@@ -100,7 +100,112 @@ h1 {
 }
 
 
-/* GUMB */
+/* PASSWORD */
+
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-wrapper #password {
+    width: 100%;
+    padding-right: 50px;
+}
+
+
+/* GUMB ZA OKO */
+
+.toggle-password {
+    position: absolute;
+
+    right: 13px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 28px;
+    height: 28px;
+
+    padding: 0;
+
+    background: transparent;
+    border: none;
+
+    cursor: pointer;
+
+    opacity: 0.7;
+
+    transition: 0.2s ease;
+}
+
+.toggle-password:hover {
+    opacity: 1;
+}
+
+
+/* PASSWORD EYE */
+
+.toggle-password {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    background: transparent;
+    border: none;
+
+    cursor: pointer;
+    color: #aaa;
+
+    transition: 0.2s ease;
+}
+
+.toggle-password:hover {
+    color: white;
+}
+
+.eye-svg {
+    width: 21px;
+    height: 21px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Crta je normalno skrivena */
+
+.eye-slash {
+    opacity: 0;
+}
+
+/* Kad je lozinka prikazana, pokaži crtu */
+
+.toggle-password.password-visible .eye-slash {
+    opacity: 1;
+}
+
+/* LIGHT MODE */
+
+body.light-mode .toggle-password {
+    color: #777;
+}
+
+body.light-mode .toggle-password:hover {
+    color: #222;
+}
+
+/* LOGIN GUMB */
 
 #loginButton {
     width: 100%;
@@ -139,17 +244,22 @@ h1 {
     transform: translateY(0);
 }
 
+
 /* LOGIN ACTIONS */
 
 .login-actions {
     display: flex;
     align-items: center;
+
     gap: 12px;
 }
 
+
 .login-actions #loginButton {
     flex: 1;
+
     width: auto;
+
     margin-top: 5px;
 }
 
@@ -167,14 +277,18 @@ h1 {
     margin-top: 5px;
 }
 
+
 .login-theme-switch input {
     opacity: 0;
+
     width: 0;
     height: 0;
 }
 
+
 .login-theme-slider {
     position: absolute;
+
     inset: 0;
 
     background: #1f1f1f;
@@ -186,6 +300,7 @@ h1 {
 
     transition: 0.25s ease;
 }
+
 
 .login-theme-slider::before {
     content: "☾";
@@ -212,9 +327,11 @@ h1 {
     transition: 0.25s ease;
 }
 
+
 .login-theme-switch input:checked + .login-theme-slider {
     background: #ddd;
 }
+
 
 .login-theme-switch input:checked + .login-theme-slider::before {
     content: "☀";
@@ -232,6 +349,7 @@ body.light-mode {
     background: #f2f2f2;
 }
 
+
 body.light-mode .big_bubble {
     background: white;
 
@@ -240,7 +358,12 @@ body.light-mode .big_bubble {
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
 }
 
+
 body.light-mode h1 {
+    color: #1f1f1f;
+}
+
+body.light-mode h2 {
     color: #1f1f1f;
 }
 
@@ -252,15 +375,133 @@ body.light-mode #password {
     border-color: #ccc;
 }
 
+
 body.light-mode #email::placeholder,
 body.light-mode #password::placeholder {
     color: #777;
 }
 
+
 body.light-mode .login-theme-slider {
     background: #ddd;
 
     border-color: #bbb;
+}
+
+
+/* OKO U LIGHT MODE */
+
+body.light-mode .eye {
+    border-color: #666;
+}
+
+
+body.light-mode .eye::before,
+body.light-mode .toggle-password.password-visible::after {
+    background: #666;
+}
+
+/* INPUT IKONE */
+
+.input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.input-wrapper #email {
+    width: 100%;
+    padding-left: 46px;
+}
+
+.input-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 19px;
+    height: 19px;
+
+    fill: none;
+    stroke: #888;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+    pointer-events: none;
+
+    transition: 0.2s ease;
+}
+
+/* Kad klikneš u E-mail, ikona postane narančasta */
+
+.input-wrapper:focus-within .input-icon {
+    stroke: #ff7a00;
+}
+
+/* LIGHT MODE */
+
+body.light-mode .input-icon {
+    stroke: #777;
+}
+
+body.light-mode .input-wrapper:focus-within .input-icon {
+    stroke: #ff7a00;
+}
+
+/* IKONA LOKOTA */
+
+.password-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 19px;
+    height: 19px;
+
+    fill: none;
+    stroke: #888;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+    pointer-events: none;
+
+    transition: 0.2s ease;
+}
+
+/* Napravi mjesta za lokot lijevo i oko desno */
+
+.password-wrapper #password {
+    padding-left: 46px;
+    padding-right: 50px;
+}
+
+/* Kad klikneš u Lozinku, lokot postane narančast */
+
+.password-wrapper:focus-within .password-icon {
+    stroke: #ff7a00;
+}
+
+/* LIGHT MODE */
+
+body.light-mode .password-icon {
+    stroke: #777;
+}
+
+body.light-mode .password-wrapper:focus-within .password-icon {
+    stroke: #ff7a00;
+}
+
+h2{
+  margin: 0 0 30px 0;
+
+    text-align: center;
+
+    color: white;  
 }
 
 /* MOBITEL */
