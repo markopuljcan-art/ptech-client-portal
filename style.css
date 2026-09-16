@@ -515,6 +515,90 @@ body.light-mode #userGreeting {
 body.light-mode .section-title {
     color: #1f1f1f;
 }
+
+/* STATUS BADGE */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 5px 11px;
+    border-radius: 999px;
+
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+
+    border: 1px solid transparent;
+}
+
+.status-badge::before {
+    content: "";
+
+    width: 7px;
+    height: 7px;
+
+    margin-right: 7px;
+
+    border-radius: 50%;
+}
+
+
+/* U IZRADI */
+
+.status-badge.status-progress {
+    background: rgba(255, 122, 0, 0.12);
+    border-color: rgba(255, 122, 0, 0.35);
+    color: #ff9a3d;
+}
+
+.status-badge.status-progress::before {
+    background: #ff7a00;
+    box-shadow: 0 0 8px rgba(255, 122, 0, 0.6);
+}
+
+
+/* ZAVRŠENO */
+
+.status-badge.status-done {
+    background: rgba(40, 190, 90, 0.12);
+    border-color: rgba(40, 190, 90, 0.35);
+    color: #49d77d;
+}
+
+.status-badge.status-done::before {
+    background: #2ecc71;
+    box-shadow: 0 0 8px rgba(46, 204, 113, 0.5);
+}
+
+
+/* NA ČEKANJU */
+
+.status-badge.status-waiting {
+    background: rgba(170, 170, 170, 0.10);
+    border-color: rgba(170, 170, 170, 0.28);
+    color: #bcbcbc;
+}
+
+.status-badge.status-waiting::before {
+    background: #999;
+}
+
+
+/* LIGHT MODE */
+
+body.light-mode .status-badge.status-progress {
+    color: #c85f00;
+}
+
+body.light-mode .status-badge.status-done {
+    color: #198f4a;
+}
+
+body.light-mode .status-badge.status-waiting {
+    color: #666;
+}
+
 /* MOBITEL */
 
 @media (max-width: 600px) {
