@@ -58,6 +58,23 @@ async function loadDashboard() {
     document.getElementById("job").textContent = project.type;
     document.getElementById("jobName").textContent = project.name;
     document.getElementById("jobStatus").textContent = project.status;
+    const statusBadge = document.getElementById("jobStatus");
+
+statusBadge.classList.remove(
+    "status-progress",
+    "status-done",
+    "status-waiting"
+);
+
+if (project.status === "U izradi") {
+    statusBadge.classList.add("status-progress");
+}
+else if (project.status === "Završeno") {
+    statusBadge.classList.add("status-done");
+}
+else if (project.status === "Na čekanju") {
+    statusBadge.classList.add("status-waiting");
+}
     document.getElementById("progress").textContent = project.progress;
 
 
