@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="style_login.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="login.js" defer></script>
+
+    <title>Prijava | PTech Digital</title>
+</head>
+
+<body>
+
+
+       <div class="big_bubble">
+
+    <h1>Prijava</h1>
+
+    <form id="loginForm">
+
+        <input
+            type="email"
+            id="email"
+            placeholder="E-mail"
+            required
+        >
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Lozinka"
+            required
+        >
+
+        <div class="login-actions">
+
+    <button type="submit" id="loginButton">
+        Prijavi se
+    </button>
+
+    <label class="login-theme-switch">
+        <input type="checkbox" id="themeToggle">
+        <span class="login-theme-slider"></span>
+    </label>
+
+</div>
+
+    </form>
+
+</div>
+
+</body>
+</html>

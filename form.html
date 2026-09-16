@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js" defer></script>
+
+    <title>PTech Digital Client Portal</title>
+</head>
+
+<body>
+
+    <div class="big_bubble">
+
+        <h1>PTech Digital Client Portal</h1>
+
+        <hr>
+
+
+        <!-- KORISNIK -->
+        <div class="user-bar">
+
+            <div class="user-profile">
+
+                <span class="user-icon">👤</span>
+
+                <span id="userTop"></span>
+
+                <span class="separator"></span>
+
+                <button id="logoutButton">
+                    Odjava
+                </button>
+<span class="separator"></span>
+            
+
+
+            <!-- DARK / LIGHT MODE -->
+            <label class="theme-switch">
+
+                <input
+                    type="checkbox"
+                    id="themeToggle"
+                >
+
+                <span class="theme-slider"></span>
+
+            </label>
+
+        </div>
+        </div>
+
+
+        <!-- POZDRAV -->
+        <p>
+            Bok, <span id="userGreeting"></span> 👋
+        </p>
+
+        <p>
+            Evo što se događa s tvojim projektom.
+        </p>
+
+
+        <!-- AKTIVNI PROJEKT -->
+        <h1 class="section-title">Aktivni projekt</h1>
+
+        <div class="small_bubble">
+
+            <div class="project-row project-name">
+    <span id="job"></span> - <span id="jobName"></span>
+</div>
+
+
+            <div class="project-row">
+
+                <span class="label">
+                    Status:
+                </span>
+
+                <span id="jobStatus"></span>
+
+            </div>
+
+
+            <div class="project-row">
+
+                <span class="label">
+                    Napredak:
+                </span>
+
+                <div class="progress-container">
+
+                    <div
+                        class="progress-bar"
+                        id="progressBar">
+                    </div>
+
+                </div>
+
+                <span class="progress-text">
+                    <span id="progress"></span>%
+                </span>
+
+            </div>
+
+
+            <div class="project-row">
+
+                <span class="label">
+                    Rok:
+                </span>
+
+                <span id="deadline"></span>
+
+            </div>
+
+        </div>
+
+
+        <br>
+
+
+        <!-- ZADNJE AKTIVNOSTI -->
+        <div>
+
+            <h1 class="section-title">Zadnje aktivnosti</h1>
+
+            <div
+                class="small_bubble"
+                id="activities">
+            </div>
+
+        </div>
+
+
+        <hr>
+
+
+        <!-- FOOTER -->
+        <div class="footer">
+
+            <span>
+                &copy; PTech Digital 2026.
+            </span>
+
+            <span>
+                Sva prava zadržana.
+            </span>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
