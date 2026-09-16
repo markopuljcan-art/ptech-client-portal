@@ -104,3 +104,4 @@ togglePassword.addEventListener("click", function () {
         isHidden
     );
 });
+
