@@ -264,16 +264,15 @@ h1 {
     width: 0%;
     height: 100%;
 
-    background:
-        linear-gradient(
-            90deg,
-            #1f8f36,
-            #35c856
-        );
+    background: linear-gradient(
+        90deg,
+        #1f8f36,
+        #35c856
+    );
 
     border-radius: 999px;
 
-    transition: width 0.8s ease;
+    transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 
@@ -289,13 +288,16 @@ h1 {
 
 
 /* AKTIVNOSTI */
+/* AKTIVNOSTI */
 
 .activity-item {
-    position: relative;
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
 
     margin: 0;
-
-    padding: 12px 12px 12px 8px;
+    padding: 13px 8px;
 
     color: #f2f2f2;
 
@@ -304,11 +306,96 @@ h1 {
     border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
-
 .activity-item:last-child {
     border-bottom: none;
 }
 
+
+/* IKONA */
+
+.activity-icon {
+    width: 22px;
+    height: 22px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.activity-icon svg {
+    width: 20px;
+    height: 20px;
+
+    fill: none;
+
+    stroke: currentColor;
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+/* TEKST AKTIVNOSTI */
+
+.activity-title {
+    color: inherit;
+    margin: 0;
+}
+
+
+/* ZAVRŠENO */
+
+.activity-done .activity-icon {
+    color: #35c856;
+}
+
+
+/* U TIJEKU */
+
+.activity-progress .activity-icon {
+    color: #ff7a00;
+}
+
+.activity-spinner {
+    animation: activity-spin 1.5s linear infinite;
+}
+
+@keyframes activity-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* NA ČEKANJU */
+
+.activity-waiting .activity-icon {
+    color: #888;
+}
+
+
+/* LIGHT MODE */
+
+body.light-mode .activity-item {
+    color: #222;
+
+    border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .activity-done .activity-icon {
+    color: #1fa64a;
+}
+
+body.light-mode .activity-progress .activity-icon {
+    color: #e96f00;
+}
+
+body.light-mode .activity-waiting .activity-icon {
+    color: #888;
+}
 
 /* FOOTER */
 
