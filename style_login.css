@@ -6,11 +6,93 @@ body {
     justify-content: center;
     align-items: center;
 
-    background: #1f1f1f;
+    background:
+    radial-gradient(
+        circle at 20% 20%,
+        rgba(255, 122, 0, 0.10),
+        transparent 35%
+    ),
+    radial-gradient(
+        circle at 80% 80%,
+        rgba(255, 122, 0, 0.06),
+        transparent 35%
+    ),
+    linear-gradient(
+        135deg,
+        #111111,
+        #181818,
+        #0f0f0f
+    );
+
+background-size:
+    140% 140%,
+    140% 140%,
+    200% 200%;
+
+animation: ptechBackground 18s ease-in-out infinite alternate;
 
     font-family: Arial, sans-serif;
 }
 
+@keyframes ptechBackground {
+
+    0% {
+        background-position:
+            0% 0%,
+            100% 100%,
+            0% 50%;
+    }
+
+    50% {
+        background-position:
+            20% 10%,
+            80% 90%,
+            100% 50%;
+    }
+
+    100% {
+        background-position:
+            40% 20%,
+            60% 80%,
+            0% 50%;
+    }
+}
+
+/* LOGIN FOOTER */
+
+.login-footer {
+    margin-top: 28px;
+    padding-top: 16px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+    color: rgba(255, 255, 255, 0.42);
+
+    font-size: 12px;
+    text-align: center;
+    letter-spacing: 0.2px;
+}
+
+/* LIGHT MODE */
+
+body.light-mode .login-footer {
+    border-top-color: rgba(0, 0, 0, 0.08);
+    color: #777;
+}
+
+/* CAPS LOCK UPOZORENJE */
+
+.caps-lock-warning {
+    display: none;
+    margin: -5px 0 5px;
+    color: #ff9a3d;
+    font-size: 12px;
+    text-align: left;
+}
+
+.caps-lock-warning.show {
+    display: block;
+}
 
 /* GLAVNA KARTICA */
 
