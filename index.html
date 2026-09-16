@@ -14,18 +14,26 @@
 </head>
 
 <body>
+
     <div class="big_bubble">
 
-        <h1>PTECH Client Portal</h1>
+        <h1>PTech Client Portal</h1>
+
         <hr>
+
         <br>
+
         <h2>Prijava</h2>
+
         <form id="loginForm">
 
             <!-- E-MAIL -->
             <div class="input-wrapper">
 
-                <svg class="input-icon" viewBox="0 0 24 24">
+                <svg
+                    class="input-icon"
+                    viewBox="0 0 24 24"
+                >
                     <rect
                         x="3"
                         y="5"
@@ -41,6 +49,7 @@
                     type="email"
                     id="email"
                     placeholder="E-mail"
+                    autocomplete="email"
                     required
                 >
 
@@ -49,8 +58,12 @@
 
             <!-- LOZINKA -->
             <div class="password-wrapper">
+
                 <!-- LOKOT -->
-                <svg class="password-icon" viewBox="0 0 24 24">
+                <svg
+                    class="password-icon"
+                    viewBox="0 0 24 24"
+                >
                     <rect
                         x="5"
                         y="10"
@@ -67,6 +80,7 @@
                     type="password"
                     id="password"
                     placeholder="Lozinka"
+                    autocomplete="current-password"
                     required
                 >
 
@@ -79,7 +93,10 @@
                     aria-label="Prikaži lozinku"
                 >
 
-                    <svg class="eye-svg" viewBox="0 0 24 24">
+                    <svg
+                        class="eye-svg"
+                        viewBox="0 0 24 24"
+                    >
 
                         <path
                             d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"
@@ -105,7 +122,23 @@
 
             </div>
 
-<p id="loginError" class="login-error"></p>
+
+            <!-- CAPS LOCK UPOZORENJE -->
+            <p
+                id="capsLockWarning"
+                class="caps-lock-warning"
+            >
+                ⚠ Caps Lock je uključen
+            </p>
+
+
+            <!-- LOGIN GREŠKA -->
+            <p
+                id="loginError"
+                class="login-error"
+            ></p>
+
+
             <!-- LOGIN + THEME -->
             <div class="login-actions">
 
@@ -131,7 +164,9 @@
             </div>
 
         </form>
-
+       <div class="login-footer">
+    © PTech Digital 2026. • Sva prava zadržana.
+</div> 
     </div>
 
 </body>
