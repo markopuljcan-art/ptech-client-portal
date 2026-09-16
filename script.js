@@ -32,8 +32,6 @@ async function loadDashboard() {
         console.error("Greška kod dohvaćanja profila:", profileError);
     }
 
-    // Ako postoji display_name koristi njega,
-    // inače privremeno koristi email
     const userName =
         profile?.display_name || session.user.email;
 
@@ -43,10 +41,10 @@ async function loadDashboard() {
 
     // 3. DOHVATI PROJEKT PRIJAVLJENOG KORISNIKA
     const { data: project, error: projectError } = await supabaseClient
-    .from("projects")
-    .select("id, type, name, status, progress, deadline")
-    .eq("user_id", session.user.id)
-    .single();
+        .from("projects")
+        .select("id, type, name, status, progress, deadline")
+        .eq("user_id", session.user.id)
+        .single();
 
     if (projectError) {
         console.error("Greška kod dohvaćanja projekta:", projectError);
@@ -57,25 +55,29 @@ async function loadDashboard() {
     // 4. PRIKAŽI PROJEKT
     document.getElementById("job").textContent = project.type;
     document.getElementById("jobName").textContent = project.name;
-    document.getElementById("jobStatus").textContent = project.status;
+
     const statusBadge = document.getElementById("jobStatus");
 
-statusBadge.classList.remove(
-    "status-progress",
-    "status-done",
-    "status-waiting"
-);
+    statusBadge.textContent = project.status;
 
-if (project.status === "U izradi") {
-    statusBadge.classList.add("status-progress");
-}
-else if (project.status === "Završeno") {
-    statusBadge.classList.add("status-done");
-}
-else if (project.status === "Na čekanju") {
-    statusBadge.classList.add("status-waiting");
-}
-    document.getElementById("progress").textContent = project.progress;
+    statusBadge.classList.remove(
+        "status-progress",
+        "status-done",
+        "status-waiting"
+    );
+
+    if (project.status === "U izradi") {
+        statusBadge.classList.add("status-progress");
+    }
+    else if (project.status === "Završeno") {
+        statusBadge.classList.add("status-done");
+    }
+    else if (project.status === "Na čekanju") {
+        statusBadge.classList.add("status-waiting");
+    }
+
+    document.getElementById("progress").textContent =
+        project.progress;
 
 
     // 5. DATUM
@@ -93,12 +95,25 @@ else if (project.status === "Na čekanju") {
     }
 
 
-    // 6. PROGRESS BAR
-    document.getElementById("progressBar").style.width =
-        project.progress + "%";
+    // 6. ANIMIRANI PROGRESS BAR
+    const progressBar =
+        document.getElementById("progressBar");
+
+    progressBar.style.width = "0%";
+
+    requestAnimationFrame(function () {
+
+        setTimeout(function () {
+
+            progressBar.style.width =
+                project.progress + "%";
+
+        }, 150);
+
+    });
 
 
-    // 7. DOHVATI AKTIVNOSTI TOG PROJEKTA
+    // 7. DOHVATI AKTIVNOSTI
     const { data: activities, error: activitiesError } =
         await supabaseClient
             .from("activities")
@@ -107,10 +122,12 @@ else if (project.status === "Na čekanju") {
             .order("position", { ascending: true });
 
     if (activitiesError) {
+
         console.error(
             "Greška kod dohvaćanja aktivnosti:",
             activitiesError
         );
+
         return;
     }
 
@@ -119,28 +136,102 @@ else if (project.status === "Na čekanju") {
     const activitiesContainer =
         document.getElementById("activities");
 
-    // očisti stare aktivnosti prije prikaza
     activitiesContainer.innerHTML = "";
+
 
     activities.forEach(function (activity) {
 
-        const p = document.createElement("p");
+        const item = document.createElement("div");
 
-        p.classList.add("activity-item");
+        item.classList.add("activity-item");
 
-        let icon = "○";
 
+        // IKONA
+        const icon = document.createElement("span");
+
+        icon.classList.add("activity-icon");
+
+
+        // ZAVRŠENO
         if (activity.status === "Završeno") {
-            icon = "✓";
+
+            item.classList.add("activity-done");
+
+            icon.innerHTML = `
+                <svg viewBox="0 0 24 24">
+
+                    <circle
+                        cx="12"
+                        cy="12"
+                        r="9">
+                    </circle>
+
+                    <path
+                        d="M8 12.5l2.5 2.5L16 9">
+                    </path>
+
+                </svg>
+            `;
         }
+
+
+        // U TIJEKU
         else if (activity.status === "U tijeku") {
-            icon = "●";
+
+            item.classList.add("activity-progress");
+
+            icon.innerHTML = `
+                <svg
+                    class="activity-spinner"
+                    viewBox="0 0 24 24"
+                >
+
+                    <circle
+                        cx="12"
+                        cy="12"
+                        r="8">
+                    </circle>
+
+                    <path
+                        d="M12 4a8 8 0 0 1 8 8">
+                    </path>
+
+                </svg>
+            `;
         }
 
-        p.textContent =
-            icon + " " + activity.title;
 
-        activitiesContainer.appendChild(p);
+        // NA ČEKANJU
+        else {
+
+            item.classList.add("activity-waiting");
+
+            icon.innerHTML = `
+                <svg viewBox="0 0 24 24">
+
+                    <circle
+                        cx="12"
+                        cy="12"
+                        r="8">
+                    </circle>
+
+                </svg>
+            `;
+        }
+
+
+        // NASLOV AKTIVNOSTI
+        const title = document.createElement("span");
+
+        title.classList.add("activity-title");
+
+        title.textContent = activity.title;
+
+
+        item.appendChild(icon);
+        item.appendChild(title);
+
+        activitiesContainer.appendChild(item);
 
     });
 }
@@ -160,46 +251,42 @@ document
         window.location.href = "login.html";
 
     });
-const themeToggle = document.getElementById("themeToggle");
 
-// Učitaj spremljenu temu
-const savedTheme = localStorage.getItem("theme");
+
+// LIGHT / DARK MODE
+const themeToggle =
+    document.getElementById("themeToggle");
+
+const savedTheme =
+    localStorage.getItem("theme");
 
 if (savedTheme === "light") {
+
     document.body.classList.add("light-mode");
+
     themeToggle.checked = true;
 }
 
-// Promjena teme
+
 themeToggle.addEventListener("change", function () {
 
     if (themeToggle.checked) {
 
         document.body.classList.add("light-mode");
-        localStorage.setItem("theme", "light");
+
+        localStorage.setItem(
+            "theme",
+            "light"
+        );
 
     } else {
 
         document.body.classList.remove("light-mode");
-        localStorage.setItem("theme", "dark");
 
-    }
-
-});
-const togglePassword = document.getElementById("togglePassword");
-const passwordInput = document.getElementById("password");
-
-togglePassword.addEventListener("click", function () {
-
-    if (passwordInput.type === "password") {
-
-        passwordInput.type = "text";
-        togglePassword.classList.add("hidden-password");
-
-    } else {
-
-        passwordInput.type = "password";
-        togglePassword.classList.remove("hidden-password");
+        localStorage.setItem(
+            "theme",
+            "dark"
+        );
 
     }
 
