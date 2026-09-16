@@ -8,10 +8,13 @@ const supabaseClient = supabase.createClient(
 
 
 // LOGIN
-document.getElementById("loginForm").addEventListener("submit", async function (event) { 
+document.getElementById("loginForm").addEventListener("submit", async function (event) {
 
     event.preventDefault();
+    const loginError = document.getElementById("loginError");
 
+loginError.textContent = "";
+loginError.classList.remove("show");
     const loginButton = document.getElementById("loginButton");
 
     loginButton.disabled = true;
@@ -27,14 +30,26 @@ document.getElementById("loginForm").addEventListener("submit", async function (
 
     if (error) {
 
-        alert(error.message);
-        console.error(error);
+    console.error(error);
 
-        loginButton.disabled = false;
-        loginButton.textContent = "Prijavi se";
+    const loginError = document.getElementById("loginError");
+    const loginCard = document.querySelector(".big_bubble");
 
-        return;
-    }
+    loginError.textContent = "Pogrešan e-mail ili lozinka.";
+    loginError.classList.add("show");
+
+    loginCard.classList.remove("shake");
+
+    // prisili browser da ponovno pokrene animaciju
+    void loginCard.offsetWidth;
+
+    loginCard.classList.add("shake");
+
+    loginButton.disabled = false;
+    loginButton.textContent = "Prijavi se";
+
+    return;
+}
 
     // Login je uspješan
     localStorage.setItem("user", email);
