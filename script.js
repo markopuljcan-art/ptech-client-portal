@@ -22,43 +22,65 @@ async function loadDashboard() {
 
 
     // 2. DOHVATI PROFIL KORISNIKA
-    const { data: profile, error: profileError } = await supabaseClient
+    const {
+        data: profile,
+        error: profileError
+    } = await supabaseClient
         .from("profiles")
         .select("display_name")
         .eq("id", session.user.id)
         .maybeSingle();
 
     if (profileError) {
-        console.error("Greška kod dohvaćanja profila:", profileError);
+        console.error(
+            "Greška kod dohvaćanja profila:",
+            profileError
+        );
     }
 
     const userName =
         profile?.display_name || session.user.email;
 
-    document.getElementById("userTop").textContent = userName;
-    document.getElementById("userGreeting").textContent = userName;
+    document.getElementById("userTop").textContent =
+        userName;
+
+    document.getElementById("userGreeting").textContent =
+        userName;
 
 
-    // 3. DOHVATI PROJEKT PRIJAVLJENOG KORISNIKA
-    const { data: project, error: projectError } = await supabaseClient
+    // 3. DOHVATI PROJEKT
+    const {
+        data: project,
+        error: projectError
+    } = await supabaseClient
         .from("projects")
         .select("id, type, name, status, progress, deadline")
         .eq("user_id", session.user.id)
         .single();
 
     if (projectError) {
-        console.error("Greška kod dohvaćanja projekta:", projectError);
+        console.error(
+            "Greška kod dohvaćanja projekta:",
+            projectError
+        );
         return;
     }
 
 
     // 4. PRIKAŽI PROJEKT
-    document.getElementById("job").textContent = project.type;
-    document.getElementById("jobName").textContent = project.name;
+    document.getElementById("job").textContent =
+        project.type;
 
-    const statusBadge = document.getElementById("jobStatus");
+    document.getElementById("jobName").textContent =
+        project.name;
 
-    statusBadge.textContent = project.status;
+
+    // STATUS BADGE
+    const statusBadge =
+        document.getElementById("jobStatus");
+
+    statusBadge.textContent =
+        project.status;
 
     statusBadge.classList.remove(
         "status-progress",
@@ -76,6 +98,8 @@ async function loadDashboard() {
         statusBadge.classList.add("status-waiting");
     }
 
+
+    // NAPREDAK
     document.getElementById("progress").textContent =
         project.progress;
 
@@ -83,51 +107,48 @@ async function loadDashboard() {
     // 5. DATUM
     if (project.deadline) {
 
-        const deadline = new Date(project.deadline);
+        const deadline =
+            new Date(project.deadline);
 
         document.getElementById("deadline").textContent =
             deadline.toLocaleDateString("hr-HR");
 
     } else {
 
-        document.getElementById("deadline").textContent = "-";
-
+        document.getElementById("deadline").textContent =
+            "-";
     }
 
 
-    // 6. ANIMIRANI PROGRESS BAR
+    // 6. PROGRESS BAR
     const progressBar =
         document.getElementById("progressBar");
 
     progressBar.style.width = "0%";
 
-    requestAnimationFrame(function () {
-
-        setTimeout(function () {
-
-            progressBar.style.width =
-                project.progress + "%";
-
-        }, 150);
-
-    });
+    setTimeout(function () {
+        progressBar.style.width =
+            project.progress + "%";
+    }, 150);
 
 
     // 7. DOHVATI AKTIVNOSTI
-    const { data: activities, error: activitiesError } =
-        await supabaseClient
-            .from("activities")
-            .select("title, status, position")
-            .eq("project_id", project.id)
-            .order("position", { ascending: true });
+    const {
+        data: activities,
+        error: activitiesError
+    } = await supabaseClient
+        .from("activities")
+        .select("title, status, position")
+        .eq("project_id", project.id)
+        .order("position", {
+            ascending: true
+        });
 
     if (activitiesError) {
-
         console.error(
             "Greška kod dohvaćanja aktivnosti:",
             activitiesError
         );
-
         return;
     }
 
@@ -138,16 +159,16 @@ async function loadDashboard() {
 
     activitiesContainer.innerHTML = "";
 
-
     activities.forEach(function (activity) {
 
-        const item = document.createElement("div");
+        const item =
+            document.createElement("div");
 
         item.classList.add("activity-item");
 
 
-        // IKONA
-        const icon = document.createElement("span");
+        const icon =
+            document.createElement("span");
 
         icon.classList.add("activity-icon");
 
@@ -159,17 +180,8 @@ async function loadDashboard() {
 
             icon.innerHTML = `
                 <svg viewBox="0 0 24 24">
-
-                    <circle
-                        cx="12"
-                        cy="12"
-                        r="9">
-                    </circle>
-
-                    <path
-                        d="M8 12.5l2.5 2.5L16 9">
-                    </path>
-
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <path d="M8 12.5l2.5 2.5L16 9"></path>
                 </svg>
             `;
         }
@@ -185,17 +197,8 @@ async function loadDashboard() {
                     class="activity-spinner"
                     viewBox="0 0 24 24"
                 >
-
-                    <circle
-                        cx="12"
-                        cy="12"
-                        r="8">
-                    </circle>
-
-                    <path
-                        d="M12 4a8 8 0 0 1 8 8">
-                    </path>
-
+                    <circle cx="12" cy="12" r="8"></circle>
+                    <path d="M12 4a8 8 0 0 1 8 8"></path>
                 </svg>
             `;
         }
@@ -208,24 +211,19 @@ async function loadDashboard() {
 
             icon.innerHTML = `
                 <svg viewBox="0 0 24 24">
-
-                    <circle
-                        cx="12"
-                        cy="12"
-                        r="8">
-                    </circle>
-
+                    <circle cx="12" cy="12" r="8"></circle>
                 </svg>
             `;
         }
 
 
-        // NASLOV AKTIVNOSTI
-        const title = document.createElement("span");
+        const title =
+            document.createElement("span");
 
         title.classList.add("activity-title");
 
-        title.textContent = activity.title;
+        title.textContent =
+            activity.title;
 
 
         item.appendChild(icon);
@@ -263,30 +261,21 @@ const savedTheme =
 if (savedTheme === "light") {
 
     document.body.classList.add("light-mode");
-
     themeToggle.checked = true;
-}
 
+}
 
 themeToggle.addEventListener("change", function () {
 
     if (themeToggle.checked) {
 
         document.body.classList.add("light-mode");
-
-        localStorage.setItem(
-            "theme",
-            "light"
-        );
+        localStorage.setItem("theme", "light");
 
     } else {
 
         document.body.classList.remove("light-mode");
-
-        localStorage.setItem(
-            "theme",
-            "dark"
-        );
+        localStorage.setItem("theme", "dark");
 
     }
 
