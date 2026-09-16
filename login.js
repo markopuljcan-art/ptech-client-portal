@@ -105,3 +105,24 @@ togglePassword.addEventListener("click", function () {
     );
 });
 
+// CAPS LOCK UPOZORENJE
+
+const capsLockWarning =
+    document.getElementById("capsLockWarning");
+
+passwordInput.addEventListener("keyup", function (event) {
+
+    const capsLockOn =
+        event.getModifierState("CapsLock");
+
+    if (capsLockOn) {
+        capsLockWarning.classList.add("show");
+    } else {
+        capsLockWarning.classList.remove("show");
+    }
+
+});
+
+passwordInput.addEventListener("blur", function () {
+    capsLockWarning.classList.remove("show");
+});
