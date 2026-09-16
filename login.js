@@ -8,7 +8,7 @@ const supabaseClient = supabase.createClient(
 
 
 // LOGIN
-document.getElementById("loginForm").addEventListener("submit", async function (event) {
+document.getElementById("loginForm").addEventListener("submit", async function (event) { 
 
     event.preventDefault();
 
