@@ -7,9 +7,15 @@ const supabaseClient = supabase.createClient(
 );
 
 
+// LOGIN
 document.getElementById("loginForm").addEventListener("submit", async function (event) {
 
     event.preventDefault();
+
+    const loginButton = document.getElementById("loginButton");
+
+    loginButton.disabled = true;
+    loginButton.textContent = "Prijava...";
 
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -20,21 +26,28 @@ document.getElementById("loginForm").addEventListener("submit", async function (
     });
 
     if (error) {
-    alert(error.message);
-    console.error(error);
-    return;
-}
+
+        alert(error.message);
+        console.error(error);
+
+        loginButton.disabled = false;
+        loginButton.textContent = "Prijavi se";
+
+        return;
+    }
 
     // Login je uspješan
     localStorage.setItem("user", email);
 
+    setTimeout(function () {
     window.location.href = "form.html";
-
+}, 1000);
 });
 
+
+// THEME
 const themeToggle = document.getElementById("themeToggle");
 
-// Provjeri je li tema već spremljena
 const savedTheme = localStorage.getItem("theme");
 
 if (savedTheme === "light") {
@@ -42,7 +55,6 @@ if (savedTheme === "light") {
     themeToggle.checked = true;
 }
 
-// Kad korisnik promijeni temu
 themeToggle.addEventListener("change", function () {
 
     if (themeToggle.checked) {
@@ -57,4 +69,23 @@ themeToggle.addEventListener("change", function () {
 
     }
 
+});
+
+
+// SHOW / HIDE PASSWORD
+const togglePassword = document.getElementById("togglePassword");
+const passwordInput = document.getElementById("password");
+
+togglePassword.addEventListener("click", function () {
+
+    const isHidden = passwordInput.type === "password";
+
+    passwordInput.type = isHidden
+        ? "text"
+        : "password";
+
+    togglePassword.classList.toggle(
+        "password-visible",
+        isHidden
+    );
 });
