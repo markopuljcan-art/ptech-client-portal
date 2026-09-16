@@ -169,3 +169,21 @@ themeToggle.addEventListener("change", function () {
     }
 
 });
+const togglePassword = document.getElementById("togglePassword");
+const passwordInput = document.getElementById("password");
+
+togglePassword.addEventListener("click", function () {
+
+    if (passwordInput.type === "password") {
+
+        passwordInput.type = "text";
+        togglePassword.classList.add("hidden-password");
+
+    } else {
+
+        passwordInput.type = "password";
+        togglePassword.classList.remove("hidden-password");
+
+    }
+
+});
