@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="style.css?v=4">
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="script.js?v=3" defer></script>
+    <script src="script.js?v=4" defer></script>
 
     <title>PTech Digital Client Portal</title>
 </head>
@@ -38,10 +38,21 @@
                 <div class="user-box">
 
                     <div class="user-avatar">
+
                         <svg viewBox="0 0 24 24">
-                            <circle cx="12" cy="8" r="3"></circle>
-                            <path d="M5 20c0-4 3-7 7-7s7 3 7 7"></path>
+
+                            <circle
+                                cx="12"
+                                cy="8"
+                                r="3">
+                            </circle>
+
+                            <path
+                                d="M5 20c0-4 3-7 7-7s7 3 7 7">
+                            </path>
+
                         </svg>
+
                     </div>
 
                     <span id="userTop"></span>
@@ -52,15 +63,25 @@
                 <span class="header-separator"></span>
 
 
-                <button id="logoutButton" class="logout-button">
+                <button
+                    id="logoutButton"
+                    class="logout-button"
+                    type="button"
+                >
 
                     <svg viewBox="0 0 24 24">
+
                         <path d="M10 5H5v14h5"></path>
+
                         <path d="M14 8l4 4-4 4"></path>
+
                         <path d="M8 12h10"></path>
+
                     </svg>
 
-                    <span>Odjava</span>
+                    <span>
+                        Odjava
+                    </span>
 
                 </button>
 
@@ -85,192 +106,96 @@
         </header>
 
 
-        <!-- CONTENT -->
+        <!-- SADRŽAJ -->
         <div class="dashboard-content">
+
 
             <!-- POZDRAV -->
             <section class="welcome">
 
                 <h2>
-                    Bok, <strong id="userGreeting"></strong>!
+                    Bok,
+                    <strong id="userGreeting"></strong>!
                 </h2>
 
                 <p>
-                    Evo što se događa s tvojim projektom.
+                    Evo što se događa s tvojim projektima.
                 </p>
 
             </section>
 
 
-            <!-- AKTIVNI PROJEKT -->
+            <!-- AKTIVNI PROJEKTI -->
             <section class="dashboard-section">
 
-                <h2 class="section-title">
-                    Aktivni projekt
-                </h2>
+                <div class="section-header">
+
+                    <h2 class="section-title">
+                        Aktivni projekti
+                    </h2>
 
 
-                <div class="project-card">
+                    <div class="project-counter">
 
-                    <div class="project-heading">
-
-                        <div class="project-main">
-
-                            <div class="project-icon">
-                                <svg viewBox="0 0 24 24">
-                                    <rect
-                                        x="3"
-                                        y="4"
-                                        width="18"
-                                        height="13"
-                                        rx="2"
-                                    ></rect>
-
-                                    <path d="M8 21h8"></path>
-                                    <path d="M12 17v4"></path>
-                                </svg>
-                            </div>
-
-
-                            <div>
-
-                                <h3 id="job"></h3>
-
-                                <p id="jobName"></p>
-
-                            </div>
-
-                        </div>
-
-
-                        <span
-                            id="jobStatus"
-                            class="status-badge">
+                        <span id="currentProject">
+                            1
                         </span>
 
-                    </div>
+                        <span>
+                            /
+                        </span>
 
-
-                    <div class="project-stats">
-
-                        <!-- STATUS -->
-                        <div class="stat-card">
-
-                            <div class="stat-icon">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M6 3h9l3 3v15H6z"></path>
-                                    <path d="M15 3v4h4"></path>
-                                    <path d="M9 11h6"></path>
-                                    <path d="M9 15h6"></path>
-                                </svg>
-                            </div>
-
-                            <div>
-                                <span class="stat-label">
-                                    Status
-                                </span>
-
-                                <strong id="statusText">
-                                    -
-                                </strong>
-                            </div>
-
-                        </div>
-
-
-                        <!-- NAPREDAK -->
-                        <div class="stat-card progress-stat">
-
-                            <div class="stat-icon">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M5 20V12"></path>
-                                    <path d="M10 20V7"></path>
-                                    <path d="M15 20V4"></path>
-                                    <path d="M20 20V10"></path>
-                                </svg>
-                            </div>
-
-
-                            <div class="progress-info">
-
-                                <span class="stat-label">
-                                    Napredak
-                                </span>
-
-
-                                <div class="progress-row">
-
-                                    <div class="progress-container">
-
-                                        <div
-                                            class="progress-bar"
-                                            id="progressBar">
-                                        </div>
-
-                                    </div>
-
-                                    <strong>
-                                        <span id="progress"></span>%
-                                    </strong>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- ROK -->
-                        <div class="stat-card">
-
-                            <div class="stat-icon">
-                                <svg viewBox="0 0 24 24">
-                                    <rect
-                                        x="3"
-                                        y="5"
-                                        width="18"
-                                        height="16"
-                                        rx="2"
-                                    ></rect>
-
-                                    <path d="M8 3v4"></path>
-                                    <path d="M16 3v4"></path>
-                                    <path d="M3 10h18"></path>
-                                </svg>
-                            </div>
-
-                            <div>
-
-                                <span class="stat-label">
-                                    Rok
-                                </span>
-
-                                <strong id="deadline">
-                                    -
-                                </strong>
-
-                            </div>
-
-                        </div>
+                        <span id="totalProjects">
+                            1
+                        </span>
 
                     </div>
 
                 </div>
 
+
+                <!--
+                    JS ovdje automatski ubacuje
+                    sve projektne kartice.
+                -->
+                <div
+                    class="projects-slider"
+                    id="projectsSlider"
+                >
+                </div>
+
+
+                <!-- DOTS ISPOD SLIDERA -->
+                <div
+                    class="slider-dots"
+                    id="sliderDots"
+                >
+                </div>
+
             </section>
 
 
-            <!-- AKTIVNOSTI -->
-            <section class="dashboard-section activities-section">
+            <!-- ZADNJE AKTIVNOSTI -->
+            <section
+                class="
+                    dashboard-section
+                    activities-section
+                "
+            >
 
                 <h2 class="section-title">
                     Zadnje aktivnosti
                 </h2>
 
 
+                <!--
+                    Aktivnosti se mijenjaju
+                    kada korisnik swipea projekt.
+                -->
                 <div
                     class="activities-card"
-                    id="activities">
+                    id="activities"
+                >
                 </div>
 
             </section>
@@ -280,7 +205,10 @@
 
         <!-- FOOTER -->
         <footer class="footer">
-            © PTech Digital 2026. • Sva prava zadržana.
+
+            © PTech Digital 2026.
+            • Sva prava zadržana.
+
         </footer>
 
     </main>
