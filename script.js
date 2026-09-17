@@ -25,6 +25,7 @@ function escapeHTML(value) {
 
 
 function formatDate(value) {
+
     if (!value) {
         return "-";
     }
@@ -63,11 +64,14 @@ async function loadActivities(projectId) {
             ascending: true
         });
 
+
     if (error) {
+
         console.error(
             "Greška kod dohvaćanja aktivnosti:",
             error
         );
+
         return;
     }
 
@@ -78,6 +82,7 @@ async function loadActivities(projectId) {
     container.innerHTML = "";
 
 
+    // NEMA AKTIVNOSTI
     if (!activities || activities.length === 0) {
 
         container.innerHTML = `
@@ -117,6 +122,7 @@ async function loadActivities(projectId) {
 
             icon.innerHTML = `
                 <svg viewBox="0 0 24 24">
+
                     <circle
                         cx="12"
                         cy="12"
@@ -126,6 +132,7 @@ async function loadActivities(projectId) {
                     <path
                         d="M8 12.5l2.5 2.5L16 9">
                     </path>
+
                 </svg>
             `;
 
@@ -144,6 +151,7 @@ async function loadActivities(projectId) {
                     class="activity-spinner"
                     viewBox="0 0 24 24"
                 >
+
                     <circle
                         cx="12"
                         cy="12"
@@ -153,6 +161,7 @@ async function loadActivities(projectId) {
                     <path
                         d="M12 4a8 8 0 0 1 8 8">
                     </path>
+
                 </svg>
             `;
 
@@ -168,17 +177,20 @@ async function loadActivities(projectId) {
 
             icon.innerHTML = `
                 <svg viewBox="0 0 24 24">
+
                     <circle
                         cx="12"
                         cy="12"
                         r="8">
                     </circle>
+
                 </svg>
             `;
 
         }
 
 
+        // SADRŽAJ
         const content =
             document.createElement("div");
 
@@ -187,6 +199,7 @@ async function loadActivities(projectId) {
         );
 
 
+        // NASLOV
         const title =
             document.createElement("span");
 
@@ -198,6 +211,7 @@ async function loadActivities(projectId) {
             activity.title;
 
 
+        // DATUM
         const date =
             document.createElement("span");
 
@@ -205,12 +219,19 @@ async function loadActivities(projectId) {
             "activity-date"
         );
 
-        date.textContent =
-            activity.activity_date
-                ? formatDate(
+
+        if (activity.activity_date) {
+
+            date.textContent =
+                formatDate(
                     activity.activity_date
-                )
-                : "";
+                );
+
+        } else {
+
+            date.textContent = "";
+
+        }
 
 
         content.appendChild(title);
@@ -272,7 +293,9 @@ function renderProjects() {
         );
 
 
+        // STATUS KLASA
         let statusClass = "";
+
 
         if (project.status === "U izradi") {
 
@@ -280,6 +303,7 @@ function renderProjects() {
                 "status-progress";
 
         }
+
         else if (
             project.status === "Završeno"
         ) {
@@ -288,6 +312,7 @@ function renderProjects() {
                 "status-done";
 
         }
+
         else if (
             project.status === "Na čekanju"
         ) {
@@ -302,7 +327,12 @@ function renderProjects() {
             Number(project.progress) || 0;
 
 
+        // =========================
+        // PROJEKTNA KARTICA
+        // =========================
+
         slide.innerHTML = `
+
             <div class="project-card">
 
                 <div class="project-heading">
@@ -321,9 +351,13 @@ function renderProjects() {
                                     rx="2">
                                 </rect>
 
-                                <path d="M8 21h8"></path>
+                                <path
+                                    d="M8 21h8">
+                                </path>
 
-                                <path d="M12 17v4"></path>
+                                <path
+                                    d="M12 17v4">
+                                </path>
 
                             </svg>
 
@@ -349,6 +383,7 @@ function renderProjects() {
                     </div>
 
 
+                    <!-- STATUS GORE DESNO -->
                     <span
                         class="
                             status-badge
@@ -363,28 +398,35 @@ function renderProjects() {
                 </div>
 
 
+                <!-- DONJE KARTICE -->
                 <div class="project-stats">
 
+
+                    <!-- PAKET -->
                     <div class="stat-card">
 
                         <div class="stat-icon">
 
                             <svg viewBox="0 0 24 24">
 
+                                <rect
+                                    x="3"
+                                    y="7"
+                                    width="18"
+                                    height="13"
+                                    rx="2">
+                                </rect>
+
                                 <path
-                                    d="M6 3h9l3 3v15H6z">
+                                    d="M8 7V5">
                                 </path>
 
                                 <path
-                                    d="M15 3v4h4">
+                                    d="M16 7V5">
                                 </path>
 
                                 <path
-                                    d="M9 11h6">
-                                </path>
-
-                                <path
-                                    d="M9 15h6">
+                                    d="M8 5h8">
                                 </path>
 
                             </svg>
@@ -394,15 +436,13 @@ function renderProjects() {
 
                         <div>
 
-                            <span
-                                class="stat-label"
-                            >
-                                Status
+                            <span class="stat-label">
+                                Paket
                             </span>
 
-                            <strong>
+                            <strong class="package-name">
                                 ${escapeHTML(
-                                    project.status
+                                    project.package || "-"
                                 )}
                             </strong>
 
@@ -411,6 +451,7 @@ function renderProjects() {
                     </div>
 
 
+                    <!-- NAPREDAK -->
                     <div
                         class="
                             stat-card
@@ -443,31 +484,19 @@ function renderProjects() {
                         </div>
 
 
-                        <div
-                            class="progress-info"
-                        >
+                        <div class="progress-info">
 
-                            <span
-                                class="stat-label"
-                            >
+                            <span class="stat-label">
                                 Napredak
                             </span>
 
 
-                            <div
-                                class="progress-row"
-                            >
+                            <div class="progress-row">
 
-                                <div
-                                    class="
-                                        progress-container
-                                    "
-                                >
+                                <div class="progress-container">
 
                                     <div
-                                        class="
-                                            progress-bar
-                                        "
+                                        class="progress-bar"
                                         style="
                                             width:
                                             ${progress}%;
@@ -489,6 +518,7 @@ function renderProjects() {
                     </div>
 
 
+                    <!-- ROK -->
                     <div class="stat-card">
 
                         <div class="stat-icon">
@@ -503,11 +533,17 @@ function renderProjects() {
                                     rx="2">
                                 </rect>
 
-                                <path d="M8 3v4"></path>
+                                <path
+                                    d="M8 3v4">
+                                </path>
 
-                                <path d="M16 3v4"></path>
+                                <path
+                                    d="M16 3v4">
+                                </path>
 
-                                <path d="M3 10h18"></path>
+                                <path
+                                    d="M3 10h18">
+                                </path>
 
                             </svg>
 
@@ -516,9 +552,7 @@ function renderProjects() {
 
                         <div>
 
-                            <span
-                                class="stat-label"
-                            >
+                            <span class="stat-label">
                                 Rok
                             </span>
 
@@ -541,7 +575,10 @@ function renderProjects() {
         slider.appendChild(slide);
 
 
+        // =========================
         // DOT
+        // =========================
+
         const dot =
             document.createElement(
                 "button"
@@ -553,8 +590,13 @@ function renderProjects() {
             "slider-dot"
         );
 
+
         if (index === 0) {
-            dot.classList.add("active");
+
+            dot.classList.add(
+                "active"
+            );
+
         }
 
 
@@ -563,37 +605,60 @@ function renderProjects() {
             function () {
 
                 slider.scrollTo({
+
                     left:
                         index *
                         slider.clientWidth,
 
                     behavior:
                         "smooth"
+
                 });
 
             }
         );
 
 
-        dotsContainer.appendChild(dot);
+        dotsContainer.appendChild(
+            dot
+        );
 
     });
 
 
+    // PRVI PROJEKT
     if (projects.length > 0) {
 
-        currentProject.textContent = "1";
+        currentProject.textContent =
+            "1";
+
+        activeProjectIndex = 0;
 
         loadActivities(
             projects[0].id
         );
 
     }
+
+    else {
+
+        currentProject.textContent =
+            "0";
+
+        document.getElementById(
+            "activities"
+        ).innerHTML = `
+            <div class="no-activities">
+                Trenutno nema projekata.
+            </div>
+        `;
+
+    }
 }
 
 
 // =========================
-// PROMJENA AKTIVNOG PROJEKTA
+// SWIPE / PROMJENA PROJEKTA
 // =========================
 
 function setupProjectSlider() {
@@ -632,31 +697,48 @@ function setupProjectSlider() {
                         }
 
 
-                        const index =
-                            Math.round(
-                                slider.scrollLeft /
-                                slider.clientWidth
+                        const slide =
+                            slider.querySelector(
+                                ".project-slide"
                             );
 
 
-                        if (
-                            index < 0 ||
-                            index >=
-                                projects.length
-                        ) {
+                        if (!slide) {
                             return;
                         }
 
 
+                        const slideWidth =
+                            slide.offsetWidth + 18;
+
+
+                        let index =
+                            Math.round(
+                                slider.scrollLeft /
+                                slideWidth
+                            );
+
+
+                        index =
+                            Math.max(
+                                0,
+                                Math.min(
+                                    index,
+                                    projects.length - 1
+                                )
+                            );
+
+
+                        // BROJAČ
                         currentProject.textContent =
                             index + 1;
 
 
+                        // DOTS
                         const dots =
-                            document
-                                .querySelectorAll(
-                                    ".slider-dot"
-                                );
+                            document.querySelectorAll(
+                                ".slider-dot"
+                            );
 
 
                         dots.forEach(
@@ -667,14 +749,14 @@ function setupProjectSlider() {
 
                                 dot.classList.toggle(
                                     "active",
-                                    dotIndex ===
-                                        index
+                                    dotIndex === index
                                 );
 
                             }
                         );
 
 
+                        // PROMIJENI AKTIVNOSTI
                         if (
                             index !==
                             activeProjectIndex
@@ -685,9 +767,7 @@ function setupProjectSlider() {
 
 
                             loadActivities(
-                                projects[
-                                    index
-                                ].id
+                                projects[index].id
                             );
 
                         }
@@ -707,6 +787,7 @@ function setupProjectSlider() {
 
 async function loadDashboard() {
 
+    // SESSION
     const {
         data: { session }
     } =
@@ -724,7 +805,10 @@ async function loadDashboard() {
     }
 
 
+    // =========================
     // PROFIL
+    // =========================
+
     const {
         data: profile,
         error: profileError
@@ -765,14 +849,17 @@ async function loadDashboard() {
         userName;
 
 
-    // SVI PROJEKTI
+    // =========================
+    // SVI PROJEKTI USERA
+    // =========================
+
     const {
         data,
         error: projectError
     } = await supabaseClient
         .from("projects")
         .select(
-            "id, type, name, status, progress, deadline"
+            "id, type, name, status, progress, deadline, package"
         )
         .eq(
             "user_id",
@@ -825,7 +912,7 @@ document
 
 
 // =========================
-// THEME
+// LIGHT / DARK MODE
 // =========================
 
 const themeToggle =
@@ -866,6 +953,7 @@ themeToggle.addEventListener(
             );
 
         }
+
         else {
 
             document.body.classList.remove(
