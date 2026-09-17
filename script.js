@@ -141,7 +141,7 @@ else if (project.status === "Na čekanju") {
         error: activitiesError
     } = await supabaseClient
         .from("activities")
-        .select("title, status, position")
+        .select("title, status, position, activity_date")
         .eq("project_id", project.id)
         .order("position", {
             ascending: true
@@ -156,86 +156,127 @@ else if (project.status === "Na čekanju") {
     }
 
 
-    // 8. PRIKAŽI AKTIVNOSTI
-    const activitiesContainer =
-        document.getElementById("activities");
+// 8. PRIKAŽI AKTIVNOSTI
+const activitiesContainer =
+    document.getElementById("activities");
 
-    activitiesContainer.innerHTML = "";
+activitiesContainer.innerHTML = "";
 
-    activities.forEach(function (activity) {
+activities.forEach(function (activity) {
 
-        const item =
-            document.createElement("div");
+    const item =
+        document.createElement("div");
 
-        item.classList.add("activity-item");
-
-
-        const icon =
-            document.createElement("span");
-
-        icon.classList.add("activity-icon");
+    item.classList.add("activity-item");
 
 
-        // ZAVRŠENO
-        if (activity.status === "Završeno") {
+    const icon =
+        document.createElement("span");
 
-            item.classList.add("activity-done");
-
-            icon.innerHTML = `
-                <svg viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="9"></circle>
-                    <path d="M8 12.5l2.5 2.5L16 9"></path>
-                </svg>
-            `;
-        }
+    icon.classList.add("activity-icon");
 
 
-        // U TIJEKU
-        else if (activity.status === "U tijeku") {
+    // ZAVRŠENO
+    if (activity.status === "Završeno") {
 
-            item.classList.add("activity-progress");
+        item.classList.add("activity-done");
 
-            icon.innerHTML = `
-                <svg
-                    class="activity-spinner"
-                    viewBox="0 0 24 24"
-                >
-                    <circle cx="12" cy="12" r="8"></circle>
-                    <path d="M12 4a8 8 0 0 1 8 8"></path>
-                </svg>
-            `;
-        }
+        icon.innerHTML = `
+            <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="9"></circle>
+                <path d="M8 12.5l2.5 2.5L16 9"></path>
+            </svg>
+        `;
+    }
 
 
-        // NA ČEKANJU
-        else {
+    // U TIJEKU
+    else if (activity.status === "U tijeku") {
 
-            item.classList.add("activity-waiting");
+        item.classList.add("activity-progress");
 
-            icon.innerHTML = `
-                <svg viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="8"></circle>
-                </svg>
-            `;
-        }
-
-
-        const title =
-            document.createElement("span");
-
-        title.classList.add("activity-title");
-
-        title.textContent =
-            activity.title;
+        icon.innerHTML = `
+            <svg
+                class="activity-spinner"
+                viewBox="0 0 24 24"
+            >
+                <circle cx="12" cy="12" r="8"></circle>
+                <path d="M12 4a8 8 0 0 1 8 8"></path>
+            </svg>
+        `;
+    }
 
 
-        item.appendChild(icon);
-        item.appendChild(title);
+    // NA ČEKANJU
+    else {
 
-        activitiesContainer.appendChild(item);
+        item.classList.add("activity-waiting");
 
-    });
-}
+        icon.innerHTML = `
+            <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="8"></circle>
+            </svg>
+        `;
+    }
+
+
+    // SADRŽAJ AKTIVNOSTI
+    const content =
+        document.createElement("div");
+
+    content.classList.add("activity-content");
+
+
+    // NASLOV
+    const title =
+        document.createElement("span");
+
+    title.classList.add("activity-title");
+
+    title.textContent =
+        activity.title;
+
+
+    // DATUM
+    const date =
+        document.createElement("span");
+
+    date.classList.add("activity-date");
+
+
+    if (activity.activity_date) {
+
+        const activityDate =
+            new Date(
+                activity.activity_date +
+                "T00:00:00"
+            );
+
+        date.textContent =
+            activityDate.toLocaleDateString(
+                "hr-HR",
+                {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                }
+            );
+
+    } else {
+
+        date.textContent = "";
+    }
+
+
+    content.appendChild(title);
+    content.appendChild(date);
+
+    item.appendChild(icon);
+    item.appendChild(content);
+
+    activitiesContainer.appendChild(item);
+
+});
 
 
 // POKRENI DASHBOARD
