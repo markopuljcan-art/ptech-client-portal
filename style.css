@@ -1282,6 +1282,20 @@ body.light-mode .theme-slider::before {
     color: #111;
 }
 
+.activity-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.activity-date {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+body.light-mode .activity-date {
+    color: rgba(0, 0, 0, 0.45);
+}
 
 /* FOOTER */
 
