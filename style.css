@@ -955,63 +955,66 @@ body::after {
         translateX(29px);
 }
 
-
-/* LIGHT MODE */
+/* =========================
+   LIGHT MODE
+========================= */
 
 body.light-mode {
-    --text: #181818;
-    --muted: #747474;
+    --text: #1e1e1e;
+    --muted: #74706c;
 
     background:
         radial-gradient(
-            circle at 10% 10%,
+            circle at 5% 5%,
             rgba(255, 122, 0, 0.08),
-            transparent 25%
+            transparent 28%
         ),
-        #f3f4f6;
+        radial-gradient(
+            circle at 95% 90%,
+            rgba(255, 122, 0, 0.06),
+            transparent 28%
+        ),
+        linear-gradient(
+            135deg,
+            #f7f4f0,
+            #f4f5f7
+        );
 
-    color: #181818;
+    color: #1d1d1d;
 }
 
+
+/* GLAVNI DASHBOARD */
 
 body.light-mode .dashboard {
     background:
-        rgba(
-            255,
-            255,
-            255,
-            0.96
+        linear-gradient(
+            145deg,
+            #fffdfb,
+            #ffffff
         );
 
     border-color:
-        rgba(
-            0,
-            0,
-            0,
-            0.1
-        );
+        rgba(0, 0, 0, 0.08);
 
     box-shadow:
         0 30px 80px
-        rgba(
-            0,
-            0,
-            0,
-            0.12
-        );
+        rgba(30, 25, 20, 0.12);
 }
 
+
+/* HEADER */
 
 body.light-mode .dashboard-header {
+    background:
+        rgba(255, 255, 255, 0.72);
+
     border-bottom-color:
-        rgba(
-            0,
-            0,
-            0,
-            0.08
-        );
+        rgba(0, 0, 0, 0.07);
 }
 
+
+/* NASLOVI */
 
 body.light-mode .brand h1,
 body.light-mode .welcome h2 strong,
@@ -1020,47 +1023,182 @@ body.light-mode .project-main h3,
 body.light-mode .stat-card strong,
 body.light-mode .activity-title,
 body.light-mode #userTop {
-    color: #171717;
+    color: #1b1b1b;
 }
 
+
+/* POZDRAV */
+
+body.light-mode .welcome h2 {
+    color: #76716d;
+}
+
+
+body.light-mode .welcome p {
+    color: #817b75;
+}
+
+
+/* PROJECT CARD */
 
 body.light-mode .project-card {
     background:
         linear-gradient(
             135deg,
-            #fffaf4,
-            #ffffff
-        );
-}
-
-
-body.light-mode .stat-card,
-body.light-mode .activities-card {
-    background:
-        rgba(
-            0,
-            0,
-            0,
-            0.025
+            rgba(255, 248, 241, 0.96),
+            rgba(255, 255, 255, 0.98)
         );
 
     border-color:
-        rgba(
-            0,
-            0,
-            0,
-            0.1
+        rgba(255, 122, 0, 0.50);
+
+    box-shadow:
+        0 10px 30px
+        rgba(255, 122, 0, 0.05);
+}
+
+
+/* PROJECT ICON */
+
+body.light-mode .project-icon {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 122, 0, 0.14),
+            rgba(255, 122, 0, 0.05)
         );
+
+    color: #ff7a00;
+}
+
+
+/* PROJECT SUBTITLE */
+
+body.light-mode .project-main p {
+    color: #7a746f;
+}
+
+
+/* STAT CARDS */
+
+body.light-mode .stat-card {
+    background:
+        linear-gradient(
+            135deg,
+            #fafafa,
+            #f6f6f6
+        );
+
+    border-color:
+        rgba(0, 0, 0, 0.08);
+
+    box-shadow:
+        0 4px 12px
+        rgba(0, 0, 0, 0.03);
+}
+
+
+body.light-mode .stat-label {
+    color: #77716c;
+}
+
+
+body.light-mode .stat-icon {
+    color: #ff7a00;
+}
+
+
+/* PROGRESS */
+
+body.light-mode .progress-container {
+    background: #e8e5e2;
+}
+
+
+body.light-mode .progress-bar {
+    background:
+        linear-gradient(
+            90deg,
+            #ff7600,
+            #ffad4d
+        );
+
+    box-shadow:
+        0 0 10px
+        rgba(255, 122, 0, 0.20);
+}
+
+
+/* STATUS BADGE */
+
+body.light-mode .status-progress {
+    color: #c65c00;
+
+    border-color:
+        rgba(255, 122, 0, 0.28);
+
+    background:
+        rgba(255, 122, 0, 0.08);
+}
+
+
+body.light-mode .status-done {
+    color: #198e46;
+
+    border-color:
+        rgba(46, 204, 113, 0.28);
+
+    background:
+        rgba(46, 204, 113, 0.08);
+}
+
+
+body.light-mode .status-waiting {
+    color: #c86100;
+
+    border-color:
+        rgba(255, 122, 0, 0.28);
+
+    background:
+        rgba(255, 122, 0, 0.08);
+}
+
+
+/* ACTIVITIES */
+
+body.light-mode .activities-card {
+    background:
+        linear-gradient(
+            135deg,
+            #fafafa,
+            #f7f7f7
+        );
+
+    border-color:
+        rgba(0, 0, 0, 0.08);
+
+    box-shadow:
+        0 5px 16px
+        rgba(0, 0, 0, 0.03);
 }
 
 
 body.light-mode .activity-item {
-    color: #222;
+    color: #2a2a2a;
 }
 
 
-body.light-mode .logout-button {
-    color: #555;
+body.light-mode .activity-item:not(:last-child)::after {
+    background:
+        rgba(0, 0, 0, 0.10);
+}
+
+
+/* USER / HEADER ACTIONS */
+
+body.light-mode .user-avatar {
+    background:
+        rgba(0, 0, 0, 0.04);
 }
 
 
@@ -1069,77 +1207,52 @@ body.light-mode .user-avatar svg {
 }
 
 
-/* MOBILE */
-
-@media (max-width: 800px) {
-
-    body {
-        padding: 15px;
-        align-items: flex-start;
-    }
+body.light-mode .logout-button {
+    color: #555;
+}
 
 
-    .dashboard-header {
-        padding: 18px 20px;
+body.light-mode .logout-button:hover {
+    background:
+        rgba(0, 0, 0, 0.05);
 
-        flex-direction: column;
-
-        align-items: flex-start;
-    }
-
-
-    .header-actions {
-        width: 100%;
-
-        justify-content: space-between;
-    }
+    color: #111;
+}
 
 
-    .brand h1 {
-        font-size: 21px;
-    }
+body.light-mode .header-separator {
+    background:
+        rgba(0, 0, 0, 0.12);
+}
 
 
-    .brand-logo {
-        width: 44px;
-        height: 44px;
+/* THEME SWITCH */
 
-        font-size: 25px;
-    }
+body.light-mode .theme-slider {
+    background: #ececec;
 
-
-    .dashboard-content {
-        padding:
-            28px
-            20px;
-    }
+    border-color:
+        rgba(0, 0, 0, 0.10);
+}
 
 
-    .project-heading {
-        align-items: flex-start;
+body.light-mode .theme-slider::before {
+    background:
+        linear-gradient(
+            135deg,
+            #ffab35,
+            #ff7a00
+        );
 
-        flex-direction: column;
-    }
-
-
-    .project-stats {
-        grid-template-columns: 1fr;
-    }
-
-
-    .project-icon {
-        width: 65px;
-        height: 65px;
-    }
+    color: #111;
+}
 
 
-    .project-main h3 {
-        font-size: 22px;
-    }
+/* FOOTER */
 
+body.light-mode .footer {
+    color: #8b8580;
 
-    .footer {
-        margin: 0 20px;
-    }
-
+    border-top-color:
+        rgba(0, 0, 0, 0.08);
 }
