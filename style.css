@@ -17,6 +17,206 @@
     --muted: rgba(255, 255, 255, 0.55);
 }
 
+/* =========================
+   PROJECT SLIDER
+========================= */
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    margin-bottom: 18px;
+}
+
+.section-header .section-title {
+    margin: 0;
+}
+
+.project-counter {
+    flex-shrink: 0;
+
+    padding: 6px 10px;
+
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.04);
+
+    color: var(--muted);
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+/* SLIDER */
+
+.projects-slider {
+    display: flex;
+
+    gap: 18px;
+
+    width: 100%;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+
+    scrollbar-width: none;
+
+    overscroll-behavior-x: contain;
+
+    touch-action: pan-x;
+
+    -webkit-overflow-scrolling: touch;
+}
+
+.projects-slider::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* SVAKI PROJEKT */
+
+.project-slide {
+    flex: 0 0 100%;
+    width: 100%;
+
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+
+
+/* DOTS ISPOD */
+
+.slider-dots {
+    min-height: 22px;
+
+    margin-top: 14px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 7px;
+}
+
+.slider-dot {
+    width: 7px;
+    height: 7px;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.20);
+
+    cursor: pointer;
+
+    transition:
+        width 0.25s ease,
+        background 0.25s ease,
+        transform 0.2s ease;
+}
+
+.slider-dot:hover {
+    transform: scale(1.15);
+}
+
+.slider-dot.active {
+    width: 24px;
+
+    background: #ff7a00;
+}
+
+
+/* NEMA AKTIVNOSTI */
+
+.no-activities {
+    padding: 24px;
+
+    text-align: center;
+
+    color: var(--muted);
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   LIGHT MODE - SLIDER
+========================= */
+
+body.light-mode .project-counter {
+    background: rgba(0, 0, 0, 0.025);
+
+    border-color: rgba(0, 0, 0, 0.08);
+
+    color: #77716c;
+}
+
+body.light-mode .slider-dot {
+    background: rgba(0, 0, 0, 0.16);
+}
+
+body.light-mode .slider-dot.active {
+    background: #ff7a00;
+}
+
+
+/* =========================
+   MOBILE SLIDER
+========================= */
+
+@media (max-width: 700px) {
+
+    .section-header {
+        margin-bottom: 14px;
+    }
+
+    .project-counter {
+        padding: 5px 9px;
+
+        font-size: 12px;
+    }
+
+    .projects-slider {
+        gap: 12px;
+    }
+
+    .slider-dots {
+        margin-top: 12px;
+    }
+
+    .slider-dot.active {
+        width: 20px;
+    }
+
+}
+
+
+/* MALI MOBITEL */
+
+@media (max-width: 390px) {
+
+    .section-header {
+        gap: 10px;
+    }
+
+    .section-header .section-title {
+        font-size: 19px;
+    }
+
+    .project-counter {
+        font-size: 11px;
+    }
+
+}
 
 /* BODY */
 
