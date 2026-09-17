@@ -17,6 +17,15 @@
     --muted: rgba(255, 255, 255, 0.55);
 }
 
+.package-name {
+    color: #ff9d38;
+    font-weight: 700;
+}
+
+body.light-mode .package-name {
+    color: #e66d00;
+}
+
 /* =========================
    PROJECT SLIDER
 ========================= */
