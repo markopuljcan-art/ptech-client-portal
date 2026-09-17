@@ -275,7 +275,7 @@ activities.forEach(function (activity) {
     item.appendChild(content);
 
     activitiesContainer.appendChild(item);
-
+}
 });
 
 
