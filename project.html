@@ -12,7 +12,7 @@
 
     <link
         rel="stylesheet"
-        href="style.css?v=12"
+        href="project.css?v=3"
     >
 
     <script
@@ -20,7 +20,7 @@
     </script>
 
     <script
-        src="project.js?v=1"
+        src="project.js?v=3"
         defer>
     </script>
 
@@ -57,6 +57,9 @@
 
             <div class="header-actions">
 
+
+                <!-- USER -->
+
                 <div class="user-box">
 
                     <div class="user-avatar">
@@ -85,6 +88,8 @@
                 <span class="header-separator"></span>
 
 
+                <!-- ODJAVA -->
+
                 <button
                     id="logoutButton"
                     class="logout-button"
@@ -94,7 +99,9 @@
                     <svg viewBox="0 0 24 24">
 
                         <path d="M10 5H5v14h5"></path>
+
                         <path d="M14 8l4 4-4 4"></path>
+
                         <path d="M8 12h10"></path>
 
                     </svg>
@@ -108,6 +115,8 @@
 
                 <span class="header-separator"></span>
 
+
+                <!-- THEME -->
 
                 <label class="theme-switch">
 
@@ -134,249 +143,18 @@
         <div class="dashboard-content">
 
 
-            <!-- NATRAG -->
-
-            <div class="project-back-row">
-
-                <a
-                    href="form.html"
-                    class="project-back"
-                >
-                    <span>&lt;</span>
-                    Natrag
-                </a>
-
-            </div>
-
-
-
             <!-- =========================
-                 PROJECT HERO
+                 PROJECT DETAIL
+                 JS OVDJE UBACUJE PROJEKT
             ========================== -->
 
-            <section class="project-detail-hero">
+            <div id="projectDetail">
 
-                <div class="project-detail-heading">
-
-                    <div class="project-main">
-
-                        <div class="project-icon">
-
-                            <svg viewBox="0 0 24 24">
-
-                                <rect
-                                    x="3"
-                                    y="4"
-                                    width="18"
-                                    height="13"
-                                    rx="2">
-                                </rect>
-
-                                <path d="M8 21h8"></path>
-                                <path d="M12 17v4"></path>
-
-                            </svg>
-
-                        </div>
-
-
-                        <div>
-
-                            <h2 id="projectType">
-                                Projekt
-                            </h2>
-
-                            <p id="projectName">
-                                -
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <span
-                        id="projectStatus"
-                        class="status-badge"
-                    >
-                        -
-                    </span>
-
+                <div class="empty-state">
+                    Učitavanje projekta...
                 </div>
 
-
-
-                <!-- INFO -->
-
-                <div class="project-stats">
-
-
-                    <!-- PAKET -->
-
-                    <div class="stat-card">
-
-                        <div class="stat-icon">
-
-                            <svg viewBox="0 0 24 24">
-
-                                <rect
-                                    x="3"
-                                    y="7"
-                                    width="18"
-                                    height="13"
-                                    rx="2">
-                                </rect>
-
-                                <path d="M8 7V5"></path>
-                                <path d="M16 7V5"></path>
-                                <path d="M8 5h8"></path>
-
-                            </svg>
-
-                        </div>
-
-                        <div>
-
-                            <span class="stat-label">
-                                Paket
-                            </span>
-
-                            <strong id="projectPackage">
-                                -
-                            </strong>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- NAPREDAK -->
-
-                    <div class="stat-card progress-stat">
-
-                        <div class="stat-icon">
-
-                            <svg viewBox="0 0 24 24">
-
-                                <path d="M5 20V12"></path>
-                                <path d="M10 20V7"></path>
-                                <path d="M15 20V4"></path>
-                                <path d="M20 20V10"></path>
-
-                            </svg>
-
-                        </div>
-
-                        <div class="progress-info">
-
-                            <span class="stat-label">
-                                Napredak
-                            </span>
-
-                            <div class="progress-row">
-
-                                <div class="progress-container">
-
-                                    <div
-                                        class="progress-bar"
-                                        id="projectProgressBar"
-                                    >
-                                    </div>
-
-                                </div>
-
-                                <strong>
-                                    <span id="projectProgress">
-                                        0
-                                    </span>%
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- ROK -->
-
-                    <div class="stat-card">
-
-                        <div class="stat-icon">
-
-                            <svg viewBox="0 0 24 24">
-
-                                <rect
-                                    x="3"
-                                    y="5"
-                                    width="18"
-                                    height="16"
-                                    rx="2">
-                                </rect>
-
-                                <path d="M8 3v4"></path>
-                                <path d="M16 3v4"></path>
-                                <path d="M3 10h18"></path>
-
-                            </svg>
-
-                        </div>
-
-                        <div>
-
-                            <span class="stat-label">
-                                Rok
-                            </span>
-
-                            <strong id="projectDeadline">
-                                -
-                            </strong>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- ZADNJE AŽURIRANO -->
-
-                    <div class="stat-card">
-
-                        <div class="stat-icon">
-
-                            <svg viewBox="0 0 24 24">
-
-                                <path
-                                    d="M20 11a8 8 0 1 1-2.34-5.66">
-                                </path>
-
-                                <path
-                                    d="M20 4v7h-7">
-                                </path>
-
-                            </svg>
-
-                        </div>
-
-                        <div>
-
-                            <span class="stat-label">
-                                Zadnje ažurirano
-                            </span>
-
-                            <strong id="projectUpdated">
-                                -
-                            </strong>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </section>
+            </div>
 
 
 
@@ -399,6 +177,11 @@
                     class="activities-card"
                     id="projectActivities"
                 >
+
+                    <div class="empty-state">
+                        Učitavanje aktivnosti...
+                    </div>
+
                 </div>
 
             </section>
@@ -425,7 +208,7 @@
                     id="projectDocuments"
                 >
 
-                    <div class="no-projects">
+                    <div class="empty-state">
                         Učitavanje dokumenata...
                     </div>
 
@@ -452,15 +235,18 @@
 
 
         <!-- =========================
-             BOTTOM NAV
+             BOTTOM NAVIGATION
         ========================== -->
 
         <nav class="bottom-nav">
 
 
+            <!-- POČETNA -->
+
             <a
                 href="form.html"
                 class="bottom-nav-item"
+                aria-label="Početna"
             >
 
                 <svg viewBox="0 0 24 24">
@@ -479,18 +265,25 @@
 
 
 
+            <!-- PORUKE -->
+
             <a
                 href="messages.html"
                 class="bottom-nav-item"
+                aria-label="Poruke"
             >
 
-                <svg viewBox="0 0 24 24">
+                <div class="bottom-nav-icon-wrap">
 
-                    <path
-                        d="M4 5h16v11H8l-4 4z">
-                    </path>
+                    <svg viewBox="0 0 24 24">
 
-                </svg>
+                        <path
+                            d="M4 5h16v11H8l-4 4z">
+                        </path>
+
+                    </svg>
+
+                </div>
 
                 <span>
                     Poruke
@@ -500,9 +293,12 @@
 
 
 
+            <!-- PROJEKTI -->
+
             <a
                 href="projects.html"
                 class="bottom-nav-item active"
+                aria-label="Projekti"
             >
 
                 <svg viewBox="0 0 24 24">
@@ -529,9 +325,12 @@
 
 
 
+            <!-- DOKUMENTI -->
+
             <a
                 href="documents.html"
                 class="bottom-nav-item"
+                aria-label="Dokumenti"
             >
 
                 <svg viewBox="0 0 24 24">
@@ -550,9 +349,12 @@
 
 
 
+            <!-- PROFIL -->
+
             <a
                 href="profile.html"
                 class="bottom-nav-item"
+                aria-label="Profil"
             >
 
                 <svg viewBox="0 0 24 24">
