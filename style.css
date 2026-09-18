@@ -33,221 +33,356 @@
 ========================= */
 
 .actions-section {
-    margin-top: 38px;
-    margin-bottom: 28px;
+    margin-top: 26px;
 }
 
-.actions-section .section-title {
+
+/* NASLOV */
+
+.actions-header {
+    margin-bottom: 14px;
+}
+
+.actions-header h2 {
     margin: 0 0 3px;
-    font-size: 20px;
+
+    color: #fff;
+
+    font-size: 22px;
     font-weight: 700;
 }
 
-.actions-subtitle {
-    margin: 0 0 12px;
-    color: rgba(255, 255, 255, 0.42);
-    font-size: 11px;
+.actions-header p {
+    margin: 0;
+
+    color:
+        rgba(255, 255, 255, 0.44);
+
+    font-size: 12px;
 }
+
+
+/* =========================
+   GRID
+========================= */
 
 .actions-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 12px;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 14px;
 }
+
+
+/* =========================
+   KARTICA
+========================= */
 
 .action-card {
     position: relative;
+
     min-width: 0;
-    min-height: 138px;
-    padding: 13px;
+    min-height: 155px;
+
+    padding: 16px;
+
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    border-radius: 13px;
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012));
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.10);
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.035),
+            rgba(255, 255, 255, 0.012)
+        );
+
     color: inherit;
+
     text-decoration: none;
-    overflow: hidden;
+
     cursor: pointer;
-    transition: border-color 0.22s ease, background 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
+
+    transition:
+        border-color 0.22s ease,
+        box-shadow 0.22s ease,
+        background 0.22s ease,
+        transform 0.22s ease;
 }
+
+
+/* =========================
+   HOVER GLOW
+========================= */
 
 .action-card:hover {
-    border-color: rgba(255, 122, 0, 0.75);
-    background: linear-gradient(145deg, rgba(255, 122, 0, 0.09), rgba(255, 122, 0, 0.025));
-    box-shadow: 0 0 0 1px rgba(255, 122, 0, 0.05), 0 0 18px rgba(255, 122, 0, 0.16), 0 10px 24px rgba(0, 0, 0, 0.20);
-    transform: translateY(-2px);
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(255, 122, 0, 0.85);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 122, 0, 0.11),
+            rgba(255, 122, 0, 0.025)
+        );
+
+    box-shadow:
+        0 0 0 1px
+        rgba(255, 122, 0, 0.06),
+
+        0 0 22px
+        rgba(255, 122, 0, 0.20),
+
+        0 12px 28px
+        rgba(0, 0, 0, 0.20);
 }
 
+
+/* =========================
+   IKONA
+========================= */
+
 .action-icon {
-    width: 32px;
-    height: 32px;
-    margin-bottom: 8px;
-    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+
+    margin-bottom: 11px;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 9px;
-    background: rgba(255, 122, 0, 0.11);
-    color: #ff850f;
-    font-size: 17px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(255, 122, 0, 0.12);
+
+    color: #ff8a16;
+
+    font-size: 20px;
     font-weight: 700;
-    transition: background 0.22s ease, box-shadow 0.22s ease, color 0.22s ease;
+
+    transition:
+        background 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-.action-card:hover .action-icon {
-    background: rgba(255, 122, 0, 0.18);
-    color: #ff9d38;
-    box-shadow: 0 0 13px rgba(255, 122, 0, 0.18);
+
+.action-card:hover
+.action-icon {
+    background:
+        rgba(255, 122, 0, 0.20);
+
+    box-shadow:
+        0 0 14px
+        rgba(255, 122, 0, 0.17);
 }
 
-.action-card strong,
-.action-content strong {
-    display: block;
-    margin-bottom: 4px;
-    color: #ffffff;
-    font-size: 12px;
+
+/* =========================
+   TEKST
+========================= */
+
+.action-card strong {
+    margin-bottom: 6px;
+
+    color: #fff;
+
+    font-size: 14px;
     font-weight: 700;
+
     line-height: 1.25;
 }
 
-.action-description {
-    display: block;
-    min-height: 28px;
-    margin-bottom: 8px;
-    color: rgba(255, 255, 255, 0.43);
-    font-size: 9px;
-    line-height: 1.4;
-}
 
-.action-content {
-    flex: 1;
-}
-
-.action-content p {
+.action-card p {
     margin: 0;
-    color: rgba(255, 255, 255, 0.43);
-    font-size: 9px;
-    line-height: 1.4;
+
+    color:
+        rgba(255, 255, 255, 0.45);
+
+    font-size: 11px;
+
+    line-height: 1.45;
 }
+
+
+/* =========================
+   GUMB
+========================= */
 
 .action-button {
     margin-top: auto;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 5px 9px;
-    border: 1px solid rgba(255, 122, 0, 0.38);
+
+    padding:
+        6px
+        11px;
+
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.45);
+
     border-radius: 999px;
-    background: rgba(255, 122, 0, 0.06);
-    color: #ff8a1f !important;
-    font-size: 8px !important;
+
+    background:
+        rgba(255, 122, 0, 0.06);
+
+    color: #ff8a16;
+
+    font-size: 10px;
     font-weight: 700;
+
     line-height: 1;
-    white-space: nowrap;
-    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-.action-card:hover .action-button {
-    background: rgba(255, 122, 0, 0.15);
-    border-color: rgba(255, 122, 0, 0.75);
-    box-shadow: 0 0 9px rgba(255, 122, 0, 0.13);
+
+.action-card:hover
+.action-button {
+    border-color: #ff7a00;
+
+    background:
+        rgba(255, 122, 0, 0.15);
+
+    box-shadow:
+        0 0 10px
+        rgba(255, 122, 0, 0.14);
 }
 
-body.light-mode .actions-subtitle {
-    color: rgba(0, 0, 0, 0.45);
+
+/* =========================
+   LIGHT MODE
+========================= */
+
+body.light-mode
+.actions-header h2 {
+    color: #1b1b1b;
 }
 
-body.light-mode .action-card {
-    background: linear-gradient(145deg, #fafafa, #f7f7f7);
-    border-color: rgba(0, 0, 0, 0.08);
+
+body.light-mode
+.actions-header p {
+    color:
+        rgba(0, 0, 0, 0.45);
 }
 
-body.light-mode .action-card strong,
-body.light-mode .action-content strong {
-    color: #222222;
+
+body.light-mode
+.action-card {
+    background: #fafafa;
+
+    border-color:
+        rgba(0, 0, 0, 0.08);
 }
 
-body.light-mode .action-description,
-body.light-mode .action-content p {
-    color: rgba(0, 0, 0, 0.45);
+
+body.light-mode
+.action-card strong {
+    color: #222;
 }
 
-body.light-mode .action-card:hover {
-    border-color: rgba(230, 109, 0, 0.65);
-    background: linear-gradient(145deg, rgba(255, 122, 0, 0.07), #ffffff);
-    box-shadow: 0 0 18px rgba(230, 109, 0, 0.12), 0 8px 20px rgba(0, 0, 0, 0.06);
+
+body.light-mode
+.action-card p {
+    color:
+        rgba(0, 0, 0, 0.48);
 }
+
+
+body.light-mode
+.action-card:hover {
+    border-color:
+        rgba(255, 122, 0, 0.70);
+
+    background:
+        rgba(255, 122, 0, 0.045);
+
+    box-shadow:
+        0 0 20px
+        rgba(255, 122, 0, 0.12);
+}
+
+
+/* =========================
+   TABLET
+========================= */
 
 @media (max-width: 900px) {
+
     .actions-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
+        grid-template-columns:
+            repeat(2, 1fr);
     }
+
 }
 
+
+/* =========================
+   MOBITEL
+========================= */
+
 @media (max-width: 700px) {
+
     .actions-section {
-        margin-top: 28px;
-        margin-bottom: 24px;
+        margin-top: 24px;
     }
 
-    .actions-section .section-title {
+    .actions-header h2 {
         font-size: 19px;
     }
 
-    .actions-subtitle {
-        margin-bottom: 10px;
-        font-size: 10px;
-    }
-
     .actions-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 8px;
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 9px;
     }
 
     .action-card {
-        min-height: 130px;
-        padding: 11px;
-        border-radius: 11px;
+        min-height: 145px;
+
+        padding: 12px;
     }
 
     .action-icon {
-        width: 30px;
-        height: 30px;
-        margin-bottom: 7px;
-        font-size: 16px;
+        width: 34px;
+        height: 34px;
+
+        font-size: 18px;
     }
 
-    .action-card strong,
-    .action-content strong {
-        font-size: 11px;
+    .action-card strong {
+        font-size: 12px;
     }
 
-    .action-description,
-    .action-content p {
-        font-size: 8.5px;
+    .action-card p {
+        font-size: 9px;
     }
 
     .action-button {
-        padding: 5px 8px;
-        font-size: 8px !important;
+        padding:
+            5px
+            9px;
+
+        font-size: 8px;
     }
+
 }
-
-@media (max-width: 390px) {
-    .actions-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 7px;
-    }
-
-    .action-card {
-        min-height: 125px;
-        padding: 10px;
-    }
-}
-
 /* =========================
    BODY
 ========================= */
