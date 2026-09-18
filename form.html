@@ -12,7 +12,7 @@
 
     <link
         rel="stylesheet"
-        href="style.css?v=5"
+        href="style.css?v=6"
     >
 
     <script
@@ -20,7 +20,7 @@
     </script>
 
     <script
-        src="script.js?v=5"
+        src="script.js?v=6"
         defer>
     </script>
 
@@ -177,7 +177,6 @@
 
             <section class="dashboard-section">
 
-
                 <div class="section-header">
 
                     <h2 class="section-title">
@@ -204,13 +203,14 @@
                 </div>
 
 
-
                 <!--
-                    JS ovdje automatski ubacuje
-                    sve projektne kartice.
-
-                    Paket / Napredak / Rok
-                    također dolaze iz script.js.
+                    JS automatski generira:
+                    - projekt
+                    - paket
+                    - napredak
+                    - rok
+                    - status
+                    - klikabilni Napredak
                 -->
 
                 <div
@@ -220,8 +220,7 @@
                 </div>
 
 
-
-                <!-- DOTS ZA SLIDER -->
+                <!-- DOTS -->
 
                 <div
                     class="slider-dots"
@@ -229,20 +228,18 @@
                 >
                 </div>
 
-
             </section>
 
 
 
             <!-- =========================
-                 AKTIVNOSTI
+                 ZADNJE AKTIVNOSTI
             ========================== -->
 
             <section
-                class="
-                    dashboard-section
-                    activities-section
-                "
+                class="activities-section"
+                id="activitiesSection"
+                hidden
             >
 
                 <h2 class="section-title">
@@ -250,21 +247,13 @@
                 </h2>
 
 
-                <!--
-                    Aktivnosti se mijenjaju
-                    ovisno o projektu koji
-                    trenutno gledaš.
-                -->
-
                 <div
                     class="activities-card"
                     id="activities"
                 >
                 </div>
 
-
             </section>
-
 
         </div>
 
