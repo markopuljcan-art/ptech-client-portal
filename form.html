@@ -2,7 +2,6 @@
 <html lang="hr">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -12,34 +11,24 @@
 
     <link
         rel="stylesheet"
-        href="style.css?v=6"
+        href="style.css?v=7"
     >
 
-    <script
-        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script
-        src="script.js?v=6"
-        defer>
-    </script>
+        src="script.js?v=7"
+        defer
+    ></script>
 
-    <title>
-        PTech Digital Client Portal
-    </title>
-
+    <title>PTech Digital Client Portal</title>
 </head>
-
 
 <body>
 
     <main class="dashboard">
 
-
-        <!-- =========================
-             HEADER
-        ========================== -->
-
+        <!-- HEADER -->
         <header class="dashboard-header">
 
             <div class="brand">
@@ -56,9 +45,6 @@
 
 
             <div class="header-actions">
-
-
-                <!-- USER -->
 
                 <div class="user-box">
 
@@ -80,17 +66,13 @@
 
                     </div>
 
-                    <span id="userTop">
-                    </span>
+                    <span id="userTop"></span>
 
                 </div>
 
 
-                <span class="header-separator">
-                </span>
+                <span class="header-separator"></span>
 
-
-                <!-- ODJAVA -->
 
                 <button
                     id="logoutButton"
@@ -100,17 +82,9 @@
 
                     <svg viewBox="0 0 24 24">
 
-                        <path
-                            d="M10 5H5v14h5">
-                        </path>
-
-                        <path
-                            d="M14 8l4 4-4 4">
-                        </path>
-
-                        <path
-                            d="M8 12h10">
-                        </path>
+                        <path d="M10 5H5v14h5"></path>
+                        <path d="M14 8l4 4-4 4"></path>
+                        <path d="M8 12h10"></path>
 
                     </svg>
 
@@ -121,11 +95,8 @@
                 </button>
 
 
-                <span class="header-separator">
-                </span>
+                <span class="header-separator"></span>
 
-
-                <!-- THEME -->
 
                 <label class="theme-switch">
 
@@ -135,8 +106,7 @@
                         aria-label="Promijeni temu"
                     >
 
-                    <span class="theme-slider">
-                    </span>
+                    <span class="theme-slider"></span>
 
                 </label>
 
@@ -145,22 +115,14 @@
         </header>
 
 
-
-        <!-- =========================
-             CONTENT
-        ========================== -->
-
+        <!-- CONTENT -->
         <div class="dashboard-content">
 
-
-            <!-- WELCOME -->
-
+            <!-- POZDRAV -->
             <section class="welcome">
 
                 <h2>
-                    Bok,
-                    <strong id="userGreeting">
-                    </strong>!
+                    Bok, <strong id="userGreeting"></strong>!
                 </h2>
 
                 <p>
@@ -170,11 +132,7 @@
             </section>
 
 
-
-            <!-- =========================
-                 PROJEKTI
-            ========================== -->
-
+            <!-- PROJEKTI -->
             <section class="dashboard-section">
 
                 <div class="section-header">
@@ -183,16 +141,13 @@
                         Aktivni projekti
                     </h2>
 
-
                     <div class="project-counter">
 
                         <span id="currentProject">
                             0
                         </span>
 
-                        <span>
-                            /
-                        </span>
+                        <span>/</span>
 
                         <span id="totalProjects">
                             0
@@ -203,73 +158,28 @@
                 </div>
 
 
-                <!--
-                    JS automatski generira:
-                    - projekt
-                    - paket
-                    - napredak
-                    - rok
-                    - status
-                    - klikabilni Napredak
-                -->
-
+                <!-- JS UBACUJE PROJEKTE -->
                 <div
                     class="projects-slider"
                     id="projectsSlider"
-                >
-                </div>
+                ></div>
 
 
                 <!-- DOTS -->
-
                 <div
                     class="slider-dots"
                     id="sliderDots"
-                >
-                </div>
-
-            </section>
-
-
-
-            <!-- =========================
-                 ZADNJE AKTIVNOSTI
-            ========================== -->
-
-            <section
-                class="activities-section"
-                id="activitiesSection"
-                hidden
-            >
-
-                <h2 class="section-title">
-                    Zadnje aktivnosti
-                </h2>
-
-
-                <div
-                    class="activities-card"
-                    id="activities"
-                >
-                </div>
+                ></div>
 
             </section>
 
         </div>
 
 
-
-        <!-- =========================
-             FOOTER
-        ========================== -->
-
+        <!-- FOOTER -->
         <footer class="footer">
-
-            © PTech Digital 2026.
-            • Sva prava zadržana.
-
+            © PTech Digital 2026. • Sva prava zadržana.
         </footer>
-
 
     </main>
 
