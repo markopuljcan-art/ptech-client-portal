@@ -2,6 +2,7 @@
 <html lang="hr">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -11,24 +12,34 @@
 
     <link
         rel="stylesheet"
-        href="style.css?v=7"
+        href="style.css?v=10"
     >
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
 
     <script
-        src="script.js?v=7"
-        defer
-    ></script>
+        src="script.js?v=10"
+        defer>
+    </script>
 
-    <title>PTech Digital Client Portal</title>
+    <title>
+        PTech Digital Client Portal
+    </title>
+
 </head>
+
 
 <body>
 
     <main class="dashboard">
 
-        <!-- HEADER -->
+
+        <!-- =========================
+             HEADER
+        ========================== -->
+
         <header class="dashboard-header">
 
             <div class="brand">
@@ -45,6 +56,9 @@
 
 
             <div class="header-actions">
+
+
+                <!-- USER -->
 
                 <div class="user-box">
 
@@ -74,6 +88,8 @@
                 <span class="header-separator"></span>
 
 
+                <!-- ODJAVA -->
+
                 <button
                     id="logoutButton"
                     class="logout-button"
@@ -83,7 +99,9 @@
                     <svg viewBox="0 0 24 24">
 
                         <path d="M10 5H5v14h5"></path>
+
                         <path d="M14 8l4 4-4 4"></path>
+
                         <path d="M8 12h10"></path>
 
                     </svg>
@@ -97,6 +115,8 @@
 
                 <span class="header-separator"></span>
 
+
+                <!-- THEME -->
 
                 <label class="theme-switch">
 
@@ -115,14 +135,21 @@
         </header>
 
 
-        <!-- CONTENT -->
+
+        <!-- =========================
+             CONTENT
+        ========================== -->
+
         <div class="dashboard-content">
 
+
             <!-- POZDRAV -->
+
             <section class="welcome">
 
                 <h2>
-                    Bok, <strong id="userGreeting"></strong>!
+                    Bok,
+                    <strong id="userGreeting"></strong>!
                 </h2>
 
                 <p>
@@ -132,7 +159,11 @@
             </section>
 
 
-            <!-- PROJEKTI -->
+
+            <!-- =========================
+                 PROJEKTI
+            ========================== -->
+
             <section class="dashboard-section">
 
                 <div class="section-header">
@@ -140,6 +171,7 @@
                     <h2 class="section-title">
                         Aktivni projekti
                     </h2>
+
 
                     <div class="project-counter">
 
@@ -159,26 +191,45 @@
 
 
                 <!-- JS UBACUJE PROJEKTE -->
+
                 <div
                     class="projects-slider"
                     id="projectsSlider"
-                ></div>
+                >
+                </div>
 
 
                 <!-- DOTS -->
+
                 <div
                     class="slider-dots"
                     id="sliderDots"
-                ></div>
+                >
+                </div>
 
             </section>
+
+
+            <!--
+                OVDJE ĆEMO POSLIJE
+                DODATI "ZA VAS"
+                I "AKCIJE"
+            -->
+
 
         </div>
 
 
-        <!-- FOOTER -->
+
+        <!-- =========================
+             FOOTER
+        ========================== -->
+
         <footer class="footer">
-            © PTech Digital 2026. • Sva prava zadržana.
+
+            © PTech Digital 2026.
+            • Sva prava zadržana.
+
         </footer>
 
     </main>
