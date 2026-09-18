@@ -4,11 +4,13 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
 
+
 const supabaseClient =
     supabase.createClient(
         SUPABASE_URL,
         SUPABASE_KEY
     );
+
 
 
 /* =========================
@@ -34,8 +36,9 @@ const documentsContainer =
     document.getElementById("projectDocuments");
 
 
+
 /* =========================
-   PROJECT ID IZ URL-a
+   PROJECT ID
 ========================= */
 
 const params =
@@ -45,6 +48,7 @@ const params =
 
 const projectId =
     params.get("id");
+
 
 
 /* =========================
@@ -57,10 +61,21 @@ function formatDate(value) {
         return "-";
     }
 
+    const raw =
+        String(value).slice(0, 10);
+
     const date =
         new Date(
-            value + "T00:00:00"
+            raw + "T00:00:00"
         );
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+        return "-";
+    }
 
     return date.toLocaleDateString(
         "hr-HR",
@@ -71,6 +86,7 @@ function formatDate(value) {
         }
     );
 }
+
 
 
 /* =========================
@@ -88,6 +104,7 @@ function escapeHtml(value) {
 }
 
 
+
 /* =========================
    STATUS
 ========================= */
@@ -99,22 +116,28 @@ function getStatusClass(status) {
             .toLowerCase()
             .trim();
 
+
     if (
         value === "završeno" ||
         value === "zavrseno"
     ) {
+
         return "status-done";
     }
+
 
     if (
         value === "na čekanju" ||
         value === "na cekanju"
     ) {
+
         return "status-waiting";
     }
 
+
     return "status-progress";
 }
+
 
 
 /* =========================
@@ -122,9 +145,14 @@ function getStatusClass(status) {
 ========================= */
 
 const savedTheme =
-    localStorage.getItem("theme");
+    localStorage.getItem(
+        "theme"
+    );
 
-if (savedTheme === "light") {
+
+if (
+    savedTheme === "light"
+) {
 
     document.body.classList.add(
         "light-mode"
@@ -153,9 +181,11 @@ if (themeToggle) {
                     ? "light"
                     : "dark"
             );
+
         }
     );
 }
+
 
 
 /* =========================
@@ -168,25 +198,33 @@ if (logoutButton) {
         "click",
         async function () {
 
-            await supabaseClient.auth.signOut();
+            await supabaseClient
+                .auth
+                .signOut();
 
             window.location.href =
                 "index.html";
+
         }
     );
 }
 
 
+
 /* =========================
-   UČITAJ STRANICU
+   START
 ========================= */
 
 async function initProjectPage() {
 
     const {
-        data: { session }
+        data: {
+            session
+        }
     } =
-        await supabaseClient.auth.getSession();
+        await supabaseClient
+            .auth
+            .getSession();
 
 
     if (!session) {
@@ -198,42 +236,58 @@ async function initProjectPage() {
     }
 
 
-    /* USER */
 
-    const metadata =
-        session.user.user_metadata || {};
+    /* =========================
+       USER
+    ========================= */
 
-    const userName =
-        metadata.full_name ||
-        metadata.name ||
-        session.user.email
-            .split("@")[0];
+    const {
+        data: profile
+    } =
+        await supabaseClient
+
+            .from("profiles")
+
+            .select(
+                "display_name"
+            )
+
+            .eq(
+                "id",
+                session.user.id
+            )
+
+            .maybeSingle();
+
 
     if (userTop) {
+
         userTop.textContent =
-            userName;
+            profile?.display_name ||
+            session.user.email
+                .split("@")[0];
+
     }
 
 
-    /* NEMA ID-a */
+
+    /* =========================
+       ID PROVJERA
+    ========================= */
 
     if (!projectId) {
 
-        if (projectContainer) {
-
-            projectContainer.innerHTML = `
-                <div class="empty-state">
-                    Projekt nije pronađen.
-                </div>
-            `;
-        }
+        showProjectError(
+            "Projekt nije odabran."
+        );
 
         return;
     }
 
 
+
     /* =========================
-       PROJEKT
+       DOHVATI PROJEKT
     ========================= */
 
     const {
@@ -241,7 +295,9 @@ async function initProjectPage() {
         error
     } =
         await supabaseClient
+
             .from("projects")
+
             .select(`
                 id,
                 name,
@@ -249,17 +305,17 @@ async function initProjectPage() {
                 status,
                 progress,
                 deadline,
-                package
+                package,
+                user_id
             `)
+
             .eq(
                 "id",
                 projectId
             )
-            .eq(
-                "user_id",
-                session.user.id
-            )
+
             .maybeSingle();
+
 
 
     if (error) {
@@ -269,32 +325,119 @@ async function initProjectPage() {
             error
         );
 
+        showProjectError(
+            "Projekt se ne može učitati."
+        );
+
         return;
     }
+
 
 
     if (!project) {
 
-        projectContainer.innerHTML = `
-            <div class="empty-state">
-                Projekt nije pronađen.
-            </div>
-        `;
+        showProjectError(
+            "Projekt nije pronađen."
+        );
 
         return;
     }
 
 
-    renderProject(project);
 
-    await loadActivities(
-        project.id
+    /*
+        DODATNA FRONTEND PROVJERA.
+
+        RLS u Supabaseu i dalje treba
+        ostati glavna zaštita.
+    */
+
+    if (
+        project.user_id &&
+        project.user_id !==
+        session.user.id
+    ) {
+
+        showProjectError(
+            "Projekt nije dostupan."
+        );
+
+        return;
+    }
+
+
+
+    /* =========================
+       PRIKAŽI
+    ========================= */
+
+    renderProject(
+        project
     );
 
-    await loadDocuments(
-        project.id
-    );
+
+    await Promise.all([
+
+        loadActivities(
+            project.id
+        ),
+
+        loadDocuments(
+            project.id
+        )
+
+    ]);
+
 }
+
+
+
+/* =========================
+   ERROR
+========================= */
+
+function showProjectError(message) {
+
+    if (projectContainer) {
+
+        projectContainer.innerHTML = `
+
+            <div class="project-back-row">
+
+                <a
+                    href="form.html"
+                    class="project-back"
+                >
+                    <span>‹</span>
+
+                    Natrag
+                </a>
+
+            </div>
+
+
+            <div class="empty-state">
+                ${escapeHtml(message)}
+            </div>
+        `;
+    }
+
+
+    if (activitiesContainer) {
+
+        activitiesContainer.innerHTML =
+            "";
+    }
+
+
+    if (documentsContainer) {
+
+        documentsContainer.innerHTML =
+            "";
+    }
+
+}
+
 
 
 /* =========================
@@ -302,10 +445,6 @@ async function initProjectPage() {
 ========================= */
 
 function renderProject(project) {
-
-    if (!projectContainer) {
-        return;
-    }
 
     const progress =
         Math.max(
@@ -317,6 +456,7 @@ function renderProject(project) {
                 )
             )
         );
+
 
     const statusClass =
         getStatusClass(
@@ -332,18 +472,25 @@ function renderProject(project) {
                 href="form.html"
                 class="project-back"
             >
+
                 <span>‹</span>
+
                 Natrag
+
             </a>
 
         </div>
 
 
+
         <section class="project-detail-hero">
+
 
             <div class="project-detail-heading">
 
+
                 <div class="project-main">
+
 
                     <div class="project-icon">
 
@@ -370,19 +517,27 @@ function renderProject(project) {
                     </div>
 
 
-                    <div>
+                    <div class="project-title-area">
 
                         <h2>
-                            ${escapeHtml(project.name)}
+                            ${escapeHtml(
+                                project.type ||
+                                project.name ||
+                                "Projekt"
+                            )}
                         </h2>
 
                         <p>
-                            ${escapeHtml(project.type || "")}
+                            ${escapeHtml(
+                                project.name || ""
+                            )}
                         </p>
 
                     </div>
 
+
                 </div>
+
 
 
                 <div
@@ -391,10 +546,16 @@ function renderProject(project) {
                         ${statusClass}
                     "
                 >
-                    ${escapeHtml(project.status || "-")}
+
+                    ${escapeHtml(
+                        project.status || "-"
+                    )}
+
                 </div>
 
+
             </div>
+
 
 
             <div class="project-stats">
@@ -405,8 +566,33 @@ function renderProject(project) {
                 <div class="stat-card">
 
                     <div class="stat-icon">
-                        ▣
+
+                        <svg viewBox="0 0 24 24">
+
+                            <rect
+                                x="3"
+                                y="7"
+                                width="18"
+                                height="13"
+                                rx="2">
+                            </rect>
+
+                            <path
+                                d="M8 7V5">
+                            </path>
+
+                            <path
+                                d="M16 7V5">
+                            </path>
+
+                            <path
+                                d="M8 5h8">
+                            </path>
+
+                        </svg>
+
                     </div>
+
 
                     <div>
 
@@ -415,7 +601,11 @@ function renderProject(project) {
                         </span>
 
                         <strong class="package-value">
-                            ${escapeHtml(project.package || "-")}
+
+                            ${escapeHtml(
+                                project.package || "-"
+                            )}
+
                         </strong>
 
                     </div>
@@ -423,19 +613,31 @@ function renderProject(project) {
                 </div>
 
 
+
                 <!-- NAPREDAK -->
 
                 <div class="stat-card">
 
                     <div class="stat-icon">
-                        ▥
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path d="M5 20V12"></path>
+                            <path d="M10 20V7"></path>
+                            <path d="M15 20V4"></path>
+                            <path d="M20 20V10"></path>
+
+                        </svg>
+
                     </div>
+
 
                     <div class="progress-info">
 
                         <span class="stat-label">
                             Napredak
                         </span>
+
 
                         <div class="progress-row">
 
@@ -452,6 +654,7 @@ function renderProject(project) {
 
                             </div>
 
+
                             <strong>
                                 ${progress}%
                             </strong>
@@ -463,13 +666,31 @@ function renderProject(project) {
                 </div>
 
 
+
                 <!-- ROK -->
 
                 <div class="stat-card">
 
                     <div class="stat-icon">
-                        ◫
+
+                        <svg viewBox="0 0 24 24">
+
+                            <rect
+                                x="3"
+                                y="5"
+                                width="18"
+                                height="16"
+                                rx="2">
+                            </rect>
+
+                            <path d="M8 3v4"></path>
+                            <path d="M16 3v4"></path>
+                            <path d="M3 10h18"></path>
+
+                        </svg>
+
                     </div>
+
 
                     <div>
 
@@ -478,7 +699,9 @@ function renderProject(project) {
                         </span>
 
                         <strong>
-                            ${formatDate(project.deadline)}
+                            ${formatDate(
+                                project.deadline
+                            )}
                         </strong>
 
                     </div>
@@ -486,13 +709,27 @@ function renderProject(project) {
                 </div>
 
 
-                <!-- ZADNJE AŽURIRANO -->
+
+                <!-- ZADNJE -->
 
                 <div class="stat-card">
 
                     <div class="stat-icon">
-                        ↻
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path
+                                d="M20 11a8 8 0 1 1-2.34-5.66">
+                            </path>
+
+                            <path
+                                d="M20 4v7h-7">
+                            </path>
+
+                        </svg>
+
                     </div>
+
 
                     <div>
 
@@ -508,46 +745,52 @@ function renderProject(project) {
 
                 </div>
 
+
             </div>
+
 
         </section>
     `;
+
 }
+
 
 
 /* =========================
    AKTIVNOSTI
 ========================= */
 
-async function loadActivities(projectId) {
-
-    if (!activitiesContainer) {
-        return;
-    }
-
+async function loadActivities(
+    currentProjectId
+) {
 
     const {
         data: activities,
         error
     } =
         await supabaseClient
+
             .from("activities")
+
             .select(`
                 title,
                 status,
                 position,
                 activity_date
             `)
+
             .eq(
                 "project_id",
-                projectId
+                currentProjectId
             )
+
             .order(
                 "position",
                 {
                     ascending: true
                 }
             );
+
 
 
     if (error) {
@@ -558,6 +801,7 @@ async function loadActivities(projectId) {
         );
 
         activitiesContainer.innerHTML = `
+
             <div class="empty-state">
                 Aktivnosti se ne mogu učitati.
             </div>
@@ -567,12 +811,14 @@ async function loadActivities(projectId) {
     }
 
 
+
     if (
         !activities ||
         activities.length === 0
     ) {
 
         activitiesContainer.innerHTML = `
+
             <div class="empty-state">
                 Trenutno nema aktivnosti.
             </div>
@@ -582,29 +828,14 @@ async function loadActivities(projectId) {
     }
 
 
-    activitiesContainer.innerHTML = "";
+
+    activitiesContainer.innerHTML =
+        "";
+
 
 
     activities.forEach(
-        function (activity) {
-
-            const item =
-                document.createElement(
-                    "div"
-                );
-
-            item.className =
-                "activity-item";
-
-
-            const icon =
-                document.createElement(
-                    "div"
-                );
-
-            icon.className =
-                "activity-icon";
-
+        activity => {
 
             const status =
                 String(
@@ -614,170 +845,170 @@ async function loadActivities(projectId) {
                     .trim();
 
 
+            let statusClass =
+                "activity-waiting";
+
+            let icon =
+                "○";
+
+
             if (
                 status === "završeno" ||
                 status === "zavrseno"
             ) {
 
-                item.classList.add(
-                    "activity-done"
-                );
+                statusClass =
+                    "activity-done";
 
-                icon.textContent = "✓";
+                icon =
+                    "✓";
 
-            } else if (
+            }
+
+            else if (
                 status === "u tijeku" ||
                 status === "u izradi"
             ) {
 
-                item.classList.add(
-                    "activity-progress"
-                );
+                statusClass =
+                    "activity-progress";
 
-                icon.textContent = "↻";
+                icon =
+                    "↻";
 
-            } else {
-
-                item.classList.add(
-                    "activity-waiting"
-                );
-
-                icon.textContent = "○";
             }
 
 
-            const content =
+
+            const item =
                 document.createElement(
                     "div"
                 );
 
-            content.className =
-                "activity-content";
+
+            item.className =
+                `activity-item ${statusClass}`;
 
 
-            const title =
-                document.createElement(
-                    "strong"
+            item.innerHTML = `
+
+                <div class="activity-icon">
+                    ${icon}
+                </div>
+
+
+                <div class="activity-content">
+
+                    <strong class="activity-title">
+
+                        ${escapeHtml(
+                            activity.title || "-"
+                        )}
+
+                    </strong>
+
+
+                    <span class="activity-date">
+
+                        ${formatDate(
+                            activity.activity_date
+                        )}
+
+                    </span>
+
+                </div>
+            `;
+
+
+            activitiesContainer
+                .appendChild(
+                    item
                 );
 
-            title.className =
-                "activity-title";
-
-            title.textContent =
-                activity.title || "-";
-
-
-            const date =
-                document.createElement(
-                    "span"
-                );
-
-            date.className =
-                "activity-date";
-
-            date.textContent =
-                formatDate(
-                    activity.activity_date
-                );
-
-
-            content.appendChild(
-                title
-            );
-
-            content.appendChild(
-                date
-            );
-
-
-            item.appendChild(
-                icon
-            );
-
-            item.appendChild(
-                content
-            );
-
-
-            activitiesContainer.appendChild(
-                item
-            );
         }
     );
 
 
+
     /* ZADNJE AŽURIRANO */
 
-    const datedActivities =
-        activities.filter(
-            activity =>
-                activity.activity_date
-        );
-
-
-    if (datedActivities.length) {
-
-        datedActivities.sort(
-            (a, b) =>
-                new Date(
-                    b.activity_date
-                ) -
-                new Date(
-                    a.activity_date
-                )
-        );
-
-
-        const lastUpdated =
-            document.getElementById(
-                "lastUpdated"
+    const withDate =
+        activities
+            .filter(
+                item =>
+                    item.activity_date
+            )
+            .sort(
+                (a, b) =>
+                    new Date(
+                        b.activity_date
+                    ) -
+                    new Date(
+                        a.activity_date
+                    )
             );
 
 
-        if (lastUpdated) {
+    const lastUpdated =
+        document.getElementById(
+            "lastUpdated"
+        );
 
-            lastUpdated.textContent =
-                formatDate(
-                    datedActivities[0]
-                        .activity_date
-                );
-        }
+
+    if (
+        lastUpdated &&
+        withDate.length
+    ) {
+
+        lastUpdated.textContent =
+            formatDate(
+                withDate[0]
+                    .activity_date
+            );
+
     }
+
 }
+
 
 
 /* =========================
    DOKUMENTI
 ========================= */
 
-async function loadDocuments(projectId) {
-
-    if (!documentsContainer) {
-        return;
-    }
-
+async function loadDocuments(
+    currentProjectId
+) {
 
     const {
         data: documents,
         error
     } =
         await supabaseClient
-            .from("project_documents")
+
+            .from(
+                "project_documents"
+            )
+
             .select(`
+                id,
                 name,
                 file_url,
                 created_at
             `)
+
             .eq(
                 "project_id",
-                projectId
+                currentProjectId
             )
+
             .order(
                 "created_at",
                 {
                     ascending: false
                 }
             );
+
 
 
     if (error) {
@@ -788,6 +1019,7 @@ async function loadDocuments(projectId) {
         );
 
         documentsContainer.innerHTML = `
+
             <div class="empty-state">
                 Dokumenti se ne mogu učitati.
             </div>
@@ -797,12 +1029,14 @@ async function loadDocuments(projectId) {
     }
 
 
+
     if (
         !documents ||
         documents.length === 0
     ) {
 
         documentsContainer.innerHTML = `
+
             <div class="empty-state">
                 Trenutno nema dokumenata.
             </div>
@@ -812,7 +1046,10 @@ async function loadDocuments(projectId) {
     }
 
 
-    documentsContainer.innerHTML = "";
+
+    documentsContainer.innerHTML =
+        "";
+
 
 
     for (
@@ -820,26 +1057,9 @@ async function loadDocuments(projectId) {
         of documents
     ) {
 
-        const {
-            data: signedData,
-            error: signedError
-        } =
-            await supabaseClient
-                .storage
-                .from(
-                    "project-documents"
-                )
-                .createSignedUrl(
-                    documentItem.file_url,
-                    600
-                );
-
-
         const card =
             document.createElement(
-                signedError
-                    ? "div"
-                    : "a"
+                "a"
             );
 
 
@@ -847,56 +1067,119 @@ async function loadDocuments(projectId) {
             "project-document-card";
 
 
-        if (!signedError) {
+        let documentUrl =
+            "#";
 
-            card.href =
-                signedData.signedUrl;
+
+        if (
+            documentItem.file_url
+        ) {
+
+            const {
+                data: signedData,
+                error: signedError
+            } =
+                await supabaseClient
+
+                    .storage
+
+                    .from(
+                        "project-documents"
+                    )
+
+                    .createSignedUrl(
+                        documentItem.file_url,
+                        600
+                    );
+
+
+            if (
+                !signedError &&
+                signedData?.signedUrl
+            ) {
+
+                documentUrl =
+                    signedData.signedUrl;
+
+            }
+
+        }
+
+
+        card.href =
+            documentUrl;
+
+
+        if (
+            documentUrl !== "#"
+        ) {
 
             card.target =
                 "_blank";
 
             card.rel =
                 "noopener noreferrer";
+
         }
 
 
         card.innerHTML = `
 
             <div class="project-document-icon">
-                ↓
+
+                <svg viewBox="0 0 24 24">
+
+                    <path
+                        d="M6 3h8l4 4v14H6z">
+                    </path>
+
+                    <path
+                        d="M14 3v5h5">
+                    </path>
+
+                </svg>
+
             </div>
+
 
             <div class="project-document-content">
 
                 <strong>
-                    ${escapeHtml(documentItem.name)}
+
+                    ${escapeHtml(
+                        documentItem.name ||
+                        "Dokument"
+                    )}
+
                 </strong>
 
+
                 <span>
+
                     ${formatDate(
-                        String(
-                            documentItem.created_at
-                        ).slice(0, 10)
+                        documentItem.created_at
                     )}
+
                 </span>
 
             </div>
 
-            <div class="project-document-arrow">
+
+            <span class="project-document-arrow">
                 ›
-            </div>
+            </span>
         `;
 
 
-        documentsContainer.appendChild(
-            card
-        );
+        documentsContainer
+            .appendChild(
+                card
+            );
+
     }
+
 }
 
 
-/* =========================
-   START
-========================= */
 
 initProjectPage();
