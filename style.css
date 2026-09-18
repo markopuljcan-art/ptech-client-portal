@@ -11,64 +11,25 @@
     --orange-light: #ff9d38;
 
     --text: #f6f6f6;
-    --muted: rgba(255, 255, 255, 0.55);
+
+    --muted:
+        rgba(
+            255,
+            255,
+            255,
+            0.55
+        );
 
     --orange-border:
-        rgba(255, 122, 0, 0.65);
-}
-
-/* =========================
-   STAT COLUMN
-========================= */
-
-.stat-column {
-    display: flex;
-    flex-direction: column;
-
-    gap: 12px;
+        rgba(
+            255,
+            122,
+            0,
+            0.65
+        );
 }
 
 
-/* =========================
-   ZADNJE AŽURIRANO
-========================= */
-
-.updated-card {
-    min-height: 82px;
-}
-
-
-/* =========================
-   PORAVNANJE PROJEKT STATS
-========================= */
-
-.project-stats {
-    align-items: stretch;
-}
-
-
-/* SREDNJI NAPREDAK NEKA SE MOŽE RASTEGNUTI */
-
-.progress-stat {
-    align-self: stretch;
-}
-
-
-/* =========================
-   MOBILE
-========================= */
-
-@media (max-width: 700px) {
-
-    .stat-column {
-        gap: 10px;
-    }
-
-    .updated-card {
-        min-height: 68px;
-    }
-
-}
 /* =========================
    BODY
 ========================= */
@@ -89,7 +50,8 @@ body {
         Helvetica,
         sans-serif;
 
-    color: var(--text);
+    color:
+        var(--text);
 
     background:
         radial-gradient(
@@ -97,11 +59,13 @@ body {
             rgba(255, 122, 0, 0.24),
             transparent 25%
         ),
+
         radial-gradient(
             circle at 95% 90%,
             rgba(255, 122, 0, 0.17),
             transparent 26%
         ),
+
         linear-gradient(
             135deg,
             #090a0c,
@@ -110,6 +74,8 @@ body {
         );
 }
 
+
+/* UKRASNI KRUGOVI */
 
 body::before,
 body::after {
@@ -124,7 +90,12 @@ body::after {
 
     border:
         1px solid
-        rgba(255, 122, 0, 0.42);
+        rgba(
+            255,
+            122,
+            0,
+            0.42
+        );
 
     pointer-events: none;
 }
@@ -158,7 +129,12 @@ body::after {
 
     border:
         1px solid
-        rgba(255, 255, 255, 0.16);
+        rgba(
+            255,
+            255,
+            255,
+            0.16
+        );
 
     border-radius: 22px;
 
@@ -171,7 +147,12 @@ body::after {
 
     box-shadow:
         0 35px 90px
-        rgba(0, 0, 0, 0.55);
+        rgba(
+            0,
+            0,
+            0,
+            0.55
+        );
 
     backdrop-filter:
         blur(20px);
@@ -185,7 +166,9 @@ body::after {
 .dashboard-header {
     min-height: 100px;
 
-    padding: 20px 42px;
+    padding:
+        20px
+        42px;
 
     display: flex;
     align-items: center;
@@ -195,7 +178,12 @@ body::after {
 
     border-bottom:
         1px solid
-        rgba(255, 255, 255, 0.11);
+        rgba(
+            255,
+            255,
+            255,
+            0.11
+        );
 }
 
 
@@ -233,7 +221,12 @@ body::after {
 
     box-shadow:
         0 8px 24px
-        rgba(255, 122, 0, 0.25);
+        rgba(
+            255,
+            122,
+            0,
+            0.25
+        );
 }
 
 
@@ -242,11 +235,12 @@ body::after {
 
     font-size: 28px;
 
-    letter-spacing: -0.4px;
+    letter-spacing:
+        -0.4px;
 }
 
 
-/* HEADER DESNO */
+/* HEADER ACTIONS */
 
 .header-actions {
     display: flex;
@@ -277,7 +271,12 @@ body::after {
     border-radius: 50%;
 
     background:
-        rgba(255, 255, 255, 0.08);
+        rgba(
+            255,
+            255,
+            255,
+            0.08
+        );
 }
 
 
@@ -288,7 +287,12 @@ body::after {
     fill: none;
 
     stroke:
-        rgba(255, 255, 255, 0.75);
+        rgba(
+            255,
+            255,
+            255,
+            0.75
+        );
 
     stroke-width: 1.8;
 }
@@ -299,11 +303,18 @@ body::after {
     height: 30px;
 
     background:
-        rgba(255, 255, 255, 0.14);
+        rgba(
+            255,
+            255,
+            255,
+            0.14
+        );
 }
 
 
-/* ODJAVA */
+/* =========================
+   LOGOUT
+========================= */
 
 .logout-button {
     display: flex;
@@ -316,17 +327,24 @@ body::after {
     border: none;
     border-radius: 9px;
 
-    background: transparent;
+    background:
+        transparent;
 
     color:
-        rgba(255, 255, 255, 0.85);
+        rgba(
+            255,
+            255,
+            255,
+            0.85
+        );
 
     font-size: 14px;
     font-weight: 600;
 
     cursor: pointer;
 
-    transition: 0.2s ease;
+    transition:
+        0.2s ease;
 }
 
 
@@ -336,7 +354,8 @@ body::after {
 
     fill: none;
 
-    stroke: currentColor;
+    stroke:
+        currentColor;
 
     stroke-width: 1.8;
     stroke-linecap: round;
@@ -348,7 +367,12 @@ body::after {
     color: white;
 
     background:
-        rgba(255, 255, 255, 0.07);
+        rgba(
+            255,
+            255,
+            255,
+            0.07
+        );
 }
 
 
@@ -383,11 +407,17 @@ body::after {
 
     border:
         1px solid
-        rgba(255, 255, 255, 0.15);
+        rgba(
+            255,
+            255,
+            255,
+            0.15
+        );
 
     border-radius: 999px;
 
-    background: #121314;
+    background:
+        #121314;
 
     cursor: pointer;
 }
@@ -420,7 +450,8 @@ body::after {
     color: #111;
 
     transition:
-        transform 0.25s ease;
+        transform
+        0.25s ease;
 }
 
 
@@ -441,37 +472,50 @@ body::after {
     padding:
         36px
         48px
-        26px;
+        34px;
 }
 
 
-/* POZDRAV */
+/* =========================
+   WELCOME
+========================= */
 
 .welcome {
-    margin-bottom: 30px;
+    margin-bottom:
+        30px;
 }
 
 
 .welcome h2 {
-    margin: 0 0 6px;
+    margin:
+        0
+        0
+        6px;
 
     font-size: 25px;
     font-weight: 400;
 
     color:
-        rgba(255, 255, 255, 0.7);
+        rgba(
+            255,
+            255,
+            255,
+            0.70
+        );
 }
 
 
 .welcome h2 strong {
-    color: white;
+    color:
+        white;
 }
 
 
 .welcome p {
     margin: 0;
 
-    color: var(--muted);
+    color:
+        var(--muted);
 
     font-size: 16px;
 }
@@ -482,7 +526,20 @@ body::after {
 ========================= */
 
 .dashboard-section {
-    margin-top: 30px;
+    margin-top:
+        30px;
+}
+
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom:
+        18px;
 }
 
 
@@ -493,34 +550,39 @@ body::after {
 }
 
 
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    gap: 20px;
-
-    margin-bottom: 18px;
-}
-
-
-/* COUNTER */
+/* =========================
+   COUNTER
+========================= */
 
 .project-counter {
     flex-shrink: 0;
 
-    padding: 6px 10px;
+    padding:
+        6px
+        10px;
 
     border:
         1px solid
-        rgba(255, 255, 255, 0.10);
+        rgba(
+            255,
+            255,
+            255,
+            0.10
+        );
 
-    border-radius: 999px;
+    border-radius:
+        999px;
 
     background:
-        rgba(255, 255, 255, 0.04);
+        rgba(
+            255,
+            255,
+            255,
+            0.04
+        );
 
-    color: var(--muted);
+    color:
+        var(--muted);
 
     font-size: 13px;
     font-weight: 600;
@@ -528,7 +590,7 @@ body::after {
 
 
 /* =========================
-   SLIDER
+   PROJECT SLIDER
 ========================= */
 
 .projects-slider {
@@ -567,7 +629,10 @@ body::after {
 
 
 .project-slide {
-    flex: 0 0 100%;
+    flex:
+        0
+        0
+        100%;
 
     width: 100%;
 
@@ -579,12 +644,15 @@ body::after {
 }
 
 
-/* DOTS */
+/* =========================
+   DOTS
+========================= */
 
 .slider-dots {
     min-height: 22px;
 
-    margin-top: 14px;
+    margin-top:
+        14px;
 
     display: flex;
     align-items: center;
@@ -601,10 +669,17 @@ body::after {
     padding: 0;
 
     border: none;
-    border-radius: 999px;
+
+    border-radius:
+        999px;
 
     background:
-        rgba(255, 255, 255, 0.20);
+        rgba(
+            255,
+            255,
+            255,
+            0.20
+        );
 
     cursor: pointer;
 
@@ -634,13 +709,16 @@ body::after {
 ========================= */
 
 .project-card {
+    display: block;
+
     padding: 24px;
 
     border:
         1px solid
         var(--orange-border);
 
-    border-radius: 18px;
+    border-radius:
+        18px;
 
     background:
         linear-gradient(
@@ -651,32 +729,91 @@ body::after {
 }
 
 
-/* PROJECT HEADER */
+/* CLICKABLE */
+
+.project-card-link {
+    color:
+        inherit;
+
+    text-decoration:
+        none;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.project-card-link:hover {
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(
+            255,
+            122,
+            0,
+            0.90
+        );
+
+    box-shadow:
+        0 18px 45px
+        rgba(
+            0,
+            0,
+            0,
+            0.24
+        ),
+
+        0 0 0 1px
+        rgba(
+            255,
+            122,
+            0,
+            0.05
+        );
+}
+
+
+.project-card-link:active {
+    transform:
+        translateY(0);
+}
+
+
+/* =========================
+   PROJECT HEADER
+========================= */
 
 .project-heading {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
 
     gap: 30px;
 
-    margin-bottom: 22px;
+    margin-bottom:
+        24px;
 }
 
 
 .project-main {
+    min-width: 0;
+
     display: flex;
     align-items: center;
 
     gap: 22px;
-
-    min-width: 0;
 }
 
 
 .project-icon {
-    width: 84px;
-    height: 84px;
+    width: 76px;
+    height: 76px;
 
     flex-shrink: 0;
 
@@ -684,7 +821,8 @@ body::after {
     align-items: center;
     justify-content: center;
 
-    border-radius: 18px;
+    border-radius:
+        17px;
 
     background:
         linear-gradient(
@@ -699,12 +837,13 @@ body::after {
 
 
 .project-icon svg {
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
 
     fill: none;
 
-    stroke: currentColor;
+    stroke:
+        currentColor;
 
     stroke-width: 1.7;
     stroke-linecap: round;
@@ -712,8 +851,16 @@ body::after {
 }
 
 
+.project-title-wrap {
+    min-width: 0;
+}
+
+
 .project-main h3 {
-    margin: 0 0 6px;
+    margin:
+        0
+        0
+        6px;
 
     font-size: 27px;
 }
@@ -722,9 +869,50 @@ body::after {
 .project-main p {
     margin: 0;
 
-    color: var(--muted);
+    color:
+        var(--muted);
 
-    font-size: 18px;
+    font-size: 17px;
+}
+
+
+/* DESNO */
+
+.project-heading-right {
+    display: flex;
+    align-items: center;
+
+    gap: 17px;
+
+    flex-shrink: 0;
+}
+
+
+.project-open-arrow {
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.42
+        );
+
+    font-size: 27px;
+    font-weight: 700;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.project-card-link:hover
+.project-open-arrow {
+    color:
+        var(--orange);
+
+    transform:
+        translateX(4px);
 }
 
 
@@ -733,43 +921,66 @@ body::after {
 ========================= */
 
 .status-badge {
-    display: inline-flex;
-    align-items: center;
+    display:
+        inline-flex;
 
-    padding: 11px 20px;
+    align-items:
+        center;
 
-    border-radius: 999px;
+    padding:
+        10px
+        18px;
 
-    font-size: 14px;
-    font-weight: 600;
+    border-radius:
+        999px;
 
-    white-space: nowrap;
+    font-size:
+        13px;
+
+    font-weight:
+        600;
+
+    white-space:
+        nowrap;
 }
 
 
 .status-badge::before {
     content: "";
 
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
 
-    margin-right: 10px;
+    margin-right:
+        9px;
 
-    border-radius: 50%;
+    border-radius:
+        50%;
 }
 
 
 /* U IZRADI */
 
 .status-progress {
-    color: #ff9a3d;
+    color:
+        #ff9a3d;
 
     border:
         1px solid
-        rgba(255, 122, 0, 0.35);
+        rgba(
+            255,
+            122,
+            0,
+            0.35
+        );
 
     background:
-        rgba(255, 122, 0, 0.10);
+        rgba(
+            255,
+            122,
+            0,
+            0.10
+        );
 }
 
 
@@ -782,14 +993,25 @@ body::after {
 /* ZAVRŠENO */
 
 .status-done {
-    color: #55df82;
+    color:
+        #55df82;
 
     border:
         1px solid
-        rgba(46, 204, 113, 0.35);
+        rgba(
+            46,
+            204,
+            113,
+            0.35
+        );
 
     background:
-        rgba(46, 204, 113, 0.10);
+        rgba(
+            46,
+            204,
+            113,
+            0.10
+        );
 }
 
 
@@ -802,14 +1024,25 @@ body::after {
 /* ČEKANJE */
 
 .status-waiting {
-    color: #b8b8b8;
+    color:
+        #b8b8b8;
 
     border:
         1px solid
-        rgba(160, 160, 160, 0.30);
+        rgba(
+            160,
+            160,
+            160,
+            0.30
+        );
 
     background:
-        rgba(160, 160, 160, 0.10);
+        rgba(
+            160,
+            160,
+            160,
+            0.10
+        );
 }
 
 
@@ -820,7 +1053,7 @@ body::after {
 
 
 /* =========================
-   STATS
+   INFO GRID
 ========================= */
 
 .project-stats {
@@ -828,35 +1061,65 @@ body::after {
 
     grid-template-columns:
         1fr
-        1.55fr
-        1fr;
+        1.4fr
+        1fr
+        1.2fr;
 
-    gap: 16px;
-
-    align-items: start;
+    gap:
+        14px;
 }
 
 
 .stat-card {
-    min-height: 88px;
+    min-width: 0;
 
-    padding: 17px 20px;
+    min-height:
+        84px;
+
+    padding:
+        16px
+        17px;
 
     display: flex;
     align-items: center;
 
-    gap: 14px;
+    gap: 13px;
 
     border:
         1px solid
-        rgba(255, 255, 255, 0.10);
+        rgba(
+            255,
+            255,
+            255,
+            0.10
+        );
 
-    border-radius: 13px;
+    border-radius:
+        13px;
 
     background:
-        rgba(0, 0, 0, 0.16);
+        rgba(
+            0,
+            0,
+            0,
+            0.16
+        );
 
-    color: inherit;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.project-card-link:hover
+.stat-card {
+    border-color:
+        rgba(
+            255,
+            255,
+            255,
+            0.13
+        );
 }
 
 
@@ -869,12 +1132,13 @@ body::after {
 
 
 .stat-icon svg {
-    width: 25px;
-    height: 25px;
+    width: 24px;
+    height: 24px;
 
     fill: none;
 
-    stroke: currentColor;
+    stroke:
+        currentColor;
 
     stroke-width: 1.7;
     stroke-linecap: round;
@@ -885,16 +1149,20 @@ body::after {
 .stat-label {
     display: block;
 
-    margin-bottom: 6px;
+    margin-bottom:
+        6px;
 
-    color: var(--muted);
+    color:
+        var(--muted);
 
-    font-size: 14px;
+    font-size:
+        13px;
 }
 
 
 .stat-card strong {
-    font-size: 15px;
+    font-size:
+        14px;
 }
 
 
@@ -902,79 +1170,19 @@ body::after {
     color:
         var(--orange-light);
 
-    font-weight: 700;
+    font-weight:
+        700;
 }
 
 
 /* =========================
-   PROGRESS CARD
+   PROGRESS
 ========================= */
 
-.progress-stat {
-    display: block;
-
-    padding: 0;
-
-    overflow: hidden;
-}
-
-
-.progress-header {
-    position: relative;
-
-    width: 100%;
-
-    min-height: 86px;
-
-    padding:
-        17px
-        48px
-        17px
-        20px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 14px;
-
-    border: none;
-
-    background:
-        transparent;
-
-    color: inherit;
-
-    font: inherit;
-
-    text-align: left;
-
-    cursor: pointer;
-
-    transition:
-        background 0.2s ease;
-}
-
-
-.progress-header:hover {
-    background:
-        rgba(255, 122, 0, 0.05);
-}
-
-
-.progress-header:focus-visible {
-    outline:
-        2px solid
-        rgba(255, 122, 0, 0.70);
-
-    outline-offset:
-        -3px;
-}
-
-
 .progress-info {
-    width: 100%;
-
     min-width: 0;
+
+    width: 100%;
 }
 
 
@@ -982,23 +1190,32 @@ body::after {
     display: flex;
     align-items: center;
 
-    gap: 14px;
+    gap: 12px;
 }
 
 
 .progress-container {
     flex: 1;
 
-    min-width: 40px;
+    min-width:
+        35px;
 
-    height: 13px;
+    height:
+        11px;
 
-    overflow: hidden;
+    overflow:
+        hidden;
 
-    border-radius: 999px;
+    border-radius:
+        999px;
 
     background:
-        rgba(255, 255, 255, 0.08);
+        rgba(
+            255,
+            255,
+            255,
+            0.08
+        );
 }
 
 
@@ -1016,306 +1233,41 @@ body::after {
         );
 
     box-shadow:
-        0 0 14px
-        rgba(255, 122, 0, 0.35);
-}
-
-
-/* STRELICA */
-
-.progress-chevron {
-    position: absolute;
-
-    right: 16px;
-    top: 50%;
-
-    transform:
-        translateY(-50%);
-
-    color:
-        rgba(255, 255, 255, 0.45);
-
-    font-size: 22px;
-    font-weight: 700;
-
-    transition:
-        transform 0.25s ease,
-        color 0.2s ease;
-}
-
-
-.progress-header:hover
-.progress-chevron {
-    color:
-        var(--orange);
-}
-
-
-.progress-header[aria-expanded="true"]
-.progress-chevron {
-    transform:
-        translateY(-50%)
-        rotate(90deg);
-
-    color:
-        var(--orange);
+        0 0 12px
+        rgba(
+            255,
+            122,
+            0,
+            0.30
+        );
 }
 
 
 /* =========================
-   AKTIVNOSTI UNUTAR
-   PROGRESS BUBBLEA
+   EMPTY
 ========================= */
 
-.progress-activities {
+.no-projects {
     padding:
-        4px
-        14px
-        12px;
-
-    border-top:
-        1px solid
-        rgba(255, 255, 255, 0.08);
-}
-
-
-.progress-activities[hidden] {
-    display: none;
-}
-
-
-/* JEDNA AKTIVNOST */
-
-.activity-preview-item {
-    position: relative;
-
-    min-height: 52px;
-
-    padding:
-        10px
-        6px
-        10px
-        38px;
-
-    display: flex;
-    align-items: center;
-}
-
-
-/* IKONA */
-
-.activity-preview-icon {
-    position: absolute;
-
-    left: 5px;
-    top: 50%;
-
-    transform:
-        translateY(-50%);
-
-    width: 23px;
-    height: 23px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    z-index: 2;
-}
-
-
-.activity-preview-icon svg {
-    width: 21px;
-    height: 21px;
-
-    fill: none;
-
-    stroke: currentColor;
-
-    stroke-width: 1.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-
-/* BOJE */
-
-.activity-preview-done
-.activity-preview-icon {
-    color: #2fd462;
-}
-
-
-.activity-preview-progress
-.activity-preview-icon {
-    color:
-        var(--orange);
-}
-
-
-.activity-preview-waiting
-.activity-preview-icon {
-    color: #999;
-}
-
-
-/* SPOJNA CRTA */
-
-.activity-preview-item:first-child::after {
-    content: "";
-
-    position: absolute;
-
-    left: 16px;
-    top: 36px;
-
-    width: 2px;
-    height: 31px;
-
-    border-radius:
-        999px;
-
-    background:
-        rgba(255, 255, 255, 0.14);
-
-    z-index: 1;
-}
-
-
-.activity-preview-done:first-child::after {
-    background:
-        linear-gradient(
-            to bottom,
-            #2ecc71,
-            rgba(46, 204, 113, 0.16)
-        );
-}
-
-
-.activity-preview-progress:first-child::after {
-    background:
-        linear-gradient(
-            to bottom,
-            #ff7a00,
-            rgba(255, 122, 0, 0.16)
-        );
-}
-
-
-.activity-preview-waiting:first-child::after {
-    background:
-        linear-gradient(
-            to bottom,
-            #888,
-            rgba(136, 136, 136, 0.16)
-        );
-}
-
-
-/* CONTENT */
-
-.activity-preview-content {
-    display: flex;
-    flex-direction: column;
-
-    gap: 3px;
-
-    min-width: 0;
-}
-
-
-.activity-preview-content strong {
-    font-size: 13px;
-
-    line-height: 1.35;
-}
-
-
-.activity-preview-content span {
-    color:
-        rgba(255, 255, 255, 0.42);
-
-    font-size: 11px;
-}
-
-
-/* =========================
-   POGLEDAJ VIŠE
-========================= */
-.activities-more {
-    margin-top: 8px;
-
-    padding: 8px 14px;
-
-    display: inline-flex;
-    align-items: center;
-
-    gap: 8px;
+        40px;
 
     border:
         1px solid
-        rgba(255, 122, 0, 0.35);
+        rgba(
+            255,
+            255,
+            255,
+            0.10
+        );
 
-    border-radius: 999px;
+    border-radius:
+        16px;
 
-    background:
-        rgba(255, 122, 0, 0.10);
+    color:
+        var(--muted);
 
-    color: #ff9a3d;
-
-    text-decoration: none;
-
-    font-size: 12px;
-    font-weight: 600;
-
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        color 0.2s ease,
-        transform 0.2s ease;
-}
-
-
-.activities-more:hover {
-    background:
-        rgba(255, 122, 0, 0.16);
-
-    border-color:
-        rgba(255, 122, 0, 0.55);
-
-    color: #ffad55;
-
-    transform:
-        translateY(-1px);
-}
-
-
-.activities-more-arrow {
-    font-size: 14px;
-
-    transition:
-        transform 0.2s ease;
-}
-
-
-.activities-more:hover
-.activities-more-arrow {
-    transform:
-        translateX(3px);
-}
-
-
-/* EMPTY */
-
-.no-activities,
-.no-projects {
-    padding: 18px;
-
-    color: var(--muted);
-
-    font-size: 13px;
-
-    text-align: center;
+    text-align:
+        center;
 }
 
 
@@ -1335,14 +1287,26 @@ body::after {
 
     border-top:
         1px solid
-        rgba(255, 255, 255, 0.10);
+        rgba(
+            255,
+            255,
+            255,
+            0.10
+        );
 
-    text-align: center;
+    text-align:
+        center;
 
     color:
-        rgba(255, 255, 255, 0.42);
+        rgba(
+            255,
+            255,
+            255,
+            0.42
+        );
 
-    font-size: 12px;
+    font-size:
+        12px;
 }
 
 
@@ -1351,10 +1315,14 @@ body::after {
 ========================= */
 
 body.light-mode {
-    --text: #1e1e1e;
-    --muted: #74706c;
+    --text:
+        #1e1e1e;
 
-    color: #1d1d1d;
+    --muted:
+        #74706c;
+
+    color:
+        #1d1d1d;
 
     background:
         radial-gradient(
@@ -1362,11 +1330,13 @@ body.light-mode {
             rgba(255, 122, 0, 0.08),
             transparent 28%
         ),
+
         radial-gradient(
             circle at 95% 90%,
             rgba(255, 122, 0, 0.06),
             transparent 28%
         ),
+
         linear-gradient(
             135deg,
             #f7f4f0,
@@ -1385,21 +1355,41 @@ body.light-mode
         );
 
     border-color:
-        rgba(0, 0, 0, 0.08);
+        rgba(
+            0,
+            0,
+            0,
+            0.08
+        );
 
     box-shadow:
         0 30px 80px
-        rgba(30, 25, 20, 0.12);
+        rgba(
+            30,
+            25,
+            20,
+            0.12
+        );
 }
 
 
 body.light-mode
 .dashboard-header {
     background:
-        rgba(255, 255, 255, 0.72);
+        rgba(
+            255,
+            255,
+            255,
+            0.72
+        );
 
     border-bottom-color:
-        rgba(0, 0, 0, 0.07);
+        rgba(
+            0,
+            0,
+            0,
+            0.07
+        );
 }
 
 
@@ -1420,19 +1410,22 @@ body.light-mode
 
 body.light-mode
 #userTop {
-    color: #1b1b1b;
+    color:
+        #1b1b1b;
 }
 
 
 body.light-mode
 .welcome h2 {
-    color: #76716d;
+    color:
+        #76716d;
 }
 
 
 body.light-mode
 .welcome p {
-    color: #817b75;
+    color:
+        #817b75;
 }
 
 
@@ -1448,7 +1441,33 @@ body.light-mode
         );
 
     border-color:
-        rgba(255, 122, 0, 0.50);
+        rgba(
+            255,
+            122,
+            0,
+            0.50
+        );
+}
+
+
+body.light-mode
+.project-card-link:hover {
+    border-color:
+        rgba(
+            255,
+            122,
+            0,
+            0.78
+        );
+
+    box-shadow:
+        0 18px 40px
+        rgba(
+            30,
+            25,
+            20,
+            0.10
+        );
 }
 
 
@@ -1468,7 +1487,20 @@ body.light-mode
 
 body.light-mode
 .project-main p {
-    color: #7a746f;
+    color:
+        #7a746f;
+}
+
+
+body.light-mode
+.project-open-arrow {
+    color:
+        rgba(
+            0,
+            0,
+            0,
+            0.35
+        );
 }
 
 
@@ -1484,23 +1516,28 @@ body.light-mode
         );
 
     border-color:
-        rgba(0, 0, 0, 0.08);
+        rgba(
+            0,
+            0,
+            0,
+            0.08
+        );
 }
 
 
 body.light-mode
 .stat-label {
-    color: #77716c;
+    color:
+        #77716c;
 }
 
 
 body.light-mode
 .package-name {
-    color: #e66d00;
+    color:
+        #e66d00;
 }
 
-
-/* PROGRESS */
 
 body.light-mode
 .progress-container {
@@ -1509,134 +1546,133 @@ body.light-mode
 }
 
 
-body.light-mode
-.progress-header:hover {
-    background:
-        rgba(255, 122, 0, 0.04);
-}
-
-
-body.light-mode
-.progress-chevron {
-    color:
-        rgba(0, 0, 0, 0.38);
-}
-
-
-/* ACTIVITIES */
-
-
-body.light-mode
-.progress-activities {
-    border-top-color:
-        rgba(0, 0, 0, 0.08);
-}
-
-
-body.light-mode
-.activity-preview-content span {
-    color:
-        rgba(0, 0, 0, 0.42);
-}
-
-
-body.light-mode
-.activity-preview-content strong {
-    color: #222;
-}
-
-
-body.light-mode
-.activities-more {
-    color: #c65c00;
-
-    background:
-        rgba(255, 122, 0, 0.08);
-
-    border-color:
-        rgba(255, 122, 0, 0.28);
-}
-
-
-body.light-mode
-.activities-more:hover {
-    color: #a94f00;
-
-    background:
-        rgba(255, 122, 0, 0.13);
-
-    border-color:
-        rgba(255, 122, 0, 0.40);
-}
-
-
-/* STATUS WAITING */
+/* WAITING SIV */
 
 body.light-mode
 .status-waiting {
-    color: #666;
+    color:
+        #666;
 
     border-color:
-        rgba(100, 100, 100, 0.22);
+        rgba(
+            100,
+            100,
+            100,
+            0.22
+        );
 
     background:
-        rgba(100, 100, 100, 0.06);
+        rgba(
+            100,
+            100,
+            100,
+            0.06
+        );
 }
 
 
-/* HEADER */
+/* HEADER LIGHT */
 
 body.light-mode
 .user-avatar {
     background:
-        rgba(0, 0, 0, 0.04);
+        rgba(
+            0,
+            0,
+            0,
+            0.04
+        );
 }
 
 
 body.light-mode
 .user-avatar svg {
-    stroke: #555;
+    stroke:
+        #555;
 }
 
 
 body.light-mode
 .logout-button {
-    color: #555;
+    color:
+        #555;
+}
+
+
+body.light-mode
+.logout-button:hover {
+    color:
+        #111;
+
+    background:
+        rgba(
+            0,
+            0,
+            0,
+            0.05
+        );
 }
 
 
 body.light-mode
 .header-separator {
     background:
-        rgba(0, 0, 0, 0.12);
+        rgba(
+            0,
+            0,
+            0,
+            0.12
+        );
 }
 
 
 body.light-mode
 .theme-slider {
-    background: #ececec;
+    background:
+        #ececec;
 
     border-color:
-        rgba(0, 0, 0, 0.10);
+        rgba(
+            0,
+            0,
+            0,
+            0.10
+        );
 }
 
 
 body.light-mode
 .project-counter {
     background:
-        rgba(0, 0, 0, 0.025);
+        rgba(
+            0,
+            0,
+            0,
+            0.025
+        );
 
     border-color:
-        rgba(0, 0, 0, 0.08);
+        rgba(
+            0,
+            0,
+            0,
+            0.08
+        );
 
-    color: #77716c;
+    color:
+        #77716c;
 }
 
 
 body.light-mode
 .slider-dot {
     background:
-        rgba(0, 0, 0, 0.16);
+        rgba(
+            0,
+            0,
+            0,
+            0.16
+        );
 }
 
 
@@ -1649,10 +1685,16 @@ body.light-mode
 
 body.light-mode
 .footer {
-    color: #8b8580;
+    color:
+        #8b8580;
 
     border-top-color:
-        rgba(0, 0, 0, 0.08);
+        rgba(
+            0,
+            0,
+            0,
+            0.08
+        );
 }
 
 
@@ -1660,100 +1702,34 @@ body.light-mode
    TABLET
 ========================= */
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
 
     body {
-        padding: 16px;
-
-        align-items: flex-start;
-    }
-
-
-    .dashboard {
-        width: 100%;
-
-        border-radius: 18px;
-    }
-
-
-    .dashboard-header {
-        padding: 18px 20px;
-
-        flex-direction: column;
-        align-items: stretch;
-
-        gap: 18px;
-    }
-
-
-    .brand {
-        justify-content: center;
-    }
-
-
-    .brand-logo {
-        width: 44px;
-        height: 44px;
-
-        font-size: 25px;
-    }
-
-
-    .brand h1 {
-        font-size: 21px;
-    }
-
-
-    .header-actions {
-        width: 100%;
-
-        justify-content: center;
+        padding:
+            20px;
     }
 
 
     .dashboard-content {
         padding:
-            26px
-            20px
-            20px;
-    }
-
-
-    .project-heading {
-        flex-direction: column;
-        align-items: flex-start;
-
-        gap: 16px;
+            30px
+            28px
+            26px;
     }
 
 
     .project-stats {
         grid-template-columns:
+            1fr
             1fr;
     }
 
 
-    .project-icon {
-        width: 64px;
-        height: 64px;
+    .project-heading {
+        gap:
+            18px;
     }
 
-
-    .project-main h3 {
-        font-size: 21px;
-    }
-
-
-    .project-main p {
-        font-size: 15px;
-    }
-
-
-    .footer {
-        margin:
-            0
-            20px;
-    }
 }
 
 
@@ -1764,94 +1740,108 @@ body.light-mode
 @media (max-width: 700px) {
 
     body {
-        padding: 8px;
+        padding:
+            8px;
 
-        align-items: flex-start;
+        align-items:
+            flex-start;
     }
 
 
     .dashboard {
         min-height:
-            calc(100vh - 16px);
+            calc(
+                100vh - 16px
+            );
 
-        border-radius: 16px;
+        border-radius:
+            16px;
     }
 
 
     /* HEADER */
 
     .dashboard-header {
-        padding: 16px;
+        padding:
+            16px;
 
-        gap: 14px;
+        flex-direction:
+            column;
+
+        align-items:
+            stretch;
+
+        gap:
+            14px;
     }
 
 
     .brand {
-        justify-content:
-            flex-start;
-
-        gap: 12px;
+        gap:
+            12px;
     }
 
 
     .brand-logo {
-        width: 42px;
-        height: 42px;
+        width:
+            42px;
 
-        font-size: 24px;
+        height:
+            42px;
+
+        font-size:
+            24px;
     }
 
 
     .brand h1 {
-        font-size: 18px;
-
-        line-height: 1.15;
+        font-size:
+            18px;
     }
 
 
     .header-actions {
         justify-content:
             space-between;
-
-        gap: 8px;
     }
 
 
     .header-separator {
-        display: none;
+        display:
+            none;
     }
 
 
     .user-box {
-        font-size: 13px;
-    }
-
-
-    .user-avatar {
-        width: 32px;
-        height: 32px;
+        font-size:
+            13px;
     }
 
 
     .logout-button {
-        padding: 7px 8px;
-
-        font-size: 13px;
+        font-size:
+            13px;
     }
 
 
     .theme-switch {
-        width: 50px;
-        height: 28px;
+        width:
+            50px;
+
+        height:
+            28px;
     }
 
 
     .theme-slider::before {
-        width: 21px;
-        height: 21px;
+        width:
+            21px;
 
-        font-size: 12px;
+        height:
+            21px;
+
+        font-size:
+            12px;
     }
 
 
@@ -1873,216 +1863,170 @@ body.light-mode
 
 
     .welcome {
-        margin-bottom: 22px;
+        margin-bottom:
+            22px;
     }
 
 
     .welcome h2 {
-        font-size: 21px;
+        font-size:
+            21px;
     }
 
 
     .welcome p {
-        font-size: 13px;
+        font-size:
+            13px;
     }
 
 
     /* SECTION */
 
-    .dashboard-section {
-        margin-top: 24px;
-    }
-
-
     .section-title {
-        font-size: 20px;
-    }
-
-
-    .section-header {
-        margin-bottom: 14px;
+        font-size:
+            20px;
     }
 
 
     .project-counter {
-        padding: 5px 9px;
+        padding:
+            5px
+            9px;
 
-        font-size: 12px;
-    }
-
-
-    .projects-slider {
-        gap: 12px;
-    }
-
-
-    .slider-dot.active {
-        width: 20px;
+        font-size:
+            12px;
     }
 
 
     /* PROJECT */
 
     .project-card {
-        padding: 16px;
+        padding:
+            16px;
     }
 
 
     .project-heading {
-        display: block;
+        display:
+            block;
 
-        margin-bottom: 16px;
+        margin-bottom:
+            18px;
     }
 
 
     .project-main {
-        gap: 12px;
+        gap:
+            12px;
     }
 
 
     .project-icon {
-        width: 50px;
-        height: 50px;
+        width:
+            52px;
+
+        height:
+            52px;
     }
 
 
     .project-icon svg {
-        width: 27px;
-        height: 27px;
+        width:
+            28px;
+
+        height:
+            28px;
     }
 
 
     .project-main h3 {
-        margin-bottom: 3px;
-
-        font-size: 18px;
+        font-size:
+            19px;
     }
 
 
     .project-main p {
-        font-size: 13px;
+        font-size:
+            13px;
+    }
+
+
+    .project-heading-right {
+        margin-top:
+            14px;
+
+        justify-content:
+            space-between;
+    }
+
+
+    .project-open-arrow {
+        font-size:
+            22px;
     }
 
 
     .status-badge {
-        margin-top: 14px;
+        padding:
+            8px
+            12px;
 
-        padding: 8px 12px;
-
-        font-size: 12px;
+        font-size:
+            12px;
     }
 
 
-    /* STAT */
+    /* GRID */
 
     .project-stats {
-        display: flex;
-        flex-direction: column;
+        grid-template-columns:
+            1fr
+            1fr;
 
-        gap: 10px;
-    }
-
-
-    .stat-card {
-        width: 100%;
-
-        min-height: 68px;
-
-        padding: 13px 14px;
-    }
-
-
-    /* PROGRESS */
-
-    .progress-stat {
-        padding: 0;
-    }
-
-
-    .progress-header {
-        min-height: 68px;
-
-        padding:
-            13px
-            42px
-            13px
-            14px;
-    }
-
-
-    .progress-row {
-        gap: 8px;
-    }
-
-
-    .progress-container {
-        height: 10px;
-    }
-
-
-    .progress-chevron {
-        right: 13px;
-
-        font-size: 20px;
-    }
-
-
-    /* ACTIVITY PREVIEW */
-
-    .progress-activities {
-        padding:
-            3px
-            10px
+        gap:
             10px;
     }
 
 
-    .activity-preview-item {
-        min-height: 48px;
+    .stat-card {
+        min-height:
+            74px;
 
-        padding-left: 34px;
-    }
-
-
-    .activity-preview-icon {
-        left: 3px;
-
-        width: 21px;
-        height: 21px;
-    }
-
-
-    .activity-preview-icon svg {
-        width: 19px;
-        height: 19px;
-    }
-
-
-    .activity-preview-item:first-child::after {
-        left: 13px;
-        top: 34px;
-
-        height: 28px;
-    }
-
-
-    .activity-preview-content strong {
-        font-size: 12px;
-    }
-
-
-    .activity-preview-content span {
-        font-size: 10px;
-    }
-
-
-    .activities-more {
         padding:
-            10px
-            6px
-            4px;
+            12px;
+    }
 
-        font-size: 12px;
+
+    .stat-label {
+        font-size:
+            11px;
+    }
+
+
+    .stat-card strong {
+        font-size:
+            12px;
+    }
+
+
+    .stat-icon svg {
+        width:
+            21px;
+
+        height:
+            21px;
+    }
+
+
+    .progress-container {
+        height:
+            8px;
+    }
+
+
+    .progress-row {
+        gap:
+            7px;
     }
 
 
@@ -2098,8 +2042,10 @@ body.light-mode
             8px
             18px;
 
-        font-size: 10px;
+        font-size:
+            10px;
     }
+
 }
 
 
@@ -2110,30 +2056,38 @@ body.light-mode
 @media (max-width: 390px) {
 
     .brand h1 {
-        font-size: 16px;
+        font-size:
+            16px;
     }
 
 
     .brand-logo {
-        width: 38px;
-        height: 38px;
+        width:
+            38px;
 
-        font-size: 22px;
+        height:
+            38px;
+
+        font-size:
+            22px;
     }
 
 
     .header-actions {
-        flex-wrap: wrap;
+        flex-wrap:
+            wrap;
     }
 
 
     .user-box {
-        flex: 1;
+        flex:
+            1;
     }
 
 
     .logout-button span {
-        display: none;
+        display:
+            none;
     }
 
 
@@ -2144,17 +2098,19 @@ body.light-mode
     }
 
 
-    .project-card {
-        padding: 13px;
+    .project-stats {
+        grid-template-columns:
+            1fr
+            1fr;
     }
 
 
-    .project-main h3 {
-        font-size: 17px;
+    .stat-card {
+        gap:
+            8px;
+
+        padding:
+            10px;
     }
 
-
-    .project-main p {
-        font-size: 12px;
-    }
 }
