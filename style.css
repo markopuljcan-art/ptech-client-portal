@@ -1191,25 +1191,26 @@ body::after {
 /* =========================
    POGLEDAJ VIŠE
 ========================= */
-
 .activities-more {
-    margin-top: 4px;
+    margin-top: 8px;
 
-    padding:
-        11px
-        8px
-        5px;
+    padding: 8px 14px;
 
-    display: flex;
-    justify-content: space-between;
+    display: inline-flex;
     align-items: center;
 
-    border-top:
-        1px solid
-        rgba(255, 255, 255, 0.08);
+    gap: 8px;
 
-    color:
-        rgba(255, 255, 255, 0.70);
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.35);
+
+    border-radius: 999px;
+
+    background:
+        rgba(255, 122, 0, 0.10);
+
+    color: #ff9a3d;
 
     text-decoration: none;
 
@@ -1217,18 +1218,29 @@ body::after {
     font-weight: 600;
 
     transition:
-        color 0.2s ease;
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
 }
 
 
 .activities-more:hover {
-    color:
-        var(--orange-light);
+    background:
+        rgba(255, 122, 0, 0.16);
+
+    border-color:
+        rgba(255, 122, 0, 0.55);
+
+    color: #ffad55;
+
+    transform:
+        translateY(-1px);
 }
 
 
 .activities-more-arrow {
-    font-size: 17px;
+    font-size: 14px;
 
     transition:
         transform 0.2s ease;
@@ -1462,6 +1474,7 @@ body.light-mode
 
 /* ACTIVITIES */
 
+
 body.light-mode
 .progress-activities {
     border-top-color:
@@ -1484,17 +1497,25 @@ body.light-mode
 
 body.light-mode
 .activities-more {
-    color:
-        rgba(0, 0, 0, 0.60);
+    color: #c65c00;
 
-    border-top-color:
-        rgba(0, 0, 0, 0.08);
+    background:
+        rgba(255, 122, 0, 0.08);
+
+    border-color:
+        rgba(255, 122, 0, 0.28);
 }
 
 
 body.light-mode
 .activities-more:hover {
-    color: #e66d00;
+    color: #a94f00;
+
+    background:
+        rgba(255, 122, 0, 0.13);
+
+    border-color:
+        rgba(255, 122, 0, 0.40);
 }
 
 
