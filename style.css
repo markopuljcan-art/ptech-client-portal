@@ -10,14 +10,11 @@
     --orange: #ff7a00;
     --orange-light: #ff9d38;
 
-    --bg: #090a0c;
-    --panel: rgba(20, 21, 23, 0.96);
-
     --text: #f6f6f6;
     --muted: rgba(255, 255, 255, 0.55);
 
-    --border: rgba(255, 255, 255, 0.13);
-    --orange-border: rgba(255, 122, 0, 0.65);
+    --orange-border:
+        rgba(255, 122, 0, 0.65);
 }
 
 
@@ -63,8 +60,6 @@ body {
 }
 
 
-/* UKRASNI KRUGOVI */
-
 body::before,
 body::after {
     content: "";
@@ -83,10 +78,12 @@ body::after {
     pointer-events: none;
 }
 
+
 body::before {
     top: -350px;
     left: -320px;
 }
+
 
 body::after {
     right: -350px;
@@ -125,7 +122,8 @@ body::after {
         0 35px 90px
         rgba(0, 0, 0, 0.55);
 
-    backdrop-filter: blur(20px);
+    backdrop-filter:
+        blur(20px);
 }
 
 
@@ -162,11 +160,11 @@ body::after {
     width: 52px;
     height: 52px;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     border-radius: 14px;
 
@@ -422,14 +420,14 @@ body::after {
 .welcome p {
     margin: 0;
 
-    font-size: 16px;
-
     color: var(--muted);
+
+    font-size: 16px;
 }
 
 
 /* =========================
-   SEKCIJE
+   SECTION
 ========================= */
 
 .dashboard-section {
@@ -438,11 +436,9 @@ body::after {
 
 
 .section-title {
-    margin: 0 0 18px;
+    margin: 0;
 
     font-size: 24px;
-
-    text-align: left;
 }
 
 
@@ -457,14 +453,7 @@ body::after {
 }
 
 
-.section-header .section-title {
-    margin: 0;
-}
-
-
-/* =========================
-   PROJECT COUNTER
-========================= */
+/* COUNTER */
 
 .project-counter {
     flex-shrink: 0;
@@ -488,7 +477,7 @@ body::after {
 
 
 /* =========================
-   PROJECT SLIDER
+   SLIDER
 ========================= */
 
 .projects-slider {
@@ -501,16 +490,23 @@ body::after {
     overflow-x: auto;
     overflow-y: hidden;
 
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
+    scroll-snap-type:
+        x mandatory;
 
-    scrollbar-width: none;
+    scroll-behavior:
+        smooth;
 
-    overscroll-behavior-x: contain;
+    scrollbar-width:
+        none;
 
-    touch-action: pan-x;
+    overscroll-behavior-x:
+        contain;
 
-    -webkit-overflow-scrolling: touch;
+    touch-action:
+        pan-x;
+
+    -webkit-overflow-scrolling:
+        touch;
 }
 
 
@@ -524,8 +520,11 @@ body::after {
 
     width: 100%;
 
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
+    scroll-snap-align:
+        start;
+
+    scroll-snap-stop:
+        always;
 }
 
 
@@ -537,8 +536,8 @@ body::after {
     margin-top: 14px;
 
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     gap: 7px;
 }
@@ -566,14 +565,16 @@ body::after {
 
 
 .slider-dot:hover {
-    transform: scale(1.15);
+    transform:
+        scale(1.15);
 }
 
 
 .slider-dot.active {
     width: 24px;
 
-    background: var(--orange);
+    background:
+        var(--orange);
 }
 
 
@@ -594,12 +595,8 @@ body::after {
         linear-gradient(
             135deg,
             rgba(72, 42, 18, 0.33),
-            rgba(20, 20, 20, 0.6)
+            rgba(20, 20, 20, 0.60)
         );
-
-    box-shadow:
-        inset 0 1px 0
-        rgba(255, 255, 255, 0.025);
 }
 
 
@@ -633,8 +630,8 @@ body::after {
     flex-shrink: 0;
 
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     border-radius: 18px;
 
@@ -645,11 +642,8 @@ body::after {
             rgba(255, 122, 0, 0.07)
         );
 
-    color: var(--orange-light);
-
-    box-shadow:
-        inset 0 0 25px
-        rgba(255, 122, 0, 0.08);
+    color:
+        var(--orange-light);
 }
 
 
@@ -724,12 +718,13 @@ body::after {
         rgba(255, 122, 0, 0.35);
 
     background:
-        rgba(255, 122, 0, 0.1);
+        rgba(255, 122, 0, 0.10);
 }
 
 
 .status-progress::before {
-    background: var(--orange);
+    background:
+        var(--orange);
 }
 
 
@@ -743,16 +738,17 @@ body::after {
         rgba(46, 204, 113, 0.35);
 
     background:
-        rgba(46, 204, 113, 0.1);
+        rgba(46, 204, 113, 0.10);
 }
 
 
 .status-done::before {
-    background: #2ecc71;
+    background:
+        #2ecc71;
 }
 
 
-/* NA ČEKANJU */
+/* ČEKANJE */
 
 .status-waiting {
     color: #b8b8b8;
@@ -767,12 +763,13 @@ body::after {
 
 
 .status-waiting::before {
-    background: #8f8f8f;
+    background:
+        #8f8f8f;
 }
 
 
 /* =========================
-   PROJECT STATS
+   STATS
 ========================= */
 
 .project-stats {
@@ -784,6 +781,8 @@ body::after {
         1fr;
 
     gap: 16px;
+
+    align-items: start;
 }
 
 
@@ -811,9 +810,10 @@ body::after {
 
 
 .stat-icon {
-    color: var(--orange);
-
     flex-shrink: 0;
+
+    color:
+        var(--orange);
 }
 
 
@@ -847,21 +847,76 @@ body::after {
 }
 
 
-/* PAKET */
-
 .package-name {
-    color: var(--orange-light);
+    color:
+        var(--orange-light);
 
     font-weight: 700;
 }
 
 
 /* =========================
-   PROGRESS
+   PROGRESS CARD
 ========================= */
 
 .progress-stat {
+    display: block;
+
+    padding: 0;
+
+    overflow: hidden;
+}
+
+
+.progress-header {
+    position: relative;
+
+    width: 100%;
+
+    min-height: 86px;
+
+    padding:
+        17px
+        48px
+        17px
+        20px;
+
+    display: flex;
     align-items: center;
+
+    gap: 14px;
+
+    border: none;
+
+    background:
+        transparent;
+
+    color: inherit;
+
+    font: inherit;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease;
+}
+
+
+.progress-header:hover {
+    background:
+        rgba(255, 122, 0, 0.05);
+}
+
+
+.progress-header:focus-visible {
+    outline:
+        2px solid
+        rgba(255, 122, 0, 0.70);
+
+    outline-offset:
+        -3px;
 }
 
 
@@ -881,8 +936,6 @@ body::after {
 
 
 .progress-container {
-    position: relative;
-
     flex: 1;
 
     min-width: 40px;
@@ -901,7 +954,8 @@ body::after {
 .progress-bar {
     height: 100%;
 
-    border-radius: inherit;
+    border-radius:
+        inherit;
 
     background:
         linear-gradient(
@@ -913,62 +967,6 @@ body::after {
     box-shadow:
         0 0 14px
         rgba(255, 122, 0, 0.35);
-
-    transition:
-        width 1.1s
-        cubic-bezier(
-            0.22,
-            1,
-            0.36,
-            1
-        );
-}
-
-
-/* KLIKABILNI PROGRESS */
-
-.progress-toggle {
-    position: relative;
-
-    width: 100%;
-
-    padding-right: 48px;
-
-    font: inherit;
-
-    text-align: left;
-
-    cursor: pointer;
-
-    appearance: none;
-
-    transition:
-        border-color 0.2s ease,
-        background 0.2s ease,
-        transform 0.2s ease;
-}
-
-
-.progress-toggle:hover {
-    border-color:
-        rgba(255, 122, 0, 0.40);
-
-    background:
-        rgba(255, 122, 0, 0.05);
-}
-
-
-.progress-toggle:active {
-    transform: scale(0.995);
-}
-
-
-.progress-toggle:focus-visible {
-    outline:
-        2px solid
-        rgba(255, 122, 0, 0.7);
-
-    outline-offset: 2px;
 }
 
 
@@ -995,97 +993,89 @@ body::after {
 }
 
 
-.progress-toggle:hover
+.progress-header:hover
 .progress-chevron {
-    color: var(--orange);
+    color:
+        var(--orange);
 }
 
 
-.progress-toggle[aria-expanded="true"]
+.progress-header[aria-expanded="true"]
 .progress-chevron {
     transform:
         translateY(-50%)
         rotate(90deg);
 
-    color: var(--orange);
+    color:
+        var(--orange);
 }
 
 
 /* =========================
-   AKTIVNOSTI PREVIEW
+   AKTIVNOSTI UNUTAR
+   PROGRESS BUBBLEA
 ========================= */
 
-.activities-section[hidden] {
+.progress-activities {
+    padding:
+        4px
+        14px
+        12px;
+
+    border-top:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+}
+
+
+.progress-activities[hidden] {
     display: none;
 }
 
 
-.activities-section {
-    margin-top: 24px;
-}
+/* JEDNA AKTIVNOST */
 
-
-.activities-card {
-    padding: 14px 16px;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.12);
-
-    border-radius: 14px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(35, 24, 16, 0.22),
-            rgba(15, 15, 16, 0.52)
-        );
-}
-
-
-/* SAMO DVA REDA */
-
-.activity-item {
+.activity-preview-item {
     position: relative;
 
-    min-height: 54px;
+    min-height: 52px;
 
     padding:
-        8px
-        8px
-        8px
-        44px;
+        10px
+        6px
+        10px
+        38px;
 
     display: flex;
     align-items: center;
-
-    color: #eee;
 }
 
 
-.activity-icon {
+/* IKONA */
+
+.activity-preview-icon {
     position: absolute;
 
-    z-index: 2;
-
-    left: 4px;
+    left: 5px;
     top: 50%;
 
     transform:
         translateY(-50%);
 
-    width: 24px;
-    height: 24px;
+    width: 23px;
+    height: 23px;
 
     display: flex;
     align-items: center;
     justify-content: center;
+
+    z-index: 2;
 }
 
 
-.activity-icon svg {
-    width: 22px;
-    height: 22px;
+.activity-preview-icon svg {
+    width: 21px;
+    height: 21px;
 
     fill: none;
 
@@ -1097,94 +1087,104 @@ body::after {
 }
 
 
-.activity-content {
-    display: flex;
-    flex-direction: column;
+/* BOJE */
 
-    gap: 3px;
-}
-
-
-.activity-title {
-    font-size: 14px;
-    font-weight: 600;
-}
-
-
-.activity-date {
-    font-size: 11px;
-
-    color:
-        rgba(255, 255, 255, 0.42);
-}
-
-
-/* IKONE STATUSA */
-
-.activity-done
-.activity-icon {
+.activity-preview-done
+.activity-preview-icon {
     color: #2fd462;
 }
 
 
-.activity-progress
-.activity-icon {
-    color: var(--orange);
+.activity-preview-progress
+.activity-preview-icon {
+    color:
+        var(--orange);
 }
 
 
-.activity-waiting
-.activity-icon {
+.activity-preview-waiting
+.activity-preview-icon {
     color: #999;
 }
 
 
-/* TIMELINE LINIJA */
+/* SPOJNA CRTA */
 
-.activity-item:not(:last-child)::after {
+.activity-preview-item:first-child::after {
     content: "";
 
     position: absolute;
 
-    left: 15px;
-    top: 35px;
+    left: 16px;
+    top: 36px;
 
     width: 2px;
-    height: 30px;
+    height: 31px;
 
-    border-radius: 999px;
+    border-radius:
+        999px;
+
+    background:
+        rgba(255, 255, 255, 0.14);
 
     z-index: 1;
 }
 
 
-.activity-done:not(:last-child)::after {
+.activity-preview-done:first-child::after {
     background:
         linear-gradient(
             to bottom,
             #2ecc71,
-            rgba(46, 204, 113, 0.18)
+            rgba(46, 204, 113, 0.16)
         );
 }
 
 
-.activity-progress:not(:last-child)::after {
+.activity-preview-progress:first-child::after {
     background:
         linear-gradient(
             to bottom,
             #ff7a00,
-            rgba(255, 122, 0, 0.18)
+            rgba(255, 122, 0, 0.16)
         );
 }
 
 
-.activity-waiting:not(:last-child)::after {
+.activity-preview-waiting:first-child::after {
     background:
         linear-gradient(
             to bottom,
             #888,
-            rgba(136, 136, 136, 0.18)
+            rgba(136, 136, 136, 0.16)
         );
+}
+
+
+/* CONTENT */
+
+.activity-preview-content {
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+
+    min-width: 0;
+}
+
+
+.activity-preview-content strong {
+    font-size: 13px;
+
+    line-height: 1.35;
+}
+
+
+.activity-preview-content span {
+    color:
+        rgba(255, 255, 255, 0.42);
+
+    font-size: 11px;
 }
 
 
@@ -1193,9 +1193,12 @@ body::after {
 ========================= */
 
 .activities-more {
-    margin-top: 6px;
+    margin-top: 4px;
 
-    padding: 12px 14px;
+    padding:
+        11px
+        8px
+        5px;
 
     display: flex;
     justify-content: space-between;
@@ -1205,32 +1208,27 @@ body::after {
         1px solid
         rgba(255, 255, 255, 0.08);
 
-    border-radius: 8px;
-
     color:
-        rgba(255, 255, 255, 0.72);
+        rgba(255, 255, 255, 0.70);
 
     text-decoration: none;
 
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
 
     transition:
-        color 0.2s ease,
-        background 0.2s ease;
+        color 0.2s ease;
 }
 
 
 .activities-more:hover {
-    color: #ff8a1f;
-
-    background:
-        rgba(255, 122, 0, 0.04);
+    color:
+        var(--orange-light);
 }
 
 
 .activities-more-arrow {
-    font-size: 18px;
+    font-size: 17px;
 
     transition:
         transform 0.2s ease;
@@ -1240,20 +1238,21 @@ body::after {
 .activities-more:hover
 .activities-more-arrow {
     transform:
-        translateX(4px);
+        translateX(3px);
 }
 
 
-/* NEMA AKTIVNOSTI */
+/* EMPTY */
 
-.no-activities {
-    padding: 24px;
-
-    text-align: center;
+.no-activities,
+.no-projects {
+    padding: 18px;
 
     color: var(--muted);
 
-    font-size: 14px;
+    font-size: 13px;
+
+    text-align: center;
 }
 
 
@@ -1292,6 +1291,8 @@ body.light-mode {
     --text: #1e1e1e;
     --muted: #74706c;
 
+    color: #1d1d1d;
+
     background:
         radial-gradient(
             circle at 5% 5%,
@@ -1308,12 +1309,11 @@ body.light-mode {
             #f7f4f0,
             #f4f5f7
         );
-
-    color: #1d1d1d;
 }
 
 
-body.light-mode .dashboard {
+body.light-mode
+.dashboard {
     background:
         linear-gradient(
             145deg,
@@ -1330,7 +1330,8 @@ body.light-mode .dashboard {
 }
 
 
-body.light-mode .dashboard-header {
+body.light-mode
+.dashboard-header {
     background:
         rgba(255, 255, 255, 0.72);
 
@@ -1339,30 +1340,43 @@ body.light-mode .dashboard-header {
 }
 
 
-body.light-mode .brand h1,
-body.light-mode .welcome h2 strong,
-body.light-mode .section-title,
-body.light-mode .project-main h3,
-body.light-mode .stat-card strong,
-body.light-mode .activity-title,
-body.light-mode #userTop {
+body.light-mode
+.brand h1,
+
+body.light-mode
+.welcome h2 strong,
+
+body.light-mode
+.section-title,
+
+body.light-mode
+.project-main h3,
+
+body.light-mode
+.stat-card strong,
+
+body.light-mode
+#userTop {
     color: #1b1b1b;
 }
 
 
-body.light-mode .welcome h2 {
+body.light-mode
+.welcome h2 {
     color: #76716d;
 }
 
 
-body.light-mode .welcome p {
+body.light-mode
+.welcome p {
     color: #817b75;
 }
 
 
-/* LIGHT PROJECT */
+/* PROJECT */
 
-body.light-mode .project-card {
+body.light-mode
+.project-card {
     background:
         linear-gradient(
             135deg,
@@ -1372,14 +1386,11 @@ body.light-mode .project-card {
 
     border-color:
         rgba(255, 122, 0, 0.50);
-
-    box-shadow:
-        0 10px 30px
-        rgba(255, 122, 0, 0.05);
 }
 
 
-body.light-mode .project-icon {
+body.light-mode
+.project-icon {
     background:
         linear-gradient(
             135deg,
@@ -1387,18 +1398,21 @@ body.light-mode .project-icon {
             rgba(255, 122, 0, 0.05)
         );
 
-    color: var(--orange);
+    color:
+        var(--orange);
 }
 
 
-body.light-mode .project-main p {
+body.light-mode
+.project-main p {
     color: #7a746f;
 }
 
 
-/* LIGHT STAT */
+/* STAT */
 
-body.light-mode .stat-card {
+body.light-mode
+.stat-card {
     background:
         linear-gradient(
             135deg,
@@ -1408,33 +1422,34 @@ body.light-mode .stat-card {
 
     border-color:
         rgba(0, 0, 0, 0.08);
-
-    box-shadow:
-        0 4px 12px
-        rgba(0, 0, 0, 0.03);
 }
 
 
-body.light-mode .stat-label {
+body.light-mode
+.stat-label {
     color: #77716c;
 }
 
 
-body.light-mode .stat-icon {
-    color: var(--orange);
-}
-
-
-body.light-mode .package-name {
+body.light-mode
+.package-name {
     color: #e66d00;
 }
 
 
-/* LIGHT PROGRESS */
+/* PROGRESS */
 
 body.light-mode
 .progress-container {
-    background: #e8e5e2;
+    background:
+        #e8e5e2;
+}
+
+
+body.light-mode
+.progress-header:hover {
+    background:
+        rgba(255, 122, 0, 0.04);
 }
 
 
@@ -1445,40 +1460,48 @@ body.light-mode
 }
 
 
+/* ACTIVITIES */
+
 body.light-mode
-.progress-toggle:hover {
-    background:
-        rgba(255, 122, 0, 0.05);
+.progress-activities {
+    border-top-color:
+        rgba(0, 0, 0, 0.08);
 }
 
 
-/* LIGHT STATUS */
-
-body.light-mode .status-progress {
-    color: #c65c00;
-
-    border-color:
-        rgba(255, 122, 0, 0.28);
-
-    background:
-        rgba(255, 122, 0, 0.08);
+body.light-mode
+.activity-preview-content span {
+    color:
+        rgba(0, 0, 0, 0.42);
 }
 
 
-body.light-mode .status-done {
-    color: #198e46;
-
-    border-color:
-        rgba(46, 204, 113, 0.28);
-
-    background:
-        rgba(46, 204, 113, 0.08);
+body.light-mode
+.activity-preview-content strong {
+    color: #222;
 }
 
 
-/* NA ČEKANJU OSTAJE SIVO */
+body.light-mode
+.activities-more {
+    color:
+        rgba(0, 0, 0, 0.60);
 
-body.light-mode .status-waiting {
+    border-top-color:
+        rgba(0, 0, 0, 0.08);
+}
+
+
+body.light-mode
+.activities-more:hover {
+    color: #e66d00;
+}
+
+
+/* STATUS WAITING */
+
+body.light-mode
+.status-waiting {
     color: #666;
 
     border-color:
@@ -1489,65 +1512,7 @@ body.light-mode .status-waiting {
 }
 
 
-body.light-mode
-.status-waiting::before {
-    background: #888;
-}
-
-
-/* LIGHT ACTIVITIES */
-
-body.light-mode
-.activities-card {
-    background:
-        linear-gradient(
-            135deg,
-            #fafafa,
-            #f7f7f7
-        );
-
-    border-color:
-        rgba(0, 0, 0, 0.08);
-
-    box-shadow:
-        0 5px 16px
-        rgba(0, 0, 0, 0.03);
-}
-
-
-body.light-mode
-.activity-item {
-    color: #2a2a2a;
-}
-
-
-body.light-mode
-.activity-date {
-    color:
-        rgba(0, 0, 0, 0.42);
-}
-
-
-body.light-mode
-.activities-more {
-    color:
-        rgba(0, 0, 0, 0.62);
-
-    border-top-color:
-        rgba(0, 0, 0, 0.08);
-}
-
-
-body.light-mode
-.activities-more:hover {
-    color: #e66d00;
-
-    background:
-        rgba(255, 122, 0, 0.04);
-}
-
-
-/* LIGHT HEADER */
+/* HEADER */
 
 body.light-mode
 .user-avatar {
@@ -1565,15 +1530,6 @@ body.light-mode
 body.light-mode
 .logout-button {
     color: #555;
-}
-
-
-body.light-mode
-.logout-button:hover {
-    background:
-        rgba(0, 0, 0, 0.05);
-
-    color: #111;
 }
 
 
@@ -1614,7 +1570,8 @@ body.light-mode
 
 body.light-mode
 .slider-dot.active {
-    background: var(--orange);
+    background:
+        var(--orange);
 }
 
 
@@ -1640,25 +1597,6 @@ body.light-mode
     }
 
 
-    body::before,
-    body::after {
-        width: 320px;
-        height: 320px;
-    }
-
-
-    body::before {
-        top: -210px;
-        left: -190px;
-    }
-
-
-    body::after {
-        right: -210px;
-        bottom: -220px;
-    }
-
-
     .dashboard {
         width: 100%;
 
@@ -1666,11 +1604,7 @@ body.light-mode
     }
 
 
-    /* HEADER */
-
     .dashboard-header {
-        min-height: auto;
-
         padding: 18px 20px;
 
         flex-direction: column;
@@ -1689,8 +1623,6 @@ body.light-mode
         width: 44px;
         height: 44px;
 
-        border-radius: 12px;
-
         font-size: 25px;
     }
 
@@ -1704,25 +1636,14 @@ body.light-mode
         width: 100%;
 
         justify-content: center;
-
-        gap: 10px;
     }
 
-
-    /* CONTENT */
 
     .dashboard-content {
         padding:
             26px
             20px
             20px;
-    }
-
-
-    /* PROJECT */
-
-    .project-card {
-        padding: 18px;
     }
 
 
@@ -1734,15 +1655,15 @@ body.light-mode
     }
 
 
-    .project-icon {
-        width: 64px;
-        height: 64px;
+    .project-stats {
+        grid-template-columns:
+            1fr;
     }
 
 
-    .project-icon svg {
-        width: 34px;
-        height: 34px;
+    .project-icon {
+        width: 64px;
+        height: 64px;
     }
 
 
@@ -1753,20 +1674,6 @@ body.light-mode
 
     .project-main p {
         font-size: 15px;
-    }
-
-
-    .project-stats {
-        grid-template-columns: 1fr;
-
-        gap: 12px;
-    }
-
-
-    .stat-card {
-        min-height: 76px;
-
-        padding: 15px 16px;
     }
 
 
@@ -1788,25 +1695,6 @@ body.light-mode
         padding: 8px;
 
         align-items: flex-start;
-
-        background:
-            radial-gradient(
-                circle at 10% 0%,
-                rgba(255, 122, 0, 0.15),
-                transparent 30%
-            ),
-            #0b0c0e;
-    }
-
-
-    body.light-mode {
-        background:
-            radial-gradient(
-                circle at 10% 0%,
-                rgba(255, 122, 0, 0.07),
-                transparent 32%
-            ),
-            #f5f5f5;
     }
 
 
@@ -1828,7 +1716,8 @@ body.light-mode
 
 
     .brand {
-        justify-content: flex-start;
+        justify-content:
+            flex-start;
 
         gap: 12px;
     }
@@ -1837,8 +1726,6 @@ body.light-mode
     .brand-logo {
         width: 42px;
         height: 42px;
-
-        border-radius: 11px;
 
         font-size: 24px;
     }
@@ -1852,7 +1739,8 @@ body.light-mode
 
 
     .header-actions {
-        justify-content: space-between;
+        justify-content:
+            space-between;
 
         gap: 8px;
     }
@@ -1864,8 +1752,6 @@ body.light-mode
 
 
     .user-box {
-        gap: 7px;
-
         font-size: 13px;
     }
 
@@ -1892,9 +1778,6 @@ body.light-mode
     .theme-slider::before {
         width: 21px;
         height: 21px;
-
-        left: 3px;
-        top: 2px;
 
         font-size: 12px;
     }
@@ -1932,7 +1815,7 @@ body.light-mode
     }
 
 
-    /* SECTIONS */
+    /* SECTION */
 
     .dashboard-section {
         margin-top: 24px;
@@ -1956,15 +1839,8 @@ body.light-mode
     }
 
 
-    /* SLIDER */
-
     .projects-slider {
         gap: 12px;
-    }
-
-
-    .slider-dots {
-        margin-top: 12px;
     }
 
 
@@ -1977,8 +1853,6 @@ body.light-mode
 
     .project-card {
         padding: 16px;
-
-        border-radius: 15px;
     }
 
 
@@ -1997,8 +1871,6 @@ body.light-mode
     .project-icon {
         width: 50px;
         height: 50px;
-
-        border-radius: 12px;
     }
 
 
@@ -2029,7 +1901,7 @@ body.light-mode
     }
 
 
-    /* STATS */
+    /* STAT */
 
     .project-stats {
         display: flex;
@@ -2045,40 +1917,24 @@ body.light-mode
         min-height: 68px;
 
         padding: 13px 14px;
-
-        border-radius: 11px;
-    }
-
-
-    .stat-icon svg {
-        width: 22px;
-        height: 22px;
-    }
-
-
-    .stat-label {
-        margin-bottom: 4px;
-
-        font-size: 12px;
-    }
-
-
-    .stat-card strong {
-        font-size: 14px;
     }
 
 
     /* PROGRESS */
 
-    .progress-toggle {
-        padding-right: 42px;
+    .progress-stat {
+        padding: 0;
     }
 
 
-    .progress-chevron {
-        right: 13px;
+    .progress-header {
+        min-height: 68px;
 
-        font-size: 20px;
+        padding:
+            13px
+            42px
+            13px
+            14px;
     }
 
 
@@ -2092,65 +1948,67 @@ body.light-mode
     }
 
 
-    /* AKTIVNOSTI */
+    .progress-chevron {
+        right: 13px;
 
-    .activities-section {
-        margin-top: 22px;
+        font-size: 20px;
     }
 
 
-    .activities-card {
-        padding: 12px;
+    /* ACTIVITY PREVIEW */
 
-        border-radius: 14px;
-    }
-
-
-    .activity-item {
-        min-height: 52px;
-
+    .progress-activities {
         padding:
-            8px
-            6px
-            8px
-            40px;
+            3px
+            10px
+            10px;
     }
 
 
-    .activity-icon {
-        left: 2px;
+    .activity-preview-item {
+        min-height: 48px;
 
-        width: 22px;
-        height: 22px;
+        padding-left: 34px;
     }
 
 
-    .activity-icon svg {
-        width: 20px;
-        height: 20px;
+    .activity-preview-icon {
+        left: 3px;
+
+        width: 21px;
+        height: 21px;
     }
 
 
-    .activity-title {
-        font-size: 13px;
+    .activity-preview-icon svg {
+        width: 19px;
+        height: 19px;
     }
 
 
-    .activity-date {
-        font-size: 10px;
-    }
-
-
-    .activity-item:not(:last-child)::after {
-        left: 12px;
+    .activity-preview-item:first-child::after {
+        left: 13px;
         top: 34px;
 
         height: 28px;
     }
 
 
+    .activity-preview-content strong {
+        font-size: 12px;
+    }
+
+
+    .activity-preview-content span {
+        font-size: 10px;
+    }
+
+
     .activities-more {
-        padding: 11px 10px;
+        padding:
+            10px
+            6px
+            4px;
 
         font-size: 12px;
     }
@@ -2211,22 +2069,6 @@ body.light-mode
         padding:
             18px
             12px;
-    }
-
-
-    .section-header {
-        gap: 10px;
-    }
-
-
-    .section-header
-    .section-title {
-        font-size: 19px;
-    }
-
-
-    .project-counter {
-        font-size: 11px;
     }
 
 
