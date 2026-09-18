@@ -17,7 +17,7 @@ let activeProjectIndex = 0;
 
 
 // =========================
-// HELPER
+// HELPERS
 // =========================
 
 function escapeHTML(value) {
@@ -37,10 +37,12 @@ function formatDate(value) {
         return "-";
     }
 
+
     const date =
         new Date(
             value + "T00:00:00"
         );
+
 
     return date.toLocaleDateString(
         "hr-HR",
@@ -99,8 +101,7 @@ async function loadLatestUpdate(
             error
         );
 
-        element.textContent =
-            "-";
+        element.textContent = "-";
 
         return;
     }
@@ -111,8 +112,7 @@ async function loadLatestUpdate(
         data.length === 0
     ) {
 
-        element.textContent =
-            "-";
+        element.textContent = "-";
 
         return;
     }
@@ -126,506 +126,39 @@ async function loadLatestUpdate(
 
 
 // =========================
-// ACTIVITY PREVIEW
+// STATUS
 // =========================
 
-async function loadActivityPreview(
-    projectId,
-    container
-) {
+function getStatusClass(status) {
 
-    const {
-        data: activities,
-        error
-    } = await supabaseClient
+    if (
+        status === "U izradi"
+    ) {
 
-        .from("activities")
+        return "status-progress";
 
-        .select(
-            "title, status, position, activity_date"
-        )
-
-        .eq(
-            "project_id",
-            projectId
-        )
-
-        .order(
-            "position",
-            {
-                ascending: true
-            }
-        );
-
-
-    if (error) {
-
-        console.error(
-            "Greška kod dohvaćanja aktivnosti:",
-            error
-        );
-
-        container.innerHTML = `
-            <div class="no-activities">
-                Aktivnosti se trenutno ne mogu učitati.
-            </div>
-        `;
-
-        return;
     }
-
-
-    container.innerHTML = "";
 
 
     if (
-        !activities ||
-        activities.length === 0
+        status === "Završeno"
     ) {
 
-        container.innerHTML = `
-            <div class="no-activities">
-                Trenutno nema aktivnosti.
-            </div>
-        `;
+        return "status-done";
 
-        return;
     }
 
-
-    // =========================
-    // PRVE 2 AKTIVNOSTI
-    // =========================
-
-    const previewActivities =
-        activities.slice(0, 2);
-
-
-    previewActivities.forEach(
-        function (activity) {
-
-            const item =
-                document.createElement(
-                    "div"
-                );
-
-
-            item.classList.add(
-                "activity-preview-item"
-            );
-
-
-            // =========================
-            // STATUS KLASA
-            // =========================
-
-            if (
-                activity.status ===
-                "Završeno"
-            ) {
-
-                item.classList.add(
-                    "activity-preview-done"
-                );
-
-            }
-
-            else if (
-                activity.status ===
-                "U tijeku"
-            ) {
-
-                item.classList.add(
-                    "activity-preview-progress"
-                );
-
-            }
-
-            else {
-
-                item.classList.add(
-                    "activity-preview-waiting"
-                );
-
-            }
-
-
-            // =========================
-            // IKONA
-            // =========================
-
-            const icon =
-                document.createElement(
-                    "span"
-                );
-
-
-            icon.classList.add(
-                "activity-preview-icon"
-            );
-
-
-            // ZAVRŠENO
-            if (
-                activity.status ===
-                "Završeno"
-            ) {
-
-                icon.innerHTML = `
-                    <svg viewBox="0 0 24 24">
-
-                        <circle
-                            cx="12"
-                            cy="12"
-                            r="9">
-                        </circle>
-
-                        <path
-                            d="M8 12.5l2.5 2.5L16 9">
-                        </path>
-
-                    </svg>
-                `;
-
-            }
-
-
-            // U TIJEKU
-            else if (
-                activity.status ===
-                "U tijeku"
-            ) {
-
-                icon.innerHTML = `
-                    <svg viewBox="0 0 24 24">
-
-                        <circle
-                            cx="12"
-                            cy="12"
-                            r="8">
-                        </circle>
-
-                        <path
-                            d="M12 4a8 8 0 0 1 8 8">
-                        </path>
-
-                    </svg>
-                `;
-
-            }
-
-
-            // NA ČEKANJU
-            else {
-
-                icon.innerHTML = `
-                    <svg viewBox="0 0 24 24">
-
-                        <circle
-                            cx="12"
-                            cy="12"
-                            r="8">
-                        </circle>
-
-                    </svg>
-                `;
-
-            }
-
-
-            // =========================
-            // CONTENT
-            // =========================
-
-            const content =
-                document.createElement(
-                    "div"
-                );
-
-
-            content.classList.add(
-                "activity-preview-content"
-            );
-
-
-            const title =
-                document.createElement(
-                    "strong"
-                );
-
-
-            title.textContent =
-                activity.title;
-
-
-            const date =
-                document.createElement(
-                    "span"
-                );
-
-
-            if (
-                activity.activity_date
-            ) {
-
-                date.textContent =
-                    formatDate(
-                        activity.activity_date
-                    );
-
-            }
-
-            else {
-
-                date.textContent =
-                    "";
-
-            }
-
-
-            content.appendChild(
-                title
-            );
-
-
-            content.appendChild(
-                date
-            );
-
-
-            item.appendChild(
-                icon
-            );
-
-
-            item.appendChild(
-                content
-            );
-
-
-            container.appendChild(
-                item
-            );
-
-        }
-    );
-
-
-    // =========================
-    // POGLEDAJ VIŠE
-    // =========================
 
     if (
-        activities.length > 2
+        status === "Na čekanju"
     ) {
 
-        const more =
-            document.createElement(
-                "a"
-            );
-
-
-        more.classList.add(
-            "activities-more"
-        );
-
-
-        more.href =
-            `activities.html?project=${projectId}`;
-
-
-        more.innerHTML = `
-            <span>
-                Pogledaj više
-            </span>
-
-            <span class="activities-more-arrow">
-                &gt;
-            </span>
-        `;
-
-
-        container.appendChild(
-            more
-        );
+        return "status-waiting";
 
     }
 
-}
 
-
-// =========================
-// NAPREDAK CLICK
-// =========================
-
-function setupProgressToggles() {
-
-    const progressCards =
-        document.querySelectorAll(
-            ".progress-toggle"
-        );
-
-
-    progressCards.forEach(
-        function (card) {
-
-            const button =
-                card.querySelector(
-                    ".progress-header"
-                );
-
-
-            const preview =
-                card.querySelector(
-                    ".progress-activities"
-                );
-
-
-            button.addEventListener(
-                "click",
-                async function () {
-
-                    const projectId =
-                        Number(
-                            card.dataset.projectId
-                        );
-
-
-                    const isOpen =
-                        button.getAttribute(
-                            "aria-expanded"
-                        ) === "true";
-
-
-                    // =========================
-                    // ZATVORI
-                    // =========================
-
-                    if (isOpen) {
-
-                        preview.hidden =
-                            true;
-
-
-                        button.setAttribute(
-                            "aria-expanded",
-                            "false"
-                        );
-
-
-                        return;
-                    }
-
-
-                    // =========================
-                    // ZATVORI OSTALE
-                    // =========================
-
-                    document
-                        .querySelectorAll(
-                            ".progress-toggle"
-                        )
-                        .forEach(
-                            function (
-                                otherCard
-                            ) {
-
-                                const otherButton =
-                                    otherCard.querySelector(
-                                        ".progress-header"
-                                    );
-
-
-                                const otherPreview =
-                                    otherCard.querySelector(
-                                        ".progress-activities"
-                                    );
-
-
-                                if (
-                                    otherCard !== card
-                                ) {
-
-                                    otherPreview.hidden =
-                                        true;
-
-
-                                    otherButton.setAttribute(
-                                        "aria-expanded",
-                                        "false"
-                                    );
-
-                                }
-
-                            }
-                        );
-
-
-                    // =========================
-                    // UČITAJ
-                    // =========================
-
-                    await loadActivityPreview(
-                        projectId,
-                        preview
-                    );
-
-
-                    preview.hidden =
-                        false;
-
-
-                    button.setAttribute(
-                        "aria-expanded",
-                        "true"
-                    );
-
-                }
-            );
-
-        }
-    );
-
-}
-
-
-// =========================
-// ZATVORI PREVIEW
-// =========================
-
-function closeProgressPreviews() {
-
-    document
-        .querySelectorAll(
-            ".progress-toggle"
-        )
-        .forEach(
-            function (card) {
-
-                const button =
-                    card.querySelector(
-                        ".progress-header"
-                    );
-
-
-                const preview =
-                    card.querySelector(
-                        ".progress-activities"
-                    );
-
-
-                preview.hidden =
-                    true;
-
-
-                button.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-            }
-        );
-
+    return "";
 }
 
 
@@ -659,13 +192,9 @@ function renderProjects() {
         );
 
 
-    slider.innerHTML =
-        "";
+    slider.innerHTML = "";
 
-
-    dotsContainer.innerHTML =
-        "";
-
+    dotsContainer.innerHTML = "";
 
     totalProjects.textContent =
         projects.length;
@@ -685,7 +214,9 @@ function renderProjects() {
 
         slider.innerHTML = `
             <div class="no-projects">
+
                 Trenutno nema aktivnih projekata.
+
             </div>
         `;
 
@@ -695,7 +226,7 @@ function renderProjects() {
 
 
     // =========================
-    // PROJEKTI
+    // SVAKI PROJEKT
     // =========================
 
     projects.forEach(
@@ -704,48 +235,11 @@ function renderProjects() {
             index
         ) {
 
-            // =========================
-            // STATUS
-            // =========================
+            const statusClass =
+                getStatusClass(
+                    project.status
+                );
 
-            let statusClass =
-                "";
-
-
-            if (
-                project.status ===
-                "U izradi"
-            ) {
-
-                statusClass =
-                    "status-progress";
-
-            }
-
-            else if (
-                project.status ===
-                "Završeno"
-            ) {
-
-                statusClass =
-                    "status-done";
-
-            }
-
-            else if (
-                project.status ===
-                "Na čekanju"
-            ) {
-
-                statusClass =
-                    "status-waiting";
-
-            }
-
-
-            // =========================
-            // PROGRESS
-            // =========================
 
             const progress =
                 Math.max(
@@ -774,13 +268,22 @@ function renderProjects() {
             );
 
 
+            // =========================
+            // KARTICA
+            // =========================
+
             slide.innerHTML = `
 
-                <div class="project-card">
-
+                <a
+                    class="
+                        project-card
+                        project-card-link
+                    "
+                    href="project.html?id=${project.id}"
+                >
 
                     <!-- =====================
-                         HEADER PROJEKTA
+                         PROJECT HEADER
                     ====================== -->
 
                     <div class="project-heading">
@@ -812,7 +315,7 @@ function renderProjects() {
                             </div>
 
 
-                            <div>
+                            <div class="project-title-wrap">
 
                                 <h3>
                                     ${escapeHTML(
@@ -831,130 +334,89 @@ function renderProjects() {
                         </div>
 
 
-                        <span
-                            class="
-                                status-badge
-                                ${statusClass}
-                            "
-                        >
+                        <div class="project-heading-right">
 
-                            ${escapeHTML(
-                                project.status
-                            )}
+                            <span
+                                class="
+                                    status-badge
+                                    ${statusClass}
+                                "
+                            >
 
-                        </span>
+                                ${escapeHTML(
+                                    project.status
+                                )}
+
+                            </span>
+
+
+                            <span
+                                class="project-open-arrow"
+                                aria-hidden="true"
+                            >
+                                &gt;
+                            </span>
+
+                        </div>
 
                     </div>
 
 
                     <!-- =====================
-                         STATS
+                         INFO GRID
                     ====================== -->
 
                     <div class="project-stats">
 
 
                         <!-- =====================
-                             LIJEVA KOLONA
+                             PAKET
                         ====================== -->
 
-                        <div class="stat-column">
+                        <div class="stat-card">
 
+                            <div class="stat-icon">
 
-                            <!-- PAKET -->
+                                <svg viewBox="0 0 24 24">
 
-                            <div class="stat-card">
+                                    <rect
+                                        x="3"
+                                        y="7"
+                                        width="18"
+                                        height="13"
+                                        rx="2">
+                                    </rect>
 
-                                <div class="stat-icon">
+                                    <path
+                                        d="M8 7V5">
+                                    </path>
 
-                                    <svg viewBox="0 0 24 24">
+                                    <path
+                                        d="M16 7V5">
+                                    </path>
 
-                                        <rect
-                                            x="3"
-                                            y="7"
-                                            width="18"
-                                            height="13"
-                                            rx="2">
-                                        </rect>
+                                    <path
+                                        d="M8 5h8">
+                                    </path>
 
-                                        <path
-                                            d="M8 7V5">
-                                        </path>
-
-                                        <path
-                                            d="M16 7V5">
-                                        </path>
-
-                                        <path
-                                            d="M8 5h8">
-                                        </path>
-
-                                    </svg>
-
-                                </div>
-
-
-                                <div>
-
-                                    <span class="stat-label">
-                                        Paket
-                                    </span>
-
-                                    <strong class="package-name">
-
-                                        ${escapeHTML(
-                                            project.package || "-"
-                                        )}
-
-                                    </strong>
-
-                                </div>
+                                </svg>
 
                             </div>
 
 
-                            <!-- =====================
-                                 ZADNJE AŽURIRANO
-                            ====================== -->
+                            <div>
 
-                            <div
-                                class="
-                                    stat-card
-                                    updated-card
-                                "
-                            >
+                                <span class="stat-label">
+                                    Paket
+                                </span>
 
-                                <div class="stat-icon">
+                                <strong class="package-name">
 
-                                    <svg viewBox="0 0 24 24">
+                                    ${escapeHTML(
+                                        project.package || "-"
+                                    )}
 
-                                        <path
-                                            d="M20 11a8 8 0 1 1-2.34-5.66">
-                                        </path>
-
-                                        <path
-                                            d="M20 4v7h-7">
-                                        </path>
-
-                                    </svg>
-
-                                </div>
-
-
-                                <div>
-
-                                    <span class="stat-label">
-                                        Zadnje ažurirano
-                                    </span>
-
-                                    <strong
-                                        class="latest-update"
-                                        data-project-id="${project.id}"
-                                    >
-                                        -
-                                    </strong>
-
-                                </div>
+                                </strong>
 
                             </div>
 
@@ -965,91 +427,62 @@ function renderProjects() {
                              NAPREDAK
                         ====================== -->
 
-                        <div
-                            class="
-                                stat-card
-                                progress-stat
-                                progress-toggle
-                            "
-                            data-project-id="${project.id}"
-                        >
+                        <div class="stat-card progress-stat">
 
-                            <button
-                                type="button"
-                                class="progress-header"
-                                aria-expanded="false"
-                            >
+                            <div class="stat-icon">
 
-                                <div class="stat-icon">
+                                <svg viewBox="0 0 24 24">
 
-                                    <svg viewBox="0 0 24 24">
+                                    <path
+                                        d="M5 20V12">
+                                    </path>
 
-                                        <path
-                                            d="M5 20V12">
-                                        </path>
+                                    <path
+                                        d="M10 20V7">
+                                    </path>
 
-                                        <path
-                                            d="M10 20V7">
-                                        </path>
+                                    <path
+                                        d="M15 20V4">
+                                    </path>
 
-                                        <path
-                                            d="M15 20V4">
-                                        </path>
+                                    <path
+                                        d="M20 20V10">
+                                    </path>
 
-                                        <path
-                                            d="M20 20V10">
-                                        </path>
+                                </svg>
 
-                                    </svg>
-
-                                </div>
+                            </div>
 
 
-                                <div class="progress-info">
+                            <div class="progress-info">
 
-                                    <span class="stat-label">
-                                        Napredak
-                                    </span>
+                                <span class="stat-label">
+                                    Napredak
+                                </span>
 
 
-                                    <div class="progress-row">
+                                <div class="progress-row">
 
-                                        <div class="progress-container">
+                                    <div class="progress-container">
 
-                                            <div
-                                                class="progress-bar"
-                                                style="
-                                                    width:
-                                                    ${progress}%;
-                                                "
-                                            >
-                                            </div>
-
+                                        <div
+                                            class="progress-bar"
+                                            style="
+                                                width:
+                                                ${progress}%;
+                                            "
+                                        >
                                         </div>
-
-
-                                        <strong>
-                                            ${progress}%
-                                        </strong>
 
                                     </div>
 
+
+                                    <strong>
+                                        ${progress}%
+                                    </strong>
+
                                 </div>
 
-
-                                <span class="progress-chevron">
-                                    &gt;
-                                </span>
-
-                            </button>
-
-
-                            <!-- AKTIVNOSTI -->
-
-                            <div
-                                class="progress-activities"
-                                hidden
-                            >
                             </div>
 
                         </div>
@@ -1097,9 +530,55 @@ function renderProjects() {
                                 </span>
 
                                 <strong>
+
                                     ${formatDate(
                                         project.deadline
                                     )}
+
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =====================
+                             ZADNJE AŽURIRANO
+                        ====================== -->
+
+                        <div class="stat-card">
+
+                            <div class="stat-icon">
+
+                                <svg viewBox="0 0 24 24">
+
+                                    <path
+                                        d="
+                                            M20 11
+                                            a8 8 0 1 1
+                                            -2.34 -5.66
+                                        ">
+                                    </path>
+
+                                    <path
+                                        d="M20 4v7h-7">
+                                    </path>
+
+                                </svg>
+
+                            </div>
+
+
+                            <div>
+
+                                <span class="stat-label">
+                                    Zadnje ažurirano
+                                </span>
+
+                                <strong
+                                    class="latest-update"
+                                >
+                                    -
                                 </strong>
 
                             </div>
@@ -1108,7 +587,7 @@ function renderProjects() {
 
                     </div>
 
-                </div>
+                </a>
             `;
 
 
@@ -1118,10 +597,10 @@ function renderProjects() {
 
 
             // =========================
-            // UČITAJ ZADNJE AŽURIRANJE
+            // ZADNJE AŽURIRANO
             // =========================
 
-            const latestUpdateElement =
+            const latestUpdate =
                 slide.querySelector(
                     ".latest-update"
                 );
@@ -1129,7 +608,7 @@ function renderProjects() {
 
             loadLatestUpdate(
                 project.id,
-                latestUpdateElement
+                latestUpdate
             );
 
 
@@ -1143,8 +622,7 @@ function renderProjects() {
                 );
 
 
-            dot.type =
-                "button";
+            dot.type = "button";
 
 
             dot.classList.add(
@@ -1154,7 +632,7 @@ function renderProjects() {
 
             dot.setAttribute(
                 "aria-label",
-                `Projekt ${index + 1}`
+                `Prikaži projekt ${index + 1}`
             );
 
 
@@ -1220,15 +698,11 @@ function renderProjects() {
 
     activeProjectIndex =
         0;
-
-
-    setupProgressToggles();
-
 }
 
 
 // =========================
-// PROJECT SLIDER
+// SLIDER
 // =========================
 
 function setupProjectSlider() {
@@ -1287,9 +761,7 @@ function setupProjectSlider() {
                         }
 
 
-                        let index =
-                            0;
-
+                        let index = 0;
 
                         let smallestDistance =
                             Infinity;
@@ -1326,13 +798,13 @@ function setupProjectSlider() {
                         );
 
 
-                        // BROJAČ
+                        activeProjectIndex =
+                            index;
+
 
                         currentProject.textContent =
                             index + 1;
 
-
-                        // DOTS
 
                         const dots =
                             document.querySelectorAll(
@@ -1353,22 +825,6 @@ function setupProjectSlider() {
 
                             }
                         );
-
-
-                        // PROMJENA PROJEKTA
-
-                        if (
-                            index !==
-                            activeProjectIndex
-                        ) {
-
-                            activeProjectIndex =
-                                index;
-
-
-                            closeProgressPreviews();
-
-                        }
 
                     },
                     100
@@ -1482,7 +938,15 @@ async function loadDashboard() {
             .from("projects")
 
             .select(
-                "id, type, name, status, progress, deadline, package"
+                `
+                id,
+                type,
+                name,
+                status,
+                progress,
+                deadline,
+                package
+                `
             )
 
             .eq(
@@ -1500,7 +964,6 @@ async function loadDashboard() {
             projectError
         );
 
-
         return;
 
     }
@@ -1516,7 +979,7 @@ async function loadDashboard() {
 
 
 // =========================
-// ODJAVA
+// LOGOUT
 // =========================
 
 document
