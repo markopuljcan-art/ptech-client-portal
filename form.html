@@ -12,7 +12,7 @@
 
     <link
         rel="stylesheet"
-        href="style.css?v=10"
+        href="style.css?v=11"
     >
 
     <script
@@ -20,7 +20,7 @@
     </script>
 
     <script
-        src="script.js?v=10"
+        src="script.js?v=11"
         defer>
     </script>
 
@@ -190,16 +190,12 @@
                 </div>
 
 
-                <!-- JS UBACUJE PROJEKTE -->
-
                 <div
                     class="projects-slider"
                     id="projectsSlider"
                 >
                 </div>
 
-
-                <!-- DOTS -->
 
                 <div
                     class="slider-dots"
@@ -209,20 +205,12 @@
 
             </section>
 
-
-            <!--
-                OVDJE ĆEMO POSLIJE
-                DODATI "ZA VAS"
-                I "AKCIJE"
-            -->
-
-
         </div>
 
 
 
         <!-- =========================
-             FOOTER
+             COPYRIGHT
         ========================== -->
 
         <footer class="footer">
@@ -231,6 +219,178 @@
             • Sva prava zadržana.
 
         </footer>
+
+
+
+        <!-- =========================
+             BOTTOM NAVIGATION
+        ========================== -->
+
+        <nav class="bottom-nav">
+
+
+            <!-- POČETNA -->
+
+            <a
+                href="form.html"
+                class="bottom-nav-item active"
+                aria-label="Početna"
+            >
+
+                <svg viewBox="0 0 24 24">
+
+                    <path
+                        d="M3 11.5L12 4l9 7.5">
+                    </path>
+
+                    <path
+                        d="M5 10.5V20h14v-9.5">
+                    </path>
+
+                    <path
+                        d="M9 20v-6h6v6">
+                    </path>
+
+                </svg>
+
+                <span>
+                    Početna
+                </span>
+
+            </a>
+
+
+
+            <!-- PORUKE -->
+
+            <a
+                href="messages.html"
+                class="bottom-nav-item"
+                aria-label="Poruke"
+            >
+
+                <div class="bottom-nav-icon-wrap">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <path
+                            d="M4 5h16v11H8l-4 4z">
+                        </path>
+
+                    </svg>
+
+                    <!-- kasnije možemo ovdje staviti broj poruka -->
+                    <span
+                        class="nav-notification"
+                        hidden
+                    >
+                        0
+                    </span>
+
+                </div>
+
+                <span>
+                    Poruke
+                </span>
+
+            </a>
+
+
+
+            <!-- PROJEKTI -->
+
+            <a
+                href="projects.html"
+                class="bottom-nav-item"
+                aria-label="Projekti"
+            >
+
+                <svg viewBox="0 0 24 24">
+
+                    <rect
+                        x="4"
+                        y="5"
+                        width="16"
+                        height="15"
+                        rx="2">
+                    </rect>
+
+                    <path
+                        d="M8 5V3">
+                    </path>
+
+                    <path
+                        d="M16 5V3">
+                    </path>
+
+                    <path
+                        d="M4 9h16">
+                    </path>
+
+                </svg>
+
+                <span>
+                    Projekti
+                </span>
+
+            </a>
+
+
+
+            <!-- DOKUMENTI -->
+
+            <a
+                href="documents.html"
+                class="bottom-nav-item"
+                aria-label="Dokumenti"
+            >
+
+                <svg viewBox="0 0 24 24">
+
+                    <path
+                        d="M4 4h6l2 2h8v14H4z">
+                    </path>
+
+                </svg>
+
+                <span>
+                    Dokumenti
+                </span>
+
+            </a>
+
+
+
+            <!-- PROFIL -->
+
+            <a
+                href="profile.html"
+                class="bottom-nav-item"
+                aria-label="Profil"
+            >
+
+                <svg viewBox="0 0 24 24">
+
+                    <circle
+                        cx="12"
+                        cy="8"
+                        r="3">
+                    </circle>
+
+                    <path
+                        d="M5 20c0-4 3-7 7-7s7 3 7 7">
+                    </path>
+
+                </svg>
+
+                <span>
+                    Profil
+                </span>
+
+            </a>
+
+        </nav>
+
 
     </main>
 
