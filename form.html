@@ -142,177 +142,174 @@
 
         <div class="dashboard-content">
 
+    <!-- POZDRAV -->
+    <section class="welcome">
 
-            <!-- POZDRAV -->
+        <h2>
+            Bok,
+            <strong id="userGreeting"></strong>!
+        </h2>
 
-            <section class="welcome">
+        <p>
+            Evo što se događa s tvojim projektima.
+        </p>
 
-                <h2>
-                    Bok,
-                    <strong id="userGreeting"></strong>!
-                </h2>
-
-                <p>
-                    Evo što se događa s tvojim projektima.
-                </p>
-
-            </section>
+    </section>
 
 
+    <!-- AKTIVNI PROJEKTI -->
+    <section class="dashboard-section">
 
-            <!-- =========================
-                 PROJEKTI
-            ========================== -->
+        <div class="section-header">
 
-            <section class="dashboard-section">
+            <h2 class="section-title">
+                Aktivni projekti
+            </h2>
 
-                <div class="section-header">
+            <div class="project-counter">
 
-                    <h2 class="section-title">
-                        Aktivni projekti
-                    </h2>
+                <span id="currentProject">0</span>
+                <span>/</span>
+                <span id="totalProjects">0</span>
 
-
-                    <div class="project-counter">
-
-                        <span id="currentProject">
-                            0
-                        </span>
-
-                        <span>/</span>
-
-                        <span id="totalProjects">
-                            0
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <div
-                    class="projects-slider"
-                    id="projectsSlider"
-                >
-                </div>
-
-
-                <div
-                    class="slider-dots"
-                    id="sliderDots"
-                >
-                </div>
-
-            </section>
+            </div>
 
         </div>
-<!-- =========================
-     AKCIJE
-========================= -->
-
-<section class="dashboard-section actions-section">
-
-    <div class="actions-header">
-        <h2>Akcije</h2>
-        <p>Što želite učiniti?</p>
-    </div>
-
-    <div class="actions-grid">
-
-        <!-- ODOBRI DIZAJN -->
-        <a href="#" class="action-card">
-
-            <div class="action-icon">
-                ✓
-            </div>
-
-            <div class="action-content">
-                <strong>Odobri dizajn</strong>
-
-                <p>
-                    Pregledajte dizajn<br>
-                    i potvrdite ga.
-                </p>
-            </div>
-
-            <span class="action-button">
-                Pregledaj
-            </span>
-
-        </a>
 
 
-        <!-- ZATRAŽI IZMJENU -->
-        <a href="#" class="action-card">
-
-            <div class="action-icon">
-                ↔
-            </div>
-
-            <div class="action-content">
-                <strong>Zatraži izmjenu</strong>
-
-                <p>
-                    Pošaljite prijedlog<br>
-                    ili izmjenu.
-                </p>
-            </div>
-
-            <span class="action-button">
-                Nova izmjena
-            </span>
-
-        </a>
+        <div
+            class="projects-slider"
+            id="projectsSlider">
+        </div>
 
 
-        <!-- DOSTAVI MATERIJALE -->
-        <a href="#" class="action-card">
+        <div
+            class="slider-dots"
+            id="sliderDots">
+        </div>
 
-            <div class="action-icon">
-                ↑
-            </div>
+    </section>
 
-            <div class="action-content">
-                <strong>Dostavi materijale</strong>
+
+    <!-- =========================
+         AKCIJE
+    ========================== -->
+
+    <section class="actions-section">
+
+        <div class="actions-header">
+
+            <h2>
+                Akcije
+            </h2>
+
+            <p>
+                Što želite učiniti?
+            </p>
+
+        </div>
+
+
+        <div class="actions-grid">
+
+
+            <!-- ODOBRI -->
+
+            <a href="#" class="action-card">
+
+                <div class="action-icon">
+                    ✓
+                </div>
+
+                <strong>
+                    Odobri dizajn
+                </strong>
 
                 <p>
-                    Pošaljite logo, fotografije<br>
-                    ili dokumente.
+                    Pregledajte dizajn i potvrdite ga.
                 </p>
-            </div>
 
-            <span class="action-button">
-                Pošalji
-            </span>
+                <span class="action-button">
+                    Pregledaj
+                </span>
 
-        </a>
+            </a>
 
 
-        <!-- PODRŠKA -->
-        <a href="#" class="action-card">
+            <!-- IZMJENA -->
 
-            <div class="action-icon">
-                ?
-            </div>
+            <a href="#" class="action-card">
 
-            <div class="action-content">
-                <strong>Kontaktiraj podršku</strong>
+                <div class="action-icon">
+                    ↔
+                </div>
+
+                <strong>
+                    Zatraži izmjenu
+                </strong>
 
                 <p>
-                    Trebate pomoć? Naš tim<br>
-                    je tu za vas.
+                    Pošaljite prijedlog ili izmjenu.
                 </p>
-            </div>
 
-            <span class="action-button">
-                Pošalji upit
-            </span>
+                <span class="action-button">
+                    Nova izmjena
+                </span>
 
-        </a>
+            </a>
 
-    </div>
 
-</section>
+            <!-- MATERIJALI -->
+
+            <a href="#" class="action-card">
+
+                <div class="action-icon">
+                    ↑
+                </div>
+
+                <strong>
+                    Dostavi materijale
+                </strong>
+
+                <p>
+                    Pošaljite logo, fotografije ili dokumente.
+                </p>
+
+                <span class="action-button">
+                    Pošalji
+                </span>
+
+            </a>
+
+
+            <!-- PODRŠKA -->
+
+            <a href="#" class="action-card">
+
+                <div class="action-icon">
+                    ?
+                </div>
+
+                <strong>
+                    Kontaktiraj podršku
+                </strong>
+
+                <p>
+                    Trebate pomoć? Naš tim je tu za vas.
+                </p>
+
+                <span class="action-button">
+                    Pošalji upit
+                </span>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+</div>
         <!-- =========================
              COPYRIGHT
         ========================== -->
