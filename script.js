@@ -54,6 +54,78 @@ function formatDate(value) {
 
 
 // =========================
+// ZADNJE AŽURIRANO
+// =========================
+
+async function loadLatestUpdate(
+    projectId,
+    element
+) {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+
+        .from("activities")
+
+        .select("activity_date")
+
+        .eq(
+            "project_id",
+            projectId
+        )
+
+        .not(
+            "activity_date",
+            "is",
+            null
+        )
+
+        .order(
+            "activity_date",
+            {
+                ascending: false
+            }
+        )
+
+        .limit(1);
+
+
+    if (error) {
+
+        console.error(
+            "Greška kod zadnjeg ažuriranja:",
+            error
+        );
+
+        element.textContent =
+            "-";
+
+        return;
+    }
+
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+
+        element.textContent =
+            "-";
+
+        return;
+    }
+
+
+    element.textContent =
+        formatDate(
+            data[0].activity_date
+        );
+}
+
+
+// =========================
 // ACTIVITY PREVIEW
 // =========================
 
@@ -121,7 +193,10 @@ async function loadActivityPreview(
     }
 
 
+    // =========================
     // PRVE 2 AKTIVNOSTI
+    // =========================
+
     const previewActivities =
         activities.slice(0, 2);
 
@@ -134,10 +209,15 @@ async function loadActivityPreview(
                     "div"
                 );
 
+
             item.classList.add(
                 "activity-preview-item"
             );
 
+
+            // =========================
+            // STATUS KLASA
+            // =========================
 
             if (
                 activity.status ===
@@ -170,10 +250,15 @@ async function loadActivityPreview(
             }
 
 
+            // =========================
+            // IKONA
+            // =========================
+
             const icon =
                 document.createElement(
                     "span"
                 );
+
 
             icon.classList.add(
                 "activity-preview-icon"
@@ -248,10 +333,15 @@ async function loadActivityPreview(
             }
 
 
+            // =========================
+            // CONTENT
+            // =========================
+
             const content =
                 document.createElement(
                     "div"
                 );
+
 
             content.classList.add(
                 "activity-preview-content"
@@ -262,6 +352,7 @@ async function loadActivityPreview(
                 document.createElement(
                     "strong"
                 );
+
 
             title.textContent =
                 activity.title;
@@ -296,6 +387,7 @@ async function loadActivityPreview(
                 title
             );
 
+
             content.appendChild(
                 date
             );
@@ -304,6 +396,7 @@ async function loadActivityPreview(
             item.appendChild(
                 icon
             );
+
 
             item.appendChild(
                 content
@@ -331,12 +424,15 @@ async function loadActivityPreview(
                 "a"
             );
 
+
         more.classList.add(
             "activities-more"
         );
 
+
         more.href =
             `activities.html?project=${projectId}`;
+
 
         more.innerHTML = `
             <span>
@@ -378,6 +474,7 @@ function setupProgressToggles() {
                     ".progress-header"
                 );
 
+
             const preview =
                 card.querySelector(
                     ".progress-activities"
@@ -409,10 +506,12 @@ function setupProgressToggles() {
                         preview.hidden =
                             true;
 
+
                         button.setAttribute(
                             "aria-expanded",
                             "false"
                         );
+
 
                         return;
                     }
@@ -436,6 +535,7 @@ function setupProgressToggles() {
                                         ".progress-header"
                                     );
 
+
                                 const otherPreview =
                                     otherCard.querySelector(
                                         ".progress-activities"
@@ -449,6 +549,7 @@ function setupProgressToggles() {
                                     otherPreview.hidden =
                                         true;
 
+
                                     otherButton.setAttribute(
                                         "aria-expanded",
                                         "false"
@@ -461,7 +562,7 @@ function setupProgressToggles() {
 
 
                     // =========================
-                    // LOAD
+                    // UČITAJ
                     // =========================
 
                     await loadActivityPreview(
@@ -505,6 +606,7 @@ function closeProgressPreviews() {
                     card.querySelector(
                         ".progress-header"
                     );
+
 
                 const preview =
                     card.querySelector(
@@ -569,7 +671,10 @@ function renderProjects() {
         projects.length;
 
 
+    // =========================
     // NEMA PROJEKATA
+    // =========================
+
     if (
         projects.length === 0
     ) {
@@ -588,6 +693,10 @@ function renderProjects() {
         return;
     }
 
+
+    // =========================
+    // PROJEKTI
+    // =========================
 
     projects.forEach(
         function (
@@ -634,6 +743,10 @@ function renderProjects() {
             }
 
 
+            // =========================
+            // PROGRESS
+            // =========================
+
             const progress =
                 Math.max(
                     0,
@@ -664,6 +777,7 @@ function renderProjects() {
             slide.innerHTML = `
 
                 <div class="project-card">
+
 
                     <!-- =====================
                          HEADER PROJEKTA
@@ -734,58 +848,113 @@ function renderProjects() {
 
 
                     <!-- =====================
-                         STAT CARDS
+                         STATS
                     ====================== -->
 
                     <div class="project-stats">
 
 
-                        <!-- PAKET -->
+                        <!-- =====================
+                             LIJEVA KOLONA
+                        ====================== -->
 
-                        <div class="stat-card">
+                        <div class="stat-column">
 
-                            <div class="stat-icon">
 
-                                <svg viewBox="0 0 24 24">
+                            <!-- PAKET -->
 
-                                    <rect
-                                        x="3"
-                                        y="7"
-                                        width="18"
-                                        height="13"
-                                        rx="2">
-                                    </rect>
+                            <div class="stat-card">
 
-                                    <path
-                                        d="M8 7V5">
-                                    </path>
+                                <div class="stat-icon">
 
-                                    <path
-                                        d="M16 7V5">
-                                    </path>
+                                    <svg viewBox="0 0 24 24">
 
-                                    <path
-                                        d="M8 5h8">
-                                    </path>
+                                        <rect
+                                            x="3"
+                                            y="7"
+                                            width="18"
+                                            height="13"
+                                            rx="2">
+                                        </rect>
 
-                                </svg>
+                                        <path
+                                            d="M8 7V5">
+                                        </path>
+
+                                        <path
+                                            d="M16 7V5">
+                                        </path>
+
+                                        <path
+                                            d="M8 5h8">
+                                        </path>
+
+                                    </svg>
+
+                                </div>
+
+
+                                <div>
+
+                                    <span class="stat-label">
+                                        Paket
+                                    </span>
+
+                                    <strong class="package-name">
+
+                                        ${escapeHTML(
+                                            project.package || "-"
+                                        )}
+
+                                    </strong>
+
+                                </div>
 
                             </div>
 
 
-                            <div>
+                            <!-- =====================
+                                 ZADNJE AŽURIRANO
+                            ====================== -->
 
-                                <span class="stat-label">
-                                    Paket
-                                </span>
+                            <div
+                                class="
+                                    stat-card
+                                    updated-card
+                                "
+                            >
 
-                                <strong class="package-name">
+                                <div class="stat-icon">
 
-                                    ${escapeHTML(
-                                        project.package || "-"
-                                    )}
+                                    <svg viewBox="0 0 24 24">
 
-                                </strong>
+                                        <path
+                                            d="M20 11a8 8 0 1 1-2.34-5.66">
+                                        </path>
+
+                                        <path
+                                            d="M20 4v7h-7">
+                                        </path>
+
+                                    </svg>
+
+                                </div>
+
+
+                                <div>
+
+                                    <span class="stat-label">
+                                        Zadnje ažurirano
+                                    </span>
+
+                                    <strong
+                                        class="latest-update"
+                                        data-project-id="${project.id}"
+                                    >
+                                        -
+                                    </strong>
+
+                                </div>
 
                             </div>
 
@@ -804,8 +973,6 @@ function renderProjects() {
                             "
                             data-project-id="${project.id}"
                         >
-
-                            <!-- GORNJI KLIKABILNI DIO -->
 
                             <button
                                 type="button"
@@ -877,10 +1044,7 @@ function renderProjects() {
                             </button>
 
 
-                            <!-- =====================
-                                 AKTIVNOSTI UNUTAR
-                                 ISTOG BUBBLEA
-                            ====================== -->
+                            <!-- AKTIVNOSTI -->
 
                             <div
                                 class="progress-activities"
@@ -891,7 +1055,9 @@ function renderProjects() {
                         </div>
 
 
-                        <!-- ROK -->
+                        <!-- =====================
+                             ROK
+                        ====================== -->
 
                         <div class="stat-card">
 
@@ -948,6 +1114,22 @@ function renderProjects() {
 
             slider.appendChild(
                 slide
+            );
+
+
+            // =========================
+            // UČITAJ ZADNJE AŽURIRANJE
+            // =========================
+
+            const latestUpdateElement =
+                slide.querySelector(
+                    ".latest-update"
+                );
+
+
+            loadLatestUpdate(
+                project.id,
+                latestUpdateElement
             );
 
 
@@ -1105,7 +1287,9 @@ function setupProjectSlider() {
                         }
 
 
-                        let index = 0;
+                        let index =
+                            0;
+
 
                         let smallestDistance =
                             Infinity;
@@ -1132,6 +1316,7 @@ function setupProjectSlider() {
                                     smallestDistance =
                                         distance;
 
+
                                     index =
                                         slideIndex;
 
@@ -1141,9 +1326,13 @@ function setupProjectSlider() {
                         );
 
 
+                        // BROJAČ
+
                         currentProject.textContent =
                             index + 1;
 
+
+                        // DOTS
 
                         const dots =
                             document.querySelectorAll(
@@ -1165,6 +1354,8 @@ function setupProjectSlider() {
                             }
                         );
 
+
+                        // PROMJENA PROJEKTA
 
                         if (
                             index !==
@@ -1195,7 +1386,9 @@ function setupProjectSlider() {
 
 async function loadDashboard() {
 
+    // =========================
     // SESSION
+    // =========================
 
     const {
         data: {
@@ -1306,6 +1499,7 @@ async function loadDashboard() {
             "Greška kod projekata:",
             projectError
         );
+
 
         return;
 
