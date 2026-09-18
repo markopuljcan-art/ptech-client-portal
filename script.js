@@ -82,7 +82,6 @@ async function loadActivities(projectId) {
     container.innerHTML = "";
 
 
-    // NEMA AKTIVNOSTI
     if (!activities || activities.length === 0) {
 
         container.innerHTML = `
@@ -190,7 +189,6 @@ async function loadActivities(projectId) {
         }
 
 
-        // SADRŽAJ
         const content =
             document.createElement("div");
 
@@ -199,7 +197,6 @@ async function loadActivities(projectId) {
         );
 
 
-        // NASLOV
         const title =
             document.createElement("span");
 
@@ -211,7 +208,6 @@ async function loadActivities(projectId) {
             activity.title;
 
 
-        // DATUM
         const date =
             document.createElement("span");
 
@@ -219,19 +215,12 @@ async function loadActivities(projectId) {
             "activity-date"
         );
 
-
-        if (activity.activity_date) {
-
-            date.textContent =
-                formatDate(
+        date.textContent =
+            activity.activity_date
+                ? formatDate(
                     activity.activity_date
-                );
-
-        } else {
-
-            date.textContent = "";
-
-        }
+                )
+                : "";
 
 
         content.appendChild(title);
@@ -243,6 +232,118 @@ async function loadActivities(projectId) {
         container.appendChild(item);
 
     });
+}
+
+
+// =========================
+// PROGRESS TOGGLE
+// =========================
+
+function setupProgressToggles() {
+
+    const activitiesSection =
+        document.getElementById(
+            "activitiesSection"
+        );
+
+    const buttons =
+        document.querySelectorAll(
+            ".progress-toggle"
+        );
+
+
+    buttons.forEach(function (button) {
+
+        button.addEventListener(
+            "click",
+            async function () {
+
+                const projectId =
+                    Number(
+                        button.dataset.projectId
+                    );
+
+                const isOpen =
+                    button.getAttribute(
+                        "aria-expanded"
+                    ) === "true";
+
+
+                // AKO JE VEĆ OTVORENO -> ZATVORI
+                if (isOpen) {
+
+                    activitiesSection.hidden =
+                        true;
+
+                    button.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+                    return;
+                }
+
+
+                // ZATVORI SVE OSTALE BUTTON-E
+                buttons.forEach(
+                    function (otherButton) {
+
+                        otherButton.setAttribute(
+                            "aria-expanded",
+                            "false"
+                        );
+
+                    }
+                );
+
+
+                // UČITAJ AKTIVNOSTI
+                await loadActivities(
+                    projectId
+                );
+
+
+                // OTVORI SEKCIJU
+                activitiesSection.hidden =
+                    false;
+
+                button.setAttribute(
+                    "aria-expanded",
+                    "true"
+                );
+
+            }
+        );
+
+    });
+}
+
+
+// =========================
+// ZATVORI AKTIVNOSTI
+// =========================
+
+function closeActivities() {
+
+    const activitiesSection =
+        document.getElementById(
+            "activitiesSection"
+        );
+
+    activitiesSection.hidden = true;
+
+    document
+        .querySelectorAll(
+            ".progress-toggle"
+        )
+        .forEach(function (button) {
+
+            button.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        });
 }
 
 
@@ -327,10 +428,6 @@ function renderProjects() {
             Number(project.progress) || 0;
 
 
-        // =========================
-        // PROJEKTNA KARTICA
-        // =========================
-
         slide.innerHTML = `
 
             <div class="project-card">
@@ -383,7 +480,6 @@ function renderProjects() {
                     </div>
 
 
-                    <!-- STATUS GORE DESNO -->
                     <span
                         class="
                             status-badge
@@ -398,7 +494,6 @@ function renderProjects() {
                 </div>
 
 
-                <!-- DONJE KARTICE -->
                 <div class="project-stats">
 
 
@@ -452,11 +547,15 @@ function renderProjects() {
 
 
                     <!-- NAPREDAK -->
-                    <div
+                    <button
+                        type="button"
                         class="
                             stat-card
                             progress-stat
+                            progress-toggle
                         "
+                        data-project-id="${project.id}"
+                        aria-expanded="false"
                     >
 
                         <div class="stat-icon">
@@ -515,7 +614,12 @@ function renderProjects() {
 
                         </div>
 
-                    </div>
+
+                        <span class="progress-chevron">
+                            &gt;
+                        </span>
+
+                    </button>
 
 
                     <!-- ROK -->
@@ -575,10 +679,7 @@ function renderProjects() {
         slider.appendChild(slide);
 
 
-        // =========================
         // DOT
-        // =========================
-
         const dot =
             document.createElement(
                 "button"
@@ -604,11 +705,26 @@ function renderProjects() {
             "click",
             function () {
 
+                const firstSlide =
+                    slider.querySelector(
+                        ".project-slide"
+                    );
+
+                if (!firstSlide) {
+                    return;
+                }
+
+                const gap = 18;
+
+                const slideWidth =
+                    firstSlide.offsetWidth + gap;
+
+
                 slider.scrollTo({
 
                     left:
                         index *
-                        slider.clientWidth,
+                        slideWidth,
 
                     behavior:
                         "smooth"
@@ -634,10 +750,6 @@ function renderProjects() {
 
         activeProjectIndex = 0;
 
-        loadActivities(
-            projects[0].id
-        );
-
     }
 
     else {
@@ -645,15 +757,22 @@ function renderProjects() {
         currentProject.textContent =
             "0";
 
-        document.getElementById(
-            "activities"
-        ).innerHTML = `
+        const activities =
+            document.getElementById(
+                "activities"
+            );
+
+        activities.innerHTML = `
             <div class="no-activities">
                 Trenutno nema projekata.
             </div>
         `;
 
     }
+
+
+    // POSTAVI CLICK LISTENERE
+    setupProgressToggles();
 }
 
 
@@ -708,8 +827,10 @@ function setupProjectSlider() {
                         }
 
 
+                        const gap = 18;
+
                         const slideWidth =
-                            slide.offsetWidth + 18;
+                            slide.offsetWidth + gap;
 
 
                         let index =
@@ -756,7 +877,7 @@ function setupProjectSlider() {
                         );
 
 
-                        // PROMIJENI AKTIVNOSTI
+                        // PROMJENA PROJEKTA
                         if (
                             index !==
                             activeProjectIndex
@@ -766,9 +887,8 @@ function setupProjectSlider() {
                                 index;
 
 
-                            loadActivities(
-                                projects[index].id
-                            );
+                            // ZATVORI AKTIVNOSTI
+                            closeActivities();
 
                         }
 
@@ -787,7 +907,6 @@ function setupProjectSlider() {
 
 async function loadDashboard() {
 
-    // SESSION
     const {
         data: { session }
     } =
@@ -805,10 +924,7 @@ async function loadDashboard() {
     }
 
 
-    // =========================
     // PROFIL
-    // =========================
-
     const {
         data: profile,
         error: profileError
@@ -849,10 +965,7 @@ async function loadDashboard() {
         userName;
 
 
-    // =========================
-    // SVI PROJEKTI USERA
-    // =========================
-
+    // SVI PROJEKTI
     const {
         data,
         error: projectError
