@@ -1,10 +1,16 @@
-const SUPABASE_URL = "https://agivwsbczzvvuzszcvxz.supabase.co";
-const SUPABASE_KEY = "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
+const SUPABASE_URL =
+    "https://agivwsbczzvvuzszcvxz.supabase.co";
 
-const supabaseClient = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
+const SUPABASE_KEY =
+    "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
+
+
+const supabaseClient =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
 
 let projects = [];
 let activeProjectIndex = 0;
@@ -15,6 +21,7 @@ let activeProjectIndex = 0;
 // =========================
 
 function escapeHTML(value) {
+
     return String(value ?? "")
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
@@ -30,9 +37,10 @@ function formatDate(value) {
         return "-";
     }
 
-    const date = new Date(
-        value + "T00:00:00"
-    );
+    const date =
+        new Date(
+            value + "T00:00:00"
+        );
 
     return date.toLocaleDateString(
         "hr-HR",
@@ -46,23 +54,30 @@ function formatDate(value) {
 
 
 // =========================
-// AKTIVNOSTI
+// ACTIVITY PREVIEW
 // =========================
 
-async function loadActivities(projectId) {
+async function loadActivityPreview(
+    projectId,
+    container
+) {
 
     const {
         data: activities,
         error
     } = await supabaseClient
+
         .from("activities")
+
         .select(
             "title, status, position, activity_date"
         )
+
         .eq(
             "project_id",
             projectId
         )
+
         .order(
             "position",
             {
@@ -78,19 +93,19 @@ async function loadActivities(projectId) {
             error
         );
 
+        container.innerHTML = `
+            <div class="no-activities">
+                Aktivnosti se trenutno ne mogu učitati.
+            </div>
+        `;
+
         return;
     }
 
 
-    const container =
-        document.getElementById(
-            "activities"
-        );
-
     container.innerHTML = "";
 
 
-    // NEMA AKTIVNOSTI
     if (
         !activities ||
         activities.length === 0
@@ -106,15 +121,12 @@ async function loadActivities(projectId) {
     }
 
 
-    // =========================
-    // SAMO PRVE 2 AKTIVNOSTI
-    // =========================
-
-    const visibleActivities =
+    // PRVE 2 AKTIVNOSTI
+    const previewActivities =
         activities.slice(0, 2);
 
 
-    visibleActivities.forEach(
+    previewActivities.forEach(
         function (activity) {
 
             const item =
@@ -123,13 +135,40 @@ async function loadActivities(projectId) {
                 );
 
             item.classList.add(
-                "activity-item"
+                "activity-preview-item"
             );
 
 
-            // =========================
-            // IKONA
-            // =========================
+            if (
+                activity.status ===
+                "Završeno"
+            ) {
+
+                item.classList.add(
+                    "activity-preview-done"
+                );
+
+            }
+
+            else if (
+                activity.status ===
+                "U tijeku"
+            ) {
+
+                item.classList.add(
+                    "activity-preview-progress"
+                );
+
+            }
+
+            else {
+
+                item.classList.add(
+                    "activity-preview-waiting"
+                );
+
+            }
+
 
             const icon =
                 document.createElement(
@@ -137,7 +176,7 @@ async function loadActivities(projectId) {
                 );
 
             icon.classList.add(
-                "activity-icon"
+                "activity-preview-icon"
             );
 
 
@@ -146,10 +185,6 @@ async function loadActivities(projectId) {
                 activity.status ===
                 "Završeno"
             ) {
-
-                item.classList.add(
-                    "activity-done"
-                );
 
                 icon.innerHTML = `
                     <svg viewBox="0 0 24 24">
@@ -176,15 +211,8 @@ async function loadActivities(projectId) {
                 "U tijeku"
             ) {
 
-                item.classList.add(
-                    "activity-progress"
-                );
-
                 icon.innerHTML = `
-                    <svg
-                        class="activity-spinner"
-                        viewBox="0 0 24 24"
-                    >
+                    <svg viewBox="0 0 24 24">
 
                         <circle
                             cx="12"
@@ -205,10 +233,6 @@ async function loadActivities(projectId) {
             // NA ČEKANJU
             else {
 
-                item.classList.add(
-                    "activity-waiting"
-                );
-
                 icon.innerHTML = `
                     <svg viewBox="0 0 24 24">
 
@@ -224,28 +248,20 @@ async function loadActivities(projectId) {
             }
 
 
-            // =========================
-            // SADRŽAJ
-            // =========================
-
             const content =
                 document.createElement(
                     "div"
                 );
 
             content.classList.add(
-                "activity-content"
+                "activity-preview-content"
             );
 
 
             const title =
                 document.createElement(
-                    "span"
+                    "strong"
                 );
-
-            title.classList.add(
-                "activity-title"
-            );
 
             title.textContent =
                 activity.title;
@@ -255,10 +271,6 @@ async function loadActivities(projectId) {
                 document.createElement(
                     "span"
                 );
-
-            date.classList.add(
-                "activity-date"
-            );
 
 
             if (
@@ -274,7 +286,8 @@ async function loadActivities(projectId) {
 
             else {
 
-                date.textContent = "";
+                date.textContent =
+                    "";
 
             }
 
@@ -287,6 +300,7 @@ async function loadActivities(projectId) {
                 date
             );
 
+
             item.appendChild(
                 icon
             );
@@ -294,6 +308,7 @@ async function loadActivities(projectId) {
             item.appendChild(
                 content
             );
+
 
             container.appendChild(
                 item
@@ -311,19 +326,19 @@ async function loadActivities(projectId) {
         activities.length > 2
     ) {
 
-        const moreLink =
+        const more =
             document.createElement(
                 "a"
             );
 
-        moreLink.classList.add(
+        more.classList.add(
             "activities-more"
         );
 
-        moreLink.href =
+        more.href =
             `activities.html?project=${projectId}`;
 
-        moreLink.innerHTML = `
+        more.innerHTML = `
             <span>
                 Pogledaj više
             </span>
@@ -333,8 +348,9 @@ async function loadActivities(projectId) {
             </span>
         `;
 
+
         container.appendChild(
-            moreLink
+            more
         );
 
     }
@@ -343,24 +359,30 @@ async function loadActivities(projectId) {
 
 
 // =========================
-// NAPREDAK - CLICK
+// NAPREDAK CLICK
 // =========================
 
 function setupProgressToggles() {
 
-    const activitiesSection =
-        document.getElementById(
-            "activitiesSection"
-        );
-
-    const buttons =
+    const progressCards =
         document.querySelectorAll(
             ".progress-toggle"
         );
 
 
-    buttons.forEach(
-        function (button) {
+    progressCards.forEach(
+        function (card) {
+
+            const button =
+                card.querySelector(
+                    ".progress-header"
+                );
+
+            const preview =
+                card.querySelector(
+                    ".progress-activities"
+                );
+
 
             button.addEventListener(
                 "click",
@@ -368,8 +390,9 @@ function setupProgressToggles() {
 
                     const projectId =
                         Number(
-                            button.dataset.projectId
+                            card.dataset.projectId
                         );
+
 
                     const isOpen =
                         button.getAttribute(
@@ -383,7 +406,7 @@ function setupProgressToggles() {
 
                     if (isOpen) {
 
-                        activitiesSection.hidden =
+                        preview.hidden =
                             true;
 
                         button.setAttribute(
@@ -396,38 +419,60 @@ function setupProgressToggles() {
 
 
                     // =========================
-                    // RESET SVIH
+                    // ZATVORI OSTALE
                     // =========================
 
-                    buttons.forEach(
-                        function (
-                            otherButton
-                        ) {
+                    document
+                        .querySelectorAll(
+                            ".progress-toggle"
+                        )
+                        .forEach(
+                            function (
+                                otherCard
+                            ) {
 
-                            otherButton.setAttribute(
-                                "aria-expanded",
-                                "false"
-                            );
+                                const otherButton =
+                                    otherCard.querySelector(
+                                        ".progress-header"
+                                    );
 
-                        }
+                                const otherPreview =
+                                    otherCard.querySelector(
+                                        ".progress-activities"
+                                    );
+
+
+                                if (
+                                    otherCard !== card
+                                ) {
+
+                                    otherPreview.hidden =
+                                        true;
+
+                                    otherButton.setAttribute(
+                                        "aria-expanded",
+                                        "false"
+                                    );
+
+                                }
+
+                            }
+                        );
+
+
+                    // =========================
+                    // LOAD
+                    // =========================
+
+                    await loadActivityPreview(
+                        projectId,
+                        preview
                     );
 
 
-                    // =========================
-                    // UČITAJ
-                    // =========================
-
-                    await loadActivities(
-                        projectId
-                    );
-
-
-                    // =========================
-                    // OTVORI
-                    // =========================
-
-                    activitiesSection.hidden =
+                    preview.hidden =
                         false;
+
 
                     button.setAttribute(
                         "aria-expanded",
@@ -444,31 +489,32 @@ function setupProgressToggles() {
 
 
 // =========================
-// ZATVORI AKTIVNOSTI
+// ZATVORI PREVIEW
 // =========================
 
-function closeActivities() {
-
-    const activitiesSection =
-        document.getElementById(
-            "activitiesSection"
-        );
-
-
-    if (activitiesSection) {
-
-        activitiesSection.hidden =
-            true;
-
-    }
-
+function closeProgressPreviews() {
 
     document
         .querySelectorAll(
             ".progress-toggle"
         )
         .forEach(
-            function (button) {
+            function (card) {
+
+                const button =
+                    card.querySelector(
+                        ".progress-header"
+                    );
+
+                const preview =
+                    card.querySelector(
+                        ".progress-activities"
+                    );
+
+
+                preview.hidden =
+                    true;
+
 
                 button.setAttribute(
                     "aria-expanded",
@@ -482,7 +528,7 @@ function closeActivities() {
 
 
 // =========================
-// PROJECT SLIDER
+// RENDER PROJECTS
 // =========================
 
 function renderProjects() {
@@ -492,15 +538,18 @@ function renderProjects() {
             "projectsSlider"
         );
 
+
     const dotsContainer =
         document.getElementById(
             "sliderDots"
         );
 
+
     const currentProject =
         document.getElementById(
             "currentProject"
         );
+
 
     const totalProjects =
         document.getElementById(
@@ -508,11 +557,36 @@ function renderProjects() {
         );
 
 
-    slider.innerHTML = "";
-    dotsContainer.innerHTML = "";
+    slider.innerHTML =
+        "";
+
+
+    dotsContainer.innerHTML =
+        "";
+
 
     totalProjects.textContent =
         projects.length;
+
+
+    // NEMA PROJEKATA
+    if (
+        projects.length === 0
+    ) {
+
+        currentProject.textContent =
+            "0";
+
+
+        slider.innerHTML = `
+            <div class="no-projects">
+                Trenutno nema aktivnih projekata.
+            </div>
+        `;
+
+
+        return;
+    }
 
 
     projects.forEach(
@@ -521,21 +595,12 @@ function renderProjects() {
             index
         ) {
 
-            const slide =
-                document.createElement(
-                    "div"
-                );
-
-            slide.classList.add(
-                "project-slide"
-            );
-
-
             // =========================
             // STATUS
             // =========================
 
-            let statusClass = "";
+            let statusClass =
+                "";
 
 
             if (
@@ -570,22 +635,41 @@ function renderProjects() {
 
 
             const progress =
-                Number(
-                    project.progress
-                ) || 0;
+                Math.max(
+                    0,
+                    Math.min(
+                        100,
+                        Number(
+                            project.progress
+                        ) || 0
+                    )
+                );
 
 
             // =========================
-            // KARTICA
+            // SLIDE
             // =========================
+
+            const slide =
+                document.createElement(
+                    "div"
+                );
+
+
+            slide.classList.add(
+                "project-slide"
+            );
+
 
             slide.innerHTML = `
 
                 <div class="project-card">
 
+                    <!-- =====================
+                         HEADER PROJEKTA
+                    ====================== -->
 
                     <div class="project-heading">
-
 
                         <div class="project-main">
 
@@ -650,7 +734,7 @@ function renderProjects() {
 
 
                     <!-- =====================
-                         DONJE KARTICE
+                         STAT CARDS
                     ====================== -->
 
                     <div class="project-stats">
@@ -712,79 +796,99 @@ function renderProjects() {
                              NAPREDAK
                         ====================== -->
 
-                        <button
-                            type="button"
+                        <div
                             class="
                                 stat-card
                                 progress-stat
                                 progress-toggle
                             "
                             data-project-id="${project.id}"
-                            aria-expanded="false"
                         >
 
-                            <div class="stat-icon">
+                            <!-- GORNJI KLIKABILNI DIO -->
 
-                                <svg viewBox="0 0 24 24">
+                            <button
+                                type="button"
+                                class="progress-header"
+                                aria-expanded="false"
+                            >
 
-                                    <path
-                                        d="M5 20V12">
-                                    </path>
+                                <div class="stat-icon">
 
-                                    <path
-                                        d="M10 20V7">
-                                    </path>
+                                    <svg viewBox="0 0 24 24">
 
-                                    <path
-                                        d="M15 20V4">
-                                    </path>
+                                        <path
+                                            d="M5 20V12">
+                                        </path>
 
-                                    <path
-                                        d="M20 20V10">
-                                    </path>
+                                        <path
+                                            d="M10 20V7">
+                                        </path>
 
-                                </svg>
+                                        <path
+                                            d="M15 20V4">
+                                        </path>
 
-                            </div>
+                                        <path
+                                            d="M20 20V10">
+                                        </path>
 
-
-                            <div class="progress-info">
-
-                                <span class="stat-label">
-                                    Napredak
-                                </span>
-
-
-                                <div class="progress-row">
-
-                                    <div class="progress-container">
-
-                                        <div
-                                            class="progress-bar"
-                                            style="
-                                                width:
-                                                ${progress}%;
-                                            "
-                                        >
-                                        </div>
-
-                                    </div>
-
-
-                                    <strong>
-                                        ${progress}%
-                                    </strong>
+                                    </svg>
 
                                 </div>
 
+
+                                <div class="progress-info">
+
+                                    <span class="stat-label">
+                                        Napredak
+                                    </span>
+
+
+                                    <div class="progress-row">
+
+                                        <div class="progress-container">
+
+                                            <div
+                                                class="progress-bar"
+                                                style="
+                                                    width:
+                                                    ${progress}%;
+                                                "
+                                            >
+                                            </div>
+
+                                        </div>
+
+
+                                        <strong>
+                                            ${progress}%
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+
+                                <span class="progress-chevron">
+                                    &gt;
+                                </span>
+
+                            </button>
+
+
+                            <!-- =====================
+                                 AKTIVNOSTI UNUTAR
+                                 ISTOG BUBBLEA
+                            ====================== -->
+
+                            <div
+                                class="progress-activities"
+                                hidden
+                            >
                             </div>
 
-
-                            <span class="progress-chevron">
-                                &gt;
-                            </span>
-
-                        </button>
+                        </div>
 
 
                         <!-- ROK -->
@@ -827,17 +931,14 @@ function renderProjects() {
                                 </span>
 
                                 <strong>
-
                                     ${formatDate(
                                         project.deadline
                                     )}
-
                                 </strong>
 
                             </div>
 
                         </div>
-
 
                     </div>
 
@@ -859,15 +960,25 @@ function renderProjects() {
                     "button"
                 );
 
+
             dot.type =
                 "button";
+
 
             dot.classList.add(
                 "slider-dot"
             );
 
 
-            if (index === 0) {
+            dot.setAttribute(
+                "aria-label",
+                `Projekt ${index + 1}`
+            );
+
+
+            if (
+                index === 0
+            ) {
 
                 dot.classList.add(
                     "active"
@@ -885,12 +996,17 @@ function renderProjects() {
                             ".project-slide"
                         );
 
+
                     const targetSlide =
                         slides[index];
 
 
-                    if (!targetSlide) {
+                    if (
+                        !targetSlide
+                    ) {
+
                         return;
+
                     }
 
 
@@ -916,28 +1032,12 @@ function renderProjects() {
     );
 
 
-    // =========================
-    // PRVI PROJEKT
-    // =========================
+    currentProject.textContent =
+        "1";
 
-    if (
-        projects.length > 0
-    ) {
 
-        currentProject.textContent =
-            "1";
-
-        activeProjectIndex =
-            0;
-
-    }
-
-    else {
-
-        currentProject.textContent =
-            "0";
-
-    }
+    activeProjectIndex =
+        0;
 
 
     setupProgressToggles();
@@ -946,7 +1046,7 @@ function renderProjects() {
 
 
 // =========================
-// SWIPE / PROMJENA PROJEKTA
+// PROJECT SLIDER
 // =========================
 
 function setupProjectSlider() {
@@ -955,6 +1055,7 @@ function setupProjectSlider() {
         document.getElementById(
             "projectsSlider"
         );
+
 
     const currentProject =
         document.getElementById(
@@ -1004,10 +1105,6 @@ function setupProjectSlider() {
                         }
 
 
-                        // =========================
-                        // NAJBLIŽI SLIDE
-                        // =========================
-
                         let index = 0;
 
                         let smallestDistance =
@@ -1044,17 +1141,9 @@ function setupProjectSlider() {
                         );
 
 
-                        // =========================
-                        // BROJAČ
-                        // =========================
-
                         currentProject.textContent =
                             index + 1;
 
-
-                        // =========================
-                        // DOTS
-                        // =========================
 
                         const dots =
                             document.querySelectorAll(
@@ -1077,10 +1166,6 @@ function setupProjectSlider() {
                         );
 
 
-                        // =========================
-                        // PROMJENA PROJEKTA
-                        // =========================
-
                         if (
                             index !==
                             activeProjectIndex
@@ -1089,7 +1174,8 @@ function setupProjectSlider() {
                             activeProjectIndex =
                                 index;
 
-                            closeActivities();
+
+                            closeProgressPreviews();
 
                         }
 
@@ -1104,7 +1190,7 @@ function setupProjectSlider() {
 
 
 // =========================
-// GLAVNA FUNKCIJA
+// DASHBOARD
 // =========================
 
 async function loadDashboard() {
@@ -1121,7 +1207,9 @@ async function loadDashboard() {
             .getSession();
 
 
-    if (!session) {
+    if (
+        !session
+    ) {
 
         window.location.href =
             "login.html";
@@ -1140,18 +1228,24 @@ async function loadDashboard() {
         error: profileError
     } =
         await supabaseClient
+
             .from("profiles")
+
             .select(
                 "display_name"
             )
+
             .eq(
                 "id",
                 session.user.id
             )
+
             .maybeSingle();
 
 
-    if (profileError) {
+    if (
+        profileError
+    ) {
 
         console.error(
             "Greška kod profila:",
@@ -1191,17 +1285,22 @@ async function loadDashboard() {
         error: projectError
     } =
         await supabaseClient
+
             .from("projects")
+
             .select(
                 "id, type, name, status, progress, deadline, package"
             )
+
             .eq(
                 "user_id",
                 session.user.id
             );
 
 
-    if (projectError) {
+    if (
+        projectError
+    ) {
 
         console.error(
             "Greška kod projekata:",
@@ -1247,7 +1346,7 @@ document
 
 
 // =========================
-// LIGHT / DARK MODE
+// THEME
 // =========================
 
 const themeToggle =
@@ -1270,6 +1369,7 @@ if (
         "light-mode"
     );
 
+
     themeToggle.checked =
         true;
 
@@ -1288,6 +1388,7 @@ themeToggle.addEventListener(
                 "light-mode"
             );
 
+
             localStorage.setItem(
                 "theme",
                 "light"
@@ -1300,6 +1401,7 @@ themeToggle.addEventListener(
             document.body.classList.remove(
                 "light-mode"
             );
+
 
             localStorage.setItem(
                 "theme",
@@ -1317,4 +1419,5 @@ themeToggle.addEventListener(
 // =========================
 
 setupProjectSlider();
+
 loadDashboard();
