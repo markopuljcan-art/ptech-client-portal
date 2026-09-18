@@ -1,1294 +1,1185 @@
-/* =========================
-   RESET
-========================= */
+const SUPABASE_URL =
+    "https://agivwsbczzvvuzszcvxz.supabase.co";
 
-* {
-    box-sizing: border-box;
-}
+const SUPABASE_KEY =
+    "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
 
-:root {
-    --orange: #ff7a00;
-    --orange-light: #ff9d38;
-    --text: #f5f5f5;
-    --muted: rgba(255,255,255,.48);
-    --border: rgba(255,255,255,.10);
-}
+
+const supabaseClient =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
 
 
 /* =========================
-   BODY
+   ELEMENTI
 ========================= */
 
-html {
-    min-height: 100%;
-}
+const logoutButton =
+    document.getElementById("logoutButton");
 
-body {
-    margin: 0;
+const themeToggle =
+    document.getElementById("themeToggle");
 
-    min-height: 100vh;
+const userTop =
+    document.getElementById("userTop");
 
-    padding: 40px 24px;
+const projectContainer =
+    document.getElementById("projectDetail");
 
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+const activitiesContainer =
+    document.getElementById("projectActivities");
 
-    color: var(--text);
+const documentsContainer =
+    document.getElementById("projectDocuments");
 
-    background:
-        radial-gradient(
-            circle at 0 0,
-            rgba(255,122,0,.25),
-            transparent 24%
-        ),
-        radial-gradient(
-            circle at 100% 100%,
-            rgba(255,122,0,.18),
-            transparent 25%
-        ),
-        #0c0d0f;
-}
 
 
 /* =========================
-   DASHBOARD
+   PROJECT ID
 ========================= */
 
-.dashboard {
-    width: 100%;
-    max-width: 1100px;
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
 
-    margin: 0 auto;
+const projectId =
+    params.get("id");
 
-    overflow: hidden;
 
-    border: 1px solid rgba(255,255,255,.14);
-    border-radius: 22px;
 
-    background:
-        linear-gradient(
-            145deg,
-            #181818,
-            #101113
+/* =========================
+   FORMAT DATUMA
+========================= */
+
+function formatDate(value) {
+
+    if (!value) {
+        return "-";
+    }
+
+    const raw =
+        String(value).slice(0, 10);
+
+    const date =
+        new Date(
+            raw + "T00:00:00"
         );
 
-    box-shadow:
-        0 30px 80px
-        rgba(0,0,0,.45);
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+        return "-";
+    }
+
+    return date.toLocaleDateString(
+        "hr-HR",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        }
+    );
 }
+
 
 
 /* =========================
-   HEADER
+   ESCAPE HTML
 ========================= */
 
-.dashboard-header {
-    min-height: 100px;
+function escapeHtml(value) {
 
-    padding: 20px 42px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 25px;
-
-    border-bottom:
-        1px solid
-        rgba(255,255,255,.10);
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 }
 
-
-.brand {
-    display: flex;
-    align-items: center;
-
-    gap: 18px;
-}
-
-
-.brand-logo {
-    width: 52px;
-    height: 52px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    flex: 0 0 52px;
-
-    border-radius: 14px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ffa42d,
-            #ff6f00
-        );
-
-    color: #111;
-
-    font-size: 29px;
-    font-weight: 900;
-
-    box-shadow:
-        0 8px 25px
-        rgba(255,122,0,.20);
-}
-
-
-.brand h1 {
-    margin: 0;
-
-    font-size: 27px;
-}
-
-
-/* =========================
-   HEADER ACTIONS
-========================= */
-
-.header-actions {
-    display: flex;
-    align-items: center;
-
-    gap: 14px;
-}
-
-
-.user-box {
-    display: flex;
-    align-items: center;
-
-    gap: 9px;
-
-    font-size: 14px;
-    font-weight: 700;
-}
-
-
-.user-avatar {
-    width: 38px;
-    height: 38px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 50%;
-
-    background:
-        rgba(255,255,255,.07);
-}
-
-
-.user-avatar svg {
-    width: 21px;
-    height: 21px;
-
-    fill: none;
-
-    stroke:
-        rgba(255,255,255,.70);
-
-    stroke-width: 1.8;
-}
-
-
-.header-separator {
-    width: 1px;
-    height: 30px;
-
-    background:
-        rgba(255,255,255,.13);
-}
-
-
-.logout-button {
-    padding: 8px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 8px;
-
-    border: 0;
-
-    background: transparent;
-
-    color:
-        rgba(255,255,255,.82);
-
-    font-size: 13px;
-    font-weight: 600;
-
-    cursor: pointer;
-}
-
-
-.logout-button svg {
-    width: 20px;
-    height: 20px;
-
-    fill: none;
-
-    stroke: currentColor;
-
-    stroke-width: 1.8;
-}
-
-
-/* =========================
-   THEME
-========================= */
-
-.theme-switch {
-    position: relative;
-
-    width: 62px;
-    height: 32px;
-}
-
-
-.theme-switch input {
-    position: absolute;
-
-    opacity: 0;
-}
-
-
-.theme-slider {
-    position: absolute;
-
-    inset: 0;
-
-    border:
-        1px solid
-        rgba(255,255,255,.16);
-
-    border-radius: 999px;
-
-    background: #121315;
-
-    cursor: pointer;
-}
-
-
-.theme-slider::before {
-    content: "☾";
-
-    position: absolute;
-
-    left: 3px;
-    top: 2px;
-
-    width: 26px;
-    height: 26px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 50%;
-
-    background: var(--orange);
-
-    color: #111;
-
-    font-size: 14px;
-
-    transition: .2s ease;
-}
-
-
-.theme-switch
-input:checked
-+ .theme-slider::before {
-    content: "☀";
-
-    transform:
-        translateX(29px);
-}
-
-
-/* =========================
-   CONTENT
-========================= */
-
-.dashboard-content {
-    padding: 34px 48px 40px;
-}
-
-
-/* =========================
-   NATRAG
-========================= */
-
-.project-back-row {
-    margin-bottom: 16px;
-}
-
-
-.project-back {
-    display: inline-flex;
-    align-items: center;
-
-    gap: 6px;
-
-    padding: 7px 12px;
-
-    border:
-        1px solid
-        rgba(255,122,0,.30);
-
-    border-radius: 999px;
-
-    background:
-        rgba(255,122,0,.06);
-
-    color: #ff8a1f;
-
-    text-decoration: none;
-
-    font-size: 12px;
-    font-weight: 700;
-
-    transition: .2s ease;
-}
-
-
-.project-back:hover {
-    border-color:
-        rgba(255,122,0,.65);
-
-    background:
-        rgba(255,122,0,.12);
-
-    box-shadow:
-        0 0 15px
-        rgba(255,122,0,.10);
-}
-
-
-.project-back span {
-    font-size: 18px;
-    line-height: 10px;
-}
-
-
-/* =========================
-   PROJECT HERO
-========================= */
-
-.project-detail-hero {
-    padding: 22px;
-
-    border:
-        1px solid
-        rgba(255,122,0,.48);
-
-    border-radius: 17px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(72,40,15,.25),
-            rgba(15,15,15,.30)
-        );
-}
-
-
-.project-detail-heading {
-    margin-bottom: 22px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 20px;
-}
-
-
-.project-main {
-    display: flex;
-    align-items: center;
-
-    gap: 17px;
-}
-
-
-.project-icon {
-    width: 66px;
-    height: 66px;
-
-    flex: 0 0 66px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 15px;
-
-    background:
-        rgba(255,122,0,.14);
-
-    color: #ff9a32;
-}
-
-
-.project-icon svg {
-    width: 34px;
-    height: 34px;
-
-    fill: none;
-
-    stroke: currentColor;
-
-    stroke-width: 1.8;
-}
-
-
-.project-main h2 {
-    margin: 0 0 5px;
-
-    font-size: 25px;
-}
-
-
-.project-main p {
-    margin: 0;
-
-    color: var(--muted);
-
-    font-size: 15px;
-}
 
 
 /* =========================
    STATUS
 ========================= */
 
-.status-badge {
-    display: inline-flex;
-    align-items: center;
+function getStatusClass(status) {
 
-    padding: 8px 14px;
+    const value =
+        String(status || "")
+            .toLowerCase()
+            .trim();
 
-    border-radius: 999px;
 
-    font-size: 12px;
-    font-weight: 700;
+    if (
+        value === "završeno" ||
+        value === "zavrseno"
+    ) {
 
-    white-space: nowrap;
+        return "status-done";
+    }
+
+
+    if (
+        value === "na čekanju" ||
+        value === "na cekanju"
+    ) {
+
+        return "status-waiting";
+    }
+
+
+    return "status-progress";
 }
 
-
-.status-badge::before {
-    content: "";
-
-    width: 6px;
-    height: 6px;
-
-    margin-right: 8px;
-
-    border-radius: 50%;
-}
-
-
-.status-progress {
-    color: #ff9a35;
-
-    border:
-        1px solid
-        rgba(255,122,0,.38);
-
-    background:
-        rgba(255,122,0,.08);
-}
-
-
-.status-progress::before {
-    background: var(--orange);
-}
-
-
-.status-done {
-    color: #50db7c;
-
-    border:
-        1px solid
-        rgba(46,204,113,.35);
-
-    background:
-        rgba(46,204,113,.08);
-}
-
-
-.status-done::before {
-    background: #2ecc71;
-}
-
-
-.status-waiting {
-    color: #aaa;
-
-    border:
-        1px solid
-        rgba(160,160,160,.30);
-
-    background:
-        rgba(160,160,160,.08);
-}
-
-
-.status-waiting::before {
-    background: #888;
-}
 
 
 /* =========================
-   STATS
+   THEME
 ========================= */
 
-.project-stats {
-    display: grid;
+const savedTheme =
+    localStorage.getItem(
+        "theme"
+    );
 
-    grid-template-columns:
-        1fr
-        1.4fr
-        1fr
-        1.2fr;
 
-    gap: 12px;
+if (
+    savedTheme === "light"
+) {
+
+    document.body.classList.add(
+        "light-mode"
+    );
+
+    if (themeToggle) {
+        themeToggle.checked = true;
+    }
 }
 
 
-.stat-card {
-    min-width: 0;
-    min-height: 78px;
+if (themeToggle) {
 
-    padding: 14px;
+    themeToggle.addEventListener(
+        "change",
+        function () {
 
-    display: flex;
-    align-items: center;
+            document.body.classList.toggle(
+                "light-mode",
+                themeToggle.checked
+            );
 
-    gap: 12px;
+            localStorage.setItem(
+                "theme",
+                themeToggle.checked
+                    ? "light"
+                    : "dark"
+            );
 
-    border:
-        1px solid
-        rgba(255,255,255,.10);
-
-    border-radius: 12px;
-
-    background:
-        rgba(0,0,0,.16);
+        }
+    );
 }
 
-
-.stat-icon {
-    flex: 0 0 auto;
-
-    color: var(--orange);
-
-    font-size: 21px;
-}
-
-
-.stat-label {
-    display: block;
-
-    margin-bottom: 6px;
-
-    color: var(--muted);
-
-    font-size: 12px;
-}
-
-
-.stat-card strong {
-    font-size: 13px;
-}
-
-
-.package-value {
-    color: #ff9a32;
-}
 
 
 /* =========================
-   PROGRESS
+   LOGOUT
 ========================= */
 
-.progress-info {
-    width: 100%;
-    min-width: 0;
+if (logoutButton) {
+
+    logoutButton.addEventListener(
+        "click",
+        async function () {
+
+            await supabaseClient
+                .auth
+                .signOut();
+
+            window.location.href =
+                "index.html";
+
+        }
+    );
 }
 
 
-.progress-row {
-    width: 100%;
 
-    display: flex;
-    align-items: center;
+/* =========================
+   START
+========================= */
 
-    gap: 10px;
-}
+async function initProjectPage() {
 
-
-.progress-container {
-    height: 10px;
-
-    flex: 1;
-
-    overflow: hidden;
-
-    border-radius: 999px;
-
-    background:
-        rgba(255,255,255,.09);
-}
+    const {
+        data: {
+            session
+        }
+    } =
+        await supabaseClient
+            .auth
+            .getSession();
 
 
-.progress-bar {
-    height: 100%;
+    if (!session) {
 
-    min-width: 0;
+        window.location.href =
+            "index.html";
 
-    border-radius: inherit;
+        return;
+    }
 
-    background:
-        linear-gradient(
-            90deg,
-            #ff7900,
-            #ffad3c
+
+
+    /* =========================
+       USER
+    ========================= */
+
+    const {
+        data: profile
+    } =
+        await supabaseClient
+
+            .from("profiles")
+
+            .select(
+                "display_name"
+            )
+
+            .eq(
+                "id",
+                session.user.id
+            )
+
+            .maybeSingle();
+
+
+    if (userTop) {
+
+        userTop.textContent =
+            profile?.display_name ||
+            session.user.email
+                .split("@")[0];
+
+    }
+
+
+
+    /* =========================
+       ID PROVJERA
+    ========================= */
+
+    if (!projectId) {
+
+        showProjectError(
+            "Projekt nije odabran."
         );
+
+        return;
+    }
+
+
+
+    /* =========================
+       DOHVATI PROJEKT
+    ========================= */
+
+    const {
+        data: project,
+        error
+    } =
+        await supabaseClient
+
+            .from("projects")
+
+            .select(`
+                id,
+                name,
+                type,
+                status,
+                progress,
+                deadline,
+                package,
+                user_id
+            `)
+
+            .eq(
+                "id",
+                projectId
+            )
+
+            .maybeSingle();
+
+
+
+    if (error) {
+
+        console.error(
+            "Greška kod projekta:",
+            error
+        );
+
+        showProjectError(
+            "Projekt se ne može učitati."
+        );
+
+        return;
+    }
+
+
+
+    if (!project) {
+
+        showProjectError(
+            "Projekt nije pronađen."
+        );
+
+        return;
+    }
+
+
+
+    /*
+        DODATNA FRONTEND PROVJERA.
+
+        RLS u Supabaseu i dalje treba
+        ostati glavna zaštita.
+    */
+
+    if (
+        project.user_id &&
+        project.user_id !==
+        session.user.id
+    ) {
+
+        showProjectError(
+            "Projekt nije dostupan."
+        );
+
+        return;
+    }
+
+
+
+    /* =========================
+       PRIKAŽI
+    ========================= */
+
+    renderProject(
+        project
+    );
+
+
+    await Promise.all([
+
+        loadActivities(
+            project.id
+        ),
+
+        loadDocuments(
+            project.id
+        )
+
+    ]);
+
 }
+
 
 
 /* =========================
-   SECTIONS
+   ERROR
 ========================= */
 
-.dashboard-section {
-    margin-top: 28px;
+function showProjectError(message) {
+
+    if (projectContainer) {
+
+        projectContainer.innerHTML = `
+
+            <div class="project-back-row">
+
+                <a
+                    href="form.html"
+                    class="project-back"
+                >
+                    <span>‹</span>
+
+                    Natrag
+                </a>
+
+            </div>
+
+
+            <div class="empty-state">
+                ${escapeHtml(message)}
+            </div>
+        `;
+    }
+
+
+    if (activitiesContainer) {
+
+        activitiesContainer.innerHTML =
+            "";
+    }
+
+
+    if (documentsContainer) {
+
+        documentsContainer.innerHTML =
+            "";
+    }
+
 }
 
 
-.section-header {
-    margin-bottom: 13px;
+
+/* =========================
+   RENDER PROJEKTA
+========================= */
+
+function renderProject(project) {
+
+    const progress =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                Number(
+                    project.progress || 0
+                )
+            )
+        );
+
+
+    const statusClass =
+        getStatusClass(
+            project.status
+        );
+
+
+    projectContainer.innerHTML = `
+
+        <div class="project-back-row">
+
+            <a
+                href="form.html"
+                class="project-back"
+            >
+
+                <span>‹</span>
+
+                Natrag
+
+            </a>
+
+        </div>
+
+
+
+        <section class="project-detail-hero">
+
+
+            <div class="project-detail-heading">
+
+
+                <div class="project-main">
+
+
+                    <div class="project-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <rect
+                                x="3"
+                                y="4"
+                                width="18"
+                                height="13"
+                                rx="2">
+                            </rect>
+
+                            <path
+                                d="M8 21h8">
+                            </path>
+
+                            <path
+                                d="M12 17v4">
+                            </path>
+
+                        </svg>
+
+                    </div>
+
+
+                    <div class="project-title-area">
+
+                        <h2>
+                            ${escapeHtml(
+                                project.type ||
+                                project.name ||
+                                "Projekt"
+                            )}
+                        </h2>
+
+                        <p>
+                            ${escapeHtml(
+                                project.name || ""
+                            )}
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div
+                    class="
+                        status-badge
+                        ${statusClass}
+                    "
+                >
+
+                    ${escapeHtml(
+                        project.status || "-"
+                    )}
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="project-stats">
+
+
+                <!-- PAKET -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <rect
+                                x="3"
+                                y="7"
+                                width="18"
+                                height="13"
+                                rx="2">
+                            </rect>
+
+                            <path
+                                d="M8 7V5">
+                            </path>
+
+                            <path
+                                d="M16 7V5">
+                            </path>
+
+                            <path
+                                d="M8 5h8">
+                            </path>
+
+                        </svg>
+
+                    </div>
+
+
+                    <div>
+
+                        <span class="stat-label">
+                            Paket
+                        </span>
+
+                        <strong class="package-value">
+
+                            ${escapeHtml(
+                                project.package || "-"
+                            )}
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- NAPREDAK -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path d="M5 20V12"></path>
+                            <path d="M10 20V7"></path>
+                            <path d="M15 20V4"></path>
+                            <path d="M20 20V10"></path>
+
+                        </svg>
+
+                    </div>
+
+
+                    <div class="progress-info">
+
+                        <span class="stat-label">
+                            Napredak
+                        </span>
+
+
+                        <div class="progress-row">
+
+                            <div class="progress-container">
+
+                                <div
+                                    class="progress-bar"
+                                    style="
+                                        width:
+                                        ${progress}%;
+                                    "
+                                >
+                                </div>
+
+                            </div>
+
+
+                            <strong>
+                                ${progress}%
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ROK -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <rect
+                                x="3"
+                                y="5"
+                                width="18"
+                                height="16"
+                                rx="2">
+                            </rect>
+
+                            <path d="M8 3v4"></path>
+                            <path d="M16 3v4"></path>
+                            <path d="M3 10h18"></path>
+
+                        </svg>
+
+                    </div>
+
+
+                    <div>
+
+                        <span class="stat-label">
+                            Rok
+                        </span>
+
+                        <strong>
+                            ${formatDate(
+                                project.deadline
+                            )}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ZADNJE -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path
+                                d="M20 11a8 8 0 1 1-2.34-5.66">
+                            </path>
+
+                            <path
+                                d="M20 4v7h-7">
+                            </path>
+
+                        </svg>
+
+                    </div>
+
+
+                    <div>
+
+                        <span class="stat-label">
+                            Zadnje ažurirano
+                        </span>
+
+                        <strong id="lastUpdated">
+                            -
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+    `;
+
 }
 
-
-.section-title {
-    margin: 0;
-
-    font-size: 21px;
-}
 
 
 /* =========================
    AKTIVNOSTI
 ========================= */
 
-.activities-card {
-    width: 100%;
+async function loadActivities(
+    currentProjectId
+) {
 
-    margin-top: 14px;
+    const {
+        data: activities,
+        error
+    } =
+        await supabaseClient
 
-    padding: 8px 16px;
+            .from("activities")
 
-    overflow: hidden;
+            .select(`
+                title,
+                status,
+                position,
+                activity_date
+            `)
 
-    border:
-        1px solid
-        rgba(255,255,255,.10);
+            .eq(
+                "project_id",
+                currentProjectId
+            )
 
-    border-radius: 14px;
+            .order(
+                "position",
+                {
+                    ascending: true
+                }
+            );
 
-    background:
-        rgba(255,255,255,.02);
+
+
+    if (error) {
+
+        console.error(
+            "Greška kod aktivnosti:",
+            error
+        );
+
+        activitiesContainer.innerHTML = `
+
+            <div class="empty-state">
+                Aktivnosti se ne mogu učitati.
+            </div>
+        `;
+
+        return;
+    }
+
+
+
+    if (
+        !activities ||
+        activities.length === 0
+    ) {
+
+        activitiesContainer.innerHTML = `
+
+            <div class="empty-state">
+                Trenutno nema aktivnosti.
+            </div>
+        `;
+
+        return;
+    }
+
+
+
+    activitiesContainer.innerHTML =
+        "";
+
+
+
+    activities.forEach(
+        activity => {
+
+            const status =
+                String(
+                    activity.status || ""
+                )
+                    .toLowerCase()
+                    .trim();
+
+
+            let statusClass =
+                "activity-waiting";
+
+            let icon =
+                "○";
+
+
+            if (
+                status === "završeno" ||
+                status === "zavrseno"
+            ) {
+
+                statusClass =
+                    "activity-done";
+
+                icon =
+                    "✓";
+
+            }
+
+            else if (
+                status === "u tijeku" ||
+                status === "u izradi"
+            ) {
+
+                statusClass =
+                    "activity-progress";
+
+                icon =
+                    "↻";
+
+            }
+
+
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                `activity-item ${statusClass}`;
+
+
+            item.innerHTML = `
+
+                <div class="activity-icon">
+                    ${icon}
+                </div>
+
+
+                <div class="activity-content">
+
+                    <strong class="activity-title">
+
+                        ${escapeHtml(
+                            activity.title || "-"
+                        )}
+
+                    </strong>
+
+
+                    <span class="activity-date">
+
+                        ${formatDate(
+                            activity.activity_date
+                        )}
+
+                    </span>
+
+                </div>
+            `;
+
+
+            activitiesContainer
+                .appendChild(
+                    item
+                );
+
+        }
+    );
+
+
+
+    /* ZADNJE AŽURIRANO */
+
+    const withDate =
+        activities
+            .filter(
+                item =>
+                    item.activity_date
+            )
+            .sort(
+                (a, b) =>
+                    new Date(
+                        b.activity_date
+                    ) -
+                    new Date(
+                        a.activity_date
+                    )
+            );
+
+
+    const lastUpdated =
+        document.getElementById(
+            "lastUpdated"
+        );
+
+
+    if (
+        lastUpdated &&
+        withDate.length
+    ) {
+
+        lastUpdated.textContent =
+            formatDate(
+                withDate[0]
+                    .activity_date
+            );
+
+    }
+
 }
 
-
-/*
- VAŽNO:
- nema SVG circle elemenata.
- Ikone su obični znakovi.
-*/
-
-.activity-item {
-    width: 100%;
-    min-height: 62px;
-
-    padding: 10px 4px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 14px;
-}
-
-
-.activity-item:not(:last-child) {
-    border-bottom:
-        1px solid
-        rgba(255,255,255,.06);
-}
-
-
-.activity-icon {
-    width: 27px !important;
-    height: 27px !important;
-
-    min-width: 27px !important;
-    min-height: 27px !important;
-
-    max-width: 27px !important;
-    max-height: 27px !important;
-
-    flex:
-        0 0 27px !important;
-
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-
-    position: static !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-
-    overflow: hidden !important;
-
-    border:
-        1px solid
-        currentColor;
-
-    border-radius: 50%;
-
-    background: transparent !important;
-
-    font-size: 13px !important;
-    font-weight: 800;
-
-    line-height: 1 !important;
-}
-
-
-/*
- Ako stari JS slučajno još
- negdje generira SVG,
- ovo ga skriva.
-*/
-
-.activity-icon svg,
-.activity-icon circle,
-.activity-icon path {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
-}
-
-
-.activity-done
-.activity-icon {
-    color: #2fd462;
-}
-
-
-.activity-progress
-.activity-icon {
-    color: var(--orange);
-}
-
-
-.activity-waiting
-.activity-icon {
-    color: #888;
-}
-
-
-.activity-content {
-    min-width: 0;
-
-    flex: 1;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 4px;
-}
-
-
-.activity-title {
-    display: block;
-
-    color: #fff;
-
-    font-size: 13px;
-    font-weight: 700;
-
-    line-height: 1.35;
-}
-
-
-.activity-date {
-    display: block;
-
-    color:
-        rgba(255,255,255,.40);
-
-    font-size: 11px;
-
-    line-height: 1.3;
-}
 
 
 /* =========================
    DOKUMENTI
 ========================= */
 
-.project-documents {
-    margin-top: 14px;
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, minmax(0,1fr));
-
-    gap: 12px;
-}
-
-
-.project-document-card {
-    min-width: 0;
-
-    padding: 14px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 12px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.09);
-
-    border-radius: 12px;
-
-    background:
-        rgba(255,255,255,.025);
-
-    color: inherit;
-
-    text-decoration: none;
-
-    transition: .2s ease;
-}
-
-
-.project-document-card:hover {
-    border-color:
-        rgba(255,122,0,.55);
-
-    background:
-        rgba(255,122,0,.05);
-
-    box-shadow:
-        0 0 15px
-        rgba(255,122,0,.08);
-}
-
-
-.project-document-icon {
-    width: 38px;
-    height: 38px;
-
-    flex: 0 0 38px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 10px;
-
-    background:
-        rgba(255,122,0,.10);
-
-    color: var(--orange);
-
-    font-size: 19px;
-}
-
-
-.project-document-content {
-    min-width: 0;
-
-    flex: 1;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 4px;
-}
-
-
-.project-document-content strong {
-    overflow: hidden;
-
-    color: #fff;
-
-    font-size: 13px;
-
-    text-overflow: ellipsis;
-
-    white-space: nowrap;
-}
-
-
-.project-document-content span {
-    color: var(--muted);
-
-    font-size: 10px;
-}
-
-
-.project-document-arrow {
-    color:
-        rgba(255,255,255,.35);
-
-    font-size: 20px;
-}
-
-
-/* =========================
-   EMPTY
-========================= */
-
-.empty-state {
-    padding: 20px;
-
-    color: var(--muted);
-
-    text-align: center;
-
-    font-size: 13px;
-}
-
-
-/* =========================
-   FOOTER
-========================= */
-
-.footer {
-    margin: 0 48px;
-
-    padding: 22px 20px;
-
-    border-top:
-        1px solid
-        rgba(255,255,255,.09);
-
-    color:
-        rgba(255,255,255,.38);
-
-    text-align: center;
-
-    font-size: 11px;
-}
-
-
-/* =========================
-   BOTTOM NAV
-========================= */
-
-.bottom-nav {
-    display: grid;
-
-    grid-template-columns:
-        repeat(5,1fr);
-
-    padding: 9px 18px 11px;
-
-    border-top:
-        1px solid
-        rgba(255,255,255,.10);
-
-    background: #0f1012;
-}
-
-
-.bottom-nav-item {
-    position: relative;
-
-    min-height: 52px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    gap: 4px;
-
-    color:
-        rgba(255,255,255,.45);
-
-    text-decoration: none;
-
-    font-size: 10px;
-    font-weight: 600;
-}
-
-
-.bottom-nav-item svg {
-    width: 21px;
-    height: 21px;
-
-    fill: none;
-
-    stroke: currentColor;
-
-    stroke-width: 1.8;
-}
-
-
-.bottom-nav-item.active {
-    color: var(--orange);
-}
-
-
-.bottom-nav-item.active::before {
-    content: "";
-
-    position: absolute;
-
-    top: -9px;
-
-    width: 28px;
-    height: 3px;
-
-    border-radius: 999px;
-
-    background: var(--orange);
-}
-
-
-/* =========================
-   LIGHT MODE
-========================= */
-
-body.light-mode {
-    --text: #202020;
-    --muted: #777;
-
-    color: #222;
-
-    background: #f2f2f2;
-}
-
-
-body.light-mode
-.dashboard {
-    background: #fff;
-
-    border-color:
-        rgba(0,0,0,.08);
-}
-
-
-body.light-mode
-.project-detail-hero {
-    background: #fffaf5;
-}
-
-
-body.light-mode
-.stat-card,
-
-body.light-mode
-.activities-card,
-
-body.light-mode
-.project-document-card {
-    background: #fafafa;
-
-    border-color:
-        rgba(0,0,0,.08);
-}
-
-
-body.light-mode
-.activity-title,
-
-body.light-mode
-.project-document-content strong,
-
-body.light-mode
-.project-main h2 {
-    color: #222;
-}
-
-
-body.light-mode
-.activity-date {
-    color:
-        rgba(0,0,0,.42);
-}
-
-
-body.light-mode
-.bottom-nav {
-    background: #fff;
-}
-
-
-/* =========================
-   TABLET
-========================= */
-
-@media (max-width: 900px) {
-
-    .project-stats {
-        grid-template-columns:
-            repeat(2,1fr);
-    }
-
-    .project-documents {
-        grid-template-columns: 1fr;
-    }
-}
-
-
-/* =========================
-   MOBITEL
-========================= */
-
-@media (max-width: 700px) {
-
-    body {
-        padding: 8px;
+async function loadDocuments(
+    currentProjectId
+) {
+
+    const {
+        data: documents,
+        error
+    } =
+        await supabaseClient
+
+            .from(
+                "project_documents"
+            )
+
+            .select(`
+                id,
+                name,
+                file_url,
+                created_at
+            `)
+
+            .eq(
+                "project_id",
+                currentProjectId
+            )
+
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+
+    if (error) {
+
+        console.error(
+            "Greška kod dokumenata:",
+            error
+        );
+
+        documentsContainer.innerHTML = `
+
+            <div class="empty-state">
+                Dokumenti se ne mogu učitati.
+            </div>
+        `;
+
+        return;
     }
 
 
-    .dashboard {
-        border-radius: 16px;
+
+    if (
+        !documents ||
+        documents.length === 0
+    ) {
+
+        documentsContainer.innerHTML = `
+
+            <div class="empty-state">
+                Trenutno nema dokumenata.
+            </div>
+        `;
+
+        return;
     }
 
 
-    .dashboard-header {
-        padding: 15px;
 
-        flex-direction: column;
-        align-items: stretch;
+    documentsContainer.innerHTML =
+        "";
+
+
+
+    for (
+        const documentItem
+        of documents
+    ) {
+
+        const card =
+            document.createElement(
+                "a"
+            );
+
+
+        card.className =
+            "project-document-card";
+
+
+        let documentUrl =
+            "#";
+
+
+        if (
+            documentItem.file_url
+        ) {
+
+            const {
+                data: signedData,
+                error: signedError
+            } =
+                await supabaseClient
+
+                    .storage
+
+                    .from(
+                        "project-documents"
+                    )
+
+                    .createSignedUrl(
+                        documentItem.file_url,
+                        600
+                    );
+
+
+            if (
+                !signedError &&
+                signedData?.signedUrl
+            ) {
+
+                documentUrl =
+                    signedData.signedUrl;
+
+            }
+
+        }
+
+
+        card.href =
+            documentUrl;
+
+
+        if (
+            documentUrl !== "#"
+        ) {
+
+            card.target =
+                "_blank";
+
+            card.rel =
+                "noopener noreferrer";
+
+        }
+
+
+        card.innerHTML = `
+
+            <div class="project-document-icon">
+
+                <svg viewBox="0 0 24 24">
+
+                    <path
+                        d="M6 3h8l4 4v14H6z">
+                    </path>
+
+                    <path
+                        d="M14 3v5h5">
+                    </path>
+
+                </svg>
+
+            </div>
+
+
+            <div class="project-document-content">
+
+                <strong>
+
+                    ${escapeHtml(
+                        documentItem.name ||
+                        "Dokument"
+                    )}
+
+                </strong>
+
+
+                <span>
+
+                    ${formatDate(
+                        documentItem.created_at
+                    )}
+
+                </span>
+
+            </div>
+
+
+            <span class="project-document-arrow">
+                ›
+            </span>
+        `;
+
+
+        documentsContainer
+            .appendChild(
+                card
+            );
+
     }
 
-
-    .brand-logo {
-        width: 42px;
-        height: 42px;
-
-        flex-basis: 42px;
-
-        font-size: 23px;
-    }
-
-
-    .brand h1 {
-        font-size: 18px;
-    }
-
-
-    .header-actions {
-        justify-content:
-            space-between;
-    }
-
-
-    .dashboard-content {
-        padding: 20px 14px 28px;
-    }
-
-
-    .project-detail-hero {
-        padding: 15px;
-    }
-
-
-    .project-detail-heading {
-        align-items: flex-start;
-
-        flex-direction: column;
-    }
-
-
-    .project-icon {
-        width: 54px;
-        height: 54px;
-
-        flex-basis: 54px;
-    }
-
-
-    .project-main h2 {
-        font-size: 20px;
-    }
-
-
-    .project-stats {
-        grid-template-columns:
-            repeat(2,minmax(0,1fr));
-
-        gap: 9px;
-    }
-
-
-    .stat-card {
-        min-height: 70px;
-
-        padding: 10px;
-    }
-
-
-    .activities-card {
-        padding: 7px 11px;
-    }
-
-
-    .activity-item {
-        min-height: 56px;
-
-        gap: 11px;
-    }
-
-
-    .activity-icon {
-        width: 25px !important;
-        height: 25px !important;
-
-        min-width: 25px !important;
-        min-height: 25px !important;
-
-        max-width: 25px !important;
-        max-height: 25px !important;
-
-        flex-basis: 25px !important;
-    }
-
-
-    .footer {
-        margin: 0 14px;
-    }
-
-
-    .bottom-nav {
-        padding-left: 5px;
-        padding-right: 5px;
-    }
-
-
-    .bottom-nav-item {
-        font-size: 9px;
-    }
 }
+
+
+
+initProjectPage();
