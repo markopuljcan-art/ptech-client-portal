@@ -1,30 +1,17 @@
-/* =========================
-   RESET
-========================= */
-
 * {
     box-sizing: border-box;
 }
 
 :root {
     --orange: #ff7a00;
-    --orange-soft: rgba(255, 122, 0, 0.12);
-    --orange-border: rgba(255, 122, 0, 0.34);
-
-    --bg: #0b0c0e;
-    --panel: #121315;
-    --panel-2: #17181a;
-
     --text: #f5f5f5;
     --muted: rgba(255, 255, 255, 0.48);
-
     --border: rgba(255, 255, 255, 0.09);
+    --bg: #0b0c0e;
 }
 
 
-/* =========================
-   BODY
-========================= */
+/* BODY */
 
 html {
     min-height: 100%;
@@ -32,14 +19,12 @@ html {
 
 body {
     margin: 0;
+
     min-height: 100vh;
 
     padding: 40px 24px;
 
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 
     color: var(--text);
 
@@ -58,9 +43,7 @@ body {
 }
 
 
-/* =========================
-   DASHBOARD
-========================= */
+/* DASHBOARD */
 
 .dashboard {
     width: 100%;
@@ -70,7 +53,10 @@ body {
 
     overflow: hidden;
 
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.12);
+
     border-radius: 22px;
 
     background:
@@ -86,9 +72,7 @@ body {
 }
 
 
-/* =========================
-   HEADER
-========================= */
+/* HEADER */
 
 .dashboard-header {
     min-height: 96px;
@@ -135,10 +119,6 @@ body {
 
     font-size: 27px;
     font-weight: 900;
-
-    box-shadow:
-        0 8px 24px
-        rgba(255, 122, 0, 0.18);
 }
 
 .brand h1 {
@@ -146,11 +126,6 @@ body {
 
     font-size: 25px;
 }
-
-
-/* =========================
-   HEADER ACTIONS
-========================= */
 
 .header-actions {
     display: flex;
@@ -161,6 +136,7 @@ body {
 .user-box {
     display: flex;
     align-items: center;
+
     gap: 8px;
 
     font-size: 14px;
@@ -170,8 +146,6 @@ body {
 .user-avatar {
     width: 36px;
     height: 36px;
-
-    flex: 0 0 36px;
 
     display: flex;
     align-items: center;
@@ -189,10 +163,11 @@ body {
 
     fill: none;
     stroke: currentColor;
+
     stroke-width: 1.8;
 
     color:
-        rgba(255, 255, 255, 0.70);
+        rgba(255, 255, 255, 0.7);
 }
 
 .header-separator {
@@ -206,6 +181,7 @@ body {
 .logout-button {
     display: flex;
     align-items: center;
+
     gap: 7px;
 
     padding: 7px;
@@ -215,10 +191,7 @@ body {
     background: transparent;
 
     color:
-        rgba(255, 255, 255, 0.80);
-
-    font-size: 13px;
-    font-weight: 600;
+        rgba(255, 255, 255, 0.8);
 
     cursor: pointer;
 }
@@ -229,13 +202,12 @@ body {
 
     fill: none;
     stroke: currentColor;
+
     stroke-width: 1.8;
 }
 
 
-/* =========================
-   THEME SWITCH
-========================= */
+/* THEME */
 
 .theme-switch {
     position: relative;
@@ -246,11 +218,13 @@ body {
 
 .theme-switch input {
     position: absolute;
+
     opacity: 0;
 }
 
 .theme-slider {
     position: absolute;
+
     inset: 0;
 
     border:
@@ -288,25 +262,25 @@ body {
     transition: 0.2s ease;
 }
 
-.theme-switch input:checked + .theme-slider::before {
+.theme-switch
+input:checked
++
+.theme-slider::before {
     content: "☀";
 
-    transform: translateX(28px);
+    transform:
+        translateX(28px);
 }
 
 
-/* =========================
-   CONTENT
-========================= */
+/* CONTENT */
 
 .dashboard-content {
     padding: 28px 42px 40px;
 }
 
 
-/* =========================
-   NATRAG
-========================= */
+/* BACK */
 
 .project-back-row {
     margin-bottom: 18px;
@@ -335,44 +309,17 @@ body {
 
     font-size: 12px;
     font-weight: 700;
-
-    transition: 0.2s ease;
-}
-
-.project-back:hover {
-    border-color:
-        rgba(255, 122, 0, 0.65);
-
-    background:
-        rgba(255, 122, 0, 0.10);
-
-    box-shadow:
-        0 0 14px
-        rgba(255, 122, 0, 0.08);
-}
-
-.project-back span {
-    font-size: 17px;
-    line-height: 1;
 }
 
 
-/* =========================
-   PROJECT HERO
-========================= */
+/* PROJECT */
 
 .project-detail-hero {
     padding: 0;
 
     border: none;
-
     background: transparent;
 }
-
-
-/* =========================
-   PROJECT TITLE
-========================= */
 
 .project-detail-heading {
     margin-bottom: 22px;
@@ -437,9 +384,7 @@ body {
 }
 
 
-/* =========================
-   STATUS
-========================= */
+/* STATUS */
 
 .status-badge {
     display: inline-flex;
@@ -451,8 +396,6 @@ body {
 
     font-size: 12px;
     font-weight: 700;
-
-    white-space: nowrap;
 }
 
 .status-badge::before {
@@ -501,7 +444,7 @@ body {
 
     border:
         1px solid
-        rgba(160, 160, 160, 0.30);
+        rgba(160, 160, 160, 0.3);
 
     background:
         rgba(160, 160, 160, 0.07);
@@ -512,38 +455,35 @@ body {
 }
 
 
-/* =========================
-   PROJECT STATS
-========================= */
+/* SAMO 2 KARTICE */
 
 .project-stats {
     display: grid;
 
     grid-template-columns:
-        1.5fr
         1fr
-        1fr
-        1.2fr;
+        1fr;
 
-    gap: 12px;
+    gap: 14px;
+
+    margin-bottom: 18px;
 }
 
 .stat-card {
-    min-width: 0;
-    min-height: 78px;
+    min-height: 100px;
 
-    padding: 14px;
+    padding: 18px 20px;
 
     display: flex;
     align-items: center;
 
-    gap: 12px;
+    gap: 16px;
 
     border:
         1px solid
         var(--border);
 
-    border-radius: 12px;
+    border-radius: 14px;
 
     background:
         linear-gradient(
@@ -554,10 +494,10 @@ body {
 }
 
 .stat-icon {
-    width: 28px;
-    height: 28px;
+    width: 38px;
+    height: 38px;
 
-    flex: 0 0 28px;
+    flex: 0 0 38px;
 
     display: flex;
     align-items: center;
@@ -567,8 +507,8 @@ body {
 }
 
 .stat-icon svg {
-    width: 22px;
-    height: 22px;
+    width: 26px;
+    height: 26px;
 
     fill: none;
     stroke: currentColor;
@@ -581,321 +521,35 @@ body {
 .stat-label {
     display: block;
 
-    margin-bottom: 5px;
+    margin-bottom: 7px;
 
     color: var(--muted);
 
-    font-size: 12px;
-}
-
-.stat-card strong {
     font-size: 13px;
 }
 
-.package-value {
-    color: #ff9d38;
-}
-
-/* =========================
-   LIGHT MODE - FINAL
-========================= */
-
-body.light-mode {
-    --text: #1c1c1c;
-    --muted: #757575;
-    --border: rgba(0, 0, 0, 0.09);
-
-    color: #1c1c1c;
-
-    background:
-        radial-gradient(
-            circle at 0 0,
-            rgba(255, 122, 0, 0.09),
-            transparent 25%
-        ),
-        radial-gradient(
-            circle at 100% 100%,
-            rgba(255, 122, 0, 0.06),
-            transparent 25%
-        ),
-        #ececec;
+.stat-card strong {
+    font-size: 17px;
 }
 
 
-/* GLAVNI PORTAL */
-
-body.light-mode .dashboard {
-    background:
-        linear-gradient(
-            145deg,
-            #ffffff,
-            #f8f8f8
-        );
-
-    border-color:
-        rgba(0, 0, 0, 0.10);
-
-    box-shadow:
-        0 25px 70px
-        rgba(0, 0, 0, 0.16);
-}
-
-
-/* HEADER */
-
-body.light-mode .dashboard-header {
-    background:
-        rgba(255, 255, 255, 0.88);
-
-    border-bottom-color:
-        rgba(0, 0, 0, 0.08);
-}
-
-body.light-mode .brand h1 {
-    color: #191919;
-}
-
-body.light-mode .user-box {
-    color: #222;
-}
-
-body.light-mode .user-avatar {
-    background:
-        rgba(0, 0, 0, 0.045);
-}
-
-body.light-mode .user-avatar svg {
-    color:
-        rgba(0, 0, 0, 0.65);
-}
-
-body.light-mode .header-separator {
-    background:
-        rgba(0, 0, 0, 0.10);
-}
-
-body.light-mode .logout-button {
-    color: #333;
-}
-
-
-/* THEME SWITCH */
-
-body.light-mode .theme-slider {
-    background: #f0f0f0;
-
-    border-color:
-        rgba(0, 0, 0, 0.12);
-}
-
-body.light-mode .theme-slider::before {
-    background: var(--orange);
-    color: #111;
-
-    box-shadow:
-        0 2px 8px
-        rgba(255, 122, 0, 0.22);
-}
-
-
-/* PROJECT */
-
-body.light-mode .project-title-area h2 {
-    color: #171717;
-}
-
-body.light-mode .project-title-area p {
-    color: #777;
-}
-
-body.light-mode .project-icon {
-    background:
-        rgba(255, 122, 0, 0.10);
-}
-
-
-/* MALE INFO KARTICE */
-
-body.light-mode .stat-card {
-    background:
-        linear-gradient(
-            145deg,
-            #ffffff,
-            #f6f6f6
-        );
-
-    border-color:
-        rgba(0, 0, 0, 0.09);
-
-    box-shadow:
-        0 3px 12px
-        rgba(0, 0, 0, 0.025);
-}
-
-body.light-mode .stat-label {
-    color: #777;
-}
-
-body.light-mode .stat-card strong {
-    color: #202020;
-}
-
-body.light-mode .package-value {
-    color: #e86f00;
-}
-
-body.light-mode .progress-container {
-    background:
-        rgba(0, 0, 0, 0.08);
-}
-
-
-/* PACKAGE CARD */
-
-body.light-mode .package-info-card {
-    background:
-        linear-gradient(
-            135deg,
-            #fff8f1,
-            #ffffff
-        );
-
-    border-color:
-        rgba(255, 122, 0, 0.25);
-}
-
-body.light-mode .package-info-label {
-    color: #888;
-}
-
-body.light-mode .package-info-card h3 {
-    color: #1d1d1d;
-}
-
-body.light-mode .package-info-description {
-    color: #666;
-}
-
-body.light-mode .package-feature {
-    color: #444;
-}
-
-body.light-mode .package-check {
-    background:
-        rgba(255, 122, 0, 0.10);
-
-    color: #ed7300;
-}
-
-
-/* AKTIVNOSTI */
-
-body.light-mode .activities-detail-card {
-    background:
-        linear-gradient(
-            145deg,
-            #ffffff,
-            #f8f8f8
-        );
-
-    border-color:
-        rgba(0, 0, 0, 0.09);
-
-    box-shadow:
-        0 4px 16px
-        rgba(0, 0, 0, 0.025);
-}
-
-body.light-mode .activities-heading-left h3 {
-    color: #191919;
-}
-
-body.light-mode .activities-heading-left p {
-    color: #777;
-}
-
-body.light-mode .activities-main-icon {
-    background:
-        rgba(255, 122, 0, 0.09);
-}
-
-body.light-mode .activity-icon {
-    background: #ffffff;
-}
-
-body.light-mode .activity-title {
-    color: #222;
-}
-
-body.light-mode .activity-date {
-    color: #888;
-}
-
-
-/* NATRAG */
-
-body.light-mode .project-back {
-    background:
-        rgba(255, 122, 0, 0.04);
-
-    border-color:
-        rgba(255, 122, 0, 0.30);
-
-    color: #e66e00;
-}
-
-
-/* FOOTER */
-
-body.light-mode .footer {
-    color:
-        rgba(0, 0, 0, 0.42);
-
-    border-top-color:
-        rgba(0, 0, 0, 0.08);
-}
-
-
-/* BOTTOM NAV */
-
-body.light-mode .bottom-nav {
-    background: #f7f7f7;
-
-    border-top-color:
-        rgba(0, 0, 0, 0.08);
-}
-
-body.light-mode .bottom-nav-item {
-    color:
-        rgba(0, 0, 0, 0.45);
-}
-
-body.light-mode .bottom-nav-item.active {
-    color: var(--orange);
-}
-
-/* =========================
-   PROGRESS
-========================= */
+/* PROGRESS */
 
 .progress-info {
     width: 100%;
-    min-width: 0;
 }
 
 .progress-row {
-    width: 100%;
-
     display: flex;
     align-items: center;
 
-    gap: 10px;
+    gap: 12px;
 }
 
 .progress-container {
     flex: 1;
 
-    height: 10px;
+    height: 11px;
 
     overflow: hidden;
 
@@ -916,24 +570,19 @@ body.light-mode .bottom-nav-item.active {
             #ff7700,
             #ffb34d
         );
-
-    transition:
-        width 0.35s ease;
 }
 
 
-/* =========================
-   PACKAGE INFO
-========================= */
+/* PACKAGE INFO */
 
 .package-info-card {
-    margin-top: 18px;
+    margin-top: 0;
 
-    padding: 18px 20px;
+    padding: 20px;
 
     border:
         1px solid
-        rgba(255, 122, 0, 0.18);
+        rgba(255, 122, 0, 0.2);
 
     border-radius: 14px;
 
@@ -990,17 +639,12 @@ body.light-mode .bottom-nav-item.active {
 }
 
 .package-info-description {
-    margin:
-        12px
-        0
-        14px;
+    margin: 12px 0 14px;
 
     color:
         rgba(255, 255, 255, 0.56);
 
     font-size: 12px;
-
-    line-height: 1.55;
 }
 
 .package-features {
@@ -1033,7 +677,7 @@ body.light-mode .bottom-nav-item.active {
     border-radius: 50%;
 
     background:
-        rgba(255, 122, 0, 0.10);
+        rgba(255, 122, 0, 0.1);
 
     color: var(--orange);
 
@@ -1042,34 +686,24 @@ body.light-mode .bottom-nav-item.active {
 }
 
 
-/* =========================
-   SECTIONS
-========================= */
+/* ACTIVITIES */
 
 .dashboard-section {
-    margin-top: 28px;
+    margin-top: 26px;
 }
 
-
-/* =========================
-   ACTIVITIES DETAIL CARD
-========================= */
-
 .activities-detail-card {
-    padding: 18px 18px 14px;
+    padding: 18px;
 
     border:
         1px solid
-        rgba(255, 255, 255, 0.09);
+        var(--border);
 
     border-radius: 16px;
 
     background:
         rgba(255, 255, 255, 0.018);
 }
-
-
-/* HEADER AKTIVNOSTI */
 
 .activities-card-heading {
     margin-bottom: 12px;
@@ -1108,14 +742,10 @@ body.light-mode .bottom-nav-item.active {
     stroke: currentColor;
 
     stroke-width: 1.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
 }
 
 .activities-heading-left h3 {
     margin: 0 0 3px;
-
-    color: #fff;
 
     font-size: 18px;
 }
@@ -1128,21 +758,8 @@ body.light-mode .bottom-nav-item.active {
     font-size: 10px;
 }
 
-
-/* =========================
-   ACTIVITIES TIMELINE
-========================= */
-
 .activities-card {
-    width: 100%;
-
     padding: 4px 2px;
-
-    overflow: visible;
-
-    border: 0;
-
-    border-radius: 0;
 
     background: transparent;
 }
@@ -1150,7 +767,6 @@ body.light-mode .bottom-nav-item.active {
 .activity-item {
     position: relative;
 
-    width: 100%;
     min-height: 62px;
 
     padding: 7px 0;
@@ -1159,16 +775,7 @@ body.light-mode .bottom-nav-item.active {
     align-items: flex-start;
 
     gap: 14px;
-
-    border: 0;
 }
-
-.activity-item:not(:last-child) {
-    border-bottom: 0;
-}
-
-
-/* VERTIKALNA CRTA */
 
 .activity-item:not(:last-child)::after {
     content: "";
@@ -1184,12 +791,7 @@ body.light-mode .bottom-nav-item.active {
         calc(100% - 8px);
 
     border-radius: 999px;
-
-    z-index: 0;
 }
-
-
-/* IKONA AKTIVNOSTI */
 
 .activity-icon {
     position: relative;
@@ -1198,8 +800,6 @@ body.light-mode .bottom-nav-item.active {
 
     width: 27px;
     height: 27px;
-
-    min-width: 27px;
 
     flex: 0 0 27px;
 
@@ -1217,73 +817,33 @@ body.light-mode .bottom-nav-item.active {
 
     font-size: 12px;
     font-weight: 800;
-
-    line-height: 1;
 }
-
-
-/* ZAVRŠENO */
 
 .activity-done .activity-icon {
     color: #2fd462;
-
-    box-shadow:
-        0 0 10px
-        rgba(47, 212, 98, 0.10);
 }
 
 .activity-done:not(:last-child)::after {
-    background:
-        linear-gradient(
-            to bottom,
-            #2fd462,
-            rgba(47, 212, 98, 0.40)
-        );
+    background: #2fd462;
 }
-
-
-/* U TIJEKU */
 
 .activity-progress .activity-icon {
     color: #ff7a00;
-
-    box-shadow:
-        0 0 10px
-        rgba(255, 122, 0, 0.12);
 }
 
 .activity-progress:not(:last-child)::after {
-    background:
-        linear-gradient(
-            to bottom,
-            #ff7a00,
-            rgba(255, 122, 0, 0.40)
-        );
+    background: #ff7a00;
 }
-
-
-/* NA ČEKANJU */
 
 .activity-waiting .activity-icon {
     color: #858585;
 }
 
 .activity-waiting:not(:last-child)::after {
-    background:
-        linear-gradient(
-            to bottom,
-            #777,
-            rgba(119, 119, 119, 0.40)
-        );
+    background: #666;
 }
 
-
-/* CONTENT AKTIVNOSTI */
-
 .activity-content {
-    min-width: 0;
-    flex: 1;
-
     padding-top: 2px;
 
     display: flex;
@@ -1293,419 +853,21 @@ body.light-mode .bottom-nav-item.active {
 }
 
 .activity-title {
-    display: block;
-
     color: #fff;
 
     font-size: 13px;
     font-weight: 700;
-
-    line-height: 1.3;
 }
 
 .activity-date {
-    display: block;
-
     color:
         rgba(255, 255, 255, 0.38);
 
     font-size: 10px;
-
-    line-height: 1.2;
 }
 
 
-/* =========================
-   DEADLINE CARD
-========================= */
-
-.deadline-card {
-    padding: 22px;
-
-    border:
-        1px solid
-        rgba(255, 122, 0, 0.24);
-
-    border-radius: 16px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 122, 0, 0.05),
-            rgba(255, 255, 255, 0.015)
-        );
-}
-
-
-/* DEADLINE TOP */
-
-.deadline-card-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-
-    gap: 20px;
-}
-
-.deadline-title-wrap {
-    display: flex;
-    align-items: center;
-
-    gap: 14px;
-}
-
-.deadline-main-icon {
-    width: 42px;
-    height: 42px;
-
-    flex: 0 0 42px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 11px;
-
-    background:
-        rgba(255, 122, 0, 0.10);
-
-    color: var(--orange);
-}
-
-.deadline-main-icon svg {
-    width: 23px;
-    height: 23px;
-
-    fill: none;
-    stroke: currentColor;
-
-    stroke-width: 1.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-.deadline-title-wrap h3 {
-    margin: 0 0 4px;
-
-    font-size: 18px;
-}
-
-.deadline-title-wrap p {
-    margin: 0;
-
-    color: var(--muted);
-
-    font-size: 11px;
-}
-
-
-/* DEADLINE BADGE */
-
-.deadline-badge {
-    padding: 7px 12px;
-
-    border-radius: 999px;
-
-    font-size: 11px;
-    font-weight: 700;
-
-    white-space: nowrap;
-}
-
-.deadline-good .deadline-badge {
-    color: #34d96d;
-
-    border:
-        1px solid
-        rgba(52, 217, 109, 0.35);
-
-    background:
-        rgba(52, 217, 109, 0.08);
-}
-
-.deadline-soon .deadline-badge {
-    color: #ff9a35;
-
-    border:
-        1px solid
-        rgba(255, 122, 0, 0.35);
-
-    background:
-        rgba(255, 122, 0, 0.08);
-}
-
-.deadline-late .deadline-badge {
-    color: #ff5d5d;
-
-    border:
-        1px solid
-        rgba(255, 93, 93, 0.35);
-
-    background:
-        rgba(255, 93, 93, 0.08);
-}
-
-.deadline-neutral .deadline-badge {
-    color: #aaa;
-
-    border:
-        1px solid
-        rgba(160, 160, 160, 0.25);
-
-    background:
-        rgba(160, 160, 160, 0.06);
-}
-
-
-/* GLAVNI DATUM */
-
-.deadline-main-date {
-    margin-top: 18px;
-
-    font-size: 31px;
-    font-weight: 800;
-
-    letter-spacing: 0.01em;
-}
-
-
-/* DEADLINE META */
-
-.deadline-meta-grid {
-    margin-top: 20px;
-
-    padding-top: 18px;
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 0;
-
-    border-top:
-        1px solid
-        rgba(255, 255, 255, 0.07);
-}
-
-.deadline-meta-item {
-    padding: 0 18px;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 5px;
-}
-
-.deadline-meta-item:first-child {
-    padding-left: 0;
-}
-
-.deadline-meta-item:last-child {
-    padding-right: 0;
-}
-
-.deadline-meta-item:not(:last-child) {
-    border-right:
-        1px solid
-        rgba(255, 255, 255, 0.07);
-}
-
-.deadline-meta-label {
-    color: var(--muted);
-
-    font-size: 10px;
-
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.deadline-meta-item strong {
-    font-size: 16px;
-}
-
-.deadline-meta-item small {
-    color: var(--muted);
-
-    font-size: 10px;
-
-    line-height: 1.4;
-}
-
-
-/* DEADLINE STATUS BOJE */
-
-.deadline-good
-.deadline-meta-item:nth-child(2)
-strong {
-    color: #34d96d;
-}
-
-.deadline-soon
-.deadline-meta-item:nth-child(2)
-strong {
-    color: #ff9a35;
-}
-
-.deadline-late
-.deadline-meta-item:nth-child(2)
-strong {
-    color: #ff5d5d;
-}
-
-.deadline-neutral
-.deadline-meta-item:nth-child(2)
-strong {
-    color: #aaa;
-}
-
-
-/* =========================
-   DOCUMENTS
-========================= */
-
-.project-documents {
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            2,
-            minmax(0, 1fr)
-        );
-
-    gap: 10px;
-}
-
-.section-header {
-    margin-bottom: 12px;
-}
-
-.section-title {
-    margin: 0;
-
-    font-size: 20px;
-}
-
-.project-document-card {
-    min-width: 0;
-
-    padding: 13px 14px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 11px;
-
-    border:
-        1px solid
-        var(--border);
-
-    border-radius: 12px;
-
-    background:
-        rgba(255, 255, 255, 0.018);
-
-    color: inherit;
-
-    text-decoration: none;
-
-    transition: 0.2s ease;
-}
-
-.project-document-card:hover {
-    border-color:
-        rgba(255, 122, 0, 0.55);
-
-    background:
-        rgba(255, 122, 0, 0.045);
-
-    box-shadow:
-        0 0 15px
-        rgba(255, 122, 0, 0.08);
-}
-
-.project-document-icon {
-    width: 36px;
-    height: 36px;
-
-    flex: 0 0 36px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 9px;
-
-    background:
-        rgba(255, 122, 0, 0.09);
-
-    color: var(--orange);
-}
-
-.project-document-icon svg {
-    width: 20px;
-    height: 20px;
-
-    fill: none;
-    stroke: currentColor;
-
-    stroke-width: 1.8;
-}
-
-.project-document-content {
-    min-width: 0;
-    flex: 1;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 4px;
-}
-
-.project-document-content strong {
-    overflow: hidden;
-
-    color: #fff;
-
-    font-size: 12px;
-
-    white-space: nowrap;
-
-    text-overflow: ellipsis;
-}
-
-.project-document-content span {
-    color: var(--muted);
-
-    font-size: 10px;
-}
-
-.project-document-arrow {
-    color:
-        rgba(255, 255, 255, 0.28);
-
-    font-size: 19px;
-}
-
-
-/* =========================
-   EMPTY STATE
-========================= */
-
-.empty-state {
-    padding: 22px;
-
-    color: var(--muted);
-
-    text-align: center;
-
-    font-size: 12px;
-}
-
-
-/* =========================
-   FOOTER
-========================= */
+/* FOOTER */
 
 .footer {
     margin: 0 42px;
@@ -1725,9 +887,7 @@ strong {
 }
 
 
-/* =========================
-   BOTTOM NAV
-========================= */
+/* NAV */
 
 .bottom-nav {
     display: grid;
@@ -1735,10 +895,7 @@ strong {
     grid-template-columns:
         repeat(5, 1fr);
 
-    padding:
-        9px
-        16px
-        11px;
+    padding: 9px 16px 11px;
 
     border-top:
         1px solid
@@ -1765,7 +922,6 @@ strong {
     text-decoration: none;
 
     font-size: 9px;
-    font-weight: 600;
 }
 
 .bottom-nav-item svg {
@@ -1776,8 +932,6 @@ strong {
     stroke: currentColor;
 
     stroke-width: 1.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
 }
 
 .bottom-nav-item.active {
@@ -1800,150 +954,158 @@ strong {
 }
 
 
-/* =========================
-   LIGHT MODE
-========================= */
+/* LIGHT MODE */
 
 body.light-mode {
-    --text: #222;
-    --muted: #777;
-    --border: rgba(0, 0, 0, 0.08);
+    --text: #1c1c1c;
+    --muted: #757575;
+    --border: rgba(0, 0, 0, 0.09);
 
-    color: #222;
+    color: #1c1c1c;
 
-    background: #f2f2f2;
+    background:
+        radial-gradient(
+            circle at 0 0,
+            rgba(255, 122, 0, 0.09),
+            transparent 25%
+        ),
+        #eeeeee;
 }
 
 body.light-mode .dashboard {
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #fafafa
+        );
+
+    border-color:
+        rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .dashboard-header {
     background: #fff;
 
-    border-color:
+    border-bottom-color:
         rgba(0, 0, 0, 0.08);
 }
 
-body.light-mode .stat-card,
-body.light-mode .activities-detail-card,
-body.light-mode .project-document-card {
-    background: #fafafa;
-
-    border-color:
-        rgba(0, 0, 0, 0.08);
-}
-
-body.light-mode .package-info-card,
-body.light-mode .deadline-card {
-    background: #fffaf5;
-}
-
+body.light-mode .brand h1,
 body.light-mode .project-title-area h2,
 body.light-mode .activities-heading-left h3,
-body.light-mode .activity-title,
-body.light-mode .deadline-title-wrap h3,
-body.light-mode .deadline-main-date,
-body.light-mode .project-document-content strong {
-    color: #222;
+body.light-mode .activity-title {
+    color: #171717;
 }
 
-body.light-mode .package-info-description,
-body.light-mode .package-feature,
-body.light-mode .activity-date,
-body.light-mode .deadline-title-wrap p,
-body.light-mode .deadline-meta-label,
-body.light-mode .deadline-meta-item small {
-    color:
-        rgba(0, 0, 0, 0.52);
+body.light-mode .user-avatar {
+    background:
+        rgba(0, 0, 0, 0.04);
+}
+
+body.light-mode .user-avatar svg,
+body.light-mode .logout-button {
+    color: #333;
+}
+
+body.light-mode .header-separator {
+    background:
+        rgba(0, 0, 0, 0.10);
+}
+
+body.light-mode .theme-slider {
+    background: #f2f2f2;
+
+    border-color:
+        rgba(0, 0, 0, 0.12);
+}
+
+body.light-mode .stat-card {
+    background:
+        linear-gradient(
+            145deg,
+            #fff,
+            #f8f8f8
+        );
+}
+
+body.light-mode .progress-container {
+    background:
+        rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .package-info-card {
+    background:
+        linear-gradient(
+            135deg,
+            #fff8f1,
+            #fff
+        );
+}
+
+body.light-mode .package-info-description {
+    color: #666;
+}
+
+body.light-mode .package-feature {
+    color: #444;
+}
+
+body.light-mode .activities-detail-card {
+    background:
+        linear-gradient(
+            145deg,
+            #fff,
+            #f9f9f9
+        );
 }
 
 body.light-mode .activity-icon {
-    background: #fafafa;
+    background: #fff;
 }
 
-body.light-mode .deadline-meta-grid {
+body.light-mode .activity-date {
+    color: #888;
+}
+
+body.light-mode .footer {
+    color:
+        rgba(0, 0, 0, 0.42);
+
     border-top-color:
         rgba(0, 0, 0, 0.08);
 }
 
-body.light-mode .deadline-meta-item:not(:last-child) {
-    border-right-color:
+body.light-mode .bottom-nav {
+    background: #f7f7f7;
+
+    border-top-color:
         rgba(0, 0, 0, 0.08);
 }
 
-body.light-mode .bottom-nav {
-    background: #fff;
-}
-
-body.light-mode .logout-button {
+body.light-mode .bottom-nav-item {
     color:
-        rgba(0, 0, 0, 0.72);
+        rgba(0, 0, 0, 0.45);
 }
 
-body.light-mode .user-avatar svg {
-    color:
-        rgba(0, 0, 0, 0.65);
+body.light-mode .bottom-nav-item.active {
+    color: var(--orange);
 }
 
 
-/* =========================
-   TABLET
-========================= */
+/* RESPONSIVE */
 
-@media (max-width: 900px) {
+@media (max-width: 800px) {
 
     .project-stats {
-        grid-template-columns:
-            repeat(2, 1fr);
-    }
-
-    .project-documents {
-        grid-template-columns:
-            1fr;
-    }
-
-    .deadline-meta-grid {
-        grid-template-columns:
-            1fr
-            1fr;
-    }
-
-    .deadline-meta-item {
-        padding: 12px;
-    }
-
-    .deadline-meta-item:nth-child(2) {
-        border-right: 0;
-    }
-
-    .deadline-meta-item:last-child {
-        grid-column:
-            1 / -1;
-
-        margin-top:
-            8px;
-
-        padding-top:
-            16px;
-
-        border-top:
-            1px solid
-            rgba(255, 255, 255, 0.07);
-
-        border-right: 0;
+        grid-template-columns: 1fr;
     }
 }
-
-
-/* =========================
-   MOBILE
-========================= */
 
 @media (max-width: 700px) {
 
     body {
         padding: 8px;
-    }
-
-    .dashboard {
-        border-radius: 16px;
     }
 
     .dashboard-header {
@@ -1953,170 +1115,41 @@ body.light-mode .user-avatar svg {
         align-items: stretch;
     }
 
-    .brand-logo {
-        width: 42px;
-        height: 42px;
-
-        flex-basis: 42px;
-
-        font-size: 23px;
-    }
-
     .brand h1 {
         font-size: 18px;
     }
 
-    .header-actions {
-        justify-content:
-            space-between;
-    }
-
     .dashboard-content {
-        padding:
-            20px
-            14px
-            28px;
+        padding: 20px 14px 28px;
     }
 
     .project-detail-heading {
         flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .project-icon {
-        width: 52px;
-        height: 52px;
-
-        flex-basis: 52px;
     }
 
     .project-title-area h2 {
-        font-size: 21px;
-    }
-
-    .project-stats {
-        grid-template-columns:
-            repeat(
-                2,
-                minmax(0, 1fr)
-            );
-
-        gap: 9px;
+        font-size: 22px;
     }
 
     .stat-card {
-        min-height: 70px;
+        min-height: 85px;
 
-        padding: 10px;
+        padding: 14px;
     }
 
     .package-info-card {
         padding: 15px;
     }
 
-    .package-info-top {
-        gap: 12px;
-    }
-
-    .package-info-card h3 {
-        font-size: 16px;
-    }
-
     .package-features {
         flex-direction: column;
-
-        gap: 8px;
     }
 
     .activities-detail-card {
-        padding:
-            15px
-            14px
-            12px;
-    }
-
-    .activities-heading-left h3 {
-        font-size: 16px;
-    }
-
-    .activity-item {
-        min-height: 58px;
-
-        gap: 11px;
-    }
-
-    .activity-icon {
-        width: 25px;
-        height: 25px;
-
-        min-width: 25px;
-
-        flex-basis: 25px;
-    }
-
-    .activity-item:not(:last-child)::after {
-        left: 12px;
-        top: 31px;
-    }
-
-    .deadline-card {
-        padding: 16px;
-    }
-
-    .deadline-card-top {
-        flex-direction: column;
-
-        gap: 12px;
-    }
-
-    .deadline-main-date {
-        font-size: 25px;
-    }
-
-    .deadline-meta-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .deadline-meta-item {
-        padding:
-            13px
-            0;
-    }
-
-    .deadline-meta-item:not(:last-child) {
-        border-right: 0;
-
-        border-bottom:
-            1px solid
-            rgba(255, 255, 255, 0.07);
-    }
-
-    .deadline-meta-item:last-child {
-        grid-column: auto;
-
-        margin-top: 0;
-
-        padding-top: 13px;
-
-        border-top: 0;
-    }
-
-    .project-documents {
-        grid-template-columns: 1fr;
+        padding: 15px;
     }
 
     .footer {
-        margin:
-            0
-            14px;
-    }
-
-    .bottom-nav {
-        padding-left: 5px;
-        padding-right: 5px;
-    }
-
-    .bottom-nav-item {
-        font-size: 9px;
+        margin: 0 14px;
     }
 }
