@@ -21,6 +21,170 @@
     --border: rgba(255, 255, 255, 0.09);
 }
 
+/* =========================
+   PACKAGE INFO
+========================= */
+
+.package-info-card {
+    margin-top: 18px;
+
+    padding: 18px 20px;
+
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.18);
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 122, 0, 0.06),
+            rgba(255, 255, 255, 0.015)
+        );
+}
+
+.package-info-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.package-info-label {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.package-info-card h3 {
+    margin: 0;
+
+    font-size: 18px;
+}
+
+.package-info-badge {
+    padding: 6px 10px;
+
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.35);
+
+    border-radius: 999px;
+
+    background:
+        rgba(255, 122, 0, 0.08);
+
+    color: #ff9a35;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.package-info-description {
+    margin:
+        12px
+        0
+        14px;
+
+    color:
+        rgba(255, 255, 255, 0.56);
+
+    font-size: 12px;
+
+    line-height: 1.55;
+}
+
+.package-features {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 10px 18px;
+}
+
+.package-feature {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    color:
+        rgba(255, 255, 255, 0.82);
+
+    font-size: 12px;
+}
+
+.package-check {
+    width: 18px;
+    height: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 122, 0, 0.10);
+
+    color: var(--orange);
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+
+/* LIGHT MODE */
+
+body.light-mode
+.package-info-card {
+    background: #fffaf5;
+
+    border-color:
+        rgba(255, 122, 0, 0.18);
+}
+
+body.light-mode
+.package-info-description {
+    color:
+        rgba(0, 0, 0, 0.55);
+}
+
+body.light-mode
+.package-feature {
+    color:
+        rgba(0, 0, 0, 0.78);
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .package-info-card {
+        padding: 15px;
+    }
+
+    .package-info-top {
+        gap: 12px;
+    }
+
+    .package-info-card h3 {
+        font-size: 16px;
+    }
+
+    .package-features {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
 
 /* =========================
    BODY
