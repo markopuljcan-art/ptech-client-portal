@@ -12,20 +12,25 @@
 
     <link
         rel="stylesheet"
-        href="./admin-revisions.css?v=1"
+        href="./admin.css?v=2"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./admin-revisions.css?v=2"
     >
 
     <script
-        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-    </script>
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
 
     <script
-        src="./admin-revisions.js?v=1"
+        src="./admin-revisions.js?v=2"
         defer
     ></script>
 
     <title>
-        PTech Digital | Zahtjevi za izmjenu
+        PTech Digital | Zahtjevi
     </title>
 
 </head>
@@ -33,92 +38,250 @@
 
 <body>
 
-    <main class="admin-page">
+    <div class="admin-shell">
 
 
-        <header class="admin-header">
+        <!-- SIDEBAR -->
 
-            <div class="brand">
+        <aside class="admin-sidebar">
 
-                <div class="brand-logo">
+            <div class="admin-brand">
+
+                <div class="admin-brand-logo">
                     P
                 </div>
 
                 <div>
 
                     <h1>
-                        Zahtjevi za izmjenu
+                        PTech Digital
                     </h1>
 
-                    <p>
-                        Pregled i odgovaranje na zahtjeve klijenata.
-                    </p>
+                    <span>
+                        Admin Panel
+                    </span>
 
                 </div>
 
             </div>
 
 
-            <a
-                href="form.html"
-                class="admin-back"
-            >
-                Natrag
-            </a>
+            <nav class="admin-nav">
 
-        </header>
+                <a
+                    href="admin.html"
+                    class="admin-nav-item"
+                >
+
+                    <span class="admin-nav-icon">
+                        ◫
+                    </span>
+
+                    <span>
+                        Dashboard
+                    </span>
+
+                </a>
 
 
-        <div class="admin-content">
+                <a
+                    href="admin-projects.html"
+                    class="admin-nav-item"
+                >
+
+                    <span class="admin-nav-icon">
+                        ▣
+                    </span>
+
+                    <span>
+                        Projekti
+                    </span>
+
+                </a>
 
 
-            <div class="admin-section-header">
+                <a
+                    href="admin-revisions.html"
+                    class="admin-nav-item active"
+                >
+
+                    <span class="admin-nav-icon">
+                        ↔
+                    </span>
+
+                    <span>
+                        Zahtjevi
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="admin-approvals.html"
+                    class="admin-nav-item"
+                >
+
+                    <span class="admin-nav-icon">
+                        ✓
+                    </span>
+
+                    <span>
+                        Odobrenja
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="admin-documents.html"
+                    class="admin-nav-item"
+                >
+
+                    <span class="admin-nav-icon">
+                        □
+                    </span>
+
+                    <span>
+                        Dokumenti
+                    </span>
+
+                </a>
+
+            </nav>
+
+
+            <div class="admin-sidebar-footer">
+
+                <div class="admin-user">
+
+                    <div class="admin-avatar">
+                        A
+                    </div>
+
+                    <div>
+
+                        <strong id="adminUserName">
+                            Admin
+                        </strong>
+
+                        <span>
+                            Administrator
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="adminLogoutButton"
+                    class="admin-logout"
+                >
+                    Odjava
+                </button>
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- MAIN -->
+
+        <main class="admin-main">
+
+
+            <!-- TOPBAR -->
+
+            <header class="admin-topbar">
 
                 <div>
 
-                    <span class="admin-label">
+                    <span class="admin-page-label">
                         Administracija
                     </span>
 
                     <h2>
-                        Pristigli zahtjevi
+                        Zahtjevi za izmjenu
                     </h2>
 
                 </div>
 
-                <span
-                    class="revision-count"
-                    id="revisionCount"
-                >
-                    0
-                </span>
 
-            </div>
+                <div class="admin-topbar-actions">
 
+                    <span class="admin-role-badge">
+                        Admin
+                    </span>
 
-            <div
-                class="admin-revisions-list"
-                id="adminRevisionsList"
-            >
-
-                <div class="empty-state">
-                    Učitavanje zahtjeva...
                 </div>
 
+            </header>
+
+
+
+            <!-- CONTENT -->
+
+            <div class="admin-content">
+
+
+                <section class="admin-revisions-heading">
+
+                    <div>
+
+                        <span class="admin-page-label">
+                            Klijenti
+                        </span>
+
+                        <h3>
+                            Pristigli zahtjevi
+                        </h3>
+
+                        <p>
+                            Pregledaj zahtjeve klijenata i pošalji odgovor.
+                        </p>
+
+                    </div>
+
+
+                    <span
+                        id="revisionCount"
+                        class="revision-count"
+                    >
+                        0
+                    </span>
+
+                </section>
+
+
+
+                <div
+                    id="adminRevisionsList"
+                    class="admin-revisions-list"
+                >
+
+                    <div class="admin-empty">
+                        Učitavanje zahtjeva...
+                    </div>
+
+                </div>
+
+
+
+                <div
+                    id="adminMessage"
+                    class="admin-message"
+                    hidden
+                >
+                </div>
+
+
             </div>
 
+        </main>
 
-            <div
-                class="admin-message"
-                id="adminMessage"
-                hidden
-            >
-            </div>
-
-
-        </div>
-
-    </main>
+    </div>
 
 </body>
 
