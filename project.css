@@ -8,10 +8,17 @@
 
 :root {
     --orange: #ff7a00;
-    --orange-light: #ff9d38;
+    --orange-soft: rgba(255, 122, 0, 0.12);
+    --orange-border: rgba(255, 122, 0, 0.34);
+
+    --bg: #0b0c0e;
+    --panel: #121315;
+    --panel-2: #17181a;
+
     --text: #f5f5f5;
     --muted: rgba(255, 255, 255, 0.48);
-    --border: rgba(255, 255, 255, 0.10);
+
+    --border: rgba(255, 255, 255, 0.09);
 }
 
 
@@ -26,6 +33,7 @@ html {
 body {
     margin: 0;
     min-height: 100vh;
+
     padding: 40px 24px;
 
     font-family: Arial, Helvetica, sans-serif;
@@ -35,15 +43,15 @@ body {
     background:
         radial-gradient(
             circle at 0 0,
-            rgba(255, 122, 0, 0.26),
-            transparent 25%
+            rgba(255, 122, 0, 0.22),
+            transparent 24%
         ),
         radial-gradient(
             circle at 100% 100%,
-            rgba(255, 122, 0, 0.18),
-            transparent 25%
+            rgba(255, 122, 0, 0.12),
+            transparent 24%
         ),
-        #0b0c0e;
+        var(--bg);
 }
 
 
@@ -59,14 +67,14 @@ body {
 
     overflow: hidden;
 
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 22px;
 
     background:
         linear-gradient(
             145deg,
-            #181818,
-            #101113
+            #161719,
+            #0f1012
         );
 
     box-shadow:
@@ -80,65 +88,54 @@ body {
 ========================= */
 
 .dashboard-header {
-    min-height: 100px;
+    min-height: 96px;
 
-    padding: 20px 42px;
+    padding: 18px 36px;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    gap: 25px;
+    gap: 24px;
 
     border-bottom:
         1px solid
-        rgba(255, 255, 255, 0.10);
+        rgba(255, 255, 255, 0.08);
 }
 
 .brand {
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 16px;
 }
 
 .brand-logo {
-    width: 52px;
-    height: 52px;
-
-    flex: 0 0 52px;
+    width: 48px;
+    height: 48px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 14px;
+    border-radius: 13px;
 
     background:
         linear-gradient(
             135deg,
-            #ffa42d,
-            #ff6f00
+            #ffa22d,
+            #ff7000
         );
 
     color: #111;
 
-    font-size: 29px;
+    font-size: 27px;
     font-weight: 900;
-
-    box-shadow:
-        0 8px 25px
-        rgba(255, 122, 0, 0.20);
 }
 
 .brand h1 {
     margin: 0;
-    font-size: 27px;
+    font-size: 25px;
 }
-
-
-/* =========================
-   HEADER ACTIONS
-========================= */
 
 .header-actions {
     display: flex;
@@ -149,15 +146,15 @@ body {
 .user-box {
     display: flex;
     align-items: center;
-    gap: 9px;
+    gap: 8px;
 
     font-size: 14px;
     font-weight: 700;
 }
 
 .user-avatar {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
 
     display: flex;
     align-items: center;
@@ -166,51 +163,49 @@ body {
     border-radius: 50%;
 
     background:
-        rgba(255, 255, 255, 0.07);
+        rgba(255, 255, 255, 0.06);
 }
 
 .user-avatar svg {
-    width: 21px;
-    height: 21px;
+    width: 20px;
+    height: 20px;
 
     fill: none;
-
-    stroke:
-        rgba(255, 255, 255, 0.70);
-
+    stroke: currentColor;
     stroke-width: 1.8;
+
+    color:
+        rgba(255, 255, 255, 0.7);
 }
 
 .header-separator {
     width: 1px;
-    height: 30px;
+    height: 28px;
 
     background:
-        rgba(255, 255, 255, 0.13);
+        rgba(255, 255, 255, 0.12);
 }
 
 .logout-button {
-    padding: 8px;
-
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 7px;
+
+    padding: 7px;
 
     border: 0;
+
     background: transparent;
 
     color:
-        rgba(255, 255, 255, 0.82);
-
-    font-size: 13px;
-    font-weight: 600;
+        rgba(255, 255, 255, 0.8);
 
     cursor: pointer;
 }
 
 .logout-button svg {
-    width: 20px;
-    height: 20px;
+    width: 19px;
+    height: 19px;
 
     fill: none;
     stroke: currentColor;
@@ -219,13 +214,13 @@ body {
 
 
 /* =========================
-   THEME
+   THEME SWITCH
 ========================= */
 
 .theme-switch {
     position: relative;
 
-    width: 62px;
+    width: 60px;
     height: 32px;
 }
 
@@ -240,13 +235,11 @@ body {
 
     border:
         1px solid
-        rgba(255, 255, 255, 0.16);
+        rgba(255, 255, 255, 0.14);
 
     border-radius: 999px;
 
-    background: #121315;
-
-    cursor: pointer;
+    background: #111214;
 }
 
 .theme-slider::before {
@@ -275,8 +268,7 @@ body {
 
 .theme-switch input:checked + .theme-slider::before {
     content: "☀";
-
-    transform: translateX(29px);
+    transform: translateX(28px);
 }
 
 
@@ -285,127 +277,109 @@ body {
 ========================= */
 
 .dashboard-content {
-    padding: 30px 48px 38px;
+    padding: 28px 42px 40px;
 }
 
 
 /* =========================
-   NATRAG
+   BACK
 ========================= */
 
 .project-back-row {
-    margin-bottom: 14px;
+    margin-bottom: 18px;
 }
 
 .project-back {
     display: inline-flex;
     align-items: center;
-
-    gap: 5px;
+    gap: 6px;
 
     padding: 7px 12px;
 
     border:
         1px solid
-        rgba(255, 122, 0, 0.32);
+        rgba(255, 122, 0, 0.28);
 
     border-radius: 999px;
 
     background:
-        rgba(255, 122, 0, 0.07);
+        rgba(255, 122, 0, 0.05);
 
-    color: #ff8a1f;
+    color: #ff8b22;
 
     text-decoration: none;
 
     font-size: 12px;
     font-weight: 700;
-
-    transition: 0.2s ease;
 }
 
 .project-back:hover {
-    background:
-        rgba(255, 122, 0, 0.13);
-
     border-color:
-        rgba(255, 122, 0, 0.70);
+        rgba(255, 122, 0, 0.65);
 
-    box-shadow:
-        0 0 14px
-        rgba(255, 122, 0, 0.12);
-}
-
-.project-back span {
-    font-size: 18px;
-    line-height: 1;
+    background:
+        rgba(255, 122, 0, 0.1);
 }
 
 
 /* =========================
-   PROJECT HERO
+   PROJECT DETAIL HERO
 ========================= */
 
 .project-detail-hero {
-    padding: 22px;
+    padding: 0;
 
-    border:
-        1px solid
-        rgba(255, 122, 0, 0.55);
+    border: none;
 
-    border-radius: 17px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(70, 40, 17, 0.30),
-            rgba(15, 15, 15, 0.30)
-        );
+    background: transparent;
 }
+
+
+/* =========================
+   TITLE AREA
+========================= */
 
 .project-detail-heading {
     margin-bottom: 22px;
 
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
 
-    gap: 20px;
+    gap: 24px;
 }
 
 .project-main {
     display: flex;
     align-items: center;
 
-    gap: 17px;
+    gap: 16px;
 }
 
 .project-icon {
-    width: 66px;
-    height: 66px;
+    width: 58px;
+    height: 58px;
 
-    flex: 0 0 66px;
+    flex: 0 0 58px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 15px;
+    border-radius: 14px;
 
     background:
-        rgba(255, 122, 0, 0.14);
+        rgba(255, 122, 0, 0.12);
 
-    color: #ff9a32;
+    color: #ff932b;
 }
 
 .project-icon svg {
-    width: 34px;
-    height: 34px;
+    width: 31px;
+    height: 31px;
 
     fill: none;
-
     stroke: currentColor;
-
     stroke-width: 1.8;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -414,7 +388,8 @@ body {
 .project-title-area h2 {
     margin: 0 0 5px;
 
-    font-size: 25px;
+    font-size: 29px;
+    font-weight: 800;
 }
 
 .project-title-area p {
@@ -456,7 +431,7 @@ body {
 }
 
 .status-progress {
-    color: #ff9a35;
+    color: #ff9c41;
 
     border:
         1px solid
@@ -471,7 +446,7 @@ body {
 }
 
 .status-done {
-    color: #50db7c;
+    color: #51dc80;
 
     border:
         1px solid
@@ -490,10 +465,10 @@ body {
 
     border:
         1px solid
-        rgba(160, 160, 160, 0.30);
+        rgba(160, 160, 160, 0.3);
 
     background:
-        rgba(160, 160, 160, 0.08);
+        rgba(160, 160, 160, 0.07);
 }
 
 .status-waiting::before {
@@ -502,20 +477,25 @@ body {
 
 
 /* =========================
-   STATS
+   STATS WORKSPACE
 ========================= */
 
 .project-stats {
     display: grid;
 
     grid-template-columns:
+        1.5fr
         1fr
-        1.4fr
         1fr
         1.2fr;
 
     gap: 12px;
 }
+
+
+/* =========================
+   STAT CARD
+========================= */
 
 .stat-card {
     min-width: 0;
@@ -530,19 +510,23 @@ body {
 
     border:
         1px solid
-        rgba(255, 255, 255, 0.10);
+        var(--border);
 
     border-radius: 12px;
 
     background:
-        rgba(0, 0, 0, 0.16);
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.025),
+            rgba(255, 255, 255, 0.01)
+        );
 }
 
 .stat-icon {
-    width: 25px;
-    height: 25px;
+    width: 28px;
+    height: 28px;
 
-    flex: 0 0 25px;
+    flex: 0 0 28px;
 
     display: flex;
     align-items: center;
@@ -556,9 +540,7 @@ body {
     height: 22px;
 
     fill: none;
-
     stroke: currentColor;
-
     stroke-width: 1.8;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -579,7 +561,7 @@ body {
 }
 
 .package-value {
-    color: #ff9a32;
+    color: #ff9d38;
 }
 
 
@@ -597,21 +579,20 @@ body {
 
     display: flex;
     align-items: center;
-
     gap: 10px;
 }
 
 .progress-container {
-    height: 10px;
-
     flex: 1;
+
+    height: 10px;
 
     overflow: hidden;
 
     border-radius: 999px;
 
     background:
-        rgba(255, 255, 255, 0.09);
+        rgba(255, 255, 255, 0.08);
 }
 
 .progress-bar {
@@ -622,11 +603,9 @@ body {
     background:
         linear-gradient(
             90deg,
-            #ff7900,
-            #ffad3c
+            #ff7700,
+            #ffb34d
         );
-
-    transition: width 0.4s ease;
 }
 
 
@@ -635,7 +614,7 @@ body {
 ========================= */
 
 .dashboard-section {
-    margin-top: 28px;
+    margin-top: 32px;
 }
 
 .section-header {
@@ -645,56 +624,67 @@ body {
 .section-title {
     margin: 0;
 
-    font-size: 21px;
+    font-size: 20px;
 }
 
 
 /* =========================
-   AKTIVNOSTI
+   DESKTOP TWO COLUMN AREA
+========================= */
+
+.dashboard-content {
+    display: block;
+}
+
+.dashboard-section:nth-of-type(2),
+.dashboard-section:nth-of-type(3) {
+    width: 100%;
+}
+
+
+/* =========================
+   ACTIVITIES
 ========================= */
 
 .activities-card {
     width: 100%;
 
-    padding: 8px 16px;
-
-    overflow: hidden;
+    padding: 6px 14px;
 
     border:
         1px solid
-        rgba(255, 255, 255, 0.10);
+        var(--border);
 
     border-radius: 14px;
 
     background:
-        rgba(255, 255, 255, 0.02);
+        rgba(255, 255, 255, 0.018);
 }
 
 .activity-item {
     width: 100%;
-    min-height: 62px;
 
-    padding: 10px 3px;
+    min-height: 58px;
+
+    padding: 10px 4px;
 
     display: flex;
     align-items: center;
 
-    gap: 14px;
+    gap: 13px;
 }
 
 .activity-item:not(:last-child) {
     border-bottom:
         1px solid
-        rgba(255, 255, 255, 0.06);
+        rgba(255, 255, 255, 0.055);
 }
 
 .activity-icon {
-    width: 27px;
-    height: 27px;
+    width: 26px;
+    height: 26px;
 
-    min-width: 27px;
-
-    flex: 0 0 27px;
+    flex: 0 0 26px;
 
     display: flex;
     align-items: center;
@@ -706,10 +696,8 @@ body {
 
     border-radius: 50%;
 
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 800;
-
-    line-height: 1;
 }
 
 .activity-done .activity-icon {
@@ -744,14 +732,14 @@ body {
 
 .activity-date {
     color:
-        rgba(255, 255, 255, 0.40);
+        rgba(255, 255, 255, 0.38);
 
-    font-size: 11px;
+    font-size: 10px;
 }
 
 
 /* =========================
-   DOKUMENTI
+   DOCUMENTS
 ========================= */
 
 .project-documents {
@@ -760,27 +748,27 @@ body {
     grid-template-columns:
         repeat(2, minmax(0, 1fr));
 
-    gap: 12px;
+    gap: 10px;
 }
 
 .project-document-card {
     min-width: 0;
 
-    padding: 14px;
+    padding: 13px 14px;
 
     display: flex;
     align-items: center;
 
-    gap: 12px;
+    gap: 11px;
 
     border:
         1px solid
-        rgba(255, 255, 255, 0.09);
+        var(--border);
 
     border-radius: 12px;
 
     background:
-        rgba(255, 255, 255, 0.025);
+        rgba(255, 255, 255, 0.018);
 
     color: inherit;
 
@@ -791,42 +779,40 @@ body {
 
 .project-document-card:hover {
     border-color:
-        rgba(255, 122, 0, 0.60);
+        rgba(255, 122, 0, 0.55);
 
     background:
-        rgba(255, 122, 0, 0.05);
+        rgba(255, 122, 0, 0.045);
 
     box-shadow:
-        0 0 16px
-        rgba(255, 122, 0, 0.10);
+        0 0 15px
+        rgba(255, 122, 0, 0.08);
 }
 
 .project-document-icon {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
 
-    flex: 0 0 38px;
+    flex: 0 0 36px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 10px;
+    border-radius: 9px;
 
     background:
-        rgba(255, 122, 0, 0.10);
+        rgba(255, 122, 0, 0.09);
 
     color: var(--orange);
 }
 
 .project-document-icon svg {
-    width: 21px;
-    height: 21px;
+    width: 20px;
+    height: 20px;
 
     fill: none;
-
     stroke: currentColor;
-
     stroke-width: 1.8;
 }
 
@@ -846,7 +832,7 @@ body {
 
     color: #fff;
 
-    font-size: 13px;
+    font-size: 12px;
 
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -860,9 +846,9 @@ body {
 
 .project-document-arrow {
     color:
-        rgba(255, 255, 255, 0.35);
+        rgba(255, 255, 255, 0.28);
 
-    font-size: 21px;
+    font-size: 19px;
 }
 
 
@@ -877,7 +863,7 @@ body {
 
     text-align: center;
 
-    font-size: 13px;
+    font-size: 12px;
 }
 
 
@@ -886,20 +872,20 @@ body {
 ========================= */
 
 .footer {
-    margin: 0 48px;
+    margin: 0 42px;
 
-    padding: 20px;
+    padding: 18px;
 
     border-top:
         1px solid
-        rgba(255, 255, 255, 0.09);
+        rgba(255, 255, 255, 0.08);
 
     color:
-        rgba(255, 255, 255, 0.38);
+        rgba(255, 255, 255, 0.35);
 
     text-align: center;
 
-    font-size: 11px;
+    font-size: 10px;
 }
 
 
@@ -913,19 +899,22 @@ body {
     grid-template-columns:
         repeat(5, 1fr);
 
-    padding: 9px 18px 11px;
+    padding:
+        9px
+        16px
+        11px;
 
     border-top:
         1px solid
-        rgba(255, 255, 255, 0.10);
+        rgba(255, 255, 255, 0.09);
 
-    background: #0f1012;
+    background: #0d0e10;
 }
 
 .bottom-nav-item {
     position: relative;
 
-    min-height: 52px;
+    min-height: 50px;
 
     display: flex;
     flex-direction: column;
@@ -935,22 +924,20 @@ body {
     gap: 4px;
 
     color:
-        rgba(255, 255, 255, 0.45);
+        rgba(255, 255, 255, 0.43);
 
     text-decoration: none;
 
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 600;
 }
 
 .bottom-nav-item svg {
-    width: 21px;
-    height: 21px;
+    width: 20px;
+    height: 20px;
 
     fill: none;
-
     stroke: currentColor;
-
     stroke-width: 1.8;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -981,8 +968,9 @@ body {
 ========================= */
 
 body.light-mode {
-    --text: #202020;
+    --text: #222;
     --muted: #777;
+    --border: rgba(0, 0, 0, 0.08);
 
     color: #222;
 
@@ -991,33 +979,18 @@ body.light-mode {
 
 body.light-mode .dashboard {
     background: #fff;
-
-    border-color:
-        rgba(0, 0, 0, 0.08);
-}
-
-body.light-mode .project-detail-hero {
-    background: #fffaf5;
 }
 
 body.light-mode .stat-card,
 body.light-mode .activities-card,
 body.light-mode .project-document-card {
     background: #fafafa;
-
-    border-color:
-        rgba(0, 0, 0, 0.08);
 }
 
 body.light-mode .activity-title,
 body.light-mode .project-document-content strong,
 body.light-mode .project-title-area h2 {
     color: #222;
-}
-
-body.light-mode .activity-date {
-    color:
-        rgba(0, 0, 0, 0.42);
 }
 
 body.light-mode .bottom-nav {
@@ -1043,7 +1016,7 @@ body.light-mode .bottom-nav {
 
 
 /* =========================
-   MOBITEL
+   MOBILE
 ========================= */
 
 @media (max-width: 700px) {
@@ -1063,29 +1036,15 @@ body.light-mode .bottom-nav {
         align-items: stretch;
     }
 
-    .brand-logo {
-        width: 42px;
-        height: 42px;
-
-        flex-basis: 42px;
-
-        font-size: 23px;
-    }
-
     .brand h1 {
         font-size: 18px;
     }
 
-    .header-actions {
-        justify-content: space-between;
-    }
-
     .dashboard-content {
-        padding: 20px 14px 28px;
-    }
-
-    .project-detail-hero {
-        padding: 15px;
+        padding:
+            20px
+            14px
+            28px;
     }
 
     .project-detail-heading {
@@ -1093,43 +1052,27 @@ body.light-mode .bottom-nav {
         align-items: flex-start;
     }
 
-    .project-icon {
-        width: 54px;
-        height: 54px;
-
-        flex-basis: 54px;
-    }
-
     .project-title-area h2 {
-        font-size: 20px;
+        font-size: 21px;
     }
 
     .project-stats {
         grid-template-columns:
-            repeat(2, minmax(0, 1fr));
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
 
         gap: 9px;
     }
 
     .stat-card {
         min-height: 70px;
-
         padding: 10px;
     }
 
-    .activity-item {
-        min-height: 56px;
-
-        gap: 11px;
-    }
-
-    .activity-icon {
-        width: 25px;
-        height: 25px;
-
-        min-width: 25px;
-
-        flex-basis: 25px;
+    .project-documents {
+        grid-template-columns: 1fr;
     }
 
     .footer {
@@ -1139,9 +1082,5 @@ body.light-mode .bottom-nav {
     .bottom-nav {
         padding-left: 5px;
         padding-right: 5px;
-    }
-
-    .bottom-nav-item {
-        font-size: 9px;
     }
 }
