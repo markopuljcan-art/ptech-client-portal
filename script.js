@@ -1070,6 +1070,62 @@ themeToggle.addEventListener(
     }
 );
 
+// =========================
+// AKCIJE
+// =========================
+
+function getActiveProject() {
+
+    if (
+        !projects ||
+        projects.length === 0
+    ) {
+        return null;
+    }
+
+    return projects[
+        activeProjectIndex
+    ] || null;
+}
+
+
+// =========================
+// ODOBRI DIZAJN
+// =========================
+
+const approveDesignAction =
+    document.getElementById(
+        "approveDesignAction"
+    );
+
+
+if (approveDesignAction) {
+
+    approveDesignAction.addEventListener(
+        "click",
+        function () {
+
+            const activeProject =
+                getActiveProject();
+
+
+            if (!activeProject) {
+
+                console.error(
+                    "Nema aktivnog projekta."
+                );
+
+                return;
+            }
+
+
+            window.location.href =
+                `approve.html?id=${activeProject.id}`;
+
+        }
+    );
+
+}
 
 // =========================
 // START
