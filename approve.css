@@ -1,0 +1,854 @@
+/* =========================
+   RESET
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --orange: #ff7a00;
+    --orange-light: #ff9a35;
+
+    --background: #0b0c0e;
+    --card: #151618;
+
+    --text: #f5f5f5;
+    --muted: rgba(255, 255, 255, 0.48);
+
+    --border: rgba(255, 255, 255, 0.09);
+
+    --green: #31d66b;
+    --red: #ff5d5d;
+}
+
+
+/* =========================
+   BODY
+========================= */
+
+html {
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+
+    min-height: 100vh;
+
+    padding: 40px 24px;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            circle at 0 0,
+            rgba(255, 122, 0, 0.20),
+            transparent 26%
+        ),
+        radial-gradient(
+            circle at 100% 100%,
+            rgba(255, 122, 0, 0.10),
+            transparent 25%
+        ),
+        var(--background);
+}
+
+
+/* =========================
+   PAGE
+========================= */
+
+.approve-page {
+    width: 100%;
+    max-width: 1000px;
+
+    margin: 0 auto;
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.11);
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #161719,
+            #0f1012
+        );
+
+    box-shadow:
+        0 30px 80px
+        rgba(0, 0, 0, 0.45);
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.approve-header {
+    min-height: 100px;
+
+    padding: 22px 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    border-bottom:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+}
+
+
+/* =========================
+   BRAND
+========================= */
+
+.brand {
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+}
+
+.brand-logo {
+    width: 48px;
+    height: 48px;
+
+    flex: 0 0 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffa22d,
+            #ff7000
+        );
+
+    color: #111;
+
+    font-size: 27px;
+    font-weight: 900;
+
+    box-shadow:
+        0 8px 25px
+        rgba(255, 122, 0, 0.18);
+}
+
+.brand h1 {
+    margin:
+        0
+        0
+        4px;
+
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.brand p {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+
+/* =========================
+   CLOSE
+========================= */
+
+.close-button {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.10);
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.03);
+
+    color:
+        rgba(255, 255, 255, 0.65);
+
+    text-decoration: none;
+
+    font-size: 24px;
+
+    transition:
+        0.2s ease;
+}
+
+.close-button:hover {
+    color: var(--orange);
+
+    border-color:
+        rgba(255, 122, 0, 0.35);
+
+    background:
+        rgba(255, 122, 0, 0.08);
+}
+
+
+/* =========================
+   CONTENT
+========================= */
+
+.approve-content {
+    padding:
+        28px
+        38px
+        40px;
+}
+
+
+/* =========================
+   BACK
+========================= */
+
+.approve-back-row {
+    margin-bottom: 18px;
+}
+
+.approve-back {
+    display: inline-flex;
+    align-items: center;
+
+    padding:
+        7px
+        13px;
+
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.28);
+
+    border-radius: 999px;
+
+    background:
+        rgba(255, 122, 0, 0.05);
+
+    color: #ff922b;
+
+    text-decoration: none;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    transition:
+        0.2s ease;
+}
+
+.approve-back:hover {
+    background:
+        rgba(255, 122, 0, 0.11);
+
+    border-color:
+        rgba(255, 122, 0, 0.45);
+}
+
+
+/* =========================
+   PROJECT INFO
+========================= */
+
+.approve-project-card {
+    margin-bottom: 22px;
+
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.025),
+            rgba(255, 255, 255, 0.01)
+        );
+}
+
+.approve-label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.09em;
+}
+
+.approve-project-card h2 {
+    margin:
+        0
+        0
+        5px;
+
+    font-size: 23px;
+    font-weight: 800;
+}
+
+.approve-project-card p {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+
+/* =========================
+   PROJECT STATUS
+========================= */
+
+.approve-status {
+    flex-shrink: 0;
+
+    display: inline-flex;
+    align-items: center;
+
+    padding:
+        8px
+        13px;
+
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.35);
+
+    border-radius: 999px;
+
+    background:
+        rgba(255, 122, 0, 0.08);
+
+    color: #ff9a35;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.approve-status::before {
+    content: "";
+
+    width: 6px;
+    height: 6px;
+
+    margin-right: 7px;
+
+    border-radius: 50%;
+
+    background: var(--orange);
+}
+
+
+/* =========================
+   DESIGN SECTION
+========================= */
+
+.design-section {
+    padding: 20px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 16px;
+
+    background:
+        rgba(255, 255, 255, 0.018);
+}
+
+.design-section-header {
+    margin-bottom: 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.design-section-header h2 {
+    margin:
+        0
+        0
+        4px;
+
+    font-size: 18px;
+}
+
+.design-section-header p {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+
+/* =========================
+   DESIGN PREVIEW
+========================= */
+
+.design-preview {
+    position: relative;
+
+    width: 100%;
+
+    min-height: 390px;
+
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px dashed
+        rgba(255, 122, 0, 0.25);
+
+    border-radius: 14px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(255, 122, 0, 0.05),
+            transparent 45%
+        ),
+        rgba(0, 0, 0, 0.16);
+}
+
+
+/* Ako kasnije učitamo sliku dizajna */
+
+.design-preview img {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    max-height: 700px;
+
+    object-fit: contain;
+}
+
+
+/* Ako kasnije učitamo iframe */
+
+.design-preview iframe {
+    width: 100%;
+    min-height: 600px;
+
+    border: 0;
+
+    background: #fff;
+}
+
+
+/* =========================
+   EMPTY PREVIEW
+========================= */
+
+.empty-preview {
+    max-width: 330px;
+
+    padding: 30px;
+
+    color:
+        rgba(255, 255, 255, 0.35);
+
+    text-align: center;
+
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.empty-preview::before {
+    content: "▧";
+
+    width: 54px;
+    height: 54px;
+
+    margin:
+        0
+        auto
+        14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.25);
+
+    border-radius: 14px;
+
+    background:
+        rgba(255, 122, 0, 0.07);
+
+    color: var(--orange);
+
+    font-size: 25px;
+}
+
+
+/* =========================
+   ACTIONS
+========================= */
+
+.approval-actions {
+    margin-top: 18px;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        1fr;
+
+    gap: 14px;
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+.approval-button {
+    min-height: 82px;
+
+    padding:
+        15px
+        18px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    border-radius: 14px;
+
+    font-family: inherit;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        background 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.approval-button:hover {
+    transform: translateY(-2px);
+}
+
+.approval-button-icon {
+    width: 39px;
+    height: 39px;
+
+    flex: 0 0 39px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.approval-button strong {
+    display: block;
+
+    margin-bottom: 4px;
+
+    font-size: 14px;
+}
+
+.approval-button small {
+    display: block;
+
+    font-size: 10px;
+}
+
+
+/* =========================
+   REVISION BUTTON
+========================= */
+
+.approval-button.secondary {
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.10);
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    color: #fff;
+}
+
+.approval-button.secondary
+.approval-button-icon {
+    background:
+        rgba(255, 122, 0, 0.09);
+
+    color: var(--orange);
+}
+
+.approval-button.secondary small {
+    color: var(--muted);
+}
+
+.approval-button.secondary:hover {
+    border-color:
+        rgba(255, 122, 0, 0.30);
+
+    background:
+        rgba(255, 122, 0, 0.04);
+}
+
+
+/* =========================
+   APPROVE BUTTON
+========================= */
+
+.approval-button.primary {
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.55);
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff850f,
+            #ff7000
+        );
+
+    color: #161616;
+
+    box-shadow:
+        0 10px 30px
+        rgba(255, 122, 0, 0.12);
+}
+
+.approval-button.primary
+.approval-button-icon {
+    background:
+        rgba(0, 0, 0, 0.13);
+
+    color: #151515;
+}
+
+.approval-button.primary small {
+    color:
+        rgba(0, 0, 0, 0.60);
+}
+
+.approval-button.primary:hover {
+    box-shadow:
+        0 12px 32px
+        rgba(255, 122, 0, 0.25);
+}
+
+
+/* =========================
+   DISABLED BUTTON
+========================= */
+
+.approval-button:disabled {
+    opacity: 0.45;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+    box-shadow: none;
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+.approval-message {
+    margin-top: 16px;
+
+    padding:
+        13px
+        16px;
+
+    border-radius: 12px;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.approval-message.success {
+    border:
+        1px solid
+        rgba(49, 214, 107, 0.30);
+
+    background:
+        rgba(49, 214, 107, 0.07);
+
+    color: #45dd78;
+}
+
+.approval-message.error {
+    border:
+        1px solid
+        rgba(255, 93, 93, 0.30);
+
+    background:
+        rgba(255, 93, 93, 0.07);
+
+    color: #ff7373;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+    body {
+        padding: 8px;
+    }
+
+    .approve-page {
+        border-radius: 16px;
+    }
+
+    .approve-header {
+        min-height: auto;
+
+        padding:
+            16px
+            15px;
+    }
+
+    .brand-logo {
+        width: 42px;
+        height: 42px;
+
+        flex-basis: 42px;
+
+        font-size: 23px;
+    }
+
+    .brand h1 {
+        font-size: 17px;
+    }
+
+    .brand p {
+        font-size: 10px;
+    }
+
+    .close-button {
+        width: 34px;
+        height: 34px;
+
+        flex: 0 0 34px;
+    }
+
+    .approve-content {
+        padding:
+            20px
+            14px
+            28px;
+    }
+
+    .approve-project-card {
+        padding: 16px;
+
+        align-items: flex-start;
+    }
+
+    .approve-project-card h2 {
+        font-size: 19px;
+    }
+
+    .design-section {
+        padding: 14px;
+    }
+
+    .design-preview {
+        min-height: 300px;
+    }
+
+    .approval-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .approval-button {
+        min-height: 76px;
+    }
+}
+
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media (max-width: 430px) {
+
+    .approve-header {
+        gap: 10px;
+    }
+
+    .brand {
+        gap: 10px;
+    }
+
+    .brand p {
+        display: none;
+    }
+
+    .approve-project-card {
+        flex-direction: column;
+
+        gap: 12px;
+    }
+
+    .design-preview {
+        min-height: 250px;
+    }
+}
