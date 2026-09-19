@@ -70,21 +70,6 @@ const projectId =
 
 
 /* =========================
-   ESCAPE HTML
-========================= */
-
-function escapeHtml(value) {
-
-    return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-}
-
-
-/* =========================
    MESSAGE
 ========================= */
 
@@ -142,7 +127,6 @@ function renderStatus(status) {
 
     projectStatus.textContent =
         status || "-";
-
 
     projectStatus.style.color =
         "";
@@ -257,7 +241,7 @@ function enableActions() {
 
 
 /* =========================
-   APPROVED BUTTON STATE
+   ODOBRENO STANJE
 ========================= */
 
 function renderApprovedState() {
@@ -287,8 +271,15 @@ function renderApprovedState() {
         `;
     }
 
+
+    /*
+        VAŽNO:
+        Zatraži izmjenu ostaje aktivan
+        čak i nakon odobrenja dizajna.
+    */
+
     if (revisionButton) {
-        revisionButton.disabled = true;
+        revisionButton.disabled = false;
     }
 }
 
@@ -377,10 +368,16 @@ function setupApprovalActions(
 
                 hideMessage();
 
-                approveButton.disabled =
-                    true;
 
-                revisionButton.disabled =
+                /*
+                    Zaključavamo samo
+                    gumb za odobrenje.
+
+                    Zatraži izmjenu
+                    ostaje aktivan.
+                */
+
+                approveButton.disabled =
                     true;
 
 
@@ -422,7 +419,8 @@ function setupApprovalActions(
                         "error"
                     );
 
-                    enableActions();
+                    approveButton.disabled =
+                        false;
 
                     return;
                 }
@@ -451,6 +449,7 @@ function setupApprovalActions(
                     await supabaseClient
                         .from("design_approvals")
                         .insert({
+
                             project_id:
                                 project.id,
 
@@ -474,7 +473,8 @@ function setupApprovalActions(
                         "error"
                     );
 
-                    enableActions();
+                    approveButton.disabled =
+                        false;
 
                     return;
                 }
@@ -527,14 +527,18 @@ async function loadProject() {
     const {
         data: {
             session
-        }
+        },
+        error: sessionError
     } =
         await supabaseClient
             .auth
             .getSession();
 
 
-    if (!session) {
+    if (
+        sessionError ||
+        !session
+    ) {
 
         window.location.href =
             "login.html";
