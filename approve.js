@@ -186,29 +186,6 @@ function renderStatus(status) {
 
 
 /* =========================
-   DESIGN PREVIEW
-========================= */
-
-function renderDesignPreview(project) {
-
-    if (!designPreview) {
-        return;
-    }
-
-    designPreview.innerHTML = `
-
-        <div class="empty-preview">
-
-            <span>
-                Trenutno nema dodanog pregleda dizajna za ovaj projekt.
-            </span>
-
-        </div>
-    `;
-}
-
-
-/* =========================
    DISABLE ACTIONS
 ========================= */
 
@@ -241,7 +218,7 @@ function enableActions() {
 
 
 /* =========================
-   ODOBRENO STANJE
+   APPROVED STATE
 ========================= */
 
 function renderApprovedState() {
@@ -273,20 +250,199 @@ function renderApprovedState() {
 
 
     /*
-        VAŽNO:
-        Zatraži izmjenu ostaje aktivan
-        čak i nakon odobrenja dizajna.
+        Zahtjev za izmjenu i dalje
+        ostaje dostupan.
     */
 
     if (revisionButton) {
-        revisionButton.disabled = false;
+
+        revisionButton.disabled =
+            false;
     }
 }
 
 
 /* =========================
-   PROVJERI POSTOJEĆE
-   ODOBRENJE
+   DESIGN PLACEHOLDER
+========================= */
+
+function renderDesignPlaceholder(
+    text
+) {
+
+    if (!designPreview) {
+        return;
+    }
+
+    designPreview.innerHTML = `
+
+        <div class="empty-preview">
+
+            <span>
+                ${text}
+            </span>
+
+        </div>
+    `;
+}
+
+
+/* =========================
+   UČITAJ DIZAJN
+========================= */
+
+async function loadProjectDesign(
+    project
+) {
+
+    if (!designPreview) {
+        return null;
+    }
+
+
+    renderDesignPlaceholder(
+        "Učitavanje dizajna..."
+    );
+
+
+    /* =========================
+       ZADNJI DIZAJN IZ TABLICE
+    ========================= */
+
+    const {
+        data: designs,
+        error: designError
+    } =
+        await supabaseClient
+            .from("project_designs")
+            .select(`
+                id,
+                project_id,
+                file_path,
+                status,
+                created_at
+            `)
+            .eq(
+                "project_id",
+                project.id
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            )
+            .limit(1);
+
+
+    if (designError) {
+
+        console.error(
+            "Greška kod dohvaćanja dizajna:",
+            designError
+        );
+
+        renderDesignPlaceholder(
+            "Dizajn se trenutno ne može učitati."
+        );
+
+        return null;
+    }
+
+
+    if (
+        !designs ||
+        designs.length === 0
+    ) {
+
+        renderDesignPlaceholder(
+            "Trenutno nema dodanog pregleda dizajna za ovaj projekt."
+        );
+
+        return null;
+    }
+
+
+    const design =
+        designs[0];
+
+
+    if (!design.file_path) {
+
+        renderDesignPlaceholder(
+            "Datoteka dizajna nije pronađena."
+        );
+
+        return null;
+    }
+
+
+    /* =========================
+       SIGNED URL
+    ========================= */
+
+    const {
+        data: signedData,
+        error: signedError
+    } =
+        await supabaseClient
+            .storage
+            .from("project-designs")
+            .createSignedUrl(
+                design.file_path,
+                3600
+            );
+
+
+    if (signedError) {
+
+        console.error(
+            "Greška kod signed URL-a:",
+            signedError
+        );
+
+        renderDesignPlaceholder(
+            "Slika dizajna se trenutno ne može prikazati."
+        );
+
+        return null;
+    }
+
+
+    if (!signedData?.signedUrl) {
+
+        renderDesignPlaceholder(
+            "Slika dizajna nije dostupna."
+        );
+
+        return null;
+    }
+
+
+    /* =========================
+       PRIKAŽI SLIKU
+    ========================= */
+
+    designPreview.innerHTML = `
+
+        <div class="design-image-wrapper">
+
+            <img
+                src="${signedData.signedUrl}"
+                alt="Pregled dizajna projekta"
+                class="design-image"
+            >
+
+        </div>
+    `;
+
+
+    return design;
+}
+
+
+/* =========================
+   POSTOJEĆE ODOBRENJE
 ========================= */
 
 async function loadExistingApproval(
@@ -328,6 +484,7 @@ async function loadExistingApproval(
 
 
     if (!approval) {
+
         return false;
     }
 
@@ -369,20 +526,12 @@ function setupApprovalActions(
                 hideMessage();
 
 
-                /*
-                    Zaključavamo samo
-                    gumb za odobrenje.
-
-                    Zatraži izmjenu
-                    ostaje aktivan.
-                */
-
                 approveButton.disabled =
                     true;
 
 
                 /* =========================
-                   PROVJERI POSTOJI LI VEĆ
+                   PROVJERI POSTOJEĆE
                 ========================= */
 
                 const {
@@ -631,7 +780,7 @@ async function loadProject() {
 
 
     /* =========================
-       PROVJERA KORISNIKA
+       USER CHECK
     ========================= */
 
     if (
@@ -676,13 +825,8 @@ async function loadProject() {
     );
 
 
-    renderDesignPreview(
-        project
-    );
-
-
     /* =========================
-       POSTAVI AKCIJE
+       AKCIJE
     ========================= */
 
     setupApprovalActions(
@@ -692,7 +836,33 @@ async function loadProject() {
 
 
     /* =========================
-       PROVJERI JE LI VEĆ ODOBREN
+       DIZAJN
+    ========================= */
+
+    const design =
+        await loadProjectDesign(
+            project
+        );
+
+
+    /*
+        Ako nema dizajna,
+        ne dopuštamo odobravanje.
+
+        Izmjenu također nema smisla
+        tražiti ako dizajn nije poslan.
+    */
+
+    if (!design) {
+
+        disableActions();
+
+        return;
+    }
+
+
+    /* =========================
+       POSTOJEĆE ODOBRENJE
     ========================= */
 
     await loadExistingApproval(
