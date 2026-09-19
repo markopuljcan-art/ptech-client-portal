@@ -55,7 +55,28 @@ loginError.classList.remove("show");
     localStorage.setItem("user", email);
 
     setTimeout(function () {
+    const { data: profile, error: profileError } = await supabaseClient
+    .from("profiles")
+    .select("role")
+    .eq("id", data.user.id)
+    .maybeSingle();
+
+if (profileError) {
+    console.error("Greška kod provjere role:", profileError);
+
     window.location.href = "form.html";
+    return;
+}
+
+const role = String(profile?.role || "")
+    .trim()
+    .toLowerCase();
+
+if (role === "admin") {
+    window.location.href = "admin.html";
+} else {
+    window.location.href = "form.html";
+}
 }, 1000);
 });
 
