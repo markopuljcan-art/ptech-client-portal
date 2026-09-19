@@ -590,7 +590,7 @@ approveButton.onclick =
             </span>
         `;
     };
-
+    }
 
     /* =========================
        ZATRAŽI IZMJENU
