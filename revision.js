@@ -62,6 +62,31 @@ const messageBox =
 
 
 /* =========================
+   ZADNJI ZAHTJEV
+========================= */
+
+const latestRevisionCard =
+    document.getElementById(
+        "latestRevisionCard"
+    );
+
+const latestRevisionStatus =
+    document.getElementById(
+        "latestRevisionStatus"
+    );
+
+const latestRevisionText =
+    document.getElementById(
+        "latestRevisionText"
+    );
+
+const latestRevisionDate =
+    document.getElementById(
+        "latestRevisionDate"
+    );
+
+
+/* =========================
    PROJECT ID IZ URL-a
 ========================= */
 
@@ -72,6 +97,40 @@ const params =
 
 const projectId =
     params.get("id");
+
+
+/* =========================
+   FORMAT DATUMA
+========================= */
+
+function formatDateTime(value) {
+
+    if (!value) {
+        return "-";
+    }
+
+    const date =
+        new Date(value);
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+        return "-";
+    }
+
+    return date.toLocaleString(
+        "hr-HR",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
+}
 
 
 /* =========================
@@ -116,7 +175,7 @@ function hideMessage() {
 
 
 /* =========================
-   STATUS
+   STATUS PROJEKTA
 ========================= */
 
 function renderStatus(status) {
@@ -220,7 +279,7 @@ if (revisionMessage) {
 
 
 /* =========================
-   DISABLE FORM
+   FORMA
 ========================= */
 
 function disableForm() {
@@ -235,10 +294,6 @@ function disableForm() {
 }
 
 
-/* =========================
-   ENABLE FORM
-========================= */
-
 function enableForm() {
 
     if (revisionMessage) {
@@ -252,7 +307,163 @@ function enableForm() {
 
 
 /* =========================
-   SETUP FORM
+   STATUS IZMJENE
+========================= */
+
+function getRevisionStatusLabel(status) {
+
+    const value =
+        String(status || "")
+            .toLowerCase()
+            .trim();
+
+    if (
+        value === "resolved" ||
+        value === "completed" ||
+        value === "done"
+    ) {
+        return "Riješeno";
+    }
+
+    if (
+        value === "in_progress" ||
+        value === "in progress"
+    ) {
+        return "U obradi";
+    }
+
+    return "Na čekanju";
+}
+
+
+function getRevisionStatusClass(status) {
+
+    const value =
+        String(status || "")
+            .toLowerCase()
+            .trim();
+
+    if (
+        value === "resolved" ||
+        value === "completed" ||
+        value === "done"
+    ) {
+        return "status-resolved";
+    }
+
+    return "status-pending";
+}
+
+
+/* =========================
+   ZADNJI ZAHTJEV
+========================= */
+
+async function loadLatestRevision(
+    project,
+    session
+) {
+
+    if (!latestRevisionCard) {
+        return;
+    }
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("design_revisions")
+            .select(`
+                id,
+                message,
+                status,
+                created_at
+            `)
+            .eq(
+                "project_id",
+                project.id
+            )
+            .eq(
+                "user_id",
+                session.user.id
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            )
+            .limit(1);
+
+
+    if (error) {
+
+        console.error(
+            "Greška kod učitavanja zadnjeg zahtjeva:",
+            error
+        );
+
+        latestRevisionCard.hidden =
+            true;
+
+        return;
+    }
+
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+
+        latestRevisionCard.hidden =
+            true;
+
+        return;
+    }
+
+
+    const revision =
+        data[0];
+
+
+    latestRevisionCard.hidden =
+        false;
+
+
+    if (latestRevisionText) {
+
+        latestRevisionText.textContent =
+            revision.message || "-";
+    }
+
+
+    if (latestRevisionDate) {
+
+        latestRevisionDate.textContent =
+            `Poslano: ${formatDateTime(
+                revision.created_at
+            )}`;
+    }
+
+
+    if (latestRevisionStatus) {
+
+        latestRevisionStatus.textContent =
+            getRevisionStatusLabel(
+                revision.status
+            );
+
+        latestRevisionStatus.className =
+            `latest-revision-status ${getRevisionStatusClass(
+                revision.status
+            )}`;
+    }
+}
+
+
+/* =========================
+   SETUP FORME
 ========================= */
 
 function setupRevisionForm(
@@ -323,6 +534,7 @@ function setupRevisionForm(
                         "design_revisions"
                     )
                     .insert({
+
                         project_id:
                             project.id,
 
@@ -375,14 +587,19 @@ function setupRevisionForm(
             updateCharacterCount();
 
 
-            revisionMessage.disabled =
-                true;
-
             submitButton.disabled =
-                true;
+                false;
 
             submitButton.textContent =
-                "Zahtjev poslan";
+                "Pošalji novi zahtjev";
+
+
+            /* ODMAH OSVJEŽI ZADNJI ZAHTJEV */
+
+            await loadLatestRevision(
+                project,
+                session
+            );
         }
     );
 }
@@ -397,9 +614,7 @@ async function loadProject() {
     hideMessage();
 
 
-    /* =========================
-       SESSION
-    ========================= */
+    /* SESSION */
 
     const {
         data: {
@@ -424,9 +639,7 @@ async function loadProject() {
     }
 
 
-    /* =========================
-       PROVJERA ID-a
-    ========================= */
+    /* ID */
 
     if (!projectId) {
 
@@ -441,9 +654,7 @@ async function loadProject() {
     }
 
 
-    /* =========================
-       BACK LINK
-    ========================= */
+    /* BACK */
 
     if (backToApproval) {
 
@@ -452,9 +663,7 @@ async function loadProject() {
     }
 
 
-    /* =========================
-       DOHVATI PROJEKT
-    ========================= */
+    /* PROJEKT */
 
     const {
         data: project,
@@ -507,9 +716,7 @@ async function loadProject() {
     }
 
 
-    /* =========================
-       PROVJERA KORISNIKA
-    ========================= */
+    /* USER CHECK */
 
     if (
         project.user_id &&
@@ -528,9 +735,7 @@ async function loadProject() {
     }
 
 
-    /* =========================
-       RENDER PROJEKTA
-    ========================= */
+    /* RENDER */
 
     if (projectTitle) {
 
@@ -553,13 +758,19 @@ async function loadProject() {
     );
 
 
-    /* =========================
-       FORMA
-    ========================= */
+    /* FORMA */
 
     enableForm();
 
     setupRevisionForm(
+        project,
+        session
+    );
+
+
+    /* ZADNJI ZAHTJEV */
+
+    await loadLatestRevision(
         project,
         session
     );
