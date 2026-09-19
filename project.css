@@ -682,10 +682,19 @@ body.light-mode .logout-button {
 /* THEME SWITCH */
 
 body.light-mode .theme-slider {
-    background: #222;
+    background: #f0f0f0;
 
     border-color:
-        rgba(0, 0, 0, 0.15);
+        rgba(0, 0, 0, 0.12);
+}
+
+body.light-mode .theme-slider::before {
+    background: var(--orange);
+    color: #111;
+
+    box-shadow:
+        0 2px 8px
+        rgba(255, 122, 0, 0.22);
 }
 
 
