@@ -165,45 +165,53 @@
      AKTIVNOSTI
 ========================= -->
 
-<section class="dashboard-section activity-detail-section">
+<section class="dashboard-section">
 
-    <div class="detail-section-heading">
+    <div class="activities-detail-card">
 
-        <div class="detail-section-icon">
+        <div class="activities-card-heading">
 
-            <svg viewBox="0 0 24 24">
+            <div class="activities-heading-left">
 
-                <path d="M5 20V12"></path>
-                <path d="M10 20V7"></path>
-                <path d="M15 20V4"></path>
-                <path d="M20 20V10"></path>
+                <div class="activities-main-icon">
 
-            </svg>
+                    <svg viewBox="0 0 24 24">
+
+                        <path d="M5 20V12"></path>
+                        <path d="M10 20V7"></path>
+                        <path d="M15 20V4"></path>
+                        <path d="M20 20V10"></path>
+
+                    </svg>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Aktivnosti
+                    </h3>
+
+                    <p>
+                        Pregled napretka projekta
+                    </p>
+
+                </div>
+
+            </div>
 
         </div>
 
-        <div>
 
-            <h2>
-                Aktivnosti
-            </h2>
+        <div
+            class="activities-card"
+            id="projectActivities"
+        >
 
-            <p>
-                Pregled napretka projekta
-            </p>
+            <div class="empty-state">
+                Učitavanje aktivnosti...
+            </div>
 
-        </div>
-
-    </div>
-
-
-    <div
-        class="activities-card"
-        id="projectActivities"
-    >
-
-        <div class="empty-state">
-            Učitavanje aktivnosti...
         </div>
 
     </div>
