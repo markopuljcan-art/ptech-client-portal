@@ -596,6 +596,274 @@ body {
     color: #ff9d38;
 }
 
+/* =========================
+   LIGHT MODE - FINAL
+========================= */
+
+body.light-mode {
+    --text: #1c1c1c;
+    --muted: #757575;
+    --border: rgba(0, 0, 0, 0.09);
+
+    color: #1c1c1c;
+
+    background:
+        radial-gradient(
+            circle at 0 0,
+            rgba(255, 122, 0, 0.09),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 100% 100%,
+            rgba(255, 122, 0, 0.06),
+            transparent 25%
+        ),
+        #ececec;
+}
+
+
+/* GLAVNI PORTAL */
+
+body.light-mode .dashboard {
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #f8f8f8
+        );
+
+    border-color:
+        rgba(0, 0, 0, 0.10);
+
+    box-shadow:
+        0 25px 70px
+        rgba(0, 0, 0, 0.16);
+}
+
+
+/* HEADER */
+
+body.light-mode .dashboard-header {
+    background:
+        rgba(255, 255, 255, 0.88);
+
+    border-bottom-color:
+        rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .brand h1 {
+    color: #191919;
+}
+
+body.light-mode .user-box {
+    color: #222;
+}
+
+body.light-mode .user-avatar {
+    background:
+        rgba(0, 0, 0, 0.045);
+}
+
+body.light-mode .user-avatar svg {
+    color:
+        rgba(0, 0, 0, 0.65);
+}
+
+body.light-mode .header-separator {
+    background:
+        rgba(0, 0, 0, 0.10);
+}
+
+body.light-mode .logout-button {
+    color: #333;
+}
+
+
+/* THEME SWITCH */
+
+body.light-mode .theme-slider {
+    background: #222;
+
+    border-color:
+        rgba(0, 0, 0, 0.15);
+}
+
+
+/* PROJECT */
+
+body.light-mode .project-title-area h2 {
+    color: #171717;
+}
+
+body.light-mode .project-title-area p {
+    color: #777;
+}
+
+body.light-mode .project-icon {
+    background:
+        rgba(255, 122, 0, 0.10);
+}
+
+
+/* MALE INFO KARTICE */
+
+body.light-mode .stat-card {
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #f6f6f6
+        );
+
+    border-color:
+        rgba(0, 0, 0, 0.09);
+
+    box-shadow:
+        0 3px 12px
+        rgba(0, 0, 0, 0.025);
+}
+
+body.light-mode .stat-label {
+    color: #777;
+}
+
+body.light-mode .stat-card strong {
+    color: #202020;
+}
+
+body.light-mode .package-value {
+    color: #e86f00;
+}
+
+body.light-mode .progress-container {
+    background:
+        rgba(0, 0, 0, 0.08);
+}
+
+
+/* PACKAGE CARD */
+
+body.light-mode .package-info-card {
+    background:
+        linear-gradient(
+            135deg,
+            #fff8f1,
+            #ffffff
+        );
+
+    border-color:
+        rgba(255, 122, 0, 0.25);
+}
+
+body.light-mode .package-info-label {
+    color: #888;
+}
+
+body.light-mode .package-info-card h3 {
+    color: #1d1d1d;
+}
+
+body.light-mode .package-info-description {
+    color: #666;
+}
+
+body.light-mode .package-feature {
+    color: #444;
+}
+
+body.light-mode .package-check {
+    background:
+        rgba(255, 122, 0, 0.10);
+
+    color: #ed7300;
+}
+
+
+/* AKTIVNOSTI */
+
+body.light-mode .activities-detail-card {
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #f8f8f8
+        );
+
+    border-color:
+        rgba(0, 0, 0, 0.09);
+
+    box-shadow:
+        0 4px 16px
+        rgba(0, 0, 0, 0.025);
+}
+
+body.light-mode .activities-heading-left h3 {
+    color: #191919;
+}
+
+body.light-mode .activities-heading-left p {
+    color: #777;
+}
+
+body.light-mode .activities-main-icon {
+    background:
+        rgba(255, 122, 0, 0.09);
+}
+
+body.light-mode .activity-icon {
+    background: #ffffff;
+}
+
+body.light-mode .activity-title {
+    color: #222;
+}
+
+body.light-mode .activity-date {
+    color: #888;
+}
+
+
+/* NATRAG */
+
+body.light-mode .project-back {
+    background:
+        rgba(255, 122, 0, 0.04);
+
+    border-color:
+        rgba(255, 122, 0, 0.30);
+
+    color: #e66e00;
+}
+
+
+/* FOOTER */
+
+body.light-mode .footer {
+    color:
+        rgba(0, 0, 0, 0.42);
+
+    border-top-color:
+        rgba(0, 0, 0, 0.08);
+}
+
+
+/* BOTTOM NAV */
+
+body.light-mode .bottom-nav {
+    background: #f7f7f7;
+
+    border-top-color:
+        rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .bottom-nav-item {
+    color:
+        rgba(0, 0, 0, 0.45);
+}
+
+body.light-mode .bottom-nav-item.active {
+    color: var(--orange);
+}
 
 /* =========================
    PROGRESS
