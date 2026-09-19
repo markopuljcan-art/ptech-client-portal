@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./revision.css?v=1"
+    >
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
+
+    <script
+        src="./revision.js?v=1"
+        defer
+    ></script>
+
+    <title>
+        PTech Digital | Zahtjev za izmjenu
+    </title>
+
+</head>
+
+
+<body>
+
+    <main class="revision-page">
+
+
+        <header class="revision-header">
+
+            <div class="brand">
+
+                <div class="brand-logo">
+                    P
+                </div>
+
+                <div>
+
+                    <h1>
+                        Zahtjev za izmjenu
+                    </h1>
+
+                    <p>
+                        Opiši što želiš promijeniti na projektu.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="form.html"
+                class="close-button"
+            >
+                ×
+            </a>
+
+        </header>
+
+
+
+        <div class="revision-content">
+
+
+            <div class="revision-back-row">
+
+                <a
+                    href="form.html"
+                    class="revision-back"
+                    id="backToApproval"
+                >
+                    ‹ Natrag
+                </a>
+
+            </div>
+
+
+
+            <section class="revision-project-card">
+
+                <div>
+
+                    <span class="revision-label">
+                        Projekt
+                    </span>
+
+                    <h2 id="revisionProjectTitle">
+                        Učitavanje...
+                    </h2>
+
+                    <p id="revisionProjectName"></p>
+
+                </div>
+
+
+                <span
+                    class="revision-status"
+                    id="revisionProjectStatus"
+                >
+                    -
+                </span>
+
+            </section>
+
+
+
+            <section class="revision-form-card">
+
+                <div class="revision-form-header">
+
+                    <h2>
+                        Što želiš izmijeniti?
+                    </h2>
+
+                    <p>
+                        Napiši što preciznije kako bismo lakše napravili izmjene.
+                    </p>
+
+                </div>
+
+
+                <form id="revisionForm">
+
+                    <label
+                        for="revisionMessage"
+                        class="revision-field-label"
+                    >
+                        Opis izmjene
+                    </label>
+
+
+                    <textarea
+                        id="revisionMessage"
+                        name="message"
+                        rows="8"
+                        maxlength="1500"
+                        placeholder="Primjer: Promijeniti boju gumba, povećati naslov i pomaknuti sliku malo niže..."
+                        required
+                    ></textarea>
+
+
+                    <div class="revision-form-footer">
+
+                        <span id="characterCount">
+                            0 / 1500
+                        </span>
+
+
+                        <button
+                            type="submit"
+                            class="submit-revision-button"
+                            id="submitRevisionButton"
+                        >
+                            Pošalji zahtjev
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+
+
+            <div
+                class="revision-message"
+                id="revisionMessageBox"
+                hidden
+            >
+            </div>
+
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>
