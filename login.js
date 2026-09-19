@@ -12,58 +12,120 @@ const supabaseClient =
 
 
 /* =========================
+   ELEMENTI
+========================= */
+
+const loginForm =
+    document.getElementById(
+        "loginForm"
+    );
+
+const loginButton =
+    document.getElementById(
+        "loginButton"
+    );
+
+const loginError =
+    document.getElementById(
+        "loginError"
+    );
+
+const emailInput =
+    document.getElementById(
+        "email"
+    );
+
+const passwordInput =
+    document.getElementById(
+        "password"
+    );
+
+const togglePassword =
+    document.getElementById(
+        "togglePassword"
+    );
+
+const capsLockWarning =
+    document.getElementById(
+        "capsLockWarning"
+    );
+
+const themeToggle =
+    document.getElementById(
+        "themeToggle"
+    );
+
+
+/* =========================
    LOGIN
 ========================= */
 
-document
-    .getElementById("loginForm")
-    .addEventListener(
+if (loginForm) {
+
+    loginForm.addEventListener(
         "submit",
         async function (event) {
 
             event.preventDefault();
 
-            const loginError =
-                document.getElementById(
-                    "loginError"
+
+            /* RESET ERROR */
+
+            if (loginError) {
+
+                loginError.textContent =
+                    "";
+
+                loginError.classList.remove(
+                    "show"
                 );
-
-            const loginButton =
-                document.getElementById(
-                    "loginButton"
-                );
-
-            const email =
-                document
-                    .getElementById("email")
-                    .value
-                    .trim();
-
-            const password =
-                document
-                    .getElementById("password")
-                    .value;
-
-
-            /* RESET ERRORA */
-
-            loginError.textContent = "";
-
-            loginError.classList.remove(
-                "show"
-            );
+            }
 
 
             /* BUTTON */
 
-            loginButton.disabled = true;
+            if (loginButton) {
 
-            loginButton.textContent =
-                "Prijava...";
+                loginButton.disabled =
+                    true;
+
+                loginButton.textContent =
+                    "Prijava...";
+            }
+
+
+            const email =
+                emailInput
+                    ? emailInput.value.trim()
+                    : "";
+
+            const password =
+                passwordInput
+                    ? passwordInput.value
+                    : "";
 
 
             /* =========================
-               LOGIN
+               VALIDACIJA
+            ========================= */
+
+            if (
+                !email ||
+                !password
+            ) {
+
+                showLoginError(
+                    "Unesi e-mail i lozinku."
+                );
+
+                resetLoginButton();
+
+                return;
+            }
+
+
+            /* =========================
+               SUPABASE LOGIN
             ========================= */
 
             const {
@@ -84,48 +146,46 @@ document
 
             if (error) {
 
-                console.error(error);
-
-                const loginCard =
-                    document.querySelector(
-                        ".big_bubble"
-                    );
-
-
-                loginError.textContent =
-                    "Pogrešan e-mail ili lozinka.";
-
-                loginError.classList.add(
-                    "show"
+                console.error(
+                    "Login error:",
+                    error
                 );
 
 
-                if (loginCard) {
-
-                    loginCard.classList.remove(
-                        "shake"
-                    );
-
-                    void loginCard.offsetWidth;
-
-                    loginCard.classList.add(
-                        "shake"
-                    );
-                }
+                showLoginError(
+                    "Pogrešan e-mail ili lozinka."
+                );
 
 
-                loginButton.disabled =
-                    false;
+                shakeLoginCard();
 
-                loginButton.textContent =
-                    "Prijavi se";
+                resetLoginButton();
 
                 return;
             }
 
 
             /* =========================
-               LOGIN USPJEŠAN
+               USER PROVJERA
+            ========================= */
+
+            if (
+                !data ||
+                !data.user
+            ) {
+
+                showLoginError(
+                    "Prijava nije uspjela."
+                );
+
+                resetLoginButton();
+
+                return;
+            }
+
+
+            /* =========================
+               SPREMI USER
             ========================= */
 
             localStorage.setItem(
@@ -135,7 +195,7 @@ document
 
 
             /* =========================
-               DOHVATI ROLE
+               DOHVATI PROFIL
             ========================= */
 
             const {
@@ -145,8 +205,9 @@ document
                 await supabaseClient
                     .from("profiles")
                     .select(`
-                        role,
-                        display_name
+                        id,
+                        display_name,
+                        role
                     `)
                     .eq(
                         "id",
@@ -155,22 +216,51 @@ document
                     .maybeSingle();
 
 
+            console.log(
+                "LOGIN USER:",
+                data.user.id
+            );
+
+            console.log(
+                "PROFILE:",
+                profile
+            );
+
+            console.log(
+                "PROFILE ERROR:",
+                profileError
+            );
+
+
+            /* =========================
+               PROFILE ERROR
+            ========================= */
+
             if (profileError) {
 
                 console.error(
-                    "Greška kod provjere role:",
+                    "Greška kod dohvaćanja profila:",
                     profileError
                 );
 
 
-                /*
-                    Ako nešto ne uspije kod
-                    role provjere, korisnika
-                    šaljemo na client portal.
-                */
+                showLoginError(
+                    "Prijava je uspjela, ali profil nije moguće učitati."
+                );
 
-                window.location.href =
-                    "form.html";
+                resetLoginButton();
+
+                return;
+            }
+
+
+            if (!profile) {
+
+                showLoginError(
+                    "Korisnički profil nije pronađen."
+                );
+
+                resetLoginButton();
 
                 return;
             }
@@ -182,17 +272,25 @@ document
 
             const role =
                 String(
-                    profile?.role || "client"
+                    profile.role || "client"
                 )
                     .trim()
                     .toLowerCase();
+
+
+            console.log(
+                "ROLE:",
+                role
+            );
 
 
             /* =========================
                REDIRECT
             ========================= */
 
-            if (role === "admin") {
+            if (
+                role === "admin"
+            ) {
 
                 window.location.href =
                     "admin.html";
@@ -205,16 +303,84 @@ document
                 "form.html";
         }
     );
+}
+
+
+/* =========================
+   LOGIN ERROR
+========================= */
+
+function showLoginError(
+    message
+) {
+
+    if (!loginError) {
+        return;
+    }
+
+
+    loginError.textContent =
+        message;
+
+    loginError.classList.add(
+        "show"
+    );
+}
+
+
+/* =========================
+   RESET BUTTON
+========================= */
+
+function resetLoginButton() {
+
+    if (!loginButton) {
+        return;
+    }
+
+
+    loginButton.disabled =
+        false;
+
+    loginButton.textContent =
+        "Prijavi se";
+}
+
+
+/* =========================
+   SHAKE
+========================= */
+
+function shakeLoginCard() {
+
+    const loginCard =
+        document.querySelector(
+            ".big_bubble"
+        );
+
+
+    if (!loginCard) {
+        return;
+    }
+
+
+    loginCard.classList.remove(
+        "shake"
+    );
+
+
+    void loginCard.offsetWidth;
+
+
+    loginCard.classList.add(
+        "shake"
+    );
+}
 
 
 /* =========================
    THEME
 ========================= */
-
-const themeToggle =
-    document.getElementById(
-        "themeToggle"
-    );
 
 const savedTheme =
     localStorage.getItem(
@@ -280,17 +446,6 @@ if (themeToggle) {
    SHOW / HIDE PASSWORD
 ========================= */
 
-const togglePassword =
-    document.getElementById(
-        "togglePassword"
-    );
-
-const passwordInput =
-    document.getElementById(
-        "password"
-    );
-
-
 if (
     togglePassword &&
     passwordInput
@@ -298,68 +453,85 @@ if (
 
     togglePassword.addEventListener(
         "click",
-        function () {
+        function (event) {
 
-            const isHidden =
+            event.preventDefault();
+
+
+            const isPassword =
                 passwordInput.type ===
                 "password";
 
 
             passwordInput.type =
-                isHidden
+                isPassword
                     ? "text"
                     : "password";
 
 
             togglePassword.classList.toggle(
                 "password-visible",
-                isHidden
+                isPassword
             );
+
+
+            togglePassword.setAttribute(
+                "aria-label",
+                isPassword
+                    ? "Sakrij lozinku"
+                    : "Prikaži lozinku"
+            );
+
+
+            passwordInput.focus();
         }
     );
 }
 
 
 /* =========================
-   CAPS LOCK UPOZORENJE
+   CAPS LOCK
 ========================= */
-
-const capsLockWarning =
-    document.getElementById(
-        "capsLockWarning"
-    );
-
 
 if (
     passwordInput &&
     capsLockWarning
 ) {
 
+    function checkCapsLock(event) {
+
+        const capsLockOn =
+            event.getModifierState(
+                "CapsLock"
+            );
+
+
+        if (capsLockOn) {
+
+            capsLockWarning.classList.add(
+                "show"
+            );
+
+        }
+
+        else {
+
+            capsLockWarning.classList.remove(
+                "show"
+            );
+        }
+    }
+
+
     passwordInput.addEventListener(
         "keyup",
-        function (event) {
-
-            const capsLockOn =
-                event.getModifierState(
-                    "CapsLock"
-                );
+        checkCapsLock
+    );
 
 
-            if (capsLockOn) {
-
-                capsLockWarning.classList.add(
-                    "show"
-                );
-
-            }
-
-            else {
-
-                capsLockWarning.classList.remove(
-                    "show"
-                );
-            }
-        }
+    passwordInput.addEventListener(
+        "keydown",
+        checkCapsLock
     );
 
 
