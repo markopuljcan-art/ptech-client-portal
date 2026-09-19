@@ -143,10 +143,8 @@ function getPackageInfo(packageName) {
 
         classic: {
             title: "Classic paket",
-
             description:
                 "Pouzdan paket za standardne projekte i osnovne potrebe.",
-
             features: [
                 "Standardna izrada projekta",
                 "Osnovna podrška",
@@ -156,10 +154,8 @@ function getPackageInfo(packageName) {
 
         premium: {
             title: "Premium paket",
-
             description:
                 "Napredni paket s dodatnim mogućnostima i većom razinom podrške.",
-
             features: [
                 "Prioritetna podrška",
                 "Više izmjena tijekom izrade",
@@ -173,11 +169,113 @@ function getPackageInfo(packageName) {
             packageName
                 ? `${packageName} paket`
                 : "Paket",
-
         description:
             "Detalji paketa trenutno nisu dostupni.",
-
         features: []
+    };
+}
+
+
+/* =========================
+   DEADLINE INFO
+========================= */
+
+function getDeadlineInfo(deadline) {
+
+    if (!deadline) {
+
+        return {
+            daysLeft: null,
+            daysPassed: null,
+            status: "Rok nije postavljen",
+            statusText: "Datum završetka još nije definiran.",
+            className: "deadline-neutral"
+        };
+    }
+
+    const today =
+        new Date();
+
+    today.setHours(
+        0,
+        0,
+        0,
+        0
+    );
+
+    const deadlineDate =
+        new Date(
+            String(deadline).slice(0, 10) +
+            "T00:00:00"
+        );
+
+    const difference =
+        deadlineDate.getTime() -
+        today.getTime();
+
+    const daysLeft =
+        Math.ceil(
+            difference /
+            (1000 * 60 * 60 * 24)
+        );
+
+    const createdReference =
+        new Date(
+            today.getFullYear(),
+            0,
+            1
+        );
+
+    const daysPassed =
+        Math.max(
+            0,
+            Math.floor(
+                (
+                    today.getTime() -
+                    createdReference.getTime()
+                ) /
+                (1000 * 60 * 60 * 24)
+            )
+        );
+
+    if (daysLeft < 0) {
+
+        return {
+            daysLeft:
+                Math.abs(daysLeft),
+            daysPassed,
+            status:
+                "Rok je prošao",
+            statusText:
+                "Planirani datum završetka je prekoračen.",
+            className:
+                "deadline-late"
+        };
+    }
+
+    if (daysLeft <= 30) {
+
+        return {
+            daysLeft,
+            daysPassed,
+            status:
+                "Rok se približava",
+            statusText:
+                "Projekt ulazi u završnu fazu.",
+            className:
+                "deadline-soon"
+        };
+    }
+
+    return {
+        daysLeft,
+        daysPassed,
+        status:
+            "Projekt je u roku",
+        statusText:
+            "Projekt teče prema planu.",
+        className:
+            "deadline-good"
     };
 }
 
@@ -277,20 +375,13 @@ async function initProjectPage() {
         data: profile
     } =
         await supabaseClient
-
             .from("profiles")
-
-            .select(
-                "display_name"
-            )
-
+            .select("display_name")
             .eq(
                 "id",
                 session.user.id
             )
-
             .maybeSingle();
-
 
     if (userTop) {
 
@@ -324,9 +415,7 @@ async function initProjectPage() {
         error
     } =
         await supabaseClient
-
             .from("projects")
-
             .select(`
                 id,
                 name,
@@ -337,14 +426,11 @@ async function initProjectPage() {
                 package,
                 user_id
             `)
-
             .eq(
                 "id",
                 projectId
             )
-
             .maybeSingle();
-
 
     if (error) {
 
@@ -360,7 +446,6 @@ async function initProjectPage() {
         return;
     }
 
-
     if (!project) {
 
         showProjectError(
@@ -369,7 +454,6 @@ async function initProjectPage() {
 
         return;
     }
-
 
     if (
         project.user_id &&
@@ -385,21 +469,14 @@ async function initProjectPage() {
     }
 
 
-    /* =========================
-       RENDER
-    ========================= */
-
     renderProject(
         project
     );
 
-
     await Promise.all([
-
         loadActivities(
             project.id
         ),
-
         loadDocuments(
             project.id
         )
@@ -455,7 +532,6 @@ function renderProject(project) {
         return;
     }
 
-
     const progress =
         Math.max(
             0,
@@ -467,25 +543,26 @@ function renderProject(project) {
             )
         );
 
-
     const statusClass =
         getStatusClass(
             project.status
         );
-
 
     const packageInfo =
         getPackageInfo(
             project.package
         );
 
+    const deadlineInfo =
+        getDeadlineInfo(
+            project.deadline
+        );
 
     const packageFeaturesHTML =
         packageInfo.features.length
             ? packageInfo.features
                 .map(
                     feature => `
-
                         <div class="package-feature">
 
                             <span class="package-check">
@@ -501,7 +578,6 @@ function renderProject(project) {
                 )
                 .join("")
             : "";
-
 
     projectContainer.innerHTML = `
 
@@ -521,9 +597,7 @@ function renderProject(project) {
         <section class="project-detail-hero">
 
 
-            <!-- =========================
-                 NASLOV PROJEKTA
-            ========================== -->
+            <!-- NASLOV -->
 
             <div class="project-detail-heading">
 
@@ -541,13 +615,8 @@ function renderProject(project) {
                                 rx="2">
                             </rect>
 
-                            <path
-                                d="M8 21h8">
-                            </path>
-
-                            <path
-                                d="M12 17v4">
-                            </path>
+                            <path d="M8 21h8"></path>
+                            <path d="M12 17v4"></path>
 
                         </svg>
 
@@ -589,9 +658,7 @@ function renderProject(project) {
             </div>
 
 
-            <!-- =========================
-                 STATISTIKE
-            ========================== -->
+            <!-- STATISTIKE -->
 
             <div class="project-stats">
 
@@ -662,7 +729,6 @@ function renderProject(project) {
                             Napredak
                         </span>
 
-
                         <div class="progress-row">
 
                             <div class="progress-container">
@@ -677,7 +743,6 @@ function renderProject(project) {
                                 </div>
 
                             </div>
-
 
                             <strong>
                                 ${progress}%
@@ -770,9 +835,7 @@ function renderProject(project) {
             </div>
 
 
-            <!-- =========================
-                 PACKAGE INFO
-            ========================== -->
+            <!-- PACKAGE INFO -->
 
             <div class="package-info-card">
 
@@ -794,22 +857,18 @@ function renderProject(project) {
 
 
                     <span class="package-info-badge">
-
                         ${escapeHtml(
                             project.package || "-"
                         )}
-
                     </span>
 
                 </div>
 
 
                 <p class="package-info-description">
-
                     ${escapeHtml(
                         packageInfo.description
                     )}
-
                 </p>
 
 
@@ -822,6 +881,147 @@ function renderProject(project) {
                         `
                         : ""
                 }
+
+            </div>
+
+
+            <!-- DEADLINE INFO -->
+
+            <div
+                class="
+                    deadline-card
+                    ${deadlineInfo.className}
+                "
+            >
+
+                <div class="deadline-card-top">
+
+                    <div class="deadline-title-wrap">
+
+                        <div class="deadline-main-icon">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <rect
+                                    x="3"
+                                    y="5"
+                                    width="18"
+                                    height="16"
+                                    rx="2">
+                                </rect>
+
+                                <path d="M8 3v4"></path>
+                                <path d="M16 3v4"></path>
+                                <path d="M3 10h18"></path>
+
+                            </svg>
+
+                        </div>
+
+
+                        <div>
+
+                            <h3>
+                                Rok projekta
+                            </h3>
+
+                            <p>
+                                Planirani datum završetka projekta
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <span class="deadline-badge">
+
+                        ${
+                            deadlineInfo.className === "deadline-good"
+                                ? "● U planu"
+                                : deadlineInfo.className === "deadline-soon"
+                                    ? "● Uskoro"
+                                    : deadlineInfo.className === "deadline-late"
+                                        ? "● Prošao"
+                                        : "● Nije postavljen"
+                        }
+
+                    </span>
+
+                </div>
+
+
+                <div class="deadline-main-date">
+
+                    ${formatDate(
+                        project.deadline
+                    )}
+
+                </div>
+
+
+                <div class="deadline-meta-grid">
+
+
+                    <div class="deadline-meta-item">
+
+                        <span class="deadline-meta-label">
+                            Preostalo vremena
+                        </span>
+
+                        <strong>
+
+                            ${
+                                deadlineInfo.daysLeft !== null
+                                    ? `${deadlineInfo.daysLeft} dana`
+                                    : "-"
+                            }
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="deadline-meta-item">
+
+                        <span class="deadline-meta-label">
+                            Proteklo vremena
+                        </span>
+
+                        <strong>
+
+                            ${
+                                deadlineInfo.daysPassed !== null
+                                    ? `${deadlineInfo.daysPassed} dana`
+                                    : "-"
+                            }
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="deadline-meta-item">
+
+                        <span class="deadline-meta-label">
+                            Status roka
+                        </span>
+
+                        <strong>
+                            ${escapeHtml(
+                                deadlineInfo.status
+                            )}
+                        </strong>
+
+                        <small>
+                            ${escapeHtml(
+                                deadlineInfo.statusText
+                            )}
+                        </small>
+
+                    </div>
+
+                </div>
 
             </div>
 
@@ -843,34 +1043,28 @@ async function loadActivities(
         return;
     }
 
-
     const {
         data: activities,
         error
     } =
         await supabaseClient
-
             .from("activities")
-
             .select(`
                 title,
                 status,
                 position,
                 activity_date
             `)
-
             .eq(
                 "project_id",
                 currentProjectId
             )
-
             .order(
                 "position",
                 {
                     ascending: true
                 }
             );
-
 
     if (error) {
 
@@ -880,7 +1074,6 @@ async function loadActivities(
         );
 
         activitiesContainer.innerHTML = `
-
             <div class="empty-state">
                 Aktivnosti se ne mogu učitati.
             </div>
@@ -889,14 +1082,12 @@ async function loadActivities(
         return;
     }
 
-
     if (
         !activities ||
         activities.length === 0
     ) {
 
         activitiesContainer.innerHTML = `
-
             <div class="empty-state">
                 Trenutno nema aktivnosti.
             </div>
@@ -905,10 +1096,8 @@ async function loadActivities(
         return;
     }
 
-
     activitiesContainer.innerHTML =
         "";
-
 
     activities.forEach(
         activity => {
@@ -920,13 +1109,11 @@ async function loadActivities(
                     .toLowerCase()
                     .trim();
 
-
             let statusClass =
                 "activity-waiting";
 
             let icon =
                 "○";
-
 
             if (
                 status === "završeno" ||
@@ -952,23 +1139,19 @@ async function loadActivities(
                     "↻";
             }
 
-
             const item =
                 document.createElement(
                     "div"
                 );
 
-
             item.className =
                 `activity-item ${statusClass}`;
-
 
             item.innerHTML = `
 
                 <div class="activity-icon">
                     ${icon}
                 </div>
-
 
                 <div class="activity-content">
 
@@ -978,7 +1161,6 @@ async function loadActivities(
                         )}
                     </strong>
 
-
                     <span class="activity-date">
                         ${formatDate(
                             activity.activity_date
@@ -987,7 +1169,6 @@ async function loadActivities(
 
                 </div>
             `;
-
 
             activitiesContainer
                 .appendChild(
@@ -1017,12 +1198,10 @@ async function loadActivities(
                     )
             );
 
-
     const lastUpdated =
         document.getElementById(
             "lastUpdated"
         );
-
 
     if (
         lastUpdated &&
@@ -1050,36 +1229,30 @@ async function loadDocuments(
         return;
     }
 
-
     const {
         data: documents,
         error
     } =
         await supabaseClient
-
             .from(
                 "project_documents"
             )
-
             .select(`
                 id,
                 name,
                 file_url,
                 created_at
             `)
-
             .eq(
                 "project_id",
                 currentProjectId
             )
-
             .order(
                 "created_at",
                 {
                     ascending: false
                 }
             );
-
 
     if (error) {
 
@@ -1089,7 +1262,6 @@ async function loadDocuments(
         );
 
         documentsContainer.innerHTML = `
-
             <div class="empty-state">
                 Dokumenti se ne mogu učitati.
             </div>
@@ -1098,14 +1270,12 @@ async function loadDocuments(
         return;
     }
 
-
     if (
         !documents ||
         documents.length === 0
     ) {
 
         documentsContainer.innerHTML = `
-
             <div class="empty-state">
                 Trenutno nema dokumenata.
             </div>
@@ -1114,10 +1284,8 @@ async function loadDocuments(
         return;
     }
 
-
     documentsContainer.innerHTML =
         "";
-
 
     for (
         const documentItem
@@ -1129,14 +1297,11 @@ async function loadDocuments(
                 "a"
             );
 
-
         card.className =
             "project-document-card";
 
-
         let documentUrl =
             "#";
-
 
         if (
             documentItem.file_url
@@ -1147,18 +1312,14 @@ async function loadDocuments(
                 error: signedError
             } =
                 await supabaseClient
-
                     .storage
-
                     .from(
                         "project-documents"
                     )
-
                     .createSignedUrl(
                         documentItem.file_url,
                         600
                     );
-
 
             if (
                 !signedError &&
@@ -1170,10 +1331,8 @@ async function loadDocuments(
             }
         }
 
-
         card.href =
             documentUrl;
-
 
         if (
             documentUrl !== "#"
@@ -1185,7 +1344,6 @@ async function loadDocuments(
             card.rel =
                 "noopener noreferrer";
         }
-
 
         card.innerHTML = `
 
@@ -1205,7 +1363,6 @@ async function loadDocuments(
 
             </div>
 
-
             <div class="project-document-content">
 
                 <strong>
@@ -1215,7 +1372,6 @@ async function loadDocuments(
                     )}
                 </strong>
 
-
                 <span>
                     ${formatDate(
                         documentItem.created_at
@@ -1224,12 +1380,10 @@ async function loadDocuments(
 
             </div>
 
-
             <span class="project-document-arrow">
                 ›
             </span>
         `;
-
 
         documentsContainer
             .appendChild(
