@@ -1264,6 +1264,441 @@ body {
     background: var(--orange);
 }
 
+/* =========================
+   DEADLINE CARD
+========================= */
+
+.deadline-card {
+    margin-top: 22px;
+
+    padding: 22px;
+
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.24);
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 122, 0, 0.05),
+            rgba(255, 255, 255, 0.015)
+        );
+}
+
+
+/* =========================
+   TOP
+========================= */
+
+.deadline-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+.deadline-title-wrap {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+}
+
+
+.deadline-main-icon {
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background:
+        rgba(255, 122, 0, 0.10);
+
+    color: var(--orange);
+}
+
+
+.deadline-main-icon svg {
+    width: 23px;
+    height: 23px;
+
+    fill: none;
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+.deadline-title-wrap h3 {
+    margin: 0 0 4px;
+
+    font-size: 18px;
+}
+
+
+.deadline-title-wrap p {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+
+/* =========================
+   BADGE
+========================= */
+
+.deadline-badge {
+    padding: 7px 12px;
+
+    border-radius: 999px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+/* DOBAR ROK */
+
+.deadline-good .deadline-badge {
+    color: #34d96d;
+
+    border:
+        1px solid
+        rgba(52, 217, 109, 0.35);
+
+    background:
+        rgba(52, 217, 109, 0.08);
+}
+
+
+/* ROK SE PRIBLIŽAVA */
+
+.deadline-soon .deadline-badge {
+    color: #ff9a35;
+
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.35);
+
+    background:
+        rgba(255, 122, 0, 0.08);
+}
+
+
+/* ROK PROŠAO */
+
+.deadline-late .deadline-badge {
+    color: #ff5d5d;
+
+    border:
+        1px solid
+        rgba(255, 93, 93, 0.35);
+
+    background:
+        rgba(255, 93, 93, 0.08);
+}
+
+
+/* NEUTRAL */
+
+.deadline-neutral .deadline-badge {
+    color: #aaa;
+
+    border:
+        1px solid
+        rgba(160, 160, 160, 0.25);
+
+    background:
+        rgba(160, 160, 160, 0.06);
+}
+
+
+/* =========================
+   GLAVNI DATUM
+========================= */
+
+.deadline-main-date {
+    margin-top: 18px;
+
+    font-size: 31px;
+    font-weight: 800;
+
+    letter-spacing: 0.01em;
+}
+
+
+/* =========================
+   META GRID
+========================= */
+
+.deadline-meta-grid {
+    margin-top: 20px;
+
+    padding-top: 18px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 0;
+
+    border-top:
+        1px solid
+        rgba(255, 255, 255, 0.07);
+}
+
+
+/* META ITEM */
+
+.deadline-meta-item {
+    padding: 0 18px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+
+.deadline-meta-item:first-child {
+    padding-left: 0;
+}
+
+
+.deadline-meta-item:last-child {
+    padding-right: 0;
+}
+
+
+.deadline-meta-item:not(:last-child) {
+    border-right:
+        1px solid
+        rgba(255, 255, 255, 0.07);
+}
+
+
+.deadline-meta-label {
+    color: var(--muted);
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.05em;
+}
+
+
+.deadline-meta-item strong {
+    font-size: 16px;
+}
+
+
+.deadline-meta-item small {
+    color: var(--muted);
+
+    font-size: 10px;
+
+    line-height: 1.4;
+}
+
+
+/* =========================
+   STATUS BOJE
+========================= */
+
+.deadline-good
+.deadline-meta-item:last-child
+strong {
+    color: #34d96d;
+}
+
+
+.deadline-soon
+.deadline-meta-item:last-child
+strong {
+    color: #ff9a35;
+}
+
+
+.deadline-late
+.deadline-meta-item:last-child
+strong {
+    color: #ff5d5d;
+}
+
+
+.deadline-neutral
+.deadline-meta-item:last-child
+strong {
+    color: #aaa;
+}
+
+
+/* =========================
+   LIGHT MODE
+========================= */
+
+body.light-mode
+.deadline-card {
+    background: #fffaf5;
+
+    border-color:
+        rgba(255, 122, 0, 0.18);
+}
+
+
+body.light-mode
+.deadline-title-wrap h3,
+body.light-mode
+.deadline-main-date,
+body.light-mode
+.deadline-meta-item strong {
+    color: #222;
+}
+
+
+body.light-mode
+.deadline-title-wrap p,
+body.light-mode
+.deadline-meta-label,
+body.light-mode
+.deadline-meta-item small {
+    color:
+        rgba(0, 0, 0, 0.50);
+}
+
+
+body.light-mode
+.deadline-meta-grid {
+    border-top-color:
+        rgba(0, 0, 0, 0.08);
+}
+
+
+body.light-mode
+.deadline-meta-item:not(:last-child) {
+    border-right-color:
+        rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 900px) {
+
+    .deadline-meta-grid {
+        grid-template-columns:
+            1fr
+            1fr;
+    }
+
+
+    .deadline-meta-item {
+        padding: 12px;
+    }
+
+
+    .deadline-meta-item:nth-child(2) {
+        border-right: none;
+    }
+
+
+    .deadline-meta-item:last-child {
+        grid-column: 1 / -1;
+
+        margin-top: 10px;
+
+        padding-top: 16px;
+
+        border-top:
+            1px solid
+            rgba(255, 255, 255, 0.07);
+
+        border-right: none;
+    }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+    .deadline-card {
+        padding: 16px;
+    }
+
+
+    .deadline-card-top {
+        flex-direction: column;
+
+        gap: 12px;
+    }
+
+
+    .deadline-main-date {
+        font-size: 25px;
+    }
+
+
+    .deadline-meta-grid {
+        grid-template-columns: 1fr;
+
+        gap: 0;
+    }
+
+
+    .deadline-meta-item {
+        padding:
+            13px
+            0;
+    }
+
+
+    .deadline-meta-item:not(:last-child) {
+        border-right: none;
+
+        border-bottom:
+            1px solid
+            rgba(255, 255, 255, 0.07);
+    }
+
+
+    .deadline-meta-item:last-child {
+        margin-top: 0;
+
+        padding-top: 13px;
+
+        border-top: none;
+    }
+
+
+    .deadline-meta-item strong {
+        font-size: 15px;
+    }
+
+}
 
 /* =========================
    LIGHT MODE
