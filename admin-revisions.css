@@ -1,95 +1,11 @@
-* {
-    box-sizing: border-box;
-}
+/* =========================
+   ADMIN REVISIONS
+========================= */
 
-:root {
-    --orange: #ff7a00;
-    --orange-light: #ff9b35;
+.admin-revisions-heading {
+    margin-bottom: 20px;
 
-    --bg: #0b0c0e;
-    --panel: #151618;
-
-    --text: #f5f5f5;
-    --muted: rgba(255, 255, 255, 0.48);
-
-    --border: rgba(255, 255, 255, 0.09);
-
-    --green: #35d46e;
-    --red: #ff6565;
-}
-
-
-/* BODY */
-
-html {
-    min-height: 100%;
-}
-
-body {
-    margin: 0;
-    min-height: 100vh;
-
-    padding: 40px 24px;
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    color: var(--text);
-
-    background:
-        radial-gradient(
-            circle at 0 0,
-            rgba(255, 122, 0, 0.20),
-            transparent 26%
-        ),
-        radial-gradient(
-            circle at 100% 100%,
-            rgba(255, 122, 0, 0.10),
-            transparent 24%
-        ),
-        var(--bg);
-}
-
-
-/* PAGE */
-
-.admin-page {
-    width: 100%;
-    max-width: 1100px;
-
-    margin: 0 auto;
-
-    overflow: hidden;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.11);
-
-    border-radius: 22px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #161719,
-            #0f1012
-        );
-
-    box-shadow:
-        0 30px 80px
-        rgba(0, 0, 0, 0.45);
-}
-
-
-/* HEADER */
-
-.admin-header {
-    min-height: 100px;
-
-    padding:
-        22px
-        32px;
+    padding: 20px 22px;
 
     display: flex;
     align-items: center;
@@ -97,130 +13,41 @@ body {
 
     gap: 20px;
 
-    border-bottom:
+    border:
         1px solid
-        rgba(255, 255, 255, 0.08);
-}
+        rgba(255, 122, 0, 0.14);
 
-.brand {
-    display: flex;
-    align-items: center;
-
-    gap: 15px;
-}
-
-.brand-logo {
-    width: 48px;
-    height: 48px;
-
-    flex: 0 0 48px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 13px;
+    border-radius: 15px;
 
     background:
         linear-gradient(
             135deg,
-            #ffa22d,
-            #ff7000
+            rgba(255, 122, 0, 0.05),
+            rgba(255, 255, 255, 0.01)
         );
-
-    color: #111;
-
-    font-size: 27px;
-    font-weight: 900;
 }
 
-.brand h1 {
+.admin-revisions-heading h3 {
     margin:
         0
         0
-        4px;
+        5px;
 
-    font-size: 22px;
+    font-size: 20px;
 }
 
-.brand p {
+.admin-revisions-heading p {
     margin: 0;
 
-    color: var(--muted);
+    color:
+        rgba(255, 255, 255, 0.46);
 
-    font-size: 12px;
-}
-
-.admin-back {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    min-height: 36px;
-
-    padding:
-        8px
-        14px;
-
-    border:
-        1px solid
-        rgba(255, 122, 0, 0.28);
-
-    border-radius: 999px;
-
-    background:
-        rgba(255, 122, 0, 0.05);
-
-    color: #ff922b;
-
-    text-decoration: none;
-
-    font-size: 12px;
-    font-weight: 700;
-}
-
-
-/* CONTENT */
-
-.admin-content {
-    padding:
-        28px
-        38px
-        40px;
-}
-
-.admin-section-header {
-    margin-bottom: 18px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 20px;
-}
-
-.admin-label {
-    display: block;
-
-    margin-bottom: 5px;
-
-    color: var(--muted);
-
-    font-size: 10px;
-
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-}
-
-.admin-section-header h2 {
-    margin: 0;
-
-    font-size: 22px;
+    font-size: 11px;
 }
 
 .revision-count {
-    min-width: 38px;
-    height: 38px;
+    min-width: 40px;
+    height: 40px;
 
     padding:
         0
@@ -237,67 +64,77 @@ body {
     border-radius: 999px;
 
     background:
-        rgba(255, 122, 0, 0.08);
+        rgba(255, 122, 0, 0.07);
 
-    color: var(--orange-light);
+    color: #ff9a35;
 
     font-size: 13px;
     font-weight: 800;
 }
 
 
-/* LIST */
+/* =========================
+   LIST
+========================= */
 
 .admin-revisions-list {
     display: flex;
     flex-direction: column;
 
-    gap: 16px;
+    gap: 14px;
 }
 
 
-/* CARD */
+/* =========================
+   CARD
+========================= */
 
 .admin-revision-card {
-    padding: 20px;
+    padding: 18px;
 
     border:
         1px solid
-        var(--border);
+        rgba(255, 255, 255, 0.08);
 
-    border-radius: 16px;
+    border-radius: 14px;
 
     background:
         linear-gradient(
             145deg,
             rgba(255, 255, 255, 0.025),
-            rgba(255, 255, 255, 0.01)
+            rgba(255, 255, 255, 0.008)
         );
 }
+
+
+/* =========================
+   TOP
+========================= */
 
 .admin-revision-top {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
 
-    gap: 20px;
+    gap: 18px;
 }
 
 .admin-revision-project {
     min-width: 0;
 }
 
-.admin-revision-project span {
+.admin-revision-project > span {
     display: block;
 
     margin-bottom: 5px;
 
-    color: var(--muted);
+    color:
+        rgba(255, 255, 255, 0.38);
 
-    font-size: 10px;
+    font-size: 9px;
 
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.07em;
 }
 
 .admin-revision-project h3 {
@@ -306,16 +143,22 @@ body {
         0
         4px;
 
-    font-size: 18px;
+    font-size: 17px;
 }
 
 .admin-revision-project p {
     margin: 0;
 
-    color: var(--muted);
+    color:
+        rgba(255, 255, 255, 0.42);
 
-    font-size: 11px;
+    font-size: 10px;
 }
+
+
+/* =========================
+   STATUS
+========================= */
 
 .admin-revision-status {
     flex-shrink: 0;
@@ -326,45 +169,47 @@ body {
 
     border:
         1px solid
-        rgba(255, 122, 0, 0.30);
+        rgba(255, 122, 0, 0.28);
 
     border-radius: 999px;
 
     background:
-        rgba(255, 122, 0, 0.08);
+        rgba(255, 122, 0, 0.07);
 
-    color: #ff9a35;
+    color: #ff9630;
 
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 700;
 }
 
 .admin-revision-status.answered {
-    color: #45dd78;
-
     border-color:
-        rgba(53, 212, 110, 0.30);
+        rgba(53, 212, 110, 0.25);
 
     background:
-        rgba(53, 212, 110, 0.07);
+        rgba(53, 212, 110, 0.06);
+
+    color: #42dd78;
 }
 
 
-/* CLIENT REQUEST */
+/* =========================
+   REQUEST BOX
+========================= */
 
 .admin-request-box {
-    margin-top: 16px;
+    margin-top: 14px;
 
-    padding: 15px;
+    padding: 14px;
 
     border:
         1px solid
-        rgba(255, 255, 255, 0.07);
+        rgba(255, 255, 255, 0.06);
 
-    border-radius: 12px;
+    border-radius: 11px;
 
     background:
-        rgba(0, 0, 0, 0.16);
+        rgba(0, 0, 0, 0.14);
 }
 
 .admin-request-label {
@@ -372,9 +217,10 @@ body {
 
     margin-bottom: 7px;
 
-    color: var(--muted);
+    color:
+        rgba(255, 255, 255, 0.38);
 
-    font-size: 10px;
+    font-size: 9px;
 
     text-transform: uppercase;
     letter-spacing: 0.06em;
@@ -384,56 +230,61 @@ body {
     margin: 0;
 
     color:
-        rgba(255, 255, 255, 0.84);
+        rgba(255, 255, 255, 0.82);
 
-    font-size: 13px;
+    font-size: 12px;
 
     line-height: 1.6;
+
+    white-space: pre-wrap;
 }
 
 .admin-request-date {
     display: block;
 
-    margin-top: 10px;
+    margin-top: 9px;
 
-    color: var(--muted);
+    color:
+        rgba(255, 255, 255, 0.35);
 
-    font-size: 10px;
+    font-size: 9px;
 }
 
 
-/* REPLY AREA */
+/* =========================
+   REPLY AREA
+========================= */
 
 .admin-reply-area {
-    margin-top: 16px;
+    margin-top: 14px;
 }
 
 .admin-reply-area label {
     display: block;
 
-    margin-bottom: 8px;
+    margin-bottom: 7px;
 
     color:
-        rgba(255, 255, 255, 0.78);
+        rgba(255, 255, 255, 0.72);
 
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
 }
 
-.admin-reply-area textarea {
+.admin-reply-input {
     width: 100%;
 
-    min-height: 120px;
+    min-height: 110px;
 
-    padding: 14px;
+    padding: 13px;
 
     resize: vertical;
 
     border:
         1px solid
-        rgba(255, 255, 255, 0.10);
+        rgba(255, 255, 255, 0.09);
 
-    border-radius: 12px;
+    border-radius: 11px;
 
     outline: none;
 
@@ -443,19 +294,33 @@ body {
     color: #fff;
 
     font-family: inherit;
-    font-size: 13px;
+    font-size: 12px;
 
     line-height: 1.6;
+
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
 }
 
-.admin-reply-area textarea:focus {
+.admin-reply-input::placeholder {
+    color:
+        rgba(255, 255, 255, 0.25);
+}
+
+.admin-reply-input:focus {
     border-color:
-        rgba(255, 122, 0, 0.50);
+        rgba(255, 122, 0, 0.45);
 
     box-shadow:
         0 0 0 3px
         rgba(255, 122, 0, 0.05);
 }
+
+
+/* =========================
+   REPLY BUTTON
+========================= */
 
 .admin-reply-actions {
     margin-top: 10px;
@@ -465,17 +330,17 @@ body {
 }
 
 .admin-reply-button {
-    min-height: 40px;
+    min-height: 38px;
 
     padding:
-        9px
-        16px;
+        8px
+        15px;
 
     border:
         1px solid
-        rgba(255, 122, 0, 0.55);
+        rgba(255, 122, 0, 0.50);
 
-    border-radius: 10px;
+    border-radius: 9px;
 
     background:
         linear-gradient(
@@ -484,37 +349,44 @@ body {
             #ff7000
         );
 
-    color: #171717;
+    color: #151515;
 
     font-family: inherit;
 
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 800;
 
     cursor: pointer;
 }
 
+.admin-reply-button:hover {
+    filter: brightness(1.05);
+}
+
 .admin-reply-button:disabled {
     opacity: 0.45;
+
     cursor: not-allowed;
 }
 
 
-/* EXISTING REPLY */
+/* =========================
+   EXISTING REPLY
+========================= */
 
 .admin-existing-reply {
-    margin-top: 16px;
+    margin-top: 14px;
 
-    padding: 15px;
+    padding: 14px;
 
     border:
         1px solid
-        rgba(53, 212, 110, 0.20);
+        rgba(53, 212, 110, 0.18);
 
-    border-radius: 12px;
+    border-radius: 11px;
 
     background:
-        rgba(53, 212, 110, 0.05);
+        rgba(53, 212, 110, 0.045);
 }
 
 .admin-existing-reply strong {
@@ -522,20 +394,22 @@ body {
 
     margin-bottom: 6px;
 
-    color: #45dd78;
+    color: #45dd79;
 
-    font-size: 11px;
+    font-size: 10px;
 }
 
 .admin-existing-reply p {
     margin: 0;
 
     color:
-        rgba(255, 255, 255, 0.82);
+        rgba(255, 255, 255, 0.80);
 
-    font-size: 13px;
+    font-size: 12px;
 
     line-height: 1.6;
+
+    white-space: pre-wrap;
 }
 
 .admin-existing-reply span {
@@ -543,111 +417,63 @@ body {
 
     margin-top: 8px;
 
-    color: var(--muted);
+    color:
+        rgba(255, 255, 255, 0.34);
 
-    font-size: 10px;
+    font-size: 9px;
 }
 
 
-/* EMPTY */
-
-.empty-state {
-    padding: 30px;
-
-    border:
-        1px solid
-        var(--border);
-
-    border-radius: 14px;
-
-    color: var(--muted);
-
-    text-align: center;
-
-    font-size: 12px;
-}
-
-
-/* MESSAGE */
+/* =========================
+   MESSAGE
+========================= */
 
 .admin-message {
-    margin-top: 16px;
+    margin-top: 14px;
 
     padding:
-        13px
-        16px;
+        12px
+        14px;
 
-    border-radius: 12px;
+    border-radius: 10px;
 
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
 }
 
 .admin-message.success {
     border:
         1px solid
-        rgba(53, 212, 110, 0.30);
+        rgba(53, 212, 110, 0.25);
 
     background:
-        rgba(53, 212, 110, 0.07);
+        rgba(53, 212, 110, 0.06);
 
-    color: #45dd78;
+    color: #43dc78;
 }
 
 .admin-message.error {
     border:
         1px solid
-        rgba(255, 101, 101, 0.30);
+        rgba(255, 101, 101, 0.25);
 
     background:
-        rgba(255, 101, 101, 0.07);
+        rgba(255, 101, 101, 0.06);
 
-    color: #ff7a7a;
+    color: #ff7979;
 }
 
 
-/* MOBILE */
+/* =========================
+   MOBILE
+========================= */
 
-@media (max-width: 700px) {
+@media (max-width: 760px) {
 
-    body {
-        padding: 8px;
-    }
-
-    .admin-page {
-        border-radius: 16px;
-    }
-
-    .admin-header {
-        padding:
-            16px
-            15px;
+    .admin-revisions-heading {
+        padding: 16px;
 
         align-items: flex-start;
-    }
-
-    .brand-logo {
-        width: 42px;
-        height: 42px;
-
-        flex-basis: 42px;
-
-        font-size: 23px;
-    }
-
-    .brand h1 {
-        font-size: 17px;
-    }
-
-    .brand p {
-        font-size: 10px;
-    }
-
-    .admin-content {
-        padding:
-            20px
-            14px
-            28px;
     }
 
     .admin-revision-card {
@@ -664,5 +490,12 @@ body {
 
     .admin-reply-button {
         width: 100%;
+    }
+}
+
+@media (max-width: 450px) {
+
+    .admin-revisions-heading {
+        flex-direction: column;
     }
 }
