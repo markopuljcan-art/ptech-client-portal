@@ -4,13 +4,11 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
 
-
 const supabaseClient =
     supabase.createClient(
         SUPABASE_URL,
         SUPABASE_KEY
     );
-
 
 
 /* =========================
@@ -36,9 +34,8 @@ const documentsContainer =
     document.getElementById("projectDocuments");
 
 
-
 /* =========================
-   PROJECT ID
+   PROJECT ID IZ URL-a
 ========================= */
 
 const params =
@@ -48,7 +45,6 @@ const params =
 
 const projectId =
     params.get("id");
-
 
 
 /* =========================
@@ -88,7 +84,6 @@ function formatDate(value) {
 }
 
 
-
 /* =========================
    ESCAPE HTML
 ========================= */
@@ -104,7 +99,6 @@ function escapeHtml(value) {
 }
 
 
-
 /* =========================
    STATUS
 ========================= */
@@ -116,28 +110,76 @@ function getStatusClass(status) {
             .toLowerCase()
             .trim();
 
-
     if (
         value === "završeno" ||
         value === "zavrseno"
     ) {
-
         return "status-done";
     }
-
 
     if (
         value === "na čekanju" ||
         value === "na cekanju"
     ) {
-
         return "status-waiting";
     }
-
 
     return "status-progress";
 }
 
+
+/* =========================
+   PACKAGE INFO
+========================= */
+
+function getPackageInfo(packageName) {
+
+    const normalized =
+        String(packageName || "")
+            .toLowerCase()
+            .trim();
+
+    const packages = {
+
+        classic: {
+            title: "Classic paket",
+
+            description:
+                "Pouzdan paket za standardne projekte i osnovne potrebe.",
+
+            features: [
+                "Standardna izrada projekta",
+                "Osnovna podrška",
+                "Redovna ažuriranja"
+            ]
+        },
+
+        premium: {
+            title: "Premium paket",
+
+            description:
+                "Napredni paket s dodatnim mogućnostima i većom razinom podrške.",
+
+            features: [
+                "Prioritetna podrška",
+                "Više izmjena tijekom izrade",
+                "Napredna optimizacija"
+            ]
+        }
+    };
+
+    return packages[normalized] || {
+        title:
+            packageName
+                ? `${packageName} paket`
+                : "Paket",
+
+        description:
+            "Detalji paketa trenutno nisu dostupni.",
+
+        features: []
+    };
+}
 
 
 /* =========================
@@ -145,10 +187,7 @@ function getStatusClass(status) {
 ========================= */
 
 const savedTheme =
-    localStorage.getItem(
-        "theme"
-    );
-
+    localStorage.getItem("theme");
 
 if (
     savedTheme === "light"
@@ -162,7 +201,6 @@ if (
         themeToggle.checked = true;
     }
 }
-
 
 if (themeToggle) {
 
@@ -181,11 +219,9 @@ if (themeToggle) {
                     ? "light"
                     : "dark"
             );
-
         }
     );
 }
-
 
 
 /* =========================
@@ -204,11 +240,9 @@ if (logoutButton) {
 
             window.location.href =
                 "index.html";
-
         }
     );
 }
-
 
 
 /* =========================
@@ -226,7 +260,6 @@ async function initProjectPage() {
             .auth
             .getSession();
 
-
     if (!session) {
 
         window.location.href =
@@ -234,7 +267,6 @@ async function initProjectPage() {
 
         return;
     }
-
 
 
     /* =========================
@@ -266,9 +298,7 @@ async function initProjectPage() {
             profile?.display_name ||
             session.user.email
                 .split("@")[0];
-
     }
-
 
 
     /* =========================
@@ -283,7 +313,6 @@ async function initProjectPage() {
 
         return;
     }
-
 
 
     /* =========================
@@ -317,7 +346,6 @@ async function initProjectPage() {
             .maybeSingle();
 
 
-
     if (error) {
 
         console.error(
@@ -333,7 +361,6 @@ async function initProjectPage() {
     }
 
 
-
     if (!project) {
 
         showProjectError(
@@ -343,14 +370,6 @@ async function initProjectPage() {
         return;
     }
 
-
-
-    /*
-        DODATNA FRONTEND PROVJERA.
-
-        RLS u Supabaseu i dalje treba
-        ostati glavna zaštita.
-    */
 
     if (
         project.user_id &&
@@ -366,9 +385,8 @@ async function initProjectPage() {
     }
 
 
-
     /* =========================
-       PRIKAŽI
+       RENDER
     ========================= */
 
     renderProject(
@@ -385,11 +403,8 @@ async function initProjectPage() {
         loadDocuments(
             project.id
         )
-
     ]);
-
 }
-
 
 
 /* =========================
@@ -409,12 +424,10 @@ function showProjectError(message) {
                     class="project-back"
                 >
                     <span>‹</span>
-
                     Natrag
                 </a>
 
             </div>
-
 
             <div class="empty-state">
                 ${escapeHtml(message)}
@@ -422,22 +435,14 @@ function showProjectError(message) {
         `;
     }
 
-
     if (activitiesContainer) {
-
-        activitiesContainer.innerHTML =
-            "";
+        activitiesContainer.innerHTML = "";
     }
-
 
     if (documentsContainer) {
-
-        documentsContainer.innerHTML =
-            "";
+        documentsContainer.innerHTML = "";
     }
-
 }
-
 
 
 /* =========================
@@ -445,6 +450,11 @@ function showProjectError(message) {
 ========================= */
 
 function renderProject(project) {
+
+    if (!projectContainer) {
+        return;
+    }
+
 
     const progress =
         Math.max(
@@ -464,6 +474,35 @@ function renderProject(project) {
         );
 
 
+    const packageInfo =
+        getPackageInfo(
+            project.package
+        );
+
+
+    const packageFeaturesHTML =
+        packageInfo.features.length
+            ? packageInfo.features
+                .map(
+                    feature => `
+
+                        <div class="package-feature">
+
+                            <span class="package-check">
+                                ✓
+                            </span>
+
+                            <span>
+                                ${escapeHtml(feature)}
+                            </span>
+
+                        </div>
+                    `
+                )
+                .join("")
+            : "";
+
+
     projectContainer.innerHTML = `
 
         <div class="project-back-row">
@@ -472,25 +511,23 @@ function renderProject(project) {
                 href="form.html"
                 class="project-back"
             >
-
                 <span>‹</span>
-
                 Natrag
-
             </a>
 
         </div>
 
 
-
         <section class="project-detail-hero">
 
 
+            <!-- =========================
+                 NASLOV PROJEKTA
+            ========================== -->
+
             <div class="project-detail-heading">
 
-
                 <div class="project-main">
-
 
                     <div class="project-icon">
 
@@ -535,9 +572,7 @@ function renderProject(project) {
 
                     </div>
 
-
                 </div>
-
 
 
                 <div
@@ -546,17 +581,17 @@ function renderProject(project) {
                         ${statusClass}
                     "
                 >
-
                     ${escapeHtml(
                         project.status || "-"
                     )}
-
                 </div>
-
 
             </div>
 
 
+            <!-- =========================
+                 STATISTIKE
+            ========================== -->
 
             <div class="project-stats">
 
@@ -577,17 +612,9 @@ function renderProject(project) {
                                 rx="2">
                             </rect>
 
-                            <path
-                                d="M8 7V5">
-                            </path>
-
-                            <path
-                                d="M16 7V5">
-                            </path>
-
-                            <path
-                                d="M8 5h8">
-                            </path>
+                            <path d="M8 7V5"></path>
+                            <path d="M16 7V5"></path>
+                            <path d="M8 5h8"></path>
 
                         </svg>
 
@@ -601,17 +628,14 @@ function renderProject(project) {
                         </span>
 
                         <strong class="package-value">
-
                             ${escapeHtml(
                                 project.package || "-"
                             )}
-
                         </strong>
 
                     </div>
 
                 </div>
-
 
 
                 <!-- NAPREDAK -->
@@ -666,7 +690,6 @@ function renderProject(project) {
                 </div>
 
 
-
                 <!-- ROK -->
 
                 <div class="stat-card">
@@ -709,8 +732,7 @@ function renderProject(project) {
                 </div>
 
 
-
-                <!-- ZADNJE -->
+                <!-- ZADNJE AŽURIRANO -->
 
                 <div class="stat-card">
 
@@ -745,15 +767,68 @@ function renderProject(project) {
 
                 </div>
 
+            </div>
+
+
+            <!-- =========================
+                 PACKAGE INFO
+            ========================== -->
+
+            <div class="package-info-card">
+
+                <div class="package-info-top">
+
+                    <div>
+
+                        <span class="package-info-label">
+                            Tvoj paket
+                        </span>
+
+                        <h3>
+                            ${escapeHtml(
+                                packageInfo.title
+                            )}
+                        </h3>
+
+                    </div>
+
+
+                    <span class="package-info-badge">
+
+                        ${escapeHtml(
+                            project.package || "-"
+                        )}
+
+                    </span>
+
+                </div>
+
+
+                <p class="package-info-description">
+
+                    ${escapeHtml(
+                        packageInfo.description
+                    )}
+
+                </p>
+
+
+                ${
+                    packageFeaturesHTML
+                        ? `
+                            <div class="package-features">
+                                ${packageFeaturesHTML}
+                            </div>
+                        `
+                        : ""
+                }
 
             </div>
 
 
         </section>
     `;
-
 }
-
 
 
 /* =========================
@@ -763,6 +838,11 @@ function renderProject(project) {
 async function loadActivities(
     currentProjectId
 ) {
+
+    if (!activitiesContainer) {
+        return;
+    }
+
 
     const {
         data: activities,
@@ -792,7 +872,6 @@ async function loadActivities(
             );
 
 
-
     if (error) {
 
         console.error(
@@ -811,7 +890,6 @@ async function loadActivities(
     }
 
 
-
     if (
         !activities ||
         activities.length === 0
@@ -828,10 +906,8 @@ async function loadActivities(
     }
 
 
-
     activitiesContainer.innerHTML =
         "";
-
 
 
     activities.forEach(
@@ -862,7 +938,6 @@ async function loadActivities(
 
                 icon =
                     "✓";
-
             }
 
             else if (
@@ -875,9 +950,7 @@ async function loadActivities(
 
                 icon =
                     "↻";
-
             }
-
 
 
             const item =
@@ -900,20 +973,16 @@ async function loadActivities(
                 <div class="activity-content">
 
                     <strong class="activity-title">
-
                         ${escapeHtml(
                             activity.title || "-"
                         )}
-
                     </strong>
 
 
                     <span class="activity-date">
-
                         ${formatDate(
                             activity.activity_date
                         )}
-
                     </span>
 
                 </div>
@@ -924,13 +993,13 @@ async function loadActivities(
                 .appendChild(
                     item
                 );
-
         }
     );
 
 
-
-    /* ZADNJE AŽURIRANO */
+    /* =========================
+       ZADNJE AŽURIRANO
+    ========================= */
 
     const withDate =
         activities
@@ -965,11 +1034,8 @@ async function loadActivities(
                 withDate[0]
                     .activity_date
             );
-
     }
-
 }
-
 
 
 /* =========================
@@ -979,6 +1045,11 @@ async function loadActivities(
 async function loadDocuments(
     currentProjectId
 ) {
+
+    if (!documentsContainer) {
+        return;
+    }
+
 
     const {
         data: documents,
@@ -1010,7 +1081,6 @@ async function loadDocuments(
             );
 
 
-
     if (error) {
 
         console.error(
@@ -1029,7 +1099,6 @@ async function loadDocuments(
     }
 
 
-
     if (
         !documents ||
         documents.length === 0
@@ -1046,10 +1115,8 @@ async function loadDocuments(
     }
 
 
-
     documentsContainer.innerHTML =
         "";
-
 
 
     for (
@@ -1100,9 +1167,7 @@ async function loadDocuments(
 
                 documentUrl =
                     signedData.signedUrl;
-
             }
-
         }
 
 
@@ -1119,7 +1184,6 @@ async function loadDocuments(
 
             card.rel =
                 "noopener noreferrer";
-
         }
 
 
@@ -1145,21 +1209,17 @@ async function loadDocuments(
             <div class="project-document-content">
 
                 <strong>
-
                     ${escapeHtml(
                         documentItem.name ||
                         "Dokument"
                     )}
-
                 </strong>
 
 
                 <span>
-
                     ${formatDate(
                         documentItem.created_at
                     )}
-
                 </span>
 
             </div>
@@ -1175,11 +1235,12 @@ async function loadDocuments(
             .appendChild(
                 card
             );
-
     }
-
 }
 
 
+/* =========================
+   INIT
+========================= */
 
 initProjectPage();
