@@ -12,7 +12,7 @@
 
     <link
         rel="stylesheet"
-        href="./project.css?v=20"
+        href="./project.css?v=30"
     >
 
     <script
@@ -20,7 +20,7 @@
     </script>
 
     <script
-        src="./project.js?v=20"
+        src="./project.js?v=30"
         defer>
     </script>
 
@@ -36,7 +36,9 @@
     <main class="dashboard">
 
 
-        <!-- HEADER -->
+        <!-- =========================
+             HEADER
+        ========================== -->
 
         <header class="dashboard-header">
 
@@ -55,13 +57,25 @@
 
             <div class="header-actions">
 
+
+                <!-- USER -->
+
                 <div class="user-box">
 
                     <div class="user-avatar">
 
                         <svg viewBox="0 0 24 24">
-                            <circle cx="12" cy="8" r="3"></circle>
-                            <path d="M5 20c0-4 3-7 7-7s7 3 7 7"></path>
+
+                            <circle
+                                cx="12"
+                                cy="8"
+                                r="3">
+                            </circle>
+
+                            <path
+                                d="M5 20c0-4 3-7 7-7s7 3 7 7">
+                            </path>
+
                         </svg>
 
                     </div>
@@ -74,6 +88,8 @@
                 <span class="header-separator"></span>
 
 
+                <!-- ODJAVA -->
+
                 <button
                     id="logoutButton"
                     class="logout-button"
@@ -81,9 +97,13 @@
                 >
 
                     <svg viewBox="0 0 24 24">
+
                         <path d="M10 5H5v14h5"></path>
+
                         <path d="M14 8l4 4-4 4"></path>
+
                         <path d="M8 12h10"></path>
+
                     </svg>
 
                     <span>
@@ -95,6 +115,8 @@
 
                 <span class="header-separator"></span>
 
+
+                <!-- THEME -->
 
                 <label class="theme-switch">
 
@@ -114,12 +136,22 @@
 
 
 
-        <!-- CONTENT -->
+        <!-- =========================
+             CONTENT
+        ========================== -->
 
         <div class="dashboard-content">
 
 
-            <!-- PROJECT DETAIL -->
+            <!-- =========================
+                 PROJECT DETAIL
+                 JS UBACUJE:
+                 - Natrag
+                 - naziv projekta
+                 - status
+                 - Paket / Napredak / Rok
+                 - Tvoj paket
+            ========================== -->
 
             <div id="projectDetail">
 
@@ -131,7 +163,9 @@
 
 
 
-            <!-- AKTIVNOSTI -->
+            <!-- =========================
+                 AKTIVNOSTI
+            ========================== -->
 
             <section class="dashboard-section">
 
@@ -159,7 +193,27 @@
 
 
 
-            <!-- DOKUMENTI -->
+            <!-- =========================
+                 DETALJI ROKA
+            ========================== -->
+
+            <section class="dashboard-section">
+
+                <div id="projectDeadlineDetails">
+
+                    <div class="empty-state">
+                        Učitavanje detalja roka...
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =========================
+                 DOKUMENTI
+            ========================== -->
 
             <section class="dashboard-section">
 
@@ -190,7 +244,9 @@
 
 
 
-        <!-- FOOTER -->
+        <!-- =========================
+             FOOTER
+        ========================== -->
 
         <footer class="footer">
 
@@ -201,10 +257,14 @@
 
 
 
-        <!-- BOTTOM NAV -->
+        <!-- =========================
+             BOTTOM NAV
+        ========================== -->
 
         <nav class="bottom-nav">
 
+
+            <!-- POČETNA -->
 
             <a
                 href="form.html"
@@ -214,7 +274,9 @@
                 <svg viewBox="0 0 24 24">
 
                     <path d="M3 11.5L12 4l9 7.5"></path>
+
                     <path d="M5 10.5V20h14v-9.5"></path>
+
                     <path d="M9 20v-6h6v6"></path>
 
                 </svg>
@@ -226,6 +288,8 @@
             </a>
 
 
+
+            <!-- PORUKE -->
 
             <a
                 href="messages.html"
@@ -248,6 +312,8 @@
 
 
 
+            <!-- PROJEKTI -->
+
             <a
                 href="projects.html"
                 class="bottom-nav-item active"
@@ -264,7 +330,9 @@
                     </rect>
 
                     <path d="M8 5V3"></path>
+
                     <path d="M16 5V3"></path>
+
                     <path d="M4 9h16"></path>
 
                 </svg>
@@ -276,6 +344,8 @@
             </a>
 
 
+
+            <!-- DOKUMENTI -->
 
             <a
                 href="documents.html"
@@ -297,6 +367,8 @@
             </a>
 
 
+
+            <!-- PROFIL -->
 
             <a
                 href="profile.html"
@@ -322,6 +394,7 @@
                 </span>
 
             </a>
+
 
         </nav>
 
