@@ -22,6 +22,58 @@
     --red: #ff6565;
 }
 
+/* =========================
+   ODGOVOR TIMA
+========================= */
+
+.client-admin-reply {
+    margin-top: 15px;
+
+    padding: 15px;
+
+    border:
+        1px solid
+        rgba(53, 212, 110, 0.22);
+
+    border-radius: 12px;
+
+    background:
+        rgba(53, 212, 110, 0.055);
+}
+
+.client-admin-reply strong {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #45dd78;
+
+    font-size: 11px;
+}
+
+.client-admin-reply p {
+    margin: 0;
+
+    color:
+        rgba(255, 255, 255, 0.84);
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    white-space: pre-wrap;
+}
+
+.client-admin-reply span {
+    display: block;
+
+    margin-top: 10px;
+
+    color:
+        rgba(255, 255, 255, 0.38);
+
+    font-size: 10px;
+}
 
 /* =========================
    BODY
