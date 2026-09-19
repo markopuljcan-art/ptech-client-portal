@@ -22,6 +22,59 @@
     --red: #ff5d5d;
 }
 
+/* =========================
+   DESIGN IMAGE
+========================= */
+
+.design-image-wrapper {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border-radius: 13px;
+
+    background: #0b0c0e;
+}
+
+.design-image {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    max-height: 850px;
+
+    object-fit: contain;
+}
+
+
+/* malo elegantniji hover */
+
+.design-image-wrapper {
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.design-image-wrapper:hover {
+    box-shadow:
+        0 0 25px
+        rgba(255, 122, 0, 0.08);
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .design-image {
+        max-height: 600px;
+    }
+}
 
 /* =========================
    BODY
