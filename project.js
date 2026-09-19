@@ -30,6 +30,11 @@ const projectContainer =
 const activitiesContainer =
     document.getElementById("projectActivities");
 
+const deadlineContainer =
+    document.getElementById(
+        "projectDeadlineDetails"
+    );
+
 const documentsContainer =
     document.getElementById("projectDocuments");
 
@@ -143,8 +148,10 @@ function getPackageInfo(packageName) {
 
         classic: {
             title: "Classic paket",
+
             description:
                 "Pouzdan paket za standardne projekte i osnovne potrebe.",
+
             features: [
                 "Standardna izrada projekta",
                 "Osnovna podrška",
@@ -154,8 +161,10 @@ function getPackageInfo(packageName) {
 
         premium: {
             title: "Premium paket",
+
             description:
                 "Napredni paket s dodatnim mogućnostima i većom razinom podrške.",
+
             features: [
                 "Prioritetna podrška",
                 "Više izmjena tijekom izrade",
@@ -165,12 +174,15 @@ function getPackageInfo(packageName) {
     };
 
     return packages[normalized] || {
+
         title:
             packageName
                 ? `${packageName} paket`
                 : "Paket",
+
         description:
             "Detalji paketa trenutno nisu dostupni.",
+
         features: []
     };
 }
@@ -186,10 +198,12 @@ function getDeadlineInfo(deadline) {
 
         return {
             daysLeft: null,
-            daysPassed: null,
-            status: "Rok nije postavljen",
-            statusText: "Datum završetka još nije definiran.",
-            className: "deadline-neutral"
+            status:
+                "Rok nije postavljen",
+            statusText:
+                "Datum završetka još nije definiran.",
+            className:
+                "deadline-neutral"
         };
     }
 
@@ -219,35 +233,18 @@ function getDeadlineInfo(deadline) {
             (1000 * 60 * 60 * 24)
         );
 
-    const createdReference =
-        new Date(
-            today.getFullYear(),
-            0,
-            1
-        );
-
-    const daysPassed =
-        Math.max(
-            0,
-            Math.floor(
-                (
-                    today.getTime() -
-                    createdReference.getTime()
-                ) /
-                (1000 * 60 * 60 * 24)
-            )
-        );
-
     if (daysLeft < 0) {
 
         return {
             daysLeft:
                 Math.abs(daysLeft),
-            daysPassed,
+
             status:
                 "Rok je prošao",
+
             statusText:
-                "Planirani datum završetka je prekoračen.",
+                "Planirani datum završetka projekta je prekoračen.",
+
             className:
                 "deadline-late"
         };
@@ -257,11 +254,13 @@ function getDeadlineInfo(deadline) {
 
         return {
             daysLeft,
-            daysPassed,
+
             status:
                 "Rok se približava",
+
             statusText:
                 "Projekt ulazi u završnu fazu.",
+
             className:
                 "deadline-soon"
         };
@@ -269,11 +268,13 @@ function getDeadlineInfo(deadline) {
 
     return {
         daysLeft,
-        daysPassed,
+
         status:
             "Projekt je u roku",
+
         statusText:
             "Projekt teče prema planu.",
+
         className:
             "deadline-good"
     };
@@ -344,7 +345,7 @@ if (logoutButton) {
 
 
 /* =========================
-   START
+   INIT
 ========================= */
 
 async function initProjectPage() {
@@ -382,6 +383,7 @@ async function initProjectPage() {
                 session.user.id
             )
             .maybeSingle();
+
 
     if (userTop) {
 
@@ -432,6 +434,7 @@ async function initProjectPage() {
             )
             .maybeSingle();
 
+
     if (error) {
 
         console.error(
@@ -446,6 +449,7 @@ async function initProjectPage() {
         return;
     }
 
+
     if (!project) {
 
         showProjectError(
@@ -454,6 +458,7 @@ async function initProjectPage() {
 
         return;
     }
+
 
     if (
         project.user_id &&
@@ -469,14 +474,25 @@ async function initProjectPage() {
     }
 
 
+    /* =========================
+       RENDER
+    ========================= */
+
     renderProject(
         project
     );
 
+    renderDeadlineCard(
+        project
+    );
+
+
     await Promise.all([
+
         loadActivities(
             project.id
         ),
+
         loadDocuments(
             project.id
         )
@@ -506,6 +522,7 @@ function showProjectError(message) {
 
             </div>
 
+
             <div class="empty-state">
                 ${escapeHtml(message)}
             </div>
@@ -514,6 +531,10 @@ function showProjectError(message) {
 
     if (activitiesContainer) {
         activitiesContainer.innerHTML = "";
+    }
+
+    if (deadlineContainer) {
+        deadlineContainer.innerHTML = "";
     }
 
     if (documentsContainer) {
@@ -532,6 +553,7 @@ function renderProject(project) {
         return;
     }
 
+
     const progress =
         Math.max(
             0,
@@ -543,26 +565,25 @@ function renderProject(project) {
             )
         );
 
+
     const statusClass =
         getStatusClass(
             project.status
         );
+
 
     const packageInfo =
         getPackageInfo(
             project.package
         );
 
-    const deadlineInfo =
-        getDeadlineInfo(
-            project.deadline
-        );
 
     const packageFeaturesHTML =
         packageInfo.features.length
             ? packageInfo.features
                 .map(
                     feature => `
+
                         <div class="package-feature">
 
                             <span class="package-check">
@@ -578,6 +599,7 @@ function renderProject(project) {
                 )
                 .join("")
             : "";
+
 
     projectContainer.innerHTML = `
 
@@ -616,6 +638,7 @@ function renderProject(project) {
                             </rect>
 
                             <path d="M8 21h8"></path>
+
                             <path d="M12 17v4"></path>
 
                         </svg>
@@ -680,7 +703,9 @@ function renderProject(project) {
                             </rect>
 
                             <path d="M8 7V5"></path>
+
                             <path d="M16 7V5"></path>
+
                             <path d="M8 5h8"></path>
 
                         </svg>
@@ -729,6 +754,7 @@ function renderProject(project) {
                             Napredak
                         </span>
 
+
                         <div class="progress-row">
 
                             <div class="progress-container">
@@ -743,6 +769,7 @@ function renderProject(project) {
                                 </div>
 
                             </div>
+
 
                             <strong>
                                 ${progress}%
@@ -772,7 +799,9 @@ function renderProject(project) {
                             </rect>
 
                             <path d="M8 3v4"></path>
+
                             <path d="M16 3v4"></path>
+
                             <path d="M3 10h18"></path>
 
                         </svg>
@@ -857,18 +886,22 @@ function renderProject(project) {
 
 
                     <span class="package-info-badge">
+
                         ${escapeHtml(
                             project.package || "-"
                         )}
+
                     </span>
 
                 </div>
 
 
                 <p class="package-info-description">
+
                     ${escapeHtml(
                         packageInfo.description
                     )}
+
                 </p>
 
 
@@ -885,148 +918,205 @@ function renderProject(project) {
             </div>
 
 
-            <!-- DEADLINE INFO -->
-
-            <div
-                class="
-                    deadline-card
-                    ${deadlineInfo.className}
-                "
-            >
-
-                <div class="deadline-card-top">
-
-                    <div class="deadline-title-wrap">
-
-                        <div class="deadline-main-icon">
-
-                            <svg viewBox="0 0 24 24">
-
-                                <rect
-                                    x="3"
-                                    y="5"
-                                    width="18"
-                                    height="16"
-                                    rx="2">
-                                </rect>
-
-                                <path d="M8 3v4"></path>
-                                <path d="M16 3v4"></path>
-                                <path d="M3 10h18"></path>
-
-                            </svg>
-
-                        </div>
+        </section>
+    `;
+}
 
 
-                        <div>
+/* =========================
+   ROK PROJEKTA
+========================= */
 
-                            <h3>
-                                Rok projekta
-                            </h3>
+function renderDeadlineCard(
+    project
+) {
 
-                            <p>
-                                Planirani datum završetka projekta
-                            </p>
+    if (!deadlineContainer) {
+        return;
+    }
 
-                        </div>
+
+    const deadlineInfo =
+        getDeadlineInfo(
+            project.deadline
+        );
+
+
+    let badgeText =
+        "● Nije postavljen";
+
+
+    if (
+        deadlineInfo.className ===
+        "deadline-good"
+    ) {
+
+        badgeText =
+            "● U planu";
+    }
+
+    else if (
+        deadlineInfo.className ===
+        "deadline-soon"
+    ) {
+
+        badgeText =
+            "● Uskoro";
+    }
+
+    else if (
+        deadlineInfo.className ===
+        "deadline-late"
+    ) {
+
+        badgeText =
+            "● Prošao";
+    }
+
+
+    deadlineContainer.innerHTML = `
+
+        <div
+            class="
+                deadline-card
+                ${deadlineInfo.className}
+            "
+        >
+
+            <div class="deadline-card-top">
+
+                <div class="deadline-title-wrap">
+
+                    <div class="deadline-main-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <rect
+                                x="3"
+                                y="5"
+                                width="18"
+                                height="16"
+                                rx="2">
+                            </rect>
+
+                            <path d="M8 3v4"></path>
+
+                            <path d="M16 3v4"></path>
+
+                            <path d="M3 10h18"></path>
+
+                        </svg>
 
                     </div>
 
 
-                    <span class="deadline-badge">
+                    <div>
 
-                        ${
-                            deadlineInfo.className === "deadline-good"
-                                ? "● U planu"
-                                : deadlineInfo.className === "deadline-soon"
-                                    ? "● Uskoro"
-                                    : deadlineInfo.className === "deadline-late"
-                                        ? "● Prošao"
-                                        : "● Nije postavljen"
-                        }
+                        <h3>
+                            Rok projekta
+                        </h3>
 
+                        <p>
+                            Planirani datum završetka projekta
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <span class="deadline-badge">
+                    ${badgeText}
+                </span>
+
+            </div>
+
+
+            <div class="deadline-main-date">
+
+                ${formatDate(
+                    project.deadline
+                )}
+
+            </div>
+
+
+            <div class="deadline-meta-grid">
+
+
+                <!-- PREOSTALO -->
+
+                <div class="deadline-meta-item">
+
+                    <span class="deadline-meta-label">
+                        Preostalo vremena
                     </span>
 
+                    <strong>
+
+                        ${
+                            deadlineInfo.daysLeft !== null
+                                ? `${deadlineInfo.daysLeft} dana`
+                                : "-"
+                        }
+
+                    </strong>
+
                 </div>
 
 
-                <div class="deadline-main-date">
+                <!-- STATUS -->
 
-                    ${formatDate(
-                        project.deadline
-                    )}
+                <div class="deadline-meta-item">
+
+                    <span class="deadline-meta-label">
+                        Status roka
+                    </span>
+
+                    <strong>
+                        ${escapeHtml(
+                            deadlineInfo.status
+                        )}
+                    </strong>
+
+                    <small>
+                        ${escapeHtml(
+                            deadlineInfo.statusText
+                        )}
+                    </small>
 
                 </div>
 
 
-                <div class="deadline-meta-grid">
+                <!-- NAPREDAK -->
 
+                <div class="deadline-meta-item">
 
-                    <div class="deadline-meta-item">
+                    <span class="deadline-meta-label">
+                        Napredak projekta
+                    </span>
 
-                        <span class="deadline-meta-label">
-                            Preostalo vremena
-                        </span>
+                    <strong>
+                        ${Math.max(
+                            0,
+                            Math.min(
+                                100,
+                                Number(
+                                    project.progress || 0
+                                )
+                            )
+                        )}%
+                    </strong>
 
-                        <strong>
-
-                            ${
-                                deadlineInfo.daysLeft !== null
-                                    ? `${deadlineInfo.daysLeft} dana`
-                                    : "-"
-                            }
-
-                        </strong>
-
-                    </div>
-
-
-                    <div class="deadline-meta-item">
-
-                        <span class="deadline-meta-label">
-                            Proteklo vremena
-                        </span>
-
-                        <strong>
-
-                            ${
-                                deadlineInfo.daysPassed !== null
-                                    ? `${deadlineInfo.daysPassed} dana`
-                                    : "-"
-                            }
-
-                        </strong>
-
-                    </div>
-
-
-                    <div class="deadline-meta-item">
-
-                        <span class="deadline-meta-label">
-                            Status roka
-                        </span>
-
-                        <strong>
-                            ${escapeHtml(
-                                deadlineInfo.status
-                            )}
-                        </strong>
-
-                        <small>
-                            ${escapeHtml(
-                                deadlineInfo.statusText
-                            )}
-                        </small>
-
-                    </div>
+                    <small>
+                        Trenutni ukupni napredak projekta.
+                    </small>
 
                 </div>
 
             </div>
 
-
-        </section>
+        </div>
     `;
 }
 
@@ -1042,6 +1132,7 @@ async function loadActivities(
     if (!activitiesContainer) {
         return;
     }
+
 
     const {
         data: activities,
@@ -1066,6 +1157,7 @@ async function loadActivities(
                 }
             );
 
+
     if (error) {
 
         console.error(
@@ -1074,6 +1166,7 @@ async function loadActivities(
         );
 
         activitiesContainer.innerHTML = `
+
             <div class="empty-state">
                 Aktivnosti se ne mogu učitati.
             </div>
@@ -1082,12 +1175,14 @@ async function loadActivities(
         return;
     }
 
+
     if (
         !activities ||
         activities.length === 0
     ) {
 
         activitiesContainer.innerHTML = `
+
             <div class="empty-state">
                 Trenutno nema aktivnosti.
             </div>
@@ -1096,8 +1191,10 @@ async function loadActivities(
         return;
     }
 
+
     activitiesContainer.innerHTML =
         "";
+
 
     activities.forEach(
         activity => {
@@ -1109,11 +1206,13 @@ async function loadActivities(
                     .toLowerCase()
                     .trim();
 
+
             let statusClass =
                 "activity-waiting";
 
             let icon =
                 "○";
+
 
             if (
                 status === "završeno" ||
@@ -1139,13 +1238,16 @@ async function loadActivities(
                     "↻";
             }
 
+
             const item =
                 document.createElement(
                     "div"
                 );
 
+
             item.className =
                 `activity-item ${statusClass}`;
+
 
             item.innerHTML = `
 
@@ -1153,22 +1255,29 @@ async function loadActivities(
                     ${icon}
                 </div>
 
+
                 <div class="activity-content">
 
                     <strong class="activity-title">
+
                         ${escapeHtml(
                             activity.title || "-"
                         )}
+
                     </strong>
 
+
                     <span class="activity-date">
+
                         ${formatDate(
                             activity.activity_date
                         )}
+
                     </span>
 
                 </div>
             `;
+
 
             activitiesContainer
                 .appendChild(
@@ -1198,10 +1307,12 @@ async function loadActivities(
                     )
             );
 
+
     const lastUpdated =
         document.getElementById(
             "lastUpdated"
         );
+
 
     if (
         lastUpdated &&
@@ -1229,6 +1340,7 @@ async function loadDocuments(
         return;
     }
 
+
     const {
         data: documents,
         error
@@ -1254,6 +1366,7 @@ async function loadDocuments(
                 }
             );
 
+
     if (error) {
 
         console.error(
@@ -1262,6 +1375,7 @@ async function loadDocuments(
         );
 
         documentsContainer.innerHTML = `
+
             <div class="empty-state">
                 Dokumenti se ne mogu učitati.
             </div>
@@ -1270,12 +1384,14 @@ async function loadDocuments(
         return;
     }
 
+
     if (
         !documents ||
         documents.length === 0
     ) {
 
         documentsContainer.innerHTML = `
+
             <div class="empty-state">
                 Trenutno nema dokumenata.
             </div>
@@ -1284,8 +1400,10 @@ async function loadDocuments(
         return;
     }
 
+
     documentsContainer.innerHTML =
         "";
+
 
     for (
         const documentItem
@@ -1297,11 +1415,14 @@ async function loadDocuments(
                 "a"
             );
 
+
         card.className =
             "project-document-card";
 
+
         let documentUrl =
             "#";
+
 
         if (
             documentItem.file_url
@@ -1321,6 +1442,7 @@ async function loadDocuments(
                         600
                     );
 
+
             if (
                 !signedError &&
                 signedData?.signedUrl
@@ -1331,8 +1453,10 @@ async function loadDocuments(
             }
         }
 
+
         card.href =
             documentUrl;
+
 
         if (
             documentUrl !== "#"
@@ -1344,6 +1468,7 @@ async function loadDocuments(
             card.rel =
                 "noopener noreferrer";
         }
+
 
         card.innerHTML = `
 
@@ -1363,27 +1488,35 @@ async function loadDocuments(
 
             </div>
 
+
             <div class="project-document-content">
 
                 <strong>
+
                     ${escapeHtml(
                         documentItem.name ||
                         "Dokument"
                     )}
+
                 </strong>
 
+
                 <span>
+
                     ${formatDate(
                         documentItem.created_at
                     )}
+
                 </span>
 
             </div>
+
 
             <span class="project-document-arrow">
                 ›
             </span>
         `;
+
 
         documentsContainer
             .appendChild(
@@ -1394,7 +1527,7 @@ async function loadDocuments(
 
 
 /* =========================
-   INIT
+   START
 ========================= */
 
 initProjectPage();
