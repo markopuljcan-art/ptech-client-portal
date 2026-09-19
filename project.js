@@ -4,6 +4,7 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
 
+
 const supabaseClient =
     supabase.createClient(
         SUPABASE_URL,
@@ -31,16 +32,11 @@ const activitiesContainer =
     document.getElementById("projectActivities");
 
 const deadlineContainer =
-    document.getElementById(
-        "projectDeadlineDetails"
-    );
-
-const documentsContainer =
-    document.getElementById("projectDocuments");
+    document.getElementById("projectDeadlineDetails");
 
 
 /* =========================
-   PROJECT ID IZ URL-a
+   PROJECT ID
 ========================= */
 
 const params =
@@ -198,12 +194,10 @@ function getDeadlineInfo(deadline) {
 
         return {
             daysLeft: null,
-            status:
-                "Rok nije postavljen",
+            status: "Rok nije postavljen",
             statusText:
                 "Datum završetka još nije definiran.",
-            className:
-                "deadline-neutral"
+            className: "deadline-neutral"
         };
     }
 
@@ -301,6 +295,7 @@ if (
     }
 }
 
+
 if (themeToggle) {
 
     themeToggle.addEventListener(
@@ -359,6 +354,7 @@ async function initProjectPage() {
             .auth
             .getSession();
 
+
     if (!session) {
 
         window.location.href =
@@ -368,9 +364,7 @@ async function initProjectPage() {
     }
 
 
-    /* =========================
-       USER
-    ========================= */
+    /* USER */
 
     const {
         data: profile
@@ -394,9 +388,7 @@ async function initProjectPage() {
     }
 
 
-    /* =========================
-       ID PROVJERA
-    ========================= */
+    /* ID */
 
     if (!projectId) {
 
@@ -408,9 +400,7 @@ async function initProjectPage() {
     }
 
 
-    /* =========================
-       DOHVATI PROJEKT
-    ========================= */
+    /* PROJEKT */
 
     const {
         data: project,
@@ -474,10 +464,6 @@ async function initProjectPage() {
     }
 
 
-    /* =========================
-       RENDER
-    ========================= */
-
     renderProject(
         project
     );
@@ -486,17 +472,9 @@ async function initProjectPage() {
         project
     );
 
-
-    await Promise.all([
-
-        loadActivities(
-            project.id
-        ),
-
-        loadDocuments(
-            project.id
-        )
-    ]);
+    await loadActivities(
+        project.id
+    );
 }
 
 
@@ -536,15 +514,11 @@ function showProjectError(message) {
     if (deadlineContainer) {
         deadlineContainer.innerHTML = "";
     }
-
-    if (documentsContainer) {
-        documentsContainer.innerHTML = "";
-    }
 }
 
 
 /* =========================
-   RENDER PROJEKTA
+   PROJECT
 ========================= */
 
 function renderProject(project) {
@@ -673,61 +647,19 @@ function renderProject(project) {
                         ${statusClass}
                     "
                 >
+
                     ${escapeHtml(
                         project.status || "-"
                     )}
+
                 </div>
 
             </div>
 
 
-            <!-- STATISTIKE -->
+            <!-- SAMO NAPREDAK + ZADNJE AŽURIRANO -->
 
             <div class="project-stats">
-
-
-                <!-- PAKET -->
-
-                <div class="stat-card">
-
-                    <div class="stat-icon">
-
-                        <svg viewBox="0 0 24 24">
-
-                            <rect
-                                x="3"
-                                y="7"
-                                width="18"
-                                height="13"
-                                rx="2">
-                            </rect>
-
-                            <path d="M8 7V5"></path>
-
-                            <path d="M16 7V5"></path>
-
-                            <path d="M8 5h8"></path>
-
-                        </svg>
-
-                    </div>
-
-
-                    <div>
-
-                        <span class="stat-label">
-                            Paket
-                        </span>
-
-                        <strong class="package-value">
-                            ${escapeHtml(
-                                project.package || "-"
-                            )}
-                        </strong>
-
-                    </div>
-
-                </div>
 
 
                 <!-- NAPREDAK -->
@@ -782,50 +714,6 @@ function renderProject(project) {
                 </div>
 
 
-                <!-- ROK -->
-
-                <div class="stat-card">
-
-                    <div class="stat-icon">
-
-                        <svg viewBox="0 0 24 24">
-
-                            <rect
-                                x="3"
-                                y="5"
-                                width="18"
-                                height="16"
-                                rx="2">
-                            </rect>
-
-                            <path d="M8 3v4"></path>
-
-                            <path d="M16 3v4"></path>
-
-                            <path d="M3 10h18"></path>
-
-                        </svg>
-
-                    </div>
-
-
-                    <div>
-
-                        <span class="stat-label">
-                            Rok
-                        </span>
-
-                        <strong>
-                            ${formatDate(
-                                project.deadline
-                            )}
-                        </strong>
-
-                    </div>
-
-                </div>
-
-
                 <!-- ZADNJE AŽURIRANO -->
 
                 <div class="stat-card">
@@ -864,7 +752,7 @@ function renderProject(project) {
             </div>
 
 
-            <!-- PACKAGE INFO -->
+            <!-- PACKAGE -->
 
             <div class="package-info-card">
 
@@ -919,204 +807,6 @@ function renderProject(project) {
 
 
         </section>
-    `;
-}
-
-
-/* =========================
-   ROK PROJEKTA
-========================= */
-
-function renderDeadlineCard(
-    project
-) {
-
-    if (!deadlineContainer) {
-        return;
-    }
-
-
-    const deadlineInfo =
-        getDeadlineInfo(
-            project.deadline
-        );
-
-
-    let badgeText =
-        "● Nije postavljen";
-
-
-    if (
-        deadlineInfo.className ===
-        "deadline-good"
-    ) {
-
-        badgeText =
-            "● U planu";
-    }
-
-    else if (
-        deadlineInfo.className ===
-        "deadline-soon"
-    ) {
-
-        badgeText =
-            "● Uskoro";
-    }
-
-    else if (
-        deadlineInfo.className ===
-        "deadline-late"
-    ) {
-
-        badgeText =
-            "● Prošao";
-    }
-
-
-    deadlineContainer.innerHTML = `
-
-        <div
-            class="
-                deadline-card
-                ${deadlineInfo.className}
-            "
-        >
-
-            <div class="deadline-card-top">
-
-                <div class="deadline-title-wrap">
-
-                    <div class="deadline-main-icon">
-
-                        <svg viewBox="0 0 24 24">
-
-                            <rect
-                                x="3"
-                                y="5"
-                                width="18"
-                                height="16"
-                                rx="2">
-                            </rect>
-
-                            <path d="M8 3v4"></path>
-
-                            <path d="M16 3v4"></path>
-
-                            <path d="M3 10h18"></path>
-
-                        </svg>
-
-                    </div>
-
-
-                    <div>
-
-                        <h3>
-                            Rok projekta
-                        </h3>
-
-                        <p>
-                            Planirani datum završetka projekta
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <span class="deadline-badge">
-                    ${badgeText}
-                </span>
-
-            </div>
-
-
-            <div class="deadline-main-date">
-
-                ${formatDate(
-                    project.deadline
-                )}
-
-            </div>
-
-
-            <div class="deadline-meta-grid">
-
-
-                <!-- PREOSTALO -->
-
-                <div class="deadline-meta-item">
-
-                    <span class="deadline-meta-label">
-                        Preostalo vremena
-                    </span>
-
-                    <strong>
-
-                        ${
-                            deadlineInfo.daysLeft !== null
-                                ? `${deadlineInfo.daysLeft} dana`
-                                : "-"
-                        }
-
-                    </strong>
-
-                </div>
-
-
-                <!-- STATUS -->
-
-                <div class="deadline-meta-item">
-
-                    <span class="deadline-meta-label">
-                        Status roka
-                    </span>
-
-                    <strong>
-                        ${escapeHtml(
-                            deadlineInfo.status
-                        )}
-                    </strong>
-
-                    <small>
-                        ${escapeHtml(
-                            deadlineInfo.statusText
-                        )}
-                    </small>
-
-                </div>
-
-
-                <!-- NAPREDAK -->
-
-                <div class="deadline-meta-item">
-
-                    <span class="deadline-meta-label">
-                        Napredak projekta
-                    </span>
-
-                    <strong>
-                        ${Math.max(
-                            0,
-                            Math.min(
-                                100,
-                                Number(
-                                    project.progress || 0
-                                )
-                            )
-                        )}%
-                    </strong>
-
-                    <small>
-                        Trenutni ukupni napredak projekta.
-                    </small>
-
-                </div>
-
-            </div>
-
-        </div>
     `;
 }
 
@@ -1222,8 +912,7 @@ async function loadActivities(
                 statusClass =
                     "activity-done";
 
-                icon =
-                    "✓";
+                icon = "✓";
             }
 
             else if (
@@ -1234,8 +923,7 @@ async function loadActivities(
                 statusClass =
                     "activity-progress";
 
-                icon =
-                    "↻";
+                icon = "↻";
             }
 
 
@@ -1287,15 +975,13 @@ async function loadActivities(
     );
 
 
-    /* =========================
-       ZADNJE AŽURIRANO
-    ========================= */
+    /* ZADNJE AŽURIRANO */
 
     const withDate =
         activities
             .filter(
-                item =>
-                    item.activity_date
+                activity =>
+                    activity.activity_date
             )
             .sort(
                 (a, b) =>
@@ -1325,204 +1011,202 @@ async function loadActivities(
                     .activity_date
             );
     }
+
+    else if (lastUpdated) {
+
+        lastUpdated.textContent =
+            "-";
+    }
 }
 
 
 /* =========================
-   DOKUMENTI
+   ROK PROJEKTA
 ========================= */
 
-async function loadDocuments(
-    currentProjectId
-) {
+function renderDeadlineCard(project) {
 
-    if (!documentsContainer) {
+    if (!deadlineContainer) {
         return;
     }
 
 
-    const {
-        data: documents,
-        error
-    } =
-        await supabaseClient
-            .from(
-                "project_documents"
-            )
-            .select(`
-                id,
-                name,
-                file_url,
-                created_at
-            `)
-            .eq(
-                "project_id",
-                currentProjectId
-            )
-            .order(
-                "created_at",
-                {
-                    ascending: false
-                }
-            );
-
-
-    if (error) {
-
-        console.error(
-            "Greška kod dokumenata:",
-            error
+    const deadlineInfo =
+        getDeadlineInfo(
+            project.deadline
         );
 
-        documentsContainer.innerHTML = `
 
-            <div class="empty-state">
-                Dokumenti se ne mogu učitati.
-            </div>
-        `;
-
-        return;
-    }
+    let badgeText =
+        "● Nije postavljen";
 
 
     if (
-        !documents ||
-        documents.length === 0
+        deadlineInfo.className ===
+        "deadline-good"
     ) {
 
-        documentsContainer.innerHTML = `
+        badgeText =
+            "● U planu";
+    }
 
-            <div class="empty-state">
-                Trenutno nema dokumenata.
-            </div>
-        `;
+    else if (
+        deadlineInfo.className ===
+        "deadline-soon"
+    ) {
 
-        return;
+        badgeText =
+            "● Uskoro";
+    }
+
+    else if (
+        deadlineInfo.className ===
+        "deadline-late"
+    ) {
+
+        badgeText =
+            "● Prošao";
     }
 
 
-    documentsContainer.innerHTML =
-        "";
+    deadlineContainer.innerHTML = `
+
+        <div
+            class="
+                deadline-card
+                ${deadlineInfo.className}
+            "
+        >
+
+            <div class="deadline-card-top">
+
+                <div class="deadline-title-wrap">
+
+                    <div class="deadline-main-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <rect
+                                x="3"
+                                y="5"
+                                width="18"
+                                height="16"
+                                rx="2">
+                            </rect>
+
+                            <path d="M8 3v4"></path>
+                            <path d="M16 3v4"></path>
+                            <path d="M3 10h18"></path>
+
+                        </svg>
+
+                    </div>
 
 
-    for (
-        const documentItem
-        of documents
-    ) {
+                    <div>
 
-        const card =
-            document.createElement(
-                "a"
-            );
+                        <h3>
+                            Rok projekta
+                        </h3>
 
+                        <p>
+                            Planirani datum završetka projekta
+                        </p>
 
-        card.className =
-            "project-document-card";
+                    </div>
 
-
-        let documentUrl =
-            "#";
+                </div>
 
 
-        if (
-            documentItem.file_url
-        ) {
-
-            const {
-                data: signedData,
-                error: signedError
-            } =
-                await supabaseClient
-                    .storage
-                    .from(
-                        "project-documents"
-                    )
-                    .createSignedUrl(
-                        documentItem.file_url,
-                        600
-                    );
-
-
-            if (
-                !signedError &&
-                signedData?.signedUrl
-            ) {
-
-                documentUrl =
-                    signedData.signedUrl;
-            }
-        }
-
-
-        card.href =
-            documentUrl;
-
-
-        if (
-            documentUrl !== "#"
-        ) {
-
-            card.target =
-                "_blank";
-
-            card.rel =
-                "noopener noreferrer";
-        }
-
-
-        card.innerHTML = `
-
-            <div class="project-document-icon">
-
-                <svg viewBox="0 0 24 24">
-
-                    <path
-                        d="M6 3h8l4 4v14H6z">
-                    </path>
-
-                    <path
-                        d="M14 3v5h5">
-                    </path>
-
-                </svg>
-
-            </div>
-
-
-            <div class="project-document-content">
-
-                <strong>
-
-                    ${escapeHtml(
-                        documentItem.name ||
-                        "Dokument"
-                    )}
-
-                </strong>
-
-
-                <span>
-
-                    ${formatDate(
-                        documentItem.created_at
-                    )}
-
+                <span class="deadline-badge">
+                    ${badgeText}
                 </span>
 
             </div>
 
 
-            <span class="project-document-arrow">
-                ›
-            </span>
-        `;
+            <div class="deadline-main-date">
+
+                ${formatDate(
+                    project.deadline
+                )}
+
+            </div>
 
 
-        documentsContainer
-            .appendChild(
-                card
-            );
-    }
+            <div class="deadline-meta-grid">
+
+
+                <div class="deadline-meta-item">
+
+                    <span class="deadline-meta-label">
+                        Preostalo vremena
+                    </span>
+
+                    <strong>
+
+                        ${
+                            deadlineInfo.daysLeft !== null
+                                ? `${deadlineInfo.daysLeft} dana`
+                                : "-"
+                        }
+
+                    </strong>
+
+                </div>
+
+
+                <div class="deadline-meta-item">
+
+                    <span class="deadline-meta-label">
+                        Status roka
+                    </span>
+
+                    <strong>
+                        ${escapeHtml(
+                            deadlineInfo.status
+                        )}
+                    </strong>
+
+                    <small>
+                        ${escapeHtml(
+                            deadlineInfo.statusText
+                        )}
+                    </small>
+
+                </div>
+
+
+                <div class="deadline-meta-item">
+
+                    <span class="deadline-meta-label">
+                        Napredak projekta
+                    </span>
+
+                    <strong>
+
+                        ${Math.max(
+                            0,
+                            Math.min(
+                                100,
+                                Number(
+                                    project.progress || 0
+                                )
+                            )
+                        )}%
+
+                    </strong>
+
+                    <small>
+                        Trenutni ukupni napredak projekta.
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+    `;
 }
 
 
