@@ -120,6 +120,7 @@ function formatDateTime(value) {
         return "-";
     }
 
+
     return date.toLocaleString(
         "hr-HR",
         {
@@ -146,11 +147,14 @@ function showMessage(
         return;
     }
 
+
     messageBox.hidden =
         false;
 
+
     messageBox.className =
         `revision-message ${type}`;
+
 
     messageBox.textContent =
         message;
@@ -163,11 +167,14 @@ function hideMessage() {
         return;
     }
 
+
     messageBox.hidden =
         true;
 
+
     messageBox.className =
         "revision-message";
+
 
     messageBox.textContent =
         "";
@@ -184,19 +191,24 @@ function renderStatus(status) {
         return;
     }
 
+
     const value =
         String(status || "")
             .toLowerCase()
             .trim();
 
+
     projectStatus.textContent =
         status || "-";
+
 
     projectStatus.style.color =
         "";
 
+
     projectStatus.style.borderColor =
         "";
+
 
     projectStatus.style.background =
         "";
@@ -210,11 +222,14 @@ function renderStatus(status) {
         projectStatus.style.color =
             "#4edb7b";
 
+
         projectStatus.style.borderColor =
             "rgba(46, 204, 113, 0.35)";
 
+
         projectStatus.style.background =
             "rgba(46, 204, 113, 0.08)";
+
 
         return;
     }
@@ -228,11 +243,14 @@ function renderStatus(status) {
         projectStatus.style.color =
             "#aaa";
 
+
         projectStatus.style.borderColor =
             "rgba(160, 160, 160, 0.30)";
 
+
         projectStatus.style.background =
             "rgba(160, 160, 160, 0.07)";
+
 
         return;
     }
@@ -241,8 +259,10 @@ function renderStatus(status) {
     projectStatus.style.color =
         "#ff9a35";
 
+
     projectStatus.style.borderColor =
         "rgba(255, 122, 0, 0.35)";
+
 
     projectStatus.style.background =
         "rgba(255, 122, 0, 0.08)";
@@ -262,6 +282,7 @@ function updateCharacterCount() {
         return;
     }
 
+
     characterCount.textContent =
         `${revisionMessage.value.length} / 1500`;
 }
@@ -274,6 +295,7 @@ if (revisionMessage) {
         updateCharacterCount
     );
 
+
     updateCharacterCount();
 }
 
@@ -285,11 +307,16 @@ if (revisionMessage) {
 function disableForm() {
 
     if (revisionMessage) {
-        revisionMessage.disabled = true;
+
+        revisionMessage.disabled =
+            true;
     }
 
+
     if (submitButton) {
-        submitButton.disabled = true;
+
+        submitButton.disabled =
+            true;
     }
 }
 
@@ -297,17 +324,22 @@ function disableForm() {
 function enableForm() {
 
     if (revisionMessage) {
-        revisionMessage.disabled = false;
+
+        revisionMessage.disabled =
+            false;
     }
 
+
     if (submitButton) {
-        submitButton.disabled = false;
+
+        submitButton.disabled =
+            false;
     }
 }
 
 
 /* =========================
-   STATUS IZMJENE
+   STATUS ZAHTJEVA
 ========================= */
 
 function getRevisionStatusLabel(status) {
@@ -317,20 +349,26 @@ function getRevisionStatusLabel(status) {
             .toLowerCase()
             .trim();
 
+
     if (
+        value === "answered" ||
         value === "resolved" ||
         value === "completed" ||
         value === "done"
     ) {
-        return "Riješeno";
+
+        return "Odgovoreno";
     }
+
 
     if (
         value === "in_progress" ||
         value === "in progress"
     ) {
+
         return "U obradi";
     }
+
 
     return "Na čekanju";
 }
@@ -343,15 +381,120 @@ function getRevisionStatusClass(status) {
             .toLowerCase()
             .trim();
 
+
     if (
+        value === "answered" ||
         value === "resolved" ||
         value === "completed" ||
         value === "done"
     ) {
+
         return "status-resolved";
     }
 
+
     return "status-pending";
+}
+
+
+/* =========================
+   ADMIN ODGOVOR
+========================= */
+
+function renderAdminReply(revision) {
+
+    if (!latestRevisionCard) {
+        return;
+    }
+
+
+    /*
+        Ako već postoji stari odgovor
+        u DOM-u, prvo ga uklanjamo.
+    */
+
+    const oldReply =
+        latestRevisionCard.querySelector(
+            ".client-admin-reply"
+        );
+
+
+    if (oldReply) {
+
+        oldReply.remove();
+    }
+
+
+    /*
+        Ako nema admin odgovora,
+        ništa ne prikazujemo.
+    */
+
+    if (!revision.admin_reply) {
+        return;
+    }
+
+
+    const replyBox =
+        document.createElement(
+            "div"
+        );
+
+
+    replyBox.className =
+        "client-admin-reply";
+
+
+    const replyTitle =
+        document.createElement(
+            "strong"
+        );
+
+
+    replyTitle.textContent =
+        "Odgovor tima";
+
+
+    const replyText =
+        document.createElement(
+            "p"
+        );
+
+
+    replyText.textContent =
+        revision.admin_reply;
+
+
+    const replyDate =
+        document.createElement(
+            "span"
+        );
+
+
+    replyDate.textContent =
+        `Odgovoreno: ${formatDateTime(
+            revision.replied_at
+        )}`;
+
+
+    replyBox.appendChild(
+        replyTitle
+    );
+
+
+    replyBox.appendChild(
+        replyText
+    );
+
+
+    replyBox.appendChild(
+        replyDate
+    );
+
+
+    latestRevisionCard.appendChild(
+        replyBox
+    );
 }
 
 
@@ -368,6 +511,7 @@ async function loadLatestRevision(
         return;
     }
 
+
     const {
         data,
         error
@@ -378,7 +522,9 @@ async function loadLatestRevision(
                 id,
                 message,
                 status,
-                created_at
+                created_at,
+                admin_reply,
+                replied_at
             `)
             .eq(
                 "project_id",
@@ -404,8 +550,10 @@ async function loadLatestRevision(
             error
         );
 
+
         latestRevisionCard.hidden =
             true;
+
 
         return;
     }
@@ -419,6 +567,7 @@ async function loadLatestRevision(
         latestRevisionCard.hidden =
             true;
 
+
         return;
     }
 
@@ -431,12 +580,16 @@ async function loadLatestRevision(
         false;
 
 
+    /* TEKST ZAHTJEVA */
+
     if (latestRevisionText) {
 
         latestRevisionText.textContent =
             revision.message || "-";
     }
 
+
+    /* DATUM */
 
     if (latestRevisionDate) {
 
@@ -447,6 +600,8 @@ async function loadLatestRevision(
     }
 
 
+    /* STATUS */
+
     if (latestRevisionStatus) {
 
         latestRevisionStatus.textContent =
@@ -454,11 +609,19 @@ async function loadLatestRevision(
                 revision.status
             );
 
+
         latestRevisionStatus.className =
             `latest-revision-status ${getRevisionStatusClass(
                 revision.status
             )}`;
     }
+
+
+    /* ADMIN ODGOVOR */
+
+    renderAdminReply(
+        revision
+    );
 }
 
 
@@ -482,6 +645,7 @@ function setupRevisionForm(
 
             event.preventDefault();
 
+
             hideMessage();
 
 
@@ -496,7 +660,9 @@ function setupRevisionForm(
                     "error"
                 );
 
+
                 revisionMessage.focus();
+
 
                 return;
             }
@@ -509,7 +675,9 @@ function setupRevisionForm(
                     "error"
                 );
 
+
                 revisionMessage.focus();
+
 
                 return;
             }
@@ -517,6 +685,7 @@ function setupRevisionForm(
 
             submitButton.disabled =
                 true;
+
 
             submitButton.textContent =
                 "Šaljem...";
@@ -556,16 +725,20 @@ function setupRevisionForm(
                     error
                 );
 
+
                 showMessage(
                     "Zahtjev nije moguće poslati. Pokušaj ponovno.",
                     "error"
                 );
 
+
                 submitButton.disabled =
                     false;
 
+
                 submitButton.textContent =
                     "Pošalji zahtjev";
+
 
                 return;
             }
@@ -584,17 +757,22 @@ function setupRevisionForm(
             revisionMessage.value =
                 "";
 
+
             updateCharacterCount();
 
 
             submitButton.disabled =
                 false;
 
+
             submitButton.textContent =
                 "Pošalji novi zahtjev";
 
 
-            /* ODMAH OSVJEŽI ZADNJI ZAHTJEV */
+            /*
+                Nakon slanja odmah
+                učitamo novi zadnji zahtjev.
+            */
 
             await loadLatestRevision(
                 project,
@@ -614,7 +792,9 @@ async function loadProject() {
     hideMessage();
 
 
-    /* SESSION */
+    /* =========================
+       SESSION
+    ========================= */
 
     const {
         data: {
@@ -635,11 +815,14 @@ async function loadProject() {
         window.location.href =
             "login.html";
 
+
         return;
     }
 
 
-    /* ID */
+    /* =========================
+       ID
+    ========================= */
 
     if (!projectId) {
 
@@ -648,13 +831,17 @@ async function loadProject() {
             "error"
         );
 
+
         disableForm();
+
 
         return;
     }
 
 
-    /* BACK */
+    /* =========================
+       BACK
+    ========================= */
 
     if (backToApproval) {
 
@@ -663,7 +850,9 @@ async function loadProject() {
     }
 
 
-    /* PROJEKT */
+    /* =========================
+       PROJEKT
+    ========================= */
 
     const {
         data: project,
@@ -692,12 +881,15 @@ async function loadProject() {
             error
         );
 
+
         showMessage(
             "Projekt se ne može učitati.",
             "error"
         );
 
+
         disableForm();
+
 
         return;
     }
@@ -710,13 +902,17 @@ async function loadProject() {
             "error"
         );
 
+
         disableForm();
+
 
         return;
     }
 
 
-    /* USER CHECK */
+    /* =========================
+       USER CHECK
+    ========================= */
 
     if (
         project.user_id &&
@@ -729,13 +925,17 @@ async function loadProject() {
             "error"
         );
 
+
         disableForm();
+
 
         return;
     }
 
 
-    /* RENDER */
+    /* =========================
+       RENDER PROJEKTA
+    ========================= */
 
     if (projectTitle) {
 
@@ -758,9 +958,12 @@ async function loadProject() {
     );
 
 
-    /* FORMA */
+    /* =========================
+       FORMA
+    ========================= */
 
     enableForm();
+
 
     setupRevisionForm(
         project,
@@ -768,7 +971,9 @@ async function loadProject() {
     );
 
 
-    /* ZADNJI ZAHTJEV */
+    /* =========================
+       ZADNJI ZAHTJEV
+    ========================= */
 
     await loadLatestRevision(
         project,
