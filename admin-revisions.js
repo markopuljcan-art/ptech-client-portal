@@ -30,43 +30,15 @@ const adminMessage =
         "adminMessage"
     );
 
+const adminUserName =
+    document.getElementById(
+        "adminUserName"
+    );
 
-/* =========================
-   MESSAGE
-========================= */
-
-function showMessage(
-    message,
-    type = "success"
-) {
-
-    if (!adminMessage) {
-        return;
-    }
-
-    adminMessage.hidden = false;
-
-    adminMessage.className =
-        `admin-message ${type}`;
-
-    adminMessage.textContent =
-        message;
-}
-
-
-function hideMessage() {
-
-    if (!adminMessage) {
-        return;
-    }
-
-    adminMessage.hidden = true;
-
-    adminMessage.className =
-        "admin-message";
-
-    adminMessage.textContent = "";
-}
+const logoutButton =
+    document.getElementById(
+        "adminLogoutButton"
+    );
 
 
 /* =========================
@@ -85,7 +57,7 @@ function escapeHtml(value) {
 
 
 /* =========================
-   DATUM
+   FORMAT DATUMA
 ========================= */
 
 function formatDateTime(value) {
@@ -119,6 +91,47 @@ function formatDateTime(value) {
 
 
 /* =========================
+   MESSAGE
+========================= */
+
+function showMessage(
+    message,
+    type = "success"
+) {
+
+    if (!adminMessage) {
+        return;
+    }
+
+    adminMessage.hidden =
+        false;
+
+    adminMessage.className =
+        `admin-message ${type}`;
+
+    adminMessage.textContent =
+        message;
+}
+
+
+function hideMessage() {
+
+    if (!adminMessage) {
+        return;
+    }
+
+    adminMessage.hidden =
+        true;
+
+    adminMessage.className =
+        "admin-message";
+
+    adminMessage.textContent =
+        "";
+}
+
+
+/* =========================
    STATUS
 ========================= */
 
@@ -126,8 +139,8 @@ function getStatusLabel(status) {
 
     const value =
         String(status || "")
-            .toLowerCase()
-            .trim();
+            .trim()
+            .toLowerCase();
 
     if (
         value === "answered" ||
@@ -141,7 +154,109 @@ function getStatusLabel(status) {
 
 
 /* =========================
-   RENDER
+   LOGOUT
+========================= */
+
+if (logoutButton) {
+
+    logoutButton.addEventListener(
+        "click",
+        async function () {
+
+            await supabaseClient
+                .auth
+                .signOut();
+
+            window.location.href =
+                "login.html";
+        }
+    );
+}
+
+
+/* =========================
+   ADMIN PROVJERA
+========================= */
+
+async function checkAdmin(session) {
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .rpc(
+                "is_admin_user",
+                {
+                    check_user_id:
+                        session.user.id
+                }
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Greška kod admin provjere:",
+            error
+        );
+
+        return false;
+    }
+
+
+    return data === true;
+}
+
+
+/* =========================
+   ADMIN PROFIL
+========================= */
+
+async function loadAdminProfile(
+    session
+) {
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("profiles")
+            .select(`
+                display_name
+            `)
+            .eq(
+                "id",
+                session.user.id
+            )
+            .maybeSingle();
+
+
+    if (error) {
+
+        console.error(
+            "Greška kod admin profila:",
+            error
+        );
+
+        return;
+    }
+
+
+    if (
+        adminUserName &&
+        data?.display_name
+    ) {
+
+        adminUserName.textContent =
+            data.display_name;
+    }
+}
+
+
+/* =========================
+   RENDER ZAHTJEVA
 ========================= */
 
 function renderRevisions(revisions) {
@@ -165,7 +280,7 @@ function renderRevisions(revisions) {
 
         revisionsList.innerHTML = `
 
-            <div class="empty-state">
+            <div class="admin-empty">
                 Trenutno nema zahtjeva za izmjenu.
             </div>
         `;
@@ -193,7 +308,9 @@ function renderRevisions(revisions) {
                     const answered =
                         Boolean(
                             revision.admin_reply
-                        );
+                        ) ||
+                        revision.status ===
+                        "answered";
 
 
                     return `
@@ -276,7 +393,8 @@ function renderRevisions(revisions) {
 
                                             <p>
                                                 ${escapeHtml(
-                                                    revision.admin_reply
+                                                    revision.admin_reply ||
+                                                    ""
                                                 )}
                                             </p>
 
@@ -303,8 +421,8 @@ function renderRevisions(revisions) {
                                             <textarea
                                                 id="reply-${revision.id}"
                                                 class="admin-reply-input"
-                                                placeholder="Napiši odgovor klijentu..."
                                                 maxlength="2000"
+                                                placeholder="Napiši odgovor klijentu..."
                                             ></textarea>
 
 
@@ -336,7 +454,84 @@ function renderRevisions(revisions) {
 
 
 /* =========================
-   ODGOVORI
+   UČITAJ ZAHTJEVE
+========================= */
+
+async function loadRevisions() {
+
+    if (!revisionsList) {
+        return;
+    }
+
+
+    revisionsList.innerHTML = `
+
+        <div class="admin-empty">
+            Učitavanje zahtjeva...
+        </div>
+    `;
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("design_revisions")
+            .select(`
+                id,
+                created_at,
+                project_id,
+                user_id,
+                message,
+                status,
+                admin_reply,
+                replied_at,
+                projects (
+                    id,
+                    name,
+                    type
+                )
+            `)
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Greška kod učitavanja zahtjeva:",
+            error
+        );
+
+        revisionsList.innerHTML = `
+
+            <div class="admin-empty">
+                Zahtjeve nije moguće učitati.
+            </div>
+        `;
+
+        showMessage(
+            "Došlo je do greške kod učitavanja zahtjeva.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    renderRevisions(
+        data || []
+    );
+}
+
+
+/* =========================
+   REPLY BUTTONS
 ========================= */
 
 function setupReplyButtons() {
@@ -389,7 +584,21 @@ function setupReplyButtons() {
                     }
 
 
-                    button.disabled = true;
+                    if (reply.length < 3) {
+
+                        showMessage(
+                            "Odgovor je prekratak.",
+                            "error"
+                        );
+
+                        textarea.focus();
+
+                        return;
+                    }
+
+
+                    button.disabled =
+                        true;
 
                     button.textContent =
                         "Šaljem...";
@@ -423,7 +632,7 @@ function setupReplyButtons() {
                     if (error) {
 
                         console.error(
-                            "Greška kod odgovora:",
+                            "Greška kod spremanja odgovora:",
                             error
                         );
 
@@ -457,79 +666,13 @@ function setupReplyButtons() {
 
 
 /* =========================
-   LOAD REVISIONS
-========================= */
-
-async function loadRevisions() {
-
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
-            .from("design_revisions")
-            .select(`
-                id,
-                created_at,
-                project_id,
-                user_id,
-                message,
-                status,
-                admin_reply,
-                replied_at,
-                projects (
-                    id,
-                    name,
-                    type
-                )
-            `)
-            .order(
-                "created_at",
-                {
-                    ascending: false
-                }
-            );
-
-
-    if (error) {
-
-        console.error(
-            "Greška kod zahtjeva:",
-            error
-        );
-
-        revisionsList.innerHTML = `
-
-            <div class="empty-state">
-                Zahtjeve nije moguće učitati.
-            </div>
-        `;
-
-        showMessage(
-            "Došlo je do greške kod učitavanja zahtjeva.",
-            "error"
-        );
-
-        return;
-    }
-
-
-    renderRevisions(
-        data || []
-    );
-}
-
-
-/* =========================
    START
 ========================= */
 
-async function startAdmin() {
+async function startAdminRevisions() {
 
     hideMessage();
 
-
-    /* SESSION */
 
     const {
         data: {
@@ -554,75 +697,32 @@ async function startAdmin() {
     }
 
 
-    /* =========================
-       PROVJERA ADMIN ROLE
-    ========================= */
-
-    const {
-        data: profile,
-        error: profileError
-    } =
-        await supabaseClient
-            .from("profiles")
-            .select(`
-                id,
-                role
-            `)
-            .eq(
-                "id",
-                session.user.id
-            )
-            .maybeSingle();
-
-
-    if (
-        profileError ||
-        !profile
-    ) {
-
-        console.error(
-            "Greška kod profila:",
-            profileError
+    const isAdmin =
+        await checkAdmin(
+            session
         );
 
-        revisionsList.innerHTML = `
 
-            <div class="empty-state">
-                Nije moguće provjeriti administratorski račun.
-            </div>
-        `;
+    if (!isAdmin) {
 
-        return;
-    }
-
-
-    if (profile.role !== "admin") {
-
-        revisionsList.innerHTML = `
-
-            <div class="empty-state">
-                Nemaš administratorski pristup ovoj stranici.
-            </div>
-        `;
-
-        if (revisionCount) {
-            revisionCount.textContent = "0";
-        }
+        window.location.href =
+            "form.html";
 
         return;
     }
 
 
-    /* =========================
-       UČITAJ ZAHTJEVE
-    ========================= */
+    await loadAdminProfile(
+        session
+    );
+
 
     await loadRevisions();
 }
 
 
 /* =========================
-   START
+   INIT
 ========================= */
 
-startAdmin();
+startAdminRevisions();
