@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./admin-revisions.css?v=1"
+    >
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
+
+    <script
+        src="./admin-revisions.js?v=1"
+        defer
+    ></script>
+
+    <title>
+        PTech Digital | Zahtjevi za izmjenu
+    </title>
+
+</head>
+
+
+<body>
+
+    <main class="admin-page">
+
+
+        <header class="admin-header">
+
+            <div class="brand">
+
+                <div class="brand-logo">
+                    P
+                </div>
+
+                <div>
+
+                    <h1>
+                        Zahtjevi za izmjenu
+                    </h1>
+
+                    <p>
+                        Pregled i odgovaranje na zahtjeve klijenata.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="form.html"
+                class="admin-back"
+            >
+                Natrag
+            </a>
+
+        </header>
+
+
+        <div class="admin-content">
+
+
+            <div class="admin-section-header">
+
+                <div>
+
+                    <span class="admin-label">
+                        Administracija
+                    </span>
+
+                    <h2>
+                        Pristigli zahtjevi
+                    </h2>
+
+                </div>
+
+                <span
+                    class="revision-count"
+                    id="revisionCount"
+                >
+                    0
+                </span>
+
+            </div>
+
+
+            <div
+                class="admin-revisions-list"
+                id="adminRevisionsList"
+            >
+
+                <div class="empty-state">
+                    Učitavanje zahtjeva...
+                </div>
+
+            </div>
+
+
+            <div
+                class="admin-message"
+                id="adminMessage"
+                hidden
+            >
+            </div>
+
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>
