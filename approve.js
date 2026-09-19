@@ -211,21 +211,6 @@ function renderDesignPreview(project) {
         return;
     }
 
-
-    /*
-        Trenutno još nemamo
-        design_url / design_image
-        stupac u bazi.
-
-        Zato zasad prikazujemo
-        placeholder.
-
-        Kasnije samo dodamo
-        field u projects tablicu
-        i ovdje ga renderiramo.
-    */
-
-
     designPreview.innerHTML = `
 
         <div class="empty-preview">
@@ -236,6 +221,293 @@ function renderDesignPreview(project) {
 
         </div>
     `;
+}
+
+
+/* =========================
+   DISABLE ACTIONS
+========================= */
+
+function disableActions() {
+
+    if (approveButton) {
+        approveButton.disabled = true;
+    }
+
+    if (revisionButton) {
+        revisionButton.disabled = true;
+    }
+}
+
+
+/* =========================
+   ENABLE ACTIONS
+========================= */
+
+function enableActions() {
+
+    if (approveButton) {
+        approveButton.disabled = false;
+    }
+
+    if (revisionButton) {
+        revisionButton.disabled = false;
+    }
+}
+
+
+/* =========================
+   APPROVED BUTTON STATE
+========================= */
+
+function renderApprovedState() {
+
+    if (approveButton) {
+
+        approveButton.disabled =
+            true;
+
+        approveButton.innerHTML = `
+
+            <span class="approval-button-icon">
+                ✓
+            </span>
+
+            <span>
+
+                <strong>
+                    Dizajn odobren
+                </strong>
+
+                <small>
+                    Potvrda je zaprimljena
+                </small>
+
+            </span>
+        `;
+    }
+
+    if (revisionButton) {
+        revisionButton.disabled = true;
+    }
+}
+
+
+/* =========================
+   PROVJERI POSTOJEĆE
+   ODOBRENJE
+========================= */
+
+async function loadExistingApproval(
+    project,
+    session
+) {
+
+    const {
+        data: approval,
+        error
+    } =
+        await supabaseClient
+            .from("design_approvals")
+            .select(`
+                id,
+                status,
+                approved_at
+            `)
+            .eq(
+                "project_id",
+                project.id
+            )
+            .eq(
+                "user_id",
+                session.user.id
+            )
+            .maybeSingle();
+
+
+    if (error) {
+
+        console.error(
+            "Greška kod učitavanja odobrenja:",
+            error
+        );
+
+        return false;
+    }
+
+
+    if (!approval) {
+        return false;
+    }
+
+
+    renderApprovedState();
+
+
+    showMessage(
+        "Dizajn za ovaj projekt je već odobren.",
+        "success"
+    );
+
+
+    return true;
+}
+
+
+/* =========================
+   SETUP ACTIONS
+========================= */
+
+function setupApprovalActions(
+    project,
+    session
+) {
+
+    enableActions();
+
+
+    /* =========================
+       ODOBRI DIZAJN
+    ========================= */
+
+    if (approveButton) {
+
+        approveButton.onclick =
+            async function () {
+
+                hideMessage();
+
+                approveButton.disabled =
+                    true;
+
+                revisionButton.disabled =
+                    true;
+
+
+                /* =========================
+                   PROVJERI POSTOJI LI VEĆ
+                ========================= */
+
+                const {
+                    data: existingApproval,
+                    error: existingError
+                } =
+                    await supabaseClient
+                        .from("design_approvals")
+                        .select(`
+                            id,
+                            status,
+                            approved_at
+                        `)
+                        .eq(
+                            "project_id",
+                            project.id
+                        )
+                        .eq(
+                            "user_id",
+                            session.user.id
+                        )
+                        .maybeSingle();
+
+
+                if (existingError) {
+
+                    console.error(
+                        "Greška kod provjere odobrenja:",
+                        existingError
+                    );
+
+                    showMessage(
+                        "Nije moguće provjeriti odobrenje.",
+                        "error"
+                    );
+
+                    enableActions();
+
+                    return;
+                }
+
+
+                if (existingApproval) {
+
+                    renderApprovedState();
+
+                    showMessage(
+                        "Ovaj dizajn je već odobren.",
+                        "success"
+                    );
+
+                    return;
+                }
+
+
+                /* =========================
+                   SPREMI ODOBRENJE
+                ========================= */
+
+                const {
+                    error: insertError
+                } =
+                    await supabaseClient
+                        .from("design_approvals")
+                        .insert({
+                            project_id:
+                                project.id,
+
+                            user_id:
+                                session.user.id,
+
+                            status:
+                                "approved"
+                        });
+
+
+                if (insertError) {
+
+                    console.error(
+                        "Greška kod spremanja odobrenja:",
+                        insertError
+                    );
+
+                    showMessage(
+                        "Došlo je do greške prilikom odobrenja dizajna.",
+                        "error"
+                    );
+
+                    enableActions();
+
+                    return;
+                }
+
+
+                /* =========================
+                   SUCCESS
+                ========================= */
+
+                renderApprovedState();
+
+
+                showMessage(
+                    "Dizajn je uspješno odobren.",
+                    "success"
+                );
+            };
+    }
+
+
+    /* =========================
+       ZATRAŽI IZMJENU
+    ========================= */
+
+    if (revisionButton) {
+
+        revisionButton.onclick =
+            function () {
+
+                window.location.href =
+                    `revision.html?id=${project.id}`;
+            };
+    }
 }
 
 
@@ -300,7 +572,7 @@ async function loadProject() {
 
 
     /* =========================
-       PROJECT
+       DOHVATI PROJEKT
     ========================= */
 
     const {
@@ -355,7 +627,7 @@ async function loadProject() {
 
 
     /* =========================
-       FRONTEND PROVJERA USERA
+       PROVJERA KORISNIKA
     ========================= */
 
     if (
@@ -376,7 +648,7 @@ async function loadProject() {
 
 
     /* =========================
-       RENDER
+       RENDER PROJEKTA
     ========================= */
 
     if (projectTitle) {
@@ -405,206 +677,24 @@ async function loadProject() {
     );
 
 
+    /* =========================
+       POSTAVI AKCIJE
+    ========================= */
+
     setupApprovalActions(
         project,
         session
     );
-}
-
-
-/* =========================
-   DISABLE ACTIONS
-========================= */
-
-function disableActions() {
-
-    if (approveButton) {
-        approveButton.disabled = true;
-    }
-
-    if (revisionButton) {
-        revisionButton.disabled = true;
-    }
-}
-
-
-/* =========================
-   ENABLE ACTIONS
-========================= */
-
-function enableActions() {
-
-    if (approveButton) {
-        approveButton.disabled = false;
-    }
-
-    if (revisionButton) {
-        revisionButton.disabled = false;
-    }
-}
-
-
-/* =========================
-   APPROVAL ACTIONS
-========================= */
-
-function setupApprovalActions(
-    project,
-    session
-) {
-
-    enableActions();
 
 
     /* =========================
-       ODOBRI DIZAJN
+       PROVJERI JE LI VEĆ ODOBREN
     ========================= */
 
-    if (approveButton) {
-approveButton.onclick =
-    async function () {
-
-        hideMessage();
-
-        approveButton.disabled = true;
-        revisionButton.disabled = true;
-
-        const {
-            data: existingApproval,
-            error: existingError
-        } =
-            await supabaseClient
-                .from("design_approvals")
-                .select("id, status, approved_at")
-                .eq(
-                    "project_id",
-                    project.id
-                )
-                .eq(
-                    "user_id",
-                    session.user.id
-                )
-                .maybeSingle();
-
-
-        if (existingError) {
-
-            console.error(
-                "Greška kod provjere odobrenja:",
-                existingError
-            );
-
-            showMessage(
-                "Nije moguće provjeriti odobrenje.",
-                "error"
-            );
-
-            enableActions();
-
-            return;
-        }
-
-
-        if (existingApproval) {
-
-            showMessage(
-                "Ovaj dizajn je već odobren.",
-                "success"
-            );
-
-            approveButton.innerHTML = `
-
-                <span class="approval-button-icon">
-                    ✓
-                </span>
-
-                <span>
-
-                    <strong>
-                        Dizajn odobren
-                    </strong>
-
-                    <small>
-                        Potvrda je već zaprimljena
-                    </small>
-
-                </span>
-            `;
-
-            return;
-        }
-
-
-        const {
-            error: insertError
-        } =
-            await supabaseClient
-                .from("design_approvals")
-                .insert({
-                    project_id: project.id,
-                    user_id: session.user.id,
-                    status: "approved"
-                });
-
-
-        if (insertError) {
-
-            console.error(
-                "Greška kod spremanja odobrenja:",
-                insertError
-            );
-
-            showMessage(
-                "Došlo je do greške prilikom odobrenja dizajna.",
-                "error"
-            );
-
-            enableActions();
-
-            return;
-        }
-
-
-        showMessage(
-            "Dizajn je uspješno odobren.",
-            "success"
-        );
-
-
-        approveButton.innerHTML = `
-
-            <span class="approval-button-icon">
-                ✓
-            </span>
-
-            <span>
-
-                <strong>
-                    Dizajn odobren
-                </strong>
-
-                <small>
-                    Potvrda je zaprimljena
-                </small>
-
-            </span>
-        `;
-    };
-    }
-
-    /* =========================
-       ZATRAŽI IZMJENU
-    ========================= */
-
-    if (revisionButton) {
-
-        revisionButton.onclick =
-            function () {
-
-                window.location.href =
-                    `revision.html?id=${project.id}`;
-            };
-    }
+    await loadExistingApproval(
+        project,
+        session
+    );
 }
 
 
