@@ -461,90 +461,135 @@ function setupApprovalActions(
     ========================= */
 
     if (approveButton) {
+approveButton.onclick =
+    async function () {
 
-        approveButton.onclick =
-            async function () {
+        hideMessage();
 
-                hideMessage();
+        approveButton.disabled = true;
+        revisionButton.disabled = true;
 
-                approveButton.disabled =
-                    true;
-
-                revisionButton.disabled =
-                    true;
-
-
-                /*
-                    Trenutno još nemamo
-                    posebnu approvals tablicu.
-
-                    Zato zasad samo
-                    potvrđujemo klik.
-
-                    U sljedećem koraku
-                    možemo napraviti
-                    design_approvals tablicu
-                    i stvarno zapisivati:
-                    - project_id
-                    - user_id
-                    - status
-                    - approved_at
-                */
+        const {
+            data: existingApproval,
+            error: existingError
+        } =
+            await supabaseClient
+                .from("design_approvals")
+                .select("id, status, approved_at")
+                .eq(
+                    "project_id",
+                    project.id
+                )
+                .eq(
+                    "user_id",
+                    session.user.id
+                )
+                .maybeSingle();
 
 
-                try {
+        if (existingError) {
 
-                    await new Promise(
-                        resolve =>
-                            setTimeout(
-                                resolve,
-                                350
-                            )
-                    );
+            console.error(
+                "Greška kod provjere odobrenja:",
+                existingError
+            );
 
+            showMessage(
+                "Nije moguće provjeriti odobrenje.",
+                "error"
+            );
 
-                    showMessage(
-                        "Dizajn je odobren.",
-                        "success"
-                    );
+            enableActions();
 
-
-                    approveButton.innerHTML = `
-
-                        <span class="approval-button-icon">
-                            ✓
-                        </span>
-
-                        <span>
-
-                            <strong>
-                                Dizajn odobren
-                            </strong>
-
-                            <small>
-                                Potvrda je zaprimljena
-                            </small>
-
-                        </span>
-                    `;
+            return;
+        }
 
 
-                } catch (error) {
+        if (existingApproval) {
 
-                    console.error(
-                        "Greška kod odobrenja:",
-                        error
-                    );
+            showMessage(
+                "Ovaj dizajn je već odobren.",
+                "success"
+            );
 
-                    showMessage(
-                        "Došlo je do greške prilikom odobrenja.",
-                        "error"
-                    );
+            approveButton.innerHTML = `
 
-                    enableActions();
-                }
-            };
-    }
+                <span class="approval-button-icon">
+                    ✓
+                </span>
+
+                <span>
+
+                    <strong>
+                        Dizajn odobren
+                    </strong>
+
+                    <small>
+                        Potvrda je već zaprimljena
+                    </small>
+
+                </span>
+            `;
+
+            return;
+        }
+
+
+        const {
+            error: insertError
+        } =
+            await supabaseClient
+                .from("design_approvals")
+                .insert({
+                    project_id: project.id,
+                    user_id: session.user.id,
+                    status: "approved"
+                });
+
+
+        if (insertError) {
+
+            console.error(
+                "Greška kod spremanja odobrenja:",
+                insertError
+            );
+
+            showMessage(
+                "Došlo je do greške prilikom odobrenja dizajna.",
+                "error"
+            );
+
+            enableActions();
+
+            return;
+        }
+
+
+        showMessage(
+            "Dizajn je uspješno odobren.",
+            "success"
+        );
+
+
+        approveButton.innerHTML = `
+
+            <span class="approval-button-icon">
+                ✓
+            </span>
+
+            <span>
+
+                <strong>
+                    Dizajn odobren
+                </strong>
+
+                <small>
+                    Potvrda je zaprimljena
+                </small>
+
+            </span>
+        `;
+    };
 
 
     /* =========================
