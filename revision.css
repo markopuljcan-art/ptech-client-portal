@@ -90,6 +90,118 @@ body {
         rgba(0, 0, 0, 0.45);
 }
 
+/* =========================
+   ZADNJI ZAHTJEV
+========================= */
+
+.latest-revision-card {
+    margin-top: 18px;
+
+    padding: 18px 20px;
+
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.18);
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 122, 0, 0.05),
+            rgba(255, 255, 255, 0.015)
+        );
+}
+
+.latest-revision-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 16px;
+}
+
+.latest-revision-header h3 {
+    margin: 0;
+
+    font-size: 17px;
+}
+
+.latest-revision-status {
+    padding:
+        6px
+        10px;
+
+    border-radius: 999px;
+
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.32);
+
+    background:
+        rgba(255, 122, 0, 0.08);
+
+    color: #ff9a35;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.latest-revision-status.status-resolved {
+    color: #45dd78;
+
+    border-color:
+        rgba(53, 212, 110, 0.30);
+
+    background:
+        rgba(53, 212, 110, 0.07);
+}
+
+.latest-revision-status.status-pending {
+    color: #ff9a35;
+
+    border-color:
+        rgba(255, 122, 0, 0.32);
+
+    background:
+        rgba(255, 122, 0, 0.08);
+}
+
+.latest-revision-text {
+    margin:
+        14px
+        0
+        10px;
+
+    color:
+        rgba(255, 255, 255, 0.82);
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+.latest-revision-date {
+    color: var(--muted);
+
+    font-size: 10px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .latest-revision-card {
+        padding: 15px;
+    }
+
+    .latest-revision-header {
+        flex-direction: column;
+
+        gap: 10px;
+    }
+}
 
 /* =========================
    HEADER
