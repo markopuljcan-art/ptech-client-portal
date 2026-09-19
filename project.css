@@ -24,7 +24,10 @@ body {
 
     padding: 40px 24px;
 
-    font-family: Arial, Helvetica, sans-serif;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
     color: var(--text);
 
@@ -93,6 +96,7 @@ body {
 .brand {
     display: flex;
     align-items: center;
+
     gap: 16px;
 }
 
@@ -127,9 +131,13 @@ body {
     font-size: 25px;
 }
 
+
+/* HEADER ACTIONS */
+
 .header-actions {
     display: flex;
     align-items: center;
+
     gap: 14px;
 }
 
@@ -167,7 +175,7 @@ body {
     stroke-width: 1.8;
 
     color:
-        rgba(255, 255, 255, 0.7);
+        rgba(255, 255, 255, 0.70);
 }
 
 .header-separator {
@@ -191,7 +199,7 @@ body {
     background: transparent;
 
     color:
-        rgba(255, 255, 255, 0.8);
+        rgba(255, 255, 255, 0.80);
 
     cursor: pointer;
 }
@@ -268,15 +276,17 @@ input:checked
 .theme-slider::before {
     content: "☀";
 
-    transform:
-        translateX(28px);
+    transform: translateX(28px);
 }
 
 
 /* CONTENT */
 
 .dashboard-content {
-    padding: 28px 42px 40px;
+    padding:
+        28px
+        42px
+        40px;
 }
 
 
@@ -292,7 +302,9 @@ input:checked
 
     gap: 6px;
 
-    padding: 7px 12px;
+    padding:
+        7px
+        12px;
 
     border:
         1px solid
@@ -318,6 +330,7 @@ input:checked
     padding: 0;
 
     border: none;
+
     background: transparent;
 }
 
@@ -369,7 +382,10 @@ input:checked
 }
 
 .project-title-area h2 {
-    margin: 0 0 5px;
+    margin:
+        0
+        0
+        5px;
 
     font-size: 29px;
     font-weight: 800;
@@ -390,7 +406,9 @@ input:checked
     display: inline-flex;
     align-items: center;
 
-    padding: 8px 14px;
+    padding:
+        8px
+        14px;
 
     border-radius: 999px;
 
@@ -444,7 +462,7 @@ input:checked
 
     border:
         1px solid
-        rgba(160, 160, 160, 0.3);
+        rgba(160, 160, 160, 0.30);
 
     background:
         rgba(160, 160, 160, 0.07);
@@ -455,7 +473,7 @@ input:checked
 }
 
 
-/* SAMO 2 KARTICE */
+/* 2 INFO KARTICE */
 
 .project-stats {
     display: grid;
@@ -472,7 +490,9 @@ input:checked
 .stat-card {
     min-height: 100px;
 
-    padding: 18px 20px;
+    padding:
+        18px
+        20px;
 
     display: flex;
     align-items: center;
@@ -573,16 +593,14 @@ input:checked
 }
 
 
-/* PACKAGE INFO */
+/* PACKAGE */
 
 .package-info-card {
-    margin-top: 0;
-
     padding: 20px;
 
     border:
         1px solid
-        rgba(255, 122, 0, 0.2);
+        rgba(255, 122, 0, 0.20);
 
     border-radius: 14px;
 
@@ -621,7 +639,9 @@ input:checked
 }
 
 .package-info-badge {
-    padding: 6px 10px;
+    padding:
+        6px
+        10px;
 
     border:
         1px solid
@@ -639,7 +659,10 @@ input:checked
 }
 
 .package-info-description {
-    margin: 12px 0 14px;
+    margin:
+        12px
+        0
+        14px;
 
     color:
         rgba(255, 255, 255, 0.56);
@@ -651,7 +674,9 @@ input:checked
     display: flex;
     flex-wrap: wrap;
 
-    gap: 10px 18px;
+    gap:
+        10px
+        18px;
 }
 
 .package-feature {
@@ -677,7 +702,7 @@ input:checked
     border-radius: 50%;
 
     background:
-        rgba(255, 122, 0, 0.1);
+        rgba(255, 122, 0, 0.10);
 
     color: var(--orange);
 
@@ -686,11 +711,14 @@ input:checked
 }
 
 
-/* ACTIVITIES */
+/* SECTIONS */
 
 .dashboard-section {
     margin-top: 26px;
 }
+
+
+/* ACTIVITIES */
 
 .activities-detail-card {
     padding: 18px;
@@ -745,7 +773,10 @@ input:checked
 }
 
 .activities-heading-left h3 {
-    margin: 0 0 3px;
+    margin:
+        0
+        0
+        3px;
 
     font-size: 18px;
 }
@@ -759,7 +790,9 @@ input:checked
 }
 
 .activities-card {
-    padding: 4px 2px;
+    padding:
+        4px
+        2px;
 
     background: transparent;
 }
@@ -769,7 +802,9 @@ input:checked
 
     min-height: 62px;
 
-    padding: 7px 0;
+    padding:
+        7px
+        0;
 
     display: flex;
     align-items: flex-start;
@@ -867,10 +902,225 @@ input:checked
 }
 
 
+/* DEADLINE */
+
+.deadline-card {
+    padding: 22px;
+
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.24);
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 122, 0, 0.05),
+            rgba(255, 255, 255, 0.015)
+        );
+}
+
+.deadline-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.deadline-title-wrap {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+}
+
+.deadline-main-icon {
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background:
+        rgba(255, 122, 0, 0.10);
+
+    color: var(--orange);
+}
+
+.deadline-main-icon svg {
+    width: 23px;
+    height: 23px;
+
+    fill: none;
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+}
+
+.deadline-title-wrap h3 {
+    margin:
+        0
+        0
+        4px;
+
+    font-size: 18px;
+}
+
+.deadline-title-wrap p {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+.deadline-badge {
+    padding:
+        7px
+        12px;
+
+    border-radius: 999px;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.deadline-good .deadline-badge {
+    color: #34d96d;
+
+    border:
+        1px solid
+        rgba(52, 217, 109, 0.35);
+
+    background:
+        rgba(52, 217, 109, 0.08);
+}
+
+.deadline-soon .deadline-badge {
+    color: #ff9a35;
+
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.35);
+
+    background:
+        rgba(255, 122, 0, 0.08);
+}
+
+.deadline-late .deadline-badge {
+    color: #ff5d5d;
+
+    border:
+        1px solid
+        rgba(255, 93, 93, 0.35);
+
+    background:
+        rgba(255, 93, 93, 0.08);
+}
+
+.deadline-neutral .deadline-badge {
+    color: #aaa;
+
+    border:
+        1px solid
+        rgba(160, 160, 160, 0.25);
+
+    background:
+        rgba(160, 160, 160, 0.06);
+}
+
+.deadline-main-date {
+    margin-top: 18px;
+
+    font-size: 31px;
+    font-weight: 800;
+}
+
+.deadline-meta-grid {
+    margin-top: 20px;
+
+    padding-top: 18px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    border-top:
+        1px solid
+        rgba(255, 255, 255, 0.07);
+}
+
+.deadline-meta-item {
+    padding:
+        0
+        18px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.deadline-meta-item:first-child {
+    padding-left: 0;
+}
+
+.deadline-meta-item:last-child {
+    padding-right: 0;
+}
+
+.deadline-meta-item:not(:last-child) {
+    border-right:
+        1px solid
+        rgba(255, 255, 255, 0.07);
+}
+
+.deadline-meta-label {
+    color: var(--muted);
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+}
+
+.deadline-meta-item strong {
+    font-size: 16px;
+}
+
+.deadline-meta-item small {
+    color: var(--muted);
+
+    font-size: 10px;
+}
+
+
+/* EMPTY */
+
+.empty-state {
+    padding: 22px;
+
+    color: var(--muted);
+
+    text-align: center;
+
+    font-size: 12px;
+}
+
+
 /* FOOTER */
 
 .footer {
-    margin: 0 42px;
+    margin:
+        0
+        42px;
 
     padding: 18px;
 
@@ -895,7 +1145,10 @@ input:checked
     grid-template-columns:
         repeat(5, 1fr);
 
-    padding: 9px 16px 11px;
+    padding:
+        9px
+        16px
+        11px;
 
     border-top:
         1px solid
@@ -994,7 +1247,9 @@ body.light-mode .dashboard-header {
 body.light-mode .brand h1,
 body.light-mode .project-title-area h2,
 body.light-mode .activities-heading-left h3,
-body.light-mode .activity-title {
+body.light-mode .activity-title,
+body.light-mode .deadline-title-wrap h3,
+body.light-mode .deadline-main-date {
     color: #171717;
 }
 
@@ -1034,7 +1289,8 @@ body.light-mode .progress-container {
         rgba(0, 0, 0, 0.08);
 }
 
-body.light-mode .package-info-card {
+body.light-mode .package-info-card,
+body.light-mode .deadline-card {
     background:
         linear-gradient(
             135deg,
@@ -1043,8 +1299,12 @@ body.light-mode .package-info-card {
         );
 }
 
-body.light-mode .package-info-description {
-    color: #666;
+body.light-mode .package-info-description,
+body.light-mode .activity-date,
+body.light-mode .deadline-title-wrap p,
+body.light-mode .deadline-meta-label,
+body.light-mode .deadline-meta-item small {
+    color: #777;
 }
 
 body.light-mode .package-feature {
@@ -1064,8 +1324,14 @@ body.light-mode .activity-icon {
     background: #fff;
 }
 
-body.light-mode .activity-date {
-    color: #888;
+body.light-mode .deadline-meta-grid {
+    border-top-color:
+        rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .deadline-meta-item:not(:last-child) {
+    border-right-color:
+        rgba(0, 0, 0, 0.08);
 }
 
 body.light-mode .footer {
@@ -1100,6 +1366,24 @@ body.light-mode .bottom-nav-item.active {
     .project-stats {
         grid-template-columns: 1fr;
     }
+
+    .deadline-meta-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .deadline-meta-item {
+        padding:
+            13px
+            0;
+
+        border-right: 0 !important;
+    }
+
+    .deadline-meta-item:not(:last-child) {
+        border-bottom:
+            1px solid
+            rgba(255, 255, 255, 0.07);
+    }
 }
 
 @media (max-width: 700px) {
@@ -1120,7 +1404,10 @@ body.light-mode .bottom-nav-item.active {
     }
 
     .dashboard-content {
-        padding: 20px 14px 28px;
+        padding:
+            20px
+            14px
+            28px;
     }
 
     .project-detail-heading {
@@ -1137,7 +1424,9 @@ body.light-mode .bottom-nav-item.active {
         padding: 14px;
     }
 
-    .package-info-card {
+    .package-info-card,
+    .activities-detail-card,
+    .deadline-card {
         padding: 15px;
     }
 
@@ -1145,11 +1434,17 @@ body.light-mode .bottom-nav-item.active {
         flex-direction: column;
     }
 
-    .activities-detail-card {
-        padding: 15px;
+    .deadline-card-top {
+        flex-direction: column;
+    }
+
+    .deadline-main-date {
+        font-size: 25px;
     }
 
     .footer {
-        margin: 0 14px;
+        margin:
+            0
+            14px;
     }
 }
