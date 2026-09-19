@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./approve.css?v=1"
+    >
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
+
+    <script
+        src="./approve.js?v=1"
+        defer
+    ></script>
+
+    <title>
+        PTech Digital | Odobrenje dizajna
+    </title>
+
+</head>
+
+
+<body>
+
+    <main class="approve-page">
+
+
+        <!-- HEADER -->
+
+        <header class="approve-header">
+
+            <div class="brand">
+
+                <div class="brand-logo">
+                    P
+                </div>
+
+                <div>
+
+                    <h1>
+                        Odobrenje dizajna
+                    </h1>
+
+                    <p>
+                        Pregledaj prijedlog i potvrdi sljedeći korak.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="form.html"
+                class="close-button"
+            >
+                ×
+            </a>
+
+        </header>
+
+
+
+        <!-- CONTENT -->
+
+        <div class="approve-content">
+
+
+            <!-- BACK -->
+
+            <div class="approve-back-row">
+
+                <a
+                    href="form.html"
+                    class="approve-back"
+                    id="backToProject"
+                >
+                    ‹ Natrag
+                </a>
+
+            </div>
+
+
+
+            <!-- PROJECT INFO -->
+
+            <section class="approve-project-card">
+
+                <div>
+
+                    <span class="approve-label">
+                        Projekt
+                    </span>
+
+                    <h2 id="approveProjectTitle">
+                        Učitavanje...
+                    </h2>
+
+                    <p id="approveProjectName">
+                    </p>
+
+                </div>
+
+
+                <span
+                    class="approve-status"
+                    id="approveProjectStatus"
+                >
+                    -
+                </span>
+
+            </section>
+
+
+
+            <!-- DESIGN PREVIEW -->
+
+            <section class="design-section">
+
+                <div class="design-section-header">
+
+                    <div>
+
+                        <h2>
+                            Pregled dizajna
+                        </h2>
+
+                        <p>
+                            Provjeri dizajn prije potvrde.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="design-preview"
+                    id="designPreview"
+                >
+
+                    <div class="empty-preview">
+
+                        <span>
+                            Trenutno nema dodanog pregleda dizajna.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ACTIONS -->
+
+            <section class="approval-actions">
+
+                <button
+                    type="button"
+                    class="approval-button secondary"
+                    id="requestRevisionButton"
+                >
+
+                    <span class="approval-button-icon">
+                        ↔
+                    </span>
+
+                    <span>
+
+                        <strong>
+                            Zatraži izmjenu
+                        </strong>
+
+                        <small>
+                            Pošalji komentar ili prijedlog
+                        </small>
+
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="approval-button primary"
+                    id="approveDesignButton"
+                >
+
+                    <span class="approval-button-icon">
+                        ✓
+                    </span>
+
+                    <span>
+
+                        <strong>
+                            Odobri dizajn
+                        </strong>
+
+                        <small>
+                            Potvrdi da možemo nastaviti
+                        </small>
+
+                    </span>
+
+                </button>
+
+            </section>
+
+
+
+            <!-- MESSAGE -->
+
+            <div
+                class="approval-message"
+                id="approvalMessage"
+                hidden
+            >
+            </div>
+
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>
