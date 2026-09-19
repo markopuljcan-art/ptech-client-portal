@@ -21,228 +21,6 @@
     --border: rgba(255, 255, 255, 0.09);
 }
 
-/* =========================
-   PACKAGE INFO
-========================= */
-
-.package-info-card {
-    margin-top: 18px;
-
-    padding: 18px 20px;
-
-    border:
-        1px solid
-        rgba(255, 122, 0, 0.18);
-
-    border-radius: 14px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 122, 0, 0.06),
-            rgba(255, 255, 255, 0.015)
-        );
-}
-
-.package-info-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-
-    gap: 20px;
-}
-
-.package-info-label {
-    display: block;
-
-    margin-bottom: 5px;
-
-    color: var(--muted);
-
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-}
-
-.package-info-card h3 {
-    margin: 0;
-
-    font-size: 18px;
-}
-
-.package-info-badge {
-    padding: 6px 10px;
-
-    border:
-        1px solid
-        rgba(255, 122, 0, 0.35);
-
-    border-radius: 999px;
-
-    background:
-        rgba(255, 122, 0, 0.08);
-
-    color: #ff9a35;
-
-    font-size: 11px;
-    font-weight: 700;
-}
-
-.package-info-description {
-    margin:
-        12px
-        0
-        14px;
-
-    color:
-        rgba(255, 255, 255, 0.56);
-
-    font-size: 12px;
-
-    line-height: 1.55;
-}
-
-.package-features {
-    display: flex;
-    flex-wrap: wrap;
-
-    gap: 10px 18px;
-}
-
-.package-feature {
-    display: flex;
-    align-items: center;
-
-    gap: 7px;
-
-    color:
-        rgba(255, 255, 255, 0.82);
-
-    font-size: 12px;
-}
-
-.package-check {
-    width: 18px;
-    height: 18px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 50%;
-
-    background:
-        rgba(255, 122, 0, 0.10);
-
-    color: var(--orange);
-
-    font-size: 11px;
-    font-weight: 800;
-}
-
-
-
-/* LIGHT MODE */
-
-body.light-mode
-.package-info-card {
-    background: #fffaf5;
-
-    border-color:
-        rgba(255, 122, 0, 0.18);
-}
-
-body.light-mode
-.package-info-description {
-    color:
-        rgba(0, 0, 0, 0.55);
-}
-
-body.light-mode
-.package-feature {
-    color:
-        rgba(0, 0, 0, 0.78);
-}
-
-
-/* MOBILE */
-
-@media (max-width: 700px) {
-
-    .package-info-card {
-        padding: 15px;
-    }
-
-    .package-info-top {
-        gap: 12px;
-    }
-
-    .package-info-card h3 {
-        font-size: 16px;
-    }
-
-    .package-features {
-        flex-direction: column;
-        gap: 8px;
-    }
-}
-
-/* =========================
-   DETAIL SECTION HEADING
-========================= */
-
-.detail-section-heading {
-    margin-bottom: 12px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 12px;
-}
-
-.detail-section-icon {
-    width: 38px;
-    height: 38px;
-
-    flex: 0 0 38px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 10px;
-
-    background:
-        rgba(255, 122, 0, 0.10);
-
-    color: var(--orange);
-}
-
-.detail-section-icon svg {
-    width: 21px;
-    height: 21px;
-
-    fill: none;
-    stroke: currentColor;
-
-    stroke-width: 1.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-.detail-section-heading h2 {
-    margin: 0 0 3px;
-
-    font-size: 18px;
-}
-
-.detail-section-heading p {
-    margin: 0;
-
-    color: var(--muted);
-
-    font-size: 11px;
-}
 
 /* =========================
    BODY
@@ -258,7 +36,10 @@ body {
 
     padding: 40px 24px;
 
-    font-family: Arial, Helvetica, sans-serif;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
     color: var(--text);
 
@@ -865,101 +646,273 @@ body {
 
 
 /* =========================
-   SECTIONS
+   PACKAGE INFO
 ========================= */
 
-.dashboard-section {
-    margin-top: 32px;
+.package-info-card {
+    margin-top: 18px;
+
+    padding: 18px 20px;
+
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.18);
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 122, 0, 0.06),
+            rgba(255, 255, 255, 0.015)
+        );
 }
 
-.section-header {
-    margin-bottom: 12px;
+.package-info-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
 }
 
-.section-title {
+.package-info-label {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.package-info-card h3 {
     margin: 0;
 
-    font-size: 20px;
+    font-size: 18px;
+}
+
+.package-info-badge {
+    padding: 6px 10px;
+
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.35);
+
+    border-radius: 999px;
+
+    background:
+        rgba(255, 122, 0, 0.08);
+
+    color: #ff9a35;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.package-info-description {
+    margin:
+        12px
+        0
+        14px;
+
+    color:
+        rgba(255, 255, 255, 0.56);
+
+    font-size: 12px;
+
+    line-height: 1.55;
+}
+
+.package-features {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 10px 18px;
+}
+
+.package-feature {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    color:
+        rgba(255, 255, 255, 0.82);
+
+    font-size: 12px;
+}
+
+.package-check {
+    width: 18px;
+    height: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 122, 0, 0.10);
+
+    color: var(--orange);
+
+    font-size: 11px;
+    font-weight: 800;
 }
 
 
 /* =========================
-   AKTIVNOSTI
-   VERTICAL TIMELINE
+   SECTIONS
 ========================= */
 
-.activities-card {
-    width: 100%;
+.dashboard-section {
+    margin-top: 28px;
+}
 
-    padding: 14px 18px;
 
-    overflow: hidden;
+/* =========================
+   ACTIVITIES DETAIL CARD
+========================= */
+
+.activities-detail-card {
+    padding: 18px 18px 14px;
 
     border:
         1px solid
-        var(--border);
+        rgba(255, 255, 255, 0.09);
 
-    border-radius: 14px;
+    border-radius: 16px;
 
     background:
         rgba(255, 255, 255, 0.018);
 }
 
 
-/* pojedina aktivnost */
+/* HEADER AKTIVNOSTI */
+
+.activities-card-heading {
+    margin-bottom: 12px;
+}
+
+.activities-heading-left {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+}
+
+.activities-main-icon {
+    width: 38px;
+    height: 38px;
+
+    flex: 0 0 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background:
+        rgba(255, 122, 0, 0.10);
+
+    color: var(--orange);
+}
+
+.activities-main-icon svg {
+    width: 21px;
+    height: 21px;
+
+    fill: none;
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.activities-heading-left h3 {
+    margin: 0 0 3px;
+
+    color: #fff;
+
+    font-size: 18px;
+}
+
+.activities-heading-left p {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 10px;
+}
+
+
+/* =========================
+   ACTIVITIES TIMELINE
+========================= */
+
+.activities-card {
+    width: 100%;
+
+    padding: 4px 2px;
+
+    overflow: visible;
+
+    border: 0;
+
+    border-radius: 0;
+
+    background: transparent;
+}
 
 .activity-item {
     position: relative;
 
     width: 100%;
-    min-height: 68px;
+    min-height: 62px;
 
-    padding: 8px 4px;
+    padding: 7px 0;
 
     display: flex;
     align-items: flex-start;
 
     gap: 14px;
 
-    border: none;
+    border: 0;
 }
-
-
-/* uklanja stare horizontalne crte */
 
 .activity-item:not(:last-child) {
-    border-bottom: none;
+    border-bottom: 0;
 }
 
 
-/* =========================
-   TIMELINE VERTIKALNA CRTA
-========================= */
+/* VERTIKALNA CRTA */
 
 .activity-item:not(:last-child)::after {
     content: "";
 
     position: absolute;
 
-    left: 16.5px;
-    top: 35px;
+    left: 13px;
+    top: 33px;
 
     width: 2px;
 
     height:
-        calc(100% - 14px);
+        calc(100% - 8px);
 
     border-radius: 999px;
-
-    background: #666;
 
     z-index: 0;
 }
 
 
-/* =========================
-   TIMELINE KRUG
-========================= */
+/* IKONA AKTIVNOSTI */
 
 .activity-icon {
     position: relative;
@@ -970,6 +923,7 @@ body {
     height: 27px;
 
     min-width: 27px;
+
     flex: 0 0 27px;
 
     display: flex;
@@ -991,10 +945,7 @@ body {
 }
 
 
-/* =========================
-   ZAVRŠENO
-   ZELENO
-========================= */
+/* ZAVRŠENO */
 
 .activity-done .activity-icon {
     color: #2fd462;
@@ -1009,15 +960,12 @@ body {
         linear-gradient(
             to bottom,
             #2fd462,
-            rgba(47, 212, 98, 0.35)
+            rgba(47, 212, 98, 0.40)
         );
 }
 
 
-/* =========================
-   U TIJEKU
-   NARANČASTO
-========================= */
+/* U TIJEKU */
 
 .activity-progress .activity-icon {
     color: #ff7a00;
@@ -1032,15 +980,12 @@ body {
         linear-gradient(
             to bottom,
             #ff7a00,
-            rgba(255, 122, 0, 0.35)
+            rgba(255, 122, 0, 0.40)
         );
 }
 
 
-/* =========================
-   NA ČEKANJU
-   SIVO
-========================= */
+/* NA ČEKANJU */
 
 .activity-waiting .activity-icon {
     color: #858585;
@@ -1051,14 +996,12 @@ body {
         linear-gradient(
             to bottom,
             #777,
-            rgba(119, 119, 119, 0.35)
+            rgba(119, 119, 119, 0.40)
         );
 }
 
 
-/* =========================
-   ACTIVITY CONTENT
-========================= */
+/* CONTENT AKTIVNOSTI */
 
 .activity-content {
     min-width: 0;
@@ -1096,6 +1039,251 @@ body {
 
 
 /* =========================
+   DEADLINE CARD
+========================= */
+
+.deadline-card {
+    padding: 22px;
+
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.24);
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 122, 0, 0.05),
+            rgba(255, 255, 255, 0.015)
+        );
+}
+
+
+/* DEADLINE TOP */
+
+.deadline-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.deadline-title-wrap {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+}
+
+.deadline-main-icon {
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background:
+        rgba(255, 122, 0, 0.10);
+
+    color: var(--orange);
+}
+
+.deadline-main-icon svg {
+    width: 23px;
+    height: 23px;
+
+    fill: none;
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.deadline-title-wrap h3 {
+    margin: 0 0 4px;
+
+    font-size: 18px;
+}
+
+.deadline-title-wrap p {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+
+/* DEADLINE BADGE */
+
+.deadline-badge {
+    padding: 7px 12px;
+
+    border-radius: 999px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+.deadline-good .deadline-badge {
+    color: #34d96d;
+
+    border:
+        1px solid
+        rgba(52, 217, 109, 0.35);
+
+    background:
+        rgba(52, 217, 109, 0.08);
+}
+
+.deadline-soon .deadline-badge {
+    color: #ff9a35;
+
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.35);
+
+    background:
+        rgba(255, 122, 0, 0.08);
+}
+
+.deadline-late .deadline-badge {
+    color: #ff5d5d;
+
+    border:
+        1px solid
+        rgba(255, 93, 93, 0.35);
+
+    background:
+        rgba(255, 93, 93, 0.08);
+}
+
+.deadline-neutral .deadline-badge {
+    color: #aaa;
+
+    border:
+        1px solid
+        rgba(160, 160, 160, 0.25);
+
+    background:
+        rgba(160, 160, 160, 0.06);
+}
+
+
+/* GLAVNI DATUM */
+
+.deadline-main-date {
+    margin-top: 18px;
+
+    font-size: 31px;
+    font-weight: 800;
+
+    letter-spacing: 0.01em;
+}
+
+
+/* DEADLINE META */
+
+.deadline-meta-grid {
+    margin-top: 20px;
+
+    padding-top: 18px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 0;
+
+    border-top:
+        1px solid
+        rgba(255, 255, 255, 0.07);
+}
+
+.deadline-meta-item {
+    padding: 0 18px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.deadline-meta-item:first-child {
+    padding-left: 0;
+}
+
+.deadline-meta-item:last-child {
+    padding-right: 0;
+}
+
+.deadline-meta-item:not(:last-child) {
+    border-right:
+        1px solid
+        rgba(255, 255, 255, 0.07);
+}
+
+.deadline-meta-label {
+    color: var(--muted);
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.deadline-meta-item strong {
+    font-size: 16px;
+}
+
+.deadline-meta-item small {
+    color: var(--muted);
+
+    font-size: 10px;
+
+    line-height: 1.4;
+}
+
+
+/* DEADLINE STATUS BOJE */
+
+.deadline-good
+.deadline-meta-item:nth-child(2)
+strong {
+    color: #34d96d;
+}
+
+.deadline-soon
+.deadline-meta-item:nth-child(2)
+strong {
+    color: #ff9a35;
+}
+
+.deadline-late
+.deadline-meta-item:nth-child(2)
+strong {
+    color: #ff5d5d;
+}
+
+.deadline-neutral
+.deadline-meta-item:nth-child(2)
+strong {
+    color: #aaa;
+}
+
+
+/* =========================
    DOCUMENTS
 ========================= */
 
@@ -1109,6 +1297,16 @@ body {
         );
 
     gap: 10px;
+}
+
+.section-header {
+    margin-bottom: 12px;
+}
+
+.section-title {
+    margin: 0;
+
+    font-size: 20px;
 }
 
 .project-document-card {
@@ -1173,6 +1371,7 @@ body {
 
     fill: none;
     stroke: currentColor;
+
     stroke-width: 1.8;
 }
 
@@ -1194,6 +1393,7 @@ body {
     font-size: 12px;
 
     white-space: nowrap;
+
     text-overflow: ellipsis;
 }
 
@@ -1322,441 +1522,6 @@ body {
     background: var(--orange);
 }
 
-/* =========================
-   DEADLINE CARD
-========================= */
-
-.deadline-card {
-    margin-top: 22px;
-
-    padding: 22px;
-
-    border:
-        1px solid
-        rgba(255, 122, 0, 0.24);
-
-    border-radius: 16px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 122, 0, 0.05),
-            rgba(255, 255, 255, 0.015)
-        );
-}
-
-
-/* =========================
-   TOP
-========================= */
-
-.deadline-card-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-
-    gap: 20px;
-}
-
-
-.deadline-title-wrap {
-    display: flex;
-    align-items: center;
-
-    gap: 14px;
-}
-
-
-.deadline-main-icon {
-    width: 42px;
-    height: 42px;
-
-    flex: 0 0 42px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 11px;
-
-    background:
-        rgba(255, 122, 0, 0.10);
-
-    color: var(--orange);
-}
-
-
-.deadline-main-icon svg {
-    width: 23px;
-    height: 23px;
-
-    fill: none;
-    stroke: currentColor;
-
-    stroke-width: 1.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-
-.deadline-title-wrap h3 {
-    margin: 0 0 4px;
-
-    font-size: 18px;
-}
-
-
-.deadline-title-wrap p {
-    margin: 0;
-
-    color: var(--muted);
-
-    font-size: 11px;
-}
-
-
-/* =========================
-   BADGE
-========================= */
-
-.deadline-badge {
-    padding: 7px 12px;
-
-    border-radius: 999px;
-
-    font-size: 11px;
-    font-weight: 700;
-
-    white-space: nowrap;
-}
-
-
-/* DOBAR ROK */
-
-.deadline-good .deadline-badge {
-    color: #34d96d;
-
-    border:
-        1px solid
-        rgba(52, 217, 109, 0.35);
-
-    background:
-        rgba(52, 217, 109, 0.08);
-}
-
-
-/* ROK SE PRIBLIŽAVA */
-
-.deadline-soon .deadline-badge {
-    color: #ff9a35;
-
-    border:
-        1px solid
-        rgba(255, 122, 0, 0.35);
-
-    background:
-        rgba(255, 122, 0, 0.08);
-}
-
-
-/* ROK PROŠAO */
-
-.deadline-late .deadline-badge {
-    color: #ff5d5d;
-
-    border:
-        1px solid
-        rgba(255, 93, 93, 0.35);
-
-    background:
-        rgba(255, 93, 93, 0.08);
-}
-
-
-/* NEUTRAL */
-
-.deadline-neutral .deadline-badge {
-    color: #aaa;
-
-    border:
-        1px solid
-        rgba(160, 160, 160, 0.25);
-
-    background:
-        rgba(160, 160, 160, 0.06);
-}
-
-
-/* =========================
-   GLAVNI DATUM
-========================= */
-
-.deadline-main-date {
-    margin-top: 18px;
-
-    font-size: 31px;
-    font-weight: 800;
-
-    letter-spacing: 0.01em;
-}
-
-
-/* =========================
-   META GRID
-========================= */
-
-.deadline-meta-grid {
-    margin-top: 20px;
-
-    padding-top: 18px;
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 0;
-
-    border-top:
-        1px solid
-        rgba(255, 255, 255, 0.07);
-}
-
-
-/* META ITEM */
-
-.deadline-meta-item {
-    padding: 0 18px;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 5px;
-}
-
-
-.deadline-meta-item:first-child {
-    padding-left: 0;
-}
-
-
-.deadline-meta-item:last-child {
-    padding-right: 0;
-}
-
-
-.deadline-meta-item:not(:last-child) {
-    border-right:
-        1px solid
-        rgba(255, 255, 255, 0.07);
-}
-
-
-.deadline-meta-label {
-    color: var(--muted);
-
-    font-size: 10px;
-
-    text-transform: uppercase;
-
-    letter-spacing: 0.05em;
-}
-
-
-.deadline-meta-item strong {
-    font-size: 16px;
-}
-
-
-.deadline-meta-item small {
-    color: var(--muted);
-
-    font-size: 10px;
-
-    line-height: 1.4;
-}
-
-
-/* =========================
-   STATUS BOJE
-========================= */
-
-.deadline-good
-.deadline-meta-item:last-child
-strong {
-    color: #34d96d;
-}
-
-
-.deadline-soon
-.deadline-meta-item:last-child
-strong {
-    color: #ff9a35;
-}
-
-
-.deadline-late
-.deadline-meta-item:last-child
-strong {
-    color: #ff5d5d;
-}
-
-
-.deadline-neutral
-.deadline-meta-item:last-child
-strong {
-    color: #aaa;
-}
-
-
-/* =========================
-   LIGHT MODE
-========================= */
-
-body.light-mode
-.deadline-card {
-    background: #fffaf5;
-
-    border-color:
-        rgba(255, 122, 0, 0.18);
-}
-
-
-body.light-mode
-.deadline-title-wrap h3,
-body.light-mode
-.deadline-main-date,
-body.light-mode
-.deadline-meta-item strong {
-    color: #222;
-}
-
-
-body.light-mode
-.deadline-title-wrap p,
-body.light-mode
-.deadline-meta-label,
-body.light-mode
-.deadline-meta-item small {
-    color:
-        rgba(0, 0, 0, 0.50);
-}
-
-
-body.light-mode
-.deadline-meta-grid {
-    border-top-color:
-        rgba(0, 0, 0, 0.08);
-}
-
-
-body.light-mode
-.deadline-meta-item:not(:last-child) {
-    border-right-color:
-        rgba(0, 0, 0, 0.08);
-}
-
-
-/* =========================
-   TABLET
-========================= */
-
-@media (max-width: 900px) {
-
-    .deadline-meta-grid {
-        grid-template-columns:
-            1fr
-            1fr;
-    }
-
-
-    .deadline-meta-item {
-        padding: 12px;
-    }
-
-
-    .deadline-meta-item:nth-child(2) {
-        border-right: none;
-    }
-
-
-    .deadline-meta-item:last-child {
-        grid-column: 1 / -1;
-
-        margin-top: 10px;
-
-        padding-top: 16px;
-
-        border-top:
-            1px solid
-            rgba(255, 255, 255, 0.07);
-
-        border-right: none;
-    }
-
-}
-
-
-/* =========================
-   MOBILE
-========================= */
-
-@media (max-width: 700px) {
-
-    .deadline-card {
-        padding: 16px;
-    }
-
-
-    .deadline-card-top {
-        flex-direction: column;
-
-        gap: 12px;
-    }
-
-
-    .deadline-main-date {
-        font-size: 25px;
-    }
-
-
-    .deadline-meta-grid {
-        grid-template-columns: 1fr;
-
-        gap: 0;
-    }
-
-
-    .deadline-meta-item {
-        padding:
-            13px
-            0;
-    }
-
-
-    .deadline-meta-item:not(:last-child) {
-        border-right: none;
-
-        border-bottom:
-            1px solid
-            rgba(255, 255, 255, 0.07);
-    }
-
-
-    .deadline-meta-item:last-child {
-        margin-top: 0;
-
-        padding-top: 13px;
-
-        border-top: none;
-    }
-
-
-    .deadline-meta-item strong {
-        font-size: 15px;
-    }
-
-}
 
 /* =========================
    LIGHT MODE
@@ -1780,7 +1545,7 @@ body.light-mode .dashboard {
 }
 
 body.light-mode .stat-card,
-body.light-mode .activities-card,
+body.light-mode .activities-detail-card,
 body.light-mode .project-document-card {
     background: #fafafa;
 
@@ -1788,19 +1553,42 @@ body.light-mode .project-document-card {
         rgba(0, 0, 0, 0.08);
 }
 
+body.light-mode .package-info-card,
+body.light-mode .deadline-card {
+    background: #fffaf5;
+}
+
 body.light-mode .project-title-area h2,
+body.light-mode .activities-heading-left h3,
 body.light-mode .activity-title,
+body.light-mode .deadline-title-wrap h3,
+body.light-mode .deadline-main-date,
 body.light-mode .project-document-content strong {
     color: #222;
 }
 
-body.light-mode .activity-date {
+body.light-mode .package-info-description,
+body.light-mode .package-feature,
+body.light-mode .activity-date,
+body.light-mode .deadline-title-wrap p,
+body.light-mode .deadline-meta-label,
+body.light-mode .deadline-meta-item small {
     color:
-        rgba(0, 0, 0, 0.45);
+        rgba(0, 0, 0, 0.52);
 }
 
 body.light-mode .activity-icon {
     background: #fafafa;
+}
+
+body.light-mode .deadline-meta-grid {
+    border-top-color:
+        rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .deadline-meta-item:not(:last-child) {
+    border-right-color:
+        rgba(0, 0, 0, 0.08);
 }
 
 body.light-mode .bottom-nav {
@@ -1830,7 +1618,39 @@ body.light-mode .user-avatar svg {
     }
 
     .project-documents {
-        grid-template-columns: 1fr;
+        grid-template-columns:
+            1fr;
+    }
+
+    .deadline-meta-grid {
+        grid-template-columns:
+            1fr
+            1fr;
+    }
+
+    .deadline-meta-item {
+        padding: 12px;
+    }
+
+    .deadline-meta-item:nth-child(2) {
+        border-right: 0;
+    }
+
+    .deadline-meta-item:last-child {
+        grid-column:
+            1 / -1;
+
+        margin-top:
+            8px;
+
+        padding-top:
+            16px;
+
+        border-top:
+            1px solid
+            rgba(255, 255, 255, 0.07);
+
+        border-right: 0;
     }
 }
 
@@ -1870,7 +1690,8 @@ body.light-mode .user-avatar svg {
     }
 
     .header-actions {
-        justify-content: space-between;
+        justify-content:
+            space-between;
     }
 
     .dashboard-content {
@@ -1912,20 +1733,39 @@ body.light-mode .user-avatar svg {
         padding: 10px;
     }
 
-    .activities-card {
+    .package-info-card {
+        padding: 15px;
+    }
+
+    .package-info-top {
+        gap: 12px;
+    }
+
+    .package-info-card h3 {
+        font-size: 16px;
+    }
+
+    .package-features {
+        flex-direction: column;
+
+        gap: 8px;
+    }
+
+    .activities-detail-card {
         padding:
-            12px
-            10px;
+            15px
+            14px
+            12px;
+    }
+
+    .activities-heading-left h3 {
+        font-size: 16px;
     }
 
     .activity-item {
-        min-height: 64px;
+        min-height: 58px;
 
         gap: 11px;
-    }
-
-    .activity-item:not(:last-child)::after {
-        left: 14.5px;
     }
 
     .activity-icon {
@@ -1933,7 +1773,55 @@ body.light-mode .user-avatar svg {
         height: 25px;
 
         min-width: 25px;
+
         flex-basis: 25px;
+    }
+
+    .activity-item:not(:last-child)::after {
+        left: 12px;
+        top: 31px;
+    }
+
+    .deadline-card {
+        padding: 16px;
+    }
+
+    .deadline-card-top {
+        flex-direction: column;
+
+        gap: 12px;
+    }
+
+    .deadline-main-date {
+        font-size: 25px;
+    }
+
+    .deadline-meta-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .deadline-meta-item {
+        padding:
+            13px
+            0;
+    }
+
+    .deadline-meta-item:not(:last-child) {
+        border-right: 0;
+
+        border-bottom:
+            1px solid
+            rgba(255, 255, 255, 0.07);
+    }
+
+    .deadline-meta-item:last-child {
+        grid-column: auto;
+
+        margin-top: 0;
+
+        padding-top: 13px;
+
+        border-top: 0;
     }
 
     .project-documents {
