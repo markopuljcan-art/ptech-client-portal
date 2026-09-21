@@ -91,17 +91,6 @@ function applyTheme(theme) {
         "ptech-theme",
         finalTheme
     );
-
-
-    if (themeToggle) {
-
-        themeToggle.setAttribute(
-            "aria-label",
-            finalTheme === "light"
-                ? "Uključi tamni način"
-                : "Uključi svijetli način"
-        );
-    }
 }
 
 
@@ -399,8 +388,7 @@ async function loadProfile() {
             .from("profiles")
             .select(`
                 id,
-                display_name,
-                role
+                display_name
             `)
             .eq(
                 "id",
@@ -708,6 +696,77 @@ async function getDocumentUrl(
 
 
 /* =========================
+   DOWNLOAD URL
+========================= */
+
+async function getDownloadUrl(
+    item
+) {
+
+    if (!item.file_url) {
+        return null;
+    }
+
+
+    const value =
+        String(
+            item.file_url
+        );
+
+
+    if (
+        value.startsWith(
+            "http://"
+        ) ||
+        value.startsWith(
+            "https://"
+        )
+    ) {
+
+        return value;
+    }
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .storage
+            .from(
+                "project-documents"
+            )
+            .createSignedUrl(
+                value,
+                3600,
+                {
+                    download:
+                        item.name ||
+                        true
+                }
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Download signed URL error:",
+            error
+        );
+
+
+        return null;
+    }
+
+
+    return (
+        data?.signedUrl ||
+        null
+    );
+}
+
+
+/* =========================
    RENDER
 ========================= */
 
@@ -750,8 +809,14 @@ async function renderDocuments(
         of documents
     ) {
 
-        const url =
+        const openUrl =
             await getDocumentUrl(
+                item
+            );
+
+
+        const downloadUrl =
+            await getDownloadUrl(
                 item
             );
 
@@ -777,23 +842,19 @@ async function renderDocuments(
 
 
                         <strong>
-
                             ${escapeHtml(
                                 item.name ||
                                 "Dokument"
                             )}
-
                         </strong>
 
 
                         <span>
-
                             ${escapeHtml(
                                 item.project?.type ||
                                 item.project?.name ||
                                 "Projekt"
                             )}
-
                         </span>
 
 
@@ -825,33 +886,92 @@ async function renderDocuments(
                 </div>
 
 
-                ${
-                    url
+                <div class="document-actions">
 
-                        ? `
-                            <a
-    href="${url}"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="document-open-button"
-    title="Otvori dokument"
->
-    Otvori
 
-    <svg viewBox="0 0 24 24">
-        <path d="M14 5h5v5"></path>
-        <path d="M10 14L19 5"></path>
-        <path d="M19 13v6H5V5h6"></path>
-    </svg>
-</a>
-                        `
+                    ${
+                        openUrl
 
-                        : `
-                            <span class="document-unavailable">
-                                Nedostupno
-                            </span>
-                        `
-                }
+                            ? `
+                                <a
+                                    href="${openUrl}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="document-open-button"
+                                >
+                                    Otvori
+
+                                    <svg viewBox="0 0 24 24">
+
+                                        <path
+                                            d="M14 5h5v5">
+                                        </path>
+
+                                        <path
+                                            d="M10 14L19 5">
+                                        </path>
+
+                                        <path
+                                            d="M19 13v6H5V5h6">
+                                        </path>
+
+                                    </svg>
+
+                                </a>
+                            `
+
+                            : ""
+                    }
+
+
+                    ${
+                        downloadUrl
+
+                            ? `
+                                <a
+                                    href="${downloadUrl}"
+                                    class="document-download-button"
+                                >
+                                    Preuzmi
+
+                                    <svg viewBox="0 0 24 24">
+
+                                        <path
+                                            d="M12 3v12">
+                                        </path>
+
+                                        <path
+                                            d="M7 10l5 5 5-5">
+                                        </path>
+
+                                        <path
+                                            d="M5 20h14">
+                                        </path>
+
+                                    </svg>
+
+                                </a>
+                            `
+
+                            : ""
+                    }
+
+
+                    ${
+                        !openUrl &&
+                        !downloadUrl
+
+                            ? `
+                                <span class="document-unavailable">
+                                    Nedostupno
+                                </span>
+                            `
+
+                            : ""
+                    }
+
+
+                </div>
 
 
             </article>
