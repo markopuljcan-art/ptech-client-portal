@@ -11,65 +11,109 @@ const supabaseClient =
     );
 
 
+/* =========================
+   ELEMENTI
+========================= */
+
 const documentsList =
-    document.getElementById("documentsList");
+    document.getElementById(
+        "documentsList"
+    );
 
 const documentDetail =
-    document.getElementById("documentDetail");
+    document.getElementById(
+        "documentDetail"
+    );
 
 const documentsCount =
-    document.getElementById("documentsCount");
+    document.getElementById(
+        "documentsCount"
+    );
 
 const documentsStat =
-    document.getElementById("documentsStat");
+    document.getElementById(
+        "documentsStat"
+    );
 
 const documentProjectsStat =
-    document.getElementById("documentProjectsStat");
+    document.getElementById(
+        "documentProjectsStat"
+    );
 
 const documentsSizeStat =
-    document.getElementById("documentsSizeStat");
+    document.getElementById(
+        "documentsSizeStat"
+    );
 
 const documentSearch =
-    document.getElementById("documentSearch");
+    document.getElementById(
+        "documentSearch"
+    );
 
 const documentProjectFilter =
-    document.getElementById("documentProjectFilter");
+    document.getElementById(
+        "documentProjectFilter"
+    );
 
 const documentClientFilter =
-    document.getElementById("documentClientFilter");
+    document.getElementById(
+        "documentClientFilter"
+    );
 
 const documentTypeFilter =
-    document.getElementById("documentTypeFilter");
+    document.getElementById(
+        "documentTypeFilter"
+    );
 
 const documentsMessage =
-    document.getElementById("documentsMessage");
+    document.getElementById(
+        "documentsMessage"
+    );
 
 const adminUserName =
-    document.getElementById("adminUserName");
+    document.getElementById(
+        "adminUserName"
+    );
 
 const logoutButton =
-    document.getElementById("adminLogoutButton");
+    document.getElementById(
+        "adminLogoutButton"
+    );
 
 const openUploadButton =
-    document.getElementById("openUploadButton");
+    document.getElementById(
+        "openUploadButton"
+    );
 
 const closeUploadButton =
-    document.getElementById("closeUploadButton");
+    document.getElementById(
+        "closeUploadButton"
+    );
 
 const documentUploadPanel =
-    document.getElementById("documentUploadPanel");
+    document.getElementById(
+        "documentUploadPanel"
+    );
 
 const uploadProject =
-    document.getElementById("uploadProject");
+    document.getElementById(
+        "uploadProject"
+    );
 
 const uploadDocumentType =
-    document.getElementById("uploadDocumentType");
+    document.getElementById(
+        "uploadDocumentType"
+    );
 
 const uploadDocumentFile =
-    document.getElementById("uploadDocumentFile");
+    document.getElementById(
+        "uploadDocumentFile"
+    );
 
 const uploadDocumentButton =
-    document.getElementById("uploadDocumentButton");
+    document.getElementById(
+        "uploadDocumentButton"
+    );
 
 
 let currentSession = null;
@@ -102,15 +146,25 @@ function formatDate(value) {
         return "-";
     }
 
-    return new Date(value)
-        .toLocaleDateString(
-            "hr-HR",
-            {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric"
-            }
-        );
+    const date =
+        new Date(value);
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+        return "-";
+    }
+
+    return date.toLocaleDateString(
+        "hr-HR",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        }
+    );
 }
 
 
@@ -120,17 +174,27 @@ function formatDateTime(value) {
         return "-";
     }
 
-    return new Date(value)
-        .toLocaleString(
-            "hr-HR",
-            {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit"
-            }
-        );
+    const date =
+        new Date(value);
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+        return "-";
+    }
+
+    return date.toLocaleString(
+        "hr-HR",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
 }
 
 
@@ -141,6 +205,7 @@ function formatBytes(bytes) {
 
 
     if (value < 1024) {
+
         return `${value} B`;
     }
 
@@ -184,10 +249,42 @@ function createSlug(value) {
 }
 
 
+function createSafeFileName(fileName) {
+
+    const original =
+        String(
+            fileName ||
+            "dokument"
+        );
+
+
+    return original
+        .normalize("NFD")
+        .replace(
+            /[\u0300-\u036f]/g,
+            ""
+        )
+        .toLowerCase()
+        .replace(
+            /[^a-z0-9._-]+/g,
+            "-"
+        )
+        .replace(
+            /-+/g,
+            "-"
+        );
+}
+
+
 function showMessage(
     message,
     type = "success"
 ) {
+
+    if (!documentsMessage) {
+        return;
+    }
+
 
     documentsMessage.hidden =
         false;
@@ -200,29 +297,51 @@ function showMessage(
 }
 
 
+function hideMessage() {
+
+    if (!documentsMessage) {
+        return;
+    }
+
+
+    documentsMessage.hidden =
+        true;
+
+    documentsMessage.textContent =
+        "";
+
+    documentsMessage.className =
+        "documents-message";
+}
+
+
 /* =========================
    LOGOUT
 ========================= */
 
-logoutButton?.addEventListener(
-    "click",
-    async () => {
+logoutButton
+    ?.addEventListener(
+        "click",
+        async () => {
 
-        await supabaseClient
-            .auth
-            .signOut();
+            await supabaseClient
+                .auth
+                .signOut();
 
-        window.location.href =
-            "login.html";
-    }
-);
+
+            window.location.href =
+                "login.html";
+        }
+    );
 
 
 /* =========================
    ADMIN CHECK
 ========================= */
 
-async function checkAdmin(session) {
+async function checkAdmin(
+    session
+) {
 
     const {
         data,
@@ -240,7 +359,10 @@ async function checkAdmin(session) {
 
     if (error) {
 
-        console.error(error);
+        console.error(
+            "Admin check error:",
+            error
+        );
 
         return false;
     }
@@ -259,7 +381,8 @@ async function loadAdminProfile(
 ) {
 
     const {
-        data
+        data,
+        error
     } =
         await supabaseClient
             .from("profiles")
@@ -271,6 +394,17 @@ async function loadAdminProfile(
                 session.user.id
             )
             .maybeSingle();
+
+
+    if (error) {
+
+        console.error(
+            "Admin profile error:",
+            error
+        );
+
+        return;
+    }
 
 
     if (
@@ -313,7 +447,7 @@ async function loadProjects() {
     if (error) {
 
         console.error(
-            "Projects:",
+            "Projects error:",
             error
         );
 
@@ -343,7 +477,9 @@ async function loadProjects() {
     ) {
 
         const {
-            data: profiles
+            data: profiles,
+            error:
+                profilesError
         } =
             await supabaseClient
                 .from("profiles")
@@ -355,6 +491,15 @@ async function loadProjects() {
                     "id",
                     userIds
                 );
+
+
+        if (profilesError) {
+
+            console.error(
+                "Profiles error:",
+                profilesError
+            );
+        }
 
 
         for (
@@ -381,17 +526,26 @@ async function loadProjects() {
 
 function buildFilters() {
 
-    documentProjectFilter.innerHTML = `
-        <option value="">
-            Svi projekti
-        </option>
-    `;
+    if (
+        documentProjectFilter
+    ) {
 
-    uploadProject.innerHTML = `
-        <option value="">
-            Odaberi projekt
-        </option>
-    `;
+        documentProjectFilter.innerHTML = `
+            <option value="">
+                Svi projekti
+            </option>
+        `;
+    }
+
+
+    if (uploadProject) {
+
+        uploadProject.innerHTML = `
+            <option value="">
+                Odaberi projekt
+            </option>
+        `;
+    }
 
 
     for (
@@ -405,86 +559,143 @@ function buildFilters() {
             `Projekt #${project.id}`;
 
 
-        const option =
-            document.createElement(
-                "option"
-            );
+        if (
+            documentProjectFilter
+        ) {
 
-        option.value =
-            project.id;
-
-        option.textContent =
-            label;
-
-        documentProjectFilter
-            .appendChild(
-                option
-            );
+            const option =
+                document.createElement(
+                    "option"
+                );
 
 
-        const uploadOption =
-            option.cloneNode(true);
+            option.value =
+                String(
+                    project.id
+                );
 
-        uploadProject
-            .appendChild(
-                uploadOption
-            );
-    }
-
-
-    const clients =
-        [
-            ...new Map(
-                allProjects.map(
-                    project => [
-                        project.user_id,
-                        profileMap[
-                            project.user_id
-                        ] ||
-                        "Klijent"
-                    ]
-                )
-            ).entries()
-        ];
+            option.textContent =
+                label;
 
 
-    documentClientFilter.innerHTML = `
-        <option value="">
-            Svi klijenti
-        </option>
-    `;
-
-
-    for (
-        const [
-            userId,
-            name
-        ]
-        of clients
-    ) {
-
-        if (!userId) {
-            continue;
+            documentProjectFilter
+                .appendChild(
+                    option
+                );
         }
 
 
-        const option =
-            document.createElement(
-                "option"
-            );
+        if (
+            uploadProject
+        ) {
+
+            const uploadOption =
+                document.createElement(
+                    "option"
+                );
 
 
-        option.value =
-            userId;
+            uploadOption.value =
+                String(
+                    project.id
+                );
 
-        option.textContent =
-            name;
+            uploadOption.textContent =
+                `${label} — ${
+                    profileMap[
+                        project.user_id
+                    ] ||
+                    "Klijent"
+                }`;
 
 
+            uploadProject
+                .appendChild(
+                    uploadOption
+                );
+        }
+    }
+
+
+    if (
         documentClientFilter
-            .appendChild(
-                option
-            );
+    ) {
+
+        documentClientFilter.innerHTML = `
+            <option value="">
+                Svi klijenti
+            </option>
+        `;
+
+
+        const clients =
+            new Map();
+
+
+        for (
+            const project
+            of allProjects
+        ) {
+
+            if (
+                project.user_id
+            ) {
+
+                clients.set(
+                    project.user_id,
+                    profileMap[
+                        project.user_id
+                    ] ||
+                    "Klijent"
+                );
+            }
+        }
+
+
+        const sortedClients =
+            [
+                ...clients.entries()
+            ]
+                .sort(
+                    (a, b) =>
+                        String(
+                            a[1]
+                        )
+                            .localeCompare(
+                                String(
+                                    b[1]
+                                ),
+                                "hr"
+                            )
+                );
+
+
+        for (
+            const [
+                userId,
+                name
+            ]
+            of sortedClients
+        ) {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                userId;
+
+            option.textContent =
+                name;
+
+
+            documentClientFilter
+                .appendChild(
+                    option
+                );
+        }
     }
 }
 
@@ -494,6 +705,18 @@ function buildFilters() {
 ========================= */
 
 async function loadDocuments() {
+
+    if (!documentsList) {
+        return;
+    }
+
+
+    documentsList.innerHTML = `
+        <div class="admin-empty">
+            Učitavanje dokumenata...
+        </div>
+    `;
+
 
     const {
         data,
@@ -507,11 +730,11 @@ async function loadDocuments() {
                 id,
                 created_at,
                 project_id,
-                uploaded_by,
-                file_path,
-                file_name,
+                name,
+                file_url,
                 document_type,
-                file_size
+                file_size,
+                uploaded_by
             `)
             .order(
                 "created_at",
@@ -524,15 +747,23 @@ async function loadDocuments() {
     if (error) {
 
         console.error(
-            "Documents:",
+            "Documents error:",
             error
         );
+
 
         documentsList.innerHTML = `
             <div class="admin-empty">
                 Dokumente nije moguće učitati.
             </div>
         `;
+
+
+        showMessage(
+            "Greška kod učitavanja dokumenata.",
+            "error"
+        );
+
 
         return;
     }
@@ -542,7 +773,9 @@ async function loadDocuments() {
         Object.fromEntries(
             allProjects.map(
                 project => [
-                    project.id,
+                    String(
+                        project.id
+                    ),
                     project
                 ]
             )
@@ -552,17 +785,19 @@ async function loadDocuments() {
     allDocuments =
         (data || [])
             .map(
-                document => {
+                documentData => {
 
                     const project =
                         projectMap[
-                            document.project_id
+                            String(
+                                documentData.project_id
+                            )
                         ];
 
 
                     return {
 
-                        ...document,
+                        ...documentData,
 
                         project,
 
@@ -582,9 +817,7 @@ async function loadDocuments() {
 
     updateStats();
 
-    renderDocuments(
-        allDocuments
-    );
+    applyFilters();
 }
 
 
@@ -600,10 +833,16 @@ function updateStats() {
 
     const projects =
         new Set(
-            allDocuments.map(
-                document =>
-                    document.project_id
-            )
+            allDocuments
+                .map(
+                    item =>
+                        item.project_id
+                )
+                .filter(
+                    value =>
+                        value !==
+                        null
+                )
         );
 
 
@@ -611,28 +850,138 @@ function updateStats() {
         allDocuments.reduce(
             (
                 totalSize,
-                document
+                item
             ) =>
                 totalSize +
                 Number(
-                    document.file_size ||
+                    item.file_size ||
                     0
                 ),
             0
         );
 
 
-    documentsCount.textContent =
-        total;
+    if (documentsCount) {
 
-    documentsStat.textContent =
-        total;
+        documentsCount.textContent =
+            total;
+    }
 
-    documentProjectsStat.textContent =
-        projects.size;
 
-    documentsSizeStat.textContent =
-        formatBytes(size);
+    if (documentsStat) {
+
+        documentsStat.textContent =
+            total;
+    }
+
+
+    if (
+        documentProjectsStat
+    ) {
+
+        documentProjectsStat.textContent =
+            projects.size;
+    }
+
+
+    if (
+        documentsSizeStat
+    ) {
+
+        documentsSizeStat.textContent =
+            formatBytes(
+                size
+            );
+    }
+}
+
+
+/* =========================
+   FILE ICON
+========================= */
+
+function getFileIcon(
+    fileName
+) {
+
+    const extension =
+        String(
+            fileName || ""
+        )
+            .split(".")
+            .pop()
+            .toLowerCase();
+
+
+    if (
+        extension ===
+        "pdf"
+    ) {
+
+        return "PDF";
+    }
+
+
+    if (
+        [
+            "jpg",
+            "jpeg",
+            "png",
+            "webp"
+        ]
+            .includes(
+                extension
+            )
+    ) {
+
+        return "IMG";
+    }
+
+
+    if (
+        [
+            "doc",
+            "docx"
+        ]
+            .includes(
+                extension
+            )
+    ) {
+
+        return "DOC";
+    }
+
+
+    if (
+        [
+            "xls",
+            "xlsx"
+        ]
+            .includes(
+                extension
+            )
+    ) {
+
+        return "XLS";
+    }
+
+
+    if (
+        [
+            "zip",
+            "rar",
+            "7z"
+        ]
+            .includes(
+                extension
+            )
+    ) {
+
+        return "ZIP";
+    }
+
+
+    return "FILE";
 }
 
 
@@ -644,13 +993,19 @@ function renderDocuments(
     documents
 ) {
 
+    if (!documentsList) {
+        return;
+    }
+
+
     if (
-        !documents.length
+        !documents ||
+        documents.length === 0
     ) {
 
         documentsList.innerHTML = `
             <div class="admin-empty">
-                Nema dokumenata koji odgovaraju filterima.
+                Nema dokumenata koji odgovaraju odabranim filterima.
             </div>
         `;
 
@@ -661,10 +1016,10 @@ function renderDocuments(
     documentsList.innerHTML =
         documents
             .map(
-                document => {
+                item => {
 
                     const project =
-                        document.project;
+                        item.project;
 
 
                     return `
@@ -672,14 +1027,16 @@ function renderDocuments(
                         <button
                             type="button"
                             class="document-row"
-                            data-document-id="${document.id}"
+                            data-document-id="${escapeHtml(
+                                item.id
+                            )}"
                         >
 
                             <div class="document-file-main">
 
                                 <div class="document-file-icon">
                                     ${getFileIcon(
-                                        document.file_name
+                                        item.name
                                     )}
                                 </div>
 
@@ -687,14 +1044,14 @@ function renderDocuments(
 
                                     <strong>
                                         ${escapeHtml(
-                                            document.file_name ||
+                                            item.name ||
                                             "Dokument"
                                         )}
                                     </strong>
 
                                     <span>
                                         ${formatBytes(
-                                            document.file_size
+                                            item.file_size
                                         )}
                                     </span>
 
@@ -714,7 +1071,7 @@ function renderDocuments(
 
                             <div>
                                 ${escapeHtml(
-                                    document.client_name
+                                    item.client_name
                                 )}
                             </div>
 
@@ -723,7 +1080,7 @@ function renderDocuments(
 
                                 <span class="document-type-badge">
                                     ${escapeHtml(
-                                        document.document_type ||
+                                        item.document_type ||
                                         "Ostalo"
                                     )}
                                 </span>
@@ -733,7 +1090,7 @@ function renderDocuments(
 
                             <div>
                                 ${formatDate(
-                                    document.created_at
+                                    item.created_at
                                 )}
                             </div>
 
@@ -748,49 +1105,6 @@ function renderDocuments(
 }
 
 
-function getFileIcon(fileName) {
-
-    const extension =
-        String(
-            fileName || ""
-        )
-            .split(".")
-            .pop()
-            .toLowerCase();
-
-
-    if (extension === "pdf") {
-        return "PDF";
-    }
-
-    if (
-        extension === "jpg" ||
-        extension === "jpeg" ||
-        extension === "png" ||
-        extension === "webp"
-    ) {
-        return "IMG";
-    }
-
-    if (
-        extension === "doc" ||
-        extension === "docx"
-    ) {
-        return "DOC";
-    }
-
-    if (
-        extension === "xls" ||
-        extension === "xlsx"
-    ) {
-        return "XLS";
-    }
-
-
-    return "FILE";
-}
-
-
 /* =========================
    FILTERS
 ========================= */
@@ -799,7 +1113,8 @@ function applyFilters() {
 
     const search =
         String(
-            documentSearch.value ||
+            documentSearch
+                ?.value ||
             ""
         )
             .trim()
@@ -808,69 +1123,74 @@ function applyFilters() {
 
     const projectId =
         documentProjectFilter
-            .value;
+            ?.value ||
+        "";
 
 
     const clientId =
         documentClientFilter
-            .value;
+            ?.value ||
+        "";
 
 
     const type =
         documentTypeFilter
-            .value;
+            ?.value ||
+        "";
 
 
     const filtered =
         allDocuments.filter(
-            document => {
+            item => {
 
                 const searchText =
                     `
-                        ${document.file_name || ""}
-                        ${document.project?.name || ""}
-                        ${document.project?.type || ""}
-                        ${document.client_name || ""}
-                        ${document.document_type || ""}
+                        ${item.name || ""}
+                        ${item.project?.name || ""}
+                        ${item.project?.type || ""}
+                        ${item.client_name || ""}
+                        ${item.document_type || ""}
                     `
                         .toLowerCase();
 
 
+                const matchesSearch =
+                    !search ||
+                    searchText.includes(
+                        search
+                    );
+
+
+                const matchesProject =
+                    !projectId ||
+                    String(
+                        item.project_id
+                    ) ===
+                    projectId;
+
+
+                const matchesClient =
+                    !clientId ||
+                    String(
+                        item.client_id
+                    ) ===
+                    clientId;
+
+
+                const matchesType =
+                    !type ||
+                    String(
+                        item.document_type ||
+                        "Ostalo"
+                    ) ===
+                    type;
+
+
                 return (
-
-                    (
-                        !search ||
-                        searchText.includes(
-                            search
-                        )
-                    )
-
-                    &&
-
-                    (
-                        !projectId ||
-                        String(
-                            document.project_id
-                        ) ===
-                        projectId
-                    )
-
-                    &&
-
-                    (
-                        !clientId ||
-                        document.client_id ===
-                        clientId
-                    )
-
-                    &&
-
-                    (
-                        !type ||
-                        document.document_type ===
-                        type
-                    )
-
+                    matchesSearch &&
+                    matchesProject &&
+                    matchesClient &&
+                    matchesType
                 );
             }
         );
@@ -888,17 +1208,20 @@ documentSearch
         applyFilters
     );
 
+
 documentProjectFilter
     ?.addEventListener(
         "change",
         applyFilters
     );
 
+
 documentClientFilter
     ?.addEventListener(
         "change",
         applyFilters
     );
+
 
 documentTypeFilter
     ?.addEventListener(
@@ -908,7 +1231,7 @@ documentTypeFilter
 
 
 /* =========================
-   DETAIL
+   DETAIL ROW CLICK
 ========================= */
 
 function setupDocumentRows() {
@@ -925,17 +1248,19 @@ function setupDocumentRows() {
                     () => {
 
                         const id =
-                            Number(
-                                row.dataset
-                                    .documentId
-                            );
+                            row.dataset
+                                .documentId;
 
 
                         const documentData =
                             allDocuments.find(
                                 item =>
-                                    item.id ===
-                                    id
+                                    String(
+                                        item.id
+                                    ) ===
+                                    String(
+                                        id
+                                    )
                             );
 
 
@@ -954,9 +1279,50 @@ function setupDocumentRows() {
 }
 
 
-async function showDocumentDetail(
+/* =========================
+   RESOLVE DOCUMENT URL
+========================= */
+
+async function resolveDocumentUrl(
     documentData
 ) {
+
+    if (
+        !documentData?.file_url
+    ) {
+
+        return null;
+    }
+
+
+    const value =
+        String(
+            documentData.file_url
+        );
+
+
+    /*
+        Ako je već puni URL,
+        koristimo ga direktno.
+    */
+
+    if (
+        value.startsWith(
+            "http://"
+        ) ||
+        value.startsWith(
+            "https://"
+        )
+    ) {
+
+        return value;
+    }
+
+
+    /*
+        Inače pretpostavljamo
+        da je file_url Storage path.
+    */
 
     const {
         data,
@@ -968,20 +1334,58 @@ async function showDocumentDetail(
                 "project-documents"
             )
             .createSignedUrl(
-                documentData.file_path,
+                value,
                 3600
             );
 
 
+    if (error) {
+
+        console.error(
+            "Signed URL error:",
+            error
+        );
+
+        return null;
+    }
+
+
+    return (
+        data?.signedUrl ||
+        null
+    );
+}
+
+
+/* =========================
+   DETAIL
+========================= */
+
+async function showDocumentDetail(
+    documentData
+) {
+
+    if (!documentDetail) {
+        return;
+    }
+
+
+    documentDetail.innerHTML = `
+        <div class="document-detail-empty">
+            Učitavanje pregleda...
+        </div>
+    `;
+
+
     const signedUrl =
-        error
-            ? null
-            : data?.signedUrl;
+        await resolveDocumentUrl(
+            documentData
+        );
 
 
     const extension =
         String(
-            documentData.file_name ||
+            documentData.name ||
             ""
         )
             .split(".")
@@ -1003,9 +1407,10 @@ async function showDocumentDetail(
             "jpeg",
             "png",
             "webp"
-        ].includes(
-            extension
-        )
+        ]
+            .includes(
+                extension
+            )
     ) {
 
         preview = `
@@ -1020,7 +1425,8 @@ async function showDocumentDetail(
 
     if (
         signedUrl &&
-        extension === "pdf"
+        extension ===
+        "pdf"
     ) {
 
         preview = `
@@ -1045,11 +1451,12 @@ async function showDocumentDetail(
 
                 <h3>
                     ${escapeHtml(
-                        documentData.file_name
+                        documentData.name
                     )}
                 </h3>
 
             </div>
+
 
             <span class="document-type-badge">
                 ${escapeHtml(
@@ -1069,7 +1476,11 @@ async function showDocumentDetail(
         <div class="document-detail-meta">
 
             <div>
-                <span>Projekt</span>
+
+                <span>
+                    Projekt
+                </span>
+
                 <strong>
                     ${escapeHtml(
                         documentData.project?.type ||
@@ -1077,43 +1488,68 @@ async function showDocumentDetail(
                         "-"
                     )}
                 </strong>
+
             </div>
 
+
             <div>
-                <span>Klijent</span>
+
+                <span>
+                    Klijent
+                </span>
+
                 <strong>
                     ${escapeHtml(
                         documentData.client_name
                     )}
                 </strong>
+
             </div>
 
+
             <div>
-                <span>Vrsta</span>
+
+                <span>
+                    Vrsta
+                </span>
+
                 <strong>
                     ${escapeHtml(
                         documentData.document_type ||
                         "Ostalo"
                     )}
                 </strong>
+
             </div>
 
+
             <div>
-                <span>Veličina</span>
+
+                <span>
+                    Veličina
+                </span>
+
                 <strong>
                     ${formatBytes(
                         documentData.file_size
                     )}
                 </strong>
+
             </div>
 
+
             <div>
-                <span>Datum</span>
+
+                <span>
+                    Datum
+                </span>
+
                 <strong>
                     ${formatDateTime(
                         documentData.created_at
                     )}
                 </strong>
+
             </div>
 
         </div>
@@ -1121,6 +1557,7 @@ async function showDocumentDetail(
 
         ${
             signedUrl
+
                 ? `
                     <a
                         href="${signedUrl}"
@@ -1131,6 +1568,7 @@ async function showDocumentDetail(
                         Otvori dokument
                     </a>
                 `
+
                 : ""
         }
     `;
@@ -1145,6 +1583,8 @@ openUploadButton
     ?.addEventListener(
         "click",
         () => {
+
+            hideMessage();
 
             documentUploadPanel.hidden =
                 false;
@@ -1172,20 +1612,25 @@ uploadDocumentButton
         "click",
         async () => {
 
+            hideMessage();
+
+
             const projectId =
                 Number(
-                    uploadProject.value
+                    uploadProject
+                        ?.value
                 );
 
 
             const file =
                 uploadDocumentFile
-                    .files?.[0];
+                    ?.files?.[0];
 
 
             const type =
                 uploadDocumentType
-                    .value;
+                    ?.value ||
+                "Ostalo";
 
 
             if (
@@ -1205,12 +1650,31 @@ uploadDocumentButton
             const project =
                 allProjects.find(
                     item =>
-                        item.id ===
+                        Number(
+                            item.id
+                        ) ===
                         projectId
                 );
 
 
             if (!project) {
+
+                showMessage(
+                    "Projekt nije pronađen.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (!currentSession) {
+
+                showMessage(
+                    "Admin sesija nije dostupna.",
+                    "error"
+                );
+
                 return;
             }
 
@@ -1229,12 +1693,9 @@ uploadDocumentButton
 
 
             const safeName =
-                file.name
-                    .toLowerCase()
-                    .replace(
-                        /[^a-z0-9._-]+/g,
-                        "-"
-                    );
+                createSafeFileName(
+                    file.name
+                );
 
 
             const filePath =
@@ -1248,6 +1709,10 @@ uploadDocumentButton
                 "Učitavam...";
 
 
+            /* =========================
+               STORAGE
+            ========================= */
+
             const {
                 error: uploadError
             } =
@@ -1260,7 +1725,11 @@ uploadDocumentButton
                         filePath,
                         file,
                         {
-                            upsert: false
+                            upsert:
+                                false,
+
+                            contentType:
+                                file.type
                         }
                     );
 
@@ -1268,13 +1737,16 @@ uploadDocumentButton
             if (uploadError) {
 
                 console.error(
+                    "Upload error:",
                     uploadError
                 );
 
+
                 showMessage(
-                    "Upload nije uspio.",
+                    "Upload dokumenta nije uspio.",
                     "error"
                 );
+
 
                 resetUploadButton();
 
@@ -1282,8 +1754,13 @@ uploadDocumentButton
             }
 
 
+            /* =========================
+               DATABASE
+            ========================= */
+
             const {
-                error: insertError
+                error:
+                    insertError
             } =
                 await supabaseClient
                     .from(
@@ -1294,35 +1771,38 @@ uploadDocumentButton
                         project_id:
                             projectId,
 
-                        uploaded_by:
-                            currentSession
-                                .user
-                                .id,
-
-                        file_path:
-                            filePath,
-
-                        file_name:
+                        name:
                             file.name,
+
+                        file_url:
+                            filePath,
 
                         document_type:
                             type,
 
                         file_size:
-                            file.size
+                            file.size,
+
+                        uploaded_by:
+                            currentSession
+                                .user
+                                .id
                     });
 
 
             if (insertError) {
 
                 console.error(
+                    "Insert error:",
                     insertError
                 );
 
+
                 showMessage(
-                    "Datoteka je učitana, ali zapis u bazi nije spremljen.",
+                    "Datoteka je učitana u Storage, ali zapis u bazi nije spremljen.",
                     "error"
                 );
+
 
                 resetUploadButton();
 
@@ -1336,8 +1816,23 @@ uploadDocumentButton
             );
 
 
-            uploadDocumentFile.value =
-                "";
+            if (
+                uploadDocumentFile
+            ) {
+
+                uploadDocumentFile.value =
+                    "";
+            }
+
+
+            if (
+                uploadProject
+            ) {
+
+                uploadProject.value =
+                    "";
+            }
+
 
             documentUploadPanel.hidden =
                 true;
@@ -1353,6 +1848,14 @@ uploadDocumentButton
 
 function resetUploadButton() {
 
+    if (
+        !uploadDocumentButton
+    ) {
+
+        return;
+    }
+
+
     uploadDocumentButton.disabled =
         false;
 
@@ -1366,6 +1869,9 @@ function resetUploadButton() {
 ========================= */
 
 async function startDocuments() {
+
+    hideMessage();
+
 
     const {
         data: {
@@ -1420,5 +1926,9 @@ async function startDocuments() {
     await loadDocuments();
 }
 
+
+/* =========================
+   INIT
+========================= */
 
 startDocuments();
