@@ -50,6 +50,11 @@ const pendingDesignsCount =
         "pendingDesignsCount"
     );
 
+const revisionRequestedCount =
+    document.getElementById(
+        "revisionRequestedCount"
+    );
+
 const clientsCount =
     document.getElementById(
         "clientsCount"
@@ -366,7 +371,7 @@ async function loadStats(
 
 
     /* =========================
-       ZAHTJEVI NA ČEKANJU
+       ČEKA ODGOVOR ADMINA
     ========================= */
 
     const pendingThreads =
@@ -423,7 +428,7 @@ async function loadStats(
 
 
     /* =========================
-       DIZAJNI NA ČEKANJU
+       ČEKA ODLUKU KLIJENTA
     ========================= */
 
     const {
@@ -458,6 +463,45 @@ async function loadStats(
 
         pendingDesignsCount.textContent =
             pendingDesignCount ?? 0;
+    }
+
+
+    /* =========================
+       TRAŽENE IZMJENE
+    ========================= */
+
+    const {
+        count: revisionRequestedDesigns,
+        error: revisionRequestedError
+    } =
+        await supabaseClient
+            .from("project_designs")
+            .select(
+                "*",
+                {
+                    count: "exact",
+                    head: true
+                }
+            )
+            .eq(
+                "status",
+                "revision_requested"
+            );
+
+
+    if (revisionRequestedError) {
+
+        console.error(
+            "Greška kod brojanja traženih izmjena:",
+            revisionRequestedError
+        );
+    }
+
+
+    if (revisionRequestedCount) {
+
+        revisionRequestedCount.textContent =
+            revisionRequestedDesigns ?? 0;
     }
 
 
@@ -520,7 +564,6 @@ function loadLatestRevisions(
     ) {
 
         latestRevisions.innerHTML = `
-
             <div class="admin-empty">
                 Trenutno nema novih zahtjeva.
             </div>
@@ -567,7 +610,6 @@ function loadLatestRevisions(
 
 
                     return `
-
                         <a
                             href="admin-revisions.html"
                             class="admin-list-item"
@@ -581,22 +623,17 @@ function loadLatestRevisions(
                                     )}
                                 </strong>
 
-
                                 <span>
-
                                     Dizajn #${thread.design_id}
                                     •
-
                                     ${escapeHtml(
                                         lastMessage
                                             ?.message ||
                                         ""
                                     )}
-
                                 </span>
 
                             </div>
-
 
                             <span
                                 class="
@@ -661,7 +698,6 @@ async function loadRecentProjects() {
 
 
         recentProjects.innerHTML = `
-
             <div class="admin-empty">
                 Projekte nije moguće učitati.
             </div>
@@ -677,7 +713,6 @@ async function loadRecentProjects() {
     ) {
 
         recentProjects.innerHTML = `
-
             <div class="admin-empty">
                 Trenutno nema projekata.
             </div>
@@ -693,7 +728,6 @@ async function loadRecentProjects() {
                 project => {
 
                     return `
-
                         <a
                             href="project.html?id=${project.id}"
                             class="admin-list-item"
@@ -709,24 +743,18 @@ async function loadRecentProjects() {
                                     )}
                                 </strong>
 
-
                                 <span>
-
                                     ${escapeHtml(
                                         project.name ||
                                         ""
                                     )}
-
                                     •
-
                                     ${formatDate(
                                         project.created_at
                                     )}
-
                                 </span>
 
                             </div>
-
 
                             <span
                                 class="admin-list-badge"
@@ -833,8 +861,7 @@ async function startAdmin() {
 
     const {
         threads,
-        error:
-            revisionThreadsError
+        error: revisionThreadsError
     } =
         await getRevisionThreads();
 
@@ -853,7 +880,6 @@ async function startAdmin() {
         if (latestRevisions) {
 
             latestRevisions.innerHTML = `
-
                 <div class="admin-empty">
                     Zahtjeve nije moguće učitati.
                 </div>
