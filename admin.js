@@ -171,12 +171,159 @@ async function getAdminProfile(
 
 
 /* =========================
+   GROUP REVISION THREADS
+========================= */
+
+function groupRevisionThreads(
+    messages
+) {
+
+    const groups = {};
+
+
+    for (const message of messages) {
+
+        const key =
+            `${message.project_id}-${message.design_id}`;
+
+
+        if (!groups[key]) {
+
+            groups[key] = {
+
+                project_id:
+                    message.project_id,
+
+                design_id:
+                    message.design_id,
+
+                project:
+                    message.projects,
+
+                messages: []
+            };
+        }
+
+
+        groups[key].messages.push(
+            message
+        );
+    }
+
+
+    const threads =
+        Object.values(groups);
+
+
+    for (const thread of threads) {
+
+        thread.messages.sort(
+            (a, b) =>
+                new Date(a.created_at) -
+                new Date(b.created_at)
+        );
+
+
+        thread.lastMessage =
+            thread.messages[
+                thread.messages.length - 1
+            ];
+
+
+        thread.waitingForAdmin =
+            thread.lastMessage
+                ?.sender_role ===
+            "client";
+    }
+
+
+    threads.sort(
+        (a, b) =>
+            new Date(
+                b.lastMessage.created_at
+            ) -
+            new Date(
+                a.lastMessage.created_at
+            )
+    );
+
+
+    return threads;
+}
+
+
+/* =========================
+   LOAD REVISION THREADS
+========================= */
+
+async function getRevisionThreads() {
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from(
+                "design_revision_messages"
+            )
+            .select(`
+                id,
+                created_at,
+                project_id,
+                design_id,
+                user_id,
+                sender_role,
+                message,
+                projects (
+                    id,
+                    name,
+                    type
+                )
+            `)
+            .order(
+                "created_at",
+                {
+                    ascending: true
+                }
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Greška kod učitavanja razgovora:",
+            error
+        );
+
+        return {
+            threads: [],
+            error
+        };
+    }
+
+
+    return {
+        threads:
+            groupRevisionThreads(
+                data || []
+            ),
+
+        error: null
+    };
+}
+
+
+/* =========================
    STATISTIKA
 ========================= */
 
-async function loadStats() {
+async function loadStats(
+    revisionThreads
+) {
 
-    /* AKTIVNI PROJEKTI */
+    /* =========================
+       AKTIVNI PROJEKTI
+    ========================= */
 
     const {
         count: activeCount,
@@ -213,44 +360,30 @@ async function loadStats() {
     }
 
 
-    /* ZAHTJEVI NA ČEKANJU */
+    /* =========================
+       ZAHTJEVI NA ČEKANJU
 
-    const {
-        count: revisionsCount,
-        error: revisionsError
-    } =
-        await supabaseClient
-            .from("design_revisions")
-            .select(
-                "*",
-                {
-                    count: "exact",
-                    head: true
-                }
-            )
-            .eq(
-                "status",
-                "pending"
-            );
+       Thread čeka admina ako je
+       zadnju poruku poslao klijent.
+    ========================= */
 
-
-    if (revisionsError) {
-
-        console.error(
-            "Greška kod brojanja zahtjeva:",
-            revisionsError
+    const pendingThreads =
+        revisionThreads.filter(
+            thread =>
+                thread.waitingForAdmin
         );
-    }
 
 
     if (pendingRevisionsCount) {
 
         pendingRevisionsCount.textContent =
-            revisionsCount ?? 0;
+            pendingThreads.length;
     }
 
 
-    /* ODOBRENI DIZAJNI */
+    /* =========================
+       ODOBRENI DIZAJNI
+    ========================= */
 
     const {
         count: approvalsCount,
@@ -287,7 +420,9 @@ async function loadStats() {
     }
 
 
-    /* KLIJENTI */
+    /* =========================
+       KLIJENTI
+    ========================= */
 
     const {
         count: clientCount,
@@ -326,64 +461,21 @@ async function loadStats() {
 
 
 /* =========================
-   ZADNJI ZAHTJEVI
+   NAJNOVIJI ZAHTJEVI
 ========================= */
 
-async function loadLatestRevisions() {
+function loadLatestRevisions(
+    revisionThreads
+) {
 
     if (!latestRevisions) {
         return;
     }
 
 
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
-            .from("design_revisions")
-            .select(`
-                id,
-                project_id,
-                message,
-                status,
-                created_at,
-                projects (
-                    id,
-                    name,
-                    type
-                )
-            `)
-            .order(
-                "created_at",
-                {
-                    ascending: false
-                }
-            )
-            .limit(5);
-
-
-    if (error) {
-
-        console.error(
-            "Greška kod zadnjih zahtjeva:",
-            error
-        );
-
-        latestRevisions.innerHTML = `
-
-            <div class="admin-empty">
-                Zahtjeve nije moguće učitati.
-            </div>
-        `;
-
-        return;
-    }
-
-
     if (
-        !data ||
-        data.length === 0
+        !revisionThreads ||
+        revisionThreads.length === 0
     ) {
 
         latestRevisions.innerHTML = `
@@ -397,24 +489,45 @@ async function loadLatestRevisions() {
     }
 
 
+    /*
+        Prikazujemo maksimalno
+        5 najnovijih threadova.
+    */
+
+    const latest =
+        revisionThreads.slice(
+            0,
+            5
+        );
+
+
     latestRevisions.innerHTML =
-        data
+        latest
             .map(
-                item => {
+                thread => {
 
                     const project =
-                        item.projects;
+                        thread.project;
+
 
                     const title =
                         project?.type ||
                         project?.name ||
-                        `Projekt #${item.project_id}`;
+                        `Projekt #${thread.project_id}`;
+
+
+                    const lastMessage =
+                        thread.lastMessage;
+
+
+                    const waiting =
+                        thread.waitingForAdmin;
 
 
                     const badge =
-                        item.status === "answered"
-                            ? "Odgovoreno"
-                            : "Na čekanju";
+                        waiting
+                            ? "Na čekanju"
+                            : "Odgovoreno";
 
 
                     return `
@@ -427,19 +540,38 @@ async function loadLatestRevisions() {
                             <div class="admin-list-main">
 
                                 <strong>
-                                    ${escapeHtml(title)}
+                                    ${escapeHtml(
+                                        title
+                                    )}
                                 </strong>
 
+
                                 <span>
+
+                                    Dizajn #${thread.design_id}
+                                    •
+
                                     ${escapeHtml(
-                                        item.message
+                                        lastMessage
+                                            ?.message ||
+                                        ""
                                     )}
+
                                 </span>
 
                             </div>
 
 
-                            <span class="admin-list-badge">
+                            <span
+                                class="
+                                    admin-list-badge
+                                    ${
+                                        waiting
+                                            ? ""
+                                            : "answered"
+                                    }
+                                "
+                            >
                                 ${badge}
                             </span>
 
@@ -491,6 +623,7 @@ async function loadRecentProjects() {
             error
         );
 
+
         recentProjects.innerHTML = `
 
             <div class="admin-empty">
@@ -540,22 +673,31 @@ async function loadRecentProjects() {
                                     )}
                                 </strong>
 
+
                                 <span>
+
                                     ${escapeHtml(
-                                        project.name || ""
+                                        project.name ||
+                                        ""
                                     )}
+
                                     •
+
                                     ${formatDate(
                                         project.created_at
                                     )}
+
                                 </span>
 
                             </div>
 
 
-                            <span class="admin-list-badge">
+                            <span
+                                class="admin-list-badge"
+                            >
                                 ${escapeHtml(
-                                    project.status || "-"
+                                    project.status ||
+                                    "-"
                                 )}
                             </span>
 
@@ -619,7 +761,9 @@ async function startAdmin() {
             .toLowerCase();
 
 
-    if (role !== "admin") {
+    if (
+        role !== "admin"
+    ) {
 
         window.location.href =
             "form.html";
@@ -647,11 +791,55 @@ async function startAdmin() {
     }
 
 
+    /* =========================
+       UČITAJ NOVE CHAT THREADOVE
+    ========================= */
+
+    const {
+        threads,
+        error:
+            revisionThreadsError
+    } =
+        await getRevisionThreads();
+
+
+    if (revisionThreadsError) {
+
+        if (pendingRevisionsCount) {
+            pendingRevisionsCount.textContent =
+                "0";
+        }
+
+        if (latestRevisions) {
+
+            latestRevisions.innerHTML = `
+
+                <div class="admin-empty">
+                    Zahtjeve nije moguće učitati.
+                </div>
+            `;
+        }
+    }
+
+
+    /* =========================
+       DASHBOARD
+    ========================= */
+
     await Promise.all([
-        loadStats(),
-        loadLatestRevisions(),
+
+        loadStats(
+            threads
+        ),
+
         loadRecentProjects()
+
     ]);
+
+
+    loadLatestRevisions(
+        threads
+    );
 }
 
 
