@@ -22,6 +22,147 @@
         rgba(255, 122, 0, 0.65);
 }
 
+/* =========================
+   DOCUMENT ACTIONS
+========================= */
+
+.document-actions {
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+
+.document-open-button,
+.document-download-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    padding:
+        8px
+        13px;
+
+    border-radius: 999px;
+
+    text-decoration: none;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    transition:
+        0.2s ease;
+}
+
+
+.document-open-button {
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.45);
+
+    background:
+        rgba(255, 122, 0, 0.07);
+
+    color:
+        var(--orange-light);
+}
+
+
+.document-open-button:hover {
+    border-color:
+        var(--orange);
+
+    background:
+        rgba(255, 122, 0, 0.15);
+}
+
+
+.document-download-button {
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.11);
+
+    background:
+        rgba(255, 255, 255, 0.035);
+
+    color:
+        rgba(255, 255, 255, 0.72);
+}
+
+
+.document-download-button:hover {
+    color: #fff;
+
+    border-color:
+        rgba(255, 255, 255, 0.22);
+
+    background:
+        rgba(255, 255, 255, 0.07);
+}
+
+
+.document-open-button svg,
+.document-download-button svg {
+    width: 14px;
+    height: 14px;
+
+    fill: none;
+
+    stroke:
+        currentColor;
+
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+/* LIGHT */
+
+html[data-theme="light"]
+.document-download-button {
+    color: #555;
+
+    border-color:
+        rgba(0, 0, 0, 0.10);
+
+    background:
+        rgba(0, 0, 0, 0.025);
+}
+
+
+html[data-theme="light"]
+.document-download-button:hover {
+    color: #111;
+
+    border-color:
+        rgba(0, 0, 0, 0.20);
+
+    background:
+        rgba(0, 0, 0, 0.05);
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .document-actions {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .document-open-button,
+    .document-download-button {
+        min-width: 86px;
+    }
+}
 
 /* =========================
    BODY
