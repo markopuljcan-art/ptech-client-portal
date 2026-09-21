@@ -12,7 +12,7 @@
 
     <link
         rel="stylesheet"
-        href="./documents.css?v=4"
+        href="./documents.css?v=5"
     >
 
     <script
@@ -20,7 +20,7 @@
     ></script>
 
     <script
-        src="./documents.js?v=3"
+        src="./documents.js?v=4"
         defer
     ></script>
 
@@ -66,10 +66,26 @@
             <div class="portal-topbar-actions">
 
 
+                <!-- USER -->
+
                 <div class="portal-user">
 
                     <div class="portal-user-icon">
-                        ♙
+
+                        <svg viewBox="0 0 24 24">
+
+                            <circle
+                                cx="12"
+                                cy="8"
+                                r="3">
+                            </circle>
+
+                            <path
+                                d="M5 20c0-4 3-7 7-7s7 3 7 7">
+                            </path>
+
+                        </svg>
+
                     </div>
 
                     <strong id="clientName">
@@ -82,17 +98,33 @@
                 <div class="portal-topbar-divider"></div>
 
 
+                <!-- ODJAVA -->
+
                 <button
                     type="button"
                     id="logoutButton"
                     class="portal-logout"
                 >
 
-                    <span>
-                        ↪
-                    </span>
+                    <svg viewBox="0 0 24 24">
 
-                    Odjava
+                        <path
+                            d="M10 5H5v14h5">
+                        </path>
+
+                        <path
+                            d="M14 8l4 4-4 4">
+                        </path>
+
+                        <path
+                            d="M8 12h10">
+                        </path>
+
+                    </svg>
+
+                    <span>
+                        Odjava
+                    </span>
 
                 </button>
 
@@ -100,13 +132,15 @@
                 <div class="portal-topbar-divider"></div>
 
 
+                <!-- THEME -->
+
                 <button
                     type="button"
                     id="themeToggle"
                     class="theme-toggle"
                     aria-label="Promijeni temu"
                 >
-                    ☀
+                    Tema
                 </button>
 
 
@@ -141,9 +175,12 @@
             </section>
 
 
-            <!-- FILTERS -->
+            <!-- =========================
+                 FILTERI
+            ========================== -->
 
             <section class="documents-toolbar">
+
 
                 <div class="documents-search-wrap">
 
@@ -205,7 +242,9 @@
             </section>
 
 
-            <!-- DOCUMENTS -->
+            <!-- =========================
+                 DOKUMENTI
+            ========================== -->
 
             <section class="documents-panel">
 
@@ -246,9 +285,10 @@
 
                 </div>
 
-
             </section>
 
+
+            <!-- MESSAGE -->
 
             <div
                 id="documentsMessage"
@@ -262,28 +302,45 @@
 
             <footer class="portal-footer">
 
-                © PTech Digital 2026. • Sva prava zadržana.
+                © PTech Digital 2026.
+                • Sva prava zadržana.
 
             </footer>
+
 
         </div>
 
 
         <!-- =========================
-             BOTTOM NAV
+             BOTTOM NAVIGATION
         ========================== -->
 
         <nav class="bottom-nav">
 
 
+            <!-- POČETNA -->
+
             <a
                 href="form.html"
                 class="bottom-nav-item"
+                aria-label="Početna"
             >
 
-                <span class="bottom-nav-icon">
-                    ⌂
-                </span>
+                <svg viewBox="0 0 24 24">
+
+                    <path
+                        d="M3 11.5L12 4l9 7.5">
+                    </path>
+
+                    <path
+                        d="M5 10.5V20h14v-9.5">
+                    </path>
+
+                    <path
+                        d="M9 20v-6h6v6">
+                    </path>
+
+                </svg>
 
                 <span>
                     Početna
@@ -292,14 +349,32 @@
             </a>
 
 
+            <!-- PORUKE -->
+
             <a
-                href="#"
+                href="messages.html"
                 class="bottom-nav-item"
+                aria-label="Poruke"
             >
 
-                <span class="bottom-nav-icon">
-                    ▱
-                </span>
+                <div class="bottom-nav-icon-wrap">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <path
+                            d="M4 5h16v11H8l-4 4z">
+                        </path>
+
+                    </svg>
+
+                    <span
+                        class="nav-notification"
+                        hidden
+                    >
+                        0
+                    </span>
+
+                </div>
 
                 <span>
                     Poruke
@@ -308,14 +383,37 @@
             </a>
 
 
+            <!-- PROJEKTI -->
+
             <a
-                href="form.html#projects"
+                href="projects.html"
                 class="bottom-nav-item"
+                aria-label="Projekti"
             >
 
-                <span class="bottom-nav-icon">
-                    ▣
-                </span>
+                <svg viewBox="0 0 24 24">
+
+                    <rect
+                        x="4"
+                        y="5"
+                        width="16"
+                        height="15"
+                        rx="2">
+                    </rect>
+
+                    <path
+                        d="M8 5V3">
+                    </path>
+
+                    <path
+                        d="M16 5V3">
+                    </path>
+
+                    <path
+                        d="M4 9h16">
+                    </path>
+
+                </svg>
 
                 <span>
                     Projekti
@@ -324,14 +422,21 @@
             </a>
 
 
+            <!-- DOKUMENTI -->
+
             <a
                 href="documents.html"
                 class="bottom-nav-item active"
+                aria-label="Dokumenti"
             >
 
-                <span class="bottom-nav-icon">
-                    □
-                </span>
+                <svg viewBox="0 0 24 24">
+
+                    <path
+                        d="M4 4h6l2 2h8v14H4z">
+                    </path>
+
+                </svg>
 
                 <span>
                     Dokumenti
@@ -340,14 +445,27 @@
             </a>
 
 
+            <!-- PROFIL -->
+
             <a
-                href="#"
+                href="profile.html"
                 class="bottom-nav-item"
+                aria-label="Profil"
             >
 
-                <span class="bottom-nav-icon">
-                    ♙
-                </span>
+                <svg viewBox="0 0 24 24">
+
+                    <circle
+                        cx="12"
+                        cy="8"
+                        r="3">
+                    </circle>
+
+                    <path
+                        d="M5 20c0-4 3-7 7-7s7 3 7 7">
+                    </path>
+
+                </svg>
 
                 <span>
                     Profil
@@ -357,6 +475,7 @@
 
 
         </nav>
+
 
     </main>
 
