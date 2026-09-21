@@ -60,11 +60,6 @@ const messageBox =
         "revisionMessageBox"
     );
 
-
-/* =========================
-   CHAT
-========================= */
-
 const conversationContainer =
     document.getElementById(
         "revisionConversation"
@@ -159,6 +154,21 @@ function hideMessage() {
 
     messageBox.textContent =
         "";
+}
+
+
+/* =========================
+   ESCAPE HTML
+========================= */
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 }
 
 
@@ -329,7 +339,6 @@ function renderConversation(messages) {
 
                             </div>
 
-
                             <p>
                                 ${escapeHtml(
                                     message.message
@@ -349,27 +358,11 @@ function renderConversation(messages) {
 
 
 /* =========================
-   ESCAPE HTML
-========================= */
-
-function escapeHtml(value) {
-
-    return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-}
-
-
-/* =========================
    LOAD CHAT
 ========================= */
 
 async function loadConversation(
-    project,
-    session
+    project
 ) {
 
     if (!conversationContainer) {
@@ -408,7 +401,7 @@ async function loadConversation(
             )
             .eq(
                 "design_id",
-                designId
+                Number(designId)
             )
             .order(
                 "created_at",
@@ -567,6 +560,43 @@ function setupRevisionForm(
             }
 
 
+            /* =========================
+               UPDATE DESIGN STATUS
+            ========================= */
+
+            const {
+                error: designStatusError
+            } =
+                await supabaseClient
+                    .from(
+                        "project_designs"
+                    )
+                    .update({
+
+                        status:
+                            "revision_requested"
+                    })
+                    .eq(
+                        "id",
+                        Number(
+                            designId
+                        )
+                    );
+
+
+            if (designStatusError) {
+
+                console.error(
+                    "Greška kod promjene statusa dizajna:",
+                    designStatusError
+                );
+            }
+
+
+            /* =========================
+               SUCCESS
+            ========================= */
+
             revisionMessage.value =
                 "";
 
@@ -587,8 +617,7 @@ function setupRevisionForm(
 
 
             await loadConversation(
-                project,
-                session
+                project
             );
         }
     );
@@ -746,8 +775,7 @@ async function loadProject() {
 
 
     await loadConversation(
-        project,
-        session
+        project
     );
 }
 
