@@ -830,13 +830,20 @@ async function renderDocuments(
 
                         ? `
                             <a
-                                href="${url}"
-                                target="_blank"
-                                rel="noopener"
-                                class="document-open-button"
-                            >
-                                Otvori
-                            </a>
+    href="${url}"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="document-open-button"
+    title="Otvori dokument"
+>
+    Otvori
+
+    <svg viewBox="0 0 24 24">
+        <path d="M14 5h5v5"></path>
+        <path d="M10 14L19 5"></path>
+        <path d="M19 13v6H5V5h6"></path>
+    </svg>
+</a>
                         `
 
                         : `
