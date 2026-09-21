@@ -62,32 +62,17 @@ const messageBox =
 
 
 /* =========================
-   ZADNJI ZAHTJEV
+   CHAT
 ========================= */
 
-const latestRevisionCard =
+const conversationContainer =
     document.getElementById(
-        "latestRevisionCard"
-    );
-
-const latestRevisionStatus =
-    document.getElementById(
-        "latestRevisionStatus"
-    );
-
-const latestRevisionText =
-    document.getElementById(
-        "latestRevisionText"
-    );
-
-const latestRevisionDate =
-    document.getElementById(
-        "latestRevisionDate"
+        "revisionConversation"
     );
 
 
 /* =========================
-   PROJECT ID IZ URL-a
+   URL PARAMS
 ========================= */
 
 const params =
@@ -97,6 +82,9 @@ const params =
 
 const projectId =
     params.get("id");
+
+const designId =
+    params.get("design");
 
 
 /* =========================
@@ -120,7 +108,6 @@ function formatDateTime(value) {
         return "-";
     }
 
-
     return date.toLocaleString(
         "hr-HR",
         {
@@ -135,7 +122,7 @@ function formatDateTime(value) {
 
 
 /* =========================
-   MESSAGE
+   MESSAGE BOX
 ========================= */
 
 function showMessage(
@@ -147,14 +134,11 @@ function showMessage(
         return;
     }
 
-
     messageBox.hidden =
         false;
 
-
     messageBox.className =
         `revision-message ${type}`;
-
 
     messageBox.textContent =
         message;
@@ -167,14 +151,11 @@ function hideMessage() {
         return;
     }
 
-
     messageBox.hidden =
         true;
 
-
     messageBox.className =
         "revision-message";
-
 
     messageBox.textContent =
         "";
@@ -191,27 +172,17 @@ function renderStatus(status) {
         return;
     }
 
-
     const value =
         String(status || "")
             .toLowerCase()
             .trim();
 
-
     projectStatus.textContent =
         status || "-";
 
-
-    projectStatus.style.color =
-        "";
-
-
-    projectStatus.style.borderColor =
-        "";
-
-
-    projectStatus.style.background =
-        "";
+    projectStatus.style.color = "";
+    projectStatus.style.borderColor = "";
+    projectStatus.style.background = "";
 
 
     if (
@@ -222,14 +193,11 @@ function renderStatus(status) {
         projectStatus.style.color =
             "#4edb7b";
 
-
         projectStatus.style.borderColor =
             "rgba(46, 204, 113, 0.35)";
 
-
         projectStatus.style.background =
             "rgba(46, 204, 113, 0.08)";
-
 
         return;
     }
@@ -243,14 +211,11 @@ function renderStatus(status) {
         projectStatus.style.color =
             "#aaa";
 
-
         projectStatus.style.borderColor =
             "rgba(160, 160, 160, 0.30)";
 
-
         projectStatus.style.background =
             "rgba(160, 160, 160, 0.07)";
-
 
         return;
     }
@@ -259,10 +224,8 @@ function renderStatus(status) {
     projectStatus.style.color =
         "#ff9a35";
 
-
     projectStatus.style.borderColor =
         "rgba(255, 122, 0, 0.35)";
-
 
     projectStatus.style.background =
         "rgba(255, 122, 0, 0.08)";
@@ -282,7 +245,6 @@ function updateCharacterCount() {
         return;
     }
 
-
     characterCount.textContent =
         `${revisionMessage.value.length} / 1500`;
 }
@@ -295,221 +257,132 @@ if (revisionMessage) {
         updateCharacterCount
     );
 
-
     updateCharacterCount();
 }
 
 
 /* =========================
-   FORMA
+   CHAT RENDER
 ========================= */
 
-function disableForm() {
+function renderConversation(messages) {
 
-    if (revisionMessage) {
-
-        revisionMessage.disabled =
-            true;
-    }
-
-
-    if (submitButton) {
-
-        submitButton.disabled =
-            true;
-    }
-}
-
-
-function enableForm() {
-
-    if (revisionMessage) {
-
-        revisionMessage.disabled =
-            false;
-    }
-
-
-    if (submitButton) {
-
-        submitButton.disabled =
-            false;
-    }
-}
-
-
-/* =========================
-   STATUS ZAHTJEVA
-========================= */
-
-function getRevisionStatusLabel(status) {
-
-    const value =
-        String(status || "")
-            .toLowerCase()
-            .trim();
-
-
-    if (
-        value === "answered" ||
-        value === "resolved" ||
-        value === "completed" ||
-        value === "done"
-    ) {
-
-        return "Odgovoreno";
-    }
-
-
-    if (
-        value === "in_progress" ||
-        value === "in progress"
-    ) {
-
-        return "U obradi";
-    }
-
-
-    return "Na čekanju";
-}
-
-
-function getRevisionStatusClass(status) {
-
-    const value =
-        String(status || "")
-            .toLowerCase()
-            .trim();
-
-
-    if (
-        value === "answered" ||
-        value === "resolved" ||
-        value === "completed" ||
-        value === "done"
-    ) {
-
-        return "status-resolved";
-    }
-
-
-    return "status-pending";
-}
-
-
-/* =========================
-   ADMIN ODGOVOR
-========================= */
-
-function renderAdminReply(revision) {
-
-    if (!latestRevisionCard) {
+    if (!conversationContainer) {
         return;
     }
 
 
-    /*
-        Ako već postoji stari odgovor
-        u DOM-u, prvo ga uklanjamo.
-    */
+    if (
+        !messages ||
+        messages.length === 0
+    ) {
 
-    const oldReply =
-        latestRevisionCard.querySelector(
-            ".client-admin-reply"
-        );
+        conversationContainer.innerHTML = `
 
+            <div class="conversation-empty">
+                Još nema poruka za ovu verziju dizajna.
+            </div>
+        `;
 
-    if (oldReply) {
-
-        oldReply.remove();
-    }
-
-
-    /*
-        Ako nema admin odgovora,
-        ništa ne prikazujemo.
-    */
-
-    if (!revision.admin_reply) {
         return;
     }
 
 
-    const replyBox =
-        document.createElement(
-            "div"
-        );
+    conversationContainer.innerHTML =
+        messages
+            .map(
+                message => {
+
+                    const isAdmin =
+                        message.sender_role ===
+                        "admin";
+
+                    const senderLabel =
+                        isAdmin
+                            ? "PTech Digital"
+                            : "Ti";
+
+                    return `
+
+                        <div
+                            class="
+                                conversation-message
+                                ${
+                                    isAdmin
+                                        ? "admin-message-item"
+                                        : "client-message-item"
+                                }
+                            "
+                        >
+
+                            <div class="conversation-message-top">
+
+                                <strong>
+                                    ${senderLabel}
+                                </strong>
+
+                                <span>
+                                    ${formatDateTime(
+                                        message.created_at
+                                    )}
+                                </span>
+
+                            </div>
 
 
-    replyBox.className =
-        "client-admin-reply";
+                            <p>
+                                ${escapeHtml(
+                                    message.message
+                                )}
+                            </p>
+
+                        </div>
+                    `;
+                }
+            )
+            .join("");
 
 
-    const replyTitle =
-        document.createElement(
-            "strong"
-        );
-
-
-    replyTitle.textContent =
-        "Odgovor tima";
-
-
-    const replyText =
-        document.createElement(
-            "p"
-        );
-
-
-    replyText.textContent =
-        revision.admin_reply;
-
-
-    const replyDate =
-        document.createElement(
-            "span"
-        );
-
-
-    replyDate.textContent =
-        `Odgovoreno: ${formatDateTime(
-            revision.replied_at
-        )}`;
-
-
-    replyBox.appendChild(
-        replyTitle
-    );
-
-
-    replyBox.appendChild(
-        replyText
-    );
-
-
-    replyBox.appendChild(
-        replyDate
-    );
-
-
-    latestRevisionCard.appendChild(
-        replyBox
-    );
+    conversationContainer.scrollTop =
+        conversationContainer.scrollHeight;
 }
 
 
 /* =========================
-   ZADNJI ZAHTJEV
+   ESCAPE HTML
 ========================= */
 
-async function loadLatestRevision(
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+/* =========================
+   LOAD CHAT
+========================= */
+
+async function loadConversation(
     project,
     session
 ) {
 
-    if (!latestRevisionCard) {
+    if (!conversationContainer) {
         return;
     }
+
+
+    conversationContainer.innerHTML = `
+
+        <div class="conversation-empty">
+            Učitavanje razgovora...
+        </div>
+    `;
 
 
     const {
@@ -517,110 +390,54 @@ async function loadLatestRevision(
         error
     } =
         await supabaseClient
-            .from("design_revisions")
+            .from(
+                "design_revision_messages"
+            )
             .select(`
                 id,
-                message,
-                status,
                 created_at,
-                admin_reply,
-                replied_at
+                project_id,
+                design_id,
+                user_id,
+                sender_role,
+                message
             `)
             .eq(
                 "project_id",
                 project.id
             )
             .eq(
-                "user_id",
-                session.user.id
+                "design_id",
+                designId
             )
             .order(
                 "created_at",
                 {
-                    ascending: false
+                    ascending: true
                 }
-            )
-            .limit(1);
+            );
 
 
     if (error) {
 
         console.error(
-            "Greška kod učitavanja zadnjeg zahtjeva:",
+            "Greška kod razgovora:",
             error
         );
 
+        conversationContainer.innerHTML = `
 
-        latestRevisionCard.hidden =
-            true;
-
-
-        return;
-    }
-
-
-    if (
-        !data ||
-        data.length === 0
-    ) {
-
-        latestRevisionCard.hidden =
-            true;
-
+            <div class="conversation-empty">
+                Razgovor nije moguće učitati.
+            </div>
+        `;
 
         return;
     }
 
 
-    const revision =
-        data[0];
-
-
-    latestRevisionCard.hidden =
-        false;
-
-
-    /* TEKST ZAHTJEVA */
-
-    if (latestRevisionText) {
-
-        latestRevisionText.textContent =
-            revision.message || "-";
-    }
-
-
-    /* DATUM */
-
-    if (latestRevisionDate) {
-
-        latestRevisionDate.textContent =
-            `Poslano: ${formatDateTime(
-                revision.created_at
-            )}`;
-    }
-
-
-    /* STATUS */
-
-    if (latestRevisionStatus) {
-
-        latestRevisionStatus.textContent =
-            getRevisionStatusLabel(
-                revision.status
-            );
-
-
-        latestRevisionStatus.className =
-            `latest-revision-status ${getRevisionStatusClass(
-                revision.status
-            )}`;
-    }
-
-
-    /* ADMIN ODGOVOR */
-
-    renderAdminReply(
-        revision
+    renderConversation(
+        data || []
     );
 }
 
@@ -645,7 +462,6 @@ function setupRevisionForm(
 
             event.preventDefault();
 
-
             hideMessage();
 
 
@@ -656,28 +472,35 @@ function setupRevisionForm(
             if (!message) {
 
                 showMessage(
-                    "Napiši što želiš izmijeniti.",
+                    "Napiši poruku.",
                     "error"
                 );
 
-
                 revisionMessage.focus();
-
 
                 return;
             }
 
 
-            if (message.length < 5) {
+            if (message.length < 3) {
 
                 showMessage(
-                    "Opis izmjene je prekratak.",
+                    "Poruka je prekratka.",
                     "error"
                 );
 
-
                 revisionMessage.focus();
 
+                return;
+            }
+
+
+            if (!designId) {
+
+                showMessage(
+                    "Verzija dizajna nije odabrana.",
+                    "error"
+                );
 
                 return;
             }
@@ -686,13 +509,12 @@ function setupRevisionForm(
             submitButton.disabled =
                 true;
 
-
             submitButton.textContent =
                 "Šaljem...";
 
 
             /* =========================
-               SPREMI U SUPABASE
+               SPREMI PORUKU
             ========================= */
 
             const {
@@ -700,63 +522,53 @@ function setupRevisionForm(
             } =
                 await supabaseClient
                     .from(
-                        "design_revisions"
+                        "design_revision_messages"
                     )
                     .insert({
 
                         project_id:
                             project.id,
 
+                        design_id:
+                            Number(
+                                designId
+                            ),
+
                         user_id:
                             session.user.id,
 
-                        message:
-                            message,
+                        sender_role:
+                            "client",
 
-                        status:
-                            "pending"
+                        message:
+                            message
                     });
 
 
             if (error) {
 
                 console.error(
-                    "Greška kod slanja zahtjeva:",
+                    "Greška kod slanja poruke:",
                     error
                 );
 
-
                 showMessage(
-                    "Zahtjev nije moguće poslati. Pokušaj ponovno.",
+                    "Poruku nije moguće poslati.",
                     "error"
                 );
-
 
                 submitButton.disabled =
                     false;
 
-
                 submitButton.textContent =
-                    "Pošalji zahtjev";
-
+                    "Pošalji poruku";
 
                 return;
             }
 
 
-            /* =========================
-               SUCCESS
-            ========================= */
-
-            showMessage(
-                "Zahtjev za izmjenu je uspješno poslan.",
-                "success"
-            );
-
-
             revisionMessage.value =
                 "";
-
 
             updateCharacterCount();
 
@@ -764,17 +576,17 @@ function setupRevisionForm(
             submitButton.disabled =
                 false;
 
-
             submitButton.textContent =
-                "Pošalji novi zahtjev";
+                "Pošalji poruku";
 
 
-            /*
-                Nakon slanja odmah
-                učitamo novi zadnji zahtjev.
-            */
+            showMessage(
+                "Poruka je poslana.",
+                "success"
+            );
 
-            await loadLatestRevision(
+
+            await loadConversation(
                 project,
                 session
             );
@@ -791,10 +603,6 @@ async function loadProject() {
 
     hideMessage();
 
-
-    /* =========================
-       SESSION
-    ========================= */
 
     const {
         data: {
@@ -815,14 +623,9 @@ async function loadProject() {
         window.location.href =
             "login.html";
 
-
         return;
     }
 
-
-    /* =========================
-       ID
-    ========================= */
 
     if (!projectId) {
 
@@ -831,17 +634,20 @@ async function loadProject() {
             "error"
         );
 
-
-        disableForm();
-
-
         return;
     }
 
 
-    /* =========================
-       BACK
-    ========================= */
+    if (!designId) {
+
+        showMessage(
+            "Verzija dizajna nije odabrana.",
+            "error"
+        );
+
+        return;
+    }
+
 
     if (backToApproval) {
 
@@ -849,10 +655,6 @@ async function loadProject() {
             `approve.html?id=${projectId}`;
     }
 
-
-    /* =========================
-       PROJEKT
-    ========================= */
 
     const {
         data: project,
@@ -881,15 +683,10 @@ async function loadProject() {
             error
         );
 
-
         showMessage(
             "Projekt se ne može učitati.",
             "error"
         );
-
-
-        disableForm();
-
 
         return;
     }
@@ -902,17 +699,9 @@ async function loadProject() {
             "error"
         );
 
-
-        disableForm();
-
-
         return;
     }
 
-
-    /* =========================
-       USER CHECK
-    ========================= */
 
     if (
         project.user_id &&
@@ -925,17 +714,9 @@ async function loadProject() {
             "error"
         );
 
-
-        disableForm();
-
-
         return;
     }
 
-
-    /* =========================
-       RENDER PROJEKTA
-    ========================= */
 
     if (projectTitle) {
 
@@ -958,24 +739,13 @@ async function loadProject() {
     );
 
 
-    /* =========================
-       FORMA
-    ========================= */
-
-    enableForm();
-
-
     setupRevisionForm(
         project,
         session
     );
 
 
-    /* =========================
-       ZADNJI ZAHTJEV
-    ========================= */
-
-    await loadLatestRevision(
+    await loadConversation(
         project,
         session
     );
