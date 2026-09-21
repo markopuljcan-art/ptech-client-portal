@@ -1,0 +1,438 @@
+/* =========================
+   APPROVALS HEADER
+========================= */
+
+.approvals-heading {
+    margin-bottom: 20px;
+
+    padding: 20px 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.14);
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 122, 0, 0.05),
+            rgba(255, 255, 255, 0.01)
+        );
+}
+
+.approvals-heading h3 {
+    margin:
+        0
+        0
+        5px;
+
+    font-size: 22px;
+}
+
+.approvals-heading p {
+    margin: 0;
+
+    color:
+        rgba(255, 255, 255, 0.50);
+
+    font-size: 12px;
+}
+
+
+/* =========================
+   COUNT
+========================= */
+
+.approvals-count-wrap {
+    min-width: 70px;
+
+    text-align: center;
+}
+
+.approvals-count-wrap span {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color:
+        rgba(255, 255, 255, 0.40);
+
+    font-size: 9px;
+
+    text-transform: uppercase;
+}
+
+.approvals-count-wrap strong {
+    color: #ff9630;
+
+    font-size: 28px;
+}
+
+
+/* =========================
+   LIST
+========================= */
+
+.approvals-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+.approval-card {
+    display: grid;
+
+    grid-template-columns:
+        210px
+        minmax(0, 1fr);
+
+    gap: 18px;
+
+    padding: 16px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.025),
+            rgba(255, 255, 255, 0.008)
+        );
+}
+
+
+/* =========================
+   PREVIEW
+========================= */
+
+.approval-preview {
+    height: 150px;
+
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.07);
+
+    border-radius: 11px;
+
+    background:
+        rgba(0, 0, 0, 0.20);
+}
+
+.approval-preview img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+}
+
+.approval-preview-empty {
+    color:
+        rgba(255, 255, 255, 0.34);
+
+    font-size: 10px;
+}
+
+
+/* =========================
+   INFO
+========================= */
+
+.approval-info {
+    min-width: 0;
+}
+
+.approval-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 16px;
+}
+
+.approval-label {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color:
+        rgba(255, 255, 255, 0.38);
+
+    font-size: 9px;
+
+    text-transform: uppercase;
+}
+
+.approval-top h3 {
+    margin:
+        0
+        0
+        4px;
+
+    font-size: 17px;
+}
+
+.approval-top p {
+    margin: 0;
+
+    color:
+        rgba(255, 255, 255, 0.45);
+
+    font-size: 11px;
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
+.approval-status {
+    flex-shrink: 0;
+
+    padding:
+        6px
+        10px;
+
+    border:
+        1px solid
+        rgba(53, 212, 110, 0.28);
+
+    border-radius: 999px;
+
+    background:
+        rgba(53, 212, 110, 0.07);
+
+    color: #43dc78;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+
+/* =========================
+   DETAILS
+========================= */
+
+.approval-details {
+    margin-top: 18px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+.approval-details > div {
+    padding: 10px 12px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.055);
+
+    border-radius: 9px;
+
+    background:
+        rgba(0, 0, 0, 0.12);
+}
+
+.approval-details span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color:
+        rgba(255, 255, 255, 0.38);
+
+    font-size: 9px;
+}
+
+.approval-details strong {
+    display: block;
+
+    overflow: hidden;
+
+    color:
+        rgba(255, 255, 255, 0.86);
+
+    font-size: 11px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+/* =========================
+   ACTIONS
+========================= */
+
+.approval-actions {
+    margin-top: 14px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+}
+
+.approval-view-button,
+.approval-secondary-button {
+    min-height: 36px;
+
+    padding:
+        8px
+        12px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.approval-view-button {
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.40);
+
+    background:
+        rgba(255, 122, 0, 0.10);
+
+    color: #ff9630;
+}
+
+.approval-view-button:hover {
+    background:
+        rgba(255, 122, 0, 0.16);
+}
+
+.approval-secondary-button {
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    color:
+        rgba(255, 255, 255, 0.66);
+}
+
+.approval-secondary-button:hover {
+    color: #fff;
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+.approvals-message {
+    margin-top: 14px;
+
+    padding:
+        12px
+        14px;
+
+    border-radius: 10px;
+
+    font-size: 11px;
+}
+
+.approvals-message.error {
+    border:
+        1px solid
+        rgba(255, 101, 101, 0.25);
+
+    background:
+        rgba(255, 101, 101, 0.06);
+
+    color: #ff7979;
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 850px) {
+
+    .approval-card {
+        grid-template-columns:
+            160px
+            minmax(0, 1fr);
+    }
+
+    .approval-details {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 650px) {
+
+    .approvals-heading {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .approvals-count-wrap {
+        text-align: left;
+    }
+
+    .approval-card {
+        grid-template-columns: 1fr;
+    }
+
+    .approval-preview {
+        height: 220px;
+    }
+
+    .approval-top {
+        flex-direction: column;
+    }
+
+    .approval-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .approval-view-button,
+    .approval-secondary-button {
+        width: 100%;
+    }
+}
