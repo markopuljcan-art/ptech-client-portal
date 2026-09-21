@@ -1,0 +1,524 @@
+/* =========================
+   HEADER
+========================= */
+
+.projects-heading {
+    margin-bottom: 18px;
+
+    padding: 20px 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.14);
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 122, 0, 0.05),
+            rgba(255, 255, 255, 0.01)
+        );
+}
+
+.projects-heading h3 {
+    margin:
+        0
+        0
+        5px;
+
+    font-size: 22px;
+}
+
+.projects-heading p {
+    margin: 0;
+
+    color:
+        rgba(255, 255, 255, 0.50);
+
+    font-size: 12px;
+}
+
+.projects-count-wrap {
+    text-align: center;
+}
+
+.projects-count-wrap span {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color:
+        rgba(255, 255, 255, 0.40);
+
+    font-size: 9px;
+
+    text-transform: uppercase;
+}
+
+.projects-count-wrap strong {
+    color: #ff9630;
+
+    font-size: 29px;
+}
+
+
+/* =========================
+   FILTERS
+========================= */
+
+.projects-filters {
+    margin-bottom: 16px;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.6fr)
+        minmax(170px, 0.7fr)
+        minmax(170px, 0.7fr);
+
+    gap: 10px;
+}
+
+.projects-filters input,
+.projects-filters select {
+    width: 100%;
+
+    min-height: 42px;
+
+    padding:
+        0
+        12px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    border-radius: 10px;
+
+    outline: none;
+
+    background:
+        rgba(0, 0, 0, 0.18);
+
+    color: #fff;
+
+    font-family: inherit;
+
+    font-size: 11px;
+}
+
+.projects-filters input::placeholder {
+    color:
+        rgba(255, 255, 255, 0.28);
+}
+
+.projects-filters input:focus,
+.projects-filters select:focus {
+    border-color:
+        rgba(255, 122, 0, 0.40);
+}
+
+.projects-filters select option {
+    background: #15171a;
+
+    color: #fff;
+}
+
+
+/* =========================
+   LIST
+========================= */
+
+.projects-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+
+/* =========================
+   PROJECT CARD
+========================= */
+
+.project-admin-card {
+    padding: 17px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 18px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.025),
+            rgba(255, 255, 255, 0.008)
+        );
+}
+
+.project-admin-main {
+    min-width: 0;
+
+    flex: 1;
+}
+
+.project-admin-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+.project-admin-label {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color:
+        rgba(255, 255, 255, 0.36);
+
+    font-size: 9px;
+
+    text-transform: uppercase;
+}
+
+.project-admin-top h3 {
+    margin:
+        0
+        0
+        4px;
+
+    font-size: 17px;
+}
+
+.project-admin-top p {
+    margin: 0;
+
+    color:
+        rgba(255, 255, 255, 0.44);
+
+    font-size: 11px;
+}
+
+
+/* =========================
+   PROJECT STATUS
+========================= */
+
+.project-status-badge {
+    flex-shrink: 0;
+
+    padding:
+        6px
+        10px;
+
+    border-radius: 999px;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.project-status-badge.active {
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.25);
+
+    background:
+        rgba(255, 122, 0, 0.07);
+
+    color: #ff9630;
+}
+
+.project-status-badge.waiting {
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.12);
+
+    background:
+        rgba(255, 255, 255, 0.035);
+
+    color:
+        rgba(255, 255, 255, 0.65);
+}
+
+.project-status-badge.completed {
+    border:
+        1px solid
+        rgba(53, 212, 110, 0.25);
+
+    background:
+        rgba(53, 212, 110, 0.06);
+
+    color: #43dc78;
+}
+
+
+/* =========================
+   DETAILS
+========================= */
+
+.project-admin-details {
+    margin-top: 15px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 9px;
+}
+
+.project-admin-details > div {
+    padding:
+        9px
+        10px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.05);
+
+    border-radius: 9px;
+
+    background:
+        rgba(0, 0, 0, 0.12);
+}
+
+.project-admin-details span {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color:
+        rgba(255, 255, 255, 0.34);
+
+    font-size: 8px;
+
+    text-transform: uppercase;
+}
+
+.project-admin-details strong {
+    display: block;
+
+    overflow: hidden;
+
+    color:
+        rgba(255, 255, 255, 0.86);
+
+    font-size: 11px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+/* =========================
+   DESIGN STATUS
+========================= */
+
+.design-status-text.pending {
+    color: #ff9630;
+}
+
+.design-status-text.revision {
+    color: #ff7979;
+}
+
+.design-status-text.approved {
+    color: #43dc78;
+}
+
+.design-status-text.none {
+    color:
+        rgba(255, 255, 255, 0.40);
+}
+
+
+/* =========================
+   ACTIONS
+========================= */
+
+.project-admin-actions {
+    width: 145px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+.project-action-primary,
+.project-action-secondary {
+    min-height: 38px;
+
+    padding:
+        8px
+        11px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.project-action-primary {
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.45);
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff850f,
+            #ff7000
+        );
+
+    color: #151515;
+}
+
+.project-action-primary:hover {
+    filter: brightness(1.06);
+}
+
+.project-action-secondary {
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    color:
+        rgba(255, 255, 255, 0.68);
+}
+
+.project-action-secondary:hover {
+    color: #fff;
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+.projects-message {
+    margin-top: 14px;
+
+    padding:
+        12px
+        14px;
+
+    border-radius: 10px;
+
+    font-size: 11px;
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 950px) {
+
+    .projects-filters {
+        grid-template-columns:
+            1fr
+            1fr;
+    }
+
+    .projects-filters input {
+        grid-column:
+            1 /
+            -1;
+    }
+
+    .project-admin-details {
+        grid-template-columns:
+            1fr
+            1fr;
+    }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+    .projects-heading {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .projects-count-wrap {
+        text-align: left;
+    }
+
+    .projects-filters {
+        grid-template-columns: 1fr;
+    }
+
+    .projects-filters input {
+        grid-column: auto;
+    }
+
+    .project-admin-card {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .project-admin-details {
+        grid-template-columns: 1fr;
+    }
+
+    .project-admin-actions {
+        width: 100%;
+
+        flex-direction: row;
+    }
+
+    .project-action-primary,
+    .project-action-secondary {
+        flex: 1;
+    }
+}
+
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media (max-width: 450px) {
+
+    .project-admin-top {
+        flex-direction: column;
+    }
+
+    .project-admin-actions {
+        flex-direction: column;
+    }
+}
