@@ -50,12 +50,121 @@ const documentsMessage =
         "documentsMessage"
     );
 
+const themeToggle =
+    document.getElementById(
+        "themeToggle"
+    );
+
 
 let currentSession = null;
 
 let allProjects = [];
 
 let allDocuments = [];
+
+
+/* =========================
+   THEME
+========================= */
+
+function applyTheme(theme) {
+
+    const finalTheme =
+        theme === "light"
+            ? "light"
+            : "dark";
+
+
+    document.documentElement
+        .setAttribute(
+            "data-theme",
+            finalTheme
+        );
+
+
+    localStorage.setItem(
+        "ptech-theme",
+        finalTheme
+    );
+
+
+    if (themeToggle) {
+
+        themeToggle.textContent =
+            finalTheme === "light"
+                ? "☾"
+                : "☀";
+
+
+        themeToggle.setAttribute(
+            "aria-label",
+            finalTheme === "light"
+                ? "Uključi tamni način"
+                : "Uključi svijetli način"
+        );
+    }
+}
+
+
+function loadTheme() {
+
+    const savedTheme =
+        localStorage.getItem(
+            "ptech-theme"
+        );
+
+
+    if (
+        savedTheme === "light" ||
+        savedTheme === "dark"
+    ) {
+
+        applyTheme(
+            savedTheme
+        );
+
+        return;
+    }
+
+
+    /*
+        Ako korisnik još nije odabrao temu,
+        koristi dark kao zadanu.
+    */
+
+    applyTheme(
+        "dark"
+    );
+}
+
+
+themeToggle
+    ?.addEventListener(
+        "click",
+        () => {
+
+            const currentTheme =
+                document.documentElement
+                    .getAttribute(
+                        "data-theme"
+                    ) ||
+                "dark";
+
+
+            const nextTheme =
+                currentTheme === "dark"
+                    ? "light"
+                    : "dark";
+
+
+            applyTheme(
+                nextTheme
+            );
+        }
+    );
+
+
+loadTheme();
 
 
 /* =========================
@@ -79,8 +188,10 @@ function formatDate(value) {
         return "-";
     }
 
+
     const date =
         new Date(value);
+
 
     if (
         Number.isNaN(
@@ -89,6 +200,7 @@ function formatDate(value) {
     ) {
         return "-";
     }
+
 
     return date.toLocaleDateString(
         "hr-HR",
@@ -108,6 +220,7 @@ function formatBytes(bytes) {
 
 
     if (value < 1024) {
+
         return `${value} B`;
     }
 
@@ -149,7 +262,10 @@ function getFileLabel(name) {
         );
 
 
-    if (extension === "pdf") {
+    if (
+        extension === "pdf"
+    ) {
+
         return "PDF";
     }
 
@@ -158,10 +274,12 @@ function getFileLabel(name) {
         [
             "doc",
             "docx"
-        ].includes(
-            extension
-        )
+        ]
+            .includes(
+                extension
+            )
     ) {
+
         return "DOC";
     }
 
@@ -170,10 +288,12 @@ function getFileLabel(name) {
         [
             "xls",
             "xlsx"
-        ].includes(
-            extension
-        )
+        ]
+            .includes(
+                extension
+            )
     ) {
+
         return "XLS";
     }
 
@@ -184,15 +304,79 @@ function getFileLabel(name) {
             "jpeg",
             "png",
             "webp"
-        ].includes(
-            extension
-        )
+        ]
+            .includes(
+                extension
+            )
     ) {
+
         return "IMG";
     }
 
 
+    if (
+        [
+            "zip",
+            "rar",
+            "7z"
+        ]
+            .includes(
+                extension
+            )
+    ) {
+
+        return "ZIP";
+    }
+
+
     return "FILE";
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+function showMessage(
+    message,
+    type = "error"
+) {
+
+    if (!documentsMessage) {
+        return;
+    }
+
+
+    documentsMessage.hidden =
+        false;
+
+
+    documentsMessage.className =
+        `documents-message ${type}`;
+
+
+    documentsMessage.textContent =
+        message;
+}
+
+
+function hideMessage() {
+
+    if (!documentsMessage) {
+        return;
+    }
+
+
+    documentsMessage.hidden =
+        true;
+
+
+    documentsMessage.className =
+        "documents-message";
+
+
+    documentsMessage.textContent =
+        "";
 }
 
 
@@ -256,7 +440,8 @@ async function loadProjects() {
             .select(`
                 id,
                 name,
-                type
+                type,
+                created_at
             `)
             .eq(
                 "user_id",
@@ -277,6 +462,13 @@ async function loadProjects() {
             error
         );
 
+
+        showMessage(
+            "Projekte nije moguće učitati.",
+            "error"
+        );
+
+
         return;
     }
 
@@ -285,43 +477,55 @@ async function loadProjects() {
         data || [];
 
 
-    if (projectFilter) {
-
-        projectFilter.innerHTML = `
-            <option value="">
-                Svi projekti
-            </option>
-        `;
+    buildProjectFilter();
+}
 
 
-        for (
-            const project
-            of allProjects
-        ) {
+/* =========================
+   PROJECT FILTER
+========================= */
 
-            const option =
-                document.createElement(
-                    "option"
-                );
+function buildProjectFilter() {
 
-
-            option.value =
-                String(
-                    project.id
-                );
+    if (!projectFilter) {
+        return;
+    }
 
 
-            option.textContent =
-                project.type ||
-                project.name ||
-                `Projekt #${project.id}`;
+    projectFilter.innerHTML = `
+        <option value="">
+            Svi projekti
+        </option>
+    `;
 
 
-            projectFilter
-                .appendChild(
-                    option
-                );
-        }
+    for (
+        const project
+        of allProjects
+    ) {
+
+        const option =
+            document.createElement(
+                "option"
+            );
+
+
+        option.value =
+            String(
+                project.id
+            );
+
+
+        option.textContent =
+            project.type ||
+            project.name ||
+            `Projekt #${project.id}`;
+
+
+        projectFilter
+            .appendChild(
+                option
+            );
     }
 }
 
@@ -384,6 +588,12 @@ async function loadDocuments() {
         `;
 
 
+        showMessage(
+            "Dokumente nije moguće učitati.",
+            "error"
+        );
+
+
         return;
     }
 
@@ -419,6 +629,8 @@ async function loadDocuments() {
             );
 
 
+    hideMessage();
+
     applyFilters();
 }
 
@@ -442,6 +654,11 @@ async function getDocumentUrl(
         );
 
 
+    /*
+        Ako je file_url već puni URL,
+        koristi ga direktno.
+    */
+
     if (
         value.startsWith(
             "http://"
@@ -450,9 +667,14 @@ async function getDocumentUrl(
             "https://"
         )
     ) {
+
         return value;
     }
 
+
+    /*
+        Inače je file_url Storage path.
+    */
 
     const {
         data,
@@ -480,17 +702,25 @@ async function getDocumentUrl(
     }
 
 
-    return data?.signedUrl || null;
+    return (
+        data?.signedUrl ||
+        null
+    );
 }
 
 
 /* =========================
-   RENDER
+   RENDER DOCUMENTS
 ========================= */
 
 async function renderDocuments(
     documents
 ) {
+
+    if (!documentsList) {
+        return;
+    }
+
 
     if (documentsCount) {
 
@@ -534,10 +764,13 @@ async function renderDocuments(
 
                 <div class="document-main">
 
+
                     <div class="document-icon">
+
                         ${getFileLabel(
                             item.name
                         )}
+
                     </div>
 
 
@@ -550,6 +783,7 @@ async function renderDocuments(
                             )}
                         </strong>
 
+
                         <span>
                             ${escapeHtml(
                                 item.project?.type ||
@@ -558,21 +792,26 @@ async function renderDocuments(
                             )}
                         </span>
 
+
                         <small>
-                            ${
-                                escapeHtml(
-                                    item.document_type ||
-                                    "Ostalo"
-                                )
-                            }
+
+                            ${escapeHtml(
+                                item.document_type ||
+                                "Ostalo"
+                            )}
+
                             •
+
                             ${formatDate(
                                 item.created_at
                             )}
+
                             •
+
                             ${formatBytes(
                                 item.file_size
                             )}
+
                         </small>
 
                     </div>
@@ -612,7 +851,7 @@ async function renderDocuments(
 
 
 /* =========================
-   FILTER
+   FILTERS
 ========================= */
 
 function applyFilters() {
@@ -692,6 +931,10 @@ function applyFilters() {
 }
 
 
+/* =========================
+   FILTER EVENTS
+========================= */
+
 documentSearch
     ?.addEventListener(
         "input",
@@ -718,6 +961,9 @@ typeFilter
 ========================= */
 
 async function startDocuments() {
+
+    hideMessage();
+
 
     const {
         data: {
@@ -753,5 +999,9 @@ async function startDocuments() {
     await loadDocuments();
 }
 
+
+/* =========================
+   INIT
+========================= */
 
 startDocuments();
