@@ -324,6 +324,70 @@ async function getRevisionThreads() {
 
 
 /* =========================
+   NAJNOVIJA VERZIJA
+   DIZAJNA PO PROJEKTU
+========================= */
+
+async function getLatestDesigns() {
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("project_designs")
+            .select(`
+                id,
+                project_id,
+                status,
+                created_at
+            `)
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Greška kod učitavanja dizajna:",
+            error
+        );
+
+        return [];
+    }
+
+
+    const latestByProject =
+        new Map();
+
+
+    for (const design of data || []) {
+
+        if (
+            !latestByProject.has(
+                design.project_id
+            )
+        ) {
+
+            latestByProject.set(
+                design.project_id,
+                design
+            );
+        }
+    }
+
+
+    return [
+        ...latestByProject.values()
+    ];
+}
+
+
+/* =========================
    STATISTIKA
 ========================= */
 
@@ -389,119 +453,56 @@ async function loadStats(
 
 
     /* =========================
-       ODOBRENI DIZAJNI
+       TRENUTNE VERZIJE
+       DIZAJNA
     ========================= */
 
-    const {
-        count: approvalsCount,
-        error: approvalsError
-    } =
-        await supabaseClient
-            .from("design_approvals")
-            .select(
-                "*",
-                {
-                    count: "exact",
-                    head: true
-                }
-            )
-            .eq(
-                "status",
+    const latestDesigns =
+        await getLatestDesigns();
+
+
+    const approvedCount =
+        latestDesigns.filter(
+            design =>
+                design.status ===
                 "approved"
-            );
+        ).length;
 
 
-    if (approvalsError) {
+    const pendingCount =
+        latestDesigns.filter(
+            design =>
+                design.status ===
+                "pending"
+        ).length;
 
-        console.error(
-            "Greška kod brojanja odobrenja:",
-            approvalsError
-        );
-    }
+
+    const revisionCount =
+        latestDesigns.filter(
+            design =>
+                design.status ===
+                "revision_requested"
+        ).length;
 
 
     if (approvedDesignsCount) {
 
         approvedDesignsCount.textContent =
-            approvalsCount ?? 0;
-    }
-
-
-    /* =========================
-       ČEKA ODLUKU KLIJENTA
-    ========================= */
-
-    const {
-        count: pendingDesignCount,
-        error: pendingDesignsError
-    } =
-        await supabaseClient
-            .from("project_designs")
-            .select(
-                "*",
-                {
-                    count: "exact",
-                    head: true
-                }
-            )
-            .eq(
-                "status",
-                "pending"
-            );
-
-
-    if (pendingDesignsError) {
-
-        console.error(
-            "Greška kod brojanja dizajna na čekanju:",
-            pendingDesignsError
-        );
+            approvedCount;
     }
 
 
     if (pendingDesignsCount) {
 
         pendingDesignsCount.textContent =
-            pendingDesignCount ?? 0;
-    }
-
-
-    /* =========================
-       TRAŽENE IZMJENE
-    ========================= */
-
-    const {
-        count: revisionRequestedDesigns,
-        error: revisionRequestedError
-    } =
-        await supabaseClient
-            .from("project_designs")
-            .select(
-                "*",
-                {
-                    count: "exact",
-                    head: true
-                }
-            )
-            .eq(
-                "status",
-                "revision_requested"
-            );
-
-
-    if (revisionRequestedError) {
-
-        console.error(
-            "Greška kod brojanja traženih izmjena:",
-            revisionRequestedError
-        );
+            pendingCount;
     }
 
 
     if (revisionRequestedCount) {
 
         revisionRequestedCount.textContent =
-            revisionRequestedDesigns ?? 0;
+            revisionCount;
     }
 
 
