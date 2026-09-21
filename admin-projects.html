@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./admin.css?v=4"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./admin-projects.css?v=1"
+    >
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+    <script
+        src="./admin-projects.js?v=1"
+        defer
+    ></script>
+
+    <title>
+        PTech Digital | Projekti
+    </title>
+
+</head>
+
+
+<body>
+
+    <div class="admin-shell">
+
+
+        <!-- SIDEBAR -->
+
+        <aside class="admin-sidebar">
+
+            <div class="admin-brand">
+
+                <div class="admin-brand-logo">
+                    P
+                </div>
+
+                <div>
+
+                    <h1>
+                        PTech Digital
+                    </h1>
+
+                    <span>
+                        Admin Panel
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <nav class="admin-nav">
+
+                <a
+                    href="admin.html"
+                    class="admin-nav-item"
+                >
+                    <span class="admin-nav-icon">◫</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a
+                    href="admin-projects.html"
+                    class="admin-nav-item active"
+                >
+                    <span class="admin-nav-icon">▣</span>
+                    <span>Projekti</span>
+                </a>
+
+                <a
+                    href="admin-revisions.html"
+                    class="admin-nav-item"
+                >
+                    <span class="admin-nav-icon">↔</span>
+                    <span>Zahtjevi</span>
+                </a>
+
+                <a
+                    href="admin-approvals.html"
+                    class="admin-nav-item"
+                >
+                    <span class="admin-nav-icon">✓</span>
+                    <span>Odobrenja</span>
+                </a>
+
+                <a
+                    href="admin-documents.html"
+                    class="admin-nav-item"
+                >
+                    <span class="admin-nav-icon">□</span>
+                    <span>Dokumenti</span>
+                </a>
+
+            </nav>
+
+
+            <div class="admin-sidebar-footer">
+
+                <div class="admin-user">
+
+                    <div class="admin-avatar">
+                        A
+                    </div>
+
+                    <div>
+                        <strong id="adminUserName">
+                            Admin
+                        </strong>
+
+                        <span>
+                            Administrator
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="adminLogoutButton"
+                    class="admin-logout"
+                >
+                    Odjava
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN -->
+
+        <main class="admin-main">
+
+
+            <header class="admin-topbar">
+
+                <div>
+
+                    <span class="admin-page-label">
+                        Administracija
+                    </span>
+
+                    <h2>
+                        Projekti
+                    </h2>
+
+                </div>
+
+
+                <div class="admin-topbar-actions">
+
+                    <span class="admin-role-badge">
+                        Admin
+                    </span>
+
+                </div>
+
+            </header>
+
+
+            <div class="admin-content">
+
+
+                <!-- HEADING -->
+
+                <section class="projects-heading">
+
+                    <div>
+
+                        <span class="admin-page-label">
+                            Klijenti
+                        </span>
+
+                        <h3>
+                            Svi projekti
+                        </h3>
+
+                        <p>
+                            Pregled projekata, klijenata i trenutnog statusa dizajna.
+                        </p>
+
+                    </div>
+
+
+                    <div class="projects-count-wrap">
+
+                        <span>
+                            Ukupno
+                        </span>
+
+                        <strong id="projectsCount">
+                            0
+                        </strong>
+
+                    </div>
+
+                </section>
+
+
+                <!-- FILTERS -->
+
+                <section class="projects-filters">
+
+                    <input
+                        type="search"
+                        id="projectSearch"
+                        placeholder="Pretraži projekt ili klijenta..."
+                    >
+
+
+                    <select id="projectStatusFilter">
+
+                        <option value="">
+                            Svi statusi projekta
+                        </option>
+
+                    </select>
+
+
+                    <select id="designStatusFilter">
+
+                        <option value="">
+                            Svi statusi dizajna
+                        </option>
+
+                        <option value="pending">
+                            Čeka odluku klijenta
+                        </option>
+
+                        <option value="revision_requested">
+                            Tražene izmjene
+                        </option>
+
+                        <option value="approved">
+                            Odobreno
+                        </option>
+
+                        <option value="no_design">
+                            Bez dizajna
+                        </option>
+
+                    </select>
+
+                </section>
+
+
+                <!-- PROJECTS -->
+
+                <div
+                    id="projectsList"
+                    class="projects-list"
+                >
+
+                    <div class="admin-empty">
+                        Učitavanje projekata...
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="projectsMessage"
+                    class="projects-message"
+                    hidden
+                >
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>
