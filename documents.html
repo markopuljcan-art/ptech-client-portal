@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./documents.css?v=1"
+    >
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+    <script
+        src="./documents.js?v=1"
+        defer
+    ></script>
+
+    <title>
+        PTech Digital | Dokumenti
+    </title>
+
+</head>
+
+<body>
+
+    <main class="client-shell">
+
+
+        <!-- HEADER -->
+
+        <header class="client-header">
+
+            <div>
+
+                <span class="page-label">
+                    Klijentski portal
+                </span>
+
+                <h1>
+                    Dokumenti
+                </h1>
+
+                <p>
+                    Pregled dokumenata vezanih uz tvoje projekte.
+                </p>
+
+            </div>
+
+            <div class="client-profile-badge">
+
+                <div class="client-avatar">
+                    P
+                </div>
+
+                <div>
+
+                    <strong id="clientName">
+                        Klijent
+                    </strong>
+
+                    <span>
+                        Korisnik
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- FILTERS -->
+
+        <section class="documents-toolbar">
+
+            <input
+                type="search"
+                id="documentSearch"
+                placeholder="Pretraži dokument..."
+            >
+
+            <select id="projectFilter">
+
+                <option value="">
+                    Svi projekti
+                </option>
+
+            </select>
+
+            <select id="typeFilter">
+
+                <option value="">
+                    Sve vrste
+                </option>
+
+                <option value="Ugovor">
+                    Ugovor
+                </option>
+
+                <option value="Ponuda">
+                    Ponuda
+                </option>
+
+                <option value="Račun">
+                    Račun
+                </option>
+
+                <option value="Brief">
+                    Brief
+                </option>
+
+                <option value="Dizajn">
+                    Dizajn
+                </option>
+
+                <option value="Ostalo">
+                    Ostalo
+                </option>
+
+            </select>
+
+        </section>
+
+
+        <!-- CONTENT -->
+
+        <section class="documents-section">
+
+            <div class="documents-section-header">
+
+                <div>
+
+                    <span class="page-label">
+                        Datoteke
+                    </span>
+
+                    <h2>
+                        Moji dokumenti
+                    </h2>
+
+                </div>
+
+                <span
+                    id="documentsCount"
+                    class="documents-count"
+                >
+                    0
+                </span>
+
+            </div>
+
+
+            <div
+                id="documentsList"
+                class="documents-list"
+            >
+
+                <div class="documents-empty">
+                    Učitavanje dokumenata...
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- MESSAGE -->
+
+        <div
+            id="documentsMessage"
+            class="documents-message"
+            hidden
+        >
+        </div>
+
+
+        <!-- BOTTOM NAV -->
+
+        <nav class="bottom-nav">
+
+            <a
+                href="form.html"
+                class="bottom-nav-item"
+            >
+                <span class="bottom-nav-icon">
+                    ⌂
+                </span>
+
+                <span>
+                    Početna
+                </span>
+            </a>
+
+
+            <a
+                href="#"
+                class="bottom-nav-item"
+            >
+                <span class="bottom-nav-icon">
+                    ▱
+                </span>
+
+                <span>
+                    Poruke
+                </span>
+            </a>
+
+
+            <a
+                href="form.html#projects"
+                class="bottom-nav-item"
+            >
+                <span class="bottom-nav-icon">
+                    ▣
+                </span>
+
+                <span>
+                    Projekti
+                </span>
+            </a>
+
+
+            <a
+                href="documents.html"
+                class="bottom-nav-item active"
+            >
+                <span class="bottom-nav-icon">
+                    □
+                </span>
+
+                <span>
+                    Dokumenti
+                </span>
+            </a>
+
+
+            <a
+                href="#"
+                class="bottom-nav-item"
+            >
+                <span class="bottom-nav-icon">
+                    ♙
+                </span>
+
+                <span>
+                    Profil
+                </span>
+            </a>
+
+        </nav>
+
+    </main>
+
+</body>
+
+</html>
