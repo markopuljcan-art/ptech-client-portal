@@ -20,6 +20,16 @@ const clientName =
         "clientName"
     );
 
+const logoutButton =
+    document.getElementById(
+        "logoutButton"
+    );
+
+const themeToggle =
+    document.getElementById(
+        "themeToggle"
+    );
+
 const documentSearch =
     document.getElementById(
         "documentSearch"
@@ -48,11 +58,6 @@ const documentsList =
 const documentsMessage =
     document.getElementById(
         "documentsMessage"
-    );
-
-const themeToggle =
-    document.getElementById(
-        "themeToggle"
     );
 
 
@@ -90,12 +95,6 @@ function applyTheme(theme) {
 
     if (themeToggle) {
 
-        themeToggle.textContent =
-            finalTheme === "light"
-                ? "☾"
-                : "☀";
-
-
         themeToggle.setAttribute(
             "aria-label",
             finalTheme === "light"
@@ -127,11 +126,6 @@ function loadTheme() {
     }
 
 
-    /*
-        Ako korisnik još nije odabrao temu,
-        koristi dark kao zadanu.
-    */
-
     applyTheme(
         "dark"
     );
@@ -151,20 +145,36 @@ themeToggle
                 "dark";
 
 
-            const nextTheme =
+            applyTheme(
                 currentTheme === "dark"
                     ? "light"
-                    : "dark";
-
-
-            applyTheme(
-                nextTheme
+                    : "dark"
             );
         }
     );
 
 
 loadTheme();
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+logoutButton
+    ?.addEventListener(
+        "click",
+        async () => {
+
+            await supabaseClient
+                .auth
+                .signOut();
+
+
+            window.location.href =
+                "login.html";
+        }
+    );
 
 
 /* =========================
@@ -198,6 +208,7 @@ function formatDate(value) {
             date.getTime()
         )
     ) {
+
         return "-";
     }
 
@@ -274,10 +285,9 @@ function getFileLabel(name) {
         [
             "doc",
             "docx"
-        ]
-            .includes(
-                extension
-            )
+        ].includes(
+            extension
+        )
     ) {
 
         return "DOC";
@@ -288,10 +298,9 @@ function getFileLabel(name) {
         [
             "xls",
             "xlsx"
-        ]
-            .includes(
-                extension
-            )
+        ].includes(
+            extension
+        )
     ) {
 
         return "XLS";
@@ -304,10 +313,9 @@ function getFileLabel(name) {
             "jpeg",
             "png",
             "webp"
-        ]
-            .includes(
-                extension
-            )
+        ].includes(
+            extension
+        )
     ) {
 
         return "IMG";
@@ -319,10 +327,9 @@ function getFileLabel(name) {
             "zip",
             "rar",
             "7z"
-        ]
-            .includes(
-                extension
-            )
+        ].includes(
+            extension
+        )
     ) {
 
         return "ZIP";
@@ -370,10 +377,8 @@ function hideMessage() {
     documentsMessage.hidden =
         true;
 
-
     documentsMessage.className =
         "documents-message";
-
 
     documentsMessage.textContent =
         "";
@@ -381,7 +386,7 @@ function hideMessage() {
 
 
 /* =========================
-   USER PROFILE
+   PROFILE
 ========================= */
 
 async function loadProfile() {
@@ -394,7 +399,8 @@ async function loadProfile() {
             .from("profiles")
             .select(`
                 id,
-                display_name
+                display_name,
+                role
             `)
             .eq(
                 "id",
@@ -654,11 +660,6 @@ async function getDocumentUrl(
         );
 
 
-    /*
-        Ako je file_url već puni URL,
-        koristi ga direktno.
-    */
-
     if (
         value.startsWith(
             "http://"
@@ -671,10 +672,6 @@ async function getDocumentUrl(
         return value;
     }
 
-
-    /*
-        Inače je file_url Storage path.
-    */
 
     const {
         data,
@@ -698,6 +695,7 @@ async function getDocumentUrl(
             error
         );
 
+
         return null;
     }
 
@@ -710,7 +708,7 @@ async function getDocumentUrl(
 
 
 /* =========================
-   RENDER DOCUMENTS
+   RENDER
 ========================= */
 
 async function renderDocuments(
@@ -762,6 +760,7 @@ async function renderDocuments(
 
             <article class="document-card">
 
+
                 <div class="document-main">
 
 
@@ -776,20 +775,25 @@ async function renderDocuments(
 
                     <div class="document-info">
 
+
                         <strong>
+
                             ${escapeHtml(
                                 item.name ||
                                 "Dokument"
                             )}
+
                         </strong>
 
 
                         <span>
+
                             ${escapeHtml(
                                 item.project?.type ||
                                 item.project?.name ||
                                 "Projekt"
                             )}
+
                         </span>
 
 
@@ -814,7 +818,9 @@ async function renderDocuments(
 
                         </small>
 
+
                     </div>
+
 
                 </div>
 
@@ -840,6 +846,7 @@ async function renderDocuments(
                         `
                 }
 
+
             </article>
         `);
     }
@@ -851,7 +858,7 @@ async function renderDocuments(
 
 
 /* =========================
-   FILTERS
+   FILTER
 ========================= */
 
 function applyFilters() {
