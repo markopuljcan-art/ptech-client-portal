@@ -561,39 +561,6 @@ function setupRevisionForm(
 
 
             /* =========================
-               UPDATE DESIGN STATUS
-            ========================= */
-
-            const {
-                error: designStatusError
-            } =
-                await supabaseClient
-                    .from(
-                        "project_designs"
-                    )
-                    .update({
-
-                        status:
-                            "revision_requested"
-                    })
-                    .eq(
-                        "id",
-                        Number(
-                            designId
-                        )
-                    );
-
-
-            if (designStatusError) {
-
-                console.error(
-                    "Greška kod promjene statusa dizajna:",
-                    designStatusError
-                );
-            }
-
-
-            /* =========================
                SUCCESS
             ========================= */
 
