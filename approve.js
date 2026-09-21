@@ -57,7 +57,7 @@ const approvalMessage =
 
 
 /* =========================
-   PROJECT ID IZ URL-a
+   PROJECT ID
 ========================= */
 
 const params =
@@ -67,6 +67,13 @@ const params =
 
 const projectId =
     params.get("id");
+
+
+/* =========================
+   TRENUTNI DIZAJN
+========================= */
+
+let currentDesign = null;
 
 
 /* =========================
@@ -111,7 +118,7 @@ function hideMessage() {
 
 
 /* =========================
-   STATUS STYLE
+   STATUS PROJEKTA
 ========================= */
 
 function renderStatus(status) {
@@ -128,14 +135,9 @@ function renderStatus(status) {
     projectStatus.textContent =
         status || "-";
 
-    projectStatus.style.color =
-        "";
-
-    projectStatus.style.borderColor =
-        "";
-
-    projectStatus.style.background =
-        "";
+    projectStatus.style.color = "";
+    projectStatus.style.borderColor = "";
+    projectStatus.style.background = "";
 
 
     if (
@@ -186,7 +188,7 @@ function renderStatus(status) {
 
 
 /* =========================
-   DISABLE ACTIONS
+   ACTIONS
 ========================= */
 
 function disableActions() {
@@ -200,10 +202,6 @@ function disableActions() {
     }
 }
 
-
-/* =========================
-   ENABLE ACTIONS
-========================= */
 
 function enableActions() {
 
@@ -241,18 +239,13 @@ function renderApprovedState() {
                 </strong>
 
                 <small>
-                    Potvrda je zaprimljena
+                    Ova verzija dizajna je potvrđena
                 </small>
 
             </span>
         `;
     }
 
-
-    /*
-        Zahtjev za izmjenu i dalje
-        ostaje dostupan.
-    */
 
     if (revisionButton) {
 
@@ -263,12 +256,44 @@ function renderApprovedState() {
 
 
 /* =========================
+   RESET APPROVE BUTTON
+========================= */
+
+function renderPendingState() {
+
+    if (!approveButton) {
+        return;
+    }
+
+    approveButton.disabled =
+        false;
+
+    approveButton.innerHTML = `
+
+        <span class="approval-button-icon">
+            ✓
+        </span>
+
+        <span>
+
+            <strong>
+                Odobri dizajn
+            </strong>
+
+            <small>
+                Potvrdi da možemo nastaviti
+            </small>
+
+        </span>
+    `;
+}
+
+
+/* =========================
    DESIGN PLACEHOLDER
 ========================= */
 
-function renderDesignPlaceholder(
-    text
-) {
+function renderDesignPlaceholder(text) {
 
     if (!designPreview) {
         return;
@@ -288,12 +313,10 @@ function renderDesignPlaceholder(
 
 
 /* =========================
-   UČITAJ DIZAJN
+   UČITAJ ZADNJI DIZAJN
 ========================= */
 
-async function loadProjectDesign(
-    project
-) {
+async function loadProjectDesign(project) {
 
     if (!designPreview) {
         return null;
@@ -305,13 +328,9 @@ async function loadProjectDesign(
     );
 
 
-    /* =========================
-       ZADNJI DIZAJN IZ TABLICE
-    ========================= */
-
     const {
         data: designs,
-        error: designError
+        error
     } =
         await supabaseClient
             .from("project_designs")
@@ -335,11 +354,11 @@ async function loadProjectDesign(
             .limit(1);
 
 
-    if (designError) {
+    if (error) {
 
         console.error(
             "Greška kod dohvaćanja dizajna:",
-            designError
+            error
         );
 
         renderDesignPlaceholder(
@@ -356,7 +375,7 @@ async function loadProjectDesign(
     ) {
 
         renderDesignPlaceholder(
-            "Trenutno nema dodanog pregleda dizajna za ovaj projekt."
+            "Trenutno nema dodanog pregleda dizajna."
         );
 
         return null;
@@ -365,6 +384,10 @@ async function loadProjectDesign(
 
     const design =
         designs[0];
+
+
+    currentDesign =
+        design;
 
 
     if (!design.file_path) {
@@ -377,9 +400,7 @@ async function loadProjectDesign(
     }
 
 
-    /* =========================
-       SIGNED URL
-    ========================= */
+    /* SIGNED URL */
 
     const {
         data: signedData,
@@ -387,7 +408,9 @@ async function loadProjectDesign(
     } =
         await supabaseClient
             .storage
-            .from("project-designs")
+            .from(
+                "project-designs"
+            )
             .createSignedUrl(
                 design.file_path,
                 3600
@@ -419,9 +442,7 @@ async function loadProjectDesign(
     }
 
 
-    /* =========================
-       PRIKAŽI SLIKU
-    ========================= */
+    /* PRIKAZ */
 
     designPreview.innerHTML = `
 
@@ -442,24 +463,34 @@ async function loadProjectDesign(
 
 
 /* =========================
-   POSTOJEĆE ODOBRENJE
+   PROVJERI JE LI OVA
+   VERZIJA ODOBRENA
 ========================= */
 
 async function loadExistingApproval(
     project,
-    session
+    session,
+    design
 ) {
+
+    if (!design) {
+        return false;
+    }
+
 
     const {
         data: approval,
         error
     } =
         await supabaseClient
-            .from("design_approvals")
+            .from(
+                "design_approvals"
+            )
             .select(`
                 id,
                 status,
-                approved_at
+                approved_at,
+                design_id
             `)
             .eq(
                 "project_id",
@@ -468,6 +499,10 @@ async function loadExistingApproval(
             .eq(
                 "user_id",
                 session.user.id
+            )
+            .eq(
+                "design_id",
+                design.id
             )
             .maybeSingle();
 
@@ -485,6 +520,8 @@ async function loadExistingApproval(
 
     if (!approval) {
 
+        renderPendingState();
+
         return false;
     }
 
@@ -493,7 +530,7 @@ async function loadExistingApproval(
 
 
     showMessage(
-        "Dizajn za ovaj projekt je već odobren.",
+        "Ova verzija dizajna je već odobrena.",
         "success"
     );
 
@@ -526,12 +563,24 @@ function setupApprovalActions(
                 hideMessage();
 
 
+                if (!currentDesign) {
+
+                    showMessage(
+                        "Nema dostupnog dizajna za odobrenje.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
                 approveButton.disabled =
                     true;
 
 
                 /* =========================
-                   PROVJERI POSTOJEĆE
+                   PROVJERI POSTOJI LI VEĆ
+                   ODOBRENJE ZA TU VERZIJU
                 ========================= */
 
                 const {
@@ -539,11 +588,13 @@ function setupApprovalActions(
                     error: existingError
                 } =
                     await supabaseClient
-                        .from("design_approvals")
+                        .from(
+                            "design_approvals"
+                        )
                         .select(`
                             id,
-                            status,
-                            approved_at
+                            design_id,
+                            status
                         `)
                         .eq(
                             "project_id",
@@ -552,6 +603,10 @@ function setupApprovalActions(
                         .eq(
                             "user_id",
                             session.user.id
+                        )
+                        .eq(
+                            "design_id",
+                            currentDesign.id
                         )
                         .maybeSingle();
 
@@ -580,7 +635,7 @@ function setupApprovalActions(
                     renderApprovedState();
 
                     showMessage(
-                        "Ovaj dizajn je već odobren.",
+                        "Ova verzija dizajna je već odobrena.",
                         "success"
                     );
 
@@ -596,11 +651,16 @@ function setupApprovalActions(
                     error: insertError
                 } =
                     await supabaseClient
-                        .from("design_approvals")
+                        .from(
+                            "design_approvals"
+                        )
                         .insert({
 
                             project_id:
                                 project.id,
+
+                            design_id:
+                                currentDesign.id,
 
                             user_id:
                                 session.user.id,
@@ -630,14 +690,45 @@ function setupApprovalActions(
 
 
                 /* =========================
-                   SUCCESS
+                   UPDATE DESIGN STATUS
                 ========================= */
+
+                const {
+                    error: designUpdateError
+                } =
+                    await supabaseClient
+                        .from(
+                            "project_designs"
+                        )
+                        .update({
+
+                            status:
+                                "approved"
+                        })
+                        .eq(
+                            "id",
+                            currentDesign.id
+                        );
+
+
+                if (designUpdateError) {
+
+                    console.error(
+                        "Greška kod statusa dizajna:",
+                        designUpdateError
+                    );
+                }
+
+
+                currentDesign.status =
+                    "approved";
+
 
                 renderApprovedState();
 
 
                 showMessage(
-                    "Dizajn je uspješno odobren.",
+                    "Ova verzija dizajna je uspješno odobrena.",
                     "success"
                 );
             };
@@ -653,8 +744,19 @@ function setupApprovalActions(
         revisionButton.onclick =
             function () {
 
+                if (!currentDesign) {
+
+                    showMessage(
+                        "Nema dostupnog dizajna za izmjenu.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
                 window.location.href =
-                    `revision.html?id=${project.id}`;
+                    `revision.html?id=${project.id}&design=${currentDesign.id}`;
             };
     }
 }
@@ -669,9 +771,7 @@ async function loadProject() {
     hideMessage();
 
 
-    /* =========================
-       SESSION
-    ========================= */
+    /* SESSION */
 
     const {
         data: {
@@ -696,9 +796,7 @@ async function loadProject() {
     }
 
 
-    /* =========================
-       ID PROVJERA
-    ========================= */
+    /* ID */
 
     if (!projectId) {
 
@@ -713,9 +811,7 @@ async function loadProject() {
     }
 
 
-    /* =========================
-       BACK LINK
-    ========================= */
+    /* BACK */
 
     if (backToProject) {
 
@@ -724,9 +820,7 @@ async function loadProject() {
     }
 
 
-    /* =========================
-       DOHVATI PROJEKT
-    ========================= */
+    /* PROJECT */
 
     const {
         data: project,
@@ -779,9 +873,7 @@ async function loadProject() {
     }
 
 
-    /* =========================
-       USER CHECK
-    ========================= */
+    /* USER CHECK */
 
     if (
         project.user_id &&
@@ -800,9 +892,7 @@ async function loadProject() {
     }
 
 
-    /* =========================
-       RENDER PROJEKTA
-    ========================= */
+    /* RENDER */
 
     if (projectTitle) {
 
@@ -825,33 +915,19 @@ async function loadProject() {
     );
 
 
-    /* =========================
-       AKCIJE
-    ========================= */
-
     setupApprovalActions(
         project,
         session
     );
 
 
-    /* =========================
-       DIZAJN
-    ========================= */
+    /* DESIGN */
 
     const design =
         await loadProjectDesign(
             project
         );
 
-
-    /*
-        Ako nema dizajna,
-        ne dopuštamo odobravanje.
-
-        Izmjenu također nema smisla
-        tražiti ako dizajn nije poslan.
-    */
 
     if (!design) {
 
@@ -861,13 +937,13 @@ async function loadProject() {
     }
 
 
-    /* =========================
-       POSTOJEĆE ODOBRENJE
-    ========================= */
+    /* PROVJERI ODOBRENJE ZA
+       KONKRETNU VERZIJU */
 
     await loadExistingApproval(
         project,
-        session
+        session,
+        design
     );
 }
 
