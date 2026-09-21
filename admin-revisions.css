@@ -93,6 +93,174 @@
     overflow-y: auto;
 }
 
+/* =========================
+   ACCORDION THREAD
+========================= */
+
+.admin-thread-card {
+    padding: 0;
+    overflow: hidden;
+}
+
+.admin-thread-toggle {
+    width: 100%;
+
+    padding: 16px 18px;
+
+    border: 0;
+
+    background: transparent;
+
+    color: inherit;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.admin-thread-toggle:hover {
+    background:
+        rgba(255, 255, 255, 0.015);
+}
+
+.admin-thread-summary {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 18px;
+}
+
+.admin-thread-summary-main {
+    min-width: 0;
+}
+
+.admin-thread-project-label {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: rgba(255, 255, 255, 0.35);
+
+    font-size: 8px;
+
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.admin-thread-summary h3 {
+    margin: 0 0 3px;
+
+    font-size: 15px;
+}
+
+.admin-thread-summary p {
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.40);
+
+    font-size: 9px;
+}
+
+.admin-thread-meta {
+    margin-top: 7px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    color: #ff9630;
+
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.admin-thread-summary-side {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    flex-shrink: 0;
+}
+
+.admin-thread-chevron {
+    display: inline-flex;
+
+    font-size: 14px;
+
+    color: rgba(255, 255, 255, 0.45);
+
+    transition:
+        transform 0.18s ease;
+}
+
+.admin-thread-toggle.open
+.admin-thread-chevron {
+    transform: rotate(180deg);
+}
+
+.admin-thread-preview {
+    margin-top: 12px;
+
+    display: flex;
+
+    gap: 5px;
+
+    color: rgba(255, 255, 255, 0.48);
+
+    font-size: 10px;
+
+    overflow: hidden;
+}
+
+.admin-thread-preview strong {
+    color: rgba(255, 255, 255, 0.64);
+
+    flex-shrink: 0;
+}
+
+.admin-thread-preview span {
+    overflow: hidden;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.admin-thread-content {
+    padding: 0 18px 18px;
+
+    border-top:
+        1px solid
+        rgba(255, 255, 255, 0.06);
+}
+
+.admin-thread-content .admin-thread {
+    margin-top: 16px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .admin-thread-summary {
+        gap: 10px;
+    }
+
+    .admin-thread-summary-side {
+        gap: 7px;
+    }
+
+    .admin-thread-meta {
+        flex-wrap: wrap;
+    }
+
+    .admin-thread-preview {
+        max-width: 100%;
+    }
+}
 
 /* =========================
    MESSAGE BUBBLE
