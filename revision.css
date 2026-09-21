@@ -23,6 +23,132 @@
 }
 
 /* =========================
+   CONVERSATION
+========================= */
+
+.conversation-card {
+    margin-top: 18px;
+
+    padding: 18px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    border-radius: 14px;
+
+    background:
+        rgba(255, 255, 255, 0.015);
+}
+
+.conversation-header {
+    margin-bottom: 14px;
+}
+
+.conversation-header h3 {
+    margin: 0;
+
+    font-size: 17px;
+}
+
+.revision-conversation {
+    max-height: 460px;
+
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+
+    padding-right: 4px;
+}
+
+.conversation-message {
+    width: fit-content;
+    max-width: 75%;
+
+    padding: 11px 13px;
+
+    border-radius: 12px;
+}
+
+.client-message-item {
+    margin-left: auto;
+
+    background:
+        rgba(255, 122, 0, 0.10);
+
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.22);
+}
+
+.admin-message-item {
+    margin-right: auto;
+
+    background:
+        rgba(255, 255, 255, 0.035);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+}
+
+.conversation-message-top {
+    margin-bottom: 6px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 14px;
+}
+
+.conversation-message-top strong {
+    font-size: 10px;
+}
+
+.conversation-message-top span {
+    color:
+        rgba(255, 255, 255, 0.35);
+
+    font-size: 8px;
+}
+
+.conversation-message p {
+    margin: 0;
+
+    color:
+        rgba(255, 255, 255, 0.84);
+
+    font-size: 12px;
+
+    line-height: 1.55;
+
+    white-space: pre-wrap;
+}
+
+.conversation-empty {
+    padding: 20px;
+
+    color:
+        rgba(255, 255, 255, 0.38);
+
+    text-align: center;
+
+    font-size: 10px;
+}
+
+
+@media (max-width: 700px) {
+
+    .conversation-message {
+        max-width: 88%;
+    }
+}
+
+/* =========================
    ODGOVOR TIMA
 ========================= */
 
