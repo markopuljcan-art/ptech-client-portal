@@ -45,6 +45,11 @@ const approvedDesignsCount =
         "approvedDesignsCount"
     );
 
+const pendingDesignsCount =
+    document.getElementById(
+        "pendingDesignsCount"
+    );
+
 const clientsCount =
     document.getElementById(
         "clientsCount"
@@ -362,9 +367,6 @@ async function loadStats(
 
     /* =========================
        ZAHTJEVI NA ČEKANJU
-
-       Thread čeka admina ako je
-       zadnju poruku poslao klijent.
     ========================= */
 
     const pendingThreads =
@@ -417,6 +419,45 @@ async function loadStats(
 
         approvedDesignsCount.textContent =
             approvalsCount ?? 0;
+    }
+
+
+    /* =========================
+       DIZAJNI NA ČEKANJU
+    ========================= */
+
+    const {
+        count: pendingDesignCount,
+        error: pendingDesignsError
+    } =
+        await supabaseClient
+            .from("project_designs")
+            .select(
+                "*",
+                {
+                    count: "exact",
+                    head: true
+                }
+            )
+            .eq(
+                "status",
+                "pending"
+            );
+
+
+    if (pendingDesignsError) {
+
+        console.error(
+            "Greška kod brojanja dizajna na čekanju:",
+            pendingDesignsError
+        );
+    }
+
+
+    if (pendingDesignsCount) {
+
+        pendingDesignsCount.textContent =
+            pendingDesignCount ?? 0;
     }
 
 
@@ -488,11 +529,6 @@ function loadLatestRevisions(
         return;
     }
 
-
-    /*
-        Prikazujemo maksimalno
-        5 najnovijih threadova.
-    */
 
     const latest =
         revisionThreads.slice(
@@ -792,7 +828,7 @@ async function startAdmin() {
 
 
     /* =========================
-       UČITAJ NOVE CHAT THREADOVE
+       CHAT THREADOVI
     ========================= */
 
     const {
@@ -805,10 +841,14 @@ async function startAdmin() {
 
     if (revisionThreadsError) {
 
-        if (pendingRevisionsCount) {
+        if (
+            pendingRevisionsCount
+        ) {
+
             pendingRevisionsCount.textContent =
                 "0";
         }
+
 
         if (latestRevisions) {
 
