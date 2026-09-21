@@ -12,7 +12,7 @@
 
     <link
         rel="stylesheet"
-        href="./documents.css?v=1"
+        href="./documents.css?v=3"
     >
 
     <script
@@ -20,7 +20,7 @@
     ></script>
 
     <script
-        src="./documents.js?v=1"
+        src="./documents.js?v=2"
         defer
     ></script>
 
@@ -30,12 +30,15 @@
 
 </head>
 
+
 <body>
 
     <main class="client-shell">
 
 
-        <!-- HEADER -->
+        <!-- =========================
+             HEADER
+        ========================== -->
 
         <header class="client-header">
 
@@ -55,21 +58,42 @@
 
             </div>
 
-            <div class="client-profile-badge">
 
-                <div class="client-avatar">
-                    P
-                </div>
+            <div
+                style="
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                "
+            >
 
-                <div>
+                <button
+                    type="button"
+                    id="themeToggle"
+                    class="theme-toggle"
+                    aria-label="Promijeni temu"
+                >
+                    ☀
+                </button>
 
-                    <strong id="clientName">
-                        Klijent
-                    </strong>
 
-                    <span>
-                        Korisnik
-                    </span>
+                <div class="client-profile-badge">
+
+                    <div class="client-avatar">
+                        P
+                    </div>
+
+                    <div>
+
+                        <strong id="clientName">
+                            Klijent
+                        </strong>
+
+                        <span>
+                            Korisnik
+                        </span>
+
+                    </div>
 
                 </div>
 
@@ -78,7 +102,9 @@
         </header>
 
 
-        <!-- FILTERS -->
+        <!-- =========================
+             FILTERI
+        ========================== -->
 
         <section class="documents-toolbar">
 
@@ -86,7 +112,9 @@
                 type="search"
                 id="documentSearch"
                 placeholder="Pretraži dokument..."
+                autocomplete="off"
             >
+
 
             <select id="projectFilter">
 
@@ -95,6 +123,7 @@
                 </option>
 
             </select>
+
 
             <select id="typeFilter">
 
@@ -131,7 +160,9 @@
         </section>
 
 
-        <!-- CONTENT -->
+        <!-- =========================
+             DOKUMENTI
+        ========================== -->
 
         <section class="documents-section">
 
@@ -148,6 +179,7 @@
                     </h2>
 
                 </div>
+
 
                 <span
                     id="documentsCount"
@@ -173,7 +205,9 @@
         </section>
 
 
-        <!-- MESSAGE -->
+        <!-- =========================
+             MESSAGE
+        ========================== -->
 
         <div
             id="documentsMessage"
@@ -183,14 +217,20 @@
         </div>
 
 
-        <!-- BOTTOM NAV -->
+        <!-- =========================
+             BOTTOM NAV
+        ========================== -->
 
         <nav class="bottom-nav">
+
+
+            <!-- POČETNA -->
 
             <a
                 href="form.html"
                 class="bottom-nav-item"
             >
+
                 <span class="bottom-nav-icon">
                     ⌂
                 </span>
@@ -198,13 +238,17 @@
                 <span>
                     Početna
                 </span>
+
             </a>
 
+
+            <!-- PORUKE -->
 
             <a
                 href="#"
                 class="bottom-nav-item"
             >
+
                 <span class="bottom-nav-icon">
                     ▱
                 </span>
@@ -212,13 +256,17 @@
                 <span>
                     Poruke
                 </span>
+
             </a>
 
+
+            <!-- PROJEKTI -->
 
             <a
                 href="form.html#projects"
                 class="bottom-nav-item"
             >
+
                 <span class="bottom-nav-icon">
                     ▣
                 </span>
@@ -226,13 +274,17 @@
                 <span>
                     Projekti
                 </span>
+
             </a>
 
+
+            <!-- DOKUMENTI -->
 
             <a
                 href="documents.html"
                 class="bottom-nav-item active"
             >
+
                 <span class="bottom-nav-icon">
                     □
                 </span>
@@ -240,13 +292,17 @@
                 <span>
                     Dokumenti
                 </span>
+
             </a>
 
+
+            <!-- PROFIL -->
 
             <a
                 href="#"
                 class="bottom-nav-item"
             >
+
                 <span class="bottom-nav-icon">
                     ♙
                 </span>
@@ -254,6 +310,7 @@
                 <span>
                     Profil
                 </span>
+
             </a>
 
         </nav>
