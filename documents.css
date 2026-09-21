@@ -1,915 +1,432 @@
-* {
-    box-sizing: border-box;
-}
-
-:root {
-    --orange: #ff7a00;
-    --orange-soft: #ff9630;
-
-    --body-bg: #090a0c;
-
-    --shell-bg: #111214;
-    --card-bg: #151618;
-    --card-soft: #18191c;
-
-    --text: #f4f4f4;
-    --muted: rgba(255, 255, 255, 0.48);
-
-    --border: rgba(255, 255, 255, 0.09);
-
-    --input-bg: #111214;
-}
-
-
 /* =========================
-   LIGHT MODE
+   HEADER - ISTO KAO HOME
 ========================= */
 
-html[data-theme="light"] {
+.portal-topbar {
+    min-height: 100px;
 
-    --body-bg: #eceef1;
+    padding:
+        20px
+        42px;
 
-    --shell-bg: #ffffff;
-    --card-bg: #ffffff;
-    --card-soft: #f5f6f7;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-    --text: #171717;
-    --muted: rgba(0, 0, 0, 0.52);
+    gap: 30px;
 
-    --border: rgba(0, 0, 0, 0.10);
-
-    --input-bg: #ffffff;
+    border-bottom:
+        1px solid
+        rgba(255, 255, 255, 0.11);
 }
 
 
-/* =========================
-   BASE
-========================= */
+/* BRAND */
 
-html,
-body {
+.portal-brand {
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+
+    color: var(--text);
+    text-decoration: none;
+}
+
+.portal-logo {
+    width: 52px;
+    height: 52px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffad39,
+            #ff6a00
+        );
+
+    color: #111;
+
+    font-size: 30px;
+    font-weight: 900;
+
+    box-shadow:
+        0 8px 24px
+        rgba(255, 122, 0, 0.25);
+}
+
+.portal-brand strong {
     margin: 0;
-    min-height: 100%;
+
+    font-size: 28px;
+    font-weight: 700;
+
+    letter-spacing: -0.4px;
 }
 
-body {
-    min-height: 100vh;
+
+/* =========================
+   HEADER ACTIONS
+========================= */
+
+.portal-topbar-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+}
+
+
+/* USER */
+
+.portal-user {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.portal-user-icon {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.08);
+}
+
+.portal-user-icon svg {
+    width: 22px;
+    height: 22px;
+
+    fill: none;
+
+    stroke:
+        rgba(255, 255, 255, 0.75);
+
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+/* SEPARATOR */
+
+.portal-topbar-divider {
+    width: 1px;
+    height: 30px;
+
+    background:
+        rgba(255, 255, 255, 0.14);
+}
+
+
+/* =========================
+   ODJAVA - ISTO KAO HOME
+========================= */
+
+.portal-logout {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    padding:
+        9px
+        10px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: transparent;
+
+    color:
+        rgba(255, 255, 255, 0.85);
 
     font-family:
         Arial,
         Helvetica,
         sans-serif;
 
-    color: var(--text);
-
-    background:
-        radial-gradient(
-            circle at top left,
-            rgba(255, 122, 0, 0.22),
-            transparent 25%
-        ),
-        radial-gradient(
-            circle at bottom right,
-            rgba(255, 122, 0, 0.14),
-            transparent 24%
-        ),
-        var(--body-bg);
-}
-
-
-/* =========================
-   PORTAL
-========================= */
-
-.portal-shell {
-    width: min(
-        100%,
-        950px
-    );
-
-    min-height: 100vh;
-
-    margin: 0 auto;
-
-    position: relative;
-
-    display: flex;
-    flex-direction: column;
-
-    border-left:
-        1px solid
-        var(--border);
-
-    border-right:
-        1px solid
-        var(--border);
-
-    background:
-        var(--shell-bg);
-
-    box-shadow:
-        0 0 70px
-        rgba(0, 0, 0, 0.40);
-}
-
-
-/* =========================
-   TOPBAR
-========================= */
-
-.portal-topbar {
-    min-height: 70px;
-
-    padding:
-        0
-        38px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 24px;
-
-    border-bottom:
-        1px solid
-        var(--border);
-}
-
-
-/* =========================
-   BRAND
-========================= */
-
-.portal-brand {
-    min-width: 0;
-
-    display: flex;
-    align-items: center;
-
-    gap: 13px;
-
-    color: var(--text);
-
-    text-decoration: none;
-}
-
-.portal-logo {
-    width: 44px;
-    height: 44px;
-
-    flex: 0 0 44px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 11px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ff9c27,
-            #ff7200
-        );
-
-    color: #111;
-
-    font-size: 24px;
-    font-weight: 900;
-
-    box-shadow:
-        0 8px 22px
-        rgba(255, 122, 0, 0.18);
-}
-
-.portal-brand strong {
-    overflow: hidden;
-
-    font-size: 23px;
-    line-height: 1;
-
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-
-/* =========================
-   TOPBAR ACTIONS
-========================= */
-
-.portal-topbar-actions {
-    flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
-
-    gap: 13px;
-}
-
-.portal-user {
-    display: flex;
-    align-items: center;
-
-    gap: 8px;
-}
-
-.portal-user-icon {
-    width: 34px;
-    height: 34px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 50%;
-
-    background:
-        rgba(255, 255, 255, 0.05);
-
-    color:
-        rgba(255, 255, 255, 0.72);
-
-    font-size: 15px;
-}
-
-html[data-theme="light"]
-.portal-user-icon {
-    color:
-        rgba(0, 0, 0, 0.65);
-}
-
-.portal-user strong {
-    font-size: 13px;
-}
-
-.portal-topbar-divider {
-    width: 1px;
-    height: 28px;
-
-    background:
-        var(--border);
-}
-
-
-/* =========================
-   LOGOUT
-========================= */
-
-.portal-logout {
-    border: 0;
-
-    display: flex;
-    align-items: center;
-
-    gap: 7px;
-
-    background: transparent;
-
-    color: var(--text);
-
-    font-family: inherit;
-
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 14px;
+    font-weight: 600;
 
     cursor: pointer;
-}
-
-.portal-logout span {
-    color: var(--muted);
-
-    font-size: 15px;
-}
-
-
-/* =========================
-   THEME
-========================= */
-
-.theme-toggle {
-    width: 47px;
-    height: 30px;
-
-    padding: 0;
-
-    position: relative;
-
-    display: flex;
-    align-items: center;
-
-    border:
-        1px solid
-        var(--border);
-
-    border-radius: 999px;
-
-    background:
-        rgba(255, 255, 255, 0.025);
-
-    color: var(--orange);
-
-    cursor: pointer;
-}
-
-.theme-toggle::before {
-    content: "";
-
-    position: absolute;
-
-    left: 4px;
-
-    width: 22px;
-    height: 22px;
-
-    border-radius: 50%;
-
-    background:
-        var(--orange);
 
     transition:
-        transform 0.22s ease;
+        0.2s ease;
 }
 
-.theme-toggle {
-    font-size: 0;
+.portal-logout svg {
+    width: 21px;
+    height: 21px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
-html[data-theme="light"]
-.theme-toggle::before {
-    transform:
-        translateX(16px);
-}
-
-
-/* =========================
-   CONTENT
-========================= */
-
-.portal-content {
-    width: 100%;
-
-    padding:
-        34px
-        42px
-        100px;
-
-    flex: 1;
-}
-
-
-/* =========================
-   PAGE HEADER
-========================= */
-
-.documents-page-header {
-    margin-bottom: 24px;
-}
-
-.documents-eyebrow {
-    display: block;
-
-    margin-bottom: 5px;
-
-    color: var(--orange-soft);
-
-    font-size: 11px;
-    font-weight: 800;
-
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-}
-
-.documents-page-header h1 {
-    margin:
-        0
-        0
-        5px;
-
-    font-size: 28px;
-}
-
-.documents-page-header p {
-    margin: 0;
-
-    color: var(--muted);
-
-    font-size: 13px;
-}
-
-
-/* =========================
-   FILTERS
-========================= */
-
-.documents-toolbar {
-    margin-bottom: 18px;
-
-    display: grid;
-
-    grid-template-columns:
-        minmax(0, 1.4fr)
-        minmax(180px, 0.8fr)
-        minmax(160px, 0.7fr);
-
-    gap: 10px;
-}
-
-.documents-search-wrap {
-    position: relative;
-}
-
-.documents-search-wrap > span {
-    position: absolute;
-
-    left: 13px;
-    top: 50%;
-
-    transform:
-        translateY(-50%);
-
-    color: var(--muted);
-
-    font-size: 16px;
-
-    pointer-events: none;
-}
-
-.documents-search-wrap input {
-    padding-left: 38px;
-}
-
-.documents-toolbar input,
-.documents-toolbar select {
-    width: 100%;
-
-    min-height: 44px;
-
-    padding:
-        0
-        13px;
-
-    border:
-        1px solid
-        var(--border);
-
-    border-radius: 10px;
-
-    outline: none;
+.portal-logout:hover {
+    color: white;
 
     background:
-        var(--input-bg);
-
-    color: var(--text);
-
-    font-family: inherit;
-
-    font-size: 12px;
-    font-weight: 500;
-}
-
-.documents-toolbar input::placeholder {
-    color: var(--muted);
-}
-
-.documents-toolbar input:focus,
-.documents-toolbar select:focus {
-    border-color:
-        rgba(255, 122, 0, 0.55);
-
-    box-shadow:
-        0 0 0 3px
-        rgba(255, 122, 0, 0.05);
-}
-
-.documents-toolbar select option {
-    background: var(--card-bg);
-    color: var(--text);
+        rgba(255, 255, 255, 0.07);
 }
 
 
 /* =========================
-   PANEL
-========================= */
-
-.documents-panel {
-    min-height: 360px;
-
-    padding: 19px;
-
-    border:
-        1px solid
-        var(--border);
-
-    border-radius: 14px;
-
-    background:
-        var(--card-bg);
-}
-
-.documents-panel-header {
-    margin-bottom: 15px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 16px;
-}
-
-.documents-panel-header > div > span {
-    display: block;
-
-    margin-bottom: 4px;
-
-    color: var(--orange-soft);
-
-    font-size: 10px;
-    font-weight: 800;
-
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-}
-
-.documents-panel-header h2 {
-    margin: 0;
-
-    font-size: 21px;
-}
-
-.documents-count {
-    min-width: 38px;
-    height: 38px;
-
-    padding:
-        0
-        10px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border:
-        1px solid
-        rgba(255, 122, 0, 0.36);
-
-    border-radius: 999px;
-
-    background:
-        rgba(255, 122, 0, 0.08);
-
-    color: var(--orange-soft);
-
-    font-size: 14px;
-    font-weight: 800;
-}
-
-
-/* =========================
-   DOCUMENT LIST
-========================= */
-
-.documents-list {
-    display: flex;
-    flex-direction: column;
-
-    gap: 10px;
-}
-
-.document-card {
-    min-height: 74px;
-
-    padding:
-        13px
-        15px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 16px;
-
-    border:
-        1px solid
-        var(--border);
-
-    border-radius: 11px;
-
-    background:
-        rgba(0, 0, 0, 0.12);
-
-    transition:
-        border-color 0.18s ease,
-        background 0.18s ease,
-        transform 0.18s ease;
-}
-
-html[data-theme="light"]
-.document-card {
-    background:
-        #fafafa;
-}
-
-.document-card:hover {
-    border-color:
-        rgba(255, 122, 0, 0.25);
-
-    transform:
-        translateY(-1px);
-}
-
-.document-main {
-    min-width: 0;
-
-    display: flex;
-    align-items: center;
-
-    gap: 13px;
-}
-
-.document-icon {
-    width: 48px;
-    height: 48px;
-
-    flex: 0 0 48px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 10px;
-
-    background:
-        rgba(255, 122, 0, 0.12);
-
-    color: var(--orange-soft);
-
-    font-size: 11px;
-    font-weight: 900;
-}
-
-.document-info {
-    min-width: 0;
-}
-
-.document-info strong {
-    display: block;
-
-    margin-bottom: 4px;
-
-    overflow: hidden;
-
-    color: var(--text);
-
-    font-size: 14px;
-    font-weight: 700;
-
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.document-info span {
-    display: block;
-
-    margin-bottom: 4px;
-
-    color: var(--muted);
-
-    font-size: 11px;
-}
-
-.document-info small {
-    display: block;
-
-    color: var(--muted);
-
-    font-size: 10px;
-}
-
-
-/* =========================
-   OPEN DOCUMENT
-========================= */
-
-.document-open-button {
-    flex-shrink: 0;
-
-    min-width: 88px;
-
-    padding:
-        8px
-        13px;
-
-    border:
-        1px solid
-        rgba(255, 122, 0, 0.34);
-
-    border-radius: 8px;
-
-    background:
-        rgba(255, 122, 0, 0.08);
-
-    color: var(--orange-soft);
-
-    text-align: center;
-    text-decoration: none;
-
-    font-size: 11px;
-    font-weight: 700;
-}
-
-.document-open-button:hover {
-    background:
-        rgba(255, 122, 0, 0.15);
-}
-
-.document-unavailable {
-    color: var(--muted);
-
-    font-size: 10px;
-}
-
-.documents-empty {
-    padding:
-        35px
-        15px;
-
-    color: var(--muted);
-
-    text-align: center;
-
-    font-size: 12px;
-}
-
-
-/* =========================
-   MESSAGE
-========================= */
-
-.documents-message {
-    margin-top: 14px;
-
-    padding:
-        11px
-        13px;
-
-    border-radius: 9px;
-
-    font-size: 11px;
-}
-
-
-/* =========================
-   FOOTER
-========================= */
-
-.portal-footer {
-    margin-top: 30px;
-
-    padding-top: 20px;
-
-    border-top:
-        1px solid
-        var(--border);
-
-    color: var(--muted);
-
-    text-align: center;
-
-    font-size: 10px;
-}
-
-
-/* =========================
-   BOTTOM NAV
+   BOTTOM NAV - ISTO KAO HOME
 ========================= */
 
 .bottom-nav {
-    min-height: 66px;
-
-    position: absolute;
-
-    left: 0;
-    right: 0;
+    position: sticky;
     bottom: 0;
+
+    z-index: 20;
+
+    width: 100%;
+
+    padding:
+        10px
+        18px
+        12px;
 
     display: grid;
 
     grid-template-columns:
         repeat(5, 1fr);
 
+    align-items: center;
+
     border-top:
         1px solid
-        var(--border);
+        rgba(255, 255, 255, 0.10);
 
     background:
-        rgba(8, 9, 11, 0.98);
+        rgba(15, 16, 18, 0.96);
+
+    backdrop-filter:
+        blur(16px);
 }
 
-html[data-theme="light"]
-.bottom-nav {
-    background:
-        rgba(255, 255, 255, 0.98);
-}
 
 .bottom-nav-item {
     position: relative;
+
+    min-height: 54px;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 
-    gap: 4px;
+    gap: 5px;
 
-    color: var(--muted);
+    color:
+        rgba(255, 255, 255, 0.48);
 
     text-decoration: none;
 
-    font-size: 9px;
+    font-size: 11px;
     font-weight: 600;
+
+    transition:
+        color 0.2s ease;
 }
+
+
+.bottom-nav-item svg {
+    width: 22px;
+    height: 22px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
 
 .bottom-nav-item:hover {
-    color: var(--text);
+    color:
+        rgba(255, 255, 255, 0.82);
 }
 
-.bottom-nav-icon {
-    font-size: 16px;
-}
 
 .bottom-nav-item.active {
-    color: var(--orange);
+    color: #ff7a00;
 }
+
 
 .bottom-nav-item.active::before {
     content: "";
 
     position: absolute;
 
-    top: 0;
+    top: -10px;
 
-    width: 24px;
+    width: 28px;
     height: 3px;
 
-    border-radius:
-        0
-        0
-        999px
-        999px;
+    border-radius: 999px;
 
     background:
-        var(--orange);
+        linear-gradient(
+            90deg,
+            #ff7a00,
+            #ffad45
+        );
+
+    box-shadow:
+        0 0 10px
+        rgba(255, 122, 0, 0.28);
+}
+
+
+/* PORUKE BADGE */
+
+.bottom-nav-icon-wrap {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bottom-nav-icon-wrap svg {
+    width: 22px;
+    height: 22px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.nav-notification {
+    position: absolute;
+
+    top: -7px;
+    right: -10px;
+
+    min-width: 16px;
+    height: 16px;
+
+    padding:
+        0
+        4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border:
+        2px solid
+        #121315;
+
+    border-radius: 999px;
+
+    background: #ff3b30;
+
+    color: white;
+
+    font-size: 9px;
+    font-weight: 700;
 }
 
 
 /* =========================
-   TABLET
+   LIGHT MODE HEADER
 ========================= */
 
-@media (max-width: 760px) {
+body.light-mode
+.portal-user-icon {
+    background:
+        rgba(0, 0, 0, 0.04);
+}
 
-    .portal-topbar {
-        padding:
-            0
-            18px;
-    }
+body.light-mode
+.portal-user-icon svg {
+    stroke: #555;
+}
 
-    .portal-brand strong {
-        font-size: 18px;
-    }
+body.light-mode
+.portal-logout {
+    color: #555;
+}
 
-    .portal-logo {
-        width: 38px;
-        height: 38px;
+body.light-mode
+.portal-logout:hover {
+    color: #111;
 
-        flex-basis: 38px;
+    background:
+        rgba(0, 0, 0, 0.05);
+}
 
-        font-size: 21px;
-    }
+body.light-mode
+.portal-topbar-divider {
+    background:
+        rgba(0, 0, 0, 0.12);
+}
 
-    .portal-content {
-        padding:
-            26px
-            18px
-            92px;
-    }
 
-    .documents-toolbar {
-        grid-template-columns: 1fr;
-    }
+/* =========================
+   LIGHT MODE NAV
+========================= */
 
-    .portal-topbar-divider {
-        display: none;
-    }
+body.light-mode
+.bottom-nav {
+    background:
+        rgba(255, 255, 255, 0.95);
 
-    .portal-logout {
-        font-size: 0;
-    }
+    border-top-color:
+        rgba(0, 0, 0, 0.08);
 
-    .portal-logout span {
-        font-size: 16px;
-    }
+    box-shadow:
+        0 -8px 24px
+        rgba(0, 0, 0, 0.04);
+}
 
+body.light-mode
+.bottom-nav-item {
+    color:
+        rgba(0, 0, 0, 0.45);
+}
+
+body.light-mode
+.bottom-nav-item:hover {
+    color:
+        rgba(0, 0, 0, 0.75);
+}
+
+body.light-mode
+.bottom-nav-item.active {
+    color: #ff7a00;
 }
 
 
@@ -917,37 +434,76 @@ html[data-theme="light"]
    MOBILE
 ========================= */
 
-@media (max-width: 520px) {
-
-    .portal-brand strong {
-        display: none;
-    }
+@media (max-width: 700px) {
 
     .portal-topbar {
-        min-height: 62px;
+        padding: 16px;
+
+        flex-direction: column;
+        align-items: stretch;
+
+        gap: 14px;
     }
 
-    .portal-user strong {
-        max-width: 80px;
-
-        overflow: hidden;
-
-        text-overflow: ellipsis;
-        white-space: nowrap;
+    .portal-brand {
+        gap: 12px;
     }
 
-    .documents-page-header h1 {
+    .portal-logo {
+        width: 42px;
+        height: 42px;
+
         font-size: 24px;
     }
 
-    .document-card {
-        align-items: stretch;
-
-        flex-direction: column;
+    .portal-brand strong {
+        font-size: 18px;
     }
 
-    .document-open-button {
-        width: 100%;
+    .portal-topbar-actions {
+        justify-content: space-between;
     }
 
+    .portal-topbar-divider {
+        display: none;
+    }
+
+    .portal-user {
+        font-size: 13px;
+    }
+
+    .portal-logout {
+        font-size: 13px;
+    }
+
+    .bottom-nav {
+        position: sticky;
+
+        bottom: 0;
+
+        padding:
+            8px
+            4px
+            9px;
+    }
+
+    .bottom-nav-item {
+        min-height: 48px;
+
+        gap: 4px;
+
+        font-size: 9px;
+    }
+
+    .bottom-nav-item svg,
+    .bottom-nav-icon-wrap svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .bottom-nav-item.active::before {
+        top: -8px;
+
+        width: 24px;
+    }
 }
