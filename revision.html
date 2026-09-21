@@ -12,7 +12,7 @@
 
     <link
         rel="stylesheet"
-        href="./revision.css?v=1"
+        href="./revision.css?v=10"
     >
 
     <script
@@ -20,7 +20,7 @@
     </script>
 
     <script
-        src="./revision.js?v=4"
+        src="./revision.js?v=10"
         defer
     ></script>
 
@@ -36,6 +36,10 @@
     <main class="revision-page">
 
 
+        <!-- =========================
+             HEADER
+        ========================== -->
+
         <header class="revision-header">
 
             <div class="brand">
@@ -44,6 +48,7 @@
                     P
                 </div>
 
+
                 <div>
 
                     <h1>
@@ -51,7 +56,7 @@
                     </h1>
 
                     <p>
-                        Opiši što želiš promijeniti na projektu.
+                        Razgovor s PTech Digital timom o ovoj verziji dizajna.
                     </p>
 
                 </div>
@@ -62,6 +67,7 @@
             <a
                 href="form.html"
                 class="close-button"
+                aria-label="Zatvori"
             >
                 ×
             </a>
@@ -70,8 +76,16 @@
 
 
 
+        <!-- =========================
+             CONTENT
+        ========================== -->
+
         <div class="revision-content">
 
+
+            <!-- =========================
+                 BACK
+            ========================== -->
 
             <div class="revision-back-row">
 
@@ -80,12 +94,16 @@
                     class="revision-back"
                     id="backToApproval"
                 >
-                    ‹ Natrag
+                    ‹ Natrag na dizajn
                 </a>
 
             </div>
 
 
+
+            <!-- =========================
+                 PROJECT INFO
+            ========================== -->
 
             <section class="revision-project-card">
 
@@ -95,11 +113,14 @@
                         Projekt
                     </span>
 
+
                     <h2 id="revisionProjectTitle">
                         Učitavanje...
                     </h2>
 
-                    <p id="revisionProjectName"></p>
+
+                    <p id="revisionProjectName">
+                    </p>
 
                 </div>
 
@@ -115,35 +136,48 @@
 
 
 
+            <!-- =========================
+                 NOVA PORUKA
+            ========================== -->
+
             <section class="revision-form-card">
 
                 <div class="revision-form-header">
 
-                    <h2>
-                        Što želiš izmijeniti?
-                    </h2>
+                    <div>
 
-                    <p>
-                        Napiši što preciznije kako bismo lakše napravili izmjene.
-                    </p>
+                        <span class="revision-label">
+                            Nova poruka
+                        </span>
+
+                        <h2>
+                            Što želiš izmijeniti?
+                        </h2>
+
+                        <p>
+                            Napiši što preciznije što želiš promijeniti na ovoj verziji dizajna.
+                        </p>
+
+                    </div>
 
                 </div>
 
 
                 <form id="revisionForm">
 
+
                     <label
                         for="revisionMessage"
                         class="revision-field-label"
                     >
-                        Opis izmjene
+                        Poruka
                     </label>
 
 
                     <textarea
                         id="revisionMessage"
                         name="message"
-                        rows="8"
+                        rows="7"
                         maxlength="1500"
                         placeholder="Primjer: Promijeniti boju gumba, povećati naslov i pomaknuti sliku malo niže..."
                         required
@@ -162,7 +196,7 @@
                             class="submit-revision-button"
                             id="submitRevisionButton"
                         >
-                            Pošalji zahtjev
+                            Pošalji poruku
                         </button>
 
                     </div>
@@ -173,6 +207,10 @@
 
 
 
+            <!-- =========================
+                 SYSTEM MESSAGE
+            ========================== -->
+
             <div
                 class="revision-message"
                 id="revisionMessageBox"
@@ -180,50 +218,45 @@
             >
             </div>
 
-            <section
-    class="latest-revision-card"
-    id="latestRevisionCard"
-    hidden
->
-
-    <div class="latest-revision-header">
-
-        <div>
-
-            <span class="revision-label">
-                Zadnji zahtjev
-            </span>
-
-            <h3>
-                Poslana izmjena
-            </h3>
-
-        </div>
-
-        <span
-            class="latest-revision-status"
-            id="latestRevisionStatus"
-        >
-            -
-        </span>
-
-    </div>
 
 
-    <p
-        class="latest-revision-text"
-        id="latestRevisionText"
-    >
-    </p>
+            <!-- =========================
+                 POVIJEST RAZGOVORA
+            ========================== -->
+
+            <section class="conversation-card">
+
+                <div class="conversation-header">
+
+                    <div>
+
+                        <span class="revision-label">
+                            Povijest
+                        </span>
+
+                        <h3>
+                            Razgovor o dizajnu
+                        </h3>
+
+                    </div>
+
+                </div>
 
 
-    <span
-        class="latest-revision-date"
-        id="latestRevisionDate"
-    >
-    </span>
+                <div
+                    id="revisionConversation"
+                    class="revision-conversation"
+                >
 
-</section>
+                    <div class="conversation-empty">
+                        Učitavanje razgovora...
+                    </div>
+
+                </div>
+
+            </section>
+
+
         </div>
 
     </main>
