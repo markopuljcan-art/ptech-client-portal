@@ -72,7 +72,11 @@ function formatDateTime(value) {
     const date =
         new Date(value);
 
-    if (Number.isNaN(date.getTime())) {
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
         return "-";
     }
 
@@ -102,7 +106,8 @@ function showMessage(
         return;
     }
 
-    adminMessage.hidden = false;
+    adminMessage.hidden =
+        false;
 
     adminMessage.className =
         `admin-message ${type}`;
@@ -118,12 +123,14 @@ function hideMessage() {
         return;
     }
 
-    adminMessage.hidden = true;
+    adminMessage.hidden =
+        true;
 
     adminMessage.className =
         "admin-message";
 
-    adminMessage.textContent = "";
+    adminMessage.textContent =
+        "";
 }
 
 
@@ -222,12 +229,13 @@ async function loadAdminProfile(session) {
 
 
 /* =========================
-   GROUP THREADS
+   GROUP MESSAGES
 ========================= */
 
 function groupMessages(messages) {
 
     const groups = {};
+
 
     for (const message of messages) {
 
@@ -237,6 +245,7 @@ function groupMessages(messages) {
         if (!groups[key]) {
 
             groups[key] = {
+
                 project_id:
                     message.project_id,
 
@@ -249,6 +258,7 @@ function groupMessages(messages) {
                 messages: []
             };
         }
+
 
         groups[key].messages.push(
             message
@@ -270,22 +280,30 @@ function groupMessages(messages) {
     }
 
 
+    /*
+        Najnoviji razgovor ide prvi.
+    */
+
     threads.sort(
         (a, b) => {
 
-            const aLast =
+            const lastA =
                 a.messages[
                     a.messages.length - 1
                 ];
 
-            const bLast =
+            const lastB =
                 b.messages[
                     b.messages.length - 1
                 ];
 
             return (
-                new Date(bLast.created_at) -
-                new Date(aLast.created_at)
+                new Date(
+                    lastB.created_at
+                ) -
+                new Date(
+                    lastA.created_at
+                )
             );
         }
     );
@@ -304,22 +322,34 @@ function renderThread(thread) {
     const project =
         thread.project;
 
+
     const projectTitle =
         project?.type ||
         project?.name ||
         `Projekt #${thread.project_id}`;
 
+
     const projectName =
         project?.name || "";
+
 
     const lastMessage =
         thread.messages[
             thread.messages.length - 1
         ];
 
+
     const waitingForAdmin =
         lastMessage?.sender_role ===
         "client";
+
+
+    const lastMessageText =
+        lastMessage?.message || "";
+
+
+    const messageCount =
+        thread.messages.length;
 
 
     const messagesHtml =
@@ -331,16 +361,19 @@ function renderThread(thread) {
                         message.sender_role ===
                         "admin";
 
+
                     return `
 
-                        <div class="
-                            admin-thread-message
-                            ${
-                                isAdmin
-                                    ? "admin-thread-admin"
-                                    : "admin-thread-client"
-                            }
-                        ">
+                        <div
+                            class="
+                                admin-thread-message
+                                ${
+                                    isAdmin
+                                        ? "admin-thread-admin"
+                                        : "admin-thread-client"
+                                }
+                            "
+                        >
 
                             <div class="admin-thread-message-top">
 
@@ -360,6 +393,7 @@ function renderThread(thread) {
 
                             </div>
 
+
                             <p>
                                 ${escapeHtml(
                                     message.message
@@ -376,91 +410,161 @@ function renderThread(thread) {
     return `
 
         <article
-            class="admin-revision-card"
+            class="
+                admin-revision-card
+                admin-thread-card
+            "
             data-project-id="${thread.project_id}"
             data-design-id="${thread.design_id}"
         >
 
-            <div class="admin-revision-top">
+            <button
+                type="button"
+                class="admin-thread-toggle"
+                data-thread-toggle="${thread.project_id}-${thread.design_id}"
+                aria-expanded="false"
+            >
 
-                <div class="admin-revision-project">
+                <div class="admin-thread-summary">
 
-                    <span>
-                        Projekt
-                    </span>
 
-                    <h3>
-                        ${escapeHtml(
-                            projectTitle
-                        )}
-                    </h3>
+                    <div class="admin-thread-summary-main">
 
-                    <p>
-                        ${escapeHtml(
-                            projectName
-                        )}
-                    </p>
+                        <span class="admin-thread-project-label">
+                            Projekt
+                        </span>
 
-                    <small>
-                        Verzija dizajna #${thread.design_id}
-                    </small>
+
+                        <h3>
+                            ${escapeHtml(
+                                projectTitle
+                            )}
+                        </h3>
+
+
+                        <p>
+                            ${escapeHtml(
+                                projectName
+                            )}
+                        </p>
+
+
+                        <div class="admin-thread-meta">
+
+                            <span>
+                                Verzija dizajna #${thread.design_id}
+                            </span>
+
+                            <span>
+                                ${messageCount}
+                                ${
+                                    messageCount === 1
+                                        ? "poruka"
+                                        : messageCount >= 2 &&
+                                          messageCount <= 4
+                                            ? "poruke"
+                                            : "poruka"
+                                }
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="admin-thread-summary-side">
+
+                        <span
+                            class="
+                                admin-revision-status
+                                ${
+                                    waitingForAdmin
+                                        ? ""
+                                        : "answered"
+                                }
+                            "
+                        >
+                            ${
+                                waitingForAdmin
+                                    ? "Na čekanju"
+                                    : "Odgovoreno"
+                            }
+                        </span>
+
+
+                        <span class="admin-thread-chevron">
+                            ▾
+                        </span>
+
+                    </div>
 
                 </div>
 
 
-                <span
-                    class="
-                        admin-revision-status
+                <div class="admin-thread-preview">
+
+                    <strong>
                         ${
-                            waitingForAdmin
-                                ? ""
-                                : "answered"
+                            lastMessage?.sender_role ===
+                            "admin"
+                                ? "PTech Digital:"
+                                : "Klijent:"
                         }
-                    "
-                >
-                    ${
-                        waitingForAdmin
-                            ? "Na čekanju"
-                            : "Odgovoreno"
-                    }
-                </span>
+                    </strong>
 
-            </div>
+                    <span>
+                        ${escapeHtml(
+                            lastMessageText
+                        )}
+                    </span>
 
+                </div>
 
-            <div class="admin-thread">
-
-                ${messagesHtml}
-
-            </div>
+            </button>
 
 
-            <div class="admin-reply-area">
+            <div
+                class="admin-thread-content"
+                id="thread-${thread.project_id}-${thread.design_id}"
+                hidden
+            >
 
-                <label
-                    for="reply-${thread.project_id}-${thread.design_id}"
-                >
-                    Odgovor klijentu
-                </label>
+                <div class="admin-thread">
 
-                <textarea
-                    id="reply-${thread.project_id}-${thread.design_id}"
-                    class="admin-reply-input"
-                    maxlength="2000"
-                    placeholder="Napiši odgovor klijentu..."
-                ></textarea>
+                    ${messagesHtml}
+
+                </div>
 
 
-                <div class="admin-reply-actions">
+                <div class="admin-reply-area">
 
-                    <button
-                        type="button"
-                        class="admin-reply-button"
-                        data-project-id="${thread.project_id}"
-                        data-design-id="${thread.design_id}"
+                    <label
+                        for="reply-${thread.project_id}-${thread.design_id}"
                     >
-                        Pošalji odgovor
-                    </button>
+                        Odgovor klijentu
+                    </label>
+
+
+                    <textarea
+                        id="reply-${thread.project_id}-${thread.design_id}"
+                        class="admin-reply-input"
+                        maxlength="2000"
+                        placeholder="Napiši odgovor klijentu..."
+                    ></textarea>
+
+
+                    <div class="admin-reply-actions">
+
+                        <button
+                            type="button"
+                            class="admin-reply-button"
+                            data-project-id="${thread.project_id}"
+                            data-design-id="${thread.design_id}"
+                        >
+                            Pošalji odgovor
+                        </button>
+
+                    </div>
 
                 </div>
 
@@ -483,7 +587,9 @@ function renderRevisions(messages) {
 
 
     const threads =
-        groupMessages(messages);
+        groupMessages(
+            messages
+        );
 
 
     if (revisionCount) {
@@ -493,7 +599,9 @@ function renderRevisions(messages) {
     }
 
 
-    if (threads.length === 0) {
+    if (
+        threads.length === 0
+    ) {
 
         revisionsList.innerHTML = `
 
@@ -508,16 +616,82 @@ function renderRevisions(messages) {
 
     revisionsList.innerHTML =
         threads
-            .map(renderThread)
+            .map(
+                renderThread
+            )
             .join("");
 
 
     setupReplyButtons();
+
+    setupThreadToggles();
 }
 
 
 /* =========================
-   UČITAJ PORUKE
+   ACCORDION
+========================= */
+
+function setupThreadToggles() {
+
+    const toggles =
+        document.querySelectorAll(
+            "[data-thread-toggle]"
+        );
+
+
+    toggles.forEach(
+        toggle => {
+
+            toggle.addEventListener(
+                "click",
+                function () {
+
+                    const key =
+                        toggle.dataset
+                            .threadToggle;
+
+
+                    const content =
+                        document.getElementById(
+                            `thread-${key}`
+                        );
+
+
+                    if (!content) {
+                        return;
+                    }
+
+
+                    const isOpen =
+                        !content.hidden;
+
+
+                    content.hidden =
+                        isOpen;
+
+
+                    toggle.setAttribute(
+                        "aria-expanded",
+                        String(
+                            !isOpen
+                        )
+                    );
+
+
+                    toggle.classList.toggle(
+                        "open",
+                        !isOpen
+                    );
+                }
+            );
+        }
+    );
+}
+
+
+/* =========================
+   LOAD MESSAGES
 ========================= */
 
 async function loadRevisions() {
@@ -572,6 +746,7 @@ async function loadRevisions() {
             error
         );
 
+
         revisionsList.innerHTML = `
 
             <div class="admin-empty">
@@ -579,10 +754,12 @@ async function loadRevisions() {
             </div>
         `;
 
+
         showMessage(
             "Došlo je do greške kod učitavanja zahtjeva.",
             "error"
         );
+
 
         return;
     }
@@ -617,10 +794,13 @@ function setupReplyButtons() {
 
 
                     const projectId =
-                        button.dataset.projectId;
+                        button.dataset
+                            .projectId;
+
 
                     const designId =
-                        button.dataset.designId;
+                        button.dataset
+                            .designId;
 
 
                     const textarea =
@@ -635,7 +815,8 @@ function setupReplyButtons() {
 
 
                     const reply =
-                        textarea.value.trim();
+                        textarea.value
+                            .trim();
 
 
                     if (!reply) {
@@ -651,7 +832,9 @@ function setupReplyButtons() {
                     }
 
 
-                    if (reply.length < 3) {
+                    if (
+                        reply.length < 3
+                    ) {
 
                         showMessage(
                             "Odgovor je prekratak.",
@@ -675,7 +858,8 @@ function setupReplyButtons() {
                     }
 
 
-                    button.disabled = true;
+                    button.disabled =
+                        true;
 
                     button.textContent =
                         "Šaljem...";
@@ -701,7 +885,9 @@ function setupReplyButtons() {
                                     ),
 
                                 user_id:
-                                    currentSession.user.id,
+                                    currentSession
+                                        .user
+                                        .id,
 
                                 sender_role:
                                     "admin",
@@ -718,16 +904,19 @@ function setupReplyButtons() {
                             error
                         );
 
+
                         showMessage(
                             "Odgovor nije moguće poslati.",
                             "error"
                         );
+
 
                         button.disabled =
                             false;
 
                         button.textContent =
                             "Pošalji odgovor";
+
 
                         return;
                     }
@@ -760,7 +949,8 @@ async function startAdminRevisions() {
         data: {
             session
         },
-        error: sessionError
+        error:
+            sessionError
     } =
         await supabaseClient
             .auth
