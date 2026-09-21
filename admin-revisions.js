@@ -135,6 +135,79 @@ function hideMessage() {
 
 
 /* =========================
+   SLUG
+========================= */
+
+function createSlug(value) {
+
+    return String(value || "klijent")
+        .normalize("NFD")
+        .replace(
+            /[\u0300-\u036f]/g,
+            ""
+        )
+        .toLowerCase()
+        .trim()
+        .replace(
+            /[^a-z0-9]+/g,
+            "-"
+        )
+        .replace(
+            /^-+|-+$/g,
+            ""
+        ) || "klijent";
+}
+
+
+/* =========================
+   FILE NAME
+========================= */
+
+function createSafeFileName(file) {
+
+    const originalName =
+        String(
+            file?.name ||
+            "design.jpg"
+        );
+
+
+    const dotIndex =
+        originalName
+            .lastIndexOf(".");
+
+
+    let extension =
+        dotIndex !== -1
+            ? originalName
+                .slice(
+                    dotIndex + 1
+                )
+                .toLowerCase()
+            : "jpg";
+
+
+    extension =
+        extension.replace(
+            /[^a-z0-9]/g,
+            ""
+        );
+
+
+    if (!extension) {
+        extension = "jpg";
+    }
+
+
+    const timestamp =
+        Date.now();
+
+
+    return `design-${timestamp}.${extension}`;
+}
+
+
+/* =========================
    LOGOUT
 ========================= */
 
@@ -174,6 +247,7 @@ async function checkAdmin(session) {
                 }
             );
 
+
     if (error) {
 
         console.error(
@@ -183,6 +257,7 @@ async function checkAdmin(session) {
 
         return false;
     }
+
 
     return data === true;
 }
@@ -200,12 +275,15 @@ async function loadAdminProfile(session) {
     } =
         await supabaseClient
             .from("profiles")
-            .select("display_name")
+            .select(
+                "display_name"
+            )
             .eq(
                 "id",
                 session.user.id
             )
             .maybeSingle();
+
 
     if (error) {
 
@@ -216,6 +294,7 @@ async function loadAdminProfile(session) {
 
         return;
     }
+
 
     if (
         adminUserName &&
@@ -242,6 +321,7 @@ function groupMessages(messages) {
         const key =
             `${message.project_id}-${message.design_id}`;
 
+
         if (!groups[key]) {
 
             groups[key] = {
@@ -254,6 +334,10 @@ function groupMessages(messages) {
 
                 project:
                     message.projects,
+
+                client_name:
+                    message.client_name ||
+                    "klijent",
 
                 messages: []
             };
@@ -280,10 +364,6 @@ function groupMessages(messages) {
     }
 
 
-    /*
-        Najnoviji razgovor ide prvi.
-    */
-
     threads.sort(
         (a, b) => {
 
@@ -296,6 +376,7 @@ function groupMessages(messages) {
                 b.messages[
                     b.messages.length - 1
                 ];
+
 
             return (
                 new Date(
@@ -393,7 +474,6 @@ function renderThread(thread) {
 
                             </div>
 
-
                             <p>
                                 ${escapeHtml(
                                     message.message
@@ -427,13 +507,11 @@ function renderThread(thread) {
 
                 <div class="admin-thread-summary">
 
-
                     <div class="admin-thread-summary-main">
 
                         <span class="admin-thread-project-label">
                             Projekt
                         </span>
-
 
                         <h3>
                             ${escapeHtml(
@@ -441,13 +519,11 @@ function renderThread(thread) {
                             )}
                         </h3>
 
-
                         <p>
                             ${escapeHtml(
                                 projectName
                             )}
                         </p>
-
 
                         <div class="admin-thread-meta">
 
@@ -491,7 +567,6 @@ function renderThread(thread) {
                             }
                         </span>
 
-
                         <span class="admin-thread-chevron">
                             ▾
                         </span>
@@ -529,12 +604,16 @@ function renderThread(thread) {
                 hidden
             >
 
+                <!-- CHAT -->
+
                 <div class="admin-thread">
 
                     ${messagesHtml}
 
                 </div>
 
+
+                <!-- ADMIN ODGOVOR -->
 
                 <div class="admin-reply-area">
 
@@ -544,14 +623,12 @@ function renderThread(thread) {
                         Odgovor klijentu
                     </label>
 
-
                     <textarea
                         id="reply-${thread.project_id}-${thread.design_id}"
                         class="admin-reply-input"
                         maxlength="2000"
                         placeholder="Napiši odgovor klijentu..."
                     ></textarea>
-
 
                     <div class="admin-reply-actions">
 
@@ -564,6 +641,65 @@ function renderThread(thread) {
                             Pošalji odgovor
                         </button>
 
+                    </div>
+
+                </div>
+
+
+                <!-- NOVA VERZIJA DIZAJNA -->
+
+                <div class="admin-design-upload">
+
+                    <div class="admin-design-upload-header">
+
+                        <div>
+
+                            <span>
+                                Nova verzija
+                            </span>
+
+                            <h4>
+                                Učitaj novi dizajn
+                            </h4>
+
+                            <p>
+                                Nova verzija će biti poslana klijentu na odobrenje.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="admin-design-upload-controls">
+
+                        <input
+                            type="file"
+                            id="design-file-${thread.project_id}-${thread.design_id}"
+                            class="admin-design-file-input"
+                            accept="image/png,image/jpeg,image/webp"
+                        >
+
+                        <button
+                            type="button"
+                            class="admin-upload-design-button"
+                            data-project-id="${thread.project_id}"
+                            data-design-id="${thread.design_id}"
+                            data-client-name="${escapeHtml(
+                                thread.client_name
+                            )}"
+                        >
+                            Učitaj novu verziju
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="upload-status-${thread.project_id}-${thread.design_id}"
+                        class="admin-upload-status"
+                        hidden
+                    >
                     </div>
 
                 </div>
@@ -625,6 +761,8 @@ function renderRevisions(messages) {
     setupReplyButtons();
 
     setupThreadToggles();
+
+    setupUploadButtons();
 }
 
 
@@ -709,8 +847,12 @@ async function loadRevisions() {
     `;
 
 
+    /*
+        1. UČITAJ PORUKE + PROJEKTE
+    */
+
     const {
-        data,
+        data: messages,
         error
     } =
         await supabaseClient
@@ -728,7 +870,8 @@ async function loadRevisions() {
                 projects (
                     id,
                     name,
-                    type
+                    type,
+                    user_id
                 )
             `)
             .order(
@@ -765,8 +908,103 @@ async function loadRevisions() {
     }
 
 
+    const rows =
+        messages || [];
+
+
+    /*
+        2. PRONAĐI KLIJENTE
+    */
+
+    const clientIds =
+        [
+            ...new Set(
+                rows
+                    .map(
+                        row =>
+                            row.projects
+                                ?.user_id
+                    )
+                    .filter(Boolean)
+            )
+        ];
+
+
+    let profileMap = {};
+
+
+    if (
+        clientIds.length > 0
+    ) {
+
+        const {
+            data: profiles,
+            error: profilesError
+        } =
+            await supabaseClient
+                .from("profiles")
+                .select(`
+                    id,
+                    display_name
+                `)
+                .in(
+                    "id",
+                    clientIds
+                );
+
+
+        if (profilesError) {
+
+            console.error(
+                "Greška kod učitavanja klijenata:",
+                profilesError
+            );
+        }
+
+
+        for (
+            const profile
+            of profiles || []
+        ) {
+
+            profileMap[
+                profile.id
+            ] =
+                profile.display_name ||
+                "klijent";
+        }
+    }
+
+
+    /*
+        3. DODAJ IME KLIJENTA
+           SVAKOJ PORUCI
+    */
+
+    const enrichedRows =
+        rows.map(
+            row => {
+
+                const clientId =
+                    row.projects
+                        ?.user_id;
+
+
+                return {
+                    ...row,
+
+                    client_name:
+                        profileMap[
+                            clientId
+                        ] ||
+                        "klijent"
+                };
+            }
+        );
+
+
     renderRevisions(
-        data || []
+        enrichedRows
     );
 }
 
@@ -929,6 +1167,417 @@ function setupReplyButtons() {
 
 
                     await loadRevisions();
+                }
+            );
+        }
+    );
+}
+
+
+/* =========================
+   UPLOAD STATUS
+========================= */
+
+function setUploadStatus(
+    projectId,
+    designId,
+    message,
+    type = "success"
+) {
+
+    const status =
+        document.getElementById(
+            `upload-status-${projectId}-${designId}`
+        );
+
+
+    if (!status) {
+        return;
+    }
+
+
+    status.hidden =
+        false;
+
+    status.className =
+        `admin-upload-status ${type}`;
+
+    status.textContent =
+        message;
+}
+
+
+/* =========================
+   UPLOAD BUTTONS
+========================= */
+
+function setupUploadButtons() {
+
+    const buttons =
+        document.querySelectorAll(
+            ".admin-upload-design-button"
+        );
+
+
+    buttons.forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                async function () {
+
+                    hideMessage();
+
+
+                    const projectId =
+                        Number(
+                            button.dataset
+                                .projectId
+                        );
+
+
+                    const oldDesignId =
+                        Number(
+                            button.dataset
+                                .designId
+                        );
+
+
+                    const clientName =
+                        button.dataset
+                            .clientName ||
+                        "klijent";
+
+
+                    const fileInput =
+                        document.getElementById(
+                            `design-file-${projectId}-${oldDesignId}`
+                        );
+
+
+                    if (!fileInput) {
+                        return;
+                    }
+
+
+                    const file =
+                        fileInput.files?.[0];
+
+
+                    if (!file) {
+
+                        setUploadStatus(
+                            projectId,
+                            oldDesignId,
+                            "Odaberi sliku nove verzije.",
+                            "error"
+                        );
+
+                        return;
+                    }
+
+
+                    const allowedTypes =
+                        [
+                            "image/jpeg",
+                            "image/png",
+                            "image/webp"
+                        ];
+
+
+                    if (
+                        !allowedTypes.includes(
+                            file.type
+                        )
+                    ) {
+
+                        setUploadStatus(
+                            projectId,
+                            oldDesignId,
+                            "Dozvoljeni su JPG, PNG i WEBP formati.",
+                            "error"
+                        );
+
+                        return;
+                    }
+
+
+                    /*
+                        15 MB limit
+                    */
+
+                    if (
+                        file.size >
+                        15 * 1024 * 1024
+                    ) {
+
+                        setUploadStatus(
+                            projectId,
+                            oldDesignId,
+                            "Slika je prevelika. Maksimalna veličina je 15 MB.",
+                            "error"
+                        );
+
+                        return;
+                    }
+
+
+                    if (!currentSession) {
+
+                        setUploadStatus(
+                            projectId,
+                            oldDesignId,
+                            "Admin sesija nije dostupna.",
+                            "error"
+                        );
+
+                        return;
+                    }
+
+
+                    button.disabled =
+                        true;
+
+                    button.textContent =
+                        "Učitavam...";
+
+
+                    setUploadStatus(
+                        projectId,
+                        oldDesignId,
+                        "Učitavanje nove verzije...",
+                        "loading"
+                    );
+
+
+                    /*
+                        FOLDER:
+
+                        petra/projekt-2/
+                        pilic/projekt-4/
+                    */
+
+                    const clientSlug =
+                        createSlug(
+                            clientName
+                        );
+
+
+                    const fileName =
+                        createSafeFileName(
+                            file
+                        );
+
+
+                    const filePath =
+                        `${clientSlug}/projekt-${projectId}/${fileName}`;
+
+
+                    /* =========================
+                       1. STORAGE UPLOAD
+                    ========================= */
+
+                    const {
+                        error: uploadError
+                    } =
+                        await supabaseClient
+                            .storage
+                            .from(
+                                "project-designs"
+                            )
+                            .upload(
+                                filePath,
+                                file,
+                                {
+                                    cacheControl:
+                                        "3600",
+
+                                    upsert:
+                                        false,
+
+                                    contentType:
+                                        file.type
+                                }
+                            );
+
+
+                    if (uploadError) {
+
+                        console.error(
+                            "Storage upload greška:",
+                            uploadError
+                        );
+
+
+                        setUploadStatus(
+                            projectId,
+                            oldDesignId,
+                            "Slika nije mogla biti učitana.",
+                            "error"
+                        );
+
+
+                        button.disabled =
+                            false;
+
+                        button.textContent =
+                            "Učitaj novu verziju";
+
+
+                        return;
+                    }
+
+
+                    /* =========================
+                       2. NOVI PROJECT_DESIGNS
+                    ========================= */
+
+                    const {
+                        data: newDesign,
+                        error:
+                            designInsertError
+                    } =
+                        await supabaseClient
+                            .from(
+                                "project_designs"
+                            )
+                            .insert({
+
+                                project_id:
+                                    projectId,
+
+                                uploaded_by:
+                                    currentSession
+                                        .user
+                                        .id,
+
+                                file_path:
+                                    filePath,
+
+                                status:
+                                    "pending"
+                            })
+                            .select(`
+                                id,
+                                project_id,
+                                file_path,
+                                status,
+                                created_at
+                            `)
+                            .single();
+
+
+                    if (designInsertError) {
+
+                        console.error(
+                            "Greška kod kreiranja nove verzije:",
+                            designInsertError
+                        );
+
+
+                        setUploadStatus(
+                            projectId,
+                            oldDesignId,
+                            "Slika je učitana, ali zapis nove verzije nije kreiran.",
+                            "error"
+                        );
+
+
+                        button.disabled =
+                            false;
+
+                        button.textContent =
+                            "Učitaj novu verziju";
+
+
+                        return;
+                    }
+
+
+                    /* =========================
+                       3. AUTOMATSKA ADMIN PORUKA
+                    ========================= */
+
+                    const {
+                        error:
+                            autoMessageError
+                    } =
+                        await supabaseClient
+                            .from(
+                                "design_revision_messages"
+                            )
+                            .insert({
+
+                                project_id:
+                                    projectId,
+
+                                design_id:
+                                    oldDesignId,
+
+                                user_id:
+                                    currentSession
+                                        .user
+                                        .id,
+
+                                sender_role:
+                                    "admin",
+
+                                message:
+                                    `Nova verzija dizajna #${newDesign.id} je učitana i poslana na odobrenje.`
+                            });
+
+
+                    if (autoMessageError) {
+
+                        console.error(
+                            "Greška kod automatske poruke:",
+                            autoMessageError
+                        );
+                    }
+
+
+                    /* =========================
+                       SUCCESS
+                    ========================= */
+
+                    fileInput.value =
+                        "";
+
+
+                    setUploadStatus(
+                        projectId,
+                        oldDesignId,
+                        `Nova verzija dizajna #${newDesign.id} uspješno je učitana i čeka odluku klijenta.`,
+                        "success"
+                    );
+
+
+                    showMessage(
+                        `Nova verzija dizajna #${newDesign.id} uspješno je kreirana.`,
+                        "success"
+                    );
+
+
+                    button.disabled =
+                        false;
+
+                    button.textContent =
+                        "Učitaj novu verziju";
+
+
+                    /*
+                        Kratko ostavimo poruku,
+                        zatim ponovno učitamo threadove.
+                    */
+
+                    setTimeout(
+                        async () => {
+
+                            await loadRevisions();
+
+                        },
+                        900
+                    );
                 }
             );
         }
