@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./admin.css?v=4"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./admin-documents.css?v=1"
+    >
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+    <script
+        src="./admin-documents.js?v=1"
+        defer
+    ></script>
+
+    <title>
+        PTech Digital | Dokumenti
+    </title>
+
+</head>
+
+<body>
+
+    <div class="admin-shell">
+
+
+        <!-- SIDEBAR -->
+
+        <aside class="admin-sidebar">
+
+            <div class="admin-brand">
+
+                <div class="admin-brand-logo">
+                    P
+                </div>
+
+                <div>
+
+                    <h1>
+                        PTech Digital
+                    </h1>
+
+                    <span>
+                        Admin Panel
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <nav class="admin-nav">
+
+                <a
+                    href="admin.html"
+                    class="admin-nav-item"
+                >
+                    <span class="admin-nav-icon">◫</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a
+                    href="admin-projects.html"
+                    class="admin-nav-item"
+                >
+                    <span class="admin-nav-icon">▣</span>
+                    <span>Projekti</span>
+                </a>
+
+                <a
+                    href="admin-revisions.html"
+                    class="admin-nav-item"
+                >
+                    <span class="admin-nav-icon">↔</span>
+                    <span>Zahtjevi</span>
+                </a>
+
+                <a
+                    href="admin-approvals.html"
+                    class="admin-nav-item"
+                >
+                    <span class="admin-nav-icon">✓</span>
+                    <span>Odobrenja</span>
+                </a>
+
+                <a
+                    href="admin-documents.html"
+                    class="admin-nav-item active"
+                >
+                    <span class="admin-nav-icon">□</span>
+                    <span>Dokumenti</span>
+                </a>
+
+            </nav>
+
+
+            <div class="admin-sidebar-footer">
+
+                <div class="admin-user">
+
+                    <div class="admin-avatar">
+                        A
+                    </div>
+
+                    <div>
+
+                        <strong id="adminUserName">
+                            Admin
+                        </strong>
+
+                        <span>
+                            Administrator
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <button
+                    type="button"
+                    id="adminLogoutButton"
+                    class="admin-logout"
+                >
+                    Odjava
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN -->
+
+        <main class="admin-main">
+
+
+            <header class="admin-topbar">
+
+                <div>
+
+                    <span class="admin-page-label">
+                        Administracija
+                    </span>
+
+                    <h2>
+                        Dokumenti
+                    </h2>
+
+                </div>
+
+                <div class="admin-topbar-actions">
+
+                    <span class="admin-role-badge">
+                        Admin
+                    </span>
+
+                </div>
+
+            </header>
+
+
+            <div class="admin-content">
+
+
+                <!-- HEADER -->
+
+                <section class="documents-heading">
+
+                    <div>
+
+                        <span class="admin-page-label">
+                            Datoteke
+                        </span>
+
+                        <h3>
+                            Dokumenti projekata
+                        </h3>
+
+                        <p>
+                            Upravljaj dokumentima klijenata i projekata.
+                        </p>
+
+                    </div>
+
+                    <div class="documents-count">
+
+                        <span>
+                            Ukupno
+                        </span>
+
+                        <strong id="documentsCount">
+                            0
+                        </strong>
+
+                    </div>
+
+                </section>
+
+
+                <!-- STATS -->
+
+                <section class="documents-stats">
+
+                    <article>
+
+                        <span>
+                            Dokumenata
+                        </span>
+
+                        <strong id="documentsStat">
+                            0
+                        </strong>
+
+                    </article>
+
+                    <article>
+
+                        <span>
+                            Projekata s dokumentima
+                        </span>
+
+                        <strong id="documentProjectsStat">
+                            0
+                        </strong>
+
+                    </article>
+
+                    <article>
+
+                        <span>
+                            Ukupna veličina
+                        </span>
+
+                        <strong id="documentsSizeStat">
+                            0 MB
+                        </strong>
+
+                    </article>
+
+                </section>
+
+
+                <!-- FILTERS -->
+
+                <section class="documents-toolbar">
+
+                    <input
+                        type="search"
+                        id="documentSearch"
+                        placeholder="Pretraži dokument..."
+                    >
+
+                    <select id="documentProjectFilter">
+
+                        <option value="">
+                            Svi projekti
+                        </option>
+
+                    </select>
+
+                    <select id="documentClientFilter">
+
+                        <option value="">
+                            Svi klijenti
+                        </option>
+
+                    </select>
+
+                    <select id="documentTypeFilter">
+
+                        <option value="">
+                            Sve vrste
+                        </option>
+
+                        <option value="Ugovor">
+                            Ugovor
+                        </option>
+
+                        <option value="Ponuda">
+                            Ponuda
+                        </option>
+
+                        <option value="Račun">
+                            Račun
+                        </option>
+
+                        <option value="Brief">
+                            Brief
+                        </option>
+
+                        <option value="Dizajn">
+                            Dizajn
+                        </option>
+
+                        <option value="Ostalo">
+                            Ostalo
+                        </option>
+
+                    </select>
+
+                    <button
+                        type="button"
+                        id="openUploadButton"
+                        class="documents-upload-open"
+                    >
+                        + Dodaj dokument
+                    </button>
+
+                </section>
+
+
+                <!-- UPLOAD -->
+
+                <section
+                    id="documentUploadPanel"
+                    class="document-upload-panel"
+                    hidden
+                >
+
+                    <div class="document-upload-header">
+
+                        <div>
+
+                            <span>
+                                Novi dokument
+                            </span>
+
+                            <h3>
+                                Dodaj dokument projektu
+                            </h3>
+
+                        </div>
+
+                        <button
+                            type="button"
+                            id="closeUploadButton"
+                            class="document-upload-close"
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+
+                    <div class="document-upload-grid">
+
+                        <div>
+
+                            <label for="uploadProject">
+                                Projekt
+                            </label>
+
+                            <select id="uploadProject">
+                                <option value="">
+                                    Odaberi projekt
+                                </option>
+                            </select>
+
+                        </div>
+
+
+                        <div>
+
+                            <label for="uploadDocumentType">
+                                Vrsta dokumenta
+                            </label>
+
+                            <select id="uploadDocumentType">
+
+                                <option value="Ugovor">
+                                    Ugovor
+                                </option>
+
+                                <option value="Ponuda">
+                                    Ponuda
+                                </option>
+
+                                <option value="Račun">
+                                    Račun
+                                </option>
+
+                                <option value="Brief">
+                                    Brief
+                                </option>
+
+                                <option value="Dizajn">
+                                    Dizajn
+                                </option>
+
+                                <option value="Ostalo">
+                                    Ostalo
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="document-upload-file-wrap">
+
+                            <label for="uploadDocumentFile">
+                                Datoteka
+                            </label>
+
+                            <input
+                                type="file"
+                                id="uploadDocumentFile"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="document-upload-actions">
+
+                        <button
+                            type="button"
+                            id="uploadDocumentButton"
+                        >
+                            Učitaj dokument
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+                <!-- MAIN GRID -->
+
+                <section class="documents-layout">
+
+
+                    <!-- LIST -->
+
+                    <div class="documents-table-wrap">
+
+                        <div class="documents-table-head">
+
+                            <span>Dokument</span>
+                            <span>Projekt</span>
+                            <span>Klijent</span>
+                            <span>Vrsta</span>
+                            <span>Datum</span>
+
+                        </div>
+
+                        <div
+                            id="documentsList"
+                            class="documents-list"
+                        >
+
+                            <div class="admin-empty">
+                                Učitavanje dokumenata...
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DETAIL -->
+
+                    <aside
+                        id="documentDetail"
+                        class="document-detail"
+                    >
+
+                        <div class="document-detail-empty">
+
+                            Odaberi dokument za pregled.
+
+                        </div>
+
+                    </aside>
+
+
+                </section>
+
+
+                <div
+                    id="documentsMessage"
+                    class="documents-message"
+                    hidden
+                >
+                </div>
+
+
+            </div>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>
