@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./messages.css?v=1"
+    >
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+    <script
+        src="./messages.js?v=1"
+        defer
+    ></script>
+
+    <title>
+        PTech Digital | Pomoć i podrška
+    </title>
+
+</head>
+
+
+<body>
+
+    <main class="portal-shell">
+
+
+        <!-- HEADER -->
+
+        <header class="portal-topbar">
+
+            <a
+                href="form.html"
+                class="portal-brand"
+            >
+
+                <div class="portal-logo">
+                    P
+                </div>
+
+                <strong>
+                    PTech Digital Client Portal
+                </strong>
+
+            </a>
+
+
+            <div class="portal-topbar-actions">
+
+
+                <div class="portal-user">
+
+                    <div class="portal-user-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <circle
+                                cx="12"
+                                cy="8"
+                                r="3">
+                            </circle>
+
+                            <path
+                                d="M5 20c0-4 3-7 7-7s7 3 7 7">
+                            </path>
+
+                        </svg>
+
+                    </div>
+
+                    <strong id="clientName">
+                        Klijent
+                    </strong>
+
+                </div>
+
+
+                <span class="portal-topbar-divider"></span>
+
+
+                <button
+                    type="button"
+                    id="logoutButton"
+                    class="portal-logout"
+                >
+
+                    <svg viewBox="0 0 24 24">
+
+                        <path d="M10 5H5v14h5"></path>
+                        <path d="M14 8l4 4-4 4"></path>
+                        <path d="M8 12h10"></path>
+
+                    </svg>
+
+                    <span>
+                        Odjava
+                    </span>
+
+                </button>
+
+
+                <span class="portal-topbar-divider"></span>
+
+
+                <button
+                    type="button"
+                    id="themeToggle"
+                    class="theme-toggle"
+                    aria-label="Promijeni temu"
+                >
+                    Tema
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+
+        <div class="portal-content">
+
+
+            <!-- PAGE HEADER -->
+
+            <section class="support-page-header">
+
+                <span class="support-eyebrow">
+                    Pomoć i podrška
+                </span>
+
+                <h1>
+                    Kako ti možemo pomoći?
+                </h1>
+
+                <p>
+                    Brzo pronađi odgovor ili pošalji poruku našem timu.
+                </p>
+
+            </section>
+
+
+            <!-- QUICK HELP -->
+
+            <section class="support-section">
+
+                <div class="support-section-header">
+
+                    <div>
+
+                        <span>
+                            Brza pomoć
+                        </span>
+
+                        <h2>
+                            Najčešća pitanja
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="help-grid">
+
+
+                    <button
+                        type="button"
+                        class="help-card"
+                        data-help="approve"
+                    >
+
+                        <div class="help-icon">
+                            ✓
+                        </div>
+
+                        <strong>
+                            Kako odobriti dizajn?
+                        </strong>
+
+                        <p>
+                            Pogledaj dizajn i potvrdi konačnu verziju.
+                        </p>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="help-card"
+                        data-help="revision"
+                    >
+
+                        <div class="help-icon">
+                            ↔
+                        </div>
+
+                        <strong>
+                            Kako zatražiti izmjenu?
+                        </strong>
+
+                        <p>
+                            Pošalji komentar i objasni što želiš promijeniti.
+                        </p>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="help-card"
+                        data-help="documents"
+                    >
+
+                        <div class="help-icon">
+                            □
+                        </div>
+
+                        <strong>
+                            Gdje su moji dokumenti?
+                        </strong>
+
+                        <p>
+                            Ugovori, ponude i ostali dokumenti nalaze se pod Dokumenti.
+                        </p>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="help-card"
+                        data-help="status"
+                    >
+
+                        <div class="help-icon">
+                            ▣
+                        </div>
+
+                        <strong>
+                            Kako pratiti projekt?
+                        </strong>
+
+                        <p>
+                            Status i napredak projekta možeš pratiti pod Projekti.
+                        </p>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="help-card"
+                        data-help="billing"
+                    >
+
+                        <div class="help-icon">
+                            €
+                        </div>
+
+                        <strong>
+                            Što se dodatno naplaćuje?
+                        </strong>
+
+                        <p>
+                            Novi zahtjevi i rad izvan dogovorenog opsega mogu se dodatno naplatiti.
+                        </p>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="help-card"
+                        data-help="support"
+                    >
+
+                        <div class="help-icon">
+                            ?
+                        </div>
+
+                        <strong>
+                            Trebam pomoć
+                        </strong>
+
+                        <p>
+                            Ako nisi pronašao odgovor, javi se našoj podršci.
+                        </p>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- HELP ANSWER -->
+
+            <section
+                id="helpAnswer"
+                class="help-answer"
+                hidden
+            >
+
+                <div class="help-answer-top">
+
+                    <div>
+
+                        <span>
+                            Pomoć
+                        </span>
+
+                        <h3 id="helpAnswerTitle">
+                            Odgovor
+                        </h3>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="closeHelpAnswer"
+                        class="help-answer-close"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="helpAnswerText"
+                    class="help-answer-text"
+                >
+                </div>
+
+            </section>
+
+
+            <!-- BILLING NOTICE -->
+
+            <section class="billing-notice">
+
+                <div class="billing-icon">
+                    !
+                </div>
+
+                <div>
+
+                    <strong>
+                        Napomena o dodatnim zahtjevima
+                    </strong>
+
+                    <p>
+                        Zahtjevi za nove funkcionalnosti, dodatne izmjene ili rad izvan dogovorenog opsega projekta mogu se dodatno naplatiti. Prije početka dodatnog rada dobit ćeš potvrdu opsega i cijene.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- SUPPORT CHAT -->
+
+            <section class="support-chat">
+
+                <div class="support-chat-header">
+
+                    <div>
+
+                        <span>
+                            Fizička podrška
+                        </span>
+
+                        <h2>
+                            Razgovor s podrškom
+                        </h2>
+
+                        <p>
+                            Pošalji pitanje našem timu. Sama poruka ne predstavlja automatsku narudžbu dodatnog rada.
+                        </p>
+
+                    </div>
+
+
+                    <span class="support-status">
+                        Podrška
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="supportMessages"
+                    class="support-messages"
+                >
+
+                    <div class="support-empty">
+                        Učitavanje razgovora...
+                    </div>
+
+                </div>
+
+
+                <div class="support-compose">
+
+                    <textarea
+                        id="supportMessageInput"
+                        maxlength="2000"
+                        placeholder="Napiši poruku podršci..."
+                    ></textarea>
+
+
+                    <div class="support-compose-bottom">
+
+                        <small>
+                            Nemoj slati osjetljive podatke poput lozinki.
+                        </small>
+
+
+                        <button
+                            type="button"
+                            id="sendSupportMessage"
+                        >
+                            Pošalji poruku
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <div
+                id="supportMessage"
+                class="support-message"
+                hidden
+            >
+            </div>
+
+
+            <footer class="portal-footer">
+                © PTech Digital 2026. • Sva prava zadržana.
+            </footer>
+
+
+        </div>
+
+
+        <!-- BOTTOM NAV -->
+
+        <nav class="bottom-nav">
+
+
+            <a
+                href="form.html"
+                class="bottom-nav-item"
+            >
+
+                <svg viewBox="0 0 24 24">
+
+                    <path d="M3 11.5L12 4l9 7.5"></path>
+                    <path d="M5 10.5V20h14v-9.5"></path>
+                    <path d="M9 20v-6h6v6"></path>
+
+                </svg>
+
+                <span>
+                    Početna
+                </span>
+
+            </a>
+
+
+            <a
+                href="messages.html"
+                class="bottom-nav-item active"
+            >
+
+                <div class="bottom-nav-icon-wrap">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <path d="M4 5h16v11H8l-4 4z"></path>
+
+                    </svg>
+
+                    <span
+                        class="nav-notification"
+                        hidden
+                    >
+                        0
+                    </span>
+
+                </div>
+
+                <span>
+                    Poruke
+                </span>
+
+            </a>
+
+
+            <a
+                href="projects.html"
+                class="bottom-nav-item"
+            >
+
+                <svg viewBox="0 0 24 24">
+
+                    <rect
+                        x="4"
+                        y="5"
+                        width="16"
+                        height="15"
+                        rx="2">
+                    </rect>
+
+                    <path d="M8 5V3"></path>
+                    <path d="M16 5V3"></path>
+                    <path d="M4 9h16"></path>
+
+                </svg>
+
+                <span>
+                    Projekti
+                </span>
+
+            </a>
+
+
+            <a
+                href="documents.html"
+                class="bottom-nav-item"
+            >
+
+                <svg viewBox="0 0 24 24">
+
+                    <path d="M4 4h6l2 2h8v14H4z"></path>
+
+                </svg>
+
+                <span>
+                    Dokumenti
+                </span>
+
+            </a>
+
+
+            <a
+                href="profile.html"
+                class="bottom-nav-item"
+            >
+
+                <svg viewBox="0 0 24 24">
+
+                    <circle
+                        cx="12"
+                        cy="8"
+                        r="3">
+                    </circle>
+
+                    <path d="M5 20c0-4 3-7 7-7s7 3 7 7"></path>
+
+                </svg>
+
+                <span>
+                    Profil
+                </span>
+
+            </a>
+
+
+        </nav>
+
+    </main>
+
+</body>
+
+</html>
