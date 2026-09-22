@@ -12,62 +12,41 @@ const supabaseClient =
 
 
 const clientName =
-    document.getElementById(
-        "clientName"
-    );
+    document.getElementById("clientName");
 
 const logoutButton =
-    document.getElementById(
-        "logoutButton"
-    );
+    document.getElementById("logoutButton");
 
 const themeToggle =
-    document.getElementById(
-        "themeToggle"
-    );
+    document.getElementById("themeToggle");
 
 const helpAnswer =
-    document.getElementById(
-        "helpAnswer"
-    );
+    document.getElementById("helpAnswer");
 
 const helpAnswerTitle =
-    document.getElementById(
-        "helpAnswerTitle"
-    );
+    document.getElementById("helpAnswerTitle");
 
 const helpAnswerText =
-    document.getElementById(
-        "helpAnswerText"
-    );
+    document.getElementById("helpAnswerText");
 
 const closeHelpAnswer =
-    document.getElementById(
-        "closeHelpAnswer"
-    );
+    document.getElementById("closeHelpAnswer");
 
 const supportMessages =
-    document.getElementById(
-        "supportMessages"
-    );
+    document.getElementById("supportMessages");
 
 const supportMessageInput =
-    document.getElementById(
-        "supportMessageInput"
-    );
+    document.getElementById("supportMessageInput");
 
 const sendSupportMessage =
-    document.getElementById(
-        "sendSupportMessage"
-    );
+    document.getElementById("sendSupportMessage");
 
 const supportMessage =
-    document.getElementById(
-        "supportMessage"
-    );
+    document.getElementById("supportMessage");
 
 
 let currentSession = null;
+let realtimeChannel = null;
 
 
 /* =========================
@@ -146,6 +125,15 @@ logoutButton
         "click",
         async () => {
 
+            if (realtimeChannel) {
+
+                await supabaseClient
+                    .removeChannel(
+                        realtimeChannel
+                    );
+            }
+
+
             await supabaseClient
                 .auth
                 .signOut();
@@ -175,7 +163,6 @@ const helpContent = {
             `
     },
 
-
     revision: {
         title:
             "Kako zatražiti izmjenu?",
@@ -183,13 +170,11 @@ const helpContent = {
         text:
             `
             Na stranici za pregled dizajna odaberi opciju za izmjenu i napiši što želiš promijeniti.
-            Zahtjev će biti poslan PTech Digital timu.
 
             Dodatne izmjene ili zahtjevi izvan dogovorenog opsega projekta mogu se dodatno naplatiti.
             Prije početka dodatnog rada dobit ćeš potvrdu cijene.
             `
     },
-
 
     documents: {
         title:
@@ -198,10 +183,9 @@ const helpContent = {
         text:
             `
             Otvori karticu Dokumenti u donjoj navigaciji.
-            Tamo možeš pronaći dokumente povezane s projektima, poput ugovora, ponuda, briefova i ostalih datoteka.
+            Tamo možeš pronaći dokumente povezane s projektima.
             `
     },
-
 
     status: {
         title:
@@ -210,10 +194,9 @@ const helpContent = {
         text:
             `
             Otvori karticu Projekti.
-            Tamo možeš vidjeti aktivne projekte, njihov trenutni status, napredak i dostupne akcije.
+            Tamo možeš pratiti status i napredak projekta.
             `
     },
-
 
     billing: {
         title:
@@ -223,12 +206,9 @@ const helpContent = {
             `
             Rad koji nije uključen u dogovoreni opseg projekta može se dodatno naplatiti.
 
-            To može uključivati nove funkcionalnosti, dodatne verzije, veće promjene nakon potvrđenog dizajna ili druge dodatne zahtjeve.
-
-            Prije početka takvog rada PTech Digital će potvrditi opseg i cijenu.
+            Prije početka dodatnog rada PTech Digital će potvrditi opseg i cijenu.
             `
     },
-
 
     support: {
         title:
@@ -236,19 +216,12 @@ const helpContent = {
 
         text:
             `
-            Ispod ovog odjeljka nalazi se razgovor s fizičkom podrškom.
-            Napiši pitanje i naš tim će odgovoriti kada bude dostupan.
-
-            Slanje poruke samo po sebi ne znači da si naručio dodatnu uslugu.
+            Ispod se nalazi razgovor s fizičkom podrškom.
+            Slanje poruke samo po sebi ne predstavlja narudžbu dodatne usluge.
             `
     }
-
 };
 
-
-/* =========================
-   HELP CARDS
-========================= */
 
 document
     .querySelectorAll(
@@ -261,13 +234,9 @@ document
                 "click",
                 () => {
 
-                    const key =
-                        button.dataset.help;
-
-
                     const item =
                         helpContent[
-                            key
+                            button.dataset.help
                         ];
 
 
@@ -279,23 +248,11 @@ document
                     helpAnswerTitle.textContent =
                         item.title;
 
-
                     helpAnswerText.textContent =
-                        item.text
-                            .trim();
-
+                        item.text.trim();
 
                     helpAnswer.hidden =
                         false;
-
-
-                    helpAnswer.scrollIntoView({
-                        behavior:
-                            "smooth",
-
-                        block:
-                            "nearest"
-                    });
                 }
             );
         }
@@ -339,7 +296,6 @@ function formatDateTime(value) {
             date.getTime()
         )
     ) {
-
         return "-";
     }
 
@@ -396,11 +352,6 @@ async function loadProfile() {
 
 
     if (error) {
-
-        console.error(
-            error
-        );
-
         return;
     }
 
@@ -417,7 +368,7 @@ async function loadProfile() {
 
 
 /* =========================
-   LOAD SUPPORT CHAT
+   LOAD MESSAGES
 ========================= */
 
 async function loadSupportMessages() {
@@ -432,9 +383,7 @@ async function loadSupportMessages() {
         error
     } =
         await supabaseClient
-            .from(
-                "support_messages"
-            )
+            .from("support_messages")
             .select(`
                 id,
                 created_at,
@@ -456,18 +405,11 @@ async function loadSupportMessages() {
 
     if (error) {
 
-        console.error(
-            "Support messages:",
-            error
-        );
-
-
         supportMessages.innerHTML = `
             <div class="support-empty">
                 Razgovor nije moguće učitati.
             </div>
         `;
-
 
         return;
     }
@@ -483,7 +425,6 @@ async function loadSupportMessages() {
                 Još nema poruka. Pošalji pitanje podršci.
             </div>
         `;
-
 
         return;
     }
@@ -530,7 +471,6 @@ async function loadSupportMessages() {
 
                             </div>
 
-
                             <p>
                                 ${escapeHtml(
                                     item.message
@@ -550,7 +490,7 @@ async function loadSupportMessages() {
 
 
 /* =========================
-   SEND MESSAGE
+   SEND
 ========================= */
 
 sendSupportMessage
@@ -580,7 +520,6 @@ sendSupportMessage
             sendSupportMessage.disabled =
                 true;
 
-
             sendSupportMessage.textContent =
                 "Šaljem...";
 
@@ -589,15 +528,11 @@ sendSupportMessage
                 error
             } =
                 await supabaseClient
-                    .from(
-                        "support_messages"
-                    )
+                    .from("support_messages")
                     .insert({
 
                         user_id:
-                            currentSession
-                                .user
-                                .id,
+                            currentSession.user.id,
 
                         sender_role:
                             "client",
@@ -607,26 +542,19 @@ sendSupportMessage
                     });
 
 
+            sendSupportMessage.disabled =
+                false;
+
+            sendSupportMessage.textContent =
+                "Pošalji poruku";
+
+
             if (error) {
-
-                console.error(
-                    error
-                );
-
 
                 showMessage(
                     "Poruku nije moguće poslati.",
                     "error"
                 );
-
-
-                sendSupportMessage.disabled =
-                    false;
-
-
-                sendSupportMessage.textContent =
-                    "Pošalji poruku";
-
 
                 return;
             }
@@ -635,24 +563,62 @@ sendSupportMessage
             supportMessageInput.value =
                 "";
 
-
             showMessage(
                 "Poruka je poslana.",
                 "success"
             );
 
-
-            sendSupportMessage.disabled =
-                false;
-
-
-            sendSupportMessage.textContent =
-                "Pošalji poruku";
-
-
-            await loadSupportMessages();
+            /*
+                Realtime će sam učitati novu poruku.
+            */
         }
     );
+
+
+supportMessageInput
+    ?.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Enter" &&
+                !event.shiftKey
+            ) {
+
+                event.preventDefault();
+                sendSupportMessage?.click();
+            }
+        }
+    );
+
+
+/* =========================
+   REALTIME
+========================= */
+
+function subscribeToSupportRealtime() {
+
+    realtimeChannel =
+        supabaseClient
+            .channel(
+                `client-support-${currentSession.user.id}`
+            )
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "support_messages",
+                    filter:
+                        `user_id=eq.${currentSession.user.id}`
+                },
+                async () => {
+
+                    await loadSupportMessages();
+                }
+            )
+            .subscribe();
+}
 
 
 /* =========================
@@ -689,8 +655,9 @@ async function startMessages() {
 
 
     await loadProfile();
-
     await loadSupportMessages();
+
+    subscribeToSupportRealtime();
 }
 
 
