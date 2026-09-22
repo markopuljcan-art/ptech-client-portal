@@ -76,6 +76,9 @@ const supportUnreadBadge =
     );
 
 
+let supportRealtimeChannel = null;
+
+
 /* =========================
    ESCAPE HTML
 ========================= */
@@ -111,7 +114,6 @@ function formatDate(value) {
             date.getTime()
         )
     ) {
-
         return "-";
     }
 
@@ -136,6 +138,15 @@ if (logoutButton) {
     logoutButton.addEventListener(
         "click",
         async function () {
+
+            if (supportRealtimeChannel) {
+
+                await supabaseClient
+                    .removeChannel(
+                        supportRealtimeChannel
+                    );
+            }
+
 
             await supabaseClient
                 .auth
@@ -191,7 +202,7 @@ async function getAdminProfile(
 
 
 /* =========================
-   SUPPORT UNREAD COUNT
+   SUPPORT UNREAD
 ========================= */
 
 async function loadSupportUnreadCount() {
@@ -263,6 +274,52 @@ async function loadSupportUnreadCount() {
         supportUnreadBadge.textContent =
             "0";
     }
+}
+
+
+/* =========================
+   SUPPORT REALTIME
+========================= */
+
+function subscribeToSupportRealtime() {
+
+    if (supportRealtimeChannel) {
+        return;
+    }
+
+
+    supportRealtimeChannel =
+        supabaseClient
+            .channel(
+                "admin-support-unread"
+            )
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "support_messages"
+                },
+                async payload => {
+
+                    console.log(
+                        "Support realtime:",
+                        payload
+                    );
+
+
+                    await loadSupportUnreadCount();
+                }
+            )
+            .subscribe(
+                status => {
+
+                    console.log(
+                        "Support realtime status:",
+                        status
+                    );
+                }
+            );
 }
 
 
@@ -427,8 +484,7 @@ async function getRevisionThreads() {
 
 
 /* =========================
-   NAJNOVIJA VERZIJA
-   DIZAJNA PO PROJEKTU
+   NAJNOVIJA VERZIJA DIZAJNA
 ========================= */
 
 async function getLatestDesigns() {
@@ -503,9 +559,6 @@ async function loadStats(
     revisionThreads
 ) {
 
-
-    /* AKTIVNI PROJEKTI */
-
     const {
         count: activeCount,
         error: projectsError
@@ -541,8 +594,6 @@ async function loadStats(
     }
 
 
-    /* ČEKA ODGOVOR ADMINA */
-
     const pendingThreads =
         revisionThreads.filter(
             thread =>
@@ -556,8 +607,6 @@ async function loadStats(
             pendingThreads.length;
     }
 
-
-    /* DIZAJNI */
 
     const latestDesigns =
         await getLatestDesigns();
@@ -607,8 +656,6 @@ async function loadStats(
             revisionCount;
     }
 
-
-    /* KLIJENTI */
 
     const {
         count: clientCount,
@@ -960,10 +1007,6 @@ async function startAdmin() {
     }
 
 
-    /* =========================
-       CHAT THREADOVI
-    ========================= */
-
     const {
         threads,
         error: revisionThreadsError
@@ -993,10 +1036,6 @@ async function startAdmin() {
     }
 
 
-    /* =========================
-       DASHBOARD
-    ========================= */
-
     await Promise.all([
 
         loadStats(
@@ -1013,6 +1052,13 @@ async function startAdmin() {
     loadLatestRevisions(
         threads
     );
+
+
+    /* =========================
+       REALTIME
+    ========================= */
+
+    subscribeToSupportRealtime();
 }
 
 
