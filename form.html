@@ -20,7 +20,7 @@
     </script>
 
     <script
-        src="script.js?v=11"
+        src="script.js?v=12"
         defer>
     </script>
 
@@ -135,185 +135,209 @@
         </header>
 
 
-
         <!-- =========================
              CONTENT
         ========================== -->
 
         <div class="dashboard-content">
 
-    <!-- POZDRAV -->
-    <section class="welcome">
 
-        <h2>
-            Bok,
-            <strong id="userGreeting"></strong>!
-        </h2>
+            <!-- POZDRAV -->
 
-        <p>
-            Evo što se događa s tvojim projektima.
-        </p>
+            <section class="welcome">
 
-    </section>
-
-
-    <!-- AKTIVNI PROJEKTI -->
-    <section class="dashboard-section">
-
-        <div class="section-header">
-
-            <h2 class="section-title">
-                Aktivni projekti
-            </h2>
-
-            <div class="project-counter">
-
-                <span id="currentProject">0</span>
-                <span>/</span>
-                <span id="totalProjects">0</span>
-
-            </div>
-
-        </div>
-
-
-        <div
-            class="projects-slider"
-            id="projectsSlider">
-        </div>
-
-
-        <div
-            class="slider-dots"
-            id="sliderDots">
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         AKCIJE
-    ========================== -->
-
-    <section class="actions-section">
-
-        <div class="actions-header">
-
-            <h2>
-                Akcije
-            </h2>
-
-            <p>
-                Što želite učiniti?
-            </p>
-
-        </div>
-
-
-        <div class="actions-grid">
-
-
-            <!-- ODOBRI -->
-
-            <a
-    href="#"
-    class="action-card"
-    id="approveDesignAction"
->
-
-                <div class="action-icon">
-                    ✓
-                </div>
-
-                <strong>
-                    Odobri dizajn
-                </strong>
+                <h2>
+                    Bok,
+                    <strong id="userGreeting"></strong>!
+                </h2>
 
                 <p>
-                    Pregledajte dizajn i potvrdite ga.
+                    Evo što se događa s tvojim projektima.
                 </p>
 
-                <span class="action-button">
-                    Pregledaj
-                </span>
-
-            </a>
+            </section>
 
 
-            <!-- IZMJENA -->
+            <!-- =========================
+                 AKTIVNI PROJEKTI
+            ========================== -->
 
-            <a href="#" class="action-card">
+            <section class="dashboard-section">
 
-                <div class="action-icon">
-                    ↔
+                <div class="section-header">
+
+                    <h2 class="section-title">
+                        Aktivni projekti
+                    </h2>
+
+                    <div class="project-counter">
+
+                        <span id="currentProject">
+                            0
+                        </span>
+
+                        <span>
+                            /
+                        </span>
+
+                        <span id="totalProjects">
+                            0
+                        </span>
+
+                    </div>
+
                 </div>
 
-                <strong>
-                    Zatraži izmjenu
-                </strong>
 
-                <p>
-                    Pošaljite prijedlog ili izmjenu.
-                </p>
-
-                <span class="action-button">
-                    Nova izmjena
-                </span>
-
-            </a>
-
-
-            <!-- MATERIJALI -->
-
-            <a href="#" class="action-card">
-
-                <div class="action-icon">
-                    ↑
+                <div
+                    class="projects-slider"
+                    id="projectsSlider">
                 </div>
 
-                <strong>
-                    Dostavi materijale
-                </strong>
 
-                <p>
-                    Pošaljite logo, fotografije ili dokumente.
-                </p>
-
-                <span class="action-button">
-                    Pošalji
-                </span>
-
-            </a>
-
-
-            <!-- PODRŠKA -->
-
-            <a href="#" class="action-card">
-
-                <div class="action-icon">
-                    ?
+                <div
+                    class="slider-dots"
+                    id="sliderDots">
                 </div>
 
-                <strong>
-                    Kontaktiraj podršku
-                </strong>
+            </section>
 
-                <p>
-                    Trebate pomoć? Naš tim je tu za vas.
-                </p>
 
-                <span class="action-button">
-                    Pošalji upit
-                </span>
+            <!-- =========================
+                 AKCIJE
+            ========================== -->
 
-            </a>
+            <section class="actions-section">
+
+                <div class="actions-header">
+
+                    <h2>
+                        Akcije
+                    </h2>
+
+                    <p>
+                        Što želite učiniti?
+                    </p>
+
+                </div>
+
+
+                <div class="actions-grid">
+
+
+                    <!-- ODOBRI DIZAJN -->
+
+                    <a
+                        href="#"
+                        class="action-card"
+                        id="approveDesignAction"
+                    >
+
+                        <div class="action-icon">
+                            ✓
+                        </div>
+
+                        <strong>
+                            Odobri dizajn
+                        </strong>
+
+                        <p>
+                            Pregledajte dizajn i potvrdite ga.
+                        </p>
+
+                        <span class="action-button">
+                            Pregledaj
+                        </span>
+
+                    </a>
+
+
+                    <!-- ZATRAŽI IZMJENU -->
+
+                    <a
+                        href="#"
+                        class="action-card"
+                    >
+
+                        <div class="action-icon">
+                            ↔
+                        </div>
+
+                        <strong>
+                            Zatraži izmjenu
+                        </strong>
+
+                        <p>
+                            Pošaljite prijedlog ili izmjenu.
+                        </p>
+
+                        <span class="action-button">
+                            Nova izmjena
+                        </span>
+
+                    </a>
+
+
+                    <!-- DOSTAVI MATERIJALE -->
+
+                    <a
+                        href="#"
+                        class="action-card"
+                    >
+
+                        <div class="action-icon">
+                            ↑
+                        </div>
+
+                        <strong>
+                            Dostavi materijale
+                        </strong>
+
+                        <p>
+                            Pošaljite logo, fotografije ili dokumente.
+                        </p>
+
+                        <span class="action-button">
+                            Pošalji
+                        </span>
+
+                    </a>
+
+
+                    <!-- PODRŠKA -->
+
+                    <a
+                        href="messages.html"
+                        class="action-card"
+                    >
+
+                        <div class="action-icon">
+                            ?
+                        </div>
+
+                        <strong>
+                            Kontaktiraj podršku
+                        </strong>
+
+                        <p>
+                            Trebate pomoć? Naš tim je tu za vas.
+                        </p>
+
+                        <span class="action-button">
+                            Pošalji upit
+                        </span>
+
+                    </a>
+
+
+                </div>
+
+            </section>
+
 
         </div>
 
-    </section>
 
-
-</div>
         <!-- =========================
              COPYRIGHT
         ========================== -->
@@ -324,7 +348,6 @@
             • Sva prava zadržana.
 
         </footer>
-
 
 
         <!-- =========================
@@ -365,8 +388,9 @@
             </a>
 
 
-
-            <!-- PORUKE -->
+            <!-- =========================
+                 PORUKE + UNREAD BADGE
+            ========================== -->
 
             <a
                 href="messages.html"
@@ -384,8 +408,14 @@
 
                     </svg>
 
-                    <!-- kasnije možemo ovdje staviti broj poruka -->
+
+                    <!--
+                        Prikazuje se samo kada postoje
+                        nepročitane ADMIN poruke.
+                    -->
+
                     <span
+                        id="messagesUnreadBadge"
                         class="nav-notification"
                         hidden
                     >
@@ -399,7 +429,6 @@
                 </span>
 
             </a>
-
 
 
             <!-- PROJEKTI -->
@@ -441,7 +470,6 @@
             </a>
 
 
-
             <!-- DOKUMENTI -->
 
             <a
@@ -463,7 +491,6 @@
                 </span>
 
             </a>
-
 
 
             <!-- PROFIL -->
@@ -493,6 +520,7 @@
                 </span>
 
             </a>
+
 
         </nav>
 
