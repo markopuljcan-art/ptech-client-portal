@@ -12,13 +12,77 @@ const supabaseClient =
     );
 
 
+/* =========================
+   GLOBAL
+========================= */
+
 let projects = [];
+
 let activeProjectIndex = 0;
 
+let supportRealtimeChannel = null;
 
-// =========================
-// HELPERS
-// =========================
+let currentSession = null;
+
+
+/* =========================
+   ELEMENTI
+========================= */
+
+const projectsSlider =
+    document.getElementById(
+        "projectsSlider"
+    );
+
+const sliderDots =
+    document.getElementById(
+        "sliderDots"
+    );
+
+const currentProject =
+    document.getElementById(
+        "currentProject"
+    );
+
+const totalProjects =
+    document.getElementById(
+        "totalProjects"
+    );
+
+const userTop =
+    document.getElementById(
+        "userTop"
+    );
+
+const userGreeting =
+    document.getElementById(
+        "userGreeting"
+    );
+
+const logoutButton =
+    document.getElementById(
+        "logoutButton"
+    );
+
+const themeToggle =
+    document.getElementById(
+        "themeToggle"
+    );
+
+const approveDesignAction =
+    document.getElementById(
+        "approveDesignAction"
+    );
+
+const messagesUnreadBadge =
+    document.getElementById(
+        "messagesUnreadBadge"
+    );
+
+
+/* =========================
+   HELPERS
+========================= */
 
 function escapeHTML(value) {
 
@@ -44,6 +108,15 @@ function formatDate(value) {
         );
 
 
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+        return "-";
+    }
+
+
     return date.toLocaleDateString(
         "hr-HR",
         {
@@ -55,43 +128,94 @@ function formatDate(value) {
 }
 
 
-// =========================
-// ZADNJE AŽURIRANO
-// =========================
+/* =========================
+   STATUS
+========================= */
+
+function getStatusClass(status) {
+
+    const value =
+        String(
+            status || ""
+        )
+            .trim()
+            .toLowerCase();
+
+
+    if (
+        value === "u izradi"
+    ) {
+
+        return "status-progress";
+    }
+
+
+    if (
+        value === "završeno" ||
+        value === "zavrseno"
+    ) {
+
+        return "status-done";
+    }
+
+
+    if (
+        value === "na čekanju" ||
+        value === "na cekanju"
+    ) {
+
+        return "status-waiting";
+    }
+
+
+    return "";
+}
+
+
+/* =========================
+   ZADNJE AŽURIRANO
+========================= */
 
 async function loadLatestUpdate(
     projectId,
     element
 ) {
 
+    if (
+        !projectId ||
+        !element
+    ) {
+        return;
+    }
+
+
     const {
         data,
         error
-    } = await supabaseClient
-
-        .from("activities")
-
-        .select("activity_date")
-
-        .eq(
-            "project_id",
-            projectId
-        )
-
-        .not(
-            "activity_date",
-            "is",
-            null
-        )
-
-        .order(
-            "activity_date",
-            {
-                ascending: false
-            }
-        )
-
-        .limit(1);
+    } =
+        await supabaseClient
+            .from(
+                "activities"
+            )
+            .select(
+                "activity_date"
+            )
+            .eq(
+                "project_id",
+                projectId
+            )
+            .not(
+                "activity_date",
+                "is",
+                null
+            )
+            .order(
+                "activity_date",
+                {
+                    ascending: false
+                }
+            )
+            .limit(1);
 
 
     if (error) {
@@ -101,7 +225,8 @@ async function loadLatestUpdate(
             error
         );
 
-        element.textContent = "-";
+        element.textContent =
+            "-";
 
         return;
     }
@@ -112,7 +237,8 @@ async function loadLatestUpdate(
         data.length === 0
     ) {
 
-        element.textContent = "-";
+        element.textContent =
+            "-";
 
         return;
     }
@@ -125,84 +251,36 @@ async function loadLatestUpdate(
 }
 
 
-// =========================
-// STATUS
-// =========================
-
-function getStatusClass(status) {
-
-    if (
-        status === "U izradi"
-    ) {
-
-        return "status-progress";
-
-    }
-
-
-    if (
-        status === "Završeno"
-    ) {
-
-        return "status-done";
-
-    }
-
-
-    if (
-        status === "Na čekanju"
-    ) {
-
-        return "status-waiting";
-
-    }
-
-
-    return "";
-}
-
-
-// =========================
-// RENDER PROJECTS
-// =========================
+/* =========================
+   RENDER PROJEKATA
+========================= */
 
 function renderProjects() {
 
-    const slider =
-        document.getElementById(
-            "projectsSlider"
-        );
+    if (
+        !projectsSlider ||
+        !sliderDots ||
+        !currentProject ||
+        !totalProjects
+    ) {
+        return;
+    }
 
 
-    const dotsContainer =
-        document.getElementById(
-            "sliderDots"
-        );
+    projectsSlider.innerHTML =
+        "";
 
+    sliderDots.innerHTML =
+        "";
 
-    const currentProject =
-        document.getElementById(
-            "currentProject"
-        );
-
-
-    const totalProjects =
-        document.getElementById(
-            "totalProjects"
-        );
-
-
-    slider.innerHTML = "";
-
-    dotsContainer.innerHTML = "";
 
     totalProjects.textContent =
         projects.length;
 
 
-    // =========================
-    // NEMA PROJEKATA
-    // =========================
+    /* =========================
+       NEMA PROJEKATA
+    ========================= */
 
     if (
         projects.length === 0
@@ -212,11 +290,9 @@ function renderProjects() {
             "0";
 
 
-        slider.innerHTML = `
+        projectsSlider.innerHTML = `
             <div class="no-projects">
-
                 Trenutno nema aktivnih projekata.
-
             </div>
         `;
 
@@ -225,9 +301,9 @@ function renderProjects() {
     }
 
 
-    // =========================
-    // SVAKI PROJEKT
-    // =========================
+    /* =========================
+       PROJEKTI
+    ========================= */
 
     projects.forEach(
         function (
@@ -253,10 +329,6 @@ function renderProjects() {
                 );
 
 
-            // =========================
-            // SLIDE
-            // =========================
-
             const slide =
                 document.createElement(
                     "div"
@@ -268,10 +340,6 @@ function renderProjects() {
             );
 
 
-            // =========================
-            // KARTICA
-            // =========================
-
             slide.innerHTML = `
 
                 <a
@@ -282,9 +350,7 @@ function renderProjects() {
                     href="project.html?id=${project.id}"
                 >
 
-                    <!-- =====================
-                         PROJECT HEADER
-                    ====================== -->
+                    <!-- HEADER -->
 
                     <div class="project-heading">
 
@@ -319,13 +385,15 @@ function renderProjects() {
 
                                 <h3>
                                     ${escapeHTML(
-                                        project.type
+                                        project.type ||
+                                        "Projekt"
                                     )}
                                 </h3>
 
                                 <p>
                                     ${escapeHTML(
-                                        project.name
+                                        project.name ||
+                                        ""
                                     )}
                                 </p>
 
@@ -342,11 +410,10 @@ function renderProjects() {
                                     ${statusClass}
                                 "
                             >
-
                                 ${escapeHTML(
-                                    project.status
+                                    project.status ||
+                                    "-"
                                 )}
-
                             </span>
 
 
@@ -362,16 +429,12 @@ function renderProjects() {
                     </div>
 
 
-                    <!-- =====================
-                         INFO GRID
-                    ====================== -->
+                    <!-- INFO -->
 
                     <div class="project-stats">
 
 
-                        <!-- =====================
-                             PAKET
-                        ====================== -->
+                        <!-- PAKET -->
 
                         <div class="stat-card">
 
@@ -411,11 +474,10 @@ function renderProjects() {
                                 </span>
 
                                 <strong class="package-name">
-
                                     ${escapeHTML(
-                                        project.package || "-"
+                                        project.package ||
+                                        "-"
                                     )}
-
                                 </strong>
 
                             </div>
@@ -423,9 +485,7 @@ function renderProjects() {
                         </div>
 
 
-                        <!-- =====================
-                             NAPREDAK
-                        ====================== -->
+                        <!-- NAPREDAK -->
 
                         <div class="stat-card progress-stat">
 
@@ -488,9 +548,7 @@ function renderProjects() {
                         </div>
 
 
-                        <!-- =====================
-                             ROK
-                        ====================== -->
+                        <!-- ROK -->
 
                         <div class="stat-card">
 
@@ -530,11 +588,9 @@ function renderProjects() {
                                 </span>
 
                                 <strong>
-
                                     ${formatDate(
                                         project.deadline
                                     )}
-
                                 </strong>
 
                             </div>
@@ -542,9 +598,7 @@ function renderProjects() {
                         </div>
 
 
-                        <!-- =====================
-                             ZADNJE AŽURIRANO
-                        ====================== -->
+                        <!-- ZADNJE AŽURIRANO -->
 
                         <div class="stat-card">
 
@@ -585,20 +639,19 @@ function renderProjects() {
 
                         </div>
 
+
                     </div>
 
                 </a>
             `;
 
 
-            slider.appendChild(
+            projectsSlider.appendChild(
                 slide
             );
 
 
-            // =========================
-            // ZADNJE AŽURIRANO
-            // =========================
+            /* ZADNJE AŽURIRANO */
 
             const latestUpdate =
                 slide.querySelector(
@@ -612,9 +665,9 @@ function renderProjects() {
             );
 
 
-            // =========================
-            // DOT
-            // =========================
+            /* =========================
+               DOT
+            ========================= */
 
             const dot =
                 document.createElement(
@@ -622,7 +675,8 @@ function renderProjects() {
                 );
 
 
-            dot.type = "button";
+            dot.type =
+                "button";
 
 
             dot.classList.add(
@@ -643,7 +697,6 @@ function renderProjects() {
                 dot.classList.add(
                     "active"
                 );
-
             }
 
 
@@ -652,42 +705,35 @@ function renderProjects() {
                 function () {
 
                     const slides =
-                        slider.querySelectorAll(
-                            ".project-slide"
-                        );
+                        projectsSlider
+                            .querySelectorAll(
+                                ".project-slide"
+                            );
 
 
                     const targetSlide =
                         slides[index];
 
 
-                    if (
-                        !targetSlide
-                    ) {
-
+                    if (!targetSlide) {
                         return;
-
                     }
 
 
-                    slider.scrollTo({
-
+                    projectsSlider.scrollTo({
                         left:
                             targetSlide.offsetLeft,
 
                         behavior:
                             "smooth"
-
                     });
-
                 }
             );
 
 
-            dotsContainer.appendChild(
+            sliderDots.appendChild(
                 dot
             );
-
         }
     );
 
@@ -701,28 +747,24 @@ function renderProjects() {
 }
 
 
-// =========================
-// SLIDER
-// =========================
+/* =========================
+   PROJECT SLIDER
+========================= */
 
 function setupProjectSlider() {
 
-    const slider =
-        document.getElementById(
-            "projectsSlider"
-        );
-
-
-    const currentProject =
-        document.getElementById(
-            "currentProject"
-        );
+    if (
+        !projectsSlider ||
+        !currentProject
+    ) {
+        return;
+    }
 
 
     let scrollTimeout;
 
 
-    slider.addEventListener(
+    projectsSlider.addEventListener(
         "scroll",
         function () {
 
@@ -738,30 +780,28 @@ function setupProjectSlider() {
                         if (
                             projects.length === 0
                         ) {
-
                             return;
-
                         }
 
 
                         const slides =
                             Array.from(
-                                slider.querySelectorAll(
-                                    ".project-slide"
-                                )
+                                projectsSlider
+                                    .querySelectorAll(
+                                        ".project-slide"
+                                    )
                             );
 
 
                         if (
                             slides.length === 0
                         ) {
-
                             return;
-
                         }
 
 
-                        let index = 0;
+                        let index =
+                            0;
 
                         let smallestDistance =
                             Infinity;
@@ -775,7 +815,7 @@ function setupProjectSlider() {
 
                                 const distance =
                                     Math.abs(
-                                        slider.scrollLeft -
+                                        projectsSlider.scrollLeft -
                                         slide.offsetLeft
                                     );
 
@@ -788,12 +828,9 @@ function setupProjectSlider() {
                                     smallestDistance =
                                         distance;
 
-
                                     index =
                                         slideIndex;
-
                                 }
-
                             }
                         );
 
@@ -822,34 +859,170 @@ function setupProjectSlider() {
                                     "active",
                                     dotIndex === index
                                 );
-
                             }
                         );
 
                     },
                     100
                 );
-
         }
     );
-
 }
 
 
-// =========================
-// DASHBOARD
-// =========================
+/* =========================
+   SUPPORT UNREAD
+========================= */
+
+async function loadMessagesUnreadCount(
+    userId
+) {
+
+    if (
+        !messagesUnreadBadge ||
+        !userId
+    ) {
+        return;
+    }
+
+
+    const {
+        count,
+        error
+    } =
+        await supabaseClient
+            .from(
+                "support_messages"
+            )
+            .select(
+                "id",
+                {
+                    count: "exact",
+                    head: true
+                }
+            )
+            .eq(
+                "user_id",
+                userId
+            )
+            .eq(
+                "sender_role",
+                "admin"
+            )
+            .is(
+                "client_read_at",
+                null
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Greška kod brojanja nepročitanih poruka:",
+            error
+        );
+
+        return;
+    }
+
+
+    const unreadCount =
+        count || 0;
+
+
+    if (
+        unreadCount > 0
+    ) {
+
+        messagesUnreadBadge.hidden =
+            false;
+
+
+        messagesUnreadBadge.textContent =
+            unreadCount > 99
+                ? "99+"
+                : String(
+                    unreadCount
+                );
+
+    } else {
+
+        messagesUnreadBadge.hidden =
+            true;
+
+
+        messagesUnreadBadge.textContent =
+            "0";
+    }
+}
+
+
+/* =========================
+   SUPPORT REALTIME
+========================= */
+
+function subscribeToSupportRealtime(
+    userId
+) {
+
+    if (
+        !userId ||
+        supportRealtimeChannel
+    ) {
+        return;
+    }
+
+
+    supportRealtimeChannel =
+        supabaseClient
+            .channel(
+                `home-support-${userId}`
+            )
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "support_messages",
+                    filter:
+                        `user_id=eq.${userId}`
+                },
+                async payload => {
+
+                    console.log(
+                        "Home support realtime:",
+                        payload
+                    );
+
+
+                    await loadMessagesUnreadCount(
+                        userId
+                    );
+                }
+            )
+            .subscribe(
+                status => {
+
+                    console.log(
+                        "Home support realtime status:",
+                        status
+                    );
+                }
+            );
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
 
 async function loadDashboard() {
-
-    // =========================
-    // SESSION
-    // =========================
 
     const {
         data: {
             session
-        }
+        },
+        error: sessionError
     } =
         await supabaseClient
             .auth
@@ -857,6 +1030,7 @@ async function loadDashboard() {
 
 
     if (
+        sessionError ||
         !session
     ) {
 
@@ -864,31 +1038,46 @@ async function loadDashboard() {
             "login.html";
 
         return;
-
     }
 
 
-    // =========================
-    // PROFIL
-    // =========================
+    currentSession =
+        session;
+
+
+    /* =========================
+       PORUKE
+    ========================= */
+
+    await loadMessagesUnreadCount(
+        session.user.id
+    );
+
+
+    subscribeToSupportRealtime(
+        session.user.id
+    );
+
+
+    /* =========================
+       PROFIL
+    ========================= */
 
     const {
         data: profile,
         error: profileError
     } =
         await supabaseClient
-
-            .from("profiles")
-
+            .from(
+                "profiles"
+            )
             .select(
                 "display_name"
             )
-
             .eq(
                 "id",
                 session.user.id
             )
-
             .maybeSingle();
 
 
@@ -900,45 +1089,43 @@ async function loadDashboard() {
             "Greška kod profila:",
             profileError
         );
-
     }
 
 
     const userName =
         profile?.display_name ||
-        session.user.email;
+        session.user.email
+            ?.split("@")[0] ||
+        "Klijent";
 
 
-    document
-        .getElementById(
-            "userTop"
-        )
-        .textContent =
+    if (userTop) {
+
+        userTop.textContent =
             userName;
+    }
 
 
-    document
-        .getElementById(
-            "userGreeting"
-        )
-        .textContent =
+    if (userGreeting) {
+
+        userGreeting.textContent =
             userName;
+    }
 
 
-    // =========================
-    // PROJEKTI
-    // =========================
+    /* =========================
+       PROJEKTI
+    ========================= */
 
     const {
         data,
         error: projectError
     } =
         await supabaseClient
-
-            .from("projects")
-
-            .select(
-                `
+            .from(
+                "projects"
+            )
+            .select(`
                 id,
                 type,
                 name,
@@ -946,9 +1133,7 @@ async function loadDashboard() {
                 progress,
                 deadline,
                 package
-                `
-            )
-
+            `)
             .eq(
                 "user_id",
                 session.user.id
@@ -965,7 +1150,6 @@ async function loadDashboard() {
         );
 
         return;
-
     }
 
 
@@ -975,20 +1159,54 @@ async function loadDashboard() {
 
     renderProjects();
 
+
+    /* =========================
+       ODOBRI DIZAJN
+    ========================= */
+
+    if (
+        approveDesignAction
+    ) {
+
+        if (
+            projects.length > 0
+        ) {
+
+            approveDesignAction.href =
+                `approve.html?id=${projects[0].id}`;
+
+        } else {
+
+            approveDesignAction.href =
+                "#";
+        }
+    }
 }
 
 
-// =========================
-// LOGOUT
-// =========================
+/* =========================
+   LOGOUT
+========================= */
 
-document
-    .getElementById(
-        "logoutButton"
-    )
-    .addEventListener(
+logoutButton
+    ?.addEventListener(
         "click",
         async function () {
+
+            if (
+                supportRealtimeChannel
+            ) {
+
+                await supabaseClient
+                    .removeChannel(
+                        supportRealtimeChannel
+                    );
+
+
+                supportRealtimeChannel =
+                    null;
+            }
+
 
             await supabaseClient
                 .auth
@@ -997,20 +1215,13 @@ document
 
             window.location.href =
                 "login.html";
-
         }
     );
 
 
-// =========================
-// THEME
-// =========================
-
-const themeToggle =
-    document.getElementById(
-        "themeToggle"
-    );
-
+/* =========================
+   THEME
+========================= */
 
 const savedTheme =
     localStorage.getItem(
@@ -1027,109 +1238,74 @@ if (
     );
 
 
-    themeToggle.checked =
-        true;
+    if (themeToggle) {
 
+        themeToggle.checked =
+            true;
+    }
 }
 
 
-themeToggle.addEventListener(
-    "change",
-    function () {
+themeToggle
+    ?.addEventListener(
+        "change",
+        function () {
+
+            if (
+                themeToggle.checked
+            ) {
+
+                document.body.classList.add(
+                    "light-mode"
+                );
+
+
+                localStorage.setItem(
+                    "theme",
+                    "light"
+                );
+
+            } else {
+
+                document.body.classList.remove(
+                    "light-mode"
+                );
+
+
+                localStorage.setItem(
+                    "theme",
+                    "dark"
+                );
+            }
+        }
+    );
+
+
+/* =========================
+   TAB / VISIBILITY REFRESH
+========================= */
+
+document.addEventListener(
+    "visibilitychange",
+    async function () {
 
         if (
-            themeToggle.checked
+            document.visibilityState ===
+                "visible" &&
+            currentSession
         ) {
 
-            document.body.classList.add(
-                "light-mode"
+            await loadMessagesUnreadCount(
+                currentSession.user.id
             );
-
-
-            localStorage.setItem(
-                "theme",
-                "light"
-            );
-
         }
-
-        else {
-
-            document.body.classList.remove(
-                "light-mode"
-            );
-
-
-            localStorage.setItem(
-                "theme",
-                "dark"
-            );
-
-        }
-
     }
 );
 
-// =========================
-// AKCIJE
-// =========================
 
-function getActiveProject() {
-
-    if (
-        !projects ||
-        projects.length === 0
-    ) {
-        return null;
-    }
-
-    return projects[
-        activeProjectIndex
-    ] || null;
-}
-
-
-// =========================
-// ODOBRI DIZAJN
-// =========================
-
-const approveDesignAction =
-    document.getElementById(
-        "approveDesignAction"
-    );
-
-
-if (approveDesignAction) {
-
-    approveDesignAction.addEventListener(
-        "click",
-        function () {
-
-            const activeProject =
-                getActiveProject();
-
-
-            if (!activeProject) {
-
-                console.error(
-                    "Nema aktivnog projekta."
-                );
-
-                return;
-            }
-
-
-            window.location.href =
-                `approve.html?id=${activeProject.id}`;
-
-        }
-    );
-
-}
-
-// =========================
-// START
-// =========================
+/* =========================
+   START
+========================= */
 
 setupProjectSlider();
 
