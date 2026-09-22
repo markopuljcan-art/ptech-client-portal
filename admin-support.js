@@ -11,90 +11,55 @@ const supabaseClient =
     );
 
 
-/* =========================
-   ELEMENTI
-========================= */
-
 const adminUserName =
-    document.getElementById(
-        "adminUserName"
-    );
+    document.getElementById("adminUserName");
 
 const adminLogoutButton =
-    document.getElementById(
-        "adminLogoutButton"
-    );
+    document.getElementById("adminLogoutButton");
 
 const supportConversationCount =
-    document.getElementById(
-        "supportConversationCount"
-    );
+    document.getElementById("supportConversationCount");
 
 const supportUnreadBadge =
-    document.getElementById(
-        "supportUnreadBadge"
-    );
+    document.getElementById("supportUnreadBadge");
 
 const supportSearch =
-    document.getElementById(
-        "supportSearch"
-    );
+    document.getElementById("supportSearch");
 
 const supportConversationList =
-    document.getElementById(
-        "supportConversationList"
-    );
+    document.getElementById("supportConversationList");
 
 const supportChatEmpty =
-    document.getElementById(
-        "supportChatEmpty"
-    );
+    document.getElementById("supportChatEmpty");
 
 const supportChatContent =
-    document.getElementById(
-        "supportChatContent"
-    );
+    document.getElementById("supportChatContent");
 
 const supportClientAvatar =
-    document.getElementById(
-        "supportClientAvatar"
-    );
+    document.getElementById("supportClientAvatar");
 
 const supportClientName =
-    document.getElementById(
-        "supportClientName"
-    );
+    document.getElementById("supportClientName");
 
 const adminSupportMessages =
-    document.getElementById(
-        "adminSupportMessages"
-    );
+    document.getElementById("adminSupportMessages");
 
 const adminSupportInput =
-    document.getElementById(
-        "adminSupportInput"
-    );
+    document.getElementById("adminSupportInput");
 
 const adminSupportSend =
-    document.getElementById(
-        "adminSupportSend"
-    );
+    document.getElementById("adminSupportSend");
 
 const adminSupportNotice =
-    document.getElementById(
-        "adminSupportNotice"
-    );
+    document.getElementById("adminSupportNotice");
 
 
 let currentSession = null;
-
 let allProfiles = [];
-
 let allMessages = [];
-
 let conversations = [];
-
 let selectedUserId = null;
+let realtimeChannel = null;
 
 
 /* =========================
@@ -102,7 +67,6 @@ let selectedUserId = null;
 ========================= */
 
 function escapeHtml(value) {
-
     return String(value ?? "")
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
@@ -118,19 +82,11 @@ function formatDateTime(value) {
         return "-";
     }
 
+    const date = new Date(value);
 
-    const date =
-        new Date(value);
-
-
-    if (
-        Number.isNaN(
-            date.getTime()
-        )
-    ) {
+    if (Number.isNaN(date.getTime())) {
         return "-";
     }
-
 
     return date.toLocaleString(
         "hr-HR",
@@ -148,14 +104,11 @@ function formatDateTime(value) {
 function getInitials(name) {
 
     const clean =
-        String(name || "K")
-            .trim();
-
+        String(name || "K").trim();
 
     if (!clean) {
         return "K";
     }
-
 
     return clean
         .split(/\s+/)
@@ -179,14 +132,9 @@ function showNotice(
         return;
     }
 
-
-    adminSupportNotice.hidden =
-        false;
-
-
+    adminSupportNotice.hidden = false;
     adminSupportNotice.className =
         `admin-support-notice ${type}`;
-
 
     adminSupportNotice.textContent =
         message;
@@ -199,17 +147,11 @@ function hideNotice() {
         return;
     }
 
-
-    adminSupportNotice.hidden =
-        true;
-
-
+    adminSupportNotice.hidden = true;
     adminSupportNotice.className =
         "admin-support-notice";
 
-
-    adminSupportNotice.textContent =
-        "";
+    adminSupportNotice.textContent = "";
 }
 
 
@@ -233,9 +175,7 @@ function getUnreadCountForUser(
 
     return allMessages.filter(
         message =>
-            String(
-                message.user_id
-            ) ===
+            String(message.user_id) ===
                 String(userId) &&
             message.sender_role === "client" &&
             !message.admin_read_at
@@ -249,29 +189,23 @@ function updateUnreadBadge() {
         return;
     }
 
-
-    const unreadCount =
+    const count =
         getUnreadCount();
 
-
-    if (unreadCount > 0) {
+    if (count > 0) {
 
         supportUnreadBadge.hidden =
             false;
 
-
         supportUnreadBadge.textContent =
-            unreadCount > 99
+            count > 99
                 ? "99+"
-                : String(
-                    unreadCount
-                );
+                : String(count);
 
     } else {
 
         supportUnreadBadge.hidden =
             true;
-
 
         supportUnreadBadge.textContent =
             "0";
@@ -340,7 +274,6 @@ async function requireAdminSession() {
             profileError
         );
 
-
         window.location.href =
             "login.html";
 
@@ -349,7 +282,9 @@ async function requireAdminSession() {
 
 
     if (
-        profile.role !== "admin"
+        String(profile.role || "")
+            .toLowerCase()
+            .trim() !== "admin"
     ) {
 
         window.location.href =
@@ -382,10 +317,17 @@ adminLogoutButton
         "click",
         async () => {
 
+            if (realtimeChannel) {
+
+                await supabaseClient
+                    .removeChannel(
+                        realtimeChannel
+                    );
+            }
+
             await supabaseClient
                 .auth
                 .signOut();
-
 
             window.location.href =
                 "login.html";
@@ -394,7 +336,7 @@ adminLogoutButton
 
 
 /* =========================
-   LOAD PROFILES
+   PROFILES
 ========================= */
 
 async function loadProfiles() {
@@ -425,12 +367,10 @@ async function loadProfiles() {
             error
         );
 
-
         showNotice(
             "Klijente nije moguće učitati.",
             "error"
         );
-
 
         return;
     }
@@ -440,14 +380,15 @@ async function loadProfiles() {
         (data || [])
             .filter(
                 profile =>
-                    profile.role !==
+                    String(profile.role || "")
+                        .toLowerCase() !==
                     "admin"
             );
 }
 
 
 /* =========================
-   LOAD SUPPORT MESSAGES
+   SUPPORT MESSAGES
 ========================= */
 
 async function loadSupportMessages() {
@@ -457,9 +398,7 @@ async function loadSupportMessages() {
         error
     } =
         await supabaseClient
-            .from(
-                "support_messages"
-            )
+            .from("support_messages")
             .select(`
                 id,
                 created_at,
@@ -483,24 +422,11 @@ async function loadSupportMessages() {
             error
         );
 
-
-        if (
-            supportConversationList
-        ) {
-
-            supportConversationList.innerHTML = `
-                <div class="admin-support-empty">
-                    Razgovore nije moguće učitati.
-                </div>
-            `;
-        }
-
-
-        showNotice(
-            "Razgovore nije moguće učitati.",
-            "error"
-        );
-
+        supportConversationList.innerHTML = `
+            <div class="admin-support-empty">
+                Razgovore nije moguće učitati.
+            </div>
+        `;
 
         return;
     }
@@ -511,7 +437,6 @@ async function loadSupportMessages() {
 
 
     updateUnreadBadge();
-
     buildConversations();
 }
 
@@ -526,9 +451,7 @@ function buildConversations() {
         Object.fromEntries(
             allProfiles.map(
                 profile => [
-                    String(
-                        profile.id
-                    ),
+                    String(profile.id),
                     profile
                 ]
             )
@@ -544,22 +467,17 @@ function buildConversations() {
     ) {
 
         const userId =
-            String(
-                message.user_id
-            );
+            String(message.user_id);
 
 
         if (!grouped[userId]) {
 
             grouped[userId] = {
-
                 user_id:
                     userId,
 
                 profile:
-                    profileMap[
-                        userId
-                    ] ||
+                    profileMap[userId] ||
                     null,
 
                 messages: []
@@ -567,32 +485,24 @@ function buildConversations() {
         }
 
 
-        grouped[
-            userId
-        ].messages.push(
-            message
-        );
+        grouped[userId]
+            .messages
+            .push(message);
     }
 
 
     conversations =
-        Object.values(
-            grouped
-        )
+        Object.values(grouped)
             .map(
                 conversation => {
 
                     const lastMessage =
-                        conversation
-                            .messages[
-                                conversation
-                                    .messages
-                                    .length - 1
-                            ];
+                        conversation.messages[
+                            conversation.messages.length - 1
+                        ];
 
 
                     return {
-
                         ...conversation,
 
                         lastMessage:
@@ -611,33 +521,22 @@ function buildConversations() {
 
                     const aTime =
                         new Date(
-                            a.lastMessage
-                                ?.created_at ||
+                            a.lastMessage?.created_at ||
                             0
-                        )
-                            .getTime();
-
+                        ).getTime();
 
                     const bTime =
                         new Date(
-                            b.lastMessage
-                                ?.created_at ||
+                            b.lastMessage?.created_at ||
                             0
-                        )
-                            .getTime();
+                        ).getTime();
 
-
-                    return (
-                        bTime -
-                        aTime
-                    );
+                    return bTime - aTime;
                 }
             );
 
 
-    if (
-        supportConversationCount
-    ) {
+    if (supportConversationCount) {
 
         supportConversationCount.textContent =
             conversations.length;
@@ -661,8 +560,7 @@ function renderConversationList() {
 
     const search =
         String(
-            supportSearch
-                ?.value ||
+            supportSearch?.value ||
             ""
         )
             .trim()
@@ -684,9 +582,7 @@ function renderConversationList() {
                     !search ||
                     name
                         .toLowerCase()
-                        .includes(
-                            search
-                        )
+                        .includes(search)
                 );
             }
         );
@@ -717,10 +613,8 @@ function renderConversationList() {
                             ?.display_name ||
                         "Klijent";
 
-
                     const last =
-                        conversation
-                            .lastMessage;
+                        conversation.lastMessage;
 
 
                     return `
@@ -742,28 +636,19 @@ function renderConversationList() {
                         >
 
                             <div class="admin-support-conversation-avatar">
-
                                 ${escapeHtml(
-                                    getInitials(
-                                        name
-                                    )
+                                    getInitials(name)
                                 )}
-
                             </div>
 
 
                             <div class="admin-support-conversation-main">
 
-
                                 <div class="admin-support-conversation-top">
 
-
                                     <strong>
-                                        ${escapeHtml(
-                                            name
-                                        )}
+                                        ${escapeHtml(name)}
                                     </strong>
-
 
                                     <span>
                                         ${
@@ -774,7 +659,6 @@ function renderConversationList() {
                                                 : ""
                                         }
                                     </span>
-
 
                                 </div>
 
@@ -788,10 +672,8 @@ function renderConversationList() {
                                         )}
                                     </p>
 
-
                                     ${
                                         conversation.unreadCount > 0
-
                                             ? `
                                                 <span class="admin-support-unread-count">
                                                     ${
@@ -801,12 +683,10 @@ function renderConversationList() {
                                                     }
                                                 </span>
                                             `
-
                                             : ""
                                     }
 
                                 </div>
-
 
                             </div>
 
@@ -839,7 +719,7 @@ function renderConversationList() {
 
 
 /* =========================
-   MARK AS READ
+   MARK READ
 ========================= */
 
 async function markConversationAsRead(
@@ -850,12 +730,8 @@ async function markConversationAsRead(
         allMessages
             .filter(
                 message =>
-                    String(
-                        message.user_id
-                    ) ===
-                        String(
-                            userId
-                        ) &&
+                    String(message.user_id) ===
+                        String(userId) &&
                     message.sender_role ===
                         "client" &&
                     !message.admin_read_at
@@ -869,25 +745,20 @@ async function markConversationAsRead(
     if (
         unreadIds.length === 0
     ) {
-
         return;
     }
 
 
     const readAt =
-        new Date()
-            .toISOString();
+        new Date().toISOString();
 
 
     const {
         error
     } =
         await supabaseClient
-            .from(
-                "support_messages"
-            )
+            .from("support_messages")
             .update({
-
                 admin_read_at:
                     readAt
             })
@@ -903,7 +774,6 @@ async function markConversationAsRead(
             "Read update error:",
             error
         );
-
 
         return;
     }
@@ -938,23 +808,8 @@ async function openConversation(
     userId
 ) {
 
-    let conversation =
-        conversations.find(
-            item =>
-                item.user_id ===
-                String(
-                    userId
-                )
-        );
-
-
-    if (!conversation) {
-        return;
-    }
-
-
     selectedUserId =
-        conversation.user_id;
+        String(userId);
 
 
     await markConversationAsRead(
@@ -962,22 +817,14 @@ async function openConversation(
     );
 
 
-    /*
-        Ponovno napravimo conversations
-        kako bi nestao unread broj
-        uz tog klijenta.
-    */
-
     buildConversations();
 
 
-    conversation =
+    const conversation =
         conversations.find(
             item =>
                 item.user_id ===
-                String(
-                    selectedUserId
-                )
+                selectedUserId
         );
 
 
@@ -986,22 +833,11 @@ async function openConversation(
     }
 
 
-    if (
-        supportChatEmpty
-    ) {
+    supportChatEmpty.hidden =
+        true;
 
-        supportChatEmpty.hidden =
-            true;
-    }
-
-
-    if (
-        supportChatContent
-    ) {
-
-        supportChatContent.hidden =
-            false;
-    }
+    supportChatContent.hidden =
+        false;
 
 
     const name =
@@ -1011,24 +847,11 @@ async function openConversation(
         "Klijent";
 
 
-    if (
-        supportClientName
-    ) {
+    supportClientName.textContent =
+        name;
 
-        supportClientName.textContent =
-            name;
-    }
-
-
-    if (
-        supportClientAvatar
-    ) {
-
-        supportClientAvatar.textContent =
-            getInitials(
-                name
-            );
-    }
+    supportClientAvatar.textContent =
+        getInitials(name);
 
 
     renderActiveMessages(
@@ -1038,7 +861,7 @@ async function openConversation(
 
 
 /* =========================
-   RENDER ACTIVE CHAT
+   RENDER CHAT
 ========================= */
 
 function renderActiveMessages(
@@ -1046,21 +869,6 @@ function renderActiveMessages(
 ) {
 
     if (!adminSupportMessages) {
-        return;
-    }
-
-
-    if (
-        !messages ||
-        messages.length === 0
-    ) {
-
-        adminSupportMessages.innerHTML = `
-            <div class="admin-support-empty">
-                Nema poruka.
-            </div>
-        `;
-
         return;
     }
 
@@ -1088,9 +896,7 @@ function renderActiveMessages(
                             "
                         >
 
-
                             <div class="admin-support-message-top">
-
 
                                 <strong>
                                     ${
@@ -1100,23 +906,19 @@ function renderActiveMessages(
                                     }
                                 </strong>
 
-
                                 <span>
                                     ${formatDateTime(
                                         message.created_at
                                     )}
                                 </span>
 
-
                             </div>
-
 
                             <p>
                                 ${escapeHtml(
                                     message.message
                                 )}
                             </p>
-
 
                         </div>
                     `;
@@ -1132,7 +934,7 @@ function renderActiveMessages(
 
 
 /* =========================
-   SEND ADMIN MESSAGE
+   SEND
 ========================= */
 
 adminSupportSend
@@ -1177,7 +979,6 @@ adminSupportSend
             adminSupportSend.disabled =
                 true;
 
-
             adminSupportSend.textContent =
                 "Šaljem...";
 
@@ -1186,9 +987,7 @@ adminSupportSend
                 error
             } =
                 await supabaseClient
-                    .from(
-                        "support_messages"
-                    )
+                    .from("support_messages")
                     .insert({
 
                         user_id:
@@ -1206,6 +1005,13 @@ adminSupportSend
                     });
 
 
+            adminSupportSend.disabled =
+                false;
+
+            adminSupportSend.textContent =
+                "Pošalji odgovor";
+
+
             if (error) {
 
                 console.error(
@@ -1213,20 +1019,10 @@ adminSupportSend
                     error
                 );
 
-
                 showNotice(
                     "Odgovor nije moguće poslati.",
                     "error"
                 );
-
-
-                adminSupportSend.disabled =
-                    false;
-
-
-                adminSupportSend.textContent =
-                    "Pošalji odgovor";
-
 
                 return;
             }
@@ -1235,38 +1031,18 @@ adminSupportSend
             adminSupportInput.value =
                 "";
 
-
             showNotice(
                 "Odgovor je poslan.",
                 "success"
             );
 
-
-            adminSupportSend.disabled =
-                false;
-
-
-            adminSupportSend.textContent =
-                "Pošalji odgovor";
-
-
-            const keepUserId =
-                selectedUserId;
-
-
-            await loadSupportMessages();
-
-
-            await openConversation(
-                keepUserId
-            );
+            /*
+                NE moramo ručno reloadati.
+                Realtime INSERT će osvježiti chat.
+            */
         }
     );
 
-
-/* =========================
-   ENTER TO SEND
-========================= */
 
 adminSupportInput
     ?.addEventListener(
@@ -1279,23 +1055,95 @@ adminSupportInput
             ) {
 
                 event.preventDefault();
-
-                adminSupportSend
-                    ?.click();
+                adminSupportSend?.click();
             }
         }
     );
 
-
-/* =========================
-   SEARCH
-========================= */
 
 supportSearch
     ?.addEventListener(
         "input",
         renderConversationList
     );
+
+
+/* =========================
+   REALTIME
+========================= */
+
+function subscribeToSupportRealtime() {
+
+    realtimeChannel =
+        supabaseClient
+            .channel(
+                "admin-support-chat"
+            )
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "support_messages"
+                },
+                async payload => {
+
+                    console.log(
+                        "Admin support realtime:",
+                        payload
+                    );
+
+
+                    const keepSelected =
+                        selectedUserId;
+
+
+                    await loadSupportMessages();
+
+
+                    if (keepSelected) {
+
+                        const changedUserId =
+                            String(
+                                payload.new?.user_id ||
+                                payload.old?.user_id ||
+                                ""
+                            );
+
+
+                        if (
+                            changedUserId ===
+                            String(keepSelected)
+                        ) {
+
+                            /*
+                                Ako admin trenutno gleda razgovor
+                                i stigla je nova klijentska poruka,
+                                odmah je označimo pročitanom.
+                            */
+
+                            if (
+                                payload.eventType === "INSERT" &&
+                                payload.new?.sender_role === "client"
+                            ) {
+
+                                await markConversationAsRead(
+                                    keepSelected
+                                );
+
+                                await loadSupportMessages();
+                            }
+
+
+                            await openConversation(
+                                keepSelected
+                            );
+                        }
+                    }
+                }
+            )
+            .subscribe();
+}
 
 
 /* =========================
@@ -1317,13 +1165,10 @@ async function startAdminSupport() {
 
 
     await loadProfiles();
-
     await loadSupportMessages();
+
+    subscribeToSupportRealtime();
 }
 
-
-/* =========================
-   INIT
-========================= */
 
 startAdminSupport();
