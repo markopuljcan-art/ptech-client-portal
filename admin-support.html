@@ -17,7 +17,7 @@
 
     <link
         rel="stylesheet"
-        href="./admin-support.css?v=1"
+        href="./admin-support.css?v=2"
     >
 
     <script
@@ -25,7 +25,7 @@
     ></script>
 
     <script
-        src="./admin-support.js?v=1"
+        src="./admin-support.js?v=2"
         defer
     ></script>
 
@@ -38,152 +38,32 @@
 
 <body>
 
-<div class="admin-shell">
+    <div class="admin-shell">
 
 
-    <!-- SIDEBAR -->
+        <!-- =========================
+             SIDEBAR
+        ========================== -->
 
-    <aside class="admin-sidebar">
-
-        <div class="admin-brand">
-
-            <div class="admin-brand-logo">
-                P
-            </div>
-
-            <div>
-
-                <h1>
-                    PTech Digital
-                </h1>
-
-                <span>
-                    Admin Panel
-                </span>
-
-            </div>
-
-        </div>
+        <aside class="admin-sidebar">
 
 
-        <nav class="admin-nav">
+            <!-- BRAND -->
 
+            <div class="admin-brand">
 
-            <a
-                href="admin.html"
-                class="admin-nav-item"
-            >
-
-                <span class="admin-nav-icon">
-                    ◫
-                </span>
-
-                <span>
-                    Dashboard
-                </span>
-
-            </a>
-
-
-            <a
-                href="admin-projects.html"
-                class="admin-nav-item"
-            >
-
-                <span class="admin-nav-icon">
-                    ▣
-                </span>
-
-                <span>
-                    Projekti
-                </span>
-
-            </a>
-
-
-            <a
-                href="admin-revisions.html"
-                class="admin-nav-item"
-            >
-
-                <span class="admin-nav-icon">
-                    ↔
-                </span>
-
-                <span>
-                    Zahtjevi
-                </span>
-
-            </a>
-
-
-            <a
-                href="admin-approvals.html"
-                class="admin-nav-item"
-            >
-
-                <span class="admin-nav-icon">
-                    ✓
-                </span>
-
-                <span>
-                    Odobrenja
-                </span>
-
-            </a>
-
-
-            <a
-                href="admin-documents.html"
-                class="admin-nav-item"
-            >
-
-                <span class="admin-nav-icon">
-                    □
-                </span>
-
-                <span>
-                    Dokumenti
-                </span>
-
-            </a>
-
-
-            <a
-                href="admin-support.html"
-                class="admin-nav-item active"
-            >
-
-                <span class="admin-nav-icon">
-                    ◌
-                </span>
-
-                <span>
-                    Podrška
-                </span>
-
-            </a>
-
-
-        </nav>
-
-
-        <div class="admin-sidebar-footer">
-
-            <div class="admin-user">
-
-                <div class="admin-avatar">
-                    A
+                <div class="admin-brand-logo">
+                    P
                 </div>
 
                 <div>
 
-                    <strong id="adminUserName">
-                        Admin
-                    </strong>
+                    <h1>
+                        PTech Digital
+                    </h1>
 
                     <span>
-                        Administrator
+                        Admin Panel
                     </span>
 
                 </div>
@@ -191,261 +71,443 @@
             </div>
 
 
-            <button
-                type="button"
-                id="adminLogoutButton"
-                class="admin-logout"
-            >
-                Odjava
-            </button>
+            <!-- NAV -->
 
-        </div>
-
-    </aside>
+            <nav class="admin-nav">
 
 
-    <!-- MAIN -->
+                <!-- DASHBOARD -->
 
-    <main class="admin-main">
+                <a
+                    href="admin.html"
+                    class="admin-nav-item"
+                >
 
-
-        <!-- TOPBAR -->
-
-        <header class="admin-topbar">
-
-            <div>
-
-                <span class="admin-page-label">
-                    Administracija
-                </span>
-
-                <h2>
-                    Podrška
-                </h2>
-
-            </div>
-
-
-            <div class="admin-topbar-actions">
-
-                <span class="admin-role-badge">
-                    Admin
-                </span>
-
-            </div>
-
-        </header>
-
-
-        <!-- CONTENT -->
-
-        <div class="admin-content">
-
-
-            <!-- HERO -->
-
-            <section class="support-admin-hero">
-
-                <div>
-
-                    <span>
-                        Korisnička podrška
+                    <span class="admin-nav-icon">
+                        ◫
                     </span>
 
-                    <h3>
-                        Razgovori s klijentima
-                    </h3>
-
-                    <p>
-                        Pregledaj poruke klijenata i odgovori
-                        direktno iz administratorskog panela.
-                    </p>
-
-                </div>
-
-
-                <div class="support-admin-stat">
-
                     <span>
-                        Razgovori
+                        Dashboard
                     </span>
 
-                    <strong id="supportConversationCount">
+                </a>
+
+
+                <!-- PROJEKTI -->
+
+                <a
+                    href="admin-projects.html"
+                    class="admin-nav-item"
+                >
+
+                    <span class="admin-nav-icon">
+                        ▣
+                    </span>
+
+                    <span>
+                        Projekti
+                    </span>
+
+                </a>
+
+
+                <!-- ZAHTJEVI -->
+
+                <a
+                    href="admin-revisions.html"
+                    class="admin-nav-item"
+                >
+
+                    <span class="admin-nav-icon">
+                        ↔
+                    </span>
+
+                    <span>
+                        Zahtjevi
+                    </span>
+
+                </a>
+
+
+                <!-- ODOBRENJA -->
+
+                <a
+                    href="admin-approvals.html"
+                    class="admin-nav-item"
+                >
+
+                    <span class="admin-nav-icon">
+                        ✓
+                    </span>
+
+                    <span>
+                        Odobrenja
+                    </span>
+
+                </a>
+
+
+                <!-- DOKUMENTI -->
+
+                <a
+                    href="admin-documents.html"
+                    class="admin-nav-item"
+                >
+
+                    <span class="admin-nav-icon">
+                        □
+                    </span>
+
+                    <span>
+                        Dokumenti
+                    </span>
+
+                </a>
+
+
+                <!-- PODRŠKA -->
+
+                <a
+                    href="admin-support.html"
+                    class="admin-nav-item active"
+                >
+
+                    <span class="admin-nav-icon">
+                        ◌
+                    </span>
+
+                    <span>
+                        Podrška
+                    </span>
+
+                    <span
+                        id="supportUnreadBadge"
+                        class="admin-nav-badge"
+                        hidden
+                    >
                         0
-                    </strong>
+                    </span>
 
-                </div>
-
-            </section>
+                </a>
 
 
-            <!-- SUPPORT LAYOUT -->
-
-            <section class="admin-support-layout">
+            </nav>
 
 
-                <!-- CLIENT LIST -->
+            <!-- SIDEBAR FOOTER -->
 
-                <aside class="admin-support-sidebar">
+            <div class="admin-sidebar-footer">
 
 
-                    <div class="admin-support-sidebar-header">
+                <div class="admin-user">
 
-                        <div>
-
-                            <span>
-                                Klijenti
-                            </span>
-
-                            <h3>
-                                Razgovori
-                            </h3>
-
-                        </div>
-
+                    <div class="admin-avatar">
+                        A
                     </div>
 
+                    <div>
 
-                    <div class="admin-support-search">
-
-                        <input
-                            type="search"
-                            id="supportSearch"
-                            placeholder="Pretraži klijenta..."
-                            autocomplete="off"
-                        >
-
-                    </div>
-
-
-                    <div
-                        id="supportConversationList"
-                        class="admin-support-conversations"
-                    >
-
-                        <div class="admin-support-empty">
-                            Učitavanje razgovora...
-                        </div>
-
-                    </div>
-
-
-                </aside>
-
-
-                <!-- CHAT -->
-
-                <div class="admin-support-chat">
-
-
-                    <!-- EMPTY STATE -->
-
-                    <div
-                        id="supportChatEmpty"
-                        class="admin-support-chat-empty"
-                    >
-
-                        <div class="admin-support-chat-empty-icon">
-                            ◌
-                        </div>
-
-                        <strong>
-                            Odaberi razgovor
+                        <strong id="adminUserName">
+                            Admin
                         </strong>
 
+                        <span>
+                            Administrator
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="adminLogoutButton"
+                    class="admin-logout"
+                >
+                    Odjava
+                </button>
+
+
+            </div>
+
+
+        </aside>
+
+
+        <!-- =========================
+             MAIN
+        ========================== -->
+
+        <main class="admin-main">
+
+
+            <!-- TOPBAR -->
+
+            <header class="admin-topbar">
+
+                <div>
+
+                    <span class="admin-page-label">
+                        Administracija
+                    </span>
+
+                    <h2>
+                        Podrška
+                    </h2>
+
+                </div>
+
+
+                <div class="admin-topbar-actions">
+
+                    <span class="admin-role-badge">
+                        Admin
+                    </span>
+
+                </div>
+
+            </header>
+
+
+            <!-- =========================
+                 CONTENT
+            ========================== -->
+
+            <div class="admin-content">
+
+
+                <!-- HERO -->
+
+                <section class="support-admin-hero">
+
+                    <div>
+
+                        <span>
+                            Korisnička podrška
+                        </span>
+
+                        <h3>
+                            Razgovori s klijentima
+                        </h3>
+
                         <p>
-                            Odaberi klijenta s lijeve strane
-                            kako bi otvorio razgovor.
+                            Pregledaj poruke klijenata i odgovori direktno iz administratorskog panela.
                         </p>
 
                     </div>
 
 
-                    <!-- ACTIVE CHAT -->
+                    <div class="support-admin-stat">
 
-                    <div
-                        id="supportChatContent"
-                        class="admin-support-chat-content"
-                        hidden
-                    >
+                        <span>
+                            Razgovori
+                        </span>
+
+                        <strong id="supportConversationCount">
+                            0
+                        </strong>
+
+                    </div>
+
+                </section>
 
 
-                        <!-- CHAT HEADER -->
+                <!-- =========================
+                     SUPPORT LAYOUT
+                ========================== -->
 
-                        <div class="admin-support-chat-header">
+                <section class="admin-support-layout">
 
-                            <div class="admin-support-client">
 
-                                <div
-                                    id="supportClientAvatar"
-                                    class="admin-support-client-avatar"
-                                >
-                                    K
-                                </div>
+                    <!-- =========================
+                         LEFT SIDE
+                    ========================== -->
 
-                                <div>
+                    <aside class="admin-support-sidebar">
 
-                                    <strong id="supportClientName">
-                                        Klijent
-                                    </strong>
 
-                                    <span>
-                                        Razgovor s podrškom
-                                    </span>
+                        <!-- SIDEBAR HEADER -->
 
-                                </div>
+                        <div class="admin-support-sidebar-header">
+
+                            <div>
+
+                                <span>
+                                    Klijenti
+                                </span>
+
+                                <h3>
+                                    Razgovori
+                                </h3>
 
                             </div>
-
-
-                            <span class="admin-support-status">
-                                Podrška
-                            </span>
 
                         </div>
 
 
-                        <!-- MESSAGES -->
+                        <!-- SEARCH -->
+
+                        <div class="admin-support-search">
+
+                            <input
+                                type="search"
+                                id="supportSearch"
+                                placeholder="Pretraži klijenta..."
+                                autocomplete="off"
+                            >
+
+                        </div>
+
+
+                        <!-- CONVERSATIONS -->
 
                         <div
-                            id="adminSupportMessages"
-                            class="admin-support-messages"
+                            id="supportConversationList"
+                            class="admin-support-conversations"
                         >
 
                             <div class="admin-support-empty">
-                                Učitavanje poruka...
+                                Učitavanje razgovora...
                             </div>
 
                         </div>
 
 
-                        <!-- COMPOSER -->
-
-                        <div class="admin-support-compose">
-
-                            <textarea
-                                id="adminSupportInput"
-                                maxlength="2000"
-                                placeholder="Napiši odgovor klijentu..."
-                            ></textarea>
+                    </aside>
 
 
-                            <div class="admin-support-compose-bottom">
+                    <!-- =========================
+                         RIGHT CHAT
+                    ========================== -->
 
-                                <small>
-                                    Odgovor će klijent vidjeti
-                                    u svom Help & Support centru.
-                                </small>
+                    <div class="admin-support-chat">
 
 
-                                <button
-                                    type="button"
-                                    id="adminSupportSend"
-                                >
-                                    Pošalji odgovor
-                                </button>
+                        <!-- EMPTY -->
+
+                        <div
+                            id="supportChatEmpty"
+                            class="admin-support-chat-empty"
+                        >
+
+                            <div class="admin-support-chat-empty-icon">
+                                ◌
+                            </div>
+
+                            <strong>
+                                Odaberi razgovor
+                            </strong>
+
+                            <p>
+                                Odaberi klijenta s lijeve strane kako bi otvorio razgovor.
+                            </p>
+
+                        </div>
+
+
+                        <!-- =========================
+                             ACTIVE CHAT
+                        ========================== -->
+
+                        <div
+                            id="supportChatContent"
+                            class="admin-support-chat-content"
+                            hidden
+                        >
+
+
+                            <!-- CHAT HEADER -->
+
+                            <div class="admin-support-chat-header">
+
+                                <div class="admin-support-client">
+
+
+                                    <div
+                                        id="supportClientAvatar"
+                                        class="admin-support-client-avatar"
+                                    >
+                                        K
+                                    </div>
+
+
+                                    <div>
+
+                                        <strong id="supportClientName">
+                                            Klijent
+                                        </strong>
+
+                                        <span>
+                                            Razgovor s podrškom
+                                        </span>
+
+                                    </div>
+
+
+                                </div>
+
+
+                                <span class="admin-support-status">
+                                    Podrška
+                                </span>
+
 
                             </div>
+
+
+                            <!-- =========================
+                                 MESSAGES
+                            ========================== -->
+
+                            <div
+                                id="adminSupportMessages"
+                                class="admin-support-messages"
+                            >
+
+                                <div class="admin-support-empty">
+                                    Učitavanje poruka...
+                                </div>
+
+                            </div>
+
+
+                            <!-- =========================
+                                 COMPOSER
+                            ========================== -->
+
+                            <div class="admin-support-compose">
+
+
+                                <textarea
+                                    id="adminSupportInput"
+                                    maxlength="2000"
+                                    placeholder="Napiši odgovor klijentu..."
+                                ></textarea>
+
+
+                                <div class="admin-support-compose-bottom">
+
+
+                                    <small>
+                                        Odgovor će klijent vidjeti u svom Help & Support centru.
+                                    </small>
+
+
+                                    <button
+                                        type="button"
+                                        id="adminSupportSend"
+                                    >
+                                        Pošalji odgovor
+                                    </button>
+
+
+                                </div>
+
+
+                            </div>
+
 
                         </div>
 
@@ -453,28 +515,28 @@
                     </div>
 
 
+                </section>
+
+
+                <!-- =========================
+                     NOTICE
+                ========================== -->
+
+                <div
+                    id="adminSupportNotice"
+                    class="admin-support-notice"
+                    hidden
+                >
                 </div>
 
 
-            </section>
-
-
-            <div
-                id="adminSupportNotice"
-                class="admin-support-notice"
-                hidden
-            >
             </div>
 
 
-        </div>
+        </main>
 
 
-    </main>
-
-
-</div>
-
+    </div>
 
 </body>
 
