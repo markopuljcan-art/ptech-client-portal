@@ -70,6 +70,11 @@ const recentProjects =
         "recentProjects"
     );
 
+const supportUnreadBadge =
+    document.getElementById(
+        "supportUnreadBadge"
+    );
+
 
 /* =========================
    ESCAPE HTML
@@ -96,16 +101,20 @@ function formatDate(value) {
         return "-";
     }
 
+
     const date =
         new Date(value);
+
 
     if (
         Number.isNaN(
             date.getTime()
         )
     ) {
+
         return "-";
     }
+
 
     return date.toLocaleDateString(
         "hr-HR",
@@ -131,6 +140,7 @@ if (logoutButton) {
             await supabaseClient
                 .auth
                 .signOut();
+
 
             window.location.href =
                 "login.html";
@@ -181,6 +191,82 @@ async function getAdminProfile(
 
 
 /* =========================
+   SUPPORT UNREAD COUNT
+========================= */
+
+async function loadSupportUnreadCount() {
+
+    if (!supportUnreadBadge) {
+        return;
+    }
+
+
+    const {
+        count,
+        error
+    } =
+        await supabaseClient
+            .from(
+                "support_messages"
+            )
+            .select(
+                "id",
+                {
+                    count: "exact",
+                    head: true
+                }
+            )
+            .eq(
+                "sender_role",
+                "client"
+            )
+            .is(
+                "admin_read_at",
+                null
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Greška kod brojanja nepročitanih poruka podrške:",
+            error
+        );
+
+        return;
+    }
+
+
+    const unreadCount =
+        count || 0;
+
+
+    if (unreadCount > 0) {
+
+        supportUnreadBadge.hidden =
+            false;
+
+
+        supportUnreadBadge.textContent =
+            unreadCount > 99
+                ? "99+"
+                : String(
+                    unreadCount
+                );
+
+    } else {
+
+        supportUnreadBadge.hidden =
+            true;
+
+
+        supportUnreadBadge.textContent =
+            "0";
+    }
+}
+
+
+/* =========================
    GROUP REVISION THREADS
 ========================= */
 
@@ -191,7 +277,10 @@ function groupRevisionThreads(
     const groups = {};
 
 
-    for (const message of messages) {
+    for (
+        const message
+        of messages
+    ) {
 
         const key =
             `${message.project_id}-${message.design_id}`;
@@ -215,22 +304,33 @@ function groupRevisionThreads(
         }
 
 
-        groups[key].messages.push(
-            message
-        );
+        groups[key]
+            .messages
+            .push(
+                message
+            );
     }
 
 
     const threads =
-        Object.values(groups);
+        Object.values(
+            groups
+        );
 
 
-    for (const thread of threads) {
+    for (
+        const thread
+        of threads
+    ) {
 
         thread.messages.sort(
             (a, b) =>
-                new Date(a.created_at) -
-                new Date(b.created_at)
+                new Date(
+                    a.created_at
+                ) -
+                new Date(
+                    b.created_at
+                )
         );
 
 
@@ -305,6 +405,7 @@ async function getRevisionThreads() {
             error
         );
 
+
         return {
             threads: [],
             error
@@ -313,12 +414,14 @@ async function getRevisionThreads() {
 
 
     return {
+
         threads:
             groupRevisionThreads(
                 data || []
             ),
 
-        error: null
+        error:
+            null
     };
 }
 
@@ -335,7 +438,9 @@ async function getLatestDesigns() {
         error
     } =
         await supabaseClient
-            .from("project_designs")
+            .from(
+                "project_designs"
+            )
             .select(`
                 id,
                 project_id,
@@ -365,7 +470,10 @@ async function getLatestDesigns() {
         new Map();
 
 
-    for (const design of data || []) {
+    for (
+        const design
+        of data || []
+    ) {
 
         if (
             !latestByProject.has(
@@ -395,9 +503,8 @@ async function loadStats(
     revisionThreads
 ) {
 
-    /* =========================
-       AKTIVNI PROJEKTI
-    ========================= */
+
+    /* AKTIVNI PROJEKTI */
 
     const {
         count: activeCount,
@@ -434,9 +541,7 @@ async function loadStats(
     }
 
 
-    /* =========================
-       ČEKA ODGOVOR ADMINA
-    ========================= */
+    /* ČEKA ODGOVOR ADMINA */
 
     const pendingThreads =
         revisionThreads.filter(
@@ -452,10 +557,7 @@ async function loadStats(
     }
 
 
-    /* =========================
-       TRENUTNE VERZIJE
-       DIZAJNA
-    ========================= */
+    /* DIZAJNI */
 
     const latestDesigns =
         await getLatestDesigns();
@@ -506,9 +608,7 @@ async function loadStats(
     }
 
 
-    /* =========================
-       KLIJENTI
-    ========================= */
+    /* KLIJENTI */
 
     const {
         count: clientCount,
@@ -611,6 +711,7 @@ function loadLatestRevisions(
 
 
                     return `
+
                         <a
                             href="admin-revisions.html"
                             class="admin-list-item"
@@ -635,6 +736,7 @@ function loadLatestRevisions(
                                 </span>
 
                             </div>
+
 
                             <span
                                 class="
@@ -729,6 +831,7 @@ async function loadRecentProjects() {
                 project => {
 
                     return `
+
                         <a
                             href="project.html?id=${project.id}"
                             class="admin-list-item"
@@ -756,6 +859,7 @@ async function loadRecentProjects() {
                                 </span>
 
                             </div>
+
 
                             <span
                                 class="admin-list-badge"
@@ -899,7 +1003,9 @@ async function startAdmin() {
             threads
         ),
 
-        loadRecentProjects()
+        loadRecentProjects(),
+
+        loadSupportUnreadCount()
 
     ]);
 
