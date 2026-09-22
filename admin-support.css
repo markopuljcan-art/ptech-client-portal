@@ -87,6 +87,14 @@
     font-size: 29px;
 }
 
+/* =========================
+   HIDDEN FIX
+========================= */
+
+.admin-support-chat-empty[hidden],
+.admin-support-chat-content[hidden] {
+    display: none !important;
+}
 
 /* =========================
    LAYOUT
