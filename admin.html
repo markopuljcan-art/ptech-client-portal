@@ -10,17 +10,30 @@
         content="width=device-width, initial-scale=1.0"
     >
 
+    <!-- GLAVNI ADMIN CSS -->
+
     <link
         rel="stylesheet"
         href="./admin.css?v=3"
     >
 
+    <!-- DASHBOARD DODACI -->
+
+    <link
+        rel="stylesheet"
+        href="./admin-dashboard.css?v=1"
+    >
+
+    <!-- SUPABASE -->
+
     <script
         src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
     ></script>
 
+    <!-- ADMIN JS -->
+
     <script
-        src="./admin.js?v=10"
+        src="./admin.js?v=11"
         defer
     ></script>
 
@@ -36,9 +49,14 @@
     <div class="admin-shell">
 
 
-        <!-- SIDEBAR -->
+        <!-- =========================
+             SIDEBAR
+        ========================== -->
 
         <aside class="admin-sidebar">
+
+
+            <!-- BRAND -->
 
             <div class="admin-brand">
 
@@ -61,7 +79,12 @@
             </div>
 
 
+            <!-- NAVIGATION -->
+
             <nav class="admin-nav">
+
+
+                <!-- DASHBOARD -->
 
                 <a
                     href="admin.html"
@@ -79,6 +102,8 @@
                 </a>
 
 
+                <!-- PROJEKTI -->
+
                 <a
                     href="admin-projects.html"
                     class="admin-nav-item"
@@ -94,6 +119,8 @@
 
                 </a>
 
+
+                <!-- ZAHTJEVI -->
 
                 <a
                     href="admin-revisions.html"
@@ -111,6 +138,8 @@
                 </a>
 
 
+                <!-- ODOBRENJA -->
+
                 <a
                     href="admin-approvals.html"
                     class="admin-nav-item"
@@ -127,6 +156,8 @@
                 </a>
 
 
+                <!-- DOKUMENTI -->
+
                 <a
                     href="admin-documents.html"
                     class="admin-nav-item"
@@ -141,24 +172,43 @@
                     </span>
 
                 </a>
-    <a
-    href="admin-support.html"
-    class="admin-nav-item"
->
 
-    <span class="admin-nav-icon">
-        ◌
-    </span>
 
-    <span>
-        Podrška
-    </span>
+                <!-- PODRŠKA -->
 
-</a>
+                <a
+                    href="admin-support.html"
+                    class="admin-nav-item"
+                >
+
+                    <span class="admin-nav-icon">
+                        ◌
+                    </span>
+
+                    <span>
+                        Podrška
+                    </span>
+
+                    <span
+                        id="supportUnreadBadge"
+                        class="admin-nav-badge"
+                        hidden
+                    >
+                        0
+                    </span>
+
+                </a>
+
+
             </nav>
 
 
+            <!-- =========================
+                 SIDEBAR FOOTER
+            ========================== -->
+
             <div class="admin-sidebar-footer">
+
 
                 <div class="admin-user">
 
@@ -189,13 +239,16 @@
                     Odjava
                 </button>
 
+
             </div>
+
 
         </aside>
 
 
-
-        <!-- MAIN -->
+        <!-- =========================
+             MAIN
+        ========================== -->
 
         <main class="admin-main">
 
@@ -219,9 +272,7 @@
 
                 <div class="admin-topbar-actions">
 
-                    <span
-                        class="admin-role-badge"
-                    >
+                    <span class="admin-role-badge">
                         Admin
                     </span>
 
@@ -230,13 +281,16 @@
             </header>
 
 
-
-            <!-- CONTENT -->
+            <!-- =========================
+                 CONTENT
+            ========================== -->
 
             <div class="admin-content">
 
 
-                <!-- WELCOME -->
+                <!-- =========================
+                     WELCOME
+                ========================== -->
 
                 <section class="admin-welcome">
 
@@ -260,10 +314,14 @@
                 </section>
 
 
-
-                <!-- STATS -->
+                <!-- =========================
+                     STATISTIKA
+                ========================== -->
 
                 <section class="admin-stats">
+
+
+                    <!-- AKTIVNI PROJEKTI -->
 
                     <article class="admin-stat-card">
 
@@ -279,9 +337,11 @@
 
                         </div>
 
+
                         <strong id="activeProjectsCount">
                             0
                         </strong>
+
 
                         <small>
                             Projekti koji su trenutno u izradi
@@ -289,6 +349,8 @@
 
                     </article>
 
+
+                    <!-- ČEKA ODGOVOR ADMINA -->
 
                     <article class="admin-stat-card">
 
@@ -304,9 +366,11 @@
 
                         </div>
 
+
                         <strong id="pendingRevisionsCount">
                             0
                         </strong>
+
 
                         <small>
                             Zahtjevi koji čekaju odgovor
@@ -314,6 +378,8 @@
 
                     </article>
 
+
+                    <!-- ODOBRENI DIZAJNI -->
 
                     <article class="admin-stat-card">
 
@@ -329,9 +395,11 @@
 
                         </div>
 
+
                         <strong id="approvedDesignsCount">
                             0
                         </strong>
+
 
                         <small>
                             Ukupno potvrđenih dizajna
@@ -339,6 +407,8 @@
 
                     </article>
 
+
+                    <!-- KLIJENTI -->
 
                     <article class="admin-stat-card">
 
@@ -354,9 +424,11 @@
 
                         </div>
 
+
                         <strong id="clientsCount">
                             0
                         </strong>
+
 
                         <small>
                             Aktivni korisnički računi
@@ -364,62 +436,76 @@
 
                     </article>
 
+
+                    <!-- ČEKA ODLUKU KLIJENTA -->
+
                     <article class="admin-stat-card">
 
-    <div class="admin-stat-top">
+                        <div class="admin-stat-top">
 
-        <span>
-            Čeka odluku klijenta
-        </span>
+                            <span>
+                                Čeka odluku klijenta
+                            </span>
 
-        <div class="admin-stat-icon">
-            ◷
-        </div>
+                            <div class="admin-stat-icon">
+                                ◷
+                            </div>
 
-    </div>
+                        </div>
 
-    <strong id="pendingDesignsCount">
-        0
-    </strong>
 
-    <small>
-        Verzije koje čekaju odluku klijenta
-    </small>
+                        <strong id="pendingDesignsCount">
+                            0
+                        </strong>
 
-</article>
-           <article class="admin-stat-card">
 
-    <div class="admin-stat-top">
+                        <small>
+                            Verzije koje čekaju odluku klijenta
+                        </small>
 
-        <span>
-            Tražene izmjene
-        </span>
+                    </article>
 
-        <div class="admin-stat-icon">
-            ↺
-        </div>
 
-    </div>
+                    <!-- TRAŽENE IZMJENE -->
 
-    <strong id="revisionRequestedCount">
-        0
-    </strong>
+                    <article class="admin-stat-card">
 
-    <small>
-        Dizajni za koje je klijent zatražio izmjene
-    </small>
+                        <div class="admin-stat-top">
 
-</article>         
+                            <span>
+                                Tražene izmjene
+                            </span>
+
+                            <div class="admin-stat-icon">
+                                ↺
+                            </div>
+
+                        </div>
+
+
+                        <strong id="revisionRequestedCount">
+                            0
+                        </strong>
+
+
+                        <small>
+                            Dizajni za koje je klijent zatražio izmjene
+                        </small>
+
+                    </article>
+
+
                 </section>
 
 
-
-                <!-- GRID -->
+                <!-- =========================
+                     DASHBOARD GRID
+                ========================== -->
 
                 <section class="admin-dashboard-grid">
 
 
-                    <!-- LATEST REVISIONS -->
+                    <!-- NAJNOVIJI ZAHTJEVI -->
 
                     <div class="admin-panel">
 
@@ -461,8 +547,7 @@
                     </div>
 
 
-
-                    <!-- RECENT PROJECTS -->
+                    <!-- NEDAVNI PROJEKTI -->
 
                     <div class="admin-panel">
 
@@ -509,7 +594,9 @@
 
             </div>
 
+
         </main>
+
 
     </div>
 
