@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./profile.css?v=1"
+    >
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+    <script
+        src="./profile.js?v=1"
+        defer
+    ></script>
+
+    <title>
+        PTech Digital | Profil
+    </title>
+
+</head>
+
+
+<body>
+
+    <main class="portal-shell">
+
+
+        <!-- =========================
+             HEADER
+        ========================== -->
+
+        <header class="portal-topbar">
+
+
+            <a
+                href="form.html"
+                class="portal-brand"
+            >
+
+                <div class="portal-logo">
+                    P
+                </div>
+
+                <strong>
+                    PTech Digital Client Portal
+                </strong>
+
+            </a>
+
+
+            <div class="portal-topbar-actions">
+
+
+                <div class="portal-user">
+
+                    <div class="portal-user-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <circle
+                                cx="12"
+                                cy="8"
+                                r="3">
+                            </circle>
+
+                            <path
+                                d="M5 20c0-4 3-7 7-7s7 3 7 7">
+                            </path>
+
+                        </svg>
+
+                    </div>
+
+                    <strong id="clientName">
+                        Klijent
+                    </strong>
+
+                </div>
+
+
+                <span class="portal-topbar-divider"></span>
+
+
+                <button
+                    type="button"
+                    id="logoutButton"
+                    class="portal-logout"
+                >
+
+                    <svg viewBox="0 0 24 24">
+
+                        <path d="M10 5H5v14h5"></path>
+
+                        <path d="M14 8l4 4-4 4"></path>
+
+                        <path d="M8 12h10"></path>
+
+                    </svg>
+
+                    <span>
+                        Odjava
+                    </span>
+
+                </button>
+
+
+                <span class="portal-topbar-divider"></span>
+
+
+                <label class="theme-switch">
+
+                    <input
+                        type="checkbox"
+                        id="themeToggle"
+                        aria-label="Promijeni temu"
+                    >
+
+                    <span class="theme-slider"></span>
+
+                </label>
+
+
+            </div>
+
+        </header>
+
+
+        <!-- =========================
+             CONTENT
+        ========================== -->
+
+        <div class="portal-content">
+
+
+            <section class="profile-page-header">
+
+                <span class="profile-eyebrow">
+                    Korisnički račun
+                </span>
+
+                <h1>
+                    Moj profil
+                </h1>
+
+                <p>
+                    Pregled osnovnih podataka i aktivnosti računa.
+                </p>
+
+            </section>
+
+
+            <!-- =========================
+                 PROFILE CARD
+            ========================== -->
+
+            <section class="profile-card">
+
+
+                <div class="profile-main">
+
+
+                    <div
+                        id="profileAvatar"
+                        class="profile-avatar"
+                    >
+                        K
+                    </div>
+
+
+                    <div class="profile-main-info">
+
+                        <span>
+                            Klijent
+                        </span>
+
+                        <h2 id="profileName">
+                            Klijent
+                        </h2>
+
+                        <p id="profileEmail">
+                            -
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="profile-status">
+
+                    <span class="profile-status-dot"></span>
+
+                    Aktivan račun
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =========================
+                 STATS
+            ========================== -->
+
+            <section class="profile-stats">
+
+
+                <article class="profile-stat-card">
+
+                    <span>
+                        Projekti
+                    </span>
+
+                    <strong id="profileProjectsCount">
+                        0
+                    </strong>
+
+                    <small>
+                        Ukupan broj projekata
+                    </small>
+
+                </article>
+
+
+                <article class="profile-stat-card">
+
+                    <span>
+                        Dokumenti
+                    </span>
+
+                    <strong id="profileDocumentsCount">
+                        0
+                    </strong>
+
+                    <small>
+                        Dostupni dokumenti
+                    </small>
+
+                </article>
+
+
+                <article class="profile-stat-card">
+
+                    <span>
+                        Član od
+                    </span>
+
+                    <strong id="profileCreatedAt">
+                        -
+                    </strong>
+
+                    <small>
+                        Datum kreiranja računa
+                    </small>
+
+                </article>
+
+
+            </section>
+
+
+            <!-- =========================
+                 ACCOUNT INFO
+            ========================== -->
+
+            <section class="profile-section">
+
+                <div class="profile-section-header">
+
+                    <span>
+                        Račun
+                    </span>
+
+                    <h2>
+                        Podaci profila
+                    </h2>
+
+                </div>
+
+
+                <div class="profile-info-list">
+
+
+                    <div class="profile-info-row">
+
+                        <div>
+
+                            <span>
+                                Ime
+                            </span>
+
+                            <strong id="profileDisplayName">
+                                -
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="profile-info-row">
+
+                        <div>
+
+                            <span>
+                                Email adresa
+                            </span>
+
+                            <strong id="profileEmailRow">
+                                -
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="profile-info-row">
+
+                        <div>
+
+                            <span>
+                                Vrsta računa
+                            </span>
+
+                            <strong>
+                                Klijent
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 QUICK LINKS
+            ========================== -->
+
+            <section class="profile-section">
+
+                <div class="profile-section-header">
+
+                    <span>
+                        Prečaci
+                    </span>
+
+                    <h2>
+                        Brzi pristup
+                    </h2>
+
+                </div>
+
+
+                <div class="profile-links">
+
+
+                    <a
+                        href="my-projects.html"
+                        class="profile-link-card"
+                    >
+
+                        <div class="profile-link-icon">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <rect
+                                    x="4"
+                                    y="5"
+                                    width="16"
+                                    height="15"
+                                    rx="2">
+                                </rect>
+
+                                <path d="M8 5V3"></path>
+
+                                <path d="M16 5V3"></path>
+
+                                <path d="M4 9h16"></path>
+
+                            </svg>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                Moji projekti
+                            </strong>
+
+                            <span>
+                                Pregled svih projekata
+                            </span>
+
+                        </div>
+
+
+                        <span class="profile-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="documents.html"
+                        class="profile-link-card"
+                    >
+
+                        <div class="profile-link-icon">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <path
+                                    d="M4 4h6l2 2h8v14H4z">
+                                </path>
+
+                            </svg>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                Dokumenti
+                            </strong>
+
+                            <span>
+                                Pregledaj svoje dokumente
+                            </span>
+
+                        </div>
+
+
+                        <span class="profile-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="messages.html"
+                        class="profile-link-card"
+                    >
+
+                        <div class="profile-link-icon">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <path
+                                    d="M4 5h16v11H8l-4 4z">
+                                </path>
+
+                            </svg>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                Podrška
+                            </strong>
+
+                            <span>
+                                Kontaktiraj naš tim
+                            </span>
+
+                        </div>
+
+
+                        <span class="profile-link-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 LOGOUT CARD
+            ========================== -->
+
+            <section class="profile-logout-card">
+
+                <div>
+
+                    <span>
+                        Sesija
+                    </span>
+
+                    <strong>
+                        Želiš se odjaviti?
+                    </strong>
+
+                    <p>
+                        Odjava će završiti trenutnu korisničku sesiju.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="profileLogoutButton"
+                >
+                    Odjava
+                </button>
+
+            </section>
+
+
+            <footer class="portal-footer">
+
+                © PTech Digital 2026.
+                • Sva prava zadržana.
+
+            </footer>
+
+
+        </div>
+
+
+        <!-- =========================
+             BOTTOM NAV
+        ========================== -->
+
+        <nav class="bottom-nav">
+
+
+            <a
+                href="form.html"
+                class="bottom-nav-item"
+            >
+
+                <svg viewBox="0 0 24 24">
+
+                    <path
+                        d="M3 11.5L12 4l9 7.5">
+                    </path>
+
+                    <path
+                        d="M5 10.5V20h14v-9.5">
+                    </path>
+
+                    <path
+                        d="M9 20v-6h6v6">
+                    </path>
+
+                </svg>
+
+                <span>
+                    Početna
+                </span>
+
+            </a>
+
+
+            <a
+                href="messages.html"
+                class="bottom-nav-item"
+            >
+
+                <div class="bottom-nav-icon-wrap">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <path
+                            d="M4 5h16v11H8l-4 4z">
+                        </path>
+
+                    </svg>
+
+
+                    <span
+                        id="messagesUnreadBadge"
+                        class="nav-notification"
+                        hidden
+                    >
+                        0
+                    </span>
+
+                </div>
+
+                <span>
+                    Poruke
+                </span>
+
+            </a>
+
+
+            <a
+                href="my-projects.html"
+                class="bottom-nav-item"
+            >
+
+                <svg viewBox="0 0 24 24">
+
+                    <rect
+                        x="4"
+                        y="5"
+                        width="16"
+                        height="15"
+                        rx="2">
+                    </rect>
+
+                    <path d="M8 5V3"></path>
+
+                    <path d="M16 5V3"></path>
+
+                    <path d="M4 9h16"></path>
+
+                </svg>
+
+                <span>
+                    Projekti
+                </span>
+
+            </a>
+
+
+            <a
+                href="documents.html"
+                class="bottom-nav-item"
+            >
+
+                <svg viewBox="0 0 24 24">
+
+                    <path
+                        d="M4 4h6l2 2h8v14H4z">
+                    </path>
+
+                </svg>
+
+                <span>
+                    Dokumenti
+                </span>
+
+            </a>
+
+
+            <a
+                href="profile.html"
+                class="bottom-nav-item active"
+            >
+
+                <svg viewBox="0 0 24 24">
+
+                    <circle
+                        cx="12"
+                        cy="8"
+                        r="3">
+                    </circle>
+
+                    <path
+                        d="M5 20c0-4 3-7 7-7s7 3 7 7">
+                    </path>
+
+                </svg>
+
+                <span>
+                    Profil
+                </span>
+
+            </a>
+
+
+        </nav>
+
+
+    </main>
+
+</body>
+
+</html>
