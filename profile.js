@@ -230,6 +230,10 @@ async function logout() {
             .removeChannel(
                 supportRealtimeChannel
             );
+
+
+        supportRealtimeChannel =
+            null;
     }
 
 
@@ -262,6 +266,11 @@ profileLogoutButton
 ========================= */
 
 async function loadProfile() {
+
+    if (!currentSession) {
+        return;
+    }
+
 
     const {
         data,
@@ -364,6 +373,14 @@ async function loadProfile() {
 
 async function loadProjectCount() {
 
+    if (
+        !currentSession ||
+        !profileProjectsCount
+    ) {
+        return;
+    }
+
+
     const {
         count,
         error
@@ -390,15 +407,16 @@ async function loadProjectCount() {
             error
         );
 
+
+        profileProjectsCount.textContent =
+            "0";
+
         return;
     }
 
 
-    if (profileProjectsCount) {
-
-        profileProjectsCount.textContent =
-            count || 0;
-    }
+    profileProjectsCount.textContent =
+        count || 0;
 }
 
 
@@ -408,12 +426,82 @@ async function loadProjectCount() {
 
 async function loadDocumentCount() {
 
+    if (
+        !currentSession ||
+        !profileDocumentsCount
+    ) {
+        return;
+    }
+
+
+    /* =========================
+       1. PROJEKTI KORISNIKA
+    ========================= */
+
     const {
-        count,
-        error
+        data: userProjects,
+        error: projectsError
     } =
         await supabaseClient
-            .from("project_documents")
+            .from("projects")
+            .select("id")
+            .eq(
+                "user_id",
+                currentSession.user.id
+            );
+
+
+    if (projectsError) {
+
+        console.error(
+            "Project document projects error:",
+            projectsError
+        );
+
+
+        profileDocumentsCount.textContent =
+            "0";
+
+
+        return;
+    }
+
+
+    const projectIds =
+        (userProjects || [])
+            .map(
+                project =>
+                    project.id
+            );
+
+
+    /* =========================
+       NEMA PROJEKATA
+    ========================= */
+
+    if (
+        projectIds.length === 0
+    ) {
+
+        profileDocumentsCount.textContent =
+            "0";
+
+        return;
+    }
+
+
+    /* =========================
+       2. DOKUMENTI PROJEKATA
+    ========================= */
+
+    const {
+        count,
+        error: documentsError
+    } =
+        await supabaseClient
+            .from(
+                "project_documents"
+            )
             .select(
                 "id",
                 {
@@ -421,36 +509,30 @@ async function loadDocumentCount() {
                     head: true
                 }
             )
-            .eq(
-                "user_id",
-                currentSession.user.id
+            .in(
+                "project_id",
+                projectIds
             );
 
 
-    if (error) {
+    if (documentsError) {
 
         console.error(
             "Document count error:",
-            error
+            documentsError
         );
 
 
-        if (profileDocumentsCount) {
-
-            profileDocumentsCount.textContent =
-                "0";
-        }
+        profileDocumentsCount.textContent =
+            "0";
 
 
         return;
     }
 
 
-    if (profileDocumentsCount) {
-
-        profileDocumentsCount.textContent =
-            count || 0;
-    }
+    profileDocumentsCount.textContent =
+        count || 0;
 }
 
 
