@@ -4,6 +4,7 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
 
+
 const supabaseClient =
     supabase.createClient(
         SUPABASE_URL,
@@ -70,14 +71,6 @@ const recentProjects =
         "recentProjects"
     );
 
-const supportUnreadBadge =
-    document.getElementById(
-        "supportUnreadBadge"
-    );
-
-
-let supportRealtimeChannel = null;
-
 
 /* =========================
    ESCAPE HTML
@@ -139,15 +132,6 @@ if (logoutButton) {
         "click",
         async function () {
 
-            if (supportRealtimeChannel) {
-
-                await supabaseClient
-                    .removeChannel(
-                        supportRealtimeChannel
-                    );
-            }
-
-
             await supabaseClient
                 .auth
                 .signOut();
@@ -193,133 +177,12 @@ async function getAdminProfile(
             error
         );
 
+
         return null;
     }
 
 
     return profile;
-}
-
-
-/* =========================
-   SUPPORT UNREAD
-========================= */
-
-async function loadSupportUnreadCount() {
-
-    if (!supportUnreadBadge) {
-        return;
-    }
-
-
-    const {
-        count,
-        error
-    } =
-        await supabaseClient
-            .from(
-                "support_messages"
-            )
-            .select(
-                "id",
-                {
-                    count: "exact",
-                    head: true
-                }
-            )
-            .eq(
-                "sender_role",
-                "client"
-            )
-            .is(
-                "admin_read_at",
-                null
-            );
-
-
-    if (error) {
-
-        console.error(
-            "Greška kod brojanja nepročitanih poruka podrške:",
-            error
-        );
-
-        return;
-    }
-
-
-    const unreadCount =
-        count || 0;
-
-
-    if (unreadCount > 0) {
-
-        supportUnreadBadge.hidden =
-            false;
-
-
-        supportUnreadBadge.textContent =
-            unreadCount > 99
-                ? "99+"
-                : String(
-                    unreadCount
-                );
-
-    } else {
-
-        supportUnreadBadge.hidden =
-            true;
-
-
-        supportUnreadBadge.textContent =
-            "0";
-    }
-}
-
-
-/* =========================
-   SUPPORT REALTIME
-========================= */
-
-function subscribeToSupportRealtime() {
-
-    if (supportRealtimeChannel) {
-        return;
-    }
-
-
-    supportRealtimeChannel =
-        supabaseClient
-            .channel(
-                "admin-support-unread"
-            )
-            .on(
-                "postgres_changes",
-                {
-                    event: "*",
-                    schema: "public",
-                    table: "support_messages"
-                },
-                async payload => {
-
-                    console.log(
-                        "Support realtime:",
-                        payload
-                    );
-
-
-                    await loadSupportUnreadCount();
-                }
-            )
-            .subscribe(
-                status => {
-
-                    console.log(
-                        "Support realtime status:",
-                        status
-                    );
-                }
-            );
 }
 
 
@@ -518,6 +381,7 @@ async function getLatestDesigns() {
             error
         );
 
+
         return [];
     }
 
@@ -559,6 +423,8 @@ async function loadStats(
     revisionThreads
 ) {
 
+    /* AKTIVNI PROJEKTI */
+
     const {
         count: activeCount,
         error: projectsError
@@ -594,6 +460,8 @@ async function loadStats(
     }
 
 
+    /* ČEKA ODGOVOR ADMINA */
+
     const pendingThreads =
         revisionThreads.filter(
             thread =>
@@ -607,6 +475,8 @@ async function loadStats(
             pendingThreads.length;
     }
 
+
+    /* DIZAJNI */
 
     const latestDesigns =
         await getLatestDesigns();
@@ -656,6 +526,8 @@ async function loadStats(
             revisionCount;
     }
 
+
+    /* KLIJENTI */
 
     const {
         count: clientCount,
@@ -716,6 +588,7 @@ function loadLatestRevisions(
                 Trenutno nema novih zahtjeva.
             </div>
         `;
+
 
         return;
     }
@@ -853,6 +726,7 @@ async function loadRecentProjects() {
             </div>
         `;
 
+
         return;
     }
 
@@ -867,6 +741,7 @@ async function loadRecentProjects() {
                 Trenutno nema projekata.
             </div>
         `;
+
 
         return;
     }
@@ -950,6 +825,7 @@ async function startAdmin() {
         window.location.href =
             "login.html";
 
+
         return;
     }
 
@@ -964,6 +840,7 @@ async function startAdmin() {
 
         window.location.href =
             "form.html";
+
 
         return;
     }
@@ -983,6 +860,7 @@ async function startAdmin() {
 
         window.location.href =
             "form.html";
+
 
         return;
     }
@@ -1006,6 +884,10 @@ async function startAdmin() {
             name;
     }
 
+
+    /* =========================
+       REVISION THREADOVI
+    ========================= */
 
     const {
         threads,
@@ -1036,15 +918,17 @@ async function startAdmin() {
     }
 
 
+    /* =========================
+       DASHBOARD
+    ========================= */
+
     await Promise.all([
 
         loadStats(
             threads
         ),
 
-        loadRecentProjects(),
-
-        loadSupportUnreadCount()
+        loadRecentProjects()
 
     ]);
 
@@ -1052,13 +936,6 @@ async function startAdmin() {
     loadLatestRevisions(
         threads
     );
-
-
-    /* =========================
-       REALTIME
-    ========================= */
-
-    subscribeToSupportRealtime();
 }
 
 
