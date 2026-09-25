@@ -413,7 +413,7 @@ async function loadDocumentCount() {
         error
     } =
         await supabaseClient
-            .from("documents")
+            .from("project_documents")
             .select(
                 "id",
                 {
