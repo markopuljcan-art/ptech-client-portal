@@ -1,0 +1,1371 @@
+/* =========================
+   GLOBAL
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --orange: #ff7a00;
+    --orange-light: #ff9b35;
+
+    --text: #f5f5f5;
+
+    --muted:
+        rgba(255, 255, 255, 0.52);
+
+    --border:
+        rgba(255, 255, 255, 0.10);
+}
+
+
+html {
+    min-height: 100%;
+}
+
+
+body {
+    margin: 0;
+
+    min-height: 100vh;
+
+    padding:
+        42px
+        24px;
+
+    display: flex;
+    justify-content: center;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    color:
+        var(--text);
+
+    background:
+        radial-gradient(
+            circle at 5% 5%,
+            rgba(255, 122, 0, 0.20),
+            transparent 26%
+        ),
+
+        radial-gradient(
+            circle at 95% 92%,
+            rgba(255, 122, 0, 0.15),
+            transparent 28%
+        ),
+
+        linear-gradient(
+            135deg,
+            #090a0b,
+            #151515 50%,
+            #08090a
+        );
+}
+
+
+/* =========================
+   PORTAL
+========================= */
+
+.portal-shell {
+    width: 100%;
+    max-width: 1100px;
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.14);
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(24, 24, 24, 0.97),
+            rgba(13, 14, 16, 0.97)
+        );
+
+    box-shadow:
+        0 35px 90px
+        rgba(0, 0, 0, 0.55);
+}
+
+
+/* =========================
+   TOPBAR
+========================= */
+
+.portal-topbar {
+    min-height: 96px;
+
+    padding:
+        20px
+        38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
+
+    border-bottom:
+        1px solid
+        rgba(255, 255, 255, 0.09);
+}
+
+
+.portal-brand {
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    color: inherit;
+
+    text-decoration: none;
+}
+
+
+.portal-logo {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffad3b,
+            #ff7000
+        );
+
+    color: #111;
+
+    font-size: 27px;
+    font-weight: 900;
+}
+
+
+.portal-brand strong {
+    color: #fff;
+
+    font-size: 23px;
+}
+
+
+/* =========================
+   TOPBAR ACTIONS
+========================= */
+
+.portal-topbar-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+}
+
+
+.portal-user {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    font-size: 13px;
+}
+
+
+.portal-user-icon {
+    width: 37px;
+    height: 37px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.07);
+}
+
+
+.portal-user-icon svg {
+    width: 20px;
+    height: 20px;
+
+    fill: none;
+
+    stroke:
+        rgba(255, 255, 255, 0.72);
+
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+.portal-topbar-divider {
+    width: 1px;
+    height: 28px;
+
+    background:
+        rgba(255, 255, 255, 0.12);
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+.portal-logout {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    padding:
+        8px
+        9px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: transparent;
+
+    color:
+        rgba(255, 255, 255, 0.80);
+
+    font-family: inherit;
+
+    cursor: pointer;
+}
+
+
+.portal-logout:hover {
+    background:
+        rgba(255, 255, 255, 0.06);
+
+    color: #fff;
+}
+
+
+.portal-logout svg {
+    width: 20px;
+    height: 20px;
+
+    fill: none;
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+/* =========================
+   THEME SWITCH
+========================= */
+
+.theme-switch {
+    position: relative;
+
+    width: 58px;
+    height: 32px;
+
+    display: block;
+}
+
+
+.theme-switch input {
+    display: none;
+}
+
+
+.theme-slider {
+    position: absolute;
+
+    inset: 0;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.12);
+
+    border-radius: 999px;
+
+    background:
+        #121314;
+
+    cursor: pointer;
+}
+
+
+.theme-slider::before {
+    content: "☾";
+
+    position: absolute;
+
+    width: 25px;
+    height: 25px;
+
+    left: 3px;
+    top: 2px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffad35,
+            #ff7700
+        );
+
+    color: #111;
+
+    font-size: 13px;
+
+    transition:
+        transform 0.25s ease;
+}
+
+
+.theme-switch input:checked +
+.theme-slider::before {
+    content: "☀";
+
+    transform:
+        translateX(26px);
+}
+
+
+/* =========================
+   CONTENT
+========================= */
+
+.portal-content {
+    padding:
+        34px
+        42px
+        0;
+}
+
+
+/* =========================
+   PAGE HEADER
+========================= */
+
+.projects-page-header {
+    margin-bottom: 24px;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+.projects-eyebrow {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color:
+        var(--orange);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.7px;
+}
+
+
+.projects-page-header h1 {
+    margin:
+        0
+        0
+        7px;
+
+    font-size: 29px;
+}
+
+
+.projects-page-header p {
+    margin: 0;
+
+    max-width: 560px;
+
+    color:
+        var(--muted);
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* COUNT */
+
+.projects-total-box {
+    min-width: 125px;
+
+    padding:
+        12px
+        15px;
+
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.18);
+
+    border-radius: 12px;
+
+    background:
+        rgba(255, 122, 0, 0.04);
+
+    text-align: center;
+}
+
+
+.projects-total-box span {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color:
+        var(--muted);
+
+    font-size: 9px;
+
+    text-transform: uppercase;
+}
+
+
+.projects-total-box strong {
+    color:
+        var(--orange-light);
+
+    font-size: 25px;
+}
+
+
+/* =========================
+   TOOLBAR
+========================= */
+
+.projects-toolbar {
+    margin-bottom: 18px;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        190px;
+
+    gap: 10px;
+}
+
+
+.projects-search {
+    position: relative;
+}
+
+
+.projects-search svg {
+    position: absolute;
+
+    left: 12px;
+    top: 50%;
+
+    width: 18px;
+    height: 18px;
+
+    transform:
+        translateY(-50%);
+
+    fill: none;
+
+    stroke:
+        var(--muted);
+
+    stroke-width: 1.8;
+}
+
+
+.projects-search input,
+.projects-toolbar select {
+    width: 100%;
+    height: 42px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.09);
+
+    border-radius: 10px;
+
+    outline: none;
+
+    background:
+        rgba(0, 0, 0, 0.14);
+
+    color: #fff;
+
+    font-family: inherit;
+
+    font-size: 11px;
+}
+
+
+.projects-search input {
+    padding:
+        0
+        14px
+        0
+        39px;
+}
+
+
+.projects-toolbar select {
+    padding:
+        0
+        11px;
+}
+
+
+.projects-search input:focus,
+.projects-toolbar select:focus {
+    border-color:
+        rgba(255, 122, 0, 0.45);
+}
+
+
+/* =========================
+   GRID
+========================= */
+
+.projects-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 15px;
+}
+
+
+/* =========================
+   PROJECT CARD
+========================= */
+
+.project-card {
+    padding: 18px;
+
+    display: block;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.09);
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.028),
+            rgba(255, 255, 255, 0.008)
+        );
+
+    color: inherit;
+
+    text-decoration: none;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.project-card:hover {
+    transform:
+        translateY(-3px);
+
+    border-color:
+        rgba(255, 122, 0, 0.38);
+
+    box-shadow:
+        0 17px 35px
+        rgba(0, 0, 0, 0.19);
+}
+
+
+/* =========================
+   CARD TOP
+========================= */
+
+.project-card-top {
+    margin-bottom: 17px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+
+.project-title-block {
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+}
+
+
+.project-icon {
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background:
+        rgba(255, 122, 0, 0.10);
+}
+
+
+.project-icon svg {
+    width: 21px;
+    height: 21px;
+
+    fill: none;
+
+    stroke:
+        var(--orange);
+
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+.project-title-block h2 {
+    margin:
+        0
+        0
+        3px;
+
+    color: #fff;
+
+    font-size: 16px;
+}
+
+
+.project-title-block p {
+    margin: 0;
+
+    color:
+        var(--muted);
+
+    font-size: 10px;
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
+.project-status {
+    padding:
+        5px
+        9px;
+
+    flex-shrink: 0;
+
+    border-radius: 999px;
+
+    font-size: 9px;
+    font-weight: 800;
+}
+
+
+.project-status.progress {
+    border:
+        1px solid
+        rgba(255, 122, 0, 0.27);
+
+    background:
+        rgba(255, 122, 0, 0.07);
+
+    color:
+        var(--orange-light);
+}
+
+
+.project-status.done {
+    border:
+        1px solid
+        rgba(46, 204, 113, 0.28);
+
+    background:
+        rgba(46, 204, 113, 0.06);
+
+    color:
+        #52dc80;
+}
+
+
+.project-status.waiting {
+    border:
+        1px solid
+        rgba(255, 190, 60, 0.25);
+
+    background:
+        rgba(255, 190, 60, 0.05);
+
+    color:
+        #ffc35b;
+}
+
+
+/* =========================
+   INFO CARDS
+========================= */
+
+.project-info-grid {
+    margin-bottom: 17px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 8px;
+}
+
+
+.project-info {
+    padding: 11px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.06);
+
+    border-radius: 10px;
+
+    background:
+        rgba(0, 0, 0, 0.10);
+}
+
+
+.project-info span {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color:
+        var(--muted);
+
+    font-size: 8px;
+
+    text-transform: uppercase;
+}
+
+
+.project-info strong {
+    color:
+        rgba(255, 255, 255, 0.88);
+
+    font-size: 11px;
+}
+
+
+/* =========================
+   PROGRESS
+========================= */
+
+.project-progress {
+    margin-bottom: 16px;
+}
+
+
+.project-progress-top {
+    margin-bottom: 7px;
+
+    display: flex;
+    justify-content: space-between;
+
+    color:
+        var(--muted);
+
+    font-size: 9px;
+}
+
+
+.project-progress-top strong {
+    color: #fff;
+
+    font-size: 10px;
+}
+
+
+.project-progress-track {
+    height: 7px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background:
+        rgba(255, 255, 255, 0.08);
+}
+
+
+.project-progress-bar {
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ff7200,
+            #ff9c35
+        );
+}
+
+
+/* =========================
+   CARD FOOTER
+========================= */
+
+.project-card-footer {
+    padding-top: 13px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-top:
+        1px solid
+        rgba(255, 255, 255, 0.06);
+}
+
+
+.project-update {
+    color:
+        var(--muted);
+
+    font-size: 9px;
+}
+
+
+.project-open {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    color:
+        var(--orange-light);
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+
+.project-open span {
+    font-size: 14px;
+}
+
+
+/* =========================
+   EMPTY
+========================= */
+
+.projects-loading,
+.projects-empty {
+    grid-column:
+        1 / -1;
+
+    padding:
+        60px
+        20px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.07);
+
+    border-radius: 14px;
+
+    color:
+        var(--muted);
+
+    text-align: center;
+
+    font-size: 12px;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.portal-footer {
+    margin-top: 32px;
+
+    padding:
+        21px
+        10px
+        23px;
+
+    border-top:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    color:
+        rgba(255, 255, 255, 0.37);
+
+    text-align: center;
+
+    font-size: 10px;
+}
+
+
+/* =========================
+   BOTTOM NAV
+========================= */
+
+.bottom-nav {
+    position: sticky;
+    bottom: 0;
+
+    z-index: 20;
+
+    padding:
+        9px
+        15px
+        11px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    border-top:
+        1px solid
+        rgba(255, 255, 255, 0.09);
+
+    background:
+        rgba(14, 15, 17, 0.96);
+
+    backdrop-filter:
+        blur(15px);
+}
+
+
+.bottom-nav-item {
+    position: relative;
+
+    min-height: 52px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+
+    color:
+        rgba(255, 255, 255, 0.44);
+
+    text-decoration: none;
+
+    font-size: 9px;
+    font-weight: 600;
+}
+
+
+.bottom-nav-item svg {
+    width: 20px;
+    height: 20px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+.bottom-nav-item.active {
+    color:
+        var(--orange);
+}
+
+
+.bottom-nav-item.active::before {
+    content: "";
+
+    position: absolute;
+
+    top: -9px;
+
+    width: 26px;
+    height: 3px;
+
+    border-radius: 999px;
+
+    background:
+        var(--orange);
+}
+
+
+.bottom-nav-icon-wrap {
+    position: relative;
+}
+
+
+.nav-notification {
+    position: absolute;
+
+    top: -8px;
+    right: -12px;
+
+    min-width: 17px;
+    height: 17px;
+
+    padding:
+        0
+        4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border:
+        2px solid
+        #121315;
+
+    border-radius: 999px;
+
+    background:
+        #ff3b30;
+
+    color: #fff;
+
+    font-size: 8px;
+    font-weight: 800;
+}
+
+
+.nav-notification[hidden] {
+    display: none !important;
+}
+
+
+/* =========================
+   LIGHT MODE
+========================= */
+
+body.light-mode {
+    --text: #1f1f1f;
+
+    --muted: #77716c;
+
+    background:
+        radial-gradient(
+            circle at 5% 5%,
+            rgba(255, 122, 0, 0.08),
+            transparent 28%
+        ),
+
+        linear-gradient(
+            135deg,
+            #f6f3ef,
+            #f4f5f7
+        );
+}
+
+
+body.light-mode
+.portal-shell {
+    background:
+        #fff;
+
+    border-color:
+        rgba(0, 0, 0, 0.08);
+
+    box-shadow:
+        0 30px 70px
+        rgba(0, 0, 0, 0.10);
+}
+
+
+body.light-mode
+.portal-brand strong,
+
+body.light-mode
+.projects-page-header h1,
+
+body.light-mode
+.project-title-block h2,
+
+body.light-mode
+.project-info strong,
+
+body.light-mode
+.project-progress-top strong {
+    color: #1d1d1d;
+}
+
+
+body.light-mode
+.portal-user-icon {
+    background:
+        rgba(0, 0, 0, 0.04);
+}
+
+
+body.light-mode
+.portal-user-icon svg {
+    stroke: #555;
+}
+
+
+body.light-mode
+.portal-logout {
+    color: #555;
+}
+
+
+body.light-mode
+.portal-topbar,
+body.light-mode
+.portal-footer,
+body.light-mode
+.bottom-nav {
+    border-color:
+        rgba(0, 0, 0, 0.07);
+}
+
+
+body.light-mode
+.project-card {
+    background:
+        #fafafa;
+
+    border-color:
+        rgba(0, 0, 0, 0.07);
+}
+
+
+body.light-mode
+.project-info {
+    background:
+        #fff;
+
+    border-color:
+        rgba(0, 0, 0, 0.06);
+}
+
+
+body.light-mode
+.projects-search input,
+body.light-mode
+.projects-toolbar select {
+    background:
+        #fff;
+
+    border-color:
+        rgba(0, 0, 0, 0.09);
+
+    color: #222;
+}
+
+
+body.light-mode
+.bottom-nav {
+    background:
+        rgba(255, 255, 255, 0.96);
+}
+
+
+body.light-mode
+.bottom-nav-item {
+    color:
+        rgba(0, 0, 0, 0.43);
+}
+
+
+body.light-mode
+.bottom-nav-item.active {
+    color:
+        var(--orange);
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 850px) {
+
+    body {
+        padding: 18px;
+    }
+
+
+    .portal-content {
+        padding:
+            28px
+            25px
+            0;
+    }
+
+
+    .projects-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 650px) {
+
+    body {
+        padding: 7px;
+    }
+
+
+    .portal-shell {
+        min-height:
+            calc(100vh - 14px);
+
+        border-radius: 16px;
+    }
+
+
+    .portal-topbar {
+        padding: 15px;
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 13px;
+    }
+
+
+    .portal-brand strong {
+        font-size: 17px;
+    }
+
+
+    .portal-logo {
+        width: 41px;
+        height: 41px;
+
+        font-size: 23px;
+    }
+
+
+    .portal-topbar-actions {
+        justify-content:
+            space-between;
+    }
+
+
+    .portal-topbar-divider {
+        display: none;
+    }
+
+
+    .portal-content {
+        padding:
+            20px
+            13px
+            0;
+    }
+
+
+    .projects-page-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+
+    .projects-page-header h1 {
+        font-size: 23px;
+    }
+
+
+    .projects-total-box {
+        width: 100%;
+
+        text-align: left;
+    }
+
+
+    .projects-toolbar {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .project-info-grid {
+        grid-template-columns:
+            1fr
+            1fr;
+    }
+
+
+    .bottom-nav {
+        padding:
+            8px
+            3px
+            9px;
+    }
+
+
+    .bottom-nav-item {
+        min-height: 47px;
+
+        font-size: 8px;
+    }
+
+
+    .bottom-nav-item svg {
+        width: 19px;
+        height: 19px;
+    }
+
+}
