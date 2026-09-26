@@ -4,6 +4,7 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
 
+
 const supabaseClient =
     supabase.createClient(
         SUPABASE_URL,
@@ -61,11 +62,29 @@ const documentsMessage =
     );
 
 
+/*
+    U tvom HTML-u badge trenutno nema ID,
+    zato ga hvatamo po klasi.
+*/
+
+const messagesUnreadBadge =
+    document.querySelector(
+        ".nav-notification"
+    );
+
+
+/* =========================
+   GLOBAL
+========================= */
+
 let currentSession = null;
 
 let allProjects = [];
 
 let allDocuments = [];
+
+let supportRealtimeChannel =
+    null;
 
 
 /* =========================
@@ -155,6 +174,21 @@ logoutButton
         "click",
         async () => {
 
+            if (
+                supportRealtimeChannel
+            ) {
+
+                await supabaseClient
+                    .removeChannel(
+                        supportRealtimeChannel
+                    );
+
+
+                supportRealtimeChannel =
+                    null;
+            }
+
+
             await supabaseClient
                 .auth
                 .signOut();
@@ -219,7 +253,9 @@ function formatBytes(bytes) {
         Number(bytes || 0);
 
 
-    if (value < 1024) {
+    if (
+        value < 1024
+    ) {
 
         return `${value} B`;
     }
@@ -338,7 +374,9 @@ function showMessage(
     type = "error"
 ) {
 
-    if (!documentsMessage) {
+    if (
+        !documentsMessage
+    ) {
         return;
     }
 
@@ -358,7 +396,9 @@ function showMessage(
 
 function hideMessage() {
 
-    if (!documentsMessage) {
+    if (
+        !documentsMessage
+    ) {
         return;
     }
 
@@ -366,8 +406,10 @@ function hideMessage() {
     documentsMessage.hidden =
         true;
 
+
     documentsMessage.className =
         "documents-message";
+
 
     documentsMessage.textContent =
         "";
@@ -379,6 +421,13 @@ function hideMessage() {
 ========================= */
 
 async function loadProfile() {
+
+    if (
+        !currentSession
+    ) {
+        return;
+    }
+
 
     const {
         data,
@@ -424,6 +473,13 @@ async function loadProfile() {
 ========================= */
 
 async function loadProjects() {
+
+    if (
+        !currentSession
+    ) {
+        return;
+    }
+
 
     const {
         data,
@@ -481,7 +537,9 @@ async function loadProjects() {
 
 function buildProjectFilter() {
 
-    if (!projectFilter) {
+    if (
+        !projectFilter
+    ) {
         return;
     }
 
@@ -530,7 +588,9 @@ function buildProjectFilter() {
 
 async function loadDocuments() {
 
-    if (!documentsList) {
+    if (
+        !documentsList
+    ) {
         return;
     }
 
@@ -541,6 +601,12 @@ async function loadDocuments() {
         </div>
     `;
 
+
+    /*
+        RLS već filtrira dokumente
+        tako da klijent vidi samo dokumente
+        svojih projekata.
+    */
 
     const {
         data,
@@ -596,9 +662,11 @@ async function loadDocuments() {
         Object.fromEntries(
             allProjects.map(
                 project => [
+
                     String(
                         project.id
                     ),
+
                     project
                 ]
             )
@@ -637,7 +705,9 @@ async function getDocumentUrl(
     item
 ) {
 
-    if (!item.file_url) {
+    if (
+        !item.file_url
+    ) {
         return null;
     }
 
@@ -703,7 +773,9 @@ async function getDownloadUrl(
     item
 ) {
 
-    if (!item.file_url) {
+    if (
+        !item.file_url
+    ) {
         return null;
     }
 
@@ -767,19 +839,23 @@ async function getDownloadUrl(
 
 
 /* =========================
-   RENDER
+   RENDER DOCUMENTS
 ========================= */
 
 async function renderDocuments(
     documents
 ) {
 
-    if (!documentsList) {
+    if (
+        !documentsList
+    ) {
         return;
     }
 
 
-    if (documentsCount) {
+    if (
+        documentsCount
+    ) {
 
         documentsCount.textContent =
             documents.length;
@@ -796,6 +872,7 @@ async function renderDocuments(
                 Trenutno nema dokumenata.
             </div>
         `;
+
 
         return;
     }
@@ -826,8 +903,12 @@ async function renderDocuments(
             <article class="document-card">
 
 
+                <!-- MAIN -->
+
                 <div class="document-main">
 
+
+                    <!-- ICON -->
 
                     <div class="document-icon">
 
@@ -837,6 +918,8 @@ async function renderDocuments(
 
                     </div>
 
+
+                    <!-- INFO -->
 
                     <div class="document-info">
 
@@ -886,6 +969,8 @@ async function renderDocuments(
                 </div>
 
 
+                <!-- ACTIONS -->
+
                 <div class="document-actions">
 
 
@@ -893,12 +978,14 @@ async function renderDocuments(
                         openUrl
 
                             ? `
+
                                 <a
                                     href="${openUrl}"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     class="document-open-button"
                                 >
+
                                     Otvori
 
                                     <svg viewBox="0 0 24 24">
@@ -928,10 +1015,12 @@ async function renderDocuments(
                         downloadUrl
 
                             ? `
+
                                 <a
                                     href="${downloadUrl}"
                                     class="document-download-button"
                                 >
+
                                     Preuzmi
 
                                     <svg viewBox="0 0 24 24">
@@ -962,7 +1051,10 @@ async function renderDocuments(
                         !downloadUrl
 
                             ? `
-                                <span class="document-unavailable">
+
+                                <span
+                                    class="document-unavailable"
+                                >
                                     Nedostupno
                                 </span>
                             `
@@ -1091,6 +1183,149 @@ typeFilter
 
 
 /* =========================
+   UNREAD SUPPORT
+========================= */
+
+async function loadMessagesUnreadCount() {
+
+    if (
+        !messagesUnreadBadge ||
+        !currentSession
+    ) {
+        return;
+    }
+
+
+    const {
+        count,
+        error
+    } =
+        await supabaseClient
+            .from(
+                "support_messages"
+            )
+            .select(
+                "id",
+                {
+                    count: "exact",
+                    head: true
+                }
+            )
+            .eq(
+                "user_id",
+                currentSession.user.id
+            )
+            .eq(
+                "sender_role",
+                "admin"
+            )
+            .is(
+                "client_read_at",
+                null
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Unread support error:",
+            error
+        );
+
+
+        return;
+    }
+
+
+    const unreadCount =
+        count || 0;
+
+
+    if (
+        unreadCount > 0
+    ) {
+
+        messagesUnreadBadge.hidden =
+            false;
+
+
+        messagesUnreadBadge.textContent =
+            unreadCount > 99
+                ? "99+"
+                : String(
+                    unreadCount
+                );
+
+    } else {
+
+        messagesUnreadBadge.hidden =
+            true;
+
+
+        messagesUnreadBadge.textContent =
+            "0";
+    }
+}
+
+
+/* =========================
+   SUPPORT REALTIME
+========================= */
+
+function subscribeToSupportRealtime() {
+
+    if (
+        !currentSession ||
+        supportRealtimeChannel
+    ) {
+        return;
+    }
+
+
+    supportRealtimeChannel =
+        supabaseClient
+            .channel(
+                `documents-support-${currentSession.user.id}`
+            )
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "support_messages",
+                    filter:
+                        `user_id=eq.${currentSession.user.id}`
+                },
+                async () => {
+
+                    await loadMessagesUnreadCount();
+                }
+            )
+            .subscribe();
+}
+
+
+/* =========================
+   VISIBILITY
+========================= */
+
+document.addEventListener(
+    "visibilitychange",
+    async () => {
+
+        if (
+            document.visibilityState ===
+                "visible" &&
+            currentSession
+        ) {
+
+            await loadMessagesUnreadCount();
+        }
+    }
+);
+
+
+/* =========================
    START
 ========================= */
 
@@ -1118,6 +1353,7 @@ async function startDocuments() {
         window.location.href =
             "login.html";
 
+
         return;
     }
 
@@ -1126,11 +1362,22 @@ async function startDocuments() {
         session;
 
 
+    /*
+        Projekti moraju biti učitani
+        PRIJE dokumenata jer se koriste
+        za povezivanje project_id → projekt.
+    */
+
     await loadProfile();
 
     await loadProjects();
 
     await loadDocuments();
+
+    await loadMessagesUnreadCount();
+
+
+    subscribeToSupportRealtime();
 }
 
 
