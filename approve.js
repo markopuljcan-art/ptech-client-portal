@@ -186,6 +186,74 @@ function renderStatus(status) {
         "rgba(255, 122, 0, 0.08)";
 }
 
+const themeToggle =
+    document.getElementById(
+        "themeToggle"
+    );
+
+
+function loadTheme() {
+
+    const savedTheme =
+        localStorage.getItem(
+            "theme"
+        );
+
+
+    if (
+        savedTheme === "light"
+    ) {
+
+        document.body.classList.add(
+            "light-mode"
+        );
+
+
+        if (themeToggle) {
+
+            themeToggle.checked =
+                true;
+        }
+    }
+}
+
+
+themeToggle
+    ?.addEventListener(
+        "change",
+        () => {
+
+            if (
+                themeToggle.checked
+            ) {
+
+                document.body.classList.add(
+                    "light-mode"
+                );
+
+
+                localStorage.setItem(
+                    "theme",
+                    "light"
+                );
+
+            } else {
+
+                document.body.classList.remove(
+                    "light-mode"
+                );
+
+
+                localStorage.setItem(
+                    "theme",
+                    "dark"
+                );
+            }
+        }
+    );
+
+
+loadTheme();
 
 /* =========================
    ACTIONS
