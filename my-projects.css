@@ -6,7 +6,9 @@
     box-sizing: border-box;
 }
 
+
 :root {
+
     --orange: #ff7a00;
     --orange-light: #ff9b35;
 
@@ -75,7 +77,13 @@ body {
     width: 100%;
     max-width: 1100px;
 
+    min-height:
+        calc(100vh - 84px);
+
     overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
 
     border:
         1px solid
@@ -112,6 +120,8 @@ body {
     justify-content: space-between;
 
     gap: 25px;
+
+    flex-shrink: 0;
 
     border-bottom:
         1px solid
@@ -284,11 +294,17 @@ body {
     height: 32px;
 
     display: block;
+
+    flex: 0 0 58px;
 }
 
 
 .theme-switch input {
-    display: none;
+    position: absolute;
+
+    opacity: 0;
+
+    pointer-events: none;
 }
 
 
@@ -307,6 +323,11 @@ body {
         #121314;
 
     cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
 
@@ -361,6 +382,11 @@ body {
         34px
         42px
         0;
+
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -420,7 +446,9 @@ body {
 }
 
 
-/* COUNT */
+/* =========================
+   COUNT
+========================= */
 
 .projects-total-box {
     min-width: 125px;
@@ -957,10 +985,13 @@ body {
 ========================= */
 
 .bottom-nav {
-    position: sticky;
-    bottom: 0;
+    position: relative;
+
+    bottom: auto;
 
     z-index: 20;
+
+    margin-top: auto;
 
     padding:
         9px
@@ -971,6 +1002,8 @@ body {
 
     grid-template-columns:
         repeat(5, 1fr);
+
+    flex-shrink: 0;
 
     border-top:
         1px solid
@@ -1012,7 +1045,8 @@ body {
 
     fill: none;
 
-    stroke: currentColor;
+    stroke:
+        currentColor;
 
     stroke-width: 1.8;
     stroke-linecap: round;
@@ -1091,6 +1125,7 @@ body {
 ========================= */
 
 body.light-mode {
+
     --text: #1f1f1f;
 
     --muted: #77716c;
@@ -1110,10 +1145,13 @@ body.light-mode {
 }
 
 
+/* PORTAL */
+
 body.light-mode
 .portal-shell {
+
     background:
-        #fff;
+        #ffffff;
 
     border-color:
         rgba(0, 0, 0, 0.08);
@@ -1123,6 +1161,8 @@ body.light-mode
         rgba(0, 0, 0, 0.10);
 }
 
+
+/* TEXT */
 
 body.light-mode
 .portal-brand strong,
@@ -1138,12 +1178,25 @@ body.light-mode
 
 body.light-mode
 .project-progress-top strong {
-    color: #1d1d1d;
+
+    color:
+        #1d1d1d;
+}
+
+
+/* TOPBAR */
+
+body.light-mode
+.portal-topbar {
+
+    border-bottom-color:
+        rgba(0, 0, 0, 0.07);
 }
 
 
 body.light-mode
 .portal-user-icon {
+
     background:
         rgba(0, 0, 0, 0.04);
 }
@@ -1151,29 +1204,119 @@ body.light-mode
 
 body.light-mode
 .portal-user-icon svg {
-    stroke: #555;
+
+    stroke:
+        #555;
 }
 
 
 body.light-mode
 .portal-logout {
-    color: #555;
+
+    color:
+        #555;
 }
 
 
 body.light-mode
-.portal-topbar,
+.portal-logout:hover {
+
+    background:
+        rgba(0, 0, 0, 0.04);
+
+    color:
+        #222;
+}
+
+
 body.light-mode
-.portal-footer,
+.portal-topbar-divider {
+
+    background:
+        rgba(0, 0, 0, 0.09);
+}
+
+
+/* THEME SWITCH */
+
 body.light-mode
-.bottom-nav {
+.theme-slider {
+
+    background:
+        #ffffff !important;
+
     border-color:
-        rgba(0, 0, 0, 0.07);
+        rgba(0, 0, 0, 0.14) !important;
+
+    box-shadow:
+        0 2px 8px
+        rgba(0, 0, 0, 0.06);
 }
 
+
+body.light-mode
+.theme-slider::before {
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffad35,
+            #ff7700
+        );
+
+    color:
+        #111;
+}
+
+
+/* HEADER */
+
+body.light-mode
+.projects-page-header {
+
+    color:
+        #1d1d1f;
+}
+
+
+/* TOTAL BOX */
+
+body.light-mode
+.projects-total-box {
+
+    background:
+        #ffffff;
+
+    border-color:
+        rgba(0, 0, 0, 0.08);
+
+    box-shadow:
+        0 6px 16px
+        rgba(0, 0, 0, 0.03);
+}
+
+
+body.light-mode
+.projects-total-box span {
+
+    color:
+        rgba(0, 0, 0, 0.48);
+}
+
+
+body.light-mode
+.projects-total-box strong {
+
+    color:
+        var(--orange);
+}
+
+
+/* PROJECT CARD */
 
 body.light-mode
 .project-card {
+
     background:
         #fafafa;
 
@@ -1183,9 +1326,24 @@ body.light-mode
 
 
 body.light-mode
+.project-card:hover {
+
+    border-color:
+        rgba(255, 122, 0, 0.35);
+
+    box-shadow:
+        0 14px 30px
+        rgba(0, 0, 0, 0.06);
+}
+
+
+/* INFO */
+
+body.light-mode
 .project-info {
+
     background:
-        #fff;
+        #ffffff;
 
     border-color:
         rgba(0, 0, 0, 0.06);
@@ -1193,28 +1351,78 @@ body.light-mode
 
 
 body.light-mode
-.projects-search input,
-body.light-mode
-.projects-toolbar select {
-    background:
-        #fff;
+.project-card-footer {
 
-    border-color:
-        rgba(0, 0, 0, 0.09);
-
-    color: #222;
+    border-top-color:
+        rgba(0, 0, 0, 0.06);
 }
 
 
 body.light-mode
-.bottom-nav {
+.project-progress-track {
+
     background:
-        rgba(255, 255, 255, 0.96);
+        rgba(0, 0, 0, 0.07);
+}
+
+
+/* SEARCH */
+
+body.light-mode
+.projects-search input,
+
+body.light-mode
+.projects-toolbar select {
+
+    background:
+        #ffffff;
+
+    border-color:
+        rgba(0, 0, 0, 0.09);
+
+    color:
+        #222;
+}
+
+
+body.light-mode
+.projects-search svg {
+
+    stroke:
+        rgba(0, 0, 0, 0.45);
+}
+
+
+/* FOOTER */
+
+body.light-mode
+.portal-footer {
+
+    border-color:
+        rgba(0, 0, 0, 0.07);
+
+    color:
+        rgba(0, 0, 0, 0.36);
+}
+
+
+/* BOTTOM NAV */
+
+body.light-mode
+.bottom-nav {
+
+    background:
+        #ffffff;
+
+    border-top:
+        1px solid
+        rgba(0, 0, 0, 0.07);
 }
 
 
 body.light-mode
 .bottom-nav-item {
+
     color:
         rgba(0, 0, 0, 0.43);
 }
@@ -1222,22 +1430,19 @@ body.light-mode
 
 body.light-mode
 .bottom-nav-item.active {
+
     color:
         var(--orange);
 }
 
-/* LIGHT MODE - THEME SWITCH */
 
-body.light-mode .theme-slider {
-    background: #ffffff;
+body.light-mode
+.nav-notification {
 
     border-color:
-        rgba(0, 0, 0, 0.12);
-
-    box-shadow:
-        0 2px 8px
-        rgba(0, 0, 0, 0.06);
+        #ffffff;
 }
+
 
 /* =========================
    TABLET
@@ -1247,6 +1452,13 @@ body.light-mode .theme-slider {
 
     body {
         padding: 18px;
+    }
+
+
+    .portal-shell {
+
+        min-height:
+            calc(100vh - 36px);
     }
 
 
@@ -1278,49 +1490,67 @@ body.light-mode .theme-slider {
 
 
     .portal-shell {
+
         min-height:
             calc(100vh - 14px);
 
-        border-radius: 16px;
+        border-radius:
+            16px;
     }
 
 
     .portal-topbar {
-        padding: 15px;
 
-        flex-direction: column;
+        padding:
+            15px;
 
-        align-items: stretch;
+        flex-direction:
+            column;
 
-        gap: 13px;
+        align-items:
+            stretch;
+
+        gap:
+            13px;
     }
 
 
     .portal-brand strong {
-        font-size: 17px;
+
+        font-size:
+            17px;
     }
 
 
     .portal-logo {
-        width: 41px;
-        height: 41px;
 
-        font-size: 23px;
+        width:
+            41px;
+
+        height:
+            41px;
+
+        font-size:
+            23px;
     }
 
 
     .portal-topbar-actions {
+
         justify-content:
             space-between;
     }
 
 
     .portal-topbar-divider {
-        display: none;
+
+        display:
+            none;
     }
 
 
     .portal-content {
+
         padding:
             20px
             13px
@@ -1329,31 +1559,41 @@ body.light-mode .theme-slider {
 
 
     .projects-page-header {
-        align-items: flex-start;
 
-        flex-direction: column;
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
     }
 
 
     .projects-page-header h1 {
-        font-size: 23px;
+
+        font-size:
+            23px;
     }
 
 
     .projects-total-box {
-        width: 100%;
 
-        text-align: left;
+        width:
+            100%;
+
+        text-align:
+            left;
     }
 
 
     .projects-toolbar {
+
         grid-template-columns:
             1fr;
     }
 
 
     .project-info-grid {
+
         grid-template-columns:
             1fr
             1fr;
@@ -1361,6 +1601,7 @@ body.light-mode .theme-slider {
 
 
     .bottom-nav {
+
         padding:
             8px
             3px
@@ -1369,15 +1610,22 @@ body.light-mode .theme-slider {
 
 
     .bottom-nav-item {
-        min-height: 47px;
 
-        font-size: 8px;
+        min-height:
+            47px;
+
+        font-size:
+            8px;
     }
 
 
     .bottom-nav-item svg {
-        width: 19px;
-        height: 19px;
+
+        width:
+            19px;
+
+        height:
+            19px;
     }
 
 }
