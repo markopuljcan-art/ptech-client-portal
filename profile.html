@@ -12,7 +12,7 @@
 
     <link
         rel="stylesheet"
-        href="./profile.css?v=2"
+        href="./profile.css?v=4"
     >
 
     <script
@@ -20,7 +20,7 @@
     ></script>
 
     <script
-        src="./profile.js?v=1"
+        src="./profile.js?v=3"
         defer
     ></script>
 
@@ -43,6 +43,8 @@
         <header class="portal-topbar">
 
 
+            <!-- BRAND -->
+
             <a
                 href="form.html"
                 class="portal-brand"
@@ -59,8 +61,12 @@
             </a>
 
 
+            <!-- ACTIONS -->
+
             <div class="portal-topbar-actions">
 
+
+                <!-- USER -->
 
                 <div class="portal-user">
 
@@ -71,12 +77,12 @@
                             <circle
                                 cx="12"
                                 cy="8"
-                                r="3">
-                            </circle>
+                                r="3"
+                            ></circle>
 
                             <path
-                                d="M5 20c0-4 3-7 7-7s7 3 7 7">
-                            </path>
+                                d="M5 20c0-4 3-7 7-7s7 3 7 7"
+                            ></path>
 
                         </svg>
 
@@ -89,8 +95,12 @@
                 </div>
 
 
+                <!-- DIVIDER -->
+
                 <span class="portal-topbar-divider"></span>
 
+
+                <!-- LOGOUT -->
 
                 <button
                     type="button"
@@ -100,11 +110,17 @@
 
                     <svg viewBox="0 0 24 24">
 
-                        <path d="M10 5H5v14h5"></path>
+                        <path
+                            d="M10 5H5v14h5"
+                        ></path>
 
-                        <path d="M14 8l4 4-4 4"></path>
+                        <path
+                            d="M14 8l4 4-4 4"
+                        ></path>
 
-                        <path d="M8 12h10"></path>
+                        <path
+                            d="M8 12h10"
+                        ></path>
 
                     </svg>
 
@@ -115,8 +131,12 @@
                 </button>
 
 
+                <!-- DIVIDER -->
+
                 <span class="portal-topbar-divider"></span>
 
+
+                <!-- THEME -->
 
                 <label class="theme-switch">
 
@@ -143,6 +163,8 @@
         <div class="portal-content">
 
 
+            <!-- PAGE HEADER -->
+
             <section class="profile-page-header">
 
                 <span class="profile-eyebrow">
@@ -161,14 +183,13 @@
 
 
             <!-- =========================
-                 PROFILE CARD
+                 PROFILE
             ========================== -->
 
             <section class="profile-card">
 
 
                 <div class="profile-main">
-
 
                     <div
                         id="profileAvatar"
@@ -194,7 +215,6 @@
 
                     </div>
 
-
                 </div>
 
 
@@ -202,7 +222,9 @@
 
                     <span class="profile-status-dot"></span>
 
-                    Aktivan račun
+                    <span>
+                        Aktivan račun
+                    </span>
 
                 </div>
 
@@ -277,6 +299,7 @@
 
             <section class="profile-section">
 
+
                 <div class="profile-section-header">
 
                     <span>
@@ -295,56 +318,45 @@
 
                     <div class="profile-info-row">
 
-                        <div>
+                        <span>
+                            Ime
+                        </span>
 
-                            <span>
-                                Ime
-                            </span>
-
-                            <strong id="profileDisplayName">
-                                -
-                            </strong>
-
-                        </div>
+                        <strong id="profileDisplayName">
+                            -
+                        </strong>
 
                     </div>
 
 
                     <div class="profile-info-row">
 
-                        <div>
+                        <span>
+                            Email adresa
+                        </span>
 
-                            <span>
-                                Email adresa
-                            </span>
-
-                            <strong id="profileEmailRow">
-                                -
-                            </strong>
-
-                        </div>
+                        <strong id="profileEmailRow">
+                            -
+                        </strong>
 
                     </div>
 
 
                     <div class="profile-info-row">
 
-                        <div>
+                        <span>
+                            Vrsta računa
+                        </span>
 
-                            <span>
-                                Vrsta računa
-                            </span>
-
-                            <strong>
-                                Klijent
-                            </strong>
-
-                        </div>
+                        <strong>
+                            Klijent
+                        </strong>
 
                     </div>
 
 
                 </div>
+
 
             </section>
 
@@ -354,6 +366,7 @@
             ========================== -->
 
             <section class="profile-section">
+
 
                 <div class="profile-section-header">
 
@@ -371,6 +384,8 @@
                 <div class="profile-links">
 
 
+                    <!-- PROJECTS -->
+
                     <a
                         href="my-projects.html"
                         class="profile-link-card"
@@ -385,21 +400,27 @@
                                     y="5"
                                     width="16"
                                     height="15"
-                                    rx="2">
-                                </rect>
+                                    rx="2"
+                                ></rect>
 
-                                <path d="M8 5V3"></path>
+                                <path
+                                    d="M8 5V3"
+                                ></path>
 
-                                <path d="M16 5V3"></path>
+                                <path
+                                    d="M16 5V3"
+                                ></path>
 
-                                <path d="M4 9h16"></path>
+                                <path
+                                    d="M4 9h16"
+                                ></path>
 
                             </svg>
 
                         </div>
 
 
-                        <div>
+                        <div class="profile-link-text">
 
                             <strong>
                                 Moji projekti
@@ -419,6 +440,8 @@
                     </a>
 
 
+                    <!-- DOCUMENTS -->
+
                     <a
                         href="documents.html"
                         class="profile-link-card"
@@ -429,15 +452,15 @@
                             <svg viewBox="0 0 24 24">
 
                                 <path
-                                    d="M4 4h6l2 2h8v14H4z">
-                                </path>
+                                    d="M4 4h6l2 2h8v14H4z"
+                                ></path>
 
                             </svg>
 
                         </div>
 
 
-                        <div>
+                        <div class="profile-link-text">
 
                             <strong>
                                 Dokumenti
@@ -457,6 +480,8 @@
                     </a>
 
 
+                    <!-- SUPPORT -->
+
                     <a
                         href="messages.html"
                         class="profile-link-card"
@@ -467,15 +492,15 @@
                             <svg viewBox="0 0 24 24">
 
                                 <path
-                                    d="M4 5h16v11H8l-4 4z">
-                                </path>
+                                    d="M4 5h16v11H8l-4 4z"
+                                ></path>
 
                             </svg>
 
                         </div>
 
 
-                        <div>
+                        <div class="profile-link-text">
 
                             <strong>
                                 Podrška
@@ -497,6 +522,7 @@
 
                 </div>
 
+
             </section>
 
 
@@ -505,6 +531,7 @@
             ========================== -->
 
             <section class="profile-logout-card">
+
 
                 <div>
 
@@ -530,8 +557,11 @@
                     Odjava
                 </button>
 
+
             </section>
 
+
+            <!-- FOOTER -->
 
             <footer class="portal-footer">
 
@@ -551,6 +581,8 @@
         <nav class="bottom-nav">
 
 
+            <!-- HOME -->
+
             <a
                 href="form.html"
                 class="bottom-nav-item"
@@ -559,16 +591,16 @@
                 <svg viewBox="0 0 24 24">
 
                     <path
-                        d="M3 11.5L12 4l9 7.5">
-                    </path>
+                        d="M3 11.5L12 4l9 7.5"
+                    ></path>
 
                     <path
-                        d="M5 10.5V20h14v-9.5">
-                    </path>
+                        d="M5 10.5V20h14v-9.5"
+                    ></path>
 
                     <path
-                        d="M9 20v-6h6v6">
-                    </path>
+                        d="M9 20v-6h6v6"
+                    ></path>
 
                 </svg>
 
@@ -578,6 +610,8 @@
 
             </a>
 
+
+            <!-- MESSAGES -->
 
             <a
                 href="messages.html"
@@ -589,8 +623,8 @@
                     <svg viewBox="0 0 24 24">
 
                         <path
-                            d="M4 5h16v11H8l-4 4z">
-                        </path>
+                            d="M4 5h16v11H8l-4 4z"
+                        ></path>
 
                     </svg>
 
@@ -612,6 +646,8 @@
             </a>
 
 
+            <!-- PROJECTS -->
+
             <a
                 href="my-projects.html"
                 class="bottom-nav-item"
@@ -624,14 +660,20 @@
                         y="5"
                         width="16"
                         height="15"
-                        rx="2">
-                    </rect>
+                        rx="2"
+                    ></rect>
 
-                    <path d="M8 5V3"></path>
+                    <path
+                        d="M8 5V3"
+                    ></path>
 
-                    <path d="M16 5V3"></path>
+                    <path
+                        d="M16 5V3"
+                    ></path>
 
-                    <path d="M4 9h16"></path>
+                    <path
+                        d="M4 9h16"
+                    ></path>
 
                 </svg>
 
@@ -642,6 +684,8 @@
             </a>
 
 
+            <!-- DOCUMENTS -->
+
             <a
                 href="documents.html"
                 class="bottom-nav-item"
@@ -650,8 +694,8 @@
                 <svg viewBox="0 0 24 24">
 
                     <path
-                        d="M4 4h6l2 2h8v14H4z">
-                    </path>
+                        d="M4 4h6l2 2h8v14H4z"
+                    ></path>
 
                 </svg>
 
@@ -661,6 +705,8 @@
 
             </a>
 
+
+            <!-- PROFILE -->
 
             <a
                 href="profile.html"
@@ -672,12 +718,12 @@
                     <circle
                         cx="12"
                         cy="8"
-                        r="3">
-                    </circle>
+                        r="3"
+                    ></circle>
 
                     <path
-                        d="M5 20c0-4 3-7 7-7s7 3 7 7">
-                    </path>
+                        d="M5 20c0-4 3-7 7-7s7 3 7 7"
+                    ></path>
 
                 </svg>
 
