@@ -4,6 +4,7 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
 
+
 const supabaseClient =
     supabase.createClient(
         SUPABASE_URL,
@@ -55,6 +56,11 @@ const approvalMessage =
         "approvalMessage"
     );
 
+const themeToggle =
+    document.getElementById(
+        "themeToggle"
+    );
+
 
 /* =========================
    PROJECT ID
@@ -73,7 +79,75 @@ const projectId =
    TRENUTNI DIZAJN
 ========================= */
 
-let currentDesign = null;
+let currentDesign =
+    null;
+
+
+/* =========================
+   THEME
+========================= */
+
+function applyTheme(theme) {
+
+    const finalTheme =
+        theme === "light"
+            ? "light"
+            : "dark";
+
+
+    document.body.classList.toggle(
+        "light-mode",
+        finalTheme === "light"
+    );
+
+
+    if (
+        themeToggle
+    ) {
+
+        themeToggle.checked =
+            finalTheme === "light";
+    }
+
+
+    localStorage.setItem(
+        "ptech-theme",
+        finalTheme
+    );
+}
+
+
+function loadTheme() {
+
+    const savedTheme =
+        localStorage.getItem(
+            "ptech-theme"
+        );
+
+
+    applyTheme(
+        savedTheme === "light"
+            ? "light"
+            : "dark"
+    );
+}
+
+
+themeToggle
+    ?.addEventListener(
+        "change",
+        () => {
+
+            applyTheme(
+                themeToggle.checked
+                    ? "light"
+                    : "dark"
+            );
+        }
+    );
+
+
+loadTheme();
 
 
 /* =========================
@@ -85,15 +159,20 @@ function showMessage(
     type = "success"
 ) {
 
-    if (!approvalMessage) {
+    if (
+        !approvalMessage
+    ) {
         return;
     }
+
 
     approvalMessage.hidden =
         false;
 
+
     approvalMessage.className =
         `approval-message ${type}`;
+
 
     approvalMessage.textContent =
         message;
@@ -102,15 +181,20 @@ function showMessage(
 
 function hideMessage() {
 
-    if (!approvalMessage) {
+    if (
+        !approvalMessage
+    ) {
         return;
     }
+
 
     approvalMessage.hidden =
         true;
 
+
     approvalMessage.className =
         "approval-message";
+
 
     approvalMessage.textContent =
         "";
@@ -123,21 +207,33 @@ function hideMessage() {
 
 function renderStatus(status) {
 
-    if (!projectStatus) {
+    if (
+        !projectStatus
+    ) {
         return;
     }
 
+
     const value =
-        String(status || "")
+        String(
+            status || ""
+        )
             .toLowerCase()
             .trim();
+
 
     projectStatus.textContent =
         status || "-";
 
-    projectStatus.style.color = "";
-    projectStatus.style.borderColor = "";
-    projectStatus.style.background = "";
+
+    projectStatus.style.color =
+        "";
+
+    projectStatus.style.borderColor =
+        "";
+
+    projectStatus.style.background =
+        "";
 
 
     if (
@@ -148,11 +244,14 @@ function renderStatus(status) {
         projectStatus.style.color =
             "#4edb7b";
 
+
         projectStatus.style.borderColor =
             "rgba(46, 204, 113, 0.35)";
 
+
         projectStatus.style.background =
             "rgba(46, 204, 113, 0.08)";
+
 
         return;
     }
@@ -166,11 +265,14 @@ function renderStatus(status) {
         projectStatus.style.color =
             "#aaa";
 
+
         projectStatus.style.borderColor =
             "rgba(160, 160, 160, 0.30)";
 
+
         projectStatus.style.background =
             "rgba(160, 160, 160, 0.07)";
+
 
         return;
     }
@@ -179,81 +281,15 @@ function renderStatus(status) {
     projectStatus.style.color =
         "#ff9a35";
 
+
     projectStatus.style.borderColor =
         "rgba(255, 122, 0, 0.35)";
+
 
     projectStatus.style.background =
         "rgba(255, 122, 0, 0.08)";
 }
 
-const themeToggle =
-    document.getElementById(
-        "themeToggle"
-    );
-
-
-function loadTheme() {
-
-    const savedTheme =
-        localStorage.getItem(
-            "theme"
-        );
-
-
-    if (
-        savedTheme === "light"
-    ) {
-
-        document.body.classList.add(
-            "light-mode"
-        );
-
-
-        if (themeToggle) {
-
-            themeToggle.checked =
-                true;
-        }
-    }
-}
-
-
-themeToggle
-    ?.addEventListener(
-        "change",
-        () => {
-
-            if (
-                themeToggle.checked
-            ) {
-
-                document.body.classList.add(
-                    "light-mode"
-                );
-
-
-                localStorage.setItem(
-                    "theme",
-                    "light"
-                );
-
-            } else {
-
-                document.body.classList.remove(
-                    "light-mode"
-                );
-
-
-                localStorage.setItem(
-                    "theme",
-                    "dark"
-                );
-            }
-        }
-    );
-
-
-loadTheme();
 
 /* =========================
    ACTIONS
@@ -261,24 +297,42 @@ loadTheme();
 
 function disableActions() {
 
-    if (approveButton) {
-        approveButton.disabled = true;
+    if (
+        approveButton
+    ) {
+
+        approveButton.disabled =
+            true;
     }
 
-    if (revisionButton) {
-        revisionButton.disabled = true;
+
+    if (
+        revisionButton
+    ) {
+
+        revisionButton.disabled =
+            true;
     }
 }
 
 
 function enableActions() {
 
-    if (approveButton) {
-        approveButton.disabled = false;
+    if (
+        approveButton
+    ) {
+
+        approveButton.disabled =
+            false;
     }
 
-    if (revisionButton) {
-        revisionButton.disabled = false;
+
+    if (
+        revisionButton
+    ) {
+
+        revisionButton.disabled =
+            false;
     }
 }
 
@@ -289,10 +343,13 @@ function enableActions() {
 
 function renderApprovedState() {
 
-    if (approveButton) {
+    if (
+        approveButton
+    ) {
 
         approveButton.disabled =
             true;
+
 
         approveButton.innerHTML = `
 
@@ -315,7 +372,9 @@ function renderApprovedState() {
     }
 
 
-    if (revisionButton) {
+    if (
+        revisionButton
+    ) {
 
         revisionButton.disabled =
             false;
@@ -324,17 +383,21 @@ function renderApprovedState() {
 
 
 /* =========================
-   RESET APPROVE BUTTON
+   PENDING STATE
 ========================= */
 
 function renderPendingState() {
 
-    if (!approveButton) {
+    if (
+        !approveButton
+    ) {
         return;
     }
 
+
     approveButton.disabled =
         false;
+
 
     approveButton.innerHTML = `
 
@@ -361,11 +424,16 @@ function renderPendingState() {
    DESIGN PLACEHOLDER
 ========================= */
 
-function renderDesignPlaceholder(text) {
+function renderDesignPlaceholder(
+    text
+) {
 
-    if (!designPreview) {
+    if (
+        !designPreview
+    ) {
         return;
     }
+
 
     designPreview.innerHTML = `
 
@@ -381,12 +449,16 @@ function renderDesignPlaceholder(text) {
 
 
 /* =========================
-   UČITAJ ZADNJI DIZAJN
+   LOAD PROJECT DESIGN
 ========================= */
 
-async function loadProjectDesign(project) {
+async function loadProjectDesign(
+    project
+) {
 
-    if (!designPreview) {
+    if (
+        !designPreview
+    ) {
         return null;
     }
 
@@ -401,7 +473,9 @@ async function loadProjectDesign(project) {
         error
     } =
         await supabaseClient
-            .from("project_designs")
+            .from(
+                "project_designs"
+            )
             .select(`
                 id,
                 project_id,
@@ -422,16 +496,20 @@ async function loadProjectDesign(project) {
             .limit(1);
 
 
-    if (error) {
+    if (
+        error
+    ) {
 
         console.error(
             "Greška kod dohvaćanja dizajna:",
             error
         );
 
+
         renderDesignPlaceholder(
             "Dizajn se trenutno ne može učitati."
         );
+
 
         return null;
     }
@@ -446,6 +524,7 @@ async function loadProjectDesign(project) {
             "Trenutno nema dodanog pregleda dizajna."
         );
 
+
         return null;
     }
 
@@ -458,17 +537,22 @@ async function loadProjectDesign(project) {
         design;
 
 
-    if (!design.file_path) {
+    if (
+        !design.file_path
+    ) {
 
         renderDesignPlaceholder(
             "Datoteka dizajna nije pronađena."
         );
 
+
         return null;
     }
 
 
-    /* SIGNED URL */
+    /* =========================
+       SIGNED URL
+    ========================= */
 
     const {
         data: signedData,
@@ -485,32 +569,41 @@ async function loadProjectDesign(project) {
             );
 
 
-    if (signedError) {
+    if (
+        signedError
+    ) {
 
         console.error(
             "Greška kod signed URL-a:",
             signedError
         );
 
+
         renderDesignPlaceholder(
             "Slika dizajna se trenutno ne može prikazati."
         );
+
 
         return null;
     }
 
 
-    if (!signedData?.signedUrl) {
+    if (
+        !signedData?.signedUrl
+    ) {
 
         renderDesignPlaceholder(
             "Slika dizajna nije dostupna."
         );
 
+
         return null;
     }
 
 
-    /* PRIKAZ */
+    /* =========================
+       RENDER
+    ========================= */
 
     designPreview.innerHTML = `
 
@@ -531,8 +624,7 @@ async function loadProjectDesign(project) {
 
 
 /* =========================
-   PROVJERI JE LI OVA
-   VERZIJA ODOBRENA
+   EXISTING APPROVAL
 ========================= */
 
 async function loadExistingApproval(
@@ -541,7 +633,9 @@ async function loadExistingApproval(
     design
 ) {
 
-    if (!design) {
+    if (
+        !design
+    ) {
         return false;
     }
 
@@ -575,20 +669,26 @@ async function loadExistingApproval(
             .maybeSingle();
 
 
-    if (error) {
+    if (
+        error
+    ) {
 
         console.error(
             "Greška kod učitavanja odobrenja:",
             error
         );
 
+
         return false;
     }
 
 
-    if (!approval) {
+    if (
+        !approval
+    ) {
 
         renderPendingState();
+
 
         return false;
     }
@@ -623,7 +723,9 @@ function setupApprovalActions(
        ODOBRI DIZAJN
     ========================= */
 
-    if (approveButton) {
+    if (
+        approveButton
+    ) {
 
         approveButton.onclick =
             async function () {
@@ -631,12 +733,15 @@ function setupApprovalActions(
                 hideMessage();
 
 
-                if (!currentDesign) {
+                if (
+                    !currentDesign
+                ) {
 
                     showMessage(
                         "Nema dostupnog dizajna za odobrenje.",
                         "error"
                     );
+
 
                     return;
                 }
@@ -647,8 +752,8 @@ function setupApprovalActions(
 
 
                 /* =========================
-                   PROVJERI POSTOJI LI VEĆ
-                   ODOBRENJE ZA TU VERZIJU
+                   PROVJERI POSTOJI LI
+                   ODOBRENJE
                 ========================= */
 
                 const {
@@ -679,33 +784,42 @@ function setupApprovalActions(
                         .maybeSingle();
 
 
-                if (existingError) {
+                if (
+                    existingError
+                ) {
 
                     console.error(
                         "Greška kod provjere odobrenja:",
                         existingError
                     );
 
+
                     showMessage(
                         "Nije moguće provjeriti odobrenje.",
                         "error"
                     );
 
+
                     approveButton.disabled =
                         false;
+
 
                     return;
                 }
 
 
-                if (existingApproval) {
+                if (
+                    existingApproval
+                ) {
 
                     renderApprovedState();
+
 
                     showMessage(
                         "Ova verzija dizajna je već odobrena.",
                         "success"
                     );
+
 
                     return;
                 }
@@ -738,20 +852,25 @@ function setupApprovalActions(
                         });
 
 
-                if (insertError) {
+                if (
+                    insertError
+                ) {
 
                     console.error(
                         "Greška kod spremanja odobrenja:",
                         insertError
                     );
 
+
                     showMessage(
                         "Došlo je do greške prilikom odobrenja dizajna.",
                         "error"
                     );
 
+
                     approveButton.disabled =
                         false;
+
 
                     return;
                 }
@@ -779,7 +898,9 @@ function setupApprovalActions(
                         );
 
 
-                if (designUpdateError) {
+                if (
+                    designUpdateError
+                ) {
 
                     console.error(
                         "Greška kod statusa dizajna:",
@@ -807,17 +928,22 @@ function setupApprovalActions(
        ZATRAŽI IZMJENU
     ========================= */
 
-    if (revisionButton) {
+    if (
+        revisionButton
+    ) {
 
         revisionButton.onclick =
             function () {
 
-                if (!currentDesign) {
+                if (
+                    !currentDesign
+                ) {
 
                     showMessage(
                         "Nema dostupnog dizajna za izmjenu.",
                         "error"
                     );
+
 
                     return;
                 }
@@ -839,7 +965,9 @@ async function loadProject() {
     hideMessage();
 
 
-    /* SESSION */
+    /* =========================
+       SESSION
+    ========================= */
 
     const {
         data: {
@@ -860,42 +988,57 @@ async function loadProject() {
         window.location.href =
             "login.html";
 
+
         return;
     }
 
 
-    /* ID */
+    /* =========================
+       ID
+    ========================= */
 
-    if (!projectId) {
+    if (
+        !projectId
+    ) {
 
         showMessage(
             "Projekt nije odabran.",
             "error"
         );
 
+
         disableActions();
+
 
         return;
     }
 
 
-    /* BACK */
+    /* =========================
+       BACK
+    ========================= */
 
-    if (backToProject) {
+    if (
+        backToProject
+    ) {
 
         backToProject.href =
             `project.html?id=${projectId}`;
     }
 
 
-    /* PROJECT */
+    /* =========================
+       PROJECT
+    ========================= */
 
     const {
         data: project,
         error
     } =
         await supabaseClient
-            .from("projects")
+            .from(
+                "projects"
+            )
             .select(`
                 id,
                 type,
@@ -910,38 +1053,49 @@ async function loadProject() {
             .maybeSingle();
 
 
-    if (error) {
+    if (
+        error
+    ) {
 
         console.error(
             "Greška kod projekta:",
             error
         );
 
+
         showMessage(
             "Projekt se ne može učitati.",
             "error"
         );
 
+
         disableActions();
+
 
         return;
     }
 
 
-    if (!project) {
+    if (
+        !project
+    ) {
 
         showMessage(
             "Projekt nije pronađen.",
             "error"
         );
 
+
         disableActions();
+
 
         return;
     }
 
 
-    /* USER CHECK */
+    /* =========================
+       USER CHECK
+    ========================= */
 
     if (
         project.user_id &&
@@ -954,15 +1108,21 @@ async function loadProject() {
             "error"
         );
 
+
         disableActions();
+
 
         return;
     }
 
 
-    /* RENDER */
+    /* =========================
+       RENDER PROJECT
+    ========================= */
 
-    if (projectTitle) {
+    if (
+        projectTitle
+    ) {
 
         projectTitle.textContent =
             project.type ||
@@ -971,10 +1131,13 @@ async function loadProject() {
     }
 
 
-    if (projectName) {
+    if (
+        projectName
+    ) {
 
         projectName.textContent =
-            project.name || "";
+            project.name ||
+            "";
     }
 
 
@@ -989,7 +1152,9 @@ async function loadProject() {
     );
 
 
-    /* DESIGN */
+    /* =========================
+       DESIGN
+    ========================= */
 
     const design =
         await loadProjectDesign(
@@ -997,16 +1162,20 @@ async function loadProject() {
         );
 
 
-    if (!design) {
+    if (
+        !design
+    ) {
 
         disableActions();
+
 
         return;
     }
 
 
-    /* PROVJERI ODOBRENJE ZA
-       KONKRETNU VERZIJU */
+    /* =========================
+       EXISTING APPROVAL
+    ========================= */
 
     await loadExistingApproval(
         project,
