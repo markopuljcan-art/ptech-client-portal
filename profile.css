@@ -1,3 +1,7 @@
+/* =========================
+   GLOBAL
+========================= */
+
 * {
     box-sizing: border-box;
 }
@@ -11,6 +15,9 @@
 
     --muted:
         rgba(255, 255, 255, 0.52);
+
+    --border:
+        rgba(255, 255, 255, 0.10);
 }
 
 
@@ -62,14 +69,20 @@ body {
 
 
 /* =========================
-   SHELL
+   PORTAL SHELL
 ========================= */
 
 .portal-shell {
     width: 100%;
     max-width: 1100px;
 
+    min-height:
+        calc(100vh - 84px);
+
     overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
 
     border:
         1px solid
@@ -107,11 +120,17 @@ body {
 
     gap: 25px;
 
+    flex-shrink: 0;
+
     border-bottom:
         1px solid
         rgba(255, 255, 255, 0.09);
 }
 
+
+/* =========================
+   BRAND
+========================= */
 
 .portal-brand {
     display: flex;
@@ -128,6 +147,8 @@ body {
 .portal-logo {
     width: 48px;
     height: 48px;
+
+    flex: 0 0 48px;
 
     display: flex;
     align-items: center;
@@ -155,6 +176,10 @@ body {
     font-size: 23px;
 }
 
+
+/* =========================
+   TOPBAR ACTIONS
+========================= */
 
 .portal-topbar-actions {
     display: flex;
@@ -213,6 +238,10 @@ body {
 }
 
 
+/* =========================
+   LOGOUT
+========================= */
+
 .portal-logout {
     display: flex;
     align-items: center;
@@ -235,6 +264,10 @@ body {
     font-family: inherit;
 
     cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
 }
 
 
@@ -251,7 +284,9 @@ body {
     height: 20px;
 
     fill: none;
-    stroke: currentColor;
+
+    stroke:
+        currentColor;
 
     stroke-width: 1.8;
     stroke-linecap: round;
@@ -260,7 +295,7 @@ body {
 
 
 /* =========================
-   THEME
+   THEME SWITCH
 ========================= */
 
 .theme-switch {
@@ -268,11 +303,22 @@ body {
 
     width: 58px;
     height: 32px;
+
+    flex: 0 0 58px;
+
+    display: block;
 }
 
 
 .theme-switch input {
-    display: none;
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    opacity: 0;
+
+    pointer-events: none;
 }
 
 
@@ -290,6 +336,11 @@ body {
     background: #121314;
 
     cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
 
@@ -326,6 +377,22 @@ body {
 }
 
 
+/* LIGHT CHECKED STATE */
+
+.theme-switch input:checked +
+.theme-slider {
+    background:
+        #ffffff !important;
+
+    border-color:
+        rgba(0, 0, 0, 0.14) !important;
+
+    box-shadow:
+        0 2px 8px
+        rgba(0, 0, 0, 0.06);
+}
+
+
 .theme-switch input:checked +
 .theme-slider::before {
     content: "☀";
@@ -344,8 +411,17 @@ body {
         34px
         42px
         0;
+
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
 }
 
+
+/* =========================
+   PAGE HEADER
+========================= */
 
 .profile-page-header {
     margin-bottom: 24px;
@@ -512,7 +588,8 @@ body {
     background:
         rgba(46, 204, 113, 0.05);
 
-    color: #55dc80;
+    color:
+        #55dc80;
 
     font-size: 9px;
     font-weight: 700;
@@ -525,7 +602,8 @@ body {
 
     border-radius: 50%;
 
-    background: #55dc80;
+    background:
+        #55dc80;
 }
 
 
@@ -689,7 +767,7 @@ body {
 
 
 /* =========================
-   LINKS
+   QUICK LINKS
 ========================= */
 
 .profile-links {
@@ -725,7 +803,8 @@ body {
 
     transition:
         border-color 0.2s ease,
-        transform 0.2s ease;
+        transform 0.2s ease,
+        background 0.2s ease;
 }
 
 
@@ -883,7 +962,8 @@ body {
             #ff7000
         );
 
-    color: #151515;
+    color:
+        #151515;
 
     font-family: inherit;
 
@@ -924,10 +1004,13 @@ body {
 ========================= */
 
 .bottom-nav {
-    position: sticky;
-    bottom: 0;
+    position: relative;
+
+    bottom: auto;
 
     z-index: 20;
+
+    margin-top: auto;
 
     padding:
         9px
@@ -938,6 +1021,8 @@ body {
 
     grid-template-columns:
         repeat(5, 1fr);
+
+    flex-shrink: 0;
 
     border-top:
         1px solid
@@ -1054,15 +1139,21 @@ body {
 }
 
 
-/* =========================
-   LIGHT
-========================= */
+/* =====================================================
+   LIGHT MODE
+===================================================== */
 
 body.light-mode {
     --text: #1f1f1f;
     --muted: #77716c;
 
     background:
+        radial-gradient(
+            circle at 5% 5%,
+            rgba(255, 122, 0, 0.08),
+            transparent 28%
+        ),
+
         linear-gradient(
             135deg,
             #f6f3ef,
@@ -1071,9 +1162,12 @@ body.light-mode {
 }
 
 
+/* PORTAL */
+
 body.light-mode
 .portal-shell {
-    background: #fff;
+    background:
+        #ffffff;
 
     border-color:
         rgba(0, 0, 0, 0.08);
@@ -1084,46 +1178,176 @@ body.light-mode
 }
 
 
-body.light-mode
-.portal-brand strong,
+/* TOPBAR */
 
 body.light-mode
-.profile-page-header h1,
+.portal-topbar {
+    border-bottom-color:
+        rgba(0, 0, 0, 0.07);
+}
+
 
 body.light-mode
-.profile-main-info h2,
-
-body.light-mode
-.profile-link-card strong,
-
-body.light-mode
-.profile-info-row strong,
-
-body.light-mode
-.profile-logout-card strong {
+.portal-brand strong {
     color: #1d1d1d;
 }
 
 
 body.light-mode
-.profile-card,
+.portal-user {
+    color: #1d1d1d;
+}
+
 
 body.light-mode
-.profile-stat-card,
+.portal-user-icon {
+    background:
+        rgba(0, 0, 0, 0.04);
+}
+
+
+body.light-mode
+.portal-user-icon svg {
+    stroke: #555;
+}
+
+
+body.light-mode
+.portal-topbar-divider {
+    background:
+        rgba(0, 0, 0, 0.09);
+}
+
+
+body.light-mode
+.portal-logout {
+    color: #555;
+}
+
+
+body.light-mode
+.portal-logout:hover {
+    color: #1d1d1d;
+
+    background:
+        rgba(0, 0, 0, 0.04);
+}
+
+
+/* =========================
+   LIGHT THEME SWITCH
+========================= */
+
+/*
+   Namjerno imamo više selektora.
+   Tako kapsula ostaje bijela bez obzira
+   koristi li JS body.light-mode,
+   data-theme ili checked stanje.
+*/
+
+body.light-mode
+.theme-slider,
+
+html[data-theme="light"]
+.theme-slider,
+
+.theme-switch
+input:checked +
+.theme-slider {
+    background:
+        #ffffff !important;
+
+    border-color:
+        rgba(0, 0, 0, 0.14) !important;
+
+    box-shadow:
+        0 2px 8px
+        rgba(0, 0, 0, 0.06) !important;
+}
+
+
+body.light-mode
+.theme-slider::before,
+
+html[data-theme="light"]
+.theme-slider::before {
+    background:
+        linear-gradient(
+            135deg,
+            #ffad35,
+            #ff7700
+        );
+
+    color: #111;
+}
+
+
+/* PAGE HEADER */
+
+body.light-mode
+.profile-page-header h1 {
+    color: #1d1d1d;
+}
+
+
+/* PROFILE */
+
+body.light-mode
+.profile-card {
+    border-color:
+        rgba(255, 122, 0, 0.18);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 122, 0, 0.055),
+            #ffffff
+        );
+}
+
+
+body.light-mode
+.profile-main-info h2 {
+    color: #1d1d1d;
+}
+
+
+/* STATS */
+
+body.light-mode
+.profile-stat-card {
+    background:
+        #fafafa;
+
+    border-color:
+        rgba(0, 0, 0, 0.07);
+}
+
+
+/* SECTIONS */
 
 body.light-mode
 .profile-section {
+    background:
+        #ffffff;
+
     border-color:
         rgba(0, 0, 0, 0.07);
 }
 
 
 body.light-mode
-.profile-info-row,
+.profile-section-header h2 {
+    color: #1d1d1d;
+}
+
+
+/* INFO */
 
 body.light-mode
-.profile-link-card {
-    background: #fafafa;
+.profile-info-row {
+    background:
+        #fafafa;
 
     border-color:
         rgba(0, 0, 0, 0.06);
@@ -1131,11 +1355,78 @@ body.light-mode
 
 
 body.light-mode
-.bottom-nav {
+.profile-info-row strong {
+    color: #1d1d1d;
+}
+
+
+/* LINKS */
+
+body.light-mode
+.profile-link-card {
     background:
-        rgba(255, 255, 255, 0.96);
+        #fafafa;
 
     border-color:
+        rgba(0, 0, 0, 0.06);
+}
+
+
+body.light-mode
+.profile-link-card strong {
+    color: #1d1d1d;
+}
+
+
+body.light-mode
+.profile-link-card:hover {
+    background:
+        #ffffff;
+
+    border-color:
+        rgba(255, 122, 0, 0.30);
+}
+
+
+/* LOGOUT CARD */
+
+body.light-mode
+.profile-logout-card {
+    background:
+        rgba(255, 122, 0, 0.035);
+
+    border-color:
+        rgba(255, 122, 0, 0.16);
+}
+
+
+body.light-mode
+.profile-logout-card strong {
+    color: #1d1d1d;
+}
+
+
+/* FOOTER */
+
+body.light-mode
+.portal-footer {
+    border-top-color:
+        rgba(0, 0, 0, 0.07);
+
+    color:
+        rgba(0, 0, 0, 0.36);
+}
+
+
+/* BOTTOM NAV */
+
+body.light-mode
+.bottom-nav {
+    background:
+        #ffffff;
+
+    border-top:
+        1px solid
         rgba(0, 0, 0, 0.07);
 }
 
@@ -1153,32 +1444,13 @@ body.light-mode
         var(--orange);
 }
 
-/* =========================
-   LIGHT MODE - THEME SWITCH
-========================= */
 
-body.light-mode .theme-slider {
-    background: #ffffff !important;
-
+body.light-mode
+.nav-notification {
     border-color:
-        rgba(0, 0, 0, 0.14) !important;
-
-    box-shadow:
-        0 2px 8px
-        rgba(0, 0, 0, 0.06);
+        #ffffff;
 }
 
-
-body.light-mode .theme-slider::before {
-    background:
-        linear-gradient(
-            135deg,
-            #ffad35,
-            #ff7700
-        );
-
-    color: #111;
-}
 
 /* =========================
    TABLET
@@ -1187,7 +1459,14 @@ body.light-mode .theme-slider::before {
 @media (max-width: 850px) {
 
     body {
-        padding: 18px;
+        padding:
+            18px;
+    }
+
+
+    .portal-shell {
+        min-height:
+            calc(100vh - 36px);
     }
 
 
@@ -1222,31 +1501,46 @@ body.light-mode .theme-slider::before {
         min-height:
             calc(100vh - 14px);
 
-        border-radius: 16px;
+        border-radius:
+            16px;
     }
 
 
     .portal-topbar {
-        padding: 15px;
+        min-height: auto;
 
-        flex-direction: column;
+        padding:
+            15px;
 
-        align-items: stretch;
+        flex-direction:
+            column;
 
-        gap: 13px;
+        align-items:
+            stretch;
+
+        gap:
+            13px;
     }
 
 
     .portal-brand strong {
-        font-size: 17px;
+        font-size:
+            17px;
     }
 
 
     .portal-logo {
-        width: 41px;
-        height: 41px;
+        width:
+            41px;
 
-        font-size: 23px;
+        height:
+            41px;
+
+        flex-basis:
+            41px;
+
+        font-size:
+            23px;
     }
 
 
@@ -1257,7 +1551,8 @@ body.light-mode .theme-slider::before {
 
 
     .portal-topbar-divider {
-        display: none;
+        display:
+            none;
     }
 
 
@@ -1266,6 +1561,12 @@ body.light-mode .theme-slider::before {
             20px
             13px
             0;
+    }
+
+
+    .profile-page-header h1 {
+        font-size:
+            23px;
     }
 
 
@@ -1284,6 +1585,12 @@ body.light-mode .theme-slider::before {
     }
 
 
+    .profile-links {
+        grid-template-columns:
+            1fr;
+    }
+
+
     .profile-logout-card {
         align-items:
             stretch;
@@ -1294,7 +1601,8 @@ body.light-mode .theme-slider::before {
 
 
     .profile-logout-card button {
-        width: 100%;
+        width:
+            100%;
     }
 
 
@@ -1307,15 +1615,20 @@ body.light-mode .theme-slider::before {
 
 
     .bottom-nav-item {
-        min-height: 47px;
+        min-height:
+            47px;
 
-        font-size: 8px;
+        font-size:
+            8px;
     }
 
 
     .bottom-nav-item svg {
-        width: 19px;
-        height: 19px;
+        width:
+            19px;
+
+        height:
+            19px;
     }
 
 }
