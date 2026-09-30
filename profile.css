@@ -1153,6 +1153,32 @@ body.light-mode
         var(--orange);
 }
 
+/* =========================
+   LIGHT MODE - THEME SWITCH
+========================= */
+
+body.light-mode .theme-slider {
+    background: #ffffff !important;
+
+    border-color:
+        rgba(0, 0, 0, 0.14) !important;
+
+    box-shadow:
+        0 2px 8px
+        rgba(0, 0, 0, 0.06);
+}
+
+
+body.light-mode .theme-slider::before {
+    background:
+        linear-gradient(
+            135deg,
+            #ffad35,
+            #ff7700
+        );
+
+    color: #111;
+}
 
 /* =========================
    TABLET
