@@ -12,15 +12,15 @@
 
     <link
         rel="stylesheet"
-        href="./approve.css?v=1"
+        href="./approve.css?v=2"
     >
 
     <script
-        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-    </script>
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
 
     <script
-        src="./approve.js?v=6"
+        src="./approve.js?v=7"
         defer
     ></script>
 
@@ -36,15 +36,19 @@
     <main class="approve-page">
 
 
-        <!-- HEADER -->
+        <!-- =========================
+             HEADER
+        ========================== -->
 
         <header class="approve-header">
+
 
             <div class="brand">
 
                 <div class="brand-logo">
                     P
                 </div>
+
 
                 <div>
 
@@ -57,32 +61,48 @@
                     </p>
 
                 </div>
-<label class="theme-switch">
 
-    <input
-        type="checkbox"
-        id="themeToggle"
-        aria-label="Promijeni temu"
-    >
-
-    <span class="theme-slider"></span>
-
-</label>
             </div>
 
 
-            <a
-                href="form.html"
-                class="close-button"
-            >
-                ×
-            </a>
+            <div class="approve-header-actions">
+
+
+                <!-- THEME -->
+
+                <label class="theme-switch">
+
+                    <input
+                        type="checkbox"
+                        id="themeToggle"
+                        aria-label="Promijeni temu"
+                    >
+
+                    <span class="theme-slider"></span>
+
+                </label>
+
+
+                <!-- CLOSE -->
+
+                <a
+                    href="form.html"
+                    class="close-button"
+                    aria-label="Zatvori"
+                >
+                    ×
+                </a>
+
+
+            </div>
+
 
         </header>
 
 
-
-        <!-- CONTENT -->
+        <!-- =========================
+             CONTENT
+        ========================== -->
 
         <div class="approve-content">
 
@@ -102,10 +122,12 @@
             </div>
 
 
-
-            <!-- PROJECT INFO -->
+            <!-- =========================
+                 PROJECT INFO
+            ========================== -->
 
             <section class="approve-project-card">
+
 
                 <div>
 
@@ -130,13 +152,16 @@
                     -
                 </span>
 
+
             </section>
 
 
-
-            <!-- DESIGN PREVIEW -->
+            <!-- =========================
+                 DESIGN PREVIEW
+            ========================== -->
 
             <section class="design-section">
+
 
                 <div class="design-section-header">
 
@@ -170,13 +195,16 @@
 
                 </div>
 
+
             </section>
 
 
-
-            <!-- ACTIONS -->
+            <!-- =========================
+                 ACTIONS
+            ========================== -->
 
             <section class="approval-actions">
+
 
                 <button
                     type="button"
@@ -227,11 +255,13 @@
 
                 </button>
 
+
             </section>
 
 
-
-            <!-- MESSAGE -->
+            <!-- =========================
+                 MESSAGE
+            ========================== -->
 
             <div
                 class="approval-message"
@@ -242,6 +272,7 @@
 
 
         </div>
+
 
     </main>
 
