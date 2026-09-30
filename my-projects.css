@@ -1226,6 +1226,18 @@ body.light-mode
         var(--orange);
 }
 
+/* LIGHT MODE - THEME SWITCH */
+
+body.light-mode .theme-slider {
+    background: #ffffff;
+
+    border-color:
+        rgba(0, 0, 0, 0.12);
+
+    box-shadow:
+        0 2px 8px
+        rgba(0, 0, 0, 0.06);
+}
 
 /* =========================
    TABLET
