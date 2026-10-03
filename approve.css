@@ -8,12 +8,10 @@
 
 
 :root {
-
     --orange: #ff7a00;
     --orange-light: #ff9a35;
 
     --background: #0b0c0e;
-    --card: #151618;
 
     --text: #f5f5f5;
 
@@ -27,10 +25,6 @@
     --red: #ff5d5d;
 }
 
-
-/* =========================
-   HTML / BODY
-========================= */
 
 html {
     min-height: 100%;
@@ -68,10 +62,6 @@ body {
         ),
 
         var(--background);
-
-    transition:
-        background 0.25s ease,
-        color 0.25s ease;
 }
 
 
@@ -105,11 +95,6 @@ body {
     box-shadow:
         0 30px 80px
         rgba(0, 0, 0, 0.45);
-
-    transition:
-        background 0.25s ease,
-        border-color 0.25s ease,
-        box-shadow 0.25s ease;
 }
 
 
@@ -219,56 +204,7 @@ body {
 
 
 /* =========================
-   CLOSE
-========================= */
-
-.close-button {
-    width: 38px;
-    height: 38px;
-
-    flex: 0 0 38px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.10);
-
-    border-radius: 50%;
-
-    background:
-        rgba(255, 255, 255, 0.03);
-
-    color:
-        rgba(255, 255, 255, 0.65);
-
-    text-decoration: none;
-
-    font-size: 24px;
-
-    transition:
-        color 0.2s ease,
-        border-color 0.2s ease,
-        background 0.2s ease;
-}
-
-
-.close-button:hover {
-    color:
-        var(--orange);
-
-    border-color:
-        rgba(255, 122, 0, 0.35);
-
-    background:
-        rgba(255, 122, 0, 0.08);
-}
-
-
-/* =========================
-   THEME SWITCH
+   THEME
 ========================= */
 
 .theme-switch {
@@ -278,11 +214,16 @@ body {
     height: 32px;
 
     flex: 0 0 58px;
+
+    display: block;
 }
 
 
 .theme-switch input {
     position: absolute;
+
+    width: 1px;
+    height: 1px;
 
     opacity: 0;
 
@@ -301,13 +242,15 @@ body {
 
     border-radius: 999px;
 
-    background: #121314;
+    background:
+        #121314;
 
     cursor: pointer;
 
     transition:
         background 0.25s ease,
-        border-color 0.25s ease;
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
 
@@ -344,12 +287,75 @@ body {
 }
 
 
-.theme-switch input:checked +
+.theme-switch
+input:checked +
+.theme-slider {
+    background:
+        #ffffff !important;
+
+    border-color:
+        rgba(0, 0, 0, 0.14) !important;
+
+    box-shadow:
+        0 2px 8px
+        rgba(0, 0, 0, 0.07);
+}
+
+
+.theme-switch
+input:checked +
 .theme-slider::before {
     content: "☀";
 
     transform:
         translateX(26px);
+}
+
+
+/* =========================
+   CLOSE
+========================= */
+
+.close-button {
+    width: 38px;
+    height: 38px;
+
+    flex: 0 0 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.10);
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.03);
+
+    color:
+        rgba(255, 255, 255, 0.65);
+
+    text-decoration: none;
+
+    font-size: 24px;
+
+    transition:
+        0.2s ease;
+}
+
+
+.close-button:hover {
+    color:
+        var(--orange);
+
+    border-color:
+        rgba(255, 122, 0, 0.35);
+
+    background:
+        rgba(255, 122, 0, 0.08);
 }
 
 
@@ -391,15 +397,13 @@ body {
     background:
         rgba(255, 122, 0, 0.05);
 
-    color: #ff922b;
+    color:
+        #ff922b;
 
     text-decoration: none;
 
     font-size: 12px;
     font-weight: 700;
-
-    transition:
-        0.2s ease;
 }
 
 
@@ -413,7 +417,7 @@ body {
 
 
 /* =========================
-   PROJECT INFO
+   PROJECT
 ========================= */
 
 .approve-project-card {
@@ -439,10 +443,6 @@ body {
             rgba(255, 255, 255, 0.025),
             rgba(255, 255, 255, 0.01)
         );
-
-    transition:
-        background 0.25s ease,
-        border-color 0.25s ease;
 }
 
 
@@ -487,7 +487,7 @@ body {
 
 
 /* =========================
-   PROJECT STATUS
+   STATUS
 ========================= */
 
 .approve-status {
@@ -509,7 +509,8 @@ body {
     background:
         rgba(255, 122, 0, 0.08);
 
-    color: #ff9a35;
+    color:
+        #ff9a35;
 
     font-size: 11px;
     font-weight: 700;
@@ -546,19 +547,11 @@ body {
 
     background:
         rgba(255, 255, 255, 0.018);
-
-    transition:
-        background 0.25s ease,
-        border-color 0.25s ease;
 }
 
 
 .design-section-header {
     margin-bottom: 16px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 }
 
 
@@ -586,7 +579,7 @@ body {
 
 
 /* =========================
-   DESIGN PREVIEW
+   PREVIEW
 ========================= */
 
 .design-preview {
@@ -619,33 +612,6 @@ body {
 }
 
 
-.design-preview img {
-    display: block;
-
-    width: 100%;
-    height: auto;
-
-    max-height: 700px;
-
-    object-fit: contain;
-}
-
-
-.design-preview iframe {
-    width: 100%;
-
-    min-height: 600px;
-
-    border: 0;
-
-    background: #fff;
-}
-
-
-/* =========================
-   IMAGE
-========================= */
-
 .design-image-wrapper {
     width: 100%;
 
@@ -657,11 +623,8 @@ body {
 
     border-radius: 13px;
 
-    background: #0b0c0e;
-
-    transition:
-        background 0.25s ease,
-        box-shadow 0.2s ease;
+    background:
+        #0b0c0e;
 }
 
 
@@ -673,19 +636,25 @@ body {
 
     max-height: 850px;
 
-    object-fit: contain;
+    object-fit:
+        contain;
 }
 
 
-.design-image-wrapper:hover {
-    box-shadow:
-        0 0 25px
-        rgba(255, 122, 0, 0.08);
+.design-preview iframe {
+    width: 100%;
+
+    min-height: 600px;
+
+    border: 0;
+
+    background:
+        #ffffff;
 }
 
 
 /* =========================
-   EMPTY PREVIEW
+   EMPTY
 ========================= */
 
 .empty-preview {
@@ -699,6 +668,7 @@ body {
     text-align: center;
 
     font-size: 12px;
+
     line-height: 1.6;
 }
 
@@ -750,10 +720,6 @@ body {
     gap: 14px;
 }
 
-
-/* =========================
-   BUTTON
-========================= */
 
 .approval-button {
     min-height: 82px;
@@ -834,7 +800,8 @@ body {
     background:
         rgba(255, 255, 255, 0.025);
 
-    color: #fff;
+    color:
+        #ffffff;
 }
 
 
@@ -879,7 +846,8 @@ body {
             #ff7000
         );
 
-    color: #161616;
+    color:
+        #161616;
 
     box-shadow:
         0 10px 30px
@@ -892,7 +860,8 @@ body {
     background:
         rgba(0, 0, 0, 0.13);
 
-    color: #151515;
+    color:
+        #151515;
 }
 
 
@@ -916,11 +885,14 @@ body {
 .approval-button:disabled {
     opacity: 0.45;
 
-    cursor: not-allowed;
+    cursor:
+        not-allowed;
 
-    transform: none;
+    transform:
+        none;
 
-    box-shadow: none;
+    box-shadow:
+        none;
 }
 
 
@@ -950,7 +922,8 @@ body {
     background:
         rgba(49, 214, 107, 0.07);
 
-    color: #45dd78;
+    color:
+        #45dd78;
 }
 
 
@@ -962,30 +935,27 @@ body {
     background:
         rgba(255, 93, 93, 0.07);
 
-    color: #ff7373;
+    color:
+        #ff7373;
 }
 
 
-/* =========================
+/* =====================================================
    LIGHT MODE
-========================= */
+===================================================== */
 
 body.light-mode {
+    --background:
+        #f4f5f7;
 
-    --background: #f4f5f7;
-    --card: #ffffff;
-
-    --text: #1d1d1f;
+    --text:
+        #1d1d1f;
 
     --muted:
         rgba(0, 0, 0, 0.52);
 
     --border:
         rgba(0, 0, 0, 0.09);
-
-
-    color:
-        var(--text);
 
 
     background:
@@ -1005,15 +975,12 @@ body.light-mode {
 }
 
 
+/* PAGE */
+
 body.light-mode
 .approve-page {
-
     background:
-        linear-gradient(
-            145deg,
-            #ffffff,
-            #f7f7f8
-        );
+        #ffffff;
 
     border-color:
         rgba(0, 0, 0, 0.09);
@@ -1024,9 +991,10 @@ body.light-mode
 }
 
 
+/* HEADER */
+
 body.light-mode
 .approve-header {
-
     border-bottom-color:
         rgba(0, 0, 0, 0.08);
 }
@@ -1034,156 +1002,35 @@ body.light-mode
 
 body.light-mode
 .brand h1 {
-
     color:
         #1d1d1f;
 }
 
 
-body.light-mode
-.brand p {
-
-    color:
-        rgba(0, 0, 0, 0.52);
-}
-
+/* THEME */
 
 body.light-mode
+.theme-slider,
+
+.theme-switch
+input:checked +
 .theme-slider {
+    background:
+        #ffffff !important;
 
     border-color:
-        rgba(0, 0, 0, 0.10);
+        rgba(0, 0, 0, 0.14) !important;
 
-    background:
-        #ececec;
+    box-shadow:
+        0 2px 8px
+        rgba(0, 0, 0, 0.07);
 }
 
+
+/* CLOSE */
 
 body.light-mode
 .close-button {
-
-    border-color:
-        rgba(0, 0, 0, 0.10);
-
-    background:
-        rgba(0, 0, 0, 0.025);
-
-    color:
-        rgba(0, 0, 0, 0.58);
-}
-
-
-body.light-mode
-.close-button:hover {
-
-    color:
-        var(--orange);
-
-    border-color:
-        rgba(255, 122, 0, 0.35);
-
-    background:
-        rgba(255, 122, 0, 0.07);
-}
-
-
-body.light-mode
-.approve-project-card {
-
-    border-color:
-        rgba(0, 0, 0, 0.08);
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(0, 0, 0, 0.015),
-            rgba(255, 255, 255, 0.92)
-        );
-}
-
-
-body.light-mode
-.approve-project-card h2 {
-
-    color:
-        #1d1d1f;
-}
-
-
-body.light-mode
-.approve-project-card p,
-
-body.light-mode
-.approve-label {
-
-    color:
-        rgba(0, 0, 0, 0.50);
-}
-
-
-body.light-mode
-.design-section {
-
-    border-color:
-        rgba(0, 0, 0, 0.08);
-
-    background:
-        rgba(0, 0, 0, 0.012);
-}
-
-
-body.light-mode
-.design-section-header h2 {
-
-    color:
-        #1d1d1f;
-}
-
-
-body.light-mode
-.design-section-header p {
-
-    color:
-        rgba(0, 0, 0, 0.50);
-}
-
-
-body.light-mode
-.design-preview {
-
-    border-color:
-        rgba(255, 122, 0, 0.30);
-
-    background:
-        radial-gradient(
-            circle at center,
-            rgba(255, 122, 0, 0.06),
-            transparent 45%
-        ),
-
-        rgba(0, 0, 0, 0.025);
-}
-
-
-body.light-mode
-.design-image-wrapper {
-
-    background:
-        #f1f1f1;
-}
-
-
-body.light-mode
-.empty-preview {
-
-    color:
-        rgba(0, 0, 0, 0.40);
-}
-
-
-body.light-mode
-.approval-button.secondary {
-
     border-color:
         rgba(0, 0, 0, 0.10);
 
@@ -1191,46 +1038,82 @@ body.light-mode
         #ffffff;
 
     color:
+        #666;
+}
+
+
+/* PROJECT */
+
+body.light-mode
+.approve-project-card {
+    border-color:
+        rgba(0, 0, 0, 0.08);
+
+    background:
+        #fafafa;
+}
+
+
+/* DESIGN */
+
+body.light-mode
+.design-section {
+    border-color:
+        rgba(0, 0, 0, 0.08);
+
+    background:
+        #ffffff;
+}
+
+
+body.light-mode
+.design-preview {
+    border-color:
+        rgba(255, 122, 0, 0.30);
+
+    background:
+        rgba(0, 0, 0, 0.025);
+}
+
+
+body.light-mode
+.design-image-wrapper {
+    background:
+        #f1f1f1;
+}
+
+
+body.light-mode
+.empty-preview {
+    color:
+        rgba(0, 0, 0, 0.40);
+}
+
+
+/* SECONDARY */
+
+body.light-mode
+.approval-button.secondary {
+    background:
+        #ffffff;
+
+    border-color:
+        rgba(0, 0, 0, 0.10);
+
+    color:
         #1d1d1f;
 }
 
 
-body.light-mode
-.approval-button.secondary
-small {
-
-    color:
-        rgba(0, 0, 0, 0.50);
-}
-
-
-body.light-mode
-.approval-button.secondary:hover {
-
-    border-color:
-        rgba(255, 122, 0, 0.35);
-
-    background:
-        rgba(255, 122, 0, 0.04);
-}
-
+/* BACK */
 
 body.light-mode
 .approve-back {
-
     background:
         rgba(255, 122, 0, 0.06);
 
     color:
         #e66d00;
-}
-
-
-body.light-mode
-.approve-status {
-
-    background:
-        rgba(255, 122, 0, 0.06);
 }
 
 
@@ -1241,17 +1124,20 @@ body.light-mode
 @media (max-width: 700px) {
 
     body {
-        padding: 8px;
+        padding:
+            8px;
     }
 
 
     .approve-page {
-        border-radius: 16px;
+        border-radius:
+            16px;
     }
 
 
     .approve-header {
-        min-height: auto;
+        min-height:
+            auto;
 
         padding:
             16px
@@ -1260,30 +1146,41 @@ body.light-mode
 
 
     .brand-logo {
-        width: 42px;
-        height: 42px;
+        width:
+            42px;
 
-        flex-basis: 42px;
+        height:
+            42px;
 
-        font-size: 23px;
+        flex-basis:
+            42px;
+
+        font-size:
+            23px;
     }
 
 
     .brand h1 {
-        font-size: 17px;
+        font-size:
+            17px;
     }
 
 
     .brand p {
-        font-size: 10px;
+        font-size:
+            10px;
     }
 
 
     .close-button {
-        width: 34px;
-        height: 34px;
+        width:
+            34px;
 
-        flex-basis: 34px;
+        height:
+            34px;
+
+        flex-basis:
+            34px;
     }
 
 
@@ -1296,7 +1193,8 @@ body.light-mode
 
 
     .approve-project-card {
-        padding: 16px;
+        padding:
+            16px;
 
         align-items:
             flex-start;
@@ -1304,22 +1202,26 @@ body.light-mode
 
 
     .approve-project-card h2 {
-        font-size: 19px;
+        font-size:
+            19px;
     }
 
 
     .design-section {
-        padding: 14px;
+        padding:
+            14px;
     }
 
 
     .design-preview {
-        min-height: 300px;
+        min-height:
+            300px;
     }
 
 
     .design-image {
-        max-height: 600px;
+        max-height:
+            600px;
     }
 
 
@@ -1330,7 +1232,8 @@ body.light-mode
 
 
     .approval-button {
-        min-height: 76px;
+        min-height:
+            76px;
     }
 
 }
@@ -1343,32 +1246,43 @@ body.light-mode
 @media (max-width: 430px) {
 
     .approve-header {
-        gap: 10px;
+        gap:
+            10px;
     }
 
 
     .brand {
-        gap: 10px;
+        gap:
+            10px;
     }
 
 
     .brand p {
-        display: none;
+        display:
+            none;
+    }
+
+
+    .approve-header-actions {
+        gap:
+            8px;
     }
 
 
     .theme-switch {
-        width: 52px;
+        width:
+            54px;
 
-        flex-basis: 52px;
+        flex-basis:
+            54px;
     }
 
 
-    .theme-switch input:checked +
+    .theme-switch
+    input:checked +
     .theme-slider::before {
-
         transform:
-            translateX(20px);
+            translateX(22px);
     }
 
 
@@ -1376,12 +1290,14 @@ body.light-mode
         flex-direction:
             column;
 
-        gap: 12px;
+        gap:
+            12px;
     }
 
 
     .design-preview {
-        min-height: 250px;
+        min-height:
+            250px;
     }
 
 }
