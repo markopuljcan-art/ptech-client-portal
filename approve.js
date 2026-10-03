@@ -76,7 +76,7 @@ const projectId =
 
 
 /* =========================
-   TRENUTNI DIZAJN
+   CURRENT DESIGN
 ========================= */
 
 let currentDesign =
@@ -101,9 +101,7 @@ function applyTheme(theme) {
     );
 
 
-    if (
-        themeToggle
-    ) {
+    if (themeToggle) {
 
         themeToggle.checked =
             finalTheme === "light";
@@ -111,7 +109,7 @@ function applyTheme(theme) {
 
 
     localStorage.setItem(
-        "ptech-theme",
+        "theme",
         finalTheme
     );
 }
@@ -121,7 +119,7 @@ function loadTheme() {
 
     const savedTheme =
         localStorage.getItem(
-            "ptech-theme"
+            "theme"
         );
 
 
@@ -159,9 +157,7 @@ function showMessage(
     type = "success"
 ) {
 
-    if (
-        !approvalMessage
-    ) {
+    if (!approvalMessage) {
         return;
     }
 
@@ -181,9 +177,7 @@ function showMessage(
 
 function hideMessage() {
 
-    if (
-        !approvalMessage
-    ) {
+    if (!approvalMessage) {
         return;
     }
 
@@ -202,22 +196,18 @@ function hideMessage() {
 
 
 /* =========================
-   STATUS PROJEKTA
+   STATUS
 ========================= */
 
 function renderStatus(status) {
 
-    if (
-        !projectStatus
-    ) {
+    if (!projectStatus) {
         return;
     }
 
 
     const value =
-        String(
-            status || ""
-        )
+        String(status || "")
             .toLowerCase()
             .trim();
 
@@ -263,7 +253,7 @@ function renderStatus(status) {
     ) {
 
         projectStatus.style.color =
-            "#aaa";
+            "#888";
 
 
         projectStatus.style.borderColor =
@@ -292,23 +282,19 @@ function renderStatus(status) {
 
 
 /* =========================
-   ACTIONS
+   ACTION STATE
 ========================= */
 
 function disableActions() {
 
-    if (
-        approveButton
-    ) {
+    if (approveButton) {
 
         approveButton.disabled =
             true;
     }
 
 
-    if (
-        revisionButton
-    ) {
+    if (revisionButton) {
 
         revisionButton.disabled =
             true;
@@ -318,18 +304,14 @@ function disableActions() {
 
 function enableActions() {
 
-    if (
-        approveButton
-    ) {
+    if (approveButton) {
 
         approveButton.disabled =
             false;
     }
 
 
-    if (
-        revisionButton
-    ) {
+    if (revisionButton) {
 
         revisionButton.disabled =
             false;
@@ -343,9 +325,7 @@ function enableActions() {
 
 function renderApprovedState() {
 
-    if (
-        approveButton
-    ) {
+    if (approveButton) {
 
         approveButton.disabled =
             true;
@@ -372,9 +352,7 @@ function renderApprovedState() {
     }
 
 
-    if (
-        revisionButton
-    ) {
+    if (revisionButton) {
 
         revisionButton.disabled =
             false;
@@ -388,9 +366,7 @@ function renderApprovedState() {
 
 function renderPendingState() {
 
-    if (
-        !approveButton
-    ) {
+    if (!approveButton) {
         return;
     }
 
@@ -428,9 +404,7 @@ function renderDesignPlaceholder(
     text
 ) {
 
-    if (
-        !designPreview
-    ) {
+    if (!designPreview) {
         return;
     }
 
@@ -449,16 +423,14 @@ function renderDesignPlaceholder(
 
 
 /* =========================
-   LOAD PROJECT DESIGN
+   LOAD DESIGN
 ========================= */
 
 async function loadProjectDesign(
     project
 ) {
 
-    if (
-        !designPreview
-    ) {
+    if (!designPreview) {
         return null;
     }
 
@@ -496,9 +468,7 @@ async function loadProjectDesign(
             .limit(1);
 
 
-    if (
-        error
-    ) {
+    if (error) {
 
         console.error(
             "Greška kod dohvaćanja dizajna:",
@@ -537,9 +507,7 @@ async function loadProjectDesign(
         design;
 
 
-    if (
-        !design.file_path
-    ) {
+    if (!design.file_path) {
 
         renderDesignPlaceholder(
             "Datoteka dizajna nije pronađena."
@@ -569,9 +537,7 @@ async function loadProjectDesign(
             );
 
 
-    if (
-        signedError
-    ) {
+    if (signedError) {
 
         console.error(
             "Greška kod signed URL-a:",
@@ -588,9 +554,7 @@ async function loadProjectDesign(
     }
 
 
-    if (
-        !signedData?.signedUrl
-    ) {
+    if (!signedData?.signedUrl) {
 
         renderDesignPlaceholder(
             "Slika dizajna nije dostupna."
@@ -602,7 +566,7 @@ async function loadProjectDesign(
 
 
     /* =========================
-       RENDER
+       RENDER IMAGE
     ========================= */
 
     designPreview.innerHTML = `
@@ -633,9 +597,7 @@ async function loadExistingApproval(
     design
 ) {
 
-    if (
-        !design
-    ) {
+    if (!design) {
         return false;
     }
 
@@ -669,9 +631,7 @@ async function loadExistingApproval(
             .maybeSingle();
 
 
-    if (
-        error
-    ) {
+    if (error) {
 
         console.error(
             "Greška kod učitavanja odobrenja:",
@@ -683,12 +643,9 @@ async function loadExistingApproval(
     }
 
 
-    if (
-        !approval
-    ) {
+    if (!approval) {
 
         renderPendingState();
-
 
         return false;
     }
@@ -720,12 +677,10 @@ function setupApprovalActions(
 
 
     /* =========================
-       ODOBRI DIZAJN
+       APPROVE
     ========================= */
 
-    if (
-        approveButton
-    ) {
+    if (approveButton) {
 
         approveButton.onclick =
             async function () {
@@ -733,9 +688,7 @@ function setupApprovalActions(
                 hideMessage();
 
 
-                if (
-                    !currentDesign
-                ) {
+                if (!currentDesign) {
 
                     showMessage(
                         "Nema dostupnog dizajna za odobrenje.",
@@ -752,8 +705,7 @@ function setupApprovalActions(
 
 
                 /* =========================
-                   PROVJERI POSTOJI LI
-                   ODOBRENJE
+                   CHECK EXISTING
                 ========================= */
 
                 const {
@@ -784,9 +736,7 @@ function setupApprovalActions(
                         .maybeSingle();
 
 
-                if (
-                    existingError
-                ) {
+                if (existingError) {
 
                     console.error(
                         "Greška kod provjere odobrenja:",
@@ -808,9 +758,7 @@ function setupApprovalActions(
                 }
 
 
-                if (
-                    existingApproval
-                ) {
+                if (existingApproval) {
 
                     renderApprovedState();
 
@@ -826,7 +774,7 @@ function setupApprovalActions(
 
 
                 /* =========================
-                   SPREMI ODOBRENJE
+                   INSERT APPROVAL
                 ========================= */
 
                 const {
@@ -852,9 +800,7 @@ function setupApprovalActions(
                         });
 
 
-                if (
-                    insertError
-                ) {
+                if (insertError) {
 
                     console.error(
                         "Greška kod spremanja odobrenja:",
@@ -898,9 +844,7 @@ function setupApprovalActions(
                         );
 
 
-                if (
-                    designUpdateError
-                ) {
+                if (designUpdateError) {
 
                     console.error(
                         "Greška kod statusa dizajna:",
@@ -925,19 +869,15 @@ function setupApprovalActions(
 
 
     /* =========================
-       ZATRAŽI IZMJENU
+       REVISION
     ========================= */
 
-    if (
-        revisionButton
-    ) {
+    if (revisionButton) {
 
         revisionButton.onclick =
             function () {
 
-                if (
-                    !currentDesign
-                ) {
+                if (!currentDesign) {
 
                     showMessage(
                         "Nema dostupnog dizajna za izmjenu.",
@@ -965,10 +905,6 @@ async function loadProject() {
     hideMessage();
 
 
-    /* =========================
-       SESSION
-    ========================= */
-
     const {
         data: {
             session
@@ -993,13 +929,7 @@ async function loadProject() {
     }
 
 
-    /* =========================
-       ID
-    ========================= */
-
-    if (
-        !projectId
-    ) {
+    if (!projectId) {
 
         showMessage(
             "Projekt nije odabran.",
@@ -1014,22 +944,12 @@ async function loadProject() {
     }
 
 
-    /* =========================
-       BACK
-    ========================= */
-
-    if (
-        backToProject
-    ) {
+    if (backToProject) {
 
         backToProject.href =
             `project.html?id=${projectId}`;
     }
 
-
-    /* =========================
-       PROJECT
-    ========================= */
 
     const {
         data: project,
@@ -1053,9 +973,7 @@ async function loadProject() {
             .maybeSingle();
 
 
-    if (
-        error
-    ) {
+    if (error) {
 
         console.error(
             "Greška kod projekta:",
@@ -1076,9 +994,7 @@ async function loadProject() {
     }
 
 
-    if (
-        !project
-    ) {
+    if (!project) {
 
         showMessage(
             "Projekt nije pronađen.",
@@ -1117,12 +1033,10 @@ async function loadProject() {
 
 
     /* =========================
-       RENDER PROJECT
+       PROJECT DATA
     ========================= */
 
-    if (
-        projectTitle
-    ) {
+    if (projectTitle) {
 
         projectTitle.textContent =
             project.type ||
@@ -1131,9 +1045,7 @@ async function loadProject() {
     }
 
 
-    if (
-        projectName
-    ) {
+    if (projectName) {
 
         projectName.textContent =
             project.name ||
@@ -1162,19 +1074,16 @@ async function loadProject() {
         );
 
 
-    if (
-        !design
-    ) {
+    if (!design) {
 
         disableActions();
-
 
         return;
     }
 
 
     /* =========================
-       EXISTING APPROVAL
+       APPROVAL
     ========================= */
 
     await loadExistingApproval(
