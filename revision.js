@@ -4,6 +4,7 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
 
+
 const supabaseClient =
     supabase.createClient(
         SUPABASE_URL,
@@ -65,6 +66,11 @@ const conversationContainer =
         "revisionConversation"
     );
 
+const themeToggle =
+    document.getElementById(
+        "themeToggle"
+    );
+
 
 /* =========================
    URL PARAMS
@@ -83,6 +89,71 @@ const designId =
 
 
 /* =========================
+   THEME
+========================= */
+
+function applyTheme(theme) {
+
+    const finalTheme =
+        theme === "light"
+            ? "light"
+            : "dark";
+
+
+    document.body.classList.toggle(
+        "light-mode",
+        finalTheme === "light"
+    );
+
+
+    if (themeToggle) {
+
+        themeToggle.checked =
+            finalTheme === "light";
+    }
+
+
+    localStorage.setItem(
+        "theme",
+        finalTheme
+    );
+}
+
+
+function loadTheme() {
+
+    const savedTheme =
+        localStorage.getItem(
+            "theme"
+        );
+
+
+    applyTheme(
+        savedTheme === "light"
+            ? "light"
+            : "dark"
+    );
+}
+
+
+themeToggle
+    ?.addEventListener(
+        "change",
+        () => {
+
+            applyTheme(
+                themeToggle.checked
+                    ? "light"
+                    : "dark"
+            );
+        }
+    );
+
+
+loadTheme();
+
+
+/* =========================
    FORMAT DATUMA
 ========================= */
 
@@ -92,8 +163,10 @@ function formatDateTime(value) {
         return "-";
     }
 
+
     const date =
         new Date(value);
+
 
     if (
         Number.isNaN(
@@ -102,6 +175,7 @@ function formatDateTime(value) {
     ) {
         return "-";
     }
+
 
     return date.toLocaleString(
         "hr-HR",
@@ -129,11 +203,14 @@ function showMessage(
         return;
     }
 
+
     messageBox.hidden =
         false;
 
+
     messageBox.className =
         `revision-message ${type}`;
+
 
     messageBox.textContent =
         message;
@@ -146,11 +223,14 @@ function hideMessage() {
         return;
     }
 
+
     messageBox.hidden =
         true;
 
+
     messageBox.className =
         "revision-message";
+
 
     messageBox.textContent =
         "";
@@ -173,7 +253,7 @@ function escapeHtml(value) {
 
 
 /* =========================
-   STATUS PROJEKTA
+   STATUS
 ========================= */
 
 function renderStatus(status) {
@@ -182,13 +262,16 @@ function renderStatus(status) {
         return;
     }
 
+
     const value =
         String(status || "")
             .toLowerCase()
             .trim();
 
+
     projectStatus.textContent =
         status || "-";
+
 
     projectStatus.style.color = "";
     projectStatus.style.borderColor = "";
@@ -203,11 +286,14 @@ function renderStatus(status) {
         projectStatus.style.color =
             "#4edb7b";
 
+
         projectStatus.style.borderColor =
             "rgba(46, 204, 113, 0.35)";
 
+
         projectStatus.style.background =
             "rgba(46, 204, 113, 0.08)";
+
 
         return;
     }
@@ -219,13 +305,16 @@ function renderStatus(status) {
     ) {
 
         projectStatus.style.color =
-            "#aaa";
+            "#888";
+
 
         projectStatus.style.borderColor =
             "rgba(160, 160, 160, 0.30)";
 
+
         projectStatus.style.background =
             "rgba(160, 160, 160, 0.07)";
+
 
         return;
     }
@@ -234,8 +323,10 @@ function renderStatus(status) {
     projectStatus.style.color =
         "#ff9a35";
 
+
     projectStatus.style.borderColor =
         "rgba(255, 122, 0, 0.35)";
+
 
     projectStatus.style.background =
         "rgba(255, 122, 0, 0.08)";
@@ -255,24 +346,24 @@ function updateCharacterCount() {
         return;
     }
 
+
     characterCount.textContent =
         `${revisionMessage.value.length} / 1500`;
 }
 
 
-if (revisionMessage) {
-
-    revisionMessage.addEventListener(
+revisionMessage
+    ?.addEventListener(
         "input",
         updateCharacterCount
     );
 
-    updateCharacterCount();
-}
+
+updateCharacterCount();
 
 
 /* =========================
-   CHAT RENDER
+   RENDER CONVERSATION
 ========================= */
 
 function renderConversation(messages) {
@@ -294,6 +385,7 @@ function renderConversation(messages) {
             </div>
         `;
 
+
         return;
     }
 
@@ -307,10 +399,12 @@ function renderConversation(messages) {
                         message.sender_role ===
                         "admin";
 
+
                     const senderLabel =
                         isAdmin
                             ? "PTech Digital"
                             : "Ti";
+
 
                     return `
 
@@ -358,7 +452,7 @@ function renderConversation(messages) {
 
 
 /* =========================
-   LOAD CHAT
+   LOAD CONVERSATION
 ========================= */
 
 async function loadConversation(
@@ -368,14 +462,6 @@ async function loadConversation(
     if (!conversationContainer) {
         return;
     }
-
-
-    conversationContainer.innerHTML = `
-
-        <div class="conversation-empty">
-            Učitavanje razgovora...
-        </div>
-    `;
 
 
     const {
@@ -418,12 +504,14 @@ async function loadConversation(
             error
         );
 
+
         conversationContainer.innerHTML = `
 
             <div class="conversation-empty">
                 Razgovor nije moguće učitati.
             </div>
         `;
+
 
         return;
     }
@@ -459,7 +547,9 @@ function setupRevisionForm(
 
 
             const message =
-                revisionMessage.value.trim();
+                revisionMessage
+                    .value
+                    .trim();
 
 
             if (!message) {
@@ -469,18 +559,22 @@ function setupRevisionForm(
                     "error"
                 );
 
+
                 revisionMessage.focus();
 
                 return;
             }
 
 
-            if (message.length < 3) {
+            if (
+                message.length < 3
+            ) {
 
                 showMessage(
                     "Poruka je prekratka.",
                     "error"
                 );
+
 
                 revisionMessage.focus();
 
@@ -495,6 +589,7 @@ function setupRevisionForm(
                     "error"
                 );
 
+
                 return;
             }
 
@@ -502,13 +597,10 @@ function setupRevisionForm(
             submitButton.disabled =
                 true;
 
+
             submitButton.textContent =
                 "Šaljem...";
 
-
-            /* =========================
-               SPREMI PORUKU
-            ========================= */
 
             const {
                 error
@@ -523,9 +615,7 @@ function setupRevisionForm(
                             project.id,
 
                         design_id:
-                            Number(
-                                designId
-                            ),
+                            Number(designId),
 
                         user_id:
                             session.user.id,
@@ -545,33 +635,35 @@ function setupRevisionForm(
                     error
                 );
 
+
                 showMessage(
                     "Poruku nije moguće poslati.",
                     "error"
                 );
 
+
                 submitButton.disabled =
                     false;
 
+
                 submitButton.textContent =
                     "Pošalji poruku";
+
 
                 return;
             }
 
 
-            /* =========================
-               SUCCESS
-            ========================= */
-
             revisionMessage.value =
                 "";
+
 
             updateCharacterCount();
 
 
             submitButton.disabled =
                 false;
+
 
             submitButton.textContent =
                 "Pošalji poruku";
@@ -619,6 +711,7 @@ async function loadProject() {
         window.location.href =
             "login.html";
 
+
         return;
     }
 
@@ -630,6 +723,7 @@ async function loadProject() {
             "error"
         );
 
+
         return;
     }
 
@@ -640,6 +734,7 @@ async function loadProject() {
             "Verzija dizajna nije odabrana.",
             "error"
         );
+
 
         return;
     }
@@ -679,10 +774,12 @@ async function loadProject() {
             error
         );
 
+
         showMessage(
             "Projekt se ne može učitati.",
             "error"
         );
+
 
         return;
     }
@@ -694,6 +791,7 @@ async function loadProject() {
             "Projekt nije pronađen.",
             "error"
         );
+
 
         return;
     }
@@ -709,6 +807,7 @@ async function loadProject() {
             "Ovaj projekt nije dostupan.",
             "error"
         );
+
 
         return;
     }
@@ -726,7 +825,8 @@ async function loadProject() {
     if (projectName) {
 
         projectName.textContent =
-            project.name || "";
+            project.name ||
+            "";
     }
 
 
