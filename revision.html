@@ -12,15 +12,15 @@
 
     <link
         rel="stylesheet"
-        href="./revision.css?v=10"
+        href="./revision.css?v=11"
     >
 
     <script
-        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-    </script>
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
 
     <script
-        src="./revision.js?v=11"
+        src="./revision.js?v=12"
         defer
     ></script>
 
@@ -41,6 +41,7 @@
         ========================== -->
 
         <header class="revision-header">
+
 
             <div class="brand">
 
@@ -64,16 +65,39 @@
             </div>
 
 
-            <a
-                href="form.html"
-                class="close-button"
-                aria-label="Zatvori"
-            >
-                ×
-            </a>
+            <div class="revision-header-actions">
+
+
+                <!-- THEME -->
+
+                <label class="theme-switch">
+
+                    <input
+                        type="checkbox"
+                        id="themeToggle"
+                        aria-label="Promijeni temu"
+                    >
+
+                    <span class="theme-slider"></span>
+
+                </label>
+
+
+                <!-- CLOSE -->
+
+                <a
+                    href="form.html"
+                    class="close-button"
+                    aria-label="Zatvori"
+                >
+                    ×
+                </a>
+
+
+            </div>
+
 
         </header>
-
 
 
         <!-- =========================
@@ -83,9 +107,7 @@
         <div class="revision-content">
 
 
-            <!-- =========================
-                 BACK
-            ========================== -->
+            <!-- BACK -->
 
             <div class="revision-back-row">
 
@@ -98,7 +120,6 @@
                 </a>
 
             </div>
-
 
 
             <!-- =========================
@@ -135,12 +156,12 @@
             </section>
 
 
-
             <!-- =========================
                  NOVA PORUKA
             ========================== -->
 
             <section class="revision-form-card">
+
 
                 <div class="revision-form-header">
 
@@ -155,7 +176,8 @@
                         </h2>
 
                         <p>
-                            Napiši što preciznije što želiš promijeniti na ovoj verziji dizajna.
+                            Napiši što preciznije što želiš promijeniti
+                            na ovoj verziji dizajna.
                         </p>
 
                     </div>
@@ -201,10 +223,10 @@
 
                     </div>
 
+
                 </form>
 
             </section>
-
 
 
             <!-- =========================
@@ -219,12 +241,12 @@
             </div>
 
 
-
             <!-- =========================
-                 POVIJEST RAZGOVORA
+                 CONVERSATION
             ========================== -->
 
             <section class="conversation-card">
+
 
                 <div class="conversation-header">
 
@@ -253,6 +275,7 @@
                     </div>
 
                 </div>
+
 
             </section>
 
