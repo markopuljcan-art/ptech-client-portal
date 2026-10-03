@@ -12,17 +12,17 @@
 
     <link
         rel="stylesheet"
-        href="style.css?v=11"
+        href="./style.css?v=13"
     >
 
     <script
-        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-    </script>
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
 
     <script
-        src="script.js?v=12"
-        defer>
-    </script>
+        src="./script.js?v=13"
+        defer
+    ></script>
 
     <title>
         PTech Digital Client Portal
@@ -42,7 +42,13 @@
 
         <header class="dashboard-header">
 
-            <div class="brand">
+
+            <!-- BRAND -->
+
+            <a
+                href="form.html"
+                class="brand"
+            >
 
                 <div class="brand-logo">
                     P
@@ -52,8 +58,10 @@
                     PTech Digital Client Portal
                 </h1>
 
-            </div>
+            </a>
 
+
+            <!-- HEADER ACTIONS -->
 
             <div class="header-actions">
 
@@ -69,18 +77,20 @@
                             <circle
                                 cx="12"
                                 cy="8"
-                                r="3">
-                            </circle>
+                                r="3"
+                            ></circle>
 
                             <path
-                                d="M5 20c0-4 3-7 7-7s7 3 7 7">
-                            </path>
+                                d="M5 20c0-4 3-7 7-7s7 3 7 7"
+                            ></path>
 
                         </svg>
 
                     </div>
 
-                    <span id="userTop"></span>
+                    <strong id="userTop">
+                        Klijent
+                    </strong>
 
                 </div>
 
@@ -88,7 +98,7 @@
                 <span class="header-separator"></span>
 
 
-                <!-- ODJAVA -->
+                <!-- LOGOUT -->
 
                 <button
                     id="logoutButton"
@@ -98,11 +108,17 @@
 
                     <svg viewBox="0 0 24 24">
 
-                        <path d="M10 5H5v14h5"></path>
+                        <path
+                            d="M10 5H5v14h5"
+                        ></path>
 
-                        <path d="M14 8l4 4-4 4"></path>
+                        <path
+                            d="M14 8l4 4-4 4"
+                        ></path>
 
-                        <path d="M8 12h10"></path>
+                        <path
+                            d="M8 12h10"
+                        ></path>
 
                     </svg>
 
@@ -130,6 +146,7 @@
 
                 </label>
 
+
             </div>
 
         </header>
@@ -142,13 +159,20 @@
         <div class="dashboard-content">
 
 
-            <!-- POZDRAV -->
+            <!-- =========================
+                 WELCOME
+            ========================== -->
 
             <section class="welcome">
 
                 <h2>
+
                     Bok,
-                    <strong id="userGreeting"></strong>!
+
+                    <strong id="userGreeting">
+                        Klijent
+                    </strong>!
+
                 </h2>
 
                 <p>
@@ -159,16 +183,18 @@
 
 
             <!-- =========================
-                 AKTIVNI PROJEKTI
+                 ACTIVE PROJECTS
             ========================== -->
 
             <section class="dashboard-section">
+
 
                 <div class="section-header">
 
                     <h2 class="section-title">
                         Aktivni projekti
                     </h2>
+
 
                     <div class="project-counter">
 
@@ -191,23 +217,32 @@
 
                 <div
                     class="projects-slider"
-                    id="projectsSlider">
+                    id="projectsSlider"
+                >
+
+                    <div class="no-projects">
+                        Učitavanje projekata...
+                    </div>
+
                 </div>
 
 
                 <div
                     class="slider-dots"
-                    id="sliderDots">
+                    id="sliderDots"
+                >
                 </div>
+
 
             </section>
 
 
             <!-- =========================
-                 AKCIJE
+                 ACTIONS
             ========================== -->
 
             <section class="actions-section">
+
 
                 <div class="actions-header">
 
@@ -215,8 +250,8 @@
                         Akcije
                     </h2>
 
-                    <p>
-                        Što želite učiniti?
+                    <p id="actionsProjectLabel">
+                        Odaberi projekt i nastavi.
                     </p>
 
                 </div>
@@ -225,7 +260,7 @@
                 <div class="actions-grid">
 
 
-                    <!-- ODOBRI DIZAJN -->
+                    <!-- APPROVE -->
 
                     <a
                         href="#"
@@ -242,7 +277,7 @@
                         </strong>
 
                         <p>
-                            Pregledajte dizajn i potvrdite ga.
+                            Pregledaj dizajn i potvrdi ga.
                         </p>
 
                         <span class="action-button">
@@ -252,11 +287,13 @@
                     </a>
 
 
-                    <!-- ZATRAŽI IZMJENU -->
+                    <!-- REVISION -->
 
                     <a
                         href="#"
                         class="action-card"
+                        id="revisionAction"
+                        aria-disabled="true"
                     >
 
                         <div class="action-icon">
@@ -268,21 +305,25 @@
                         </strong>
 
                         <p>
-                            Pošaljite prijedlog ili izmjenu.
+                            Pošalji prijedlog ili izmjenu dizajna.
                         </p>
 
-                        <span class="action-button">
+                        <span
+                            class="action-button"
+                            id="revisionActionText"
+                        >
                             Nova izmjena
                         </span>
 
                     </a>
 
 
-                    <!-- DOSTAVI MATERIJALE -->
+                    <!-- MATERIALS -->
 
-                    <a
-                        href="#"
-                        class="action-card"
+                    <div
+                        class="action-card action-card-disabled"
+                        id="materialsAction"
+                        aria-disabled="true"
                     >
 
                         <div class="action-icon">
@@ -294,17 +335,17 @@
                         </strong>
 
                         <p>
-                            Pošaljite logo, fotografije ili dokumente.
+                            Slanje logotipa, fotografija i ostalih materijala.
                         </p>
 
                         <span class="action-button">
-                            Pošalji
+                            Uskoro
                         </span>
 
-                    </a>
+                    </div>
 
 
-                    <!-- PODRŠKA -->
+                    <!-- SUPPORT -->
 
                     <a
                         href="messages.html"
@@ -320,7 +361,7 @@
                         </strong>
 
                         <p>
-                            Trebate pomoć? Naš tim je tu za vas.
+                            Trebaš pomoć? Naš tim je tu za tebe.
                         </p>
 
                         <span class="action-button">
@@ -332,22 +373,23 @@
 
                 </div>
 
+
             </section>
 
 
+            <!-- =========================
+                 FOOTER
+            ========================== -->
+
+            <footer class="footer">
+
+                © PTech Digital 2026.
+                • Sva prava zadržana.
+
+            </footer>
+
+
         </div>
-
-
-        <!-- =========================
-             COPYRIGHT
-        ========================== -->
-
-        <footer class="footer">
-
-            © PTech Digital 2026.
-            • Sva prava zadržana.
-
-        </footer>
 
 
         <!-- =========================
@@ -357,7 +399,7 @@
         <nav class="bottom-nav">
 
 
-            <!-- POČETNA -->
+            <!-- HOME -->
 
             <a
                 href="form.html"
@@ -368,16 +410,16 @@
                 <svg viewBox="0 0 24 24">
 
                     <path
-                        d="M3 11.5L12 4l9 7.5">
-                    </path>
+                        d="M3 11.5L12 4l9 7.5"
+                    ></path>
 
                     <path
-                        d="M5 10.5V20h14v-9.5">
-                    </path>
+                        d="M5 10.5V20h14v-9.5"
+                    ></path>
 
                     <path
-                        d="M9 20v-6h6v6">
-                    </path>
+                        d="M9 20v-6h6v6"
+                    ></path>
 
                 </svg>
 
@@ -388,9 +430,7 @@
             </a>
 
 
-            <!-- =========================
-                 PORUKE + UNREAD BADGE
-            ========================== -->
+            <!-- MESSAGES -->
 
             <a
                 href="messages.html"
@@ -403,16 +443,11 @@
                     <svg viewBox="0 0 24 24">
 
                         <path
-                            d="M4 5h16v11H8l-4 4z">
-                        </path>
+                            d="M4 5h16v11H8l-4 4z"
+                        ></path>
 
                     </svg>
 
-
-                    <!--
-                        Prikazuje se samo kada postoje
-                        nepročitane ADMIN poruke.
-                    -->
 
                     <span
                         id="messagesUnreadBadge"
@@ -431,7 +466,7 @@
             </a>
 
 
-            <!-- PROJEKTI -->
+            <!-- PROJECTS -->
 
             <a
                 href="my-projects.html"
@@ -446,20 +481,14 @@
                         y="5"
                         width="16"
                         height="15"
-                        rx="2">
-                    </rect>
+                        rx="2"
+                    ></rect>
 
-                    <path
-                        d="M8 5V3">
-                    </path>
+                    <path d="M8 5V3"></path>
 
-                    <path
-                        d="M16 5V3">
-                    </path>
+                    <path d="M16 5V3"></path>
 
-                    <path
-                        d="M4 9h16">
-                    </path>
+                    <path d="M4 9h16"></path>
 
                 </svg>
 
@@ -470,7 +499,7 @@
             </a>
 
 
-            <!-- DOKUMENTI -->
+            <!-- DOCUMENTS -->
 
             <a
                 href="documents.html"
@@ -481,8 +510,8 @@
                 <svg viewBox="0 0 24 24">
 
                     <path
-                        d="M4 4h6l2 2h8v14H4z">
-                    </path>
+                        d="M4 4h6l2 2h8v14H4z"
+                    ></path>
 
                 </svg>
 
@@ -493,7 +522,7 @@
             </a>
 
 
-            <!-- PROFIL -->
+            <!-- PROFILE -->
 
             <a
                 href="profile.html"
@@ -506,12 +535,12 @@
                     <circle
                         cx="12"
                         cy="8"
-                        r="3">
-                    </circle>
+                        r="3"
+                    ></circle>
 
                     <path
-                        d="M5 20c0-4 3-7 7-7s7 3 7 7">
-                    </path>
+                        d="M5 20c0-4 3-7 7-7s7 3 7 7"
+                    ></path>
 
                 </svg>
 
