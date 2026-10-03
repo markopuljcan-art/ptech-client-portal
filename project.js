@@ -17,22 +17,50 @@ const supabaseClient =
 ========================= */
 
 const logoutButton =
-    document.getElementById("logoutButton");
+    document.getElementById(
+        "logoutButton"
+    );
 
 const themeToggle =
-    document.getElementById("themeToggle");
+    document.getElementById(
+        "themeToggle"
+    );
 
 const userTop =
-    document.getElementById("userTop");
+    document.getElementById(
+        "userTop"
+    );
 
 const projectContainer =
-    document.getElementById("projectDetail");
+    document.getElementById(
+        "projectDetail"
+    );
 
 const activitiesContainer =
-    document.getElementById("projectActivities");
+    document.getElementById(
+        "projectActivities"
+    );
 
 const deadlineContainer =
-    document.getElementById("projectDeadlineDetails");
+    document.getElementById(
+        "projectDeadlineDetails"
+    );
+
+const messagesUnreadBadge =
+    document.getElementById(
+        "messagesUnreadBadge"
+    );
+
+
+/* =========================
+   GLOBAL
+========================= */
+
+let currentSession =
+    null;
+
+let supportRealtimeChannel =
+    null;
 
 
 /* =========================
@@ -49,7 +77,7 @@ const projectId =
 
 
 /* =========================
-   FORMAT DATUMA
+   FORMAT DATE
 ========================= */
 
 function formatDate(value) {
@@ -58,21 +86,31 @@ function formatDate(value) {
         return "-";
     }
 
+
     const raw =
-        String(value).slice(0, 10);
+        String(value)
+            .slice(
+                0,
+                10
+            );
+
 
     const date =
         new Date(
-            raw + "T00:00:00"
+            raw +
+            "T00:00:00"
         );
+
 
     if (
         Number.isNaN(
             date.getTime()
         )
     ) {
+
         return "-";
     }
+
 
     return date.toLocaleDateString(
         "hr-HR",
@@ -111,81 +149,106 @@ function getStatusClass(status) {
             .toLowerCase()
             .trim();
 
+
     if (
         value === "završeno" ||
         value === "zavrseno"
     ) {
+
         return "status-done";
     }
+
 
     if (
         value === "na čekanju" ||
         value === "na cekanju"
     ) {
+
         return "status-waiting";
     }
+
 
     return "status-progress";
 }
 
 
 /* =========================
-   PACKAGE INFO
+   PACKAGE
 ========================= */
 
-function getPackageInfo(packageName) {
+function getPackageInfo(
+    packageName
+) {
 
     const normalized =
-        String(packageName || "")
+        String(
+            packageName || ""
+        )
             .toLowerCase()
             .trim();
+
 
     const packages = {
 
         classic: {
-            title: "Classic paket",
+
+            title:
+                "Classic paket",
 
             description:
                 "Pouzdan paket za standardne projekte i osnovne potrebe.",
 
             features: [
+
                 "Standardna izrada projekta",
+
                 "Osnovna podrška",
+
                 "Redovna ažuriranja"
             ]
         },
 
+
         premium: {
-            title: "Premium paket",
+
+            title:
+                "Premium paket",
 
             description:
                 "Napredni paket s dodatnim mogućnostima i većom razinom podrške.",
 
             features: [
+
                 "Prioritetna podrška",
+
                 "Više izmjena tijekom izrade",
+
                 "Napredna optimizacija"
             ]
         }
     };
 
-    return packages[normalized] || {
 
-        title:
-            packageName
-                ? `${packageName} paket`
-                : "Paket",
+    return (
+        packages[normalized] ||
+        {
 
-        description:
-            "Detalji paketa trenutno nisu dostupni.",
+            title:
+                packageName
+                    ? `${packageName} paket`
+                    : "Paket",
 
-        features: []
-    };
+            description:
+                "Detalji paketa trenutno nisu dostupni.",
+
+            features: []
+        }
+    );
 }
 
 
 /* =========================
-   DEADLINE INFO
+   DEADLINE
 ========================= */
 
 function getDeadlineInfo(deadline) {
@@ -193,16 +256,25 @@ function getDeadlineInfo(deadline) {
     if (!deadline) {
 
         return {
-            daysLeft: null,
-            status: "Rok nije postavljen",
+
+            daysLeft:
+                null,
+
+            status:
+                "Rok nije postavljen",
+
             statusText:
                 "Datum završetka još nije definiran.",
-            className: "deadline-neutral"
+
+            className:
+                "deadline-neutral"
         };
     }
 
+
     const today =
         new Date();
+
 
     today.setHours(
         0,
@@ -211,27 +283,45 @@ function getDeadlineInfo(deadline) {
         0
     );
 
+
     const deadlineDate =
         new Date(
-            String(deadline).slice(0, 10) +
+            String(deadline)
+                .slice(
+                    0,
+                    10
+                ) +
             "T00:00:00"
         );
+
 
     const difference =
         deadlineDate.getTime() -
         today.getTime();
 
+
     const daysLeft =
         Math.ceil(
             difference /
-            (1000 * 60 * 60 * 24)
+            (
+                1000 *
+                60 *
+                60 *
+                24
+            )
         );
 
-    if (daysLeft < 0) {
+
+    if (
+        daysLeft < 0
+    ) {
 
         return {
+
             daysLeft:
-                Math.abs(daysLeft),
+                Math.abs(
+                    daysLeft
+                ),
 
             status:
                 "Rok je prošao",
@@ -244,9 +334,13 @@ function getDeadlineInfo(deadline) {
         };
     }
 
-    if (daysLeft <= 30) {
+
+    if (
+        daysLeft <= 30
+    ) {
 
         return {
+
             daysLeft,
 
             status:
@@ -260,7 +354,9 @@ function getDeadlineInfo(deadline) {
         };
     }
 
+
     return {
+
         daysLeft,
 
         status:
@@ -279,63 +375,224 @@ function getDeadlineInfo(deadline) {
    THEME
 ========================= */
 
-const savedTheme =
-    localStorage.getItem("theme");
+function applyTheme(theme) {
 
-if (
-    savedTheme === "light"
-) {
+    const finalTheme =
+        theme === "light"
+            ? "light"
+            : "dark";
 
-    document.body.classList.add(
-        "light-mode"
+
+    document.body.classList.toggle(
+        "light-mode",
+        finalTheme === "light"
     );
 
+
     if (themeToggle) {
-        themeToggle.checked = true;
+
+        themeToggle.checked =
+            finalTheme === "light";
     }
+
+
+    localStorage.setItem(
+        "theme",
+        finalTheme
+    );
 }
 
 
-if (themeToggle) {
+function loadTheme() {
 
-    themeToggle.addEventListener(
+    const savedTheme =
+        localStorage.getItem(
+            "theme"
+        );
+
+
+    applyTheme(
+        savedTheme === "light"
+            ? "light"
+            : "dark"
+    );
+}
+
+
+themeToggle
+    ?.addEventListener(
         "change",
-        function () {
+        () => {
 
-            document.body.classList.toggle(
-                "light-mode",
-                themeToggle.checked
-            );
-
-            localStorage.setItem(
-                "theme",
+            applyTheme(
                 themeToggle.checked
                     ? "light"
                     : "dark"
             );
         }
     );
-}
+
+
+loadTheme();
 
 
 /* =========================
    LOGOUT
 ========================= */
 
-if (logoutButton) {
-
-    logoutButton.addEventListener(
+logoutButton
+    ?.addEventListener(
         "click",
-        async function () {
+        async () => {
+
+            if (
+                supportRealtimeChannel
+            ) {
+
+                await supabaseClient
+                    .removeChannel(
+                        supportRealtimeChannel
+                    );
+
+
+                supportRealtimeChannel =
+                    null;
+            }
+
 
             await supabaseClient
                 .auth
                 .signOut();
 
+
             window.location.href =
-                "index.html";
+                "login.html";
         }
     );
+
+
+/* =========================
+   UNREAD SUPPORT
+========================= */
+
+async function loadMessagesUnreadCount() {
+
+    if (
+        !messagesUnreadBadge ||
+        !currentSession
+    ) {
+
+        return;
+    }
+
+
+    const {
+        count,
+        error
+    } =
+        await supabaseClient
+            .from(
+                "support_messages"
+            )
+            .select(
+                "id",
+                {
+                    count: "exact",
+                    head: true
+                }
+            )
+            .eq(
+                "user_id",
+                currentSession.user.id
+            )
+            .eq(
+                "sender_role",
+                "admin"
+            )
+            .is(
+                "client_read_at",
+                null
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Unread support error:",
+            error
+        );
+
+
+        return;
+    }
+
+
+    const unreadCount =
+        count || 0;
+
+
+    if (
+        unreadCount > 0
+    ) {
+
+        messagesUnreadBadge.hidden =
+            false;
+
+
+        messagesUnreadBadge.textContent =
+            unreadCount > 99
+                ? "99+"
+                : String(
+                    unreadCount
+                );
+
+    } else {
+
+        messagesUnreadBadge.hidden =
+            true;
+
+
+        messagesUnreadBadge.textContent =
+            "0";
+    }
+}
+
+
+/* =========================
+   REALTIME SUPPORT
+========================= */
+
+function subscribeToSupportRealtime() {
+
+    if (
+        !currentSession ||
+        supportRealtimeChannel
+    ) {
+
+        return;
+    }
+
+
+    supportRealtimeChannel =
+        supabaseClient
+            .channel(
+                `project-support-${currentSession.user.id}`
+            )
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "support_messages",
+                    filter:
+                        `user_id=eq.${currentSession.user.id}`
+                },
+                async () => {
+
+                    await loadMessagesUnreadCount();
+                }
+            )
+            .subscribe();
 }
 
 
@@ -348,30 +605,45 @@ async function initProjectPage() {
     const {
         data: {
             session
-        }
+        },
+        error: sessionError
     } =
         await supabaseClient
             .auth
             .getSession();
 
 
-    if (!session) {
+    if (
+        sessionError ||
+        !session
+    ) {
 
         window.location.href =
-            "index.html";
+            "login.html";
+
 
         return;
     }
 
 
-    /* USER */
+    currentSession =
+        session;
+
+
+    /* =========================
+       USER
+    ========================= */
 
     const {
         data: profile
     } =
         await supabaseClient
-            .from("profiles")
-            .select("display_name")
+            .from(
+                "profiles"
+            )
+            .select(
+                "display_name"
+            )
             .eq(
                 "id",
                 session.user.id
@@ -384,11 +656,19 @@ async function initProjectPage() {
         userTop.textContent =
             profile?.display_name ||
             session.user.email
-                .split("@")[0];
+                ?.split("@")[0] ||
+            "Klijent";
     }
 
 
-    /* ID */
+    await loadMessagesUnreadCount();
+
+    subscribeToSupportRealtime();
+
+
+    /* =========================
+       ID
+    ========================= */
 
     if (!projectId) {
 
@@ -396,18 +676,23 @@ async function initProjectPage() {
             "Projekt nije odabran."
         );
 
+
         return;
     }
 
 
-    /* PROJEKT */
+    /* =========================
+       PROJECT
+    ========================= */
 
     const {
         data: project,
         error
     } =
         await supabaseClient
-            .from("projects")
+            .from(
+                "projects"
+            )
             .select(`
                 id,
                 name,
@@ -432,9 +717,11 @@ async function initProjectPage() {
             error
         );
 
+
         showProjectError(
             "Projekt se ne može učitati."
         );
+
 
         return;
     }
@@ -445,6 +732,7 @@ async function initProjectPage() {
         showProjectError(
             "Projekt nije pronađen."
         );
+
 
         return;
     }
@@ -460,6 +748,7 @@ async function initProjectPage() {
             "Projekt nije dostupan."
         );
 
+
         return;
     }
 
@@ -468,9 +757,11 @@ async function initProjectPage() {
         project
     );
 
+
     renderDeadlineCard(
         project
     );
+
 
     await loadActivities(
         project.id
@@ -491,7 +782,7 @@ function showProjectError(message) {
             <div class="project-back-row">
 
                 <a
-                    href="form.html"
+                    href="my-projects.html"
                     class="project-back"
                 >
                     <span>‹</span>
@@ -502,23 +793,33 @@ function showProjectError(message) {
 
 
             <div class="empty-state">
-                ${escapeHtml(message)}
+
+                ${escapeHtml(
+                    message
+                )}
+
             </div>
         `;
     }
 
+
     if (activitiesContainer) {
-        activitiesContainer.innerHTML = "";
+
+        activitiesContainer.innerHTML =
+            "";
     }
 
+
     if (deadlineContainer) {
-        deadlineContainer.innerHTML = "";
+
+        deadlineContainer.innerHTML =
+            "";
     }
 }
 
 
 /* =========================
-   PROJECT
+   RENDER PROJECT
 ========================= */
 
 function renderProject(project) {
@@ -554,6 +855,7 @@ function renderProject(project) {
 
     const packageFeaturesHTML =
         packageInfo.features.length
+
             ? packageInfo.features
                 .map(
                     feature => `
@@ -565,13 +867,16 @@ function renderProject(project) {
                             </span>
 
                             <span>
-                                ${escapeHtml(feature)}
+                                ${escapeHtml(
+                                    feature
+                                )}
                             </span>
 
                         </div>
                     `
                 )
                 .join("")
+
             : "";
 
 
@@ -580,11 +885,11 @@ function renderProject(project) {
         <div class="project-back-row">
 
             <a
-                href="form.html"
+                href="my-projects.html"
                 class="project-back"
             >
                 <span>‹</span>
-                Natrag
+                Natrag na projekte
             </a>
 
         </div>
@@ -593,11 +898,13 @@ function renderProject(project) {
         <section class="project-detail-hero">
 
 
-            <!-- NASLOV -->
+            <!-- PROJECT HEADER -->
 
             <div class="project-detail-heading">
 
+
                 <div class="project-main">
+
 
                     <div class="project-icon">
 
@@ -608,12 +915,16 @@ function renderProject(project) {
                                 y="4"
                                 width="18"
                                 height="13"
-                                rx="2">
-                            </rect>
+                                rx="2"
+                            ></rect>
 
-                            <path d="M8 21h8"></path>
+                            <path
+                                d="M8 21h8"
+                            ></path>
 
-                            <path d="M12 17v4"></path>
+                            <path
+                                d="M12 17v4"
+                            ></path>
 
                         </svg>
 
@@ -623,20 +934,26 @@ function renderProject(project) {
                     <div class="project-title-area">
 
                         <h2>
+
                             ${escapeHtml(
                                 project.type ||
                                 project.name ||
                                 "Projekt"
                             )}
+
                         </h2>
 
                         <p>
+
                             ${escapeHtml(
-                                project.name || ""
+                                project.name ||
+                                ""
                             )}
+
                         </p>
 
                     </div>
+
 
                 </div>
 
@@ -649,20 +966,20 @@ function renderProject(project) {
                 >
 
                     ${escapeHtml(
-                        project.status || "-"
+                        project.status ||
+                        "-"
                     )}
 
                 </div>
 
+
             </div>
 
 
-            <!-- SAMO NAPREDAK + ZADNJE AŽURIRANO -->
+            <!-- STATS -->
 
             <div class="project-stats">
 
-
-                <!-- NAPREDAK -->
 
                 <div class="stat-card">
 
@@ -670,10 +987,21 @@ function renderProject(project) {
 
                         <svg viewBox="0 0 24 24">
 
-                            <path d="M5 20V12"></path>
-                            <path d="M10 20V7"></path>
-                            <path d="M15 20V4"></path>
-                            <path d="M20 20V10"></path>
+                            <path
+                                d="M5 20V12"
+                            ></path>
+
+                            <path
+                                d="M10 20V7"
+                            ></path>
+
+                            <path
+                                d="M15 20V4"
+                            ></path>
+
+                            <path
+                                d="M20 20V10"
+                            ></path>
 
                         </svg>
 
@@ -697,11 +1025,9 @@ function renderProject(project) {
                                         width:
                                         ${progress}%;
                                     "
-                                >
-                                </div>
+                                ></div>
 
                             </div>
-
 
                             <strong>
                                 ${progress}%
@@ -714,8 +1040,6 @@ function renderProject(project) {
                 </div>
 
 
-                <!-- ZADNJE AŽURIRANO -->
-
                 <div class="stat-card">
 
                     <div class="stat-icon">
@@ -723,12 +1047,12 @@ function renderProject(project) {
                         <svg viewBox="0 0 24 24">
 
                             <path
-                                d="M20 11a8 8 0 1 1-2.34-5.66">
-                            </path>
+                                d="M20 11a8 8 0 1 1-2.34-5.66"
+                            ></path>
 
                             <path
-                                d="M20 4v7h-7">
-                            </path>
+                                d="M20 4v7h-7"
+                            ></path>
 
                         </svg>
 
@@ -749,12 +1073,14 @@ function renderProject(project) {
 
                 </div>
 
+
             </div>
 
 
             <!-- PACKAGE -->
 
             <div class="package-info-card">
+
 
                 <div class="package-info-top">
 
@@ -765,9 +1091,11 @@ function renderProject(project) {
                         </span>
 
                         <h3>
+
                             ${escapeHtml(
                                 packageInfo.title
                             )}
+
                         </h3>
 
                     </div>
@@ -776,7 +1104,8 @@ function renderProject(project) {
                     <span class="package-info-badge">
 
                         ${escapeHtml(
-                            project.package || "-"
+                            project.package ||
+                            "-"
                         )}
 
                     </span>
@@ -795,13 +1124,74 @@ function renderProject(project) {
 
                 ${
                     packageFeaturesHTML
+
                         ? `
                             <div class="package-features">
+
                                 ${packageFeaturesHTML}
+
                             </div>
                         `
+
                         : ""
                 }
+
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="project-actions-card">
+
+
+                <a
+                    href="approve.html?id=${project.id}"
+                    class="project-action-button"
+                >
+
+                    <span class="project-action-icon">
+                        ✓
+                    </span>
+
+                    <span>
+
+                        <strong>
+                            Odobrenje dizajna
+                        </strong>
+
+                        <small>
+                            Pregledaj i potvrdi trenutni dizajn
+                        </small>
+
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="documents.html"
+                    class="project-action-button"
+                >
+
+                    <span class="project-action-icon">
+                        □
+                    </span>
+
+                    <span>
+
+                        <strong>
+                            Dokumenti
+                        </strong>
+
+                        <small>
+                            Pregledaj dokumente projekta
+                        </small>
+
+                    </span>
+
+                </a>
+
 
             </div>
 
@@ -812,7 +1202,7 @@ function renderProject(project) {
 
 
 /* =========================
-   AKTIVNOSTI
+   ACTIVITIES
 ========================= */
 
 async function loadActivities(
@@ -829,7 +1219,9 @@ async function loadActivities(
         error
     } =
         await supabaseClient
-            .from("activities")
+            .from(
+                "activities"
+            )
             .select(`
                 title,
                 status,
@@ -855,12 +1247,14 @@ async function loadActivities(
             error
         );
 
+
         activitiesContainer.innerHTML = `
 
             <div class="empty-state">
                 Aktivnosti se ne mogu učitati.
             </div>
         `;
+
 
         return;
     }
@@ -878,6 +1272,7 @@ async function loadActivities(
             </div>
         `;
 
+
         return;
     }
 
@@ -891,7 +1286,8 @@ async function loadActivities(
 
             const status =
                 String(
-                    activity.status || ""
+                    activity.status ||
+                    ""
                 )
                     .toLowerCase()
                     .trim();
@@ -899,6 +1295,7 @@ async function loadActivities(
 
             let statusClass =
                 "activity-waiting";
+
 
             let icon =
                 "○";
@@ -912,7 +1309,9 @@ async function loadActivities(
                 statusClass =
                     "activity-done";
 
-                icon = "✓";
+
+                icon =
+                    "✓";
             }
 
             else if (
@@ -923,7 +1322,9 @@ async function loadActivities(
                 statusClass =
                     "activity-progress";
 
-                icon = "↻";
+
+                icon =
+                    "↻";
             }
 
 
@@ -949,7 +1350,8 @@ async function loadActivities(
                     <strong class="activity-title">
 
                         ${escapeHtml(
-                            activity.title || "-"
+                            activity.title ||
+                            "-"
                         )}
 
                     </strong>
@@ -975,7 +1377,9 @@ async function loadActivities(
     );
 
 
-    /* ZADNJE AŽURIRANO */
+    /* =========================
+       LAST UPDATED
+    ========================= */
 
     const withDate =
         activities
@@ -1010,9 +1414,10 @@ async function loadActivities(
                 withDate[0]
                     .activity_date
             );
-    }
 
-    else if (lastUpdated) {
+    } else if (
+        lastUpdated
+    ) {
 
         lastUpdated.textContent =
             "-";
@@ -1021,10 +1426,12 @@ async function loadActivities(
 
 
 /* =========================
-   ROK PROJEKTA
+   DEADLINE CARD
 ========================= */
 
-function renderDeadlineCard(project) {
+function renderDeadlineCard(
+    project
+) {
 
     if (!deadlineContainer) {
         return;
@@ -1080,7 +1487,9 @@ function renderDeadlineCard(project) {
 
             <div class="deadline-card-top">
 
+
                 <div class="deadline-title-wrap">
+
 
                     <div class="deadline-main-icon">
 
@@ -1091,12 +1500,20 @@ function renderDeadlineCard(project) {
                                 y="5"
                                 width="18"
                                 height="16"
-                                rx="2">
-                            </rect>
+                                rx="2"
+                            ></rect>
 
-                            <path d="M8 3v4"></path>
-                            <path d="M16 3v4"></path>
-                            <path d="M3 10h18"></path>
+                            <path
+                                d="M8 3v4"
+                            ></path>
+
+                            <path
+                                d="M16 3v4"
+                            ></path>
+
+                            <path
+                                d="M3 10h18"
+                            ></path>
 
                         </svg>
 
@@ -1115,12 +1532,14 @@ function renderDeadlineCard(project) {
 
                     </div>
 
+
                 </div>
 
 
                 <span class="deadline-badge">
                     ${badgeText}
                 </span>
+
 
             </div>
 
@@ -1147,7 +1566,9 @@ function renderDeadlineCard(project) {
 
                         ${
                             deadlineInfo.daysLeft !== null
+
                                 ? `${deadlineInfo.daysLeft} dana`
+
                                 : "-"
                         }
 
@@ -1163,15 +1584,19 @@ function renderDeadlineCard(project) {
                     </span>
 
                     <strong>
+
                         ${escapeHtml(
                             deadlineInfo.status
                         )}
+
                     </strong>
 
                     <small>
+
                         ${escapeHtml(
                             deadlineInfo.statusText
                         )}
+
                     </small>
 
                 </div>
@@ -1190,7 +1615,8 @@ function renderDeadlineCard(project) {
                             Math.min(
                                 100,
                                 Number(
-                                    project.progress || 0
+                                    project.progress ||
+                                    0
                                 )
                             )
                         )}%
@@ -1203,11 +1629,32 @@ function renderDeadlineCard(project) {
 
                 </div>
 
+
             </div>
 
         </div>
     `;
 }
+
+
+/* =========================
+   VISIBILITY
+========================= */
+
+document.addEventListener(
+    "visibilitychange",
+    async () => {
+
+        if (
+            document.visibilityState ===
+                "visible" &&
+            currentSession
+        ) {
+
+            await loadMessagesUnreadCount();
+        }
+    }
+);
 
 
 /* =========================
