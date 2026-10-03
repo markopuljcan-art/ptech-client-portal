@@ -12,17 +12,17 @@
 
     <link
         rel="stylesheet"
-        href="./project.css?v=50"
+        href="./project.css?v=51"
     >
 
     <script
-        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-    </script>
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
 
     <script
-        src="./project.js?v=50"
-        defer>
-    </script>
+        src="./project.js?v=51"
+        defer
+    ></script>
 
     <title>
         PTech Digital | Projekt
@@ -36,11 +36,19 @@
     <main class="dashboard">
 
 
-        <!-- HEADER -->
+        <!-- =========================
+             HEADER
+        ========================== -->
 
         <header class="dashboard-header">
 
-            <div class="brand">
+
+            <!-- BRAND -->
+
+            <a
+                href="form.html"
+                class="brand"
+            >
 
                 <div class="brand-logo">
                     P
@@ -50,10 +58,15 @@
                     PTech Digital Client Portal
                 </h1>
 
-            </div>
+            </a>
 
+
+            <!-- HEADER ACTIONS -->
 
             <div class="header-actions">
+
+
+                <!-- USER -->
 
                 <div class="user-box">
 
@@ -64,24 +77,28 @@
                             <circle
                                 cx="12"
                                 cy="8"
-                                r="3">
-                            </circle>
+                                r="3"
+                            ></circle>
 
                             <path
-                                d="M5 20c0-4 3-7 7-7s7 3 7 7">
-                            </path>
+                                d="M5 20c0-4 3-7 7-7s7 3 7 7"
+                            ></path>
 
                         </svg>
 
                     </div>
 
-                    <span id="userTop"></span>
+                    <strong id="userTop">
+                        Klijent
+                    </strong>
 
                 </div>
 
 
                 <span class="header-separator"></span>
 
+
+                <!-- LOGOUT -->
 
                 <button
                     id="logoutButton"
@@ -91,9 +108,17 @@
 
                     <svg viewBox="0 0 24 24">
 
-                        <path d="M10 5H5v14h5"></path>
-                        <path d="M14 8l4 4-4 4"></path>
-                        <path d="M8 12h10"></path>
+                        <path
+                            d="M10 5H5v14h5"
+                        ></path>
+
+                        <path
+                            d="M14 8l4 4-4 4"
+                        ></path>
+
+                        <path
+                            d="M8 12h10"
+                        ></path>
 
                     </svg>
 
@@ -107,6 +132,8 @@
                 <span class="header-separator"></span>
 
 
+                <!-- THEME -->
+
                 <label class="theme-switch">
 
                     <input
@@ -119,13 +146,15 @@
 
                 </label>
 
+
             </div>
 
         </header>
 
 
-
-        <!-- CONTENT -->
+        <!-- =========================
+             CONTENT
+        ========================== -->
 
         <div class="dashboard-content">
 
@@ -141,25 +170,39 @@
             </div>
 
 
-
-            <!-- AKTIVNOSTI -->
+            <!-- =========================
+                 ACTIVITIES
+            ========================== -->
 
             <section class="dashboard-section">
 
                 <div class="activities-detail-card">
 
+
                     <div class="activities-card-heading">
 
                         <div class="activities-heading-left">
+
 
                             <div class="activities-main-icon">
 
                                 <svg viewBox="0 0 24 24">
 
-                                    <path d="M5 20V12"></path>
-                                    <path d="M10 20V7"></path>
-                                    <path d="M15 20V4"></path>
-                                    <path d="M20 20V10"></path>
+                                    <path
+                                        d="M5 20V12"
+                                    ></path>
+
+                                    <path
+                                        d="M10 20V7"
+                                    ></path>
+
+                                    <path
+                                        d="M15 20V4"
+                                    ></path>
+
+                                    <path
+                                        d="M20 20V10"
+                                    ></path>
 
                                 </svg>
 
@@ -178,6 +221,7 @@
 
                             </div>
 
+
                         </div>
 
                     </div>
@@ -194,13 +238,15 @@
 
                     </div>
 
+
                 </div>
 
             </section>
 
 
-
-            <!-- ROK PROJEKTA -->
+            <!-- =========================
+                 DEADLINE
+            ========================== -->
 
             <section class="dashboard-section">
 
@@ -215,24 +261,27 @@
             </section>
 
 
+            <!-- FOOTER -->
+
+            <footer class="footer">
+
+                © PTech Digital 2026.
+                • Sva prava zadržana.
+
+            </footer>
+
+
         </div>
 
 
-
-        <!-- FOOTER -->
-
-        <footer class="footer">
-
-            © PTech Digital 2026.
-            • Sva prava zadržana.
-
-        </footer>
-
-
-
-        <!-- BOTTOM NAV -->
+        <!-- =========================
+             BOTTOM NAV
+        ========================== -->
 
         <nav class="bottom-nav">
+
+
+            <!-- HOME -->
 
             <a
                 href="form.html"
@@ -241,9 +290,17 @@
 
                 <svg viewBox="0 0 24 24">
 
-                    <path d="M3 11.5L12 4l9 7.5"></path>
-                    <path d="M5 10.5V20h14v-9.5"></path>
-                    <path d="M9 20v-6h6v6"></path>
+                    <path
+                        d="M3 11.5L12 4l9 7.5"
+                    ></path>
+
+                    <path
+                        d="M5 10.5V20h14v-9.5"
+                    ></path>
+
+                    <path
+                        d="M9 20v-6h6v6"
+                    ></path>
 
                 </svg>
 
@@ -254,18 +311,33 @@
             </a>
 
 
+            <!-- MESSAGES -->
+
             <a
                 href="messages.html"
                 class="bottom-nav-item"
             >
 
-                <svg viewBox="0 0 24 24">
+                <div class="bottom-nav-icon-wrap">
 
-                    <path
-                        d="M4 5h16v11H8l-4 4z">
-                    </path>
+                    <svg viewBox="0 0 24 24">
 
-                </svg>
+                        <path
+                            d="M4 5h16v11H8l-4 4z"
+                        ></path>
+
+                    </svg>
+
+
+                    <span
+                        id="messagesUnreadBadge"
+                        class="nav-notification"
+                        hidden
+                    >
+                        0
+                    </span>
+
+                </div>
 
                 <span>
                     Poruke
@@ -274,8 +346,10 @@
             </a>
 
 
+            <!-- PROJECTS -->
+
             <a
-                href="projects.html"
+                href="my-projects.html"
                 class="bottom-nav-item active"
             >
 
@@ -286,12 +360,20 @@
                         y="5"
                         width="16"
                         height="15"
-                        rx="2">
-                    </rect>
+                        rx="2"
+                    ></rect>
 
-                    <path d="M8 5V3"></path>
-                    <path d="M16 5V3"></path>
-                    <path d="M4 9h16"></path>
+                    <path
+                        d="M8 5V3"
+                    ></path>
+
+                    <path
+                        d="M16 5V3"
+                    ></path>
+
+                    <path
+                        d="M4 9h16"
+                    ></path>
 
                 </svg>
 
@@ -302,6 +384,8 @@
             </a>
 
 
+            <!-- DOCUMENTS -->
+
             <a
                 href="documents.html"
                 class="bottom-nav-item"
@@ -310,8 +394,8 @@
                 <svg viewBox="0 0 24 24">
 
                     <path
-                        d="M4 4h6l2 2h8v14H4z">
-                    </path>
+                        d="M4 4h6l2 2h8v14H4z"
+                    ></path>
 
                 </svg>
 
@@ -321,6 +405,8 @@
 
             </a>
 
+
+            <!-- PROFILE -->
 
             <a
                 href="profile.html"
@@ -332,12 +418,12 @@
                     <circle
                         cx="12"
                         cy="8"
-                        r="3">
-                    </circle>
+                        r="3"
+                    ></circle>
 
                     <path
-                        d="M5 20c0-4 3-7 7-7s7 3 7 7">
-                    </path>
+                        d="M5 20c0-4 3-7 7-7s7 3 7 7"
+                    ></path>
 
                 </svg>
 
@@ -347,7 +433,9 @@
 
             </a>
 
+
         </nav>
+
 
     </main>
 
