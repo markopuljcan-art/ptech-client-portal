@@ -12,7 +12,7 @@
 
     <link
         rel="stylesheet"
-        href="./messages.css?v=1"
+        href="./messages.css?v=2"
     >
 
     <script
@@ -20,7 +20,7 @@
     ></script>
 
     <script
-        src="./messages.js?v=1"
+        src="./messages.js?v=2"
         defer
     ></script>
 
@@ -36,9 +36,14 @@
     <main class="portal-shell">
 
 
-        <!-- HEADER -->
+        <!-- =========================
+             HEADER
+        ========================== -->
 
         <header class="portal-topbar">
+
+
+            <!-- BRAND -->
 
             <a
                 href="form.html"
@@ -56,8 +61,12 @@
             </a>
 
 
+            <!-- ACTIONS -->
+
             <div class="portal-topbar-actions">
 
+
+                <!-- USER -->
 
                 <div class="portal-user">
 
@@ -68,12 +77,12 @@
                             <circle
                                 cx="12"
                                 cy="8"
-                                r="3">
-                            </circle>
+                                r="3"
+                            ></circle>
 
                             <path
-                                d="M5 20c0-4 3-7 7-7s7 3 7 7">
-                            </path>
+                                d="M5 20c0-4 3-7 7-7s7 3 7 7"
+                            ></path>
 
                         </svg>
 
@@ -89,6 +98,8 @@
                 <span class="portal-topbar-divider"></span>
 
 
+                <!-- LOGOUT -->
+
                 <button
                     type="button"
                     id="logoutButton"
@@ -97,9 +108,17 @@
 
                     <svg viewBox="0 0 24 24">
 
-                        <path d="M10 5H5v14h5"></path>
-                        <path d="M14 8l4 4-4 4"></path>
-                        <path d="M8 12h10"></path>
+                        <path
+                            d="M10 5H5v14h5"
+                        ></path>
+
+                        <path
+                            d="M14 8l4 4-4 4"
+                        ></path>
+
+                        <path
+                            d="M8 12h10"
+                        ></path>
 
                     </svg>
 
@@ -113,21 +132,29 @@
                 <span class="portal-topbar-divider"></span>
 
 
-                <button
-                    type="button"
-                    id="themeToggle"
-                    class="theme-toggle"
-                    aria-label="Promijeni temu"
-                >
-                    Tema
-                </button>
+                <!-- THEME -->
+
+                <label class="theme-switch">
+
+                    <input
+                        type="checkbox"
+                        id="themeToggle"
+                        aria-label="Promijeni temu"
+                    >
+
+                    <span class="theme-slider"></span>
+
+                </label>
+
 
             </div>
 
         </header>
 
 
-        <!-- CONTENT -->
+        <!-- =========================
+             CONTENT
+        ========================== -->
 
         <div class="portal-content">
 
@@ -151,9 +178,12 @@
             </section>
 
 
-            <!-- QUICK HELP -->
+            <!-- =========================
+                 QUICK HELP
+            ========================== -->
 
             <section class="support-section">
+
 
                 <div class="support-section-header">
 
@@ -300,12 +330,15 @@
 
                     </button>
 
+
                 </div>
 
             </section>
 
 
-            <!-- HELP ANSWER -->
+            <!-- =========================
+                 HELP ANSWER
+            ========================== -->
 
             <section
                 id="helpAnswer"
@@ -348,7 +381,9 @@
             </section>
 
 
-            <!-- BILLING NOTICE -->
+            <!-- =========================
+                 BILLING NOTICE
+            ========================== -->
 
             <section class="billing-notice">
 
@@ -371,9 +406,12 @@
             </section>
 
 
-            <!-- SUPPORT CHAT -->
+            <!-- =========================
+                 SUPPORT CHAT
+            ========================== -->
 
             <section class="support-chat">
+
 
                 <div class="support-chat-header">
 
@@ -401,6 +439,8 @@
                 </div>
 
 
+                <!-- MESSAGES -->
+
                 <div
                     id="supportMessages"
                     class="support-messages"
@@ -413,7 +453,10 @@
                 </div>
 
 
+                <!-- COMPOSE -->
+
                 <div class="support-compose">
+
 
                     <textarea
                         id="supportMessageInput"
@@ -438,10 +481,14 @@
 
                     </div>
 
+
                 </div>
+
 
             </section>
 
+
+            <!-- STATUS MESSAGE -->
 
             <div
                 id="supportMessage"
@@ -451,18 +498,27 @@
             </div>
 
 
+            <!-- FOOTER -->
+
             <footer class="portal-footer">
-                © PTech Digital 2026. • Sva prava zadržana.
+
+                © PTech Digital 2026.
+                • Sva prava zadržana.
+
             </footer>
 
 
         </div>
 
 
-        <!-- BOTTOM NAV -->
+        <!-- =========================
+             BOTTOM NAV
+        ========================== -->
 
         <nav class="bottom-nav">
 
+
+            <!-- HOME -->
 
             <a
                 href="form.html"
@@ -471,9 +527,17 @@
 
                 <svg viewBox="0 0 24 24">
 
-                    <path d="M3 11.5L12 4l9 7.5"></path>
-                    <path d="M5 10.5V20h14v-9.5"></path>
-                    <path d="M9 20v-6h6v6"></path>
+                    <path
+                        d="M3 11.5L12 4l9 7.5"
+                    ></path>
+
+                    <path
+                        d="M5 10.5V20h14v-9.5"
+                    ></path>
+
+                    <path
+                        d="M9 20v-6h6v6"
+                    ></path>
 
                 </svg>
 
@@ -484,6 +548,8 @@
             </a>
 
 
+            <!-- MESSAGES -->
+
             <a
                 href="messages.html"
                 class="bottom-nav-item active"
@@ -493,11 +559,14 @@
 
                     <svg viewBox="0 0 24 24">
 
-                        <path d="M4 5h16v11H8l-4 4z"></path>
+                        <path
+                            d="M4 5h16v11H8l-4 4z"
+                        ></path>
 
                     </svg>
 
                     <span
+                        id="messagesUnreadBadge"
                         class="nav-notification"
                         hidden
                     >
@@ -513,6 +582,8 @@
             </a>
 
 
+            <!-- PROJECTS -->
+
             <a
                 href="my-projects.html"
                 class="bottom-nav-item"
@@ -525,12 +596,20 @@
                         y="5"
                         width="16"
                         height="15"
-                        rx="2">
-                    </rect>
+                        rx="2"
+                    ></rect>
 
-                    <path d="M8 5V3"></path>
-                    <path d="M16 5V3"></path>
-                    <path d="M4 9h16"></path>
+                    <path
+                        d="M8 5V3"
+                    ></path>
+
+                    <path
+                        d="M16 5V3"
+                    ></path>
+
+                    <path
+                        d="M4 9h16"
+                    ></path>
 
                 </svg>
 
@@ -541,6 +620,8 @@
             </a>
 
 
+            <!-- DOCUMENTS -->
+
             <a
                 href="documents.html"
                 class="bottom-nav-item"
@@ -548,7 +629,9 @@
 
                 <svg viewBox="0 0 24 24">
 
-                    <path d="M4 4h6l2 2h8v14H4z"></path>
+                    <path
+                        d="M4 4h6l2 2h8v14H4z"
+                    ></path>
 
                 </svg>
 
@@ -558,6 +641,8 @@
 
             </a>
 
+
+            <!-- PROFILE -->
 
             <a
                 href="profile.html"
@@ -569,10 +654,12 @@
                     <circle
                         cx="12"
                         cy="8"
-                        r="3">
-                    </circle>
+                        r="3"
+                    ></circle>
 
-                    <path d="M5 20c0-4 3-7 7-7s7 3 7 7"></path>
+                    <path
+                        d="M5 20c0-4 3-7 7-7s7 3 7 7"
+                    ></path>
 
                 </svg>
 
@@ -584,6 +671,7 @@
 
 
         </nav>
+
 
     </main>
 
