@@ -4,6 +4,7 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
 
+
 const supabaseClient =
     supabase.createClient(
         SUPABASE_URL,
@@ -12,7 +13,7 @@ const supabaseClient =
 
 
 /* =========================
-   ELEMENTI
+   ELEMENTS
 ========================= */
 
 const clientName =
@@ -76,9 +77,15 @@ const messagesUnreadBadge =
     );
 
 
-let currentSession = null;
+/* =========================
+   GLOBAL
+========================= */
 
-let realtimeChannel = null;
+let currentSession =
+    null;
+
+let realtimeChannel =
+    null;
 
 
 /* =========================
@@ -93,15 +100,21 @@ function applyTheme(theme) {
             : "dark";
 
 
-    document.documentElement
-        .setAttribute(
-            "data-theme",
-            finalTheme
-        );
+    document.body.classList.toggle(
+        "light-mode",
+        finalTheme === "light"
+    );
+
+
+    if (themeToggle) {
+
+        themeToggle.checked =
+            finalTheme === "light";
+    }
 
 
     localStorage.setItem(
-        "ptech-theme",
+        "theme",
         finalTheme
     );
 }
@@ -111,44 +124,25 @@ function loadTheme() {
 
     const savedTheme =
         localStorage.getItem(
-            "ptech-theme"
+            "theme"
         );
-
-
-    if (
-        savedTheme === "light" ||
-        savedTheme === "dark"
-    ) {
-
-        applyTheme(
-            savedTheme
-        );
-
-        return;
-    }
 
 
     applyTheme(
-        "dark"
+        savedTheme === "light"
+            ? "light"
+            : "dark"
     );
 }
 
 
 themeToggle
     ?.addEventListener(
-        "click",
-        () => {
-
-            const currentTheme =
-                document.documentElement
-                    .getAttribute(
-                        "data-theme"
-                    ) ||
-                "dark";
-
+        "change",
+        function () {
 
             applyTheme(
-                currentTheme === "dark"
+                themeToggle.checked
                     ? "light"
                     : "dark"
             );
@@ -166,7 +160,7 @@ loadTheme();
 logoutButton
     ?.addEventListener(
         "click",
-        async () => {
+        async function () {
 
             if (realtimeChannel) {
 
@@ -174,6 +168,10 @@ logoutButton
                     .removeChannel(
                         realtimeChannel
                     );
+
+
+                realtimeChannel =
+                    null;
             }
 
 
@@ -195,89 +193,95 @@ logoutButton
 const helpContent = {
 
     approve: {
+
         title:
             "Kako odobriti dizajn?",
 
         text:
             `
-            Otvori svoj projekt i pronađi zadnju verziju dizajna.
+Otvori svoj projekt i pronađi zadnju verziju dizajna.
 
-            Pregledaj dizajn i klikni gumb za odobrenje ako si zadovoljan verzijom.
+Pregledaj dizajn i klikni gumb za odobrenje ako si zadovoljan verzijom.
 
-            Nakon odobrenja dizajn se smatra potvrđenim.
+Nakon odobrenja dizajn se smatra potvrđenim.
             `
     },
 
 
     revision: {
+
         title:
             "Kako zatražiti izmjenu?",
 
         text:
             `
-            Na stranici za pregled dizajna odaberi opciju za izmjenu i napiši što želiš promijeniti.
+Na stranici za pregled dizajna odaberi opciju za izmjenu i napiši što želiš promijeniti.
 
-            Zahtjev će biti poslan PTech Digital timu.
+Zahtjev će biti poslan PTech Digital timu.
 
-            Dodatne izmjene ili zahtjevi izvan dogovorenog opsega projekta mogu se dodatno naplatiti.
+Dodatne izmjene ili zahtjevi izvan dogovorenog opsega projekta mogu se dodatno naplatiti.
 
-            Prije početka dodatnog rada dobit ćeš potvrdu opsega i cijene.
+Prije početka dodatnog rada dobit ćeš potvrdu opsega i cijene.
             `
     },
 
 
     documents: {
+
         title:
             "Gdje su moji dokumenti?",
 
         text:
             `
-            Otvori karticu Dokumenti u donjoj navigaciji.
+Otvori karticu Dokumenti u donjoj navigaciji.
 
-            Tamo možeš pronaći dokumente povezane s projektima, poput ugovora, ponuda, briefova i ostalih datoteka.
+Tamo možeš pronaći dokumente povezane s projektima, poput ugovora, ponuda, briefova i ostalih datoteka.
             `
     },
 
 
     status: {
+
         title:
             "Kako pratiti status projekta?",
 
         text:
             `
-            Otvori karticu Projekti.
+Otvori karticu Projekti.
 
-            Tamo možeš vidjeti aktivne projekte, njihov trenutni status i napredak.
+Tamo možeš vidjeti aktivne projekte, njihov trenutni status i napredak.
             `
     },
 
 
     billing: {
+
         title:
             "Što se dodatno naplaćuje?",
 
         text:
             `
-            Rad koji nije uključen u dogovoreni opseg projekta može se dodatno naplatiti.
+Rad koji nije uključen u dogovoreni opseg projekta može se dodatno naplatiti.
 
-            To može uključivati nove funkcionalnosti, dodatne verzije, veće promjene nakon potvrđenog dizajna ili druge dodatne zahtjeve.
+To može uključivati nove funkcionalnosti, dodatne verzije, veće promjene nakon potvrđenog dizajna ili druge dodatne zahtjeve.
 
-            Prije početka takvog rada PTech Digital će potvrditi opseg i cijenu.
+Prije početka takvog rada PTech Digital će potvrditi opseg i cijenu.
             `
     },
 
 
     support: {
+
         title:
             "Kako kontaktirati podršku?",
 
         text:
             `
-            Ispod ovog odjeljka nalazi se razgovor s fizičkom podrškom.
+Ispod ovog odjeljka nalazi se razgovor s fizičkom podrškom.
 
-            Napiši pitanje i naš tim će odgovoriti kada bude dostupan.
+Napiši pitanje i naš tim će odgovoriti kada bude dostupan.
 
-            Slanje poruke samo po sebi ne znači da si naručio dodatnu uslugu.
+Slanje poruke samo po sebi ne znači da si naručio dodatnu uslugu.
             `
     }
 
@@ -293,23 +297,31 @@ document
         "[data-help]"
     )
     .forEach(
-        button => {
+        function (button) {
 
             button.addEventListener(
                 "click",
-                () => {
+                function () {
 
                     const key =
                         button.dataset.help;
 
 
                     const item =
-                        helpContent[
-                            key
-                        ];
+                        helpContent[key];
 
 
                     if (!item) {
+                        return;
+                    }
+
+
+                    if (
+                        !helpAnswer ||
+                        !helpAnswerTitle ||
+                        !helpAnswerText
+                    ) {
+
                         return;
                     }
 
@@ -319,8 +331,7 @@ document
 
 
                     helpAnswerText.textContent =
-                        item.text
-                            .trim();
+                        item.text.trim();
 
 
                     helpAnswer.hidden =
@@ -328,6 +339,7 @@ document
 
 
                     helpAnswer.scrollIntoView({
+
                         behavior:
                             "smooth",
 
@@ -343,10 +355,13 @@ document
 closeHelpAnswer
     ?.addEventListener(
         "click",
-        () => {
+        function () {
 
-            helpAnswer.hidden =
-                true;
+            if (helpAnswer) {
+
+                helpAnswer.hidden =
+                    true;
+            }
         }
     );
 
@@ -357,12 +372,29 @@ closeHelpAnswer
 
 function escapeHtml(value) {
 
-    return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+    return String(
+        value ?? ""
+    )
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
 }
 
 
@@ -390,15 +422,28 @@ function formatDateTime(value) {
     return date.toLocaleString(
         "hr-HR",
         {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit"
+            day:
+                "2-digit",
+
+            month:
+                "2-digit",
+
+            year:
+                "numeric",
+
+            hour:
+                "2-digit",
+
+            minute:
+                "2-digit"
         }
     );
 }
 
+
+/* =========================
+   STATUS MESSAGE
+========================= */
 
 function showMessage(
     message,
@@ -423,18 +468,45 @@ function showMessage(
 }
 
 
+function hideMessage() {
+
+    if (!supportMessage) {
+        return;
+    }
+
+
+    supportMessage.hidden =
+        true;
+
+
+    supportMessage.className =
+        "support-message";
+
+
+    supportMessage.textContent =
+        "";
+}
+
+
 /* =========================
-   PROFILE
+   LOAD PROFILE
 ========================= */
 
 async function loadProfile() {
+
+    if (!currentSession) {
+        return;
+    }
+
 
     const {
         data,
         error
     } =
         await supabaseClient
-            .from("profiles")
+            .from(
+                "profiles"
+            )
             .select(
                 "display_name"
             )
@@ -452,17 +524,27 @@ async function loadProfile() {
             error
         );
 
+
+        if (clientName) {
+
+            clientName.textContent =
+                currentSession.user.email
+                    ?.split("@")[0] ||
+                "Klijent";
+        }
+
+
         return;
     }
 
 
-    if (
-        clientName &&
-        data?.display_name
-    ) {
+    if (clientName) {
 
         clientName.textContent =
-            data.display_name;
+            data?.display_name ||
+            currentSession.user.email
+                ?.split("@")[0] ||
+            "Klijent";
     }
 }
 
@@ -473,7 +555,11 @@ async function loadProfile() {
 
 async function loadSupportMessages() {
 
-    if (!supportMessages) {
+    if (
+        !supportMessages ||
+        !currentSession
+    ) {
+
         return;
     }
 
@@ -501,7 +587,8 @@ async function loadSupportMessages() {
             .order(
                 "created_at",
                 {
-                    ascending: true
+                    ascending:
+                        true
                 }
             );
 
@@ -515,6 +602,7 @@ async function loadSupportMessages() {
 
 
         supportMessages.innerHTML = `
+
             <div class="support-empty">
                 Razgovor nije moguće učitati.
             </div>
@@ -531,6 +619,7 @@ async function loadSupportMessages() {
     ) {
 
         supportMessages.innerHTML = `
+
             <div class="support-empty">
                 Još nema poruka. Pošalji pitanje podršci.
             </div>
@@ -544,7 +633,7 @@ async function loadSupportMessages() {
     supportMessages.innerHTML =
         data
             .map(
-                item => {
+                function (item) {
 
                     const isClient =
                         item.sender_role ===
@@ -564,29 +653,40 @@ async function loadSupportMessages() {
                             "
                         >
 
-                            <div class="support-chat-message-top">
+                            <div
+                                class="
+                                    support-chat-message-top
+                                "
+                            >
 
                                 <strong>
+
                                     ${
                                         isClient
                                             ? "Vi"
                                             : "PTech Digital"
                                     }
+
                                 </strong>
 
+
                                 <span>
+
                                     ${formatDateTime(
                                         item.created_at
                                     )}
+
                                 </span>
 
                             </div>
 
 
                             <p>
+
                                 ${escapeHtml(
                                     item.message
                                 )}
+
                             </p>
 
                         </div>
@@ -602,7 +702,7 @@ async function loadSupportMessages() {
 
 
 /* =========================
-   CLIENT READ
+   MARK ADMIN MESSAGES READ
 ========================= */
 
 async function markClientMessagesAsRead() {
@@ -659,6 +759,7 @@ async function loadClientUnreadCount() {
         !messagesUnreadBadge ||
         !currentSession
     ) {
+
         return;
     }
 
@@ -674,8 +775,11 @@ async function loadClientUnreadCount() {
             .select(
                 "id",
                 {
-                    count: "exact",
-                    head: true
+                    count:
+                        "exact",
+
+                    head:
+                        true
                 }
             )
             .eq(
@@ -699,6 +803,7 @@ async function loadClientUnreadCount() {
             error
         );
 
+
         return;
     }
 
@@ -707,7 +812,9 @@ async function loadClientUnreadCount() {
         count || 0;
 
 
-    if (unreadCount > 0) {
+    if (
+        unreadCount > 0
+    ) {
 
         messagesUnreadBadge.hidden =
             false;
@@ -736,107 +843,126 @@ async function loadClientUnreadCount() {
    SEND MESSAGE
 ========================= */
 
+async function sendMessage() {
+
+    if (
+        !currentSession ||
+        !supportMessageInput ||
+        !sendSupportMessage
+    ) {
+
+        return;
+    }
+
+
+    hideMessage();
+
+
+    const message =
+        supportMessageInput
+            .value
+            .trim();
+
+
+    if (
+        !message ||
+        message.length < 2
+    ) {
+
+        showMessage(
+            "Napiši poruku prije slanja.",
+            "error"
+        );
+
+
+        supportMessageInput.focus();
+
+
+        return;
+    }
+
+
+    sendSupportMessage.disabled =
+        true;
+
+
+    sendSupportMessage.textContent =
+        "Šaljem...";
+
+
+    const {
+        error
+    } =
+        await supabaseClient
+            .from(
+                "support_messages"
+            )
+            .insert({
+
+                user_id:
+                    currentSession.user.id,
+
+                sender_role:
+                    "client",
+
+                message:
+                    message
+            });
+
+
+    sendSupportMessage.disabled =
+        false;
+
+
+    sendSupportMessage.textContent =
+        "Pošalji poruku";
+
+
+    if (error) {
+
+        console.error(
+            "Send support error:",
+            error
+        );
+
+
+        showMessage(
+            "Poruku nije moguće poslati.",
+            "error"
+        );
+
+
+        return;
+    }
+
+
+    supportMessageInput.value =
+        "";
+
+
+    showMessage(
+        "Poruka je poslana.",
+        "success"
+    );
+
+
+    /*
+        Realtime će obično povući poruku,
+        ali pozivamo i ručni refresh kao fallback.
+    */
+
+    await loadSupportMessages();
+}
+
+
+/* =========================
+   SEND BUTTON
+========================= */
+
 sendSupportMessage
     ?.addEventListener(
         "click",
-        async () => {
-
-            if (!currentSession) {
-                return;
-            }
-
-
-            const message =
-                supportMessageInput
-                    ?.value
-                    .trim();
-
-
-            if (
-                !message ||
-                message.length < 2
-            ) {
-
-                showMessage(
-                    "Napiši poruku prije slanja.",
-                    "error"
-                );
-
-                return;
-            }
-
-
-            sendSupportMessage.disabled =
-                true;
-
-
-            sendSupportMessage.textContent =
-                "Šaljem...";
-
-
-            const {
-                error
-            } =
-                await supabaseClient
-                    .from(
-                        "support_messages"
-                    )
-                    .insert({
-
-                        user_id:
-                            currentSession
-                                .user
-                                .id,
-
-                        sender_role:
-                            "client",
-
-                        message:
-                            message
-                    });
-
-
-            sendSupportMessage.disabled =
-                false;
-
-
-            sendSupportMessage.textContent =
-                "Pošalji poruku";
-
-
-            if (error) {
-
-                console.error(
-                    "Send support error:",
-                    error
-                );
-
-
-                showMessage(
-                    "Poruku nije moguće poslati.",
-                    "error"
-                );
-
-
-                return;
-            }
-
-
-            supportMessageInput.value =
-                "";
-
-
-            showMessage(
-                "Poruka je poslana.",
-                "success"
-            );
-
-
-            /*
-                Ne radimo ručni reload.
-                Realtime će povući novu poruku.
-            */
-        }
+        sendMessage
     );
 
 
@@ -847,7 +973,7 @@ sendSupportMessage
 supportMessageInput
     ?.addEventListener(
         "keydown",
-        event => {
+        function (event) {
 
             if (
                 event.key === "Enter" &&
@@ -857,8 +983,7 @@ supportMessageInput
                 event.preventDefault();
 
 
-                sendSupportMessage
-                    ?.click();
+                sendMessage();
             }
         }
     );
@@ -874,6 +999,7 @@ function subscribeToSupportRealtime() {
         !currentSession ||
         realtimeChannel
     ) {
+
         return;
     }
 
@@ -886,13 +1012,19 @@ function subscribeToSupportRealtime() {
             .on(
                 "postgres_changes",
                 {
-                    event: "*",
-                    schema: "public",
-                    table: "support_messages",
+                    event:
+                        "*",
+
+                    schema:
+                        "public",
+
+                    table:
+                        "support_messages",
+
                     filter:
                         `user_id=eq.${currentSession.user.id}`
                 },
-                async payload => {
+                async function (payload) {
 
                     console.log(
                         "Client support realtime:",
@@ -904,9 +1036,9 @@ function subscribeToSupportRealtime() {
 
 
                     /*
-                        Ako je stigla nova ADMIN poruka
-                        dok je korisnik baš na messages.html,
-                        odmah se smatra pročitanom.
+                        Ako korisnik trenutno gleda
+                        messages.html i stigne admin poruka,
+                        odmah ju označavamo pročitanom.
                     */
 
                     if (
@@ -925,7 +1057,7 @@ function subscribeToSupportRealtime() {
                 }
             )
             .subscribe(
-                status => {
+                function (status) {
 
                     console.log(
                         "Client support realtime status:",
@@ -942,19 +1074,40 @@ function subscribeToSupportRealtime() {
 
 document.addEventListener(
     "visibilitychange",
-    async () => {
+    async function () {
 
         if (
             document.visibilityState ===
-            "visible" &&
+                "visible" &&
             currentSession
         ) {
 
             await loadSupportMessages();
 
+
             await markClientMessagesAsRead();
 
+
             await loadClientUnreadCount();
+        }
+    }
+);
+
+
+/* =========================
+   PAGE CLEANUP
+========================= */
+
+window.addEventListener(
+    "beforeunload",
+    function () {
+
+        if (realtimeChannel) {
+
+            supabaseClient
+                .removeChannel(
+                    realtimeChannel
+                );
         }
     }
 );
@@ -985,6 +1138,7 @@ async function startMessages() {
         window.location.href =
             "login.html";
 
+
         return;
     }
 
@@ -995,15 +1149,18 @@ async function startMessages() {
 
     await loadProfile();
 
+
     await loadSupportMessages();
 
 
     /*
-        Korisnik je otvorio Poruke,
-        pa admin odgovore označavamo pročitanima.
+        Korisnik je upravo otvorio Poruke.
+        Sve admin poruke koje nisu pročitane
+        označavamo pročitanima.
     */
 
     await markClientMessagesAsRead();
+
 
     await loadClientUnreadCount();
 
