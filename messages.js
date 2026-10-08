@@ -1,1176 +1,963 @@
+
+/* =========================
+   SUPABASE
+========================= */
+
 const SUPABASE_URL =
     "https://agivwsbczzvvuzszcvxz.supabase.co";
 
 const SUPABASE_KEY =
     "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
 
-
-const supabaseClient =
-    supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
-
+const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
 /* =========================
    ELEMENTS
 ========================= */
 
-const clientName =
-    document.getElementById(
-        "clientName"
-    );
+const $ = (id) => document.getElementById(id);
 
-const logoutButton =
-    document.getElementById(
-        "logoutButton"
-    );
+const clientName = $("clientName");
+const logoutButton = $("logoutButton");
+const themeToggle = $("themeToggle");
 
-const themeToggle =
-    document.getElementById(
-        "themeToggle"
-    );
+const helpAnswer = $("helpAnswer");
+const helpAnswerTitle = $("helpAnswerTitle");
+const helpAnswerText = $("helpAnswerText");
 
-const helpAnswer =
-    document.getElementById(
-        "helpAnswer"
-    );
+const chatLauncher = $("chatLauncher");
+const chatPanel = $("chatPanel");
+const closeChatButton = $("closeChat");
+const minimizeChatButton = $("minimizeChat");
 
-const helpAnswerTitle =
-    document.getElementById(
-        "helpAnswerTitle"
-    );
+const aiTab = $("aiTab");
+const humanTab = $("humanTab");
 
-const helpAnswerText =
-    document.getElementById(
-        "helpAnswerText"
-    );
+const aiMessages = $("aiMessages");
+const supportMessages = $("supportMessages");
 
-const closeHelpAnswer =
-    document.getElementById(
-        "closeHelpAnswer"
-    );
+const aiSuggestions = $("aiSuggestions");
+const humanSupportAction = $("humanSupportAction");
 
-const supportMessages =
-    document.getElementById(
-        "supportMessages"
-    );
+const chatInput = $("chatInput");
+const sendChatMessage = $("sendChatMessage");
 
-const supportMessageInput =
-    document.getElementById(
-        "supportMessageInput"
-    );
+const chatHeaderStatus = $("chatHeaderStatus");
+const chatFooterText = $("chatFooterText");
 
-const sendSupportMessage =
-    document.getElementById(
-        "sendSupportMessage"
-    );
+const messagesUnreadBadge = $("messagesUnreadBadge");
+const chatUnreadBadge = $("chatUnreadBadge");
+const humanTabUnread = $("humanTabUnread");
 
-const supportMessage =
-    document.getElementById(
-        "supportMessage"
-    );
-
-const messagesUnreadBadge =
-    document.getElementById(
-        "messagesUnreadBadge"
-    );
-
+const supportMessage = $("supportMessage");
 
 /* =========================
-   GLOBAL
+   STATE
 ========================= */
 
-let currentSession =
-    null;
+let currentSession = null;
+let realtimeChannel = null;
 
-let realtimeChannel =
-    null;
-
+let chatOpen = false;
+let chatMode = "ai";
+let sendingMessage = false;
+let currentHelpKey = null;
+let unreadCount = 0;
 
 /* =========================
    THEME
 ========================= */
 
 function applyTheme(theme) {
-
-    const finalTheme =
-        theme === "light"
-            ? "light"
-            : "dark";
-
+    const light = theme === "light";
 
     document.body.classList.toggle(
         "light-mode",
-        finalTheme === "light"
+        light
     );
 
-
     if (themeToggle) {
-
-        themeToggle.checked =
-            finalTheme === "light";
+        themeToggle.checked = light;
     }
-
 
     localStorage.setItem(
         "theme",
-        finalTheme
+        light ? "light" : "dark"
     );
 }
 
+applyTheme(
+    localStorage.getItem("theme") === "light"
+        ? "light"
+        : "dark"
+);
 
-function loadTheme() {
-
-    const savedTheme =
-        localStorage.getItem(
-            "theme"
-        );
-
-
+themeToggle?.addEventListener("change", () => {
     applyTheme(
-        savedTheme === "light"
-            ? "light"
-            : "dark"
+        themeToggle.checked ? "light" : "dark"
     );
-}
-
-
-themeToggle
-    ?.addEventListener(
-        "change",
-        function () {
-
-            applyTheme(
-                themeToggle.checked
-                    ? "light"
-                    : "dark"
-            );
-        }
-    );
-
-
-loadTheme();
-
-
-/* =========================
-   LOGOUT
-========================= */
-
-logoutButton
-    ?.addEventListener(
-        "click",
-        async function () {
-
-            if (realtimeChannel) {
-
-                await supabaseClient
-                    .removeChannel(
-                        realtimeChannel
-                    );
-
-
-                realtimeChannel =
-                    null;
-            }
-
-
-            await supabaseClient
-                .auth
-                .signOut();
-
-
-            window.location.href =
-                "login.html";
-        }
-    );
-
+});
 
 /* =========================
    HELP CONTENT
 ========================= */
 
 const helpContent = {
-
     approve: {
+        title: "Kako odobriti dizajn?",
+        keywords: [
+            "odobri", "odobren", "potvrdi dizajn",
+            "odobriti dizajn", "prihvati dizajn"
+        ],
+        answer:
+`Za odobrenje dizajna otvori svoj projekt i pronađi opciju za pregled dizajna.
 
-        title:
-            "Kako odobriti dizajn?",
+1. Otvori karticu Projekti.
+2. Odaberi projekt.
+3. Otvori pregled dostavljenog dizajna.
+4. Pažljivo pregledaj izgled i sadržaj.
+5. Ako si zadovoljan, klikni "Odobri dizajn".
 
-        text:
-            `
-Otvori svoj projekt i pronađi zadnju verziju dizajna.
+Nakon potvrde PTech Digital tim može nastaviti s idućom fazom projekta.
 
-Pregledaj dizajn i klikni gumb za odobrenje ako si zadovoljan verzijom.
-
-Nakon odobrenja dizajn se smatra potvrđenim.
-            `
+Ako želiš nešto promijeniti, prije odobrenja odaberi "Zatraži izmjenu".`
     },
-
 
     revision: {
+        title: "Kako zatražiti izmjenu?",
+        keywords: [
+            "izmjen", "promjen", "dorad", "reviz",
+            "isprav", "poprav", "drugačiji dizajn"
+        ],
+        answer:
+`Izmjenu dizajna možeš zatražiti kroz pregled dizajna svojeg projekta.
 
-        title:
-            "Kako zatražiti izmjenu?",
+1. Otvori karticu Projekti.
+2. Odaberi svoj projekt.
+3. Otvori pregled dizajna.
+4. Klikni "Zatraži izmjenu".
+5. Opiši što želiš promijeniti.
 
-        text:
-            `
-Na stranici za pregled dizajna odaberi opciju za izmjenu i napiši što želiš promijeniti.
+Preporučujemo da komentar bude što precizniji.
 
-Zahtjev će biti poslan PTech Digital timu.
+Primjer: "Želim da naslov na početnoj stranici bude veći, a gumb za kontakt narančaste boje."
 
-Dodatne izmjene ili zahtjevi izvan dogovorenog opsega projekta mogu se dodatno naplatiti.
+Zahtjev će biti dostupan PTech Digital timu.
 
-Prije početka dodatnog rada dobit ćeš potvrdu opsega i cijene.
-            `
+Napomena: dodatni rad izvan dogovorenog opsega može se dodatno naplatiti. Prije takvog rada trebaš dobiti potvrdu opsega i cijene.`
     },
-
 
     documents: {
+        title: "Gdje su moji dokumenti?",
+        keywords: [
+            "dokument", "ugovor", "ponud", "datotek",
+            "preuz", "download", "pdf", "račun"
+        ],
+        answer:
+`Svoje dokumente možeš pronaći u kartici Dokumenti.
 
-        title:
-            "Gdje su moji dokumenti?",
+1. Klikni "Dokumenti" u donjoj navigaciji.
+2. Pregledaj dokumente povezane sa svojim projektima.
+3. Po potrebi koristi pretraživanje ili filtre.
+4. Otvori ili preuzmi željeni dokument ako je dostupan.
 
-        text:
-            `
-Otvori karticu Dokumenti u donjoj navigaciji.
+Dokumenti mogu uključivati ponude, ugovore, briefove i ostale projektne datoteke.
 
-Tamo možeš pronaći dokumente povezane s projektima, poput ugovora, ponuda, briefova i ostalih datoteka.
-            `
+Ako očekuješ dokument koji nije prikazan, javi se fizičkoj podršci.`
     },
-
 
     status: {
+        title: "Kako pratiti projekt?",
+        keywords: [
+            "projekt", "status", "napred", "rok",
+            "završ", "gotov", "koliko je", "faza"
+        ],
+        answer:
+`Napredak projekta možeš pratiti kroz svoj PTech Digital Client Portal.
 
-        title:
-            "Kako pratiti status projekta?",
+1. Otvori karticu Projekti.
+2. Odaberi projekt koji želiš pregledati.
+3. Provjeri trenutni status, napredak i rok.
 
-        text:
-            `
-Otvori karticu Projekti.
+Na početnoj stranici također možeš vidjeti osnovne informacije o svojim projektima.
 
-Tamo možeš vidjeti aktivne projekte, njihov trenutni status i napredak.
-            `
+Ako želiš dodatno pojašnjenje određenog statusa ili faze, pošalji poruku fizičkoj podršci.
+
+AI asistent ne može sam potvrditi promjenu roka ili završetak projekta.`
     },
-
 
     billing: {
+        title: "Što se dodatno naplaćuje?",
+        keywords: [
+            "naplat", "cijen", "košta", "plat",
+            "troš", "dodatni rad", "besplat",
+            "iznos", "paket"
+        ],
+        answer:
+`Dodatna naplata ovisi o dogovorenom opsegu tvojeg projekta.
 
-        title:
-            "Što se dodatno naplaćuje?",
+Rad izvan tog opsega može uključivati:
 
-        text:
-            `
-Rad koji nije uključen u dogovoreni opseg projekta može se dodatno naplatiti.
+• Nove funkcionalnosti koje nisu bile dogovorene.
+• Veće izmjene nakon potvrđenog dizajna.
+• Dodatne verzije ili zahtjeve izvan paketa.
+• Ostale naknadno dogovorene radove.
 
-To može uključivati nove funkcionalnosti, dodatne verzije, veće promjene nakon potvrđenog dizajna ili druge dodatne zahtjeve.
+Prije početka dodatnog rada PTech Digital treba potvrditi opseg i cijenu.
 
-Prije početka takvog rada PTech Digital će potvrditi opseg i cijenu.
-            `
+Samo slanje poruke podršci ne predstavlja automatsku narudžbu dodatnog rada.
+
+Za točan iznos ili ponudu obrati se fizičkoj podršci.`
     },
 
-
     support: {
+        title: "Kako kontaktirati podršku?",
+        keywords: [
+            "podrš", "osob", "agent", "čovjek",
+            "kontakt", "pomoć", "tim", "admin"
+        ],
+        answer:
+`Možeš razgovarati izravno s PTech Digital timom.
 
-        title:
-            "Kako kontaktirati podršku?",
+1. Otvori narančastu ikonu razgovora desno dolje.
+2. Odaberi "Fizička podrška" ili klikni "Razgovaraj s osobom".
+3. Napiši svoju poruku.
+4. Pošalji je našem timu.
 
-        text:
-            `
-Ispod ovog odjeljka nalazi se razgovor s fizičkom podrškom.
+Poruka će se spremiti u razgovor s podrškom.
 
-Napiši pitanje i naš tim će odgovoriti kada bude dostupan.
+Odgovor će se prikazati u istom razgovoru kada ga tim pošalje.
 
-Slanje poruke samo po sebi ne znači da si naručio dodatnu uslugu.
-            `
+Nemoj slati lozinke ili druge osjetljive podatke.`
     }
-
 };
-
 
 /* =========================
    HELP CARDS
 ========================= */
 
-document
-    .querySelectorAll(
-        "[data-help]"
-    )
-    .forEach(
-        function (button) {
+document.querySelectorAll("[data-help]").forEach((button) => {
+    button.addEventListener("click", () => {
+        const key = button.dataset.help;
+        const item = helpContent[key];
 
-            button.addEventListener(
-                "click",
-                function () {
+        if (!item) return;
 
-                    const key =
-                        button.dataset.help;
+        currentHelpKey = key;
 
+        helpAnswerTitle.textContent = item.title;
+        helpAnswerText.textContent = item.answer;
 
-                    const item =
-                        helpContent[key];
+        helpAnswer.hidden = false;
 
+        helpAnswer.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest"
+        });
+    });
+});
 
-                    if (!item) {
-                        return;
-                    }
+$("closeHelpAnswer")?.addEventListener("click", () => {
+    helpAnswer.hidden = true;
+});
 
+$("askAiAboutThis")?.addEventListener("click", () => {
+    if (!currentHelpKey) return;
 
-                    if (
-                        !helpAnswer ||
-                        !helpAnswerTitle ||
-                        !helpAnswerText
-                    ) {
+    openChat();
+    switchChatMode("ai");
 
-                        return;
-                    }
+    const question = helpContent[currentHelpKey].title;
 
-
-                    helpAnswerTitle.textContent =
-                        item.title;
-
-
-                    helpAnswerText.textContent =
-                        item.text.trim();
-
-
-                    helpAnswer.hidden =
-                        false;
-
-
-                    helpAnswer.scrollIntoView({
-
-                        behavior:
-                            "smooth",
-
-                        block:
-                            "nearest"
-                    });
-                }
-            );
-        }
-    );
-
-
-closeHelpAnswer
-    ?.addEventListener(
-        "click",
-        function () {
-
-            if (helpAnswer) {
-
-                helpAnswer.hidden =
-                    true;
-            }
-        }
-    );
-
+    sendAiQuestion(question);
+});
 
 /* =========================
    HELPERS
 ========================= */
 
-function escapeHtml(value) {
+function formatTime(value = new Date()) {
+    const date = new Date(value);
 
-    return String(
-        value ?? ""
-    )
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
+    if (Number.isNaN(date.getTime())) {
+        return "";
+    }
+
+    return date.toLocaleTimeString("hr-HR", {
+        hour: "2-digit",
+        minute: "2-digit"
+    });
 }
 
+function scrollChatToBottom(container) {
+    if (!container) return;
 
-function formatDateTime(value) {
+    requestAnimationFrame(() => {
+        container.scrollTop = container.scrollHeight;
+    });
+}
 
-    if (!value) {
-        return "-";
+function showNotice(text, isError = false) {
+    supportMessage.textContent = text;
+    supportMessage.classList.toggle("error", isError);
+    supportMessage.hidden = false;
+}
+
+function hideNotice() {
+    supportMessage.hidden = true;
+    supportMessage.textContent = "";
+}
+
+function createMessageElement(text, sender, date = new Date()) {
+    const wrapper = document.createElement("div");
+
+    wrapper.className =
+        `chat-message ${sender === "user" ? "user" : "bot"}`;
+
+    if (sender !== "user") {
+        const avatar = document.createElement("div");
+
+        avatar.className = "message-avatar";
+        avatar.textContent = "P";
+
+        wrapper.appendChild(avatar);
     }
 
+    const content = document.createElement("div");
+    content.className = "message-content";
 
-    const date =
-        new Date(value);
+    const bubble = document.createElement("div");
+    bubble.className = "message-bubble";
+    bubble.textContent = text;
 
+    const time = document.createElement("div");
+    time.className = "message-time";
+    time.textContent = formatTime(date);
 
-    if (
-        Number.isNaN(
-            date.getTime()
-        )
-    ) {
+    content.appendChild(bubble);
+    content.appendChild(time);
 
-        return "-";
+    wrapper.appendChild(content);
+
+    return wrapper;
+}
+
+function appendMessage(container, text, sender, date) {
+    const element = createMessageElement(
+        text,
+        sender,
+        date
+    );
+
+    container.appendChild(element);
+    scrollChatToBottom(container);
+
+    return element;
+}
+
+/* =========================
+   CHAT OPEN / CLOSE
+========================= */
+
+function openChat() {
+    chatOpen = true;
+
+    chatPanel.hidden = false;
+    chatLauncher.setAttribute(
+        "aria-expanded",
+        "true"
+    );
+
+    if (chatMode === "human") {
+        loadSupportMessages();
+        markClientMessagesAsRead();
     }
 
+    setTimeout(() => {
+        chatInput.focus();
+    }, 100);
+}
 
-    return date.toLocaleString(
-        "hr-HR",
-        {
-            day:
-                "2-digit",
+function closeChat() {
+    chatOpen = false;
 
-            month:
-                "2-digit",
+    chatPanel.hidden = true;
+    chatLauncher.setAttribute(
+        "aria-expanded",
+        "false"
+    );
 
-            year:
-                "numeric",
+    loadClientUnreadCount();
+}
 
-            hour:
-                "2-digit",
+chatLauncher?.addEventListener("click", () => {
+    if (chatOpen) {
+        closeChat();
+    } else {
+        openChat();
+    }
+});
 
-            minute:
-                "2-digit"
+$("openChatFromPage")?.addEventListener(
+    "click",
+    openChat
+);
+
+closeChatButton?.addEventListener(
+    "click",
+    closeChat
+);
+
+minimizeChatButton?.addEventListener(
+    "click",
+    closeChat
+);
+
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && chatOpen) {
+        closeChat();
+    }
+});
+
+/* =========================
+   CHAT MODE
+========================= */
+
+function switchChatMode(mode) {
+    chatMode = mode === "human" ? "human" : "ai";
+
+    const isHuman = chatMode === "human";
+
+    aiTab.classList.toggle("active", !isHuman);
+    humanTab.classList.toggle("active", isHuman);
+
+    aiMessages.hidden = isHuman;
+    supportMessages.hidden = !isHuman;
+
+    aiSuggestions.hidden = isHuman;
+    humanSupportAction.hidden = isHuman;
+
+    chatInput.placeholder = isHuman
+        ? "Napiši poruku podršci..."
+        : "Pitaj PTech asistenta...";
+
+    chatHeaderStatus.innerHTML = isHuman
+        ? '<i class="online-dot"></i> Fizička podrška • PTech tim'
+        : '<i class="online-dot"></i> AI asistent • Dostupan 24/7';
+
+    chatFooterText.textContent = isHuman
+        ? "Poruke se šalju PTech Digital timu"
+        : "PTech asistent • Informativni odgovori";
+
+    hideNotice();
+
+    if (isHuman && currentSession) {
+        loadSupportMessages();
+
+        if (chatOpen) {
+            markClientMessagesAsRead();
         }
+    }
+
+    scrollChatToBottom(
+        isHuman ? supportMessages : aiMessages
     );
 }
 
+aiTab?.addEventListener("click", () => {
+    switchChatMode("ai");
+});
+
+humanTab?.addEventListener("click", () => {
+    switchChatMode("human");
+});
+
+$("switchToHuman")?.addEventListener("click", () => {
+    switchChatMode("human");
+});
 
 /* =========================
-   STATUS MESSAGE
+   AI KNOWLEDGE BASE
 ========================= */
 
-function showMessage(
-    message,
-    type = "success"
-) {
-
-    if (!supportMessage) {
-        return;
-    }
-
-
-    supportMessage.hidden =
-        false;
-
-
-    supportMessage.className =
-        `support-message ${type}`;
-
-
-    supportMessage.textContent =
-        message;
+function normalizeText(text) {
+    return String(text || "")
+        .toLocaleLowerCase("hr-HR")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
 }
 
+function getAiResponse(question) {
+    const text = normalizeText(question);
 
-function hideMessage() {
+    const greetingWords = [
+        "bok", "pozdrav", "hej", "hello", "hi"
+    ];
 
-    if (!supportMessage) {
-        return;
+    if (greetingWords.includes(text)) {
+        return `Bok! 👋
+
+Dobrodošao u PTech Digital podršku.
+
+Mogu ti objasniti kako:
+• pratiti projekt
+• odobriti dizajn
+• zatražiti izmjenu
+• pronaći dokumente
+• razumjeti dodatnu naplatu
+
+Što te zanima?`;
     }
 
+    if (
+        text.includes("hvala") ||
+        text.includes("zahvaljujem")
+    ) {
+        return `Nema na čemu! 😊
 
-    supportMessage.hidden =
-        true;
+Ako imaš još pitanja, slobodno pitaj.
 
+Ako trebaš konkretnu pomoć oko svojeg projekta, možeš odabrati "Razgovaraj s osobom".`;
+    }
 
-    supportMessage.className =
-        "support-message";
+    let bestKey = null;
+    let bestScore = 0;
 
+    for (const [key, item] of Object.entries(helpContent)) {
+        let score = 0;
 
-    supportMessage.textContent =
-        "";
+        for (const keyword of item.keywords) {
+            if (text.includes(normalizeText(keyword))) {
+                score += normalizeText(keyword).length >= 6
+                    ? 2
+                    : 1;
+            }
+        }
+
+        if (text === normalizeText(item.title)) {
+            score += 10;
+        }
+
+        if (score > bestScore) {
+            bestScore = score;
+            bestKey = key;
+        }
+    }
+
+    if (bestKey && bestScore > 0) {
+        return helpContent[bestKey].answer;
+    }
+
+    return `Mogu ti pomoći s informacijama o PTech Digital Client Portalu.
+
+Najčešće teme su:
+
+• Odobrenje dizajna
+• Zahtjevi za izmjenama
+• Status i napredak projekta
+• Dokumenti
+• Dodatna naplata
+• Kontakt s podrškom
+
+Možeš malo detaljnije opisati što te zanima?
+
+Ako je pitanje vezano uz konkretnu situaciju, cijenu ili odluku PTech tima, odaberi "Razgovaraj s osobom".`;
 }
-
 
 /* =========================
-   LOAD PROFILE
+   AI CHAT
+========================= */
+
+function sendAiQuestion(question) {
+    const text = String(question || "").trim();
+
+    if (!text) return;
+
+    appendMessage(
+        aiMessages,
+        text,
+        "user"
+    );
+
+    const answer = getAiResponse(text);
+
+    const responseElement = appendMessage(
+        aiMessages,
+        answer,
+        "bot"
+    );
+
+    responseElement.style.opacity = "0";
+
+    requestAnimationFrame(() => {
+        responseElement.style.transition = "opacity .25s";
+        responseElement.style.opacity = "1";
+    });
+}
+
+document.querySelectorAll("[data-ai-question]").forEach(
+    (button) => {
+        button.addEventListener("click", () => {
+            sendAiQuestion(
+                button.dataset.aiQuestion
+            );
+        });
+    }
+);
+
+/* =========================
+   AUTH / PROFILE
 ========================= */
 
 async function loadProfile() {
+    if (!currentSession) return;
 
-    if (!currentSession) {
-        return;
-    }
-
-
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
-            .from(
-                "profiles"
-            )
-            .select(
-                "display_name"
-            )
-            .eq(
-                "id",
-                currentSession.user.id
-            )
-            .maybeSingle();
-
+    const { data, error } = await supabaseClient
+        .from("profiles")
+        .select("display_name")
+        .eq("id", currentSession.user.id)
+        .maybeSingle();
 
     if (error) {
-
-        console.error(
-            "Profile error:",
-            error
-        );
-
-
-        if (clientName) {
-
-            clientName.textContent =
-                currentSession.user.email
-                    ?.split("@")[0] ||
-                "Klijent";
-        }
-
-
-        return;
+        console.error("Profile error:", error);
     }
 
-
-    if (clientName) {
-
-        clientName.textContent =
-            data?.display_name ||
-            currentSession.user.email
-                ?.split("@")[0] ||
-            "Klijent";
-    }
+    clientName.textContent =
+        data?.display_name ||
+        currentSession.user.email?.split("@")[0] ||
+        "Klijent";
 }
 
-
 /* =========================
-   LOAD SUPPORT MESSAGES
+   SUPPORT MESSAGES
 ========================= */
 
 async function loadSupportMessages() {
+    if (!currentSession) return;
 
-    if (
-        !supportMessages ||
-        !currentSession
-    ) {
-
-        return;
-    }
-
-
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
-            .from(
-                "support_messages"
-            )
-            .select(`
-                id,
-                created_at,
-                user_id,
-                sender_role,
-                message,
-                client_read_at
-            `)
-            .eq(
-                "user_id",
-                currentSession.user.id
-            )
-            .order(
-                "created_at",
-                {
-                    ascending:
-                        true
-                }
-            );
-
+    const { data, error } = await supabaseClient
+        .from("support_messages")
+        .select(`
+            id,
+            created_at,
+            user_id,
+            sender_role,
+            message,
+            client_read_at
+        `)
+        .eq("user_id", currentSession.user.id)
+        .order("created_at", {
+            ascending: true
+        });
 
     if (error) {
+        console.error("Load support error:", error);
 
-        console.error(
-            "Support messages error:",
-            error
+        supportMessages.innerHTML = "";
+
+        const empty = document.createElement("div");
+        empty.className = "chat-empty";
+        empty.textContent =
+            "Razgovor trenutno nije moguće učitati.";
+
+        supportMessages.appendChild(empty);
+        return;
+    }
+
+    supportMessages.innerHTML = "";
+
+    if (!data || data.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "chat-empty";
+        empty.textContent =
+            "Još nema poruka. Napiši pitanje i pošalji ga našem timu.";
+
+        supportMessages.appendChild(empty);
+        return;
+    }
+
+    for (const item of data) {
+        appendMessage(
+            supportMessages,
+            item.message || "",
+            item.sender_role === "client"
+                ? "user"
+                : "bot",
+            item.created_at
         );
-
-
-        supportMessages.innerHTML = `
-
-            <div class="support-empty">
-                Razgovor nije moguće učitati.
-            </div>
-        `;
-
-
-        return;
     }
 
-
-    if (
-        !data ||
-        data.length === 0
-    ) {
-
-        supportMessages.innerHTML = `
-
-            <div class="support-empty">
-                Još nema poruka. Pošalji pitanje podršci.
-            </div>
-        `;
-
-
-        return;
-    }
-
-
-    supportMessages.innerHTML =
-        data
-            .map(
-                function (item) {
-
-                    const isClient =
-                        item.sender_role ===
-                        "client";
-
-
-                    return `
-
-                        <div
-                            class="
-                                support-chat-message
-                                ${
-                                    isClient
-                                        ? "client"
-                                        : "admin"
-                                }
-                            "
-                        >
-
-                            <div
-                                class="
-                                    support-chat-message-top
-                                "
-                            >
-
-                                <strong>
-
-                                    ${
-                                        isClient
-                                            ? "Vi"
-                                            : "PTech Digital"
-                                    }
-
-                                </strong>
-
-
-                                <span>
-
-                                    ${formatDateTime(
-                                        item.created_at
-                                    )}
-
-                                </span>
-
-                            </div>
-
-
-                            <p>
-
-                                ${escapeHtml(
-                                    item.message
-                                )}
-
-                            </p>
-
-                        </div>
-                    `;
-                }
-            )
-            .join("");
-
-
-    supportMessages.scrollTop =
-        supportMessages.scrollHeight;
+    scrollChatToBottom(supportMessages);
 }
 
-
 /* =========================
-   MARK ADMIN MESSAGES READ
+   MARK MESSAGES READ
 ========================= */
 
 async function markClientMessagesAsRead() {
-
-    if (!currentSession) {
-        return;
-    }
-
-
-    const {
-        error
-    } =
-        await supabaseClient
-            .from(
-                "support_messages"
-            )
-            .update({
-
-                client_read_at:
-                    new Date()
-                        .toISOString()
-            })
-            .eq(
-                "user_id",
-                currentSession.user.id
-            )
-            .eq(
-                "sender_role",
-                "admin"
-            )
-            .is(
-                "client_read_at",
-                null
-            );
-
-
-    if (error) {
-
-        console.error(
-            "Client read update error:",
-            error
-        );
-    }
-}
-
-
-/* =========================
-   UNREAD COUNT
-========================= */
-
-async function loadClientUnreadCount() {
-
-    if (
-        !messagesUnreadBadge ||
-        !currentSession
-    ) {
-
-        return;
-    }
-
-
-    const {
-        count,
-        error
-    } =
-        await supabaseClient
-            .from(
-                "support_messages"
-            )
-            .select(
-                "id",
-                {
-                    count:
-                        "exact",
-
-                    head:
-                        true
-                }
-            )
-            .eq(
-                "user_id",
-                currentSession.user.id
-            )
-            .eq(
-                "sender_role",
-                "admin"
-            )
-            .is(
-                "client_read_at",
-                null
-            );
-
-
-    if (error) {
-
-        console.error(
-            "Unread count error:",
-            error
-        );
-
-
-        return;
-    }
-
-
-    const unreadCount =
-        count || 0;
-
-
-    if (
-        unreadCount > 0
-    ) {
-
-        messagesUnreadBadge.hidden =
-            false;
-
-
-        messagesUnreadBadge.textContent =
-            unreadCount > 99
-                ? "99+"
-                : String(
-                    unreadCount
-                );
-
-    } else {
-
-        messagesUnreadBadge.hidden =
-            true;
-
-
-        messagesUnreadBadge.textContent =
-            "0";
-    }
-}
-
-
-/* =========================
-   SEND MESSAGE
-========================= */
-
-async function sendMessage() {
-
     if (
         !currentSession ||
-        !supportMessageInput ||
-        !sendSupportMessage
+        !chatOpen ||
+        chatMode !== "human"
     ) {
-
         return;
     }
 
-
-    hideMessage();
-
-
-    const message =
-        supportMessageInput
-            .value
-            .trim();
-
-
-    if (
-        !message ||
-        message.length < 2
-    ) {
-
-        showMessage(
-            "Napiši poruku prije slanja.",
-            "error"
-        );
-
-
-        supportMessageInput.focus();
-
-
-        return;
-    }
-
-
-    sendSupportMessage.disabled =
-        true;
-
-
-    sendSupportMessage.textContent =
-        "Šaljem...";
-
-
-    const {
-        error
-    } =
-        await supabaseClient
-            .from(
-                "support_messages"
-            )
-            .insert({
-
-                user_id:
-                    currentSession.user.id,
-
-                sender_role:
-                    "client",
-
-                message:
-                    message
-            });
-
-
-    sendSupportMessage.disabled =
-        false;
-
-
-    sendSupportMessage.textContent =
-        "Pošalji poruku";
-
+    const { error } = await supabaseClient
+        .from("support_messages")
+        .update({
+            client_read_at: new Date().toISOString()
+        })
+        .eq("user_id", currentSession.user.id)
+        .eq("sender_role", "admin")
+        .is("client_read_at", null);
 
     if (error) {
+        console.error("Mark read error:", error);
+    }
 
-        console.error(
-            "Send support error:",
-            error
+    await loadClientUnreadCount();
+}
+
+/* =========================
+   UNREAD BADGES
+========================= */
+
+function updateBadge(element, count) {
+    if (!element) return;
+
+    element.hidden = count <= 0;
+    element.textContent =
+        count > 99 ? "99+" : String(count);
+}
+
+async function loadClientUnreadCount() {
+    if (!currentSession) return;
+
+    const { count, error } = await supabaseClient
+        .from("support_messages")
+        .select("id", {
+            count: "exact",
+            head: true
+        })
+        .eq("user_id", currentSession.user.id)
+        .eq("sender_role", "admin")
+        .is("client_read_at", null);
+
+    if (error) {
+        console.error("Unread error:", error);
+        return;
+    }
+
+    unreadCount = count || 0;
+
+    updateBadge(messagesUnreadBadge, unreadCount);
+    updateBadge(chatUnreadBadge, unreadCount);
+    updateBadge(humanTabUnread, unreadCount);
+}
+
+/* =========================
+   SEND HUMAN MESSAGE
+========================= */
+
+async function sendHumanMessage(message) {
+    if (!currentSession || sendingMessage) return;
+
+    sendingMessage = true;
+    sendChatMessage.disabled = true;
+
+    hideNotice();
+
+    const { error } = await supabaseClient
+        .from("support_messages")
+        .insert({
+            user_id: currentSession.user.id,
+            sender_role: "client",
+            message: message
+        });
+
+    sendingMessage = false;
+    sendChatMessage.disabled = false;
+
+    if (error) {
+        console.error("Send message error:", error);
+
+        showNotice(
+            "Poruka nije poslana. Pokušaj ponovno.",
+            true
         );
-
-
-        showMessage(
-            "Poruku nije moguće poslati.",
-            "error"
-        );
-
 
         return;
     }
 
-
-    supportMessageInput.value =
-        "";
-
-
-    showMessage(
-        "Poruka je poslana.",
-        "success"
-    );
-
-
-    /*
-        Realtime će obično povući poruku,
-        ali pozivamo i ručni refresh kao fallback.
-    */
+    chatInput.value = "";
 
     await loadSupportMessages();
 }
 
-
 /* =========================
-   SEND BUTTON
+   SEND COMPOSER
 ========================= */
 
-sendSupportMessage
-    ?.addEventListener(
-        "click",
-        sendMessage
-    );
+async function sendCurrentMessage() {
+    if (sendingMessage) return;
 
+    const message = chatInput.value.trim();
 
-/* =========================
-   ENTER SEND
-========================= */
+    if (!message) return;
 
-supportMessageInput
-    ?.addEventListener(
-        "keydown",
-        function (event) {
+    if (message.length < 2) {
+        showNotice(
+            "Napiši malo dužu poruku.",
+            true
+        );
+        return;
+    }
 
-            if (
-                event.key === "Enter" &&
-                !event.shiftKey
-            ) {
+    hideNotice();
 
-                event.preventDefault();
+    if (chatMode === "ai") {
+        chatInput.value = "";
+        sendAiQuestion(message);
+    } else {
+        await sendHumanMessage(message);
+    }
 
+    chatInput.style.height = "42px";
+    chatInput.focus();
+}
 
-                sendMessage();
-            }
-        }
-    );
+sendChatMessage?.addEventListener(
+    "click",
+    sendCurrentMessage
+);
 
+chatInput?.addEventListener("keydown", (event) => {
+    if (
+        event.key === "Enter" &&
+        !event.shiftKey &&
+        !event.isComposing
+    ) {
+        event.preventDefault();
+        sendCurrentMessage();
+    }
+});
+
+chatInput?.addEventListener("input", () => {
+    chatInput.style.height = "42px";
+
+    chatInput.style.height =
+        Math.min(chatInput.scrollHeight, 110) + "px";
+});
 
 /* =========================
    REALTIME
 ========================= */
 
 function subscribeToSupportRealtime() {
+    if (!currentSession || realtimeChannel) return;
 
-    if (
-        !currentSession ||
-        realtimeChannel
-    ) {
+    realtimeChannel = supabaseClient
+        .channel(
+            `client-support-${currentSession.user.id}`
+        )
+        .on(
+            "postgres_changes",
+            {
+                event: "*",
+                schema: "public",
+                table: "support_messages",
+                filter:
+                    `user_id=eq.${currentSession.user.id}`
+            },
+            async () => {
+                await loadClientUnreadCount();
 
-        return;
-    }
-
-
-    realtimeChannel =
-        supabaseClient
-            .channel(
-                `client-support-${currentSession.user.id}`
-            )
-            .on(
-                "postgres_changes",
-                {
-                    event:
-                        "*",
-
-                    schema:
-                        "public",
-
-                    table:
-                        "support_messages",
-
-                    filter:
-                        `user_id=eq.${currentSession.user.id}`
-                },
-                async function (payload) {
-
-                    console.log(
-                        "Client support realtime:",
-                        payload
-                    );
-
-
+                if (chatOpen && chatMode === "human") {
                     await loadSupportMessages();
-
-
-                    /*
-                        Ako korisnik trenutno gleda
-                        messages.html i stigne admin poruka,
-                        odmah ju označavamo pročitanom.
-                    */
-
-                    if (
-                        payload.eventType ===
-                            "INSERT" &&
-                        payload.new
-                            ?.sender_role ===
-                            "admin"
-                    ) {
-
-                        await markClientMessagesAsRead();
-                    }
-
-
-                    await loadClientUnreadCount();
+                    await markClientMessagesAsRead();
                 }
-            )
-            .subscribe(
-                function (status) {
-
-                    console.log(
-                        "Client support realtime status:",
-                        status
-                    );
-                }
+            }
+        )
+        .subscribe((status) => {
+            console.log(
+                "Support realtime:",
+                status
             );
+        });
 }
 
-
 /* =========================
-   VISIBILITY
+   VISIBILITY REFRESH
 ========================= */
 
 document.addEventListener(
     "visibilitychange",
-    async function () {
-
+    async () => {
         if (
-            document.visibilityState ===
-                "visible" &&
-            currentSession
+            document.visibilityState !== "visible" ||
+            !currentSession
         ) {
+            return;
+        }
 
+        await loadClientUnreadCount();
+
+        if (chatOpen && chatMode === "human") {
             await loadSupportMessages();
-
-
             await markClientMessagesAsRead();
-
-
-            await loadClientUnreadCount();
         }
     }
 );
-
 
 /* =========================
-   PAGE CLEANUP
+   LOGOUT
 ========================= */
 
-window.addEventListener(
-    "beforeunload",
-    function () {
-
+logoutButton?.addEventListener(
+    "click",
+    async () => {
         if (realtimeChannel) {
+            await supabaseClient.removeChannel(
+                realtimeChannel
+            );
 
-            supabaseClient
-                .removeChannel(
-                    realtimeChannel
-                );
+            realtimeChannel = null;
         }
+
+        await supabaseClient.auth.signOut();
+
+        window.location.href = "login.html";
     }
 );
-
 
 /* =========================
    START
 ========================= */
 
 async function startMessages() {
-
     const {
-        data: {
-            session
-        },
+        data: { session },
         error
-    } =
-        await supabaseClient
-            .auth
-            .getSession();
+    } = await supabaseClient.auth.getSession();
 
-
-    if (
-        error ||
-        !session
-    ) {
-
-        window.location.href =
-            "login.html";
-
-
+    if (error || !session) {
+        window.location.href = "login.html";
         return;
     }
 
-
-    currentSession =
-        session;
-
+    currentSession = session;
 
     await loadProfile();
-
-
-    await loadSupportMessages();
-
-
-    /*
-        Korisnik je upravo otvorio Poruke.
-        Sve admin poruke koje nisu pročitane
-        označavamo pročitanima.
-    */
-
-    await markClientMessagesAsRead();
-
-
     await loadClientUnreadCount();
 
-
     subscribeToSupportRealtime();
+
+    switchChatMode("ai");
 }
-
-
-/* =========================
-   INIT
-========================= */
 
 startMessages();
