@@ -1,18 +1,18 @@
+
 <!DOCTYPE html>
 <html lang="hr">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
 
+    <title>PTech Digital Client Portal</title>
+
     <link
         rel="stylesheet"
-        href="./style.css?v=14"
+        href="./style.css?v=16"
     >
 
     <script
@@ -20,174 +20,92 @@
     ></script>
 
     <script
-        src="./script.js?v=13"
+        src="./script.js?v=16"
         defer
     ></script>
-
-    <title>
-        PTech Digital Client Portal
-    </title>
-
 </head>
-
 
 <body>
 
     <main class="dashboard">
 
-
-        <!-- =========================
-             HEADER
-        ========================== -->
-
+        <!-- HEADER -->
         <header class="dashboard-header">
 
-
-            <!-- BRAND -->
-
-            <a
-                href="form.html"
-                class="brand"
-            >
-
-                <div class="brand-logo">
-                    P
-                </div>
-
-                <h1>
-                    PTech Digital Client Portal
-                </h1>
-
+            <a href="form.html" class="brand">
+                <div class="brand-logo">P</div>
+                <h1>PTech Digital Client Portal</h1>
             </a>
-
-
-            <!-- HEADER ACTIONS -->
 
             <div class="header-actions">
 
-
-                <!-- USER -->
-
                 <div class="user-box">
-
                     <div class="user-avatar">
-
                         <svg viewBox="0 0 24 24">
-
                             <circle
                                 cx="12"
                                 cy="8"
                                 r="3"
                             ></circle>
-
                             <path
                                 d="M5 20c0-4 3-7 7-7s7 3 7 7"
                             ></path>
-
                         </svg>
-
                     </div>
 
                     <strong id="userTop">
                         Klijent
                     </strong>
-
                 </div>
 
-
                 <span class="header-separator"></span>
-
-
-                <!-- LOGOUT -->
 
                 <button
                     id="logoutButton"
                     class="logout-button"
                     type="button"
                 >
-
                     <svg viewBox="0 0 24 24">
-
-                        <path
-                            d="M10 5H5v14h5"
-                        ></path>
-
-                        <path
-                            d="M14 8l4 4-4 4"
-                        ></path>
-
-                        <path
-                            d="M8 12h10"
-                        ></path>
-
+                        <path d="M10 5H5v14h5"></path>
+                        <path d="M14 8l4 4-4 4"></path>
+                        <path d="M8 12h10"></path>
                     </svg>
-
-                    <span>
-                        Odjava
-                    </span>
-
+                    <span>Odjava</span>
                 </button>
-
 
                 <span class="header-separator"></span>
 
-
-                <!-- THEME -->
-
                 <label class="theme-switch">
-
                     <input
                         type="checkbox"
                         id="themeToggle"
                         aria-label="Promijeni temu"
                     >
-
                     <span class="theme-slider"></span>
-
                 </label>
 
-
             </div>
-
         </header>
 
-
-        <!-- =========================
-             CONTENT
-        ========================== -->
-
+        <!-- SADRZAJ -->
         <div class="dashboard-content">
 
-
-            <!-- =========================
-                 WELCOME
-            ========================== -->
-
+            <!-- POZDRAV -->
             <section class="welcome">
-
                 <h2>
-
                     Bok,
-
                     <strong id="userGreeting">
                         Klijent
                     </strong>!
-
                 </h2>
 
                 <p>
                     Evo što se događa s tvojim projektima.
                 </p>
-
             </section>
 
-
-            <!-- =========================
-                 ACTIVE PROJECTS
-            ========================== -->
-
+            <!-- AKTIVNI PROJEKTI -->
             <section class="dashboard-section">
-
 
                 <div class="section-header">
 
@@ -195,86 +113,51 @@
                         Aktivni projekti
                     </h2>
 
-
                     <div class="project-counter">
-
-                        <span id="currentProject">
-                            0
-                        </span>
-
-                        <span>
-                            /
-                        </span>
-
-                        <span id="totalProjects">
-                            0
-                        </span>
-
+                        <span id="currentProject">0</span>
+                        <span>/</span>
+                        <span id="totalProjects">0</span>
                     </div>
 
                 </div>
-
 
                 <div
                     class="projects-slider"
                     id="projectsSlider"
                 >
-
                     <div class="no-projects">
                         Učitavanje projekata...
                     </div>
-
                 </div>
-
 
                 <div
                     class="slider-dots"
                     id="sliderDots"
-                >
-                </div>
-
+                ></div>
 
             </section>
 
-
-            <!-- =========================
-                 ACTIONS
-            ========================== -->
-
+            <!-- AKCIJE -->
             <section class="actions-section">
 
-
                 <div class="actions-header">
-
-                    <h2>
-                        Akcije
-                    </h2>
-
+                    <h2>Akcije</h2>
                     <p id="actionsProjectLabel">
                         Odaberi projekt i nastavi.
                     </p>
-
                 </div>
-
 
                 <div class="actions-grid">
 
-
-                    <!-- APPROVE -->
-
+                    <!-- ODOBRI DIZAJN -->
                     <a
                         href="#"
                         class="action-card"
                         id="approveDesignAction"
                     >
+                        <div class="action-icon">✓</div>
 
-                        <div class="action-icon">
-                            ✓
-                        </div>
-
-                        <strong>
-                            Odobri dizajn
-                        </strong>
+                        <strong>Odobri dizajn</strong>
 
                         <p>
                             Pregledaj dizajn i potvrdi ga.
@@ -283,26 +166,18 @@
                         <span class="action-button">
                             Pregledaj
                         </span>
-
                     </a>
 
-
-                    <!-- REVISION -->
-
+                    <!-- ZATRAZI IZMJENU -->
                     <a
                         href="#"
                         class="action-card"
                         id="revisionAction"
                         aria-disabled="true"
                     >
+                        <div class="action-icon">↔</div>
 
-                        <div class="action-icon">
-                            ↔
-                        </div>
-
-                        <strong>
-                            Zatraži izmjenu
-                        </strong>
+                        <strong>Zatraži izmjenu</strong>
 
                         <p>
                             Pošalji prijedlog ili izmjenu dizajna.
@@ -314,47 +189,40 @@
                         >
                             Nova izmjena
                         </span>
-
                     </a>
 
-
-                    <!-- MATERIALS -->
-
-                    <div
-                        class="action-card action-card-disabled"
+                    <!-- DOSTAVI MATERIJALE -->
+                    <button
+                        type="button"
+                        class="action-card"
                         id="materialsAction"
-                        aria-disabled="true"
+                        disabled
                     >
-
-                        <div class="action-icon">
-                            ↑
-                        </div>
+                        <div class="action-icon">↑</div>
 
                         <strong>
                             Dostavi materijale
                         </strong>
 
                         <p>
-                            Slanje logotipa, fotografija i ostalih materijala.
+                            Pošalji logotip, fotografije i
+                            ostale materijale za odabrani projekt.
                         </p>
 
-                        <span class="action-button">
-                            Uskoro
+                        <span
+                            class="action-button"
+                            id="materialsActionText"
+                        >
+                            Učitaj datoteke
                         </span>
+                    </button>
 
-                    </div>
-
-
-                    <!-- SUPPORT -->
-
+                    <!-- PODRSKA -->
                     <a
                         href="messages.html"
                         class="action-card"
                     >
-
-                        <div class="action-icon">
-                            ?
-                        </div>
+                        <div class="action-icon">?</div>
 
                         <strong>
                             Kontaktiraj podršku
@@ -367,115 +235,67 @@
                         <span class="action-button">
                             Pošalji upit
                         </span>
-
                     </a>
 
-
                 </div>
-
-
             </section>
 
-
-            <!-- =========================
-                 FOOTER
-            ========================== -->
-
+            <!-- FOOTER -->
             <footer class="footer">
-
                 © PTech Digital 2026.
                 • Sva prava zadržana.
-
             </footer>
-
 
         </div>
 
-
-        <!-- =========================
-             BOTTOM NAVIGATION
-        ========================== -->
-
+        <!-- DONJA NAVIGACIJA -->
         <nav class="bottom-nav">
 
-
-            <!-- HOME -->
-
+            <!-- POCETNA -->
             <a
                 href="form.html"
                 class="bottom-nav-item active"
                 aria-label="Početna"
             >
-
                 <svg viewBox="0 0 24 24">
-
-                    <path
-                        d="M3 11.5L12 4l9 7.5"
-                    ></path>
-
-                    <path
-                        d="M5 10.5V20h14v-9.5"
-                    ></path>
-
-                    <path
-                        d="M9 20v-6h6v6"
-                    ></path>
-
+                    <path d="M3 11.5L12 4l9 7.5"></path>
+                    <path d="M5 10.5V20h14v-9.5"></path>
+                    <path d="M9 20v-6h6v6"></path>
                 </svg>
 
-                <span>
-                    Početna
-                </span>
-
+                <span>Početna</span>
             </a>
 
-
-            <!-- MESSAGES -->
-
+            <!-- PORUKE -->
             <a
                 href="messages.html"
                 class="bottom-nav-item"
                 aria-label="Poruke"
             >
-
                 <div class="bottom-nav-icon-wrap">
-
                     <svg viewBox="0 0 24 24">
-
                         <path
                             d="M4 5h16v11H8l-4 4z"
                         ></path>
-
                     </svg>
-
 
                     <span
                         id="messagesUnreadBadge"
                         class="nav-notification"
                         hidden
-                    >
-                        0
-                    </span>
-
+                    >0</span>
                 </div>
 
-                <span>
-                    Poruke
-                </span>
-
+                <span>Poruke</span>
             </a>
 
-
-            <!-- PROJECTS -->
-
+            <!-- PROJEKTI -->
             <a
                 href="my-projects.html"
                 class="bottom-nav-item"
                 aria-label="Projekti"
             >
-
                 <svg viewBox="0 0 24 24">
-
                     <rect
                         x="4"
                         y="5"
@@ -483,79 +303,172 @@
                         height="15"
                         rx="2"
                     ></rect>
-
                     <path d="M8 5V3"></path>
-
                     <path d="M16 5V3"></path>
-
                     <path d="M4 9h16"></path>
-
                 </svg>
 
-                <span>
-                    Projekti
-                </span>
-
+                <span>Projekti</span>
             </a>
 
-
-            <!-- DOCUMENTS -->
-
+            <!-- DOKUMENTI -->
             <a
                 href="documents.html"
                 class="bottom-nav-item"
                 aria-label="Dokumenti"
             >
-
                 <svg viewBox="0 0 24 24">
-
                     <path
                         d="M4 4h6l2 2h8v14H4z"
                     ></path>
-
                 </svg>
 
-                <span>
-                    Dokumenti
-                </span>
-
+                <span>Dokumenti</span>
             </a>
 
-
-            <!-- PROFILE -->
-
+            <!-- PROFIL -->
             <a
                 href="profile.html"
                 class="bottom-nav-item"
                 aria-label="Profil"
             >
-
                 <svg viewBox="0 0 24 24">
-
                     <circle
                         cx="12"
                         cy="8"
                         r="3"
                     ></circle>
-
                     <path
                         d="M5 20c0-4 3-7 7-7s7 3 7 7"
                     ></path>
-
                 </svg>
 
-                <span>
-                    Profil
-                </span>
-
+                <span>Profil</span>
             </a>
-
 
         </nav>
 
-
     </main>
 
-</body>
+    <!-- =====================================
+         PROZOR ZA DOSTAVU MATERIJALA
+    ====================================== -->
 
+    <div
+        class="materials-overlay"
+        id="materialsOverlay"
+        hidden
+    >
+        <section
+            class="materials-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="materialsModalTitle"
+        >
+
+            <div class="materials-modal-top">
+
+                <div>
+                    <span class="materials-eyebrow">
+                        PTECH DIGITAL · MATERIJALI
+                    </span>
+
+                    <h2 id="materialsModalTitle">
+                        Dostavi materijale
+                    </h2>
+
+                    <p id="materialsProjectName">
+                        Odabrani projekt
+                    </p>
+                </div>
+
+                <button
+                    type="button"
+                    class="materials-close"
+                    id="materialsClose"
+                    aria-label="Zatvori"
+                >
+                    ×
+                </button>
+
+            </div>
+
+            <form id="materialsForm">
+
+                <!-- ODABIR DATOTEKA -->
+                <label
+                    class="materials-dropzone"
+                    for="materialsFiles"
+                    id="materialsDropzone"
+                >
+                    <span class="materials-upload-icon">
+                        ↑
+                    </span>
+
+                    <strong>
+                        Odaberi datoteke
+                    </strong>
+
+                    <span>
+                        ili ih povuci ovdje ·
+                        slike, PDF, dokumenti i ZIP
+                    </span>
+
+                    <input
+                        type="file"
+                        id="materialsFiles"
+                        multiple
+                        accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.txt"
+                        required
+                    >
+                </label>
+
+                <!-- POPIS ODABRANIH DATOTEKA -->
+                <div
+                    id="materialsFileList"
+                    class="materials-file-list"
+                    aria-live="polite"
+                ></div>
+
+                <p class="materials-hint">
+                    Najviše 10 datoteka, do 10 MB
+                    po datoteci. Datoteke se spremaju
+                    privatno uz tvoj projekt.
+                </p>
+
+                <!-- STATUS SLANJA -->
+                <p
+                    id="materialsStatus"
+                    class="materials-status"
+                    role="status"
+                    aria-live="polite"
+                ></p>
+
+                <!-- GUMBI -->
+                <div class="materials-modal-actions">
+
+                    <button
+                        type="button"
+                        class="materials-cancel"
+                        id="materialsCancel"
+                    >
+                        Odustani
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="materials-submit"
+                        id="materialsSubmit"
+                    >
+                        Pošalji materijale
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+    </div>
+
+</body>
 </html>
