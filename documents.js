@@ -243,125 +243,66 @@ async function loadDatabaseDocuments() {
    BUCKET project-materials
 ========================= */
 
+    
 async function loadMaterialDocuments() {
     if (!currentSession || !allProjects.length) return [];
 
     const userId = currentSession.user.id;
     const bucket = supabaseClient.storage.from("project-materials");
-
-    /*
-       Struktura:
-       petra--UUID/projekt-2/datoteka.pdf
-
-       Najprije tražimo korisničku mapu.
-       Tako nije važno je li ime Petra,
-       Petar ili neki drugi naziv profila.
-    */
-
-    const { data: rootItems, error: rootError } =
-        await bucket.list("", {
-            limit: 1000,
-            offset: 0
-        });
-
-    if (rootError) {
-        console.error("Materials root error:", rootError);
-        throw rootError;
-    }
-
-    const userFolders = (rootItems || [])
-        .filter(item =>
-            item.name &&
-            item.name.endsWith(`--${userId}`)
-        )
-        .map(item => item.name);
-
-    /*
-       Dodatna mogućnost ako Supabase ne vrati
-       virtualne mape u korijenu.
-    */
-
-    const profileFolder =
-        `${safePathPart(clientName?.textContent)}--${userId}`;
-
-    if (!userFolders.includes(profileFolder)) {
-        userFolders.push(profileFolder);
-    }
-
     const materials = [];
 
-    for (const folder of userFolders) {
-        for (const project of allProjects) {
-            const projectPath =
-                `${folder}/projekt-${project.id}`;
+    // Mapa korištena prilikom slanja materijala.
+    const clientFolder = `${safePathPart(clientName?.textContent)}--${userId}`;
 
-            let offset = 0;
-            const limit = 100;
+    for (const project of allProjects) {
+        const projectPath = `${clientFolder}/projekt-${project.id}`;
 
-            while (true) {
-                const { data: files, error } =
-                    await bucket.list(projectPath, {
-                        limit,
-                        offset,
-                        sortBy: {
-                            column: "created_at",
-                            order: "desc"
-                        }
-                    });
+        let offset = 0;
+        const limit = 100;
 
-                if (error) {
-                    console.error(
-                        "Materials folder error:",
-                        projectPath,
-                        error
-                    );
-
-                    /*
-                       Ne prekidamo sve ostale projekte
-                       zbog jedne nedostupne mape.
-                    */
-                    break;
+        while (true) {
+            const { data: files, error } = await bucket.list(projectPath, {
+                limit,
+                offset,
+                sortBy: {
+                    column: "created_at",
+                    order: "desc"
                 }
+            });
 
-                const batch = files || [];
-
-                for (const file of batch) {
-                    /*
-                       Preskačemo podmape.
-                       Datoteke imaju metadata ili id.
-                    */
-                    if (!file.id && !file.metadata) continue;
-
-                    const filePath =
-                        `${projectPath}/${file.name}`;
-
-                    materials.push({
-                        id: `material:${filePath}`,
-                        created_at:
-                            file.created_at ||
-                            file.updated_at ||
-                            null,
-                        project_id: project.id,
-                        name: file.name,
-                        file_url: filePath,
-                        document_type: "Dizajn",
-                        file_size:
-                            file.metadata?.size ||
-                            0,
-                        source: "materials",
-                        bucket: "project-materials"
-                    });
-                }
-
-                if (batch.length < limit) break;
-
-                offset += limit;
+            if (error) {
+                console.error("Greška pri učitavanju materijala:", projectPath, error);
+                throw error;
             }
+
+            const batch = files || [];
+
+            for (const file of batch) {
+                if (!file.id && !file.metadata) continue;
+
+                const filePath = `${projectPath}/${file.name}`;
+
+                materials.push({
+                    id: `material:${filePath}`,
+                    created_at: file.created_at || file.updated_at || null,
+                    project_id: project.id,
+                    name: file.name,
+                    file_url: filePath,
+                    document_type: "Dizajn",
+                    file_size: file.metadata?.size || 0,
+                    source: "materials",
+                    bucket: "project-materials"
+                });
+            }
+
+            if (batch.length < limit) break;
+            offset += limit;
         }
     }
 
     return materials;
 }
+
 
 /* =========================
    UČITAVANJE SVIH DOKUMENATA
