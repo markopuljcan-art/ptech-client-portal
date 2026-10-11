@@ -12,7 +12,7 @@
 
     <link
         rel="stylesheet"
-        href="./style.css?v=17"
+        href="./style.css?v=18"
     >
 
     <script
@@ -25,356 +25,448 @@
     ></script>
 </head>
 
-<body>
+<body class="portal-desktop">
 
     <main class="dashboard desktop-layout">
-        <!-- Desktop navigacija: na mobitelima cemo kasnije napraviti zaseban prikaz -->
-        <aside class="desktop-sidebar" aria-label="Glavna navigacija">
+
+        <!-- LIJEVI DESKTOP IZBORNIK -->
+        <aside
+            class="desktop-sidebar"
+            aria-label="Glavna navigacija"
+        >
             <a class="sidebar-brand" href="form.html">
                 <span class="brand-logo">P</span>
-                <span class="sidebar-brand-text"><strong>PTech Digital</strong><small>CLIENT PORTAL</small></span>
-            </a>
-            <nav class="sidebar-nav" aria-label="Stranice portala">
-                <a href="form.html" class="sidebar-link active" aria-current="page"><span aria-hidden="true">⌂</span> Početna</a>
-                <a href="my-projects.html" class="sidebar-link"><span aria-hidden="true">▱</span> Projekti</a>
-                <a href="documents.html" class="sidebar-link"><span aria-hidden="true">▤</span> Dokumenti</a>
-                <a href="messages.html" class="sidebar-link"><span aria-hidden="true">▢</span> Poruke <span class="sidebar-message-indicator" aria-hidden="true"></span></a>
-                <a href="profile.html" class="sidebar-link"><span aria-hidden="true">♙</span> Profil</a>
-            </nav>
-            <div class="sidebar-bottom"><a href="messages.html">ⓘ &nbsp; Pomoć i podrška</a><p>© PTech Digital 2026.<br>Sva prava zadržana.</p></div>
-        </aside>
-        <div class="desktop-main">
 
-        <!-- HEADER -->
-        <header class="dashboard-header">
-
-            <a href="form.html" class="brand mobile-brand">
-                <div class="brand-logo">P</div>
-                <h1>PTech Digital Client Portal</h1>
+                <span class="sidebar-brand-text">
+                    <strong>PTech Digital</strong>
+                    <small>CLIENT PORTAL</small>
+                </span>
             </a>
 
-            <div class="header-actions">
-                <label class="desktop-search" aria-label="Pretraži portal">
-                    <span aria-hidden="true">⌕</span>
-                    <input id="portalSearch" type="search" disabled title="Pretraživanje dodajemo u sljedećem koraku" placeholder="Pretraži projekte..." autocomplete="off">
-                </label>
-
-                <div class="user-box">
-                    <div class="user-avatar">
-                        <svg viewBox="0 0 24 24">
-                            <circle
-                                cx="12"
-                                cy="8"
-                                r="3"
-                            ></circle>
-                            <path
-                                d="M5 20c0-4 3-7 7-7s7 3 7 7"
-                            ></path>
-                        </svg>
-                    </div>
-
-                    <strong id="userTop">
-                        Klijent
-                    </strong>
-                </div>
-
-                <span class="header-separator"></span>
-
-                <button
-                    id="logoutButton"
-                    class="logout-button"
-                    type="button"
+            <nav
+                class="sidebar-nav"
+                aria-label="Stranice portala"
+            >
+                <a
+                    href="form.html"
+                    class="sidebar-link active"
+                    aria-current="page"
                 >
-                    <svg viewBox="0 0 24 24">
-                        <path d="M10 5H5v14h5"></path>
-                        <path d="M14 8l4 4-4 4"></path>
-                        <path d="M8 12h10"></path>
-                    </svg>
-                    <span>Odjava</span>
-                </button>
+                    <span aria-hidden="true">⌂</span>
+                    Početna
+                </a>
 
-                <span class="header-separator"></span>
+                <a
+                    href="my-projects.html"
+                    class="sidebar-link"
+                >
+                    <span aria-hidden="true">▱</span>
+                    Projekti
+                </a>
 
-                <label class="theme-switch">
-                    <input
-                        type="checkbox"
-                        id="themeToggle"
-                        aria-label="Promijeni temu"
-                    >
-                    <span class="theme-slider"></span>
-                </label>
+                <a
+                    href="documents.html"
+                    class="sidebar-link"
+                >
+                    <span aria-hidden="true">▤</span>
+                    Dokumenti
+                </a>
 
-            </div>
-        </header>
+                <a
+                    href="messages.html"
+                    class="sidebar-link"
+                >
+                    <span aria-hidden="true">▢</span>
+                    Poruke
 
-        <!-- SADRZAJ -->
-        <div class="dashboard-content">
+                    <span
+                        class="sidebar-message-indicator"
+                        aria-hidden="true"
+                    ></span>
+                </a>
 
-            <!-- POZDRAV -->
-            <section class="welcome">
-                <h2>
-                    Bok,
-                    <strong id="userGreeting">
-                        Klijent
-                    </strong>!
-                </h2>
+                <a
+                    href="profile.html"
+                    class="sidebar-link"
+                >
+                    <span aria-hidden="true">♙</span>
+                    Profil
+                </a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <a href="messages.html">
+                    ⓘ &nbsp; Pomoć i podrška
+                </a>
 
                 <p>
-                    Evo što se događa s tvojim projektima.
+                    © PTech Digital 2026.
+                    Sva prava zadržana.
                 </p>
-            </section>
+            </div>
+        </aside>
 
-            <!-- AKTIVNI PROJEKTI -->
-            <section class="dashboard-section">
+        <!-- GLAVNI DESKTOP SADRZAJ -->
+        <div class="desktop-main">
 
-                <div class="section-header">
+            <!-- GORNJA TRAKA -->
+            <header class="dashboard-header">
 
-                    <h2 class="section-title">
-                        Aktivni projekti
-                    </h2>
-
-                    <div class="project-counter">
-                        <span id="currentProject">0</span>
-                        <span>/</span>
-                        <span id="totalProjects">0</span>
-                    </div>
-
-                </div>
-
-                <div
-                    class="projects-slider"
-                    id="projectsSlider"
+                <a
+                    href="form.html"
+                    class="brand mobile-brand"
                 >
-                    <div class="no-projects">
-                        Učitavanje projekata...
-                    </div>
-                </div>
+                    <div class="brand-logo">P</div>
+                    <h1>PTech Digital Client Portal</h1>
+                </a>
 
-                <div
-                    class="slider-dots"
-                    id="sliderDots"
-                ></div>
+                <div class="header-actions">
 
-            </section>
-
-            <!-- AKCIJE -->
-            <section class="actions-section">
-
-                <div class="actions-header">
-                    <h2>Akcije</h2>
-                    <p id="actionsProjectLabel">
-                        Odaberi projekt i nastavi.
-                    </p>
-                </div>
-
-                <div class="actions-grid">
-
-                    <!-- ODOBRI DIZAJN -->
-                    <a
-                        href="#"
-                        class="action-card"
-                        id="approveDesignAction"
+                    <!-- PRETRAZIVANJE -->
+                    <label
+                        class="desktop-search"
+                        aria-label="Pretraži portal"
                     >
-                        <div class="action-icon">✓</div>
+                        <span aria-hidden="true">⌕</span>
 
-                        <strong>Odobri dizajn</strong>
-
-                        <p>
-                            Pregledaj dizajn i potvrdi ga.
-                        </p>
-
-                        <span class="action-button">
-                            Pregledaj
-                        </span>
-                    </a>
-
-                    <!-- ZATRAZI IZMJENU -->
-                    <a
-                        href="#"
-                        class="action-card"
-                        id="revisionAction"
-                        aria-disabled="true"
-                    >
-                        <div class="action-icon">↔</div>
-
-                        <strong>Zatraži izmjenu</strong>
-
-                        <p>
-                            Pošalji prijedlog ili izmjenu dizajna.
-                        </p>
-
-                        <span
-                            class="action-button"
-                            id="revisionActionText"
+                        <input
+                            id="portalSearch"
+                            type="search"
+                            disabled
+                            title="Pretraživanje dodajemo kasnije"
+                            placeholder="Pretraži projekte..."
+                            autocomplete="off"
                         >
-                            Nova izmjena
-                        </span>
-                    </a>
+                    </label>
 
-                    <!-- DOSTAVI MATERIJALE -->
-                    <button
-                        type="button"
-                        class="action-card"
-                        id="materialsAction"
-                        disabled
-                    >
-                        <div class="action-icon">↑</div>
+                    <!-- KORISNIK -->
+                    <div class="user-box">
 
-                        <strong>
-                            Dostavi materijale
+                        <div class="user-avatar">
+                            <svg viewBox="0 0 24 24">
+                                <circle
+                                    cx="12"
+                                    cy="8"
+                                    r="3"
+                                ></circle>
+
+                                <path
+                                    d="M5 20c0-4 3-7 7-7s7 3 7 7"
+                                ></path>
+                            </svg>
+                        </div>
+
+                        <strong id="userTop">
+                            Klijent
                         </strong>
+                    </div>
 
-                        <p>
-                            Pošalji logotip, fotografije i
-                            ostale materijale za odabrani projekt.
-                        </p>
+                    <span class="header-separator"></span>
 
-                        <span
-                            class="action-button"
-                            id="materialsActionText"
-                        >
-                            Učitaj datoteke
-                        </span>
+                    <!-- ODJAVA -->
+                    <button
+                        id="logoutButton"
+                        class="logout-button"
+                        type="button"
+                    >
+                        <svg viewBox="0 0 24 24">
+                            <path d="M10 5H5v14h5"></path>
+                            <path d="M14 8l4 4-4 4"></path>
+                            <path d="M8 12h10"></path>
+                        </svg>
+
+                        <span>Odjava</span>
                     </button>
 
-                    <!-- PODRSKA -->
-                    <a
-                        href="messages.html"
-                        class="action-card"
-                    >
-                        <div class="action-icon">?</div>
+                    <span class="header-separator"></span>
 
-                        <strong>
-                            Kontaktiraj podršku
-                        </strong>
+                    <!-- LIGHT / DARK MODE -->
+                    <label class="theme-switch">
+                        <input
+                            type="checkbox"
+                            id="themeToggle"
+                            aria-label="Promijeni temu"
+                        >
 
-                        <p>
-                            Trebaš pomoć? Naš tim je tu za tebe.
-                        </p>
-
-                        <span class="action-button">
-                            Pošalji upit
-                        </span>
-                    </a>
+                        <span class="theme-slider"></span>
+                    </label>
 
                 </div>
-            </section>
+            </header>
 
-            <!-- FOOTER -->
-            <footer class="footer">
-                © PTech Digital 2026.
-                • Sva prava zadržana.
-            </footer>
+            <!-- GLAVNI SADRZAJ -->
+            <div class="dashboard-content">
 
-        </div>
+                <!-- POZDRAV -->
+                <section class="welcome">
+                    <h2>
+                        Bok,
+                        <strong id="userGreeting">
+                            Klijent
+                        </strong>!
+                    </h2>
 
-        <!-- DONJA NAVIGACIJA (za kasniji mobilni dizajn) -->
-        <nav class="bottom-nav">
+                    <p>
+                        Evo što se događa s tvojim projektima.
+                    </p>
+                </section>
 
-            <!-- POCETNA -->
-            <a
-                href="form.html"
-                class="bottom-nav-item active"
-                aria-label="Početna"
-            >
-                <svg viewBox="0 0 24 24">
-                    <path d="M3 11.5L12 4l9 7.5"></path>
-                    <path d="M5 10.5V20h14v-9.5"></path>
-                    <path d="M9 20v-6h6v6"></path>
-                </svg>
+                <!-- AKTIVNI PROJEKTI -->
+                <section class="dashboard-section">
 
-                <span>Početna</span>
-            </a>
+                    <div class="section-header">
 
-            <!-- PORUKE -->
-            <a
-                href="messages.html"
-                class="bottom-nav-item"
-                aria-label="Poruke"
-            >
-                <div class="bottom-nav-icon-wrap">
+                        <h2 class="section-title">
+                            Aktivni projekti
+                        </h2>
+
+                        <div class="project-counter">
+                            <span id="currentProject">0</span>
+                            <span>/</span>
+                            <span id="totalProjects">0</span>
+                        </div>
+
+                    </div>
+
+                    <!-- PROJEKTI IZ SUPABASEA -->
+                    <div
+                        class="projects-slider"
+                        id="projectsSlider"
+                    >
+                        <div class="no-projects">
+                            Učitavanje projekata...
+                        </div>
+                    </div>
+
+                    <!-- TOCKICE SLIDERA -->
+                    <div
+                        class="slider-dots"
+                        id="sliderDots"
+                    ></div>
+
+                </section>
+
+                <!-- BRZE AKCIJE -->
+                <section class="actions-section">
+
+                    <div class="actions-header">
+                        <h2>Brze akcije</h2>
+
+                        <p id="actionsProjectLabel">
+                            Odaberi projekt i nastavi.
+                        </p>
+                    </div>
+
+                    <div class="actions-grid">
+
+                        <!-- ODOBRI DIZAJN -->
+                        <a
+                            href="#"
+                            class="action-card"
+                            id="approveDesignAction"
+                        >
+                            <div class="action-icon">✓</div>
+
+                            <strong>Odobri dizajn</strong>
+
+                            <p>
+                                Pregledaj dizajn i potvrdi ga.
+                            </p>
+
+                            <span class="action-button">
+                                Pregledaj
+                            </span>
+                        </a>
+
+                        <!-- ZATRAZI IZMJENU -->
+                        <a
+                            href="#"
+                            class="action-card"
+                            id="revisionAction"
+                            aria-disabled="true"
+                        >
+                            <div class="action-icon">↔</div>
+
+                            <strong>Zatraži izmjenu</strong>
+
+                            <p>
+                                Pošalji prijedlog ili izmjenu dizajna.
+                            </p>
+
+                            <span
+                                class="action-button"
+                                id="revisionActionText"
+                            >
+                                Nova izmjena
+                            </span>
+                        </a>
+
+                        <!-- DOSTAVI MATERIJALE -->
+                        <button
+                            type="button"
+                            class="action-card"
+                            id="materialsAction"
+                            disabled
+                        >
+                            <div class="action-icon">↑</div>
+
+                            <strong>
+                                Dostavi materijale
+                            </strong>
+
+                            <p>
+                                Pošalji logotip, fotografije i
+                                ostale materijale za odabrani projekt.
+                            </p>
+
+                            <span
+                                class="action-button"
+                                id="materialsActionText"
+                            >
+                                Učitaj datoteke
+                            </span>
+                        </button>
+
+                        <!-- PODRSKA -->
+                        <a
+                            href="messages.html"
+                            class="action-card"
+                        >
+                            <div class="action-icon">?</div>
+
+                            <strong>
+                                Kontaktiraj podršku
+                            </strong>
+
+                            <p>
+                                Trebaš pomoć? Naš tim je tu za tebe.
+                            </p>
+
+                            <span class="action-button">
+                                Pošalji upit
+                            </span>
+                        </a>
+
+                    </div>
+                </section>
+
+                <!-- FOOTER -->
+                <footer class="footer">
+                    © PTech Digital 2026.
+                    • Sva prava zadržana.
+                </footer>
+
+            </div>
+
+            <!-- DONJA NAVIGACIJA -->
+            <!-- ZADRZAVAMO ZA KASNIJI MOBILNI DIZAJN -->
+            <nav class="bottom-nav">
+
+                <!-- POCETNA -->
+                <a
+                    href="form.html"
+                    class="bottom-nav-item active"
+                    aria-label="Početna"
+                >
+                    <svg viewBox="0 0 24 24">
+                        <path d="M3 11.5L12 4l9 7.5"></path>
+                        <path d="M5 10.5V20h14v-9.5"></path>
+                        <path d="M9 20v-6h6v6"></path>
+                    </svg>
+
+                    <span>Početna</span>
+                </a>
+
+                <!-- PORUKE -->
+                <a
+                    href="messages.html"
+                    class="bottom-nav-item"
+                    aria-label="Poruke"
+                >
+                    <div class="bottom-nav-icon-wrap">
+
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M4 5h16v11H8l-4 4z"
+                            ></path>
+                        </svg>
+
+                        <span
+                            id="messagesUnreadBadge"
+                            class="nav-notification"
+                            hidden
+                        >0</span>
+
+                    </div>
+
+                    <span>Poruke</span>
+                </a>
+
+                <!-- PROJEKTI -->
+                <a
+                    href="my-projects.html"
+                    class="bottom-nav-item"
+                    aria-label="Projekti"
+                >
+                    <svg viewBox="0 0 24 24">
+                        <rect
+                            x="4"
+                            y="5"
+                            width="16"
+                            height="15"
+                            rx="2"
+                        ></rect>
+
+                        <path d="M8 5V3"></path>
+                        <path d="M16 5V3"></path>
+                        <path d="M4 9h16"></path>
+                    </svg>
+
+                    <span>Projekti</span>
+                </a>
+
+                <!-- DOKUMENTI -->
+                <a
+                    href="documents.html"
+                    class="bottom-nav-item"
+                    aria-label="Dokumenti"
+                >
                     <svg viewBox="0 0 24 24">
                         <path
-                            d="M4 5h16v11H8l-4 4z"
+                            d="M4 4h6l2 2h8v14H4z"
                         ></path>
                     </svg>
 
-                    <span
-                        id="messagesUnreadBadge"
-                        class="nav-notification"
-                        hidden
-                    >0</span>
-                </div>
+                    <span>Dokumenti</span>
+                </a>
 
-                <span>Poruke</span>
-            </a>
+                <!-- PROFIL -->
+                <a
+                    href="profile.html"
+                    class="bottom-nav-item"
+                    aria-label="Profil"
+                >
+                    <svg viewBox="0 0 24 24">
+                        <circle
+                            cx="12"
+                            cy="8"
+                            r="3"
+                        ></circle>
 
-            <!-- PROJEKTI -->
-            <a
-                href="my-projects.html"
-                class="bottom-nav-item"
-                aria-label="Projekti"
-            >
-                <svg viewBox="0 0 24 24">
-                    <rect
-                        x="4"
-                        y="5"
-                        width="16"
-                        height="15"
-                        rx="2"
-                    ></rect>
-                    <path d="M8 5V3"></path>
-                    <path d="M16 5V3"></path>
-                    <path d="M4 9h16"></path>
-                </svg>
+                        <path
+                            d="M5 20c0-4 3-7 7-7s7 3 7 7"
+                        ></path>
+                    </svg>
 
-                <span>Projekti</span>
-            </a>
+                    <span>Profil</span>
+                </a>
 
-            <!-- DOKUMENTI -->
-            <a
-                href="documents.html"
-                class="bottom-nav-item"
-                aria-label="Dokumenti"
-            >
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M4 4h6l2 2h8v14H4z"
-                    ></path>
-                </svg>
+            </nav>
 
-                <span>Dokumenti</span>
-            </a>
-
-            <!-- PROFIL -->
-            <a
-                href="profile.html"
-                class="bottom-nav-item"
-                aria-label="Profil"
-            >
-                <svg viewBox="0 0 24 24">
-                    <circle
-                        cx="12"
-                        cy="8"
-                        r="3"
-                    ></circle>
-                    <path
-                        d="M5 20c0-4 3-7 7-7s7 3 7 7"
-                    ></path>
-                </svg>
-
-                <span>Profil</span>
-            </a>
-
-        </nav>
-
-        </div><!-- /desktop-main -->
+        </div>
     </main>
 
-    <!-- =====================================
-         PROZOR ZA DOSTAVU MATERIJALA
-    ====================================== -->
-
+    <!-- PROZOR ZA DOSTAVU MATERIJALA -->
     <div
         class="materials-overlay"
         id="materialsOverlay"
