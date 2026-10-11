@@ -1621,3 +1621,192 @@ body.light-mode .materials-cancel {
         grid-template-columns: 1fr;
     }
 }
+
+/* =========================================================
+   PTECH DESKTOP REDESIGN - desktop-only progressive styles
+   Existing project, upload and theme rules remain intact.
+   Sidebar/topbar markup will be connected in form.html.
+========================================================= */
+@media (min-width: 1101px) {
+  body.portal-desktop {
+    display: block;
+    padding: 0;
+    min-height: 100vh;
+    background: #f7f8fa;
+    color: #151a23;
+  }
+  body.portal-desktop::before,
+  body.portal-desktop::after { display: none; }
+  body.portal-desktop .dashboard {
+    width: 100%;
+    max-width: none;
+    min-height: 100vh;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: #f7f8fa;
+    overflow: visible;
+  }
+  body.portal-desktop .desktop-sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 50;
+    width: 274px;
+    padding: 28px 16px 24px;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    color: #151a23;
+    border-right: 1px solid #e8ebf0;
+  }
+  body.portal-desktop .desktop-sidebar .brand { padding: 0 14px 32px; }
+  body.portal-desktop .desktop-sidebar .brand h1 { color: #151a23; font-size: 21px; }
+  body.portal-desktop .desktop-sidebar .brand-logo { width: 48px; height: 48px; flex-basis: 48px; }
+  body.portal-desktop .sidebar-nav { display: grid; gap: 5px; }
+  body.portal-desktop .sidebar-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-height: 54px;
+    padding: 0 18px;
+    border-radius: 12px;
+    color: #232935;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    transition: background .2s ease, color .2s ease;
+  }
+  body.portal-desktop .sidebar-link svg {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.9;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  body.portal-desktop .sidebar-link:hover { background: #fff5ed; color: #f27300; }
+  body.portal-desktop .sidebar-link.active,
+  body.portal-desktop .sidebar-link[aria-current="page"] {
+    background: #fff0e5;
+    color: #ed7100;
+  }
+  body.portal-desktop .sidebar-link.active::before,
+  body.portal-desktop .sidebar-link[aria-current="page"]::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -16px;
+    width: 4px;
+    background: #ff7a00;
+  }
+  body.portal-desktop .sidebar-footer {
+    margin-top: auto;
+    padding: 20px 14px 0;
+    border-top: 1px solid #e9ebef;
+    color: #687386;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  body.portal-desktop .desktop-main { margin-left: 274px; min-width: 0; }
+  body.portal-desktop .dashboard-header {
+    min-height: 104px;
+    padding: 20px clamp(28px, 4vw, 60px);
+    background: #fff;
+    border-bottom: 1px solid #e9ebef;
+  }
+  body.portal-desktop .dashboard-header > .brand { display: none; }
+  body.portal-desktop .dashboard-content {
+    width: min(100%, 1380px);
+    margin: 0 auto;
+    padding: 42px clamp(28px, 4vw, 60px) 0;
+  }
+  body.portal-desktop .welcome { margin-bottom: 24px; }
+  body.portal-desktop .welcome h2 { font-size: 38px; font-weight: 700; color: #141922; }
+  body.portal-desktop .welcome h2 strong { color: #141922; }
+  body.portal-desktop .welcome p { font-size: 17px; color: #667085; }
+  body.portal-desktop .dashboard-section {
+    margin-top: 12px;
+    padding: 24px;
+    border: 1px solid #e9ebef;
+    border-radius: 17px;
+    background: #fff;
+    box-shadow: 0 8px 28px rgba(22, 28, 40, .035);
+  }
+  body.portal-desktop .section-title { color: #171b24; font-size: 21px; }
+  body.portal-desktop .project-card { background: #fffdfa; border-color: #ffc99e; }
+  body.portal-desktop .project-main h3 { color: #171b24; }
+  body.portal-desktop .project-main p { color: #667085; }
+  body.portal-desktop .stat-card { background: #fafbfc; border-color: #e9ebef; }
+  body.portal-desktop .stat-card strong { color: #171b24; }
+  body.portal-desktop .stat-label { color: #667085; }
+  body.portal-desktop .progress-container { background: #e9ebef; }
+  body.portal-desktop .actions-section {
+    margin-top: 16px;
+    padding: 24px;
+    background: #fff;
+    border: 1px solid #e9ebef;
+    border-radius: 17px;
+  }
+  body.portal-desktop .actions-header h2 { color: #171b24; }
+  body.portal-desktop .actions-header p { color: #7a8493; }
+  body.portal-desktop .action-card { background: #fbfbfc; border-color: #e9ebef; }
+  body.portal-desktop .action-card strong { color: #171b24; }
+  body.portal-desktop .action-card p { color: #667085; }
+  body.portal-desktop .footer { color: #7a8493; border-top-color: #e9ebef; }
+  body.portal-desktop .bottom-nav { display: none; }
+  body.portal-desktop .user-box { color: #171b24; }
+  body.portal-desktop .user-avatar { background: #f3f4f6; }
+  body.portal-desktop .user-avatar svg { stroke: #344054; }
+  body.portal-desktop .logout-button { color: #344054; }
+  body.portal-desktop .logout-button:hover { color: #111827; background: #f3f4f6; }
+  body.portal-desktop .header-separator { background: #e5e7eb; }
+  body.portal-desktop .project-counter { color: #667085; border-color: #e9ebef; }
+  body.portal-desktop .slider-dot { background: #d4d7dd; }
+  body.portal-desktop .slider-dot.active { background: #ff7a00; }
+  /* Dark mode will be applied only when the desktop body has no light-mode class. */
+  body.portal-desktop:not(.light-mode) {
+    background: #101216;
+    color: #f6f6f6;
+  }
+  body.portal-desktop:not(.light-mode) .dashboard,
+  body.portal-desktop:not(.light-mode) .dashboard-header { background: #15171c; }
+  body.portal-desktop:not(.light-mode) .desktop-sidebar {
+    background: #1a1c21;
+    color: #f6f6f6;
+    border-color: #30333a;
+  }
+  body.portal-desktop:not(.light-mode) .desktop-sidebar .brand h1,
+  body.portal-desktop:not(.light-mode) .sidebar-link { color: #f2f3f5; }
+  body.portal-desktop:not(.light-mode) .sidebar-link.active,
+  body.portal-desktop:not(.light-mode) .sidebar-link[aria-current="page"],
+  body.portal-desktop:not(.light-mode) .sidebar-link:hover {
+    color: #ff9d38;
+    background: #32261f;
+  }
+  body.portal-desktop:not(.light-mode) .sidebar-footer { border-color: #30333a; }
+  body.portal-desktop:not(.light-mode) .dashboard-section,
+  body.portal-desktop:not(.light-mode) .actions-section {
+    background: #1b1d22;
+    border-color: #30333a;
+  }
+  body.portal-desktop:not(.light-mode) .welcome h2,
+  body.portal-desktop:not(.light-mode) .welcome h2 strong,
+  body.portal-desktop:not(.light-mode) .section-title,
+  body.portal-desktop:not(.light-mode) .project-main h3,
+  body.portal-desktop:not(.light-mode) .stat-card strong,
+  body.portal-desktop:not(.light-mode) .actions-header h2,
+  body.portal-desktop:not(.light-mode) .action-card strong { color: #fff; }
+  body.portal-desktop:not(.light-mode) .project-card { background: #24201d; }
+  body.portal-desktop:not(.light-mode) .stat-card,
+  body.portal-desktop:not(.light-mode) .action-card { background: #23252b; border-color: #34373e; }
+  body.portal-desktop:not(.light-mode) .progress-container { background: #393b42; }
+  body.portal-desktop:not(.light-mode) .user-box { color: #fff; }
+  body.portal-desktop:not(.light-mode) .user-avatar { background: #30333a; }
+  body.portal-desktop:not(.light-mode) .user-avatar svg { stroke: #ddd; }
+  body.portal-desktop:not(.light-mode) .logout-button { color: #ddd; }
+}
