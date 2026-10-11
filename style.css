@@ -2305,6 +2305,158 @@ body.light-mode .materials-cancel {
 
 }
 
+
+/* =========================================
+   DESKTOP DORADE - PROJEKTI I FONTOVI
+   ========================================= */
+
+@media (min-width: 901px) {
+
+    /* Navigacija između projekata */
+
+    .project-navigation {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .project-nav-button {
+        width: 36px;
+        height: 36px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border: 1px solid rgba(255, 122, 0, 0.3);
+        border-radius: 10px;
+
+        background: rgba(255, 122, 0, 0.08);
+        color: var(--orange);
+
+        font-size: 27px;
+        line-height: 1;
+
+        cursor: pointer;
+
+        transition:
+            background 0.2s ease,
+            transform 0.2s ease;
+    }
+
+    .project-nav-button[hidden] {
+        display: none !important;
+    }
+
+    .project-nav-button:hover {
+        background: rgba(255, 122, 0, 0.17);
+        transform: translateY(-1px);
+    }
+
+    .project-nav-button:disabled {
+        opacity: 0.35;
+        cursor: default;
+    }
+
+    body.light-mode .project-nav-button {
+        background: #fff3e8;
+        border-color: #ffdfc2;
+        color: #e87508;
+    }
+
+    /* Ukloni pretragu iz zaglavlja */
+
+    .desktop-search {
+        display: none !important;
+    }
+
+    /* Malo veći tekst u cijelom desktop portalu */
+
+    .sidebar-link {
+        font-size: 16px;
+    }
+
+    .sidebar-brand-text strong {
+        font-size: 18px;
+    }
+
+    .sidebar-brand-text small {
+        font-size: 11px;
+    }
+
+    .sidebar-bottom a {
+        font-size: 15px;
+    }
+
+    .sidebar-bottom p {
+        font-size: 13px;
+    }
+
+    .user-box,
+    .logout-button {
+        font-size: 16px;
+    }
+
+    .welcome h2 {
+        font-size: clamp(29px, 2.3vw, 36px);
+    }
+
+    .welcome p {
+        font-size: 16px;
+    }
+
+    .section-title,
+    .actions-header h2 {
+        font-size: 23px;
+    }
+
+    .project-counter {
+        font-size: 14px;
+    }
+
+    .project-main h3 {
+        font-size: clamp(23px, 2vw, 29px);
+    }
+
+    .project-main p {
+        font-size: 16px;
+    }
+
+    .status-badge {
+        font-size: 14px;
+    }
+
+    .stat-label {
+        font-size: 14px;
+    }
+
+    .stat-card strong {
+        font-size: 15px;
+    }
+
+    .actions-header p {
+        font-size: 14px;
+    }
+
+    .action-card strong {
+        font-size: 16px;
+    }
+
+    .action-card p {
+        font-size: 14px;
+    }
+
+    .action-button {
+        font-size: 13px;
+    }
+
+    .footer {
+        font-size: 13px;
+    }
+
+}
+
+
 /* -----------------------------------------------------
    21. ACCESSIBILITY
    ----------------------------------------------------- */
