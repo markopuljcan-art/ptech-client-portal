@@ -1,18 +1,29 @@
 
+/* ==================================================
+   PTECH DIGITAL CLIENT PORTAL
+   LOGIN DESIGN — LIGHT CHAMPAGNE
+================================================== */
+
+
 /* ==========================================
-   PTECH DIGITAL — LOGIN
-   GRAPHITE & CHAMPAGNE
+   1. OSNOVNE POSTAVKE
 ========================================== */
 
 :root {
-    --bronze: #b78a6d;
-    --bronze-light: #e3bea4;
-    --graphite: #252529;
-    --ink: #f8f2ed;
-    --muted: #b4aaa6;
-    --line: rgba(255, 255, 255, 0.12);
-    --card: #302e33;
-    --input: #27262b;
+    color-scheme: light;
+
+    --background: #f8f5f1;
+    --background-soft: #f4ede7;
+
+    --card: #fffdfa;
+
+    --text: #292d36;
+    --text-muted: #77716f;
+
+    --bronze: #a77759;
+    --bronze-light: #d5a98b;
+
+    --border: #e9ddd4;
 }
 
 * {
@@ -21,16 +32,27 @@
 
 html {
     min-height: 100%;
+    background: var(--background);
 }
 
 body {
     margin: 0;
     min-height: 100vh;
 
-    font-family: Inter, Arial, Helvetica, sans-serif;
+    overflow-x: clip;
 
-    color: var(--ink);
-    background: #252529;
+    background: var(--background);
+    color: var(--text);
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    -webkit-font-smoothing: antialiased;
 }
 
 button,
@@ -38,31 +60,34 @@ input {
     font: inherit;
 }
 
+button {
+    cursor: pointer;
+}
+
 button:focus-visible,
-input:focus-visible,
-a:focus-visible {
-    outline: 3px solid rgba(198, 151, 121, 0.6);
+input:focus-visible {
+    outline: 3px solid rgba(174, 125, 92, 0.35);
     outline-offset: 3px;
 }
 
 
 /* ==========================================
-   GLAVNI RASPORED
+   2. GLAVNI RASPORED
 ========================================== */
 
 .login-shell {
     display: grid;
 
     grid-template-columns:
-        minmax(0, 1.06fr)
-        minmax(440px, 0.94fr);
+        minmax(0, 48%)
+        minmax(0, 52%);
 
     min-height: 100vh;
 }
 
 
 /* ==========================================
-   LIJEVA STRANA
+   3. LIJEVA STRANA
 ========================================== */
 
 .login-intro {
@@ -73,83 +98,77 @@ a:focus-visible {
     flex-direction: column;
     justify-content: space-between;
 
+    min-width: 0;
+    min-height: 100vh;
+
     overflow: hidden;
 
     padding:
-        42px clamp(30px, 5vw, 84px) 36px;
+        45px clamp(35px, 5vw, 85px)
+        38px;
 
     background:
         radial-gradient(
-            ellipse 620px 450px at 8% 0%,
-            rgba(155, 115, 91, 0.2),
-            transparent 75%
-        ),
-        radial-gradient(
-            ellipse 600px 500px at 90% 100%,
-            rgba(132, 148, 136, 0.12),
-            transparent 78%
+            ellipse at 12% 42%,
+            rgba(217, 169, 136, 0.12),
+            transparent 72%
         ),
         linear-gradient(
-            145deg,
-            #2e2d32,
-            #242428 70%,
-            #202024
+            135deg,
+            #f9f5f1,
+            #f2e8df 65%,
+            #f8f4ef
         );
-}
-
-.login-intro::before,
-.login-intro::after {
-    content: "";
-
-    position: absolute;
-    z-index: -1;
-
-    width: 800px;
-    height: 400px;
-
-    border-radius: 50%;
-    transform: rotate(-24deg);
-
-    pointer-events: none;
-}
-
-.login-intro::before {
-    left: -390px;
-    top: -235px;
-
-    border:
-        1px solid rgba(213, 169, 139, 0.2);
-
-    box-shadow:
-        0 0 0 72px rgba(194, 144, 113, 0.018),
-        0 0 0 145px rgba(194, 144, 113, 0.018);
-}
-
-.login-intro::after {
-    right: -440px;
-    bottom: -235px;
-
-    border:
-        1px solid rgba(213, 169, 139, 0.15);
-
-    box-shadow:
-        0 0 0 95px rgba(194, 144, 113, 0.02);
 }
 
 
 /* ==========================================
-   BRAND
+   4. VELIKI LIJEVI KRUG
+========================================== */
+
+.intro-orb {
+    position: absolute;
+    z-index: -1;
+
+    width: 1060px;
+    height: 1060px;
+
+    left: -550px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    border:
+        1.5px solid rgba(189, 125, 84, 0.48);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 60% 42%,
+            rgba(225, 178, 147, 0.16),
+            rgba(220, 169, 134, 0.09) 48%,
+            rgba(208, 148, 111, 0.025) 72%,
+            transparent 80%
+        );
+
+    box-shadow:
+        inset 0 0 120px rgba(189, 130, 92, 0.035);
+
+    pointer-events: none;
+}
+
+
+/* ==========================================
+   5. LOGO LIJEVO
 ========================================== */
 
 .intro-brand {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 13px;
+    gap: 15px;
 
     width: fit-content;
-
-    text-decoration: none;
-    color: #fff8f2;
 }
 
 .intro-brand-icon,
@@ -160,254 +179,324 @@ a:focus-visible {
     background:
         linear-gradient(
             135deg,
-            #e1b89c,
-            #a5775c
+            #e5b99a,
+            #bb8968
         );
 
-    color: #2b2424;
+    color: #29252a;
+
     font-weight: 900;
 
     box-shadow:
-        0 12px 30px rgba(0, 0, 0, 0.16);
+        0 12px 24px rgba(150, 100, 68, 0.15);
 }
 
 .intro-brand-icon {
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
 
-    border-radius: 13px;
-    font-size: 28px;
+    border-radius: 15px;
+
+    font-size: 31px;
 }
 
 .intro-brand-name {
     display: flex;
     flex-direction: column;
 
-    font-size: 23px;
-    font-weight: 400;
-    line-height: 1.1;
-    letter-spacing: -0.6px;
+    color: var(--text);
+
+    font-size: 25px;
+    font-weight: 800;
+
+    line-height: 1.04;
+    letter-spacing: -0.7px;
 }
 
 .intro-brand-name strong {
-    display: inline;
-    font-weight: 800;
+    color: #a67456;
 }
 
 .intro-brand-name small {
-    margin-top: 6px;
+    margin-top: 8px;
 
-    color: #d0a88e;
+    color: #8c817b;
 
     font-size: 10px;
     font-weight: 800;
+
     letter-spacing: 2px;
 }
 
 
 /* ==========================================
-   UVODNI SADRŽAJ
+   6. LIJEVI SADRŽAJ
 ========================================== */
 
 .intro-content {
     position: relative;
 
     max-width: 640px;
-    margin: 60px 0;
+
+    margin: 65px 0;
 }
 
 .eyebrow {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 9px;
+    gap: 10px;
 
-    margin-bottom: 24px;
+    margin-bottom: 26px;
 
-    color: #d7b39b;
+    color: #a27152;
 
     font-size: 11px;
     font-weight: 800;
-    letter-spacing: 2px;
+
+    letter-spacing: 1.8px;
 }
 
 .eyebrow-dot {
     width: 7px;
     height: 7px;
 
+    flex-shrink: 0;
+
     border-radius: 50%;
 
-    background: #d4a17e;
+    background: #b78361;
 
     box-shadow:
-        0 0 0 5px rgba(212, 161, 126, 0.12);
+        0 0 0 5px rgba(183, 131, 97, 0.12);
 }
 
 .intro-content h1 {
     margin: 0;
 
-    font-size: clamp(40px, 4.2vw, 66px);
-    line-height: 1.11;
-    letter-spacing: -2.5px;
+    color: var(--text);
+
+    font-size: clamp(39px, 4.1vw, 63px);
     font-weight: 800;
+
+    line-height: 1.1;
+    letter-spacing: -2.3px;
 }
 
-.intro-content h1 em {
-    color: #d6a88b;
-    font-style: normal;
+.intro-content h1 span {
+    display: block;
+
+    color: #a67557;
 }
 
 .intro-description {
-    max-width: 550px;
+    max-width: 510px;
 
-    margin: 24px 0 34px;
+    margin: 25px 0 34px;
 
-    color: #c0b6b0;
+    color: #726b68;
 
     font-size: 16px;
-    line-height: 1.85;
+    line-height: 1.8;
 }
 
 
 /* ==========================================
-   PREDNOSTI PORTALA
+   7. PREDNOSTI
 ========================================== */
 
 .intro-features {
-    display: grid;
-    gap: 17px;
+    display: flex;
+    flex-direction: column;
+
+    gap: 20px;
 }
 
 .intro-feature {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 17px;
 }
 
 .feature-icon {
     display: grid;
     place-items: center;
 
-    flex: 0 0 44px;
+    flex: 0 0 48px;
 
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
 
     border:
-        1px solid rgba(216, 176, 147, 0.23);
+        1px solid rgba(183, 131, 97, 0.13);
 
-    border-radius: 12px;
+    border-radius: 13px;
 
-    background: rgba(192, 146, 114, 0.11);
-
-    color: #dfb99d;
-    font-size: 23px;
+    background: rgba(219, 177, 149, 0.23);
 }
 
-.intro-feature strong,
-.intro-feature small {
-    display: block;
+.feature-icon svg {
+    width: 22px;
+    height: 22px;
+
+    fill: none;
+    stroke: #a87859;
+
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .intro-feature strong {
+    display: block;
+
     margin-bottom: 5px;
 
+    color: #303139;
+
     font-size: 15px;
-    color: #f6eee8;
+    font-weight: 750;
 }
 
-.intro-feature small {
-    color: #aea4a1;
+.intro-feature p {
+    margin: 0;
+
+    color: #79716d;
 
     font-size: 13px;
     line-height: 1.5;
 }
 
-.intro-bottom {
-    margin: 0;
 
-    color: #877f7e;
+/* ==========================================
+   8. DONJI LIJEVI TEKST
+========================================== */
+
+.intro-bottom {
+    position: relative;
+
+    color: #8d827c;
 
     font-size: 10px;
     font-weight: 800;
+
     letter-spacing: 1.8px;
 }
 
 .intro-bottom span {
-    color: #b78a6d;
-    margin: 0 6px;
+    margin: 0 8px;
+
+    color: #b48362;
 }
 
 
 /* ==========================================
-   DESNA STRANA
+   9. DESNA STRANA
 ========================================== */
 
 .login-area {
     position: relative;
+    isolation: isolate;
 
     display: grid;
     place-items: center;
 
-    padding: 90px 34px 40px;
+    min-width: 0;
+    min-height: 100vh;
+
+    overflow: hidden;
+
+    padding: 65px 40px;
 
     background:
         radial-gradient(
-            ellipse 480px 340px at 100% 0%,
-            rgba(155, 115, 91, 0.09),
-            transparent 80%
+            ellipse at 35% 50%,
+            rgba(219, 174, 143, 0.13),
+            transparent 68%
         ),
-        #27262b;
+        linear-gradient(
+            135deg,
+            #fbf8f5,
+            #f5eee8 60%,
+            #faf7f4
+        );
 }
 
 
 /* ==========================================
-   LOGIN KARTICA
+   10. PARTICLES CANVAS
+========================================== */
+
+#loginParticles {
+    position: absolute;
+    inset: 0;
+
+    z-index: 0;
+
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    pointer-events: none;
+}
+
+
+/* ==========================================
+   11. LOGIN KARTICA
 ========================================== */
 
 .login-card {
     position: relative;
+    z-index: 2;
 
     width: 100%;
-    max-width: 500px;
+    max-width: 590px;
 
     padding:
-        35px clamp(24px, 3.3vw, 48px) 25px;
+        45px clamp(30px, 3.4vw, 52px)
+        35px;
 
     border:
-        1px solid rgba(211, 179, 156, 0.2);
+        1px solid rgba(190, 148, 118, 0.19);
 
-    border-radius: 22px;
+    border-radius: 25px;
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(53, 50, 55, 0.98),
-            rgba(43, 41, 46, 0.98)
-        );
+    background: rgba(255, 253, 250, 0.97);
 
     box-shadow:
-        0 25px 65px rgba(0, 0, 0, 0.2);
+        0 30px 80px rgba(102, 69, 48, 0.11),
+        0 8px 24px rgba(102, 69, 48, 0.035);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
 }
+
+
+/* ==========================================
+   12. GORNJI DIO KARTICE
+========================================== */
 
 .login-card-top {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+
     gap: 12px;
 
-    margin-bottom: 30px;
+    margin-bottom: 32px;
 }
 
 .login-kicker {
-    color: #d9b298;
+    color: #c08d6b;
 
     font-size: 10px;
     font-weight: 800;
-    letter-spacing: 1.4px;
+
+    letter-spacing: 1.5px;
 }
 
 .login-secure {
-    color: #a69d98;
+    color: #8c8079;
 
     font-size: 10px;
     font-weight: 700;
@@ -416,29 +505,32 @@ a:focus-visible {
 }
 
 .login-logo {
-    width: 54px;
-    height: 54px;
+    width: 55px;
+    height: 55px;
 
-    margin-bottom: 22px;
+    margin-bottom: 23px;
 
     border-radius: 14px;
 
-    font-size: 30px;
+    font-size: 31px;
 }
 
 .login-card h2 {
     margin: 0;
 
-    color: #fff8f3;
+    color: #292d36;
 
-    font-size: clamp(26px, 2.5vw, 34px);
-    letter-spacing: -0.9px;
+    font-size: clamp(29px, 2.7vw, 37px);
+    font-weight: 800;
+
+    line-height: 1.2;
+    letter-spacing: -1.1px;
 }
 
 .login-subtitle {
-    margin: 11px 0 31px;
+    margin: 12px 0 33px;
 
-    color: #b9ada8;
+    color: #7c736f;
 
     font-size: 14px;
     line-height: 1.6;
@@ -446,26 +538,28 @@ a:focus-visible {
 
 
 /* ==========================================
-   FORMA
+   13. FORMA
 ========================================== */
 
 #loginForm {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+
+    gap: 19px;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 9px;
+
+    gap: 10px;
 }
 
 .form-group label {
-    color: #e7dcd6;
+    color: #403b39;
 
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 750;
 }
 
 .input-wrapper,
@@ -476,53 +570,85 @@ a:focus-visible {
 #email,
 #password {
     width: 100%;
-    height: 54px;
+    height: 59px;
 
     padding: 0 50px;
 
-    border:
-        1px solid rgba(225, 204, 190, 0.2);
+    border: 1px solid #e6dbd3;
+    border-radius: 12px;
 
-    border-radius: 11px;
     outline: none;
 
-    background: var(--input);
-    color: #fff8f3;
+    background: #faf8f6;
+    color: #303139;
 
     font-size: 14px;
 
     transition:
-        border-color 0.2s,
-        box-shadow 0.2s;
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
 }
 
 #password {
-    padding-right: 54px;
+    padding-right: 55px;
 }
 
 #email::placeholder,
 #password::placeholder {
-    color: #817b7d;
+    color: #a39992;
+}
+
+#email:hover,
+#password:hover {
+    border-color: #d2b5a0;
 }
 
 #email:focus,
 #password:focus {
-    border-color: #bd9073;
+    border-color: #b98c6d;
+
+    background: #fff;
 
     box-shadow:
-        0 0 0 3px rgba(183, 138, 109, 0.13);
+        0 0 0 3px rgba(185, 140, 109, 0.12);
 }
 
 
 /* ==========================================
-   IKONE U INPUTIMA
+   14. AUTOFILL POPRAVAK
+========================================== */
+
+#email:-webkit-autofill,
+#email:-webkit-autofill:hover,
+#email:-webkit-autofill:focus,
+#password:-webkit-autofill,
+#password:-webkit-autofill:hover,
+#password:-webkit-autofill:focus {
+    -webkit-text-fill-color: #303139;
+
+    -webkit-box-shadow:
+        0 0 0 1000px #faf8f6 inset;
+
+    box-shadow:
+        0 0 0 1000px #faf8f6 inset;
+
+    caret-color: #303139;
+
+    transition:
+        background-color 9999s ease-out;
+}
+
+
+/* ==========================================
+   15. INPUT IKONE
 ========================================== */
 
 .input-icon,
 .password-icon {
     position: absolute;
 
-    left: 16px;
+    left: 17px;
     top: 50%;
 
     transform: translateY(-50%);
@@ -531,7 +657,7 @@ a:focus-visible {
     height: 20px;
 
     fill: none;
-    stroke: #a79b95;
+    stroke: #947e70;
 
     stroke-width: 1.7;
     stroke-linecap: round;
@@ -542,18 +668,18 @@ a:focus-visible {
 
 .input-wrapper:focus-within .input-icon,
 .password-wrapper:focus-within .password-icon {
-    stroke: #d3a486;
+    stroke: #ae7c5d;
 }
 
 
 /* ==========================================
-   PRIKAZ LOZINKE
+   16. PRIKAZ LOZINKE
 ========================================== */
 
 .toggle-password {
     position: absolute;
 
-    right: 9px;
+    right: 10px;
     top: 50%;
 
     transform: translateY(-50%);
@@ -566,18 +692,18 @@ a:focus-visible {
 
     padding: 0;
 
-    border: 0;
+    border: none;
     border-radius: 9px;
 
     background: transparent;
-    color: #a79b95;
+    color: #937f73;
 
     cursor: pointer;
 }
 
 .toggle-password:hover {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.06);
+    background: #f0e8e1;
+    color: #6d4c38;
 }
 
 .eye-svg {
@@ -602,7 +728,7 @@ a:focus-visible {
 
 
 /* ==========================================
-   UPOZORENJA
+   17. CAPS LOCK
 ========================================== */
 
 .caps-lock-warning {
@@ -610,7 +736,8 @@ a:focus-visible {
 
     margin: -8px 0 -5px;
 
-    color: #e9b58e;
+    color: #a96c38;
+
     font-size: 12px;
 }
 
@@ -618,12 +745,17 @@ a:focus-visible {
     display: block;
 }
 
+
+/* ==========================================
+   18. LOGIN ERROR
+========================================== */
+
 .login-error {
     display: none;
 
     margin: -6px 0 0;
 
-    color: #ff9d9d;
+    color: #b94141;
 
     font-size: 13px;
     line-height: 1.5;
@@ -635,48 +767,55 @@ a:focus-visible {
 
 
 /* ==========================================
-   GUMB ZA PRIJAVU
+   19. GUMB ZA PRIJAVU
 ========================================== */
 
 #loginButton {
     position: relative;
 
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     width: 100%;
-    height: 54px;
+    height: 60px;
 
     margin-top: 5px;
 
-    border: 0;
-    border-radius: 11px;
+    border: none;
+    border-radius: 12px;
 
     background:
         linear-gradient(
             105deg,
-            #bc9074,
-            #93694f
+            #c99e81,
+            #9b6f52
         );
 
-    color: #fff;
+    color: white;
 
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 800;
 
     cursor: pointer;
 
     transition:
-        transform 0.2s,
-        box-shadow 0.2s;
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
 }
 
 #loginButton:hover:not(:disabled) {
     transform: translateY(-2px);
 
     box-shadow:
-        0 12px 28px rgba(155, 115, 91, 0.24);
+        0 14px 30px rgba(155, 111, 82, 0.24);
+
+    filter: brightness(1.03);
+}
+
+#loginButton:active:not(:disabled) {
+    transform: translateY(0);
 }
 
 #loginButton:disabled {
@@ -686,13 +825,13 @@ a:focus-visible {
 
 .login-arrow {
     position: absolute;
-    right: 18px;
+    right: 19px;
 
     width: 21px;
     height: 21px;
 
     fill: none;
-    stroke: #fff;
+    stroke: white;
 
     stroke-width: 1.8;
     stroke-linecap: round;
@@ -701,36 +840,44 @@ a:focus-visible {
 
 
 /* ==========================================
-   POMOĆ I FOOTER
+   20. PODRŠKA
 ========================================== */
 
 .login-help {
-    margin-top: 26px;
-    padding: 20px 0 0;
+    margin-top: 28px;
+    padding-top: 22px;
 
-    border-top: 1px solid var(--line);
+    border-top: 1px solid #eee4dc;
 
     text-align: center;
 }
 
-.login-help span {
-    color: #e3d7cf;
+.login-help strong {
+    display: block;
+
+    color: #343139;
 
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 750;
 }
 
 .login-help p {
-    margin: 7px 0 0;
+    margin: 8px 0 0;
 
-    color: #ab9f99;
+    color: #827872;
+
     font-size: 12px;
 }
+
+
+/* ==========================================
+   21. FOOTER
+========================================== */
 
 .login-footer {
     margin-top: 29px;
 
-    color: #827c7b;
+    color: #9d938d;
 
     text-align: center;
     font-size: 11px;
@@ -738,86 +885,7 @@ a:focus-visible {
 
 
 /* ==========================================
-   PREKIDAČ TEME
-========================================== */
-
-.theme-switch {
-    position: absolute;
-
-    top: 26px;
-    right: 30px;
-
-    z-index: 10;
-
-    width: 60px;
-    height: 34px;
-}
-
-.theme-switch input {
-    position: absolute;
-
-    width: 1px;
-    height: 1px;
-
-    opacity: 0;
-}
-
-.theme-slider {
-    position: absolute;
-    inset: 0;
-
-    border:
-        1px solid rgba(255, 255, 255, 0.19);
-
-    border-radius: 999px;
-
-    background: #37343a;
-
-    cursor: pointer;
-}
-
-.theme-slider::before {
-    content: "☾";
-
-    position: absolute;
-
-    top: 3px;
-    left: 3px;
-
-    display: grid;
-    place-items: center;
-
-    width: 26px;
-    height: 26px;
-
-    border-radius: 50%;
-
-    background:
-        linear-gradient(
-            135deg,
-            #d7b095,
-            #a4785d
-        );
-
-    color: #252529;
-    font-size: 15px;
-
-    transition: transform 0.25s;
-}
-
-.theme-switch input:checked + .theme-slider::before {
-    content: "☀";
-    transform: translateX(26px);
-}
-
-.theme-switch input:focus-visible + .theme-slider {
-    outline: 3px solid rgba(198, 151, 121, 0.6);
-    outline-offset: 3px;
-}
-
-
-/* ==========================================
-   ANIMACIJA POGREŠNE PRIJAVE
+   22. SHAKE ANIMACIJA
 ========================================== */
 
 .login-card.shake {
@@ -825,7 +893,9 @@ a:focus-visible {
 }
 
 @keyframes login-shake {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateX(0);
     }
 
@@ -844,780 +914,7 @@ a:focus-visible {
 
 
 /* ==========================================
-   SVIJETLA TEMA
-========================================== */
-
-body.light-mode {
-    background: #f0ede9;
-    color: #303138;
-}
-
-body.light-mode .login-intro {
-    background:
-        radial-gradient(
-            ellipse 620px 450px at 8% 0%,
-            rgba(155, 115, 91, 0.16),
-            transparent 75%
-        ),
-        linear-gradient(
-            145deg,
-            #f4eee8,
-            #eae2da
-        );
-}
-
-body.light-mode .intro-brand,
-body.light-mode .intro-content h1 {
-    color: #303138;
-}
-
-body.light-mode .intro-content h1 em {
-    color: #936b53;
-}
-
-body.light-mode .intro-description,
-body.light-mode .intro-feature small {
-    color: #746c68;
-}
-
-body.light-mode .intro-feature strong,
-body.light-mode .intro-feature {
-    color: #383337;
-}
-
-body.light-mode .feature-icon {
-    background: #e8d7ca;
-    color: #80573f;
-}
-
-body.light-mode .eyebrow {
-    color: #916b53;
-}
-
-body.light-mode .intro-bottom {
-    color: #8a817b;
-}
-
-body.light-mode .login-area {
-    background: #f5f1ed;
-}
-
-body.light-mode .login-card {
-    background: #fffcf8;
-
-    border-color: #e4d6cc;
-
-    box-shadow:
-        0 24px 65px rgba(68, 49, 37, 0.09);
-}
-
-body.light-mode .login-card h2 {
-    color: #303138;
-}
-
-body.light-mode .login-subtitle,
-body.light-mode .login-help p {
-    color: #77716f;
-}
-
-body.light-mode .form-group label,
-body.light-mode .login-help span {
-    color: #48413d;
-}
-
-body.light-mode #email,
-body.light-mode #password {
-    background: #f8f4f0;
-    color: #303138;
-
-    border-color: #e3d6cc;
-}
-
-body.light-mode #email::placeholder,
-body.light-mode #password::placeholder {
-    color: #9d938d;
-}
-
-body.light-mode .input-icon,
-body.light-mode .password-icon {
-    stroke: #8c7d74;
-}
-
-body.light-mode .toggle-password {
-    color: #8c7d74;
-}
-
-body.light-mode .toggle-password:hover {
-    color: #303138;
-    background: #eee6e0;
-}
-
-body.light-mode .login-help {
-    border-color: #e9ded5;
-}
-
-body.light-mode .login-footer {
-    color: #9c928c;
-}
-
-body.light-mode .login-secure {
-    color: #82766e;
-}
-
-body.light-mode .theme-slider {
-    background: #fffaf5;
-    border-color: #dfd0c4;
-}
-
-body.light-mode .login-error {
-    color: #b94242;
-}
-
-
-/* ==========================================
-   TABLET
-========================================== */
-
-@media (max-width: 1050px) {
-
-    .login-shell {
-        grid-template-columns:
-            minmax(0, 1fr)
-            minmax(380px, 1fr);
-    }
-
-    .login-intro {
-        padding: 35px;
-    }
-
-    .intro-content h1 {
-        font-size: 43px;
-    }
-
-    .login-area {
-        padding-left: 22px;
-        padding-right: 22px;
-    }
-}
-
-
-/* ==========================================
-   MOBITEL
-========================================== */
-
-@media (max-width: 760px) {
-
-    .login-shell {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .login-intro {
-        padding: 25px 22px 28px;
-    }
-
-    .intro-content {
-        margin: 38px 0 12px;
-    }
-
-    .intro-content h1 {
-        font-size: clamp(32px, 8vw, 45px);
-        letter-spacing: -1.5px;
-    }
-
-    .intro-description {
-        margin: 15px 0 0;
-        font-size: 14px;
-    }
-
-    .intro-features,
-    .intro-bottom {
-        display: none;
-    }
-
-    .login-area {
-        flex: 1;
-
-        padding: 55px 15px 30px;
-    }
-
-    .theme-switch {
-        top: 13px;
-        right: 16px;
-    }
-
-    .login-card {
-        max-width: 520px;
-        padding: 28px 23px 24px;
-    }
-}
-
-
-/* ==========================================
-   MALI MOBITEL
-========================================== */
-
-@media (max-width: 380px) {
-
-    .login-card-top {
-        flex-wrap: wrap;
-    }
-
-    .login-card {
-        padding: 24px 18px;
-    }
-
-    .intro-brand-name {
-        font-size: 20px;
-    }
-}
-
-
-/* ==========================================
-   PRISTUPAČNOST
-========================================== */
-
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-    }
-}
-
-
-/* ==================================================
-   PTECH DIGITAL
-   LIGHT LOGIN — FINAL VISUAL DESIGN
-   LEFT CIRCLE + MOVING LIGHT PARTICLES
-================================================== */
-
-
-/* ==========================================
-   1. OSNOVNA SVIJETLA TEMA
-========================================== */
-
-:root {
-    color-scheme: light;
-}
-
-html {
-    min-height: 100%;
-    background: #f8f5f1;
-}
-
-body,
-body.light-mode {
-    min-height: 100vh;
-
-    background: #f8f5f1;
-    color: #303139;
-
-    overflow-x: clip;
-}
-
-
-/* ==========================================
-   2. GLAVNI RASPORED
-   LIJEVO MANJE / DESNO VIŠE
-========================================== */
-
-.login-shell {
-    position: relative;
-
-    display: grid;
-
-    grid-template-columns:
-        minmax(0, 48%)
-        minmax(0, 52%);
-
-    min-height: 100vh;
-
-    isolation: isolate;
-}
-
-
-/* ==========================================
-   3. LIJEVA POZADINA
-========================================== */
-
-.login-intro,
-body.light-mode .login-intro {
-    position: relative;
-
-    isolation: isolate;
-
-    overflow: hidden;
-
-    background:
-        radial-gradient(
-            ellipse at 10% 45%,
-            rgba(205, 157, 124, 0.13),
-            transparent 67%
-        ),
-        linear-gradient(
-            145deg,
-            #f8f3ee 0%,
-            #f2eae2 55%,
-            #f8f4f0 100%
-        );
-
-    color: #303139;
-}
-
-
-/* ==========================================
-   4. VELIKI KRUG NA LIJEVOJ STRANI
-========================================== */
-
-.login-intro::before,
-body.light-mode .login-intro::before {
-    content: "";
-
-    position: absolute;
-
-    z-index: -1;
-
-    width: 1050px;
-    height: 1050px;
-
-    left: -530px;
-    top: 50%;
-
-    transform: translateY(-50%);
-
-    border-radius: 50%;
-
-    border:
-        1.5px solid rgba(190, 128, 87, 0.55);
-
-    background:
-        radial-gradient(
-            circle at 58% 43%,
-            rgba(227, 185, 157, 0.12),
-            rgba(213, 163, 131, 0.08) 50%,
-            rgba(196, 139, 102, 0.035) 70%,
-            transparent 78%
-        );
-
-    box-shadow:
-        0 0 0 1px rgba(196, 139, 102, 0.035),
-        inset 0 0 130px rgba(197, 147, 113, 0.055);
-
-    pointer-events: none;
-}
-
-
-/* UKLANJAMO STARI DONJI DEKORATIVNI KRUG */
-
-.login-intro::after,
-body.light-mode .login-intro::after {
-    display: none;
-}
-
-
-/* ==========================================
-   5. SVJETLEĆE CRTICE — PARTICLES
-========================================== */
-
-/*
-   Koristimo CSS animirane slojeve.
-   Nema dodatnih biblioteka ni JavaScripta.
-*/
-
-.login-area {
-    position: relative;
-
-    isolation: isolate;
-
-    overflow: hidden;
-}
-
-.login-area::before,
-.login-area::after {
-    content: "";
-
-    position: absolute;
-
-    z-index: -1;
-
-    inset: -15%;
-
-    pointer-events: none;
-
-    background-repeat: repeat;
-
-    will-change: transform;
-}
-
-
-/* PRVI SLOJ — TANKE SVJETLEĆE CRTICE */
-
-.login-area::before {
-    opacity: 0.65;
-
-    background-image:
-        linear-gradient(
-            100deg,
-            transparent 0%,
-            rgba(213, 167, 133, 0.08) 40%,
-            rgba(197, 135, 96, 0.36) 49%,
-            rgba(255, 255, 255, 0.9) 50%,
-            rgba(197, 135, 96, 0.26) 51%,
-            transparent 60%
-        ),
-
-        linear-gradient(
-            96deg,
-            transparent 0%,
-            rgba(192, 137, 101, 0.23) 48%,
-            rgba(255, 255, 255, 0.75) 50%,
-            transparent 55%
-        );
-
-    background-size:
-        620px 210px,
-        830px 340px;
-
-    animation:
-        ptech-particles-slow 24s linear infinite;
-}
-
-
-/* DRUGI SLOJ — SITNE SVJETLEĆE TOČKE */
-
-.login-area::after {
-    opacity: 0.58;
-
-    background-image:
-        radial-gradient(
-            circle,
-            rgba(255, 255, 255, 1) 0 2px,
-            rgba(209, 150, 111, 0.32) 3px,
-            transparent 8px
-        ),
-
-        radial-gradient(
-            circle,
-            rgba(195, 135, 96, 0.65) 0 1px,
-            transparent 4px
-        ),
-
-        linear-gradient(
-            100deg,
-            transparent 35%,
-            rgba(216, 168, 134, 0.2) 50%,
-            transparent 65%
-        );
-
-    background-size:
-        370px 260px,
-        230px 190px,
-        520px 290px;
-
-    background-position:
-        0 30px,
-        100px 110px,
-        40px 0;
-
-    animation:
-        ptech-particles-fast 16s linear infinite;
-}
-
-
-/* ANIMACIJE IDU LIJEVO -> DESNO */
-
-@keyframes ptech-particles-slow {
-
-    from {
-        transform: translateX(-18%);
-    }
-
-    to {
-        transform: translateX(18%);
-    }
-}
-
-@keyframes ptech-particles-fast {
-
-    from {
-        transform: translateX(-12%);
-    }
-
-    to {
-        transform: translateX(12%);
-    }
-}
-
-
-/* ==========================================
-   6. DESNA POZADINA
-========================================== */
-
-.login-area,
-body.light-mode .login-area {
-    background:
-        radial-gradient(
-            ellipse at 65% 45%,
-            rgba(219, 174, 143, 0.15),
-            transparent 65%
-        ),
-        linear-gradient(
-            135deg,
-            #faf7f4,
-            #f6f0ea 55%,
-            #fbf8f5
-        );
-
-    padding:
-        80px 55px 50px;
-}
-
-
-/* ==========================================
-   7. VEĆA LOGIN KARTICA
-========================================== */
-
-.login-card,
-body.light-mode .login-card {
-    position: relative;
-
-    z-index: 2;
-
-    width: 100%;
-    max-width: 570px;
-
-    padding:
-        44px 50px 36px;
-
-    border:
-        1px solid rgba(192, 154, 127, 0.19);
-
-    border-radius: 24px;
-
-    background:
-        rgba(255, 253, 250, 0.96);
-
-    box-shadow:
-        0 28px 75px rgba(103, 72, 53, 0.11),
-        0 8px 22px rgba(103, 72, 53, 0.035);
-
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-}
-
-
-/* ==========================================
-   8. LIJEVI TEKST
-========================================== */
-
-.intro-brand,
-body.light-mode .intro-brand {
-    color: #303139;
-}
-
-.intro-content h1,
-body.light-mode .intro-content h1 {
-    color: #303139;
-}
-
-.intro-content h1 em,
-body.light-mode .intro-content h1 em {
-    color: #a4775d;
-}
-
-.intro-description,
-body.light-mode .intro-description {
-    color: #706762;
-}
-
-.intro-feature strong,
-body.light-mode .intro-feature strong {
-    color: #343137;
-}
-
-.intro-feature small,
-body.light-mode .intro-feature small {
-    color: #77706b;
-}
-
-.eyebrow,
-body.light-mode .eyebrow {
-    color: #9e7053;
-}
-
-.feature-icon,
-body.light-mode .feature-icon {
-    background: rgba(211, 165, 132, 0.2);
-
-    color: #a27456;
-
-    border-color:
-        rgba(194, 142, 106, 0.14);
-}
-
-
-/* ==========================================
-   9. NASLOV LOGIN KARTICE
-========================================== */
-
-.login-card h2,
-body.light-mode .login-card h2 {
-    color: #303139;
-
-    font-size: 36px;
-
-    letter-spacing: -1px;
-}
-
-.login-subtitle,
-body.light-mode .login-subtitle {
-    color: #7a706b;
-}
-
-.login-kicker {
-    color: #c08e6d;
-}
-
-.login-secure,
-body.light-mode .login-secure {
-    color: #82766e;
-}
-
-
-/* ==========================================
-   10. INPUT POLJA
-========================================== */
-
-.form-group label,
-body.light-mode .form-group label {
-    color: #403a37;
-}
-
-#email,
-#password,
-body.light-mode #email,
-body.light-mode #password {
-    height: 59px;
-
-    background: #faf8f6;
-
-    color: #303139;
-
-    border:
-        1px solid #e4d9d0;
-
-    border-radius: 12px;
-}
-
-#email:focus,
-#password:focus {
-    background: #fff;
-
-    border-color: #b88a6c;
-
-    box-shadow:
-        0 0 0 3px rgba(184, 138, 108, 0.12);
-}
-
-
-/* CHROME AUTOFILL — BEZ PLAVE POZADINE */
-
-#email:-webkit-autofill,
-#email:-webkit-autofill:hover,
-#email:-webkit-autofill:focus,
-#password:-webkit-autofill,
-#password:-webkit-autofill:hover,
-#password:-webkit-autofill:focus {
-    -webkit-text-fill-color: #303139;
-
-    -webkit-box-shadow:
-        0 0 0 1000px #faf8f6 inset;
-
-    box-shadow:
-        0 0 0 1000px #faf8f6 inset;
-
-    caret-color: #303139;
-
-    transition:
-        background-color 9999s ease-out;
-}
-
-
-/* ==========================================
-   11. GUMB
-========================================== */
-
-#loginButton {
-    height: 60px;
-
-    border-radius: 12px;
-
-    background:
-        linear-gradient(
-            105deg,
-            #c69a7d,
-            #966b50
-        );
-
-    color: #fff;
-
-    font-size: 16px;
-}
-
-#loginButton:hover:not(:disabled) {
-    box-shadow:
-        0 14px 30px rgba(151, 107, 80, 0.23);
-}
-
-
-/* ==========================================
-   12. DONJI DIO KARTICE
-========================================== */
-
-.login-help,
-body.light-mode .login-help {
-    border-top:
-        1px solid #eee3db;
-}
-
-.login-help span,
-body.light-mode .login-help span {
-    color: #353139;
-}
-
-.login-help p,
-body.light-mode .login-help p {
-    color: #817771;
-}
-
-.login-footer,
-body.light-mode .login-footer {
-    color: #9b918a;
-}
-
-
-/* ==========================================
-   13. PREKIDAČ TEME
-========================================== */
-
-/*
-   Ostavljen je vizualno isti.
-   Svijetla tema je uvijek aktivna,
-   bez obzira na staru spremljenu temu.
-*/
-
-body:not(.light-mode) .theme-slider {
-    background: #fffaf5;
-    border-color: #dfd0c4;
-}
-
-
-/* ==========================================
-   14. RESPONSIVE
+   23. TABLET
 ========================================== */
 
 @media (max-width: 1100px) {
@@ -1638,19 +935,22 @@ body:not(.light-mode) .theme-slider {
     }
 
     .login-area {
-        padding-left: 30px;
-        padding-right: 30px;
+        padding: 55px 25px;
     }
 
     .login-card {
-        padding: 35px 30px;
+        padding: 36px 30px;
     }
 
     .login-card h2 {
-        font-size: 30px;
+        font-size: 31px;
     }
 }
 
+
+/* ==========================================
+   24. MOBITEL
+========================================== */
 
 @media (max-width: 760px) {
 
@@ -1660,25 +960,47 @@ body:not(.light-mode) .theme-slider {
     }
 
     .login-intro {
-        padding: 26px 22px 30px;
+        min-height: auto;
+
+        padding: 27px 23px 30px;
     }
 
-    .login-intro::before,
-    body.light-mode .login-intro::before {
+    .intro-orb {
         width: 650px;
         height: 650px;
 
-        left: -420px;
+        left: -430px;
+    }
+
+    .intro-content {
+        margin: 40px 0 10px;
+    }
+
+    .intro-content h1 {
+        font-size: clamp(33px, 8vw, 45px);
+        letter-spacing: -1.5px;
+    }
+
+    .intro-description {
+        margin: 18px 0 0;
+        font-size: 14px;
+    }
+
+    .intro-features,
+    .intro-bottom {
+        display: none;
     }
 
     .login-area {
-        padding: 50px 16px 35px;
+        min-height: auto;
+        flex: 1;
+
+        padding: 45px 16px 35px;
     }
 
-    .login-card,
-    body.light-mode .login-card {
+    .login-card {
         max-width: 570px;
-        padding: 30px 24px;
+        padding: 31px 24px;
     }
 
     .login-card h2 {
@@ -1688,227 +1010,35 @@ body:not(.light-mode) .theme-slider {
 
 
 /* ==========================================
-   15. SMANJENO KRETANJE
+   25. MALI MOBITEL
 ========================================== */
 
-@media (prefers-reduced-motion: reduce) {
+@media (max-width: 380px) {
 
-    .login-area::before,
-    .login-area::after {
-        animation: none;
+    .login-card {
+        padding: 27px 19px;
+    }
+
+    .login-card-top {
+        flex-wrap: wrap;
+    }
+
+    .intro-brand-name {
+        font-size: 22px;
     }
 }
+
 
 /* ==========================================
-   PTECH LOGIN — PARTICLES FIX
-   SUBlTLE HORIZONTAL LIGHT TRAILS
+   26. SMANJENO KRETANJE
 ========================================== */
-
-
-/* UKLANJAMO STARE DIJAGONALNE TRAKE */
-
-.login-area::before,
-.login-area::after {
-    background-image: none !important;
-    background-repeat: no-repeat !important;
-    animation: none !important;
-}
-
-
-/* GLAVNA DESNA POZADINA */
-
-.login-area,
-body.light-mode .login-area {
-    position: relative;
-    isolation: isolate;
-    overflow: hidden;
-
-    background:
-        radial-gradient(
-            ellipse at 35% 45%,
-            rgba(211, 164, 132, 0.13),
-            transparent 68%
-        ),
-        linear-gradient(
-            135deg,
-            #fbf8f5,
-            #f5eee8 55%,
-            #faf7f3
-        );
-}
-
-
-/* SITNE HORIZONTALNE SVJETLEĆE CRTICE */
-
-.login-area::before {
-    content: "";
-
-    position: absolute;
-    z-index: 0;
-
-    inset: 0;
-
-    opacity: 0.65;
-
-    background-image:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(189, 133, 97, 0.25),
-            rgba(255, 255, 255, 0.95),
-            transparent
-        ),
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(196, 144, 111, 0.22),
-            transparent
-        ),
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(212, 166, 136, 0.28),
-            transparent
-        ),
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(184, 132, 100, 0.2),
-            transparent
-        );
-
-    background-size:
-        120px 1px,
-        180px 1px,
-        90px 1px,
-        150px 1px;
-
-    background-position:
-        8% 24%,
-        48% 43%,
-        20% 69%,
-        70% 83%;
-
-    background-repeat: no-repeat;
-
-    animation:
-        ptech-light-trails 15s linear infinite !important;
-
-    pointer-events: none;
-}
-
-
-/* MALE SJAJNE TOČKICE */
-
-.login-area::after {
-    content: "";
-
-    position: absolute;
-    z-index: 0;
-
-    inset: 0;
-
-    opacity: 0.45;
-
-    background-image:
-        radial-gradient(
-            circle,
-            rgba(186, 129, 91, 0.6) 0 1px,
-            transparent 3px
-        ),
-        radial-gradient(
-            circle,
-            rgba(198, 143, 107, 0.5) 0 1px,
-            transparent 3px
-        ),
-        radial-gradient(
-            circle,
-            rgba(214, 163, 127, 0.5) 0 1px,
-            transparent 3px
-        );
-
-    background-size:
-        5px 5px,
-        5px 5px,
-        5px 5px;
-
-    background-position:
-        15% 18%,
-        60% 53%,
-        35% 80%;
-
-    background-repeat: no-repeat;
-
-    animation:
-        ptech-light-dots 18s linear infinite !important;
-
-    pointer-events: none;
-}
-
-
-/* CRTICE PUTUJU SLIJEVA NADESNO */
-
-@keyframes ptech-light-trails {
-
-    0% {
-        transform: translateX(-30%);
-        opacity: 0;
-    }
-
-    15% {
-        opacity: 0.65;
-    }
-
-    85% {
-        opacity: 0.65;
-    }
-
-    100% {
-        transform: translateX(45%);
-        opacity: 0;
-    }
-}
-
-
-/* TOČKICE SE KREĆU SPORIJE */
-
-@keyframes ptech-light-dots {
-
-    0% {
-        transform: translateX(-20%);
-        opacity: 0;
-    }
-
-    20% {
-        opacity: 0.45;
-    }
-
-    80% {
-        opacity: 0.45;
-    }
-
-    100% {
-        transform: translateX(35%);
-        opacity: 0;
-    }
-}
-
-
-/* LOGIN KARTICA IZNAD PARTICLESA */
-
-.login-card,
-body.light-mode .login-card {
-    position: relative;
-    z-index: 2;
-}
-
-
-/* POŠTUJ POSTAVKE SMANJENOG KRETANJA */
 
 @media (prefers-reduced-motion: reduce) {
 
-    .login-area::before,
-    .login-area::after {
-        animation: none !important;
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
     }
 }
