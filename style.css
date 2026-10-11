@@ -2895,18 +2895,20 @@ body:not(.light-mode) .overview-empty {
    DESKTOP SCROLL / BACKGROUND FIX
 ========================================= */
 
+/* =========================================
+   PTECH DIGITAL
+   STICKY HEADER + SCROLL FIX
+========================================= */
+
 @media (min-width: 901px) {
 
-    html {
-        min-height: 100%;
-        overflow-x: hidden;
-    }
-
-    body.portal-desktop {
-        min-height: 100vh;
-        margin: 0;
+    html,
+    body {
+        max-width: 100%;
         overflow-x: clip;
     }
+
+    /* Glavni raspored */
 
     .dashboard.desktop-layout {
         display: grid;
@@ -2915,69 +2917,46 @@ body:not(.light-mode) .overview-empty {
         align-items: stretch;
     }
 
-    /* Sidebar prati visinu ekrana dok skrolas */
+    /* Sidebar ostaje na mjestu */
 
     .desktop-sidebar {
         position: sticky;
         top: 0;
+
         height: 100vh;
-        min-height: 100vh;
+        min-height: 0;
         align-self: start;
+
         overflow: hidden;
     }
 
-    /* Glavni dio nema nepotrebnu visinu */
+    /* Glavni sadržaj */
 
     .desktop-main {
         position: relative;
+
         min-width: 0;
         min-height: 100vh;
         height: auto;
-        overflow: hidden;
+
+        overflow: visible;
         isolation: isolate;
     }
 
-    /* Pozadinski ukrasi ostaju iza sadrzaja */
+    /* Uklanja donji val koji izlazi ispod footera */
 
-    .desktop-main::before,
     .desktop-main::after {
+        display: none;
+    }
+
+    /* Gornji dekorativni val ostaje */
+
+    .desktop-main::before {
         pointer-events: none;
         z-index: -1;
     }
 
-    /* Sadrzaj ostaje iznad pozadine */
-
-    .dashboard-header,
-    .dashboard-content {
-        position: relative;
-        z-index: 1;
-    }
-
-    /* Bez ogromnog praznog prostora na dnu */
-
-    .dashboard-content {
-        min-height: 0;
-        padding-bottom: 28px;
-    }
-
-    /* Kartice zadrzavaju pravilan raspored */
-
-    .dashboard-overview {
-        margin-bottom: 24px;
-    }
-
-}
-
-
-/* =========================================
-   STICKY TOP NAVIGATION - DESKTOP
-========================================= */
-
-@media (min-width: 901px) {
-
-    .desktop-main {
-        overflow: visible;
-    }
+    /* Sticky gornja navigacija */
 
     .dashboard-header {
         position: sticky;
@@ -2987,20 +2966,37 @@ body:not(.light-mode) .overview-empty {
         width: 100%;
 
         background: rgba(255, 252, 249, 0.97);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
 
-        border-bottom: 1px solid rgba(155, 115, 91, 0.10);
+        -webkit-backdrop-filter: blur(16px);
+        backdrop-filter: blur(16px);
+
+        border-bottom:
+            1px solid rgba(155, 115, 91, 0.10);
     }
+
+    /* Sticky navigacija u tamnoj temi */
 
     body:not(.light-mode) .dashboard-header {
         background: rgba(48, 49, 56, 0.97);
-        border-bottom-color: rgba(255, 255, 255, 0.08);
+
+        border-bottom-color:
+            rgba(255, 255, 255, 0.08);
     }
+
+    /* Sadržaj iznad dekorativne pozadine */
 
     .dashboard-content {
         position: relative;
         z-index: 1;
+
+        min-height: 0;
+        padding-bottom: 28px;
+    }
+
+    /* Donje kartice */
+
+    .dashboard-overview {
+        margin-bottom: 24px;
     }
 
 }
