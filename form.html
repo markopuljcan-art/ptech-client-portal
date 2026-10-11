@@ -122,23 +122,6 @@
 
                 <div class="header-actions">
 
-                    <!-- PRETRAZIVANJE -->
-                    <label
-                        class="desktop-search"
-                        aria-label="Pretraži portal"
-                    >
-                        <span aria-hidden="true">⌕</span>
-
-                        <input
-                            id="portalSearch"
-                            type="search"
-                            disabled
-                            title="Pretraživanje dodajemo kasnije"
-                            placeholder="Pretraži projekte..."
-                            autocomplete="off"
-                        >
-                    </label>
-
                     <!-- KORISNIK -->
                     <div class="user-box">
 
@@ -214,19 +197,47 @@
                 <!-- AKTIVNI PROJEKTI -->
                 <section class="dashboard-section">
 
-                    <div class="section-header">
+                    
+<div class="section-header">
 
-                        <h2 class="section-title">
-                            Aktivni projekti
-                        </h2>
+    <h2 class="section-title">
+        Aktivni projekti
+    </h2>
 
-                        <div class="project-counter">
-                            <span id="currentProject">0</span>
-                            <span>/</span>
-                            <span id="totalProjects">0</span>
-                        </div>
+    <div class="project-navigation">
 
-                    </div>
+        <button
+            type="button"
+            id="previousProjectButton"
+            class="project-nav-button"
+            aria-label="Prethodni projekt"
+            title="Prethodni projekt"
+            hidden
+        >
+            &#8249;
+        </button>
+
+        <div class="project-counter">
+            <span id="currentProject">0</span>
+            <span>/</span>
+            <span id="totalProjects">0</span>
+        </div>
+
+        <button
+            type="button"
+            id="nextProjectButton"
+            class="project-nav-button"
+            aria-label="Sljedeći projekt"
+            title="Sljedeći projekt"
+            hidden
+        >
+            &#8250;
+        </button>
+
+    </div>
+
+</div>
+
 
                     <!-- PROJEKTI IZ SUPABASEA -->
                     <div
