@@ -1,36 +1,47 @@
 
-/* =====================================================
+/* ================================================
    PTECH DIGITAL CLIENT PORTAL
-   DESKTOP DASHBOARD - COMPLETE STYLE.CSS
-   ===================================================== */
+   SIGNATURE DESIGN — GRAPHITE & CHAMPAGNE
+   ================================================ */
 
-/* -----------------------------------------------------
-   1. GLOBAL
-   ----------------------------------------------------- */
-
-* {
-    box-sizing: border-box;
-}
+/* 1. OSNOVNE POSTAVKE */
 
 :root {
-    --orange: #ff7a00;
-    --orange-light: #ff9d38;
-    --orange-dark: #e66b00;
+    --bronze: #9b735b;
+    --bronze-light: #c7a18a;
+    --bronze-dark: #76513e;
+    --sage: #849488;
 
-    --text: #f6f6f6;
-    --muted: #a2a2a8;
-    --border: rgba(255, 255, 255, 0.10);
-    --orange-border: rgba(255, 122, 0, 0.48);
+    --graphite: #303138;
+    --graphite-dark: #26262b;
+
+    --cream: #fffcf8;
+    --stone: #f0ede9;
+    --stone-dark: #e7dfd8;
+
+    --text: #303138;
+    --muted: #77716f;
+
+    --orange: var(--bronze);
+    --orange-light: var(--bronze-light);
+    --orange-dark: var(--bronze-dark);
 
     --sidebar-width: 254px;
     --header-height: 82px;
 
-    --surface: #191b20;
-    --surface-soft: #202228;
-    --surface-muted: #24262d;
-    --page-background: #111216;
+    --surface: var(--cream);
+    --surface-soft: #f7f2ed;
+    --surface-muted: #eee8e2;
+    --page-background: var(--stone);
 
-    --shadow: 0 14px 38px rgba(0, 0, 0, 0.16);
+    --border: rgba(92, 74, 64, 0.12);
+
+    --shadow:
+        0 12px 35px rgba(69, 51, 41, 0.07);
+}
+
+* {
+    box-sizing: border-box;
 }
 
 html {
@@ -40,18 +51,13 @@ html {
 
 body {
     margin: 0;
-    min-height: 100vh;
     padding: 0;
+    min-height: 100vh;
 
     font-family: Arial, Helvetica, sans-serif;
     color: var(--text);
 
     background: var(--page-background);
-}
-
-body::before,
-body::after {
-    display: none;
 }
 
 button,
@@ -66,13 +72,6 @@ a {
     -webkit-tap-highlight-color: transparent;
 }
 
-button:focus-visible,
-a:focus-visible,
-input:focus-visible {
-    outline: 3px solid rgba(255, 122, 0, 0.5);
-    outline-offset: 3px;
-}
-
 a {
     color: inherit;
 }
@@ -81,58 +80,159 @@ svg {
     flex-shrink: 0;
 }
 
-/* -----------------------------------------------------
-   2. MAIN DESKTOP LAYOUT
-   ----------------------------------------------------- */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+    outline: 3px solid rgba(155, 115, 91, 0.45);
+    outline-offset: 3px;
+}
+
+/* 2. GLAVNI RASPORED */
 
 .dashboard.desktop-layout {
     position: relative;
-    z-index: 1;
+
+    display: grid;
+    grid-template-columns:
+        var(--sidebar-width) minmax(0, 1fr);
 
     width: 100%;
     max-width: none;
     min-height: 100vh;
 
-    display: grid;
-    grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
-
     overflow: visible;
+
     border: none;
     border-radius: 0;
+    box-shadow: none;
 
     background: var(--page-background);
-    box-shadow: none;
-    backdrop-filter: none;
 }
 
 .desktop-main {
-    min-width: 0;
-    min-height: 100vh;
+    position: relative;
 
     display: flex;
     flex-direction: column;
 
-    background: var(--page-background);
+    min-width: 0;
+    min-height: 100vh;
+
+    isolation: isolate;
+
+    background:
+        radial-gradient(
+            ellipse 580px 440px at 96% 17%,
+            rgba(181, 139, 114, 0.19),
+            transparent 74%
+        ),
+        radial-gradient(
+            ellipse 570px 480px at 5% 88%,
+            rgba(132, 148, 136, 0.14),
+            transparent 76%
+        ),
+        linear-gradient(
+            145deg,
+            #f4f0ec,
+            #eee9e4 55%,
+            #f3eee9
+        );
 }
 
-/* -----------------------------------------------------
-   3. DESKTOP SIDEBAR
-   ----------------------------------------------------- */
+/* Dekorativni oblici u pozadini */
+
+.desktop-main::before {
+    content: "";
+
+    position: absolute;
+    z-index: -1;
+
+    top: 115px;
+    right: -170px;
+
+    width: 520px;
+    height: 520px;
+
+    border: 75px solid rgba(172, 129, 102, 0.065);
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+.desktop-main::after {
+    content: "";
+
+    position: absolute;
+    z-index: -1;
+
+    left: -230px;
+    bottom: 20px;
+
+    width: 480px;
+    height: 480px;
+
+    border: 65px solid rgba(132, 148, 136, 0.075);
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+/* 3. BOČNA NAVIGACIJA */
 
 .desktop-sidebar {
     position: sticky;
     top: 0;
 
-    height: 100vh;
-    min-height: 680px;
-
     display: flex;
     flex-direction: column;
 
+    height: 100vh;
+    min-height: 680px;
+
     padding: 29px 17px 22px;
 
-    background: #181a1f;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            ellipse 300px 340px at -50% 95%,
+            rgba(155, 115, 91, 0.20),
+            transparent 75%
+        ),
+        linear-gradient(
+            165deg,
+            #303035,
+            #28282d 65%,
+            #242428
+        );
+
+    color: #f8f4f0;
+
+    border-right:
+        1px solid rgba(255, 255, 255, 0.07);
+}
+
+.desktop-sidebar::after {
+    content: "";
+
+    position: absolute;
+    z-index: 0;
+
+    width: 300px;
+    height: 300px;
+
+    bottom: -190px;
+    left: -120px;
+
+    border: 48px solid rgba(197, 151, 123, 0.08);
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+.desktop-sidebar > * {
+    position: relative;
+    z-index: 1;
 }
 
 .sidebar-brand {
@@ -147,46 +247,52 @@ svg {
 }
 
 .brand-logo {
-    width: 43px;
-    height: 43px;
-    flex: 0 0 43px;
-
     display: flex;
     align-items: center;
     justify-content: center;
 
+    width: 43px;
+    height: 43px;
+    flex: 0 0 43px;
+
     border-radius: 12px;
 
-    background: linear-gradient(135deg, #ffad39, #ff6a00);
-    color: #16110c;
+    background:
+        linear-gradient(135deg, #d8b29a, #a4775d);
+
+    color: #282429;
 
     font-size: 25px;
     font-weight: 900;
 
-    box-shadow: 0 7px 20px rgba(255, 122, 0, 0.16);
+    box-shadow:
+        0 7px 20px rgba(0, 0, 0, 0.13);
 }
 
 .sidebar-brand-text {
-    min-width: 0;
-
     display: flex;
     flex-direction: column;
     gap: 4px;
+
+    min-width: 0;
 }
 
 .sidebar-brand-text strong {
-    color: #ffffff;
-    font-size: 16px;
+    color: #fffaf5;
+
+    font-size: 18px;
     font-weight: 800;
     letter-spacing: -0.4px;
+
     white-space: nowrap;
 }
 
 .sidebar-brand-text small {
-    color: #8f9199;
-    font-size: 9px;
+    color: #c5b6ad;
+
+    font-size: 11px;
     font-weight: 800;
-    letter-spacing: 1.8px;
+    letter-spacing: 1.5px;
 }
 
 .sidebar-nav {
@@ -200,35 +306,33 @@ svg {
 .sidebar-link {
     position: relative;
 
-    min-height: 47px;
-
     display: flex;
     align-items: center;
     gap: 14px;
 
+    min-height: 48px;
     padding: 11px 15px;
 
     border-radius: 11px;
 
-    color: #b6b8c0;
+    color: #d0cbd0;
     text-decoration: none;
 
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
 
     transition:
-        background 0.2s ease,
         color 0.2s ease,
-        transform 0.2s ease;
+        background 0.2s ease;
 }
 
 .sidebar-link > span:first-child {
-    width: 21px;
-    flex: 0 0 21px;
-
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
+    width: 21px;
+    flex: 0 0 21px;
 
     font-size: 21px;
     line-height: 1;
@@ -236,13 +340,20 @@ svg {
 
 .sidebar-link:hover {
     color: #ffffff;
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.07);
 }
 
 .sidebar-link.active,
 .sidebar-link[aria-current="page"] {
-    color: #ff9a35;
-    background: rgba(255, 122, 0, 0.12);
+    color: #fffaf5;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(171, 125, 97, 0.49),
+            rgba(171, 125, 97, 0.18)
+        );
+
     font-weight: 800;
 }
 
@@ -252,13 +363,13 @@ svg {
 
     position: absolute;
     left: 0;
-    top: 11px;
-    bottom: 11px;
+    top: 10px;
+    bottom: 10px;
 
     width: 3px;
-    border-radius: 999px;
 
-    background: var(--orange);
+    border-radius: 999px;
+    background: #d4a184;
 }
 
 .sidebar-message-indicator {
@@ -268,19 +379,17 @@ svg {
     margin-left: auto;
 
     border-radius: 50%;
-    background: var(--orange);
+    background: var(--bronze-light);
 
     opacity: 0;
 }
-
-/* Badge ce se povezati sa stvarnim porukama
-   u zasebnom JS koraku. */
 
 .sidebar-bottom {
     margin-top: auto;
     padding: 22px 12px 0;
 
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top:
+        1px solid rgba(255, 255, 255, 0.10);
 }
 
 .sidebar-bottom a {
@@ -289,46 +398,46 @@ svg {
 
     min-height: 39px;
 
-    color: #c2c3c9;
+    color: #d2ced0;
     text-decoration: none;
 
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
 }
 
 .sidebar-bottom a:hover {
-    color: var(--orange-light);
+    color: #e3b99e;
 }
 
 .sidebar-bottom p {
     margin: 22px 0 0;
 
-    color: #767981;
-    font-size: 11px;
+    color: #aaa1a1;
+
+    font-size: 13px;
     line-height: 1.8;
 }
 
-/* -----------------------------------------------------
-   4. HEADER
-   ----------------------------------------------------- */
+/* 4. GORNJA TRAKA */
 
 .dashboard-header {
     position: relative;
-
-    width: 100%;
-    min-height: var(--header-height);
-
-    padding: 16px 42px;
 
     display: flex;
     align-items: center;
     justify-content: flex-end;
     gap: 20px;
 
+    width: 100%;
+    min-height: var(--header-height);
+    padding: 16px 42px;
+
     flex-shrink: 0;
 
-    background: #191b20;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 252, 248, 0.93);
+
+    border-bottom:
+        1px solid rgba(92, 74, 64, 0.10);
 }
 
 .mobile-brand {
@@ -336,61 +445,18 @@ svg {
 }
 
 .header-actions {
-    width: 100%;
-
     display: flex;
     align-items: center;
     justify-content: flex-end;
     gap: 18px;
 
+    width: 100%;
+
     white-space: nowrap;
 }
 
 .desktop-search {
-    width: min(340px, 38%);
-    min-width: 190px;
-    height: 43px;
-
-    margin-right: auto;
-    padding: 0 15px;
-
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    border: 1px solid rgba(255, 255, 255, 0.10);
-    border-radius: 11px;
-
-    background: rgba(255, 255, 255, 0.04);
-}
-
-.desktop-search > span {
-    color: #94969f;
-    font-size: 24px;
-    line-height: 1;
-}
-
-.desktop-search input {
-    width: 100%;
-    min-width: 0;
-
-    border: none;
-    outline: none;
-
-    background: transparent;
-    color: #f5f5f6;
-
-    font-size: 13px;
-}
-
-.desktop-search input::placeholder {
-    color: #858892;
-    opacity: 1;
-}
-
-.desktop-search input:disabled {
-    cursor: not-allowed;
-    opacity: 0.8;
+    display: none !important;
 }
 
 .user-box {
@@ -400,22 +466,21 @@ svg {
 
     flex-shrink: 0;
 
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 700;
 }
 
 .user-avatar {
-    width: 38px;
-    height: 38px;
-    flex: 0 0 38px;
-
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
 
-    background: rgba(255, 122, 0, 0.12);
+    border-radius: 50%;
+    background: #eee0d5;
 }
 
 .user-avatar svg {
@@ -423,12 +488,12 @@ svg {
     height: 21px;
 
     fill: none;
-    stroke: var(--orange-light);
+    stroke: #916a53;
     stroke-width: 1.8;
 }
 
 #userTop {
-    color: #f5f5f5;
+    color: #303138;
 }
 
 .header-separator {
@@ -436,32 +501,28 @@ svg {
     height: 28px;
     flex: 0 0 1px;
 
-    background: rgba(255, 255, 255, 0.12);
+    background: #e2d9d2;
 }
 
 .logout-button {
-    min-width: max-content;
-    padding: 9px 10px;
-
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
 
+    min-width: max-content;
+    padding: 9px 10px;
+
     border: none;
     border-radius: 9px;
 
     background: transparent;
-    color: #c5c6cc;
+    color: #665f60;
 
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 600;
 
     cursor: pointer;
-
-    transition:
-        background 0.2s ease,
-        color 0.2s ease;
 }
 
 .logout-button svg {
@@ -476,22 +537,20 @@ svg {
 }
 
 .logout-button:hover {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.07);
+    color: #303138;
+    background: #eee6df;
 }
 
-/* -----------------------------------------------------
-   5. THEME SWITCH
-   ----------------------------------------------------- */
+/* 5. PREBACIVANJE TEME */
 
 .theme-switch {
     position: relative;
 
+    display: block;
+
     width: 58px;
     height: 32px;
     flex: 0 0 58px;
-
-    display: block;
 }
 
 .theme-switch input {
@@ -508,47 +567,41 @@ svg {
     position: absolute;
     inset: 0;
 
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid #d8ccc3;
     border-radius: 999px;
 
-    background: #111318;
-    cursor: pointer;
+    background: #eae0d8;
 
-    transition:
-        background 0.25s ease,
-        border-color 0.25s ease,
-        box-shadow 0.25s ease;
+    cursor: pointer;
 }
 
 .theme-slider::before {
     content: "☾";
 
     position: absolute;
-    left: 3px;
     top: 2px;
-
-    width: 25px;
-    height: 25px;
+    left: 3px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
+    width: 25px;
+    height: 25px;
+
     border-radius: 50%;
 
-    background: linear-gradient(135deg, #ffad35, #ff7700);
-    color: #111;
+    background:
+        linear-gradient(135deg, #c9a58d, #92684f);
 
+    color: #ffffff;
     font-size: 13px;
 
     transition: transform 0.25s ease;
 }
 
 .theme-switch input:checked + .theme-slider {
-    background: #ffffff !important;
-    border-color: rgba(0, 0, 0, 0.14) !important;
-
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+    background: #fffaf5;
 }
 
 .theme-switch input:checked + .theme-slider::before {
@@ -557,25 +610,24 @@ svg {
 }
 
 .theme-switch input:focus-visible + .theme-slider {
-    outline: 3px solid rgba(255, 122, 0, 0.45);
+    outline: 3px solid rgba(155, 115, 91, 0.45);
     outline-offset: 3px;
 }
 
-/* -----------------------------------------------------
-   6. CONTENT
-   ----------------------------------------------------- */
+/* 6. SADRŽAJ */
 
 .dashboard-content {
-    width: 100%;
-    max-width: 1560px;
-
-    padding: 38px 48px 0;
-    margin: 0 auto;
-
-    flex: 1;
+    position: relative;
 
     display: flex;
     flex-direction: column;
+    flex: 1;
+
+    width: 100%;
+    max-width: 1560px;
+
+    margin: 0 auto;
+    padding: 38px 48px 0;
 }
 
 .welcome {
@@ -585,26 +637,30 @@ svg {
 .welcome h2 {
     margin: 0 0 10px;
 
-    color: #c5c6cc;
-    font-size: clamp(27px, 2.3vw, 34px);
+    color: #827b78;
+
+    font-size: clamp(29px, 2.3vw, 36px);
     font-weight: 400;
     letter-spacing: -0.7px;
 }
 
 .welcome h2 strong {
-    color: #ffffff;
+    color: #303138;
     font-weight: 800;
 }
 
+/* Uklonjen emoji koji maše */
+
 .welcome h2::after {
-    content: " 👋";
+    content: none;
 }
 
 .welcome p {
     margin: 0;
 
-    color: var(--muted);
-    font-size: 14px;
+    color: #77716f;
+
+    font-size: 16px;
     line-height: 1.6;
 }
 
@@ -613,47 +669,85 @@ svg {
 }
 
 .section-header {
-    margin-bottom: 18px;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
+
+    margin-bottom: 18px;
 }
 
 .section-title {
     margin: 0;
 
-    color: #ffffff;
-    font-size: 21px;
+    color: #303138;
+
+    font-size: 23px;
     font-weight: 800;
     letter-spacing: -0.4px;
 }
 
-/* -----------------------------------------------------
-   7. PROJECT COUNTER AND SLIDER
-   ----------------------------------------------------- */
+/* 7. PROJEKTI — SLIDER */
+
+.project-navigation {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
 .project-counter {
     flex-shrink: 0;
 
     padding: 7px 12px;
 
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    border: 1px solid #e6d9cf;
     border-radius: 999px;
 
-    background: rgba(255, 255, 255, 0.04);
-    color: #a6a7ae;
+    background: #fffcf8;
+    color: #675e59;
 
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 700;
 }
 
-.projects-slider {
-    width: 100%;
+.project-nav-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+    width: 36px;
+    height: 36px;
+
+    border: 1px solid #e3ccbc;
+    border-radius: 10px;
+
+    background: #f1e3d8;
+    color: #805b46;
+
+    font-size: 27px;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+.project-nav-button[hidden] {
+    display: none !important;
+}
+
+.project-nav-button:hover:not(:disabled) {
+    background: #e6d1c1;
+}
+
+.project-nav-button:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+
+.projects-slider {
     display: flex;
     gap: 18px;
+
+    width: 100%;
 
     overflow-x: auto;
     overflow-y: hidden;
@@ -681,13 +775,13 @@ svg {
 }
 
 .slider-dots {
-    min-height: 24px;
-    margin-top: 15px;
-
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
+
+    min-height: 24px;
+    margin-top: 15px;
 }
 
 .slider-dot {
@@ -695,51 +789,79 @@ svg {
     height: 8px;
 
     padding: 0;
+
     border: none;
     border-radius: 999px;
 
-    background: rgba(255, 255, 255, 0.20);
+    background: #d5c8bf;
+
     cursor: pointer;
 
     transition:
         width 0.25s ease,
-        background 0.25s ease,
-        transform 0.2s ease;
-}
-
-.slider-dot:hover {
-    transform: scale(1.15);
+        background 0.25s ease;
 }
 
 .slider-dot.active {
     width: 26px;
-    background: var(--orange);
+    background: var(--bronze);
 }
 
-/* -----------------------------------------------------
-   8. PROJECT CARD
-   ----------------------------------------------------- */
+/* 8. GLAVNA KARTICA PROJEKTA */
 
 .project-card {
+    position: relative;
+
     display: block;
 
     padding: 27px 29px;
 
-    border: 1px solid rgba(255, 122, 0, 0.38);
-    border-radius: 17px;
+    overflow: hidden;
 
-    background: linear-gradient(
-        135deg,
-        rgba(255, 122, 0, 0.09),
-        rgba(255, 255, 255, 0.025) 58%
-    );
+    border: 1px solid #e4d5c9;
+    border-radius: 19px;
 
-    box-shadow: var(--shadow);
+    background:
+        radial-gradient(
+            ellipse 360px 260px at 100% 0%,
+            rgba(190, 149, 122, 0.13),
+            transparent 85%
+        ),
+        linear-gradient(
+            135deg,
+            #fffcf8,
+            #f9f3ed
+        );
+
+    box-shadow:
+        0 15px 38px rgba(77, 55, 42, 0.08);
+}
+
+.project-card::before {
+    content: "";
+
+    position: absolute;
+    top: -150px;
+    right: -90px;
+
+    width: 320px;
+    height: 320px;
+
+    border: 42px solid rgba(172, 129, 102, 0.055);
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+.project-card > * {
+    position: relative;
+    z-index: 1;
 }
 
 .project-card-link {
     color: inherit;
     text-decoration: none;
+
     cursor: pointer;
 
     transition:
@@ -749,40 +871,44 @@ svg {
 }
 
 .project-card-link:hover {
-    border-color: rgba(255, 122, 0, 0.85);
-    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.20);
+    border-color: #b68b72;
+
+    box-shadow:
+        0 19px 43px rgba(77, 55, 42, 0.12);
 }
 
 .project-heading {
-    margin-bottom: 26px;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 25px;
+
+    margin-bottom: 26px;
 }
 
 .project-main {
-    min-width: 0;
-
     display: flex;
     align-items: center;
     gap: 20px;
+
+    min-width: 0;
 }
 
 .project-icon {
-    width: 70px;
-    height: 70px;
-    flex: 0 0 70px;
-
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 15px;
+    width: 70px;
+    height: 70px;
+    flex: 0 0 70px;
 
-    background: rgba(255, 122, 0, 0.12);
-    color: var(--orange-light);
+    border-radius: 16px;
+
+    background:
+        linear-gradient(135deg, #ead7c7, #f5e9df);
+
+    color: #936b54;
 }
 
 .project-icon svg {
@@ -803,8 +929,9 @@ svg {
 .project-main h3 {
     margin: 0 0 7px;
 
-    color: #ffffff;
-    font-size: clamp(21px, 2vw, 27px);
+    color: #303138;
+
+    font-size: clamp(23px, 2vw, 29px);
     font-weight: 800;
     letter-spacing: -0.5px;
 
@@ -814,8 +941,9 @@ svg {
 .project-main p {
     margin: 0;
 
-    color: var(--muted);
-    font-size: 14px;
+    color: #827a76;
+
+    font-size: 16px;
     line-height: 1.5;
 }
 
@@ -828,7 +956,7 @@ svg {
 }
 
 .project-open-arrow {
-    color: rgba(255, 255, 255, 0.45);
+    color: #a59a92;
 
     font-size: 27px;
     font-weight: 700;
@@ -839,13 +967,11 @@ svg {
 }
 
 .project-card-link:hover .project-open-arrow {
-    color: var(--orange);
+    color: var(--bronze);
     transform: translateX(4px);
 }
 
-/* -----------------------------------------------------
-   9. STATUS BADGES
-   ----------------------------------------------------- */
+/* 9. STATUS PROJEKTA */
 
 .status-badge {
     display: inline-flex;
@@ -855,7 +981,7 @@ svg {
 
     border-radius: 999px;
 
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 700;
     white-space: nowrap;
 }
@@ -872,38 +998,36 @@ svg {
 }
 
 .status-progress {
-    color: #ff9a3d;
-    border: 1px solid rgba(255, 122, 0, 0.30);
-    background: rgba(255, 122, 0, 0.10);
+    color: #80573e;
+    background: #f1e1d4;
+    border: 1px solid #e6cdbb;
 }
 
 .status-progress::before {
-    background: var(--orange);
+    background: #a7785a;
 }
 
 .status-done {
-    color: #55df82;
-    border: 1px solid rgba(46, 204, 113, 0.30);
-    background: rgba(46, 204, 113, 0.10);
+    color: #486c57;
+    background: #e5eee6;
+    border: 1px solid #c9ddcc;
 }
 
 .status-done::before {
-    background: #2ecc71;
+    background: #71917b;
 }
 
 .status-waiting {
-    color: #b8b8b8;
-    border: 1px solid rgba(160, 160, 160, 0.28);
-    background: rgba(160, 160, 160, 0.10);
+    color: #6c6870;
+    background: #eeebed;
+    border: 1px solid #ddd8dd;
 }
 
 .status-waiting::before {
-    background: #8f8f8f;
+    background: #98909a;
 }
 
-/* -----------------------------------------------------
-   10. PROJECT STATS
-   ----------------------------------------------------- */
+/* 10. INFORMACIJE O PROJEKTU */
 
 .project-stats {
     display: grid;
@@ -918,24 +1042,24 @@ svg {
 }
 
 .stat-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
     min-width: 0;
     min-height: 85px;
 
     padding: 16px;
 
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    border: 1px solid #e8ded6;
+    border-radius: 13px;
 
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    border-radius: 12px;
-
-    background: rgba(0, 0, 0, 0.12);
+    background: rgba(239, 231, 224, 0.75);
 }
 
 .stat-icon {
     flex-shrink: 0;
-    color: var(--orange);
+    color: #98715b;
 }
 
 .stat-icon svg {
@@ -951,28 +1075,30 @@ svg {
 
 .stat-label {
     display: block;
+
     margin-bottom: 6px;
 
-    color: var(--muted);
-    font-size: 12px;
+    color: #77716f;
+    font-size: 14px;
 }
 
 .stat-card strong {
-    color: #f4f4f5;
-    font-size: 13px;
+    color: #303138;
+
+    font-size: 15px;
     line-height: 1.4;
 
     overflow-wrap: anywhere;
 }
 
 .package-name {
-    color: var(--orange-light);
+    color: #805b46;
     font-weight: 800;
 }
 
 .progress-info {
-    min-width: 0;
     width: 100%;
+    min-width: 0;
 }
 
 .progress-row {
@@ -983,41 +1109,41 @@ svg {
 
 .progress-container {
     flex: 1;
+
     min-width: 30px;
     height: 10px;
 
     overflow: hidden;
-    border-radius: 999px;
 
-    background: rgba(255, 255, 255, 0.09);
+    border-radius: 999px;
+    background: #ded3cb;
 }
 
 .progress-bar {
     height: 100%;
+
     border-radius: inherit;
 
-    background: linear-gradient(90deg, #ff7900, #ffb44e);
-    box-shadow: 0 0 12px rgba(255, 122, 0, 0.25);
+    background:
+        linear-gradient(90deg, #926a53, #c59a7f);
 }
 
 .no-projects {
     width: 100%;
     padding: 45px 20px;
 
-    border: 1px dashed rgba(255, 255, 255, 0.15);
+    border: 1px dashed #d8c6b9;
     border-radius: 16px;
 
-    background: rgba(255, 255, 255, 0.02);
-    color: var(--muted);
+    background: #fffcf8;
+    color: #77716f;
 
     text-align: center;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.6;
 }
 
-/* -----------------------------------------------------
-   11. QUICK ACTIONS
-   ----------------------------------------------------- */
+/* 11. BRZE AKCIJE */
 
 .actions-section {
     margin-top: 28px;
@@ -1030,8 +1156,9 @@ svg {
 .actions-header h2 {
     margin: 0 0 6px;
 
-    color: #ffffff;
-    font-size: 21px;
+    color: #303138;
+
+    font-size: 23px;
     font-weight: 800;
     letter-spacing: -0.4px;
 }
@@ -1039,8 +1166,9 @@ svg {
 .actions-header p {
     margin: 0;
 
-    color: var(--muted);
-    font-size: 12px;
+    color: #77716f;
+
+    font-size: 14px;
     line-height: 1.5;
 }
 
@@ -1053,93 +1181,123 @@ svg {
 .action-card {
     position: relative;
 
-    min-width: 0;
-    min-height: 181px;
-
-    padding: 19px;
-
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    border-radius: 15px;
+    min-width: 0;
+    min-height: 191px;
 
-    background: #1c1e24;
+    padding: 20px;
+
+    border: 1px solid #e6d9cf;
+    border-radius: 17px;
+
+    background:
+        linear-gradient(
+            155deg,
+            #fffcf8,
+            #f9f2ec
+        );
+
     color: inherit;
-
     text-decoration: none;
     text-align: left;
 
-    font-family: inherit;
     cursor: pointer;
+
+    box-shadow:
+        0 9px 25px rgba(76, 59, 49, 0.055);
 
     transition:
         transform 0.2s ease,
         border-color 0.2s ease,
-        background 0.2s ease,
         box-shadow 0.2s ease;
+}
+
+/* Diskretno različite nijanse */
+
+.action-card:nth-child(2) {
+    background:
+        linear-gradient(155deg, #faf7f4, #eee8e4);
+}
+
+.action-card:nth-child(3) {
+    background:
+        linear-gradient(155deg, #f9fbf8, #e8eee7);
+}
+
+.action-card:nth-child(4) {
+    background:
+        linear-gradient(155deg, #fffcf8, #eee6de);
 }
 
 .action-card:not(:disabled):not([aria-disabled="true"]):hover {
     transform: translateY(-3px);
 
-    border-color: rgba(255, 122, 0, 0.72);
-    background: rgba(255, 122, 0, 0.07);
+    border-color: #b58b72;
 
-    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.14);
+    box-shadow:
+        0 16px 32px rgba(76, 59, 49, 0.11);
 }
 
 .action-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     width: 43px;
     height: 43px;
 
     margin-bottom: 14px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
     border-radius: 12px;
 
-    background: rgba(255, 122, 0, 0.12);
-    color: #ff8a16;
+    background: #efdfd2;
+    color: #91694f;
 
     font-size: 22px;
     font-weight: 800;
 }
 
+.action-card:nth-child(3) .action-icon {
+    background: #dce7dc;
+    color: #657f6d;
+}
+
 .action-card strong {
     margin-bottom: 7px;
 
-    color: #ffffff;
-    font-size: 14px;
+    color: #303138;
+
+    font-size: 16px;
     font-weight: 800;
 }
 
 .action-card p {
     margin: 0 0 18px;
 
-    color: #a4a5ad;
-    font-size: 12px;
+    color: #77716f;
+
+    font-size: 14px;
     line-height: 1.55;
 }
 
 .action-button {
-    margin-top: auto;
-    padding: 7px 12px;
-
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    border: 1px solid rgba(255, 122, 0, 0.36);
+    margin-top: auto;
+    padding: 8px 13px;
+
+    border: 1px solid #e3cbb9;
     border-radius: 999px;
 
-    background: rgba(255, 122, 0, 0.08);
-    color: #ff922c;
+    background: #efdfd2;
+    color: #80553d;
 
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 800;
 }
 
@@ -1157,27 +1315,19 @@ svg {
     box-shadow: none;
 }
 
-/* -----------------------------------------------------
-   12. FOOTER
-   ----------------------------------------------------- */
+/* 12. FOOTER */
 
 .footer {
     margin-top: auto;
     padding: 35px 0 23px;
 
-    border-top: none;
+    color: #928985;
 
-    color: #797b84;
     text-align: center;
-
-    font-size: 11px;
+    font-size: 13px;
 }
 
-/* -----------------------------------------------------
-   13. BOTTOM NAVIGATION
-   Desktop: hidden
-   Mobile: preserved for later design
-   ----------------------------------------------------- */
+/* 13. MOBILNA DONJA NAVIGACIJA */
 
 .bottom-nav {
     display: none;
@@ -1186,15 +1336,15 @@ svg {
 .bottom-nav-item {
     position: relative;
 
-    min-height: 54px;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 5px;
 
-    color: rgba(255, 255, 255, 0.52);
+    min-height: 54px;
+
+    color: rgba(255, 255, 255, 0.60);
     text-decoration: none;
 
     font-size: 11px;
@@ -1212,12 +1362,8 @@ svg {
     stroke-linejoin: round;
 }
 
-.bottom-nav-item:hover {
-    color: rgba(255, 255, 255, 0.82);
-}
-
 .bottom-nav-item.active {
-    color: var(--orange);
+    color: var(--bronze-light);
 }
 
 .bottom-nav-item.active::before {
@@ -1230,7 +1376,7 @@ svg {
     height: 3px;
 
     border-radius: 999px;
-    background: var(--orange);
+    background: var(--bronze);
 }
 
 .bottom-nav-icon-wrap {
@@ -1246,19 +1392,19 @@ svg {
     top: -7px;
     right: -10px;
 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     min-width: 16px;
     height: 16px;
 
     padding: 0 4px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: 2px solid #121315;
+    border: 2px solid #29292d;
     border-radius: 999px;
 
-    background: #ff3b30;
+    background: #c85d4f;
     color: #ffffff;
 
     font-size: 9px;
@@ -1269,9 +1415,7 @@ svg {
     display: none !important;
 }
 
-/* -----------------------------------------------------
-   14. MATERIALS UPLOAD MODAL
-   ----------------------------------------------------- */
+/* 14. MODAL ZA DOSTAVU MATERIJALA */
 
 .materials-overlay[hidden] {
     display: none !important;
@@ -1288,7 +1432,7 @@ svg {
 
     padding: 20px;
 
-    background: rgba(0, 0, 0, 0.78);
+    background: rgba(22, 20, 20, 0.72);
     backdrop-filter: blur(8px);
 }
 
@@ -1301,13 +1445,14 @@ svg {
 
     padding: 28px;
 
-    border: 1px solid rgba(255, 122, 0, 0.25);
+    border: 1px solid #e4d4c7;
     border-radius: 22px;
 
-    background: #1b1b1d;
-    color: #ffffff;
+    background: #fffcf8;
+    color: #303138;
 
-    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6);
+    box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.28);
 }
 
 .materials-modal-top {
@@ -1320,7 +1465,7 @@ svg {
 }
 
 .materials-eyebrow {
-    color: #ff922e;
+    color: #936b53;
 
     font-size: 11px;
     font-weight: 700;
@@ -1330,28 +1475,33 @@ svg {
 .materials-modal h2 {
     margin: 9px 0 8px;
 
-    color: #ffffff;
+    color: #303138;
     font-size: 26px;
 }
 
 #materialsProjectName {
     margin: 0;
 
-    color: #b6b6b6;
+    color: #77716f;
+
     font-size: 13px;
     line-height: 1.5;
 }
 
 .materials-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     width: 38px;
     height: 38px;
     flex: 0 0 38px;
 
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: 1px solid #e2d5cb;
     border-radius: 10px;
 
-    background: rgba(255, 255, 255, 0.07);
-    color: #ffffff;
+    background: #f0e8e1;
+    color: #303138;
 
     font-size: 25px;
     line-height: 1;
@@ -1360,8 +1510,8 @@ svg {
 }
 
 .materials-close:hover {
-    border-color: var(--orange);
-    color: var(--orange);
+    color: var(--bronze-dark);
+    border-color: var(--bronze);
 }
 
 .materials-dropzone {
@@ -1374,49 +1524,45 @@ svg {
     min-height: 190px;
     padding: 24px;
 
-    border: 2px dashed rgba(255, 122, 0, 0.45);
+    border: 2px dashed #c5a28c;
     border-radius: 16px;
 
-    background: rgba(255, 122, 0, 0.045);
+    background: #f8f0e9;
 
     text-align: center;
     cursor: pointer;
-
-    transition:
-        border-color 0.2s ease,
-        background 0.2s ease;
 }
 
 .materials-dropzone:hover,
 .materials-dropzone.dragover {
-    border-color: var(--orange);
-    background: rgba(255, 122, 0, 0.10);
+    border-color: var(--bronze);
+    background: #f3e6da;
 }
 
 .materials-upload-icon {
-    width: 54px;
-    height: 54px;
-
     display: flex;
     align-items: center;
     justify-content: center;
 
+    width: 54px;
+    height: 54px;
+
     border-radius: 15px;
 
-    background: rgba(255, 122, 0, 0.13);
-    color: #ff9029;
+    background: #ead9cb;
+    color: #916a53;
 
     font-size: 30px;
     font-weight: 700;
 }
 
 .materials-dropzone strong {
-    color: #ffffff;
+    color: #303138;
     font-size: 16px;
 }
 
 .materials-dropzone > span:not(.materials-upload-icon) {
-    color: #a5a5a5;
+    color: #77716f;
 
     font-size: 12px;
     line-height: 1.5;
@@ -1428,8 +1574,7 @@ svg {
 
     margin-top: 8px;
 
-    color: #bcbcbc;
-    font-family: inherit;
+    color: #665e59;
     font-size: 12px;
 }
 
@@ -1437,11 +1582,11 @@ svg {
     margin-right: 10px;
     padding: 9px 12px;
 
-    border: 1px solid rgba(255, 122, 0, 0.4);
+    border: 1px solid #d9bda9;
     border-radius: 8px;
 
-    background: rgba(255, 122, 0, 0.10);
-    color: #ff9b3a;
+    background: #ead9cb;
+    color: #76523e;
 
     font-weight: 700;
     cursor: pointer;
@@ -1457,11 +1602,11 @@ svg {
 .materials-file-item {
     padding: 12px 14px;
 
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    border: 1px solid #e4d9d0;
     border-radius: 11px;
 
-    background: rgba(255, 255, 255, 0.045);
-    color: #f1f1f1;
+    background: #f4eee9;
+    color: #303138;
 
     font-size: 13px;
     line-height: 1.5;
@@ -1472,7 +1617,8 @@ svg {
 .materials-hint {
     margin: 16px 0 0;
 
-    color: #aaaaaa;
+    color: #77716f;
+
     font-size: 12px;
     line-height: 1.6;
 }
@@ -1481,7 +1627,7 @@ svg {
     min-height: 20px;
     margin: 12px 0 0;
 
-    color: #c8c8c8;
+    color: #665e59;
 
     font-size: 13px;
     line-height: 1.6;
@@ -1491,11 +1637,11 @@ svg {
 }
 
 .materials-status.success {
-    color: #59e493;
+    color: #36784c;
 }
 
 .materials-status.error {
-    color: #ff7777;
+    color: #bd4545;
 }
 
 .materials-modal-actions {
@@ -1515,7 +1661,6 @@ svg {
     border: none;
     border-radius: 10px;
 
-    font-family: inherit;
     font-size: 13px;
     font-weight: 700;
 
@@ -1523,21 +1668,19 @@ svg {
 }
 
 .materials-cancel {
-    background: rgba(255, 255, 255, 0.10);
-    color: #ffffff;
-}
-
-.materials-cancel:hover {
-    background: rgba(255, 255, 255, 0.16);
+    background: #ebe4de;
+    color: #303138;
 }
 
 .materials-submit {
-    background: linear-gradient(135deg, #ff9b32, #ff7300);
-    color: #17110c;
+    background:
+        linear-gradient(135deg, #b58b72, #896149);
+
+    color: #ffffff;
 }
 
 .materials-submit:hover:not(:disabled) {
-    filter: brightness(1.08);
+    filter: brightness(1.06);
 }
 
 .materials-submit:disabled,
@@ -1551,336 +1694,242 @@ body.materials-modal-open {
     overflow: hidden;
 }
 
-/* -----------------------------------------------------
-   15. LIGHT MODE
-   ----------------------------------------------------- */
+/* 15. LIGHT MODE */
 
 body.light-mode {
-    --text: #202126;
-    --muted: #777982;
-    --border: rgba(0, 0, 0, 0.08);
+    --text: #303138;
+    --muted: #77716f;
+    --page-background: #f0ede9;
 
-    --surface: #ffffff;
-    --surface-soft: #fafafa;
-    --surface-muted: #f4f5f7;
-    --page-background: #f7f8fa;
-
-    --shadow: 0 12px 34px rgba(31, 36, 48, 0.055);
-
-    color: #202126;
-    background: #f7f8fa;
-}
-
-body.light-mode .dashboard.desktop-layout,
-body.light-mode .desktop-main {
-    background: #f7f8fa;
-}
-
-body.light-mode .desktop-sidebar {
-    background: #ffffff;
-    border-right-color: #eceef1;
-}
-
-body.light-mode .sidebar-brand-text strong {
-    color: #202126;
-}
-
-body.light-mode .sidebar-brand-text small {
-    color: #8b8e97;
-}
-
-body.light-mode .sidebar-link {
-    color: #555963;
-}
-
-body.light-mode .sidebar-link:hover {
-    color: #202126;
-    background: #f5f6f8;
-}
-
-body.light-mode .sidebar-link.active,
-body.light-mode .sidebar-link[aria-current="page"] {
-    color: #eb7100;
-    background: #fff1e4;
-}
-
-body.light-mode .sidebar-bottom {
-    border-top-color: #eceef1;
-}
-
-body.light-mode .sidebar-bottom a {
-    color: #626670;
-}
-
-body.light-mode .sidebar-bottom a:hover {
-    color: var(--orange);
-}
-
-body.light-mode .sidebar-bottom p {
-    color: #9a9ca3;
-}
-
-body.light-mode .dashboard-header {
-    background: #ffffff;
-    border-bottom-color: #eceef1;
-}
-
-body.light-mode .desktop-search {
-    background: #f7f8fa;
-    border-color: #ebedf0;
+    color: #303138;
+    background: #f0ede9;
 }
 
-body.light-mode .desktop-search > span {
-    color: #9296a0;
-}
-
-body.light-mode .desktop-search input {
-    color: #24262d;
-}
-
-body.light-mode .desktop-search input::placeholder {
-    color: #999ca5;
-}
+/* 16. DARK MODE */
 
-body.light-mode .user-avatar {
-    background: #fff0e1;
-}
+body:not(.light-mode) {
+    --text: #f4f0ec;
+    --muted: #b4aaa5;
+    --page-background: #252529;
 
-body.light-mode .user-avatar svg {
-    stroke: #ed780b;
+    color: #f4f0ec;
+    background: #252529;
 }
 
-body.light-mode #userTop {
-    color: #25262c;
+body:not(.light-mode) .dashboard.desktop-layout {
+    background: #252529;
 }
 
-body.light-mode .header-separator {
-    background: #e7e8eb;
+body:not(.light-mode) .desktop-main {
+    background:
+        radial-gradient(
+            ellipse 520px 420px at 95% 12%,
+            rgba(155, 115, 91, 0.12),
+            transparent 75%
+        ),
+        #252529;
 }
 
-body.light-mode .logout-button {
-    color: #62656e;
+body:not(.light-mode) .dashboard-header {
+    background: #2b2a2e;
+    border-bottom-color: #403b3d;
 }
 
-body.light-mode .logout-button:hover {
-    color: #24262b;
-    background: #f3f4f6;
+body:not(.light-mode) #userTop {
+    color: #f4f0ec;
 }
 
-body.light-mode .theme-slider {
-    background: #ffffff !important;
-    border-color: rgba(0, 0, 0, 0.14) !important;
+body:not(.light-mode) .logout-button {
+    color: #d4cac5;
 }
 
-body.light-mode .welcome h2 {
-    color: #777b84;
+body:not(.light-mode) .logout-button:hover {
+    background: #3b373a;
+    color: #ffffff;
 }
 
-body.light-mode .welcome h2 strong {
-    color: #202126;
+body:not(.light-mode) .header-separator {
+    background: #4b4444;
 }
 
-body.light-mode .welcome p {
-    color: #898b94;
+body:not(.light-mode) .user-avatar {
+    background: #483a34;
 }
 
-body.light-mode .section-title,
-body.light-mode .project-main h3,
-body.light-mode .actions-header h2 {
-    color: #24252b;
+body:not(.light-mode) .user-avatar svg {
+    stroke: #d6ab8f;
 }
 
-body.light-mode .project-counter {
-    background: #ffffff;
-    border-color: #e9eaed;
-    color: #777b83;
+body:not(.light-mode) .welcome h2 {
+    color: #c0b8b3;
 }
 
-body.light-mode .project-card {
-    background: #ffffff;
-    border-color: rgba(255, 122, 0, 0.27);
-    box-shadow: var(--shadow);
+body:not(.light-mode) .welcome h2 strong,
+body:not(.light-mode) .section-title,
+body:not(.light-mode) .actions-header h2 {
+    color: #f4f0ec;
 }
 
-body.light-mode .project-card-link:hover {
-    border-color: rgba(255, 122, 0, 0.75);
-    box-shadow: 0 17px 40px rgba(36, 42, 52, 0.10);
+body:not(.light-mode) .welcome p,
+body:not(.light-mode) .actions-header p {
+    color: #b4aaa5;
 }
 
-body.light-mode .project-icon {
-    background: #fff0e2;
-    color: #ed780a;
-}
+body:not(.light-mode) .project-card {
+    background:
+        linear-gradient(135deg, #343136, #2e2d32);
 
-body.light-mode .project-main p {
-    color: #898b93;
+    border-color: #5b493e;
 }
 
-body.light-mode .project-open-arrow {
-    color: #a0a3aa;
+body:not(.light-mode) .project-main h3 {
+    color: #f4f0ec;
 }
 
-body.light-mode .stat-card {
-    background: #f8f9fa;
-    border-color: #eff0f2;
+body:not(.light-mode) .project-main p {
+    color: #b4aaa5;
 }
 
-body.light-mode .stat-label {
-    color: #898c95;
+body:not(.light-mode) .project-counter {
+    background: #373337;
+    color: #d4c9c2;
+    border-color: #514741;
 }
 
-body.light-mode .stat-card strong {
-    color: #292b30;
+body:not(.light-mode) .project-nav-button {
+    background: #473b36;
+    color: #dfb49b;
+    border-color: #6b5142;
 }
 
-body.light-mode .package-name {
-    color: #e66d00;
+body:not(.light-mode) .project-icon {
+    background: #493b35;
+    color: #d4a78b;
 }
 
-body.light-mode .progress-container {
-    background: #e9eaed;
+body:not(.light-mode) .stat-card {
+    background: #3b373b;
+    border-color: #514748;
 }
 
-body.light-mode .status-progress {
-    color: #e5760a;
-    background: #fff3e8;
-    border-color: #ffd9b7;
+body:not(.light-mode) .stat-label {
+    color: #b4aaa5;
 }
 
-body.light-mode .status-done {
-    color: #168548;
-    background: #eaf9f0;
-    border-color: #c8ecd7;
+body:not(.light-mode) .stat-card strong {
+    color: #f4f0ec;
 }
 
-body.light-mode .status-waiting {
-    color: #777b84;
-    background: #f2f3f5;
-    border-color: #e2e3e6;
+body:not(.light-mode) .package-name {
+    color: #dfb49b;
 }
 
-body.light-mode .no-projects {
-    background: #ffffff;
-    border-color: #e5e7eb;
-    color: #888b93;
+body:not(.light-mode) .progress-container {
+    background: #51494a;
 }
 
-body.light-mode .actions-header p {
-    color: #898b93;
+body:not(.light-mode) .slider-dot {
+    background: #5e5553;
 }
 
-body.light-mode .action-card {
-    background: #ffffff;
-    border-color: #eceef0;
-    box-shadow: 0 8px 25px rgba(31, 36, 48, 0.035);
+body:not(.light-mode) .slider-dot.active {
+    background: #c59a7f;
 }
 
-body.light-mode .action-card:not(:disabled):not([aria-disabled="true"]):hover {
-    background: #fffaf6;
-    border-color: rgba(255, 122, 0, 0.58);
-    box-shadow: 0 13px 32px rgba(31, 36, 48, 0.09);
-}
+body:not(.light-mode) .action-card {
+    background:
+        linear-gradient(155deg, #363338, #302e33);
 
-body.light-mode .action-icon {
-    background: #fff0e2;
-    color: #ee7c10;
+    border-color: #4f4544;
 }
 
-body.light-mode .action-card strong {
-    color: #282a30;
+body:not(.light-mode) .action-card strong {
+    color: #f4f0ec;
 }
 
-body.light-mode .action-card p {
-    color: #878a93;
+body:not(.light-mode) .action-card p {
+    color: #b4aaa5;
 }
 
-body.light-mode .action-button {
-    background: #fff4e9;
-    border-color: #ffe0c3;
-    color: #e87508;
+body:not(.light-mode) .action-icon {
+    background: #493b35;
+    color: #d6ab8f;
 }
 
-body.light-mode .slider-dot {
-    background: #d5d7dc;
+body:not(.light-mode) .action-button {
+    background: #493b35;
+    color: #e4baa0;
+    border-color: #705344;
 }
 
-body.light-mode .slider-dot.active {
-    background: var(--orange);
+body:not(.light-mode) .no-projects {
+    background: #302e32;
+    color: #b4aaa5;
+    border-color: #5a4b43;
 }
 
-body.light-mode .footer {
-    color: #9a9da5;
+body:not(.light-mode) .footer {
+    color: #a99e99;
 }
-
-/* -----------------------------------------------------
-   16. LIGHT MODE - MATERIALS MODAL
-   ----------------------------------------------------- */
-
-body.light-mode .materials-modal {
-    background: #ffffff;
-    color: #222222;
 
-    border-color: rgba(0, 0, 0, 0.10);
-    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.22);
+body:not(.light-mode) .materials-modal {
+    background: #302e32;
+    color: #f4f0ec;
+    border-color: #59483e;
 }
 
-body.light-mode .materials-modal h2,
-body.light-mode .materials-dropzone strong {
-    color: #222222;
+body:not(.light-mode) .materials-modal h2,
+body:not(.light-mode) .materials-dropzone strong {
+    color: #f4f0ec;
 }
 
-body.light-mode #materialsProjectName,
-body.light-mode .materials-hint,
-body.light-mode .materials-dropzone > span:not(.materials-upload-icon) {
-    color: #777777;
+body:not(.light-mode) #materialsProjectName,
+body:not(.light-mode) .materials-hint,
+body:not(.light-mode) .materials-dropzone > span:not(.materials-upload-icon) {
+    color: #b4aaa5;
 }
 
-body.light-mode .materials-close {
-    background: #f4f4f4;
-    color: #222222;
-    border-color: #dddddd;
+body:not(.light-mode) .materials-close {
+    background: #494348;
+    color: #ffffff;
+    border-color: #655655;
 }
 
-body.light-mode .materials-dropzone {
-    background: #fff8f1;
-    border-color: rgba(255, 122, 0, 0.45);
+body:not(.light-mode) .materials-dropzone {
+    background: #393237;
+    border-color: #8c6b58;
 }
 
-body.light-mode #materialsFiles {
-    color: #555555;
+body:not(.light-mode) #materialsFiles {
+    color: #d1c7c1;
 }
 
-body.light-mode .materials-file-item {
-    background: #f7f7f7;
-    color: #222222;
-    border-color: #e5e5e5;
+body:not(.light-mode) .materials-file-item {
+    background: #3c383c;
+    color: #f4f0ec;
+    border-color: #554b49;
 }
 
-body.light-mode .materials-status {
-    color: #555555;
+body:not(.light-mode) .materials-status {
+    color: #d1c7c1;
 }
 
-body.light-mode .materials-status.success {
-    color: #138b45;
+body:not(.light-mode) .materials-status.success {
+    color: #81c999;
 }
 
-body.light-mode .materials-status.error {
-    color: #d02c2c;
+body:not(.light-mode) .materials-status.error {
+    color: #ff9999;
 }
 
-body.light-mode .materials-cancel {
-    background: #ededed;
-    color: #222222;
+body:not(.light-mode) .materials-cancel {
+    background: #494348;
+    color: #f4f0ec;
 }
 
-/* -----------------------------------------------------
-   17. NARROWER DESKTOP
-   Temporary adaptation.
-   Tablet design will be created separately.
-   ----------------------------------------------------- */
+/* 17. UŽI DESKTOP */
 
 @media (max-width: 1250px) {
-
     :root {
         --sidebar-width: 228px;
     }
@@ -1896,26 +1945,23 @@ body.light-mode .materials-cancel {
     }
 
     .project-stats {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
     }
 
     .actions-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
     }
 
     .action-card {
         min-height: 165px;
     }
-
 }
 
-/* -----------------------------------------------------
-   18. TABLET - TEMPORARY FALLBACK
-   Separate tablet design will follow.
-   ----------------------------------------------------- */
+/* 18. TABLET — PRIVREMENI RASPORED */
 
 @media (max-width: 900px) {
-
     :root {
         --sidebar-width: 210px;
     }
@@ -1942,10 +1988,6 @@ body.light-mode .materials-cancel {
 
     .header-actions {
         gap: 10px;
-    }
-
-    .desktop-search {
-        min-width: 145px;
     }
 
     .dashboard-content {
@@ -1978,17 +2020,11 @@ body.light-mode .materials-cancel {
     .project-main h3 {
         font-size: 21px;
     }
-
 }
 
-/* -----------------------------------------------------
-   19. MOBILE - TEMPORARY FALLBACK
-   Existing bottom navigation preserved.
-   Separate mobile design will follow.
-   ----------------------------------------------------- */
+/* 19. MOBITEL — PRIVREMENI RASPORED */
 
 @media (max-width: 700px) {
-
     body {
         padding: 0;
     }
@@ -1996,7 +2032,6 @@ body.light-mode .materials-cancel {
     .dashboard.desktop-layout {
         display: flex;
         flex-direction: column;
-
         min-height: 100vh;
     }
 
@@ -2007,6 +2042,11 @@ body.light-mode .materials-cancel {
     .desktop-main {
         width: 100%;
         min-height: 100vh;
+    }
+
+    .desktop-main::before,
+    .desktop-main::after {
+        display: none;
     }
 
     .dashboard-header {
@@ -2038,20 +2078,20 @@ body.light-mode .materials-cancel {
     .mobile-brand h1 {
         margin: 0;
 
-        color: #ffffff;
+        color: #303138;
+
         font-size: 17px;
         font-weight: 800;
-        letter-spacing: -0.3px;
+    }
+
+    body:not(.light-mode) .mobile-brand h1 {
+        color: #f4f0ec;
     }
 
     .header-actions {
         width: 100%;
         justify-content: space-between;
         gap: 8px;
-    }
-
-    .desktop-search {
-        display: none;
     }
 
     .header-separator {
@@ -2139,7 +2179,8 @@ body.light-mode .materials-cancel {
     }
 
     .project-stats {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
         gap: 10px;
     }
 
@@ -2161,7 +2202,8 @@ body.light-mode .materials-cancel {
     }
 
     .actions-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
         gap: 10px;
     }
 
@@ -2193,19 +2235,34 @@ body.light-mode .materials-cancel {
         bottom: 0;
         z-index: 20;
 
-        width: 100%;
-        margin-top: auto;
-
-        padding: 9px 5px 10px;
-
         display: grid;
-        grid-template-columns: repeat(5, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(5, minmax(0, 1fr));
         align-items: center;
 
-        border-top: 1px solid rgba(255, 255, 255, 0.10);
+        width: 100%;
 
-        background: #181a1f;
+        margin-top: auto;
+        padding: 9px 5px 10px;
+
+        border-top:
+            1px solid rgba(255, 255, 255, 0.10);
+
+        background: #29292d;
         backdrop-filter: blur(16px);
+    }
+
+    body.light-mode .bottom-nav {
+        background: #fffcf8;
+        border-top-color: #e7dbd2;
+    }
+
+    body.light-mode .bottom-nav-item {
+        color: #817a76;
+    }
+
+    body.light-mode .bottom-nav-item.active {
+        color: var(--bronze-dark);
     }
 
     .bottom-nav-item {
@@ -2217,27 +2274,6 @@ body.light-mode .materials-cancel {
     .bottom-nav-item svg {
         width: 20px;
         height: 20px;
-    }
-
-    body.light-mode .mobile-brand h1 {
-        color: #22242a;
-    }
-
-    body.light-mode .bottom-nav {
-        background: #ffffff;
-        border-top-color: #e9eaed;
-    }
-
-    body.light-mode .bottom-nav-item {
-        color: #888b94;
-    }
-
-    body.light-mode .bottom-nav-item.active {
-        color: var(--orange);
-    }
-
-    body.light-mode .nav-notification {
-        border-color: #ffffff;
     }
 
     .materials-overlay {
@@ -2265,15 +2301,11 @@ body.light-mode .materials-cancel {
     .materials-modal-actions button {
         width: 100%;
     }
-
 }
 
-/* -----------------------------------------------------
-   20. SMALL MOBILE - TEMPORARY FALLBACK
-   ----------------------------------------------------- */
+/* 20. MALI MOBITEL */
 
 @media (max-width: 390px) {
-
     .mobile-brand h1 {
         font-size: 15px;
     }
@@ -2302,913 +2334,11 @@ body.light-mode .materials-cancel {
     .actions-grid {
         grid-template-columns: 1fr;
     }
-
 }
 
-
-/* =========================================
-   DESKTOP DORADE - PROJEKTI I FONTOVI
-   ========================================= */
-
-@media (min-width: 901px) {
-
-    /* Navigacija između projekata */
-
-    .project-navigation {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .project-nav-button {
-        width: 36px;
-        height: 36px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        border: 1px solid rgba(255, 122, 0, 0.3);
-        border-radius: 10px;
-
-        background: rgba(255, 122, 0, 0.08);
-        color: var(--orange);
-
-        font-size: 27px;
-        line-height: 1;
-
-        cursor: pointer;
-
-        transition:
-            background 0.2s ease,
-            transform 0.2s ease;
-    }
-
-    .project-nav-button[hidden] {
-        display: none !important;
-    }
-
-    .project-nav-button:hover {
-        background: rgba(255, 122, 0, 0.17);
-        transform: translateY(-1px);
-    }
-
-    .project-nav-button:disabled {
-        opacity: 0.35;
-        cursor: default;
-    }
-
-    body.light-mode .project-nav-button {
-        background: #fff3e8;
-        border-color: #ffdfc2;
-        color: #e87508;
-    }
-
-    /* Ukloni pretragu iz zaglavlja */
-
-    .desktop-search {
-        display: none !important;
-    }
-
-    /* Malo veći tekst u cijelom desktop portalu */
-
-    .sidebar-link {
-        font-size: 16px;
-    }
-
-    .sidebar-brand-text strong {
-        font-size: 18px;
-    }
-
-    .sidebar-brand-text small {
-        font-size: 11px;
-    }
-
-    .sidebar-bottom a {
-        font-size: 15px;
-    }
-
-    .sidebar-bottom p {
-        font-size: 13px;
-    }
-
-    .user-box,
-    .logout-button {
-        font-size: 16px;
-    }
-
-    .welcome h2 {
-        font-size: clamp(29px, 2.3vw, 36px);
-    }
-
-    .welcome p {
-        font-size: 16px;
-    }
-
-    .section-title,
-    .actions-header h2 {
-        font-size: 23px;
-    }
-
-    .project-counter {
-        font-size: 14px;
-    }
-
-    .project-main h3 {
-        font-size: clamp(23px, 2vw, 29px);
-    }
-
-    .project-main p {
-        font-size: 16px;
-    }
-
-    .status-badge {
-        font-size: 14px;
-    }
-
-    .stat-label {
-        font-size: 14px;
-    }
-
-    .stat-card strong {
-        font-size: 15px;
-    }
-
-    .actions-header p {
-        font-size: 14px;
-    }
-
-    .action-card strong {
-        font-size: 16px;
-    }
-
-    .action-card p {
-        font-size: 14px;
-    }
-
-    .action-button {
-        font-size: 13px;
-    }
-
-    .footer {
-        font-size: 13px;
-    }
-
-}
-
-
-/* =====================================================
-   PTECH DIGITAL — SIGNATURE DESIGN 2026
-   Grafit • Bronca • Krem • Kadulja
-   Samo desktop — mobilni dizajn ostaje netaknut
-   ===================================================== */
-
-@media (min-width: 901px) {
-
-    /* -----------------------------------------
-       1. OSNOVNE BOJE
-       ----------------------------------------- */
-
-    :root {
-        --orange: #9b735b;
-        --orange-light: #b58b72;
-        --orange-dark: #79523e;
-        --orange-border: rgba(155, 115, 91, 0.30);
-
-        --sidebar-width: 254px;
-        --header-height: 82px;
-    }
-
-    /* -----------------------------------------
-       2. LIGHT MODE — POZADINA
-       ----------------------------------------- */
-
-    body.light-mode {
-        --text: #303138;
-        --muted: #77736f;
-        --surface: #fffcf8;
-        --surface-soft: #f5f0eb;
-        --surface-muted: #eee8e2;
-        --page-background: #f0ede9;
-
-        --shadow:
-            0 10px 30px rgba(65, 51, 43, 0.055);
-
-        color: #303138;
-
-        background: #f0ede9;
-    }
-
-    body.light-mode .dashboard.desktop-layout,
-    body.light-mode .desktop-main {
-        background: #f0ede9;
-    }
-
-    /* Suptilne boje kroz cijelu stranicu */
-
-    body.light-mode .desktop-main {
-        background:
-            radial-gradient(
-                ellipse 520px 340px at 100% 12%,
-                rgba(188, 151, 132, 0.13),
-                transparent 75%
-            ),
-            radial-gradient(
-                ellipse 480px 350px at 4% 88%,
-                rgba(132, 148, 136, 0.09),
-                transparent 75%
-            ),
-            #f0ede9;
-    }
-
-    /* -----------------------------------------
-       3. TAMNI BOČNI IZBORNIK
-       ----------------------------------------- */
-
-    .desktop-sidebar,
-    body.light-mode .desktop-sidebar {
-        background:
-            linear-gradient(
-                165deg,
-                #29292d 0%,
-                #303035 55%,
-                #252529 100%
-            );
-
-        border-right:
-            1px solid rgba(255, 255, 255, 0.07);
-    }
-
-    .sidebar-brand-text strong,
-    body.light-mode .sidebar-brand-text strong {
-        color: #fffaf5;
-    }
-
-    .sidebar-brand-text small,
-    body.light-mode .sidebar-brand-text small {
-        color: #b8ada7;
-    }
-
-    .brand-logo {
-        background:
-            linear-gradient(
-                135deg,
-                #d4aa8c,
-                #a7775d
-            );
-
-        color: #29262a;
-
-        box-shadow:
-            0 7px 20px rgba(0, 0, 0, 0.13);
-    }
-
-    .sidebar-link,
-    body.light-mode .sidebar-link {
-        color: #d2ced0;
-    }
-
-    .sidebar-link:hover,
-    body.light-mode .sidebar-link:hover {
-        color: #ffffff;
-        background: rgba(255, 255, 255, 0.07);
-    }
-
-    .sidebar-link.active,
-    .sidebar-link[aria-current="page"],
-    body.light-mode .sidebar-link.active,
-    body.light-mode .sidebar-link[aria-current="page"] {
-        color: #fffaf5;
-
-        background:
-            linear-gradient(
-                90deg,
-                rgba(172, 123, 94, 0.48),
-                rgba(172, 123, 94, 0.19)
-            );
-    }
-
-    .sidebar-link.active::before,
-    .sidebar-link[aria-current="page"]::before {
-        background: #d5a182;
-    }
-
-    .sidebar-message-indicator {
-        background: #d5a182;
-    }
-
-    .sidebar-bottom,
-    body.light-mode .sidebar-bottom {
-        border-top-color:
-            rgba(255, 255, 255, 0.10);
-    }
-
-    .sidebar-bottom a,
-    body.light-mode .sidebar-bottom a {
-        color: #d2ced0;
-    }
-
-    .sidebar-bottom a:hover,
-    body.light-mode .sidebar-bottom a:hover {
-        color: #e5b99c;
-    }
-
-    .sidebar-bottom p,
-    body.light-mode .sidebar-bottom p {
-        color: #9e999c;
-    }
-
-    /* -----------------------------------------
-       4. GORNJA TRAKA
-       ----------------------------------------- */
-
-    .dashboard-header,
-    body.light-mode .dashboard-header {
-        background: rgba(255, 252, 248, 0.90);
-
-        border-bottom:
-            1px solid rgba(89, 72, 61, 0.09);
-    }
-
-    .user-avatar,
-    body.light-mode .user-avatar {
-        background: #eee1d7;
-    }
-
-    .user-avatar svg,
-    body.light-mode .user-avatar svg {
-        stroke: #916b55;
-    }
-
-    #userTop,
-    body.light-mode #userTop {
-        color: #303138;
-    }
-
-    .logout-button,
-    body.light-mode .logout-button {
-        color: #656067;
-    }
-
-    .logout-button:hover,
-    body.light-mode .logout-button:hover {
-        color: #303138;
-        background: #eee8e2;
-    }
-
-    .header-separator,
-    body.light-mode .header-separator {
-        background: #e2dcd6;
-    }
-
-    /* Pretraga ostaje uklonjena */
-
-    .desktop-search {
-        display: none !important;
-    }
-
-    /* -----------------------------------------
-       5. POZDRAV I NASLOVI
-       ----------------------------------------- */
-
-    .welcome h2,
-    body.light-mode .welcome h2 {
-        color: #817b7a;
-    }
-
-    .welcome h2 strong,
-    body.light-mode .welcome h2 strong {
-        color: #303138;
-    }
-
-    .welcome p,
-    body.light-mode .welcome p {
-        color: #746f71;
-    }
-
-    .section-title,
-    .actions-header h2,
-    body.light-mode .section-title,
-    body.light-mode .actions-header h2 {
-        color: #303138;
-    }
-
-    .actions-header p,
-    body.light-mode .actions-header p {
-        color: #77716f;
-    }
-
-    /* -----------------------------------------
-       6. NAVIGACIJA IZMEĐU PROJEKATA
-       ----------------------------------------- */
-
-    .project-counter,
-    body.light-mode .project-counter {
-        color: #665d59;
-        background: #fffcf8;
-        border-color: #e5dad1;
-    }
-
-    .project-nav-button,
-    body.light-mode .project-nav-button {
-        color: #805b46;
-
-        background: #f6eae0;
-
-        border-color: #e8d4c4;
-    }
-
-    .project-nav-button:hover:not(:disabled) {
-        background: #ebd7c8;
-    }
-
-    .project-nav-button:disabled {
-        opacity: 0.35;
-    }
-
-    /* -----------------------------------------
-       7. GLAVNA KARTICA PROJEKTA
-       ----------------------------------------- */
-
-    .project-card,
-    body.light-mode .project-card {
-        background:
-            linear-gradient(
-                135deg,
-                #fffcf8 0%,
-                #fcf8f3 100%
-            );
-
-        border: 1px solid #e4d9d0;
-
-        border-radius: 19px;
-
-        box-shadow:
-            0 12px 32px rgba(76, 59, 49, 0.06);
-    }
-
-    .project-card-link:hover,
-    body.light-mode .project-card-link:hover {
-        border-color: #b58b72;
-
-        box-shadow:
-            0 16px 38px rgba(76, 59, 49, 0.11);
-    }
-
-    .project-icon,
-    body.light-mode .project-icon {
-        color: #936d56;
-
-        background:
-            linear-gradient(
-                135deg,
-                #efe0d3,
-                #f7ece3
-            );
-    }
-
-    .project-main h3,
-    body.light-mode .project-main h3 {
-        color: #303138;
-    }
-
-    .project-main p,
-    body.light-mode .project-main p {
-        color: #827b78;
-    }
-
-    .project-open-arrow,
-    body.light-mode .project-open-arrow {
-        color: #a49a94;
-    }
-
-    .project-card-link:hover .project-open-arrow {
-        color: #91684f;
-    }
-
-    /* -----------------------------------------
-       8. STATUS PROJEKTA
-       ----------------------------------------- */
-
-    .status-progress,
-    body.light-mode .status-progress {
-        color: #80563e;
-
-        background: #f3e5d9;
-
-        border-color: #e6cdbb;
-    }
-
-    .status-progress::before {
-        background: #a7785a;
-    }
-
-    .status-done,
-    body.light-mode .status-done {
-        color: #486c57;
-
-        background: #e7efe7;
-
-        border-color: #c9ddcc;
-    }
-
-    .status-done::before {
-        background: #71917b;
-    }
-
-    .status-waiting,
-    body.light-mode .status-waiting {
-        color: #6c6870;
-
-        background: #eeebed;
-
-        border-color: #ddd8dd;
-    }
-
-    .status-waiting::before {
-        background: #98909a;
-    }
-
-    /* -----------------------------------------
-       9. STATISTIKE PROJEKTA
-       ----------------------------------------- */
-
-    .stat-card,
-    body.light-mode .stat-card {
-        background: #f3eee9;
-
-        border: 1px solid #ebe3dc;
-
-        border-radius: 13px;
-    }
-
-    .stat-icon {
-        color: #98715b;
-    }
-
-    .stat-label,
-    body.light-mode .stat-label {
-        color: #77716f;
-    }
-
-    .stat-card strong,
-    body.light-mode .stat-card strong {
-        color: #303138;
-    }
-
-    .package-name,
-    body.light-mode .package-name {
-        color: #805b46;
-    }
-
-    .progress-container,
-    body.light-mode .progress-container {
-        background: #e0d8d2;
-    }
-
-    .progress-bar {
-        background:
-            linear-gradient(
-                90deg,
-                #926a53,
-                #c59a7f
-            );
-
-        box-shadow: none;
-    }
-
-    /* -----------------------------------------
-       10. TOČKICE ISPOD PROJEKATA
-       ----------------------------------------- */
-
-    .slider-dot,
-    body.light-mode .slider-dot {
-        background: #d4c9c1;
-    }
-
-    .slider-dot.active,
-    body.light-mode .slider-dot.active {
-        background: #9b735b;
-    }
-
-    /* -----------------------------------------
-       11. BRZE AKCIJE
-       ----------------------------------------- */
-
-    .action-card,
-    body.light-mode .action-card {
-        background: #fffcf8;
-
-        border: 1px solid #e8dfd8;
-
-        border-radius: 16px;
-
-        box-shadow:
-            0 7px 22px rgba(76, 59, 49, 0.045);
-    }
-
-    .action-card:not(:disabled):not([aria-disabled="true"]):hover,
-    body.light-mode .action-card:not(:disabled):not([aria-disabled="true"]):hover {
-        background: #fffaf5;
-
-        border-color: #b99a85;
-
-        box-shadow:
-            0 13px 28px rgba(76, 59, 49, 0.09);
-    }
-
-    .action-icon,
-    body.light-mode .action-icon {
-        background: #f1e4d9;
-        color: #926b54;
-    }
-
-    .action-card strong,
-    body.light-mode .action-card strong {
-        color: #303138;
-    }
-
-    .action-card p,
-    body.light-mode .action-card p {
-        color: #77716f;
-    }
-
-    .action-button,
-    body.light-mode .action-button {
-        background: #f1e4d9;
-
-        border: 1px solid #e7d3c3;
-
-        color: #80553d;
-    }
-
-    /* -----------------------------------------
-       12. FOOTER
-       ----------------------------------------- */
-
-    .footer,
-    body.light-mode .footer {
-        color: #948c89;
-    }
-
-    /* -----------------------------------------
-       13. MODAL ZA DOSTAVU MATERIJALA
-       ----------------------------------------- */
-
-    .materials-modal,
-    body.light-mode .materials-modal {
-        background: #fffcf8;
-        color: #303138;
-
-        border-color: #e5d7cb;
-    }
-
-    .materials-modal h2,
-    .materials-dropzone strong,
-    body.light-mode .materials-modal h2,
-    body.light-mode .materials-dropzone strong {
-        color: #303138;
-    }
-
-    .materials-eyebrow {
-        color: #936b53;
-    }
-
-    #materialsProjectName,
-    .materials-hint,
-    .materials-dropzone > span:not(.materials-upload-icon),
-    body.light-mode #materialsProjectName,
-    body.light-mode .materials-hint,
-    body.light-mode .materials-dropzone > span:not(.materials-upload-icon) {
-        color: #77716f;
-    }
-
-    .materials-close,
-    body.light-mode .materials-close {
-        color: #303138;
-
-        background: #f1eae4;
-
-        border-color: #e5d9d0;
-    }
-
-    .materials-dropzone,
-    body.light-mode .materials-dropzone {
-        background: #f8f1eb;
-
-        border-color: #c5a28c;
-    }
-
-    .materials-upload-icon {
-        color: #926b54;
-        background: #eddfd3;
-    }
-
-    #materialsFiles,
-    body.light-mode #materialsFiles {
-        color: #5e5855;
-    }
-
-    #materialsFiles::file-selector-button {
-        background: #ead9cb;
-        color: #76523e;
-        border-color: #d9bda9;
-    }
-
-    .materials-file-item,
-    body.light-mode .materials-file-item {
-        color: #303138;
-        background: #f4eee9;
-        border-color: #e4dad2;
-    }
-
-    .materials-status,
-    body.light-mode .materials-status {
-        color: #605b59;
-    }
-
-    .materials-cancel,
-    body.light-mode .materials-cancel {
-        background: #ebe5df;
-        color: #303138;
-    }
-
-    .materials-submit {
-        background:
-            linear-gradient(
-                135deg,
-                #b58b72,
-                #896149
-            );
-
-        color: #ffffff;
-    }
-
-    /* -----------------------------------------
-       14. TAMNI MODE
-       ----------------------------------------- */
-
-    body:not(.light-mode) {
-        --text: #f4f0ec;
-        --muted: #b4aba6;
-        --surface: #302f33;
-        --surface-soft: #37353a;
-        --surface-muted: #403c40;
-        --page-background: #252529;
-
-        background: #252529;
-    }
-
-    body:not(.light-mode) .dashboard.desktop-layout,
-    body:not(.light-mode) .desktop-main {
-        background:
-            radial-gradient(
-                ellipse 500px 350px at 100% 12%,
-                rgba(155, 115, 91, 0.09),
-                transparent 75%
-            ),
-            #252529;
-    }
-
-    body:not(.light-mode) .dashboard-header {
-        background: #2b2a2e;
-        border-bottom-color: #403b3d;
-    }
-
-    body:not(.light-mode) #userTop {
-        color: #f4f0ec;
-    }
-
-    body:not(.light-mode) .logout-button {
-        color: #d4cac5;
-    }
-
-    body:not(.light-mode) .welcome h2 {
-        color: #c0b8b3;
-    }
-
-    body:not(.light-mode) .welcome h2 strong,
-    body:not(.light-mode) .section-title,
-    body:not(.light-mode) .actions-header h2,
-    body:not(.light-mode) .project-main h3 {
-        color: #f4f0ec;
-    }
-
-    body:not(.light-mode) .welcome p,
-    body:not(.light-mode) .actions-header p,
-    body:not(.light-mode) .project-main p {
-        color: #b4aba6;
-    }
-
-    body:not(.light-mode) .project-card {
-        background: #302e32;
-        border-color: #59483e;
-    }
-
-    body:not(.light-mode) .project-counter {
-        background: #373337;
-        color: #d4c9c2;
-        border-color: #514741;
-    }
-
-    body:not(.light-mode) .project-nav-button {
-        background: #473b36;
-        color: #dfb49b;
-        border-color: #6b5142;
-    }
-
-    body:not(.light-mode) .project-icon {
-        background: #473a34;
-        color: #d4a78b;
-    }
-
-    body:not(.light-mode) .stat-card {
-        background: #39363a;
-        border-color: #4a4445;
-    }
-
-    body:not(.light-mode) .stat-card strong {
-        color: #f4f0ec;
-    }
-
-    body:not(.light-mode) .stat-label {
-        color: #b4aaa5;
-    }
-
-    body:not(.light-mode) .progress-container {
-        background: #50494a;
-    }
-
-    body:not(.light-mode) .action-card {
-        background: #302e32;
-        border-color: #4a4344;
-    }
-
-    body:not(.light-mode) .action-card strong {
-        color: #f4f0ec;
-    }
-
-    body:not(.light-mode) .action-card p {
-        color: #b4aaa5;
-    }
-
-    body:not(.light-mode) .action-icon {
-        background: #493b35;
-        color: #d6ab8f;
-    }
-
-    body:not(.light-mode) .action-button {
-        background: #483a34;
-        color: #e4baa0;
-        border-color: #705344;
-    }
-
-    body:not(.light-mode) .materials-modal {
-        background: #302e32;
-        color: #f4f0ec;
-    }
-
-    body:not(.light-mode) .materials-modal h2,
-    body:not(.light-mode) .materials-dropzone strong {
-        color: #f4f0ec;
-    }
-
-    body:not(.light-mode) .materials-dropzone {
-        background: #393237;
-        border-color: #8c6b58;
-    }
-
-    body:not(.light-mode) .materials-file-item {
-        background: #3c383c;
-        color: #f4f0ec;
-        border-color: #554b49;
-    }
-
-    body:not(.light-mode) .materials-cancel {
-        background: #494348;
-        color: #f4f0ec;
-    }
-
-    body:not(.light-mode) .materials-status {
-        color: #d1c7c1;
-    }
-
-    body:not(.light-mode) .footer {
-        color: #a99e99;
-    }
-
-}
-/* Ukloni emoji koji maše pokraj pozdrava */
-
-.welcome h2::after {
-    content: none !important;
-}
-/* -----------------------------------------------------
-   21. ACCESSIBILITY
-   ----------------------------------------------------- */
+/* 21. PRISTUPAČNOST */
 
 @media (prefers-reduced-motion: reduce) {
-
     html {
         scroll-behavior: auto;
     }
@@ -3220,5 +2350,4 @@ body.light-mode .materials-cancel {
         animation-duration: 0.01ms !important;
         scroll-behavior: auto !important;
     }
-
 }
