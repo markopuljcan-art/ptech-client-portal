@@ -479,8 +479,18 @@ function renderProjects() {
     });
 
     activeProjectIndex = 0;
-    updateProjectNavigation();
-    updateProjectActions();
+
+currentProject.textContent = "1";
+totalProjects.textContent = String(projects.length);
+
+sliderDots.querySelectorAll(".slider-dot").forEach(
+    (dot, index) => {
+        dot.classList.toggle("active", index === 0);
+    }
+);
+
+updateProjectNavigation();
+updateProjectActions();
 }
 
 /* PROJECT SLIDER */
