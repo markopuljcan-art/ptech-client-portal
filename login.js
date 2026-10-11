@@ -330,81 +330,69 @@ if (passwordInput && capsLockWarning) {
    9. ANIMIRANE SVJETLEĆE CRTICE
 ================================================== */
 
+/* ==================================================
+   9. PTECH DIGITAL — PREMIUM LIGHT PARTICLES
+   Izraženije brončane crtice + nježan sjaj
+================================================== */
+
 (function initLoginParticles() {
 
-    const canvas =
-        document.getElementById("loginParticles");
+    const canvas = document.getElementById("loginParticles");
 
     if (!canvas) return;
 
-    const ctx =
-        canvas.getContext("2d");
+    const ctx = canvas.getContext("2d");
 
     if (!ctx) return;
 
+    const reducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+    );
 
-    /* ======================================
-       POSTAVKE
-    ====================================== */
-
-    const PARTICLE_COUNT = 42;
-
-    const reducedMotion =
-        window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-        );
+    const PARTICLE_COUNT = 55;
 
     let particles = [];
-
     let width = 0;
     let height = 0;
-
     let animationId = null;
-
     let lastFrameTime = 0;
 
 
-    /* ======================================
-       NOVA ČESTICA
-    ====================================== */
+    /* NOVA ČESTICA */
 
-    function createParticle(randomX = true) {
+    function createParticle(randomPosition = true) {
 
         return {
-
-            x: randomX
+            x: randomPosition
                 ? Math.random() * width
-                : -120 - Math.random() * 100,
+                : -140 - Math.random() * 100,
 
-            y: Math.random() * height,
+            y: 20 + Math.random() * Math.max(1, height - 40),
 
-            length:
-                25 + Math.random() * 95,
+            length: 30 + Math.random() * 105,
 
-            speed:
-                12 + Math.random() * 30,
+            speed: 16 + Math.random() * 34,
 
-            opacity:
-                0.12 + Math.random() * 0.2,
+            opacity: 0.25 + Math.random() * 0.32,
 
-            thickness:
-                0.5 + Math.random() * 0.8,
+            thickness: 0.7 + Math.random() * 0.9,
 
-            glow:
-                1 + Math.random() * 1.2
+            radius: 0.8 + Math.random() * 1.3,
 
+            phase: Math.random() * Math.PI * 2,
+
+            pulseSpeed: 0.5 + Math.random() * 1.1,
+
+            life: Math.random() * Math.PI * 2
         };
     }
 
 
-    /* ======================================
-       RESIZE CANVAS
-    ====================================== */
+    /* VELIČINA CANVASA */
 
     function resizeCanvas() {
 
-        const rect =
-            canvas.getBoundingClientRect();
+        const rect = canvas.getBoundingClientRect();
 
         width = rect.width;
         height = rect.height;
@@ -416,77 +404,72 @@ if (passwordInput && capsLockWarning) {
             2
         );
 
-        canvas.width =
-            Math.round(width * dpr);
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
 
-        canvas.height =
-            Math.round(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-        ctx.setTransform(
-            dpr, 0,
-            0, dpr,
-            0, 0
+        particles = Array.from(
+            { length: PARTICLE_COUNT },
+            () => createParticle(true)
         );
 
-        particles = [];
-
-        for (
-            let i = 0;
-            i < PARTICLE_COUNT;
-            i++
-        ) {
-            particles.push(
-                createParticle(true)
-            );
-        }
-
-        drawParticles();
+        drawParticles(0);
     }
 
 
-    /* ======================================
-       CRTANJE
-    ====================================== */
+    /* CRTANJE ČESTICA */
 
-    function drawParticles() {
+    function drawParticles(time) {
 
-        ctx.clearRect(
-            0,
-            0,
-            width,
-            height
-        );
+        ctx.clearRect(0, 0, width, height);
 
         for (const particle of particles) {
 
-            const gradient =
-                ctx.createLinearGradient(
-                    particle.x - particle.length,
-                    particle.y,
-                    particle.x,
-                    particle.y
-                );
+            const pulse =
+                0.75 +
+                Math.sin(
+                    time * particle.pulseSpeed +
+                    particle.phase
+                ) * 0.25;
 
-            gradient.addColorStop(
-                0,
-                "rgba(174, 116, 79, 0)"
-            );
-
-            gradient.addColorStop(
-                0.65,
-                `rgba(174, 116, 79, ${particle.opacity})`
-            );
-
-            gradient.addColorStop(
+            const edgeFade = Math.min(
                 1,
-                `rgba(179, 117, 77, ${Math.min(
-                    particle.opacity + 0.15,
-                    0.55
-                )})`
+                Math.max(0, particle.x / 110),
+                Math.max(0, (width - particle.x) / 110)
             );
 
+            const alpha =
+                particle.opacity *
+                pulse *
+                edgeFade;
 
-            /* CRTICA */
+            if (alpha <= 0) continue;
+
+
+            /* SJAJ ISPOD CRTICE */
+
+            const glowGradient = ctx.createLinearGradient(
+                particle.x - particle.length,
+                particle.y,
+                particle.x,
+                particle.y
+            );
+
+            glowGradient.addColorStop(
+                0,
+                "rgba(190, 125, 82, 0)"
+            );
+
+            glowGradient.addColorStop(
+                0.65,
+                `rgba(207, 145, 103, ${alpha * 0.3})`
+            );
+
+            glowGradient.addColorStop(
+                1,
+                `rgba(207, 145, 103, ${alpha * 0.65})`
+            );
 
             ctx.beginPath();
 
@@ -500,40 +483,113 @@ if (passwordInput && capsLockWarning) {
                 particle.y
             );
 
-            ctx.strokeStyle = gradient;
-
-            ctx.lineWidth =
-                particle.thickness;
-
+            ctx.strokeStyle = glowGradient;
+            ctx.lineWidth = particle.thickness + 3;
             ctx.stroke();
 
 
-            /* SJAJNA TOČKA */
+            /* GLAVNA TANKA CRTICA */
+
+            const lineGradient = ctx.createLinearGradient(
+                particle.x - particle.length,
+                particle.y,
+                particle.x,
+                particle.y
+            );
+
+            lineGradient.addColorStop(
+                0,
+                "rgba(166, 105, 67, 0)"
+            );
+
+            lineGradient.addColorStop(
+                0.55,
+                `rgba(183, 116, 74, ${alpha * 0.7})`
+            );
+
+            lineGradient.addColorStop(
+                1,
+                `rgba(160, 94, 54, ${alpha})`
+            );
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                particle.x - particle.length,
+                particle.y
+            );
+
+            ctx.lineTo(
+                particle.x,
+                particle.y
+            );
+
+            ctx.strokeStyle = lineGradient;
+            ctx.lineWidth = particle.thickness;
+            ctx.stroke();
+
+
+            /* SVJETLEĆA TOČKA NA VRHU */
+
+            const dotGlow = ctx.createRadialGradient(
+                particle.x,
+                particle.y,
+                0,
+                particle.x,
+                particle.y,
+                particle.radius * 5
+            );
+
+            dotGlow.addColorStop(
+                0,
+                `rgba(194, 123, 77, ${alpha * 0.85})`
+            );
+
+            dotGlow.addColorStop(
+                0.4,
+                `rgba(217, 161, 121, ${alpha * 0.35})`
+            );
+
+            dotGlow.addColorStop(
+                1,
+                "rgba(217, 161, 121, 0)"
+            );
 
             ctx.beginPath();
 
             ctx.arc(
                 particle.x,
                 particle.y,
-                particle.glow,
+                particle.radius * 5,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fillStyle = dotGlow;
+            ctx.fill();
+
+
+            /* MALA JASNA TOČKICA */
+
+            ctx.beginPath();
+
+            ctx.arc(
+                particle.x,
+                particle.y,
+                particle.radius,
                 0,
                 Math.PI * 2
             );
 
             ctx.fillStyle =
-                `rgba(185, 124, 86, ${Math.min(
-                    particle.opacity + 0.1,
-                    0.55
-                )})`;
+                `rgba(164, 98, 58, ${alpha})`;
 
             ctx.fill();
         }
     }
 
 
-    /* ======================================
-       ANIMACIJA
-    ====================================== */
+    /* ANIMACIJA */
 
     function animate(timestamp) {
 
@@ -548,50 +604,35 @@ if (passwordInput && capsLockWarning) {
 
         lastFrameTime = timestamp;
 
-        for (
-            let i = 0;
-            i < particles.length;
-            i++
-        ) {
+        const time = timestamp / 1000;
 
-            const particle =
-                particles[i];
+        for (let i = 0; i < particles.length; i++) {
 
-            particle.x +=
-                particle.speed * delta;
+            particles[i].x += particles[i].speed * delta;
 
             if (
-                particle.x - particle.length > width
+                particles[i].x -
+                particles[i].length > width
             ) {
-
-                particles[i] =
-                    createParticle(false);
+                particles[i] = createParticle(false);
             }
         }
 
-        drawParticles();
+        drawParticles(time);
 
-        animationId =
-            requestAnimationFrame(animate);
+        animationId = requestAnimationFrame(animate);
     }
 
 
-    /* ======================================
-       START / STOP
-    ====================================== */
+    /* START / STOP */
 
     function stopAnimation() {
 
         if (animationId !== null) {
-
-            cancelAnimationFrame(
-                animationId
-            );
-
+            cancelAnimationFrame(animationId);
             animationId = null;
         }
     }
-
 
     function startAnimation() {
 
@@ -599,47 +640,32 @@ if (passwordInput && capsLockWarning) {
 
         lastFrameTime = 0;
 
-        if (!width || !height) {
-            return;
-        }
+        if (!width || !height) return;
 
         if (reducedMotion.matches) {
-
-            drawParticles();
+            drawParticles(0);
             return;
         }
 
-        if (document.hidden) {
-            return;
-        }
+        if (document.hidden) return;
 
-        animationId =
-            requestAnimationFrame(animate);
+        animationId = requestAnimationFrame(animate);
     }
 
 
-    /* ======================================
-       DOGAĐAJI
-    ====================================== */
+    /* DOGAĐAJI */
 
-    window.addEventListener(
-        "resize",
-        function () {
-
-            resizeCanvas();
-            startAnimation();
-        }
-    );
-
+    window.addEventListener("resize", function () {
+        resizeCanvas();
+        startAnimation();
+    });
 
     document.addEventListener(
         "visibilitychange",
         startAnimation
     );
 
-
     if (reducedMotion.addEventListener) {
-
         reducedMotion.addEventListener(
             "change",
             startAnimation
@@ -647,9 +673,7 @@ if (passwordInput && capsLockWarning) {
     }
 
 
-    /* ======================================
-       POKRETANJE
-    ====================================== */
+    /* POKRETANJE */
 
     resizeCanvas();
     startAnimation();
