@@ -2889,3 +2889,82 @@ body:not(.light-mode) .overview-empty {
         grid-template-columns: 1fr;
     }
 }
+
+
+/* =========================================
+   DESKTOP SCROLL / BACKGROUND FIX
+========================================= */
+
+@media (min-width: 901px) {
+
+    html {
+        min-height: 100%;
+        overflow-x: hidden;
+    }
+
+    body.portal-desktop {
+        min-height: 100vh;
+        margin: 0;
+        overflow-x: clip;
+    }
+
+    .dashboard.desktop-layout {
+        display: grid;
+        grid-template-columns: 204px minmax(0, 1fr);
+        min-height: 100vh;
+        align-items: stretch;
+    }
+
+    /* Sidebar prati visinu ekrana dok skrolas */
+
+    .desktop-sidebar {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        min-height: 100vh;
+        align-self: start;
+        overflow: hidden;
+    }
+
+    /* Glavni dio nema nepotrebnu visinu */
+
+    .desktop-main {
+        position: relative;
+        min-width: 0;
+        min-height: 100vh;
+        height: auto;
+        overflow: hidden;
+        isolation: isolate;
+    }
+
+    /* Pozadinski ukrasi ostaju iza sadrzaja */
+
+    .desktop-main::before,
+    .desktop-main::after {
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    /* Sadrzaj ostaje iznad pozadine */
+
+    .dashboard-header,
+    .dashboard-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Bez ogromnog praznog prostora na dnu */
+
+    .dashboard-content {
+        min-height: 0;
+        padding-bottom: 28px;
+    }
+
+    /* Kartice zadrzavaju pravilan raspored */
+
+    .dashboard-overview {
+        margin-bottom: 24px;
+    }
+
+}
+
