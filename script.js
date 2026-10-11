@@ -1848,6 +1848,197 @@ document.addEventListener(
 
 
 /* =========================================
+   DASHBOARD - RECENT MESSAGES & DOCUMENTS
+========================================= */
+
+const recentMessagesList =
+    document.getElementById("recentMessagesList");
+
+const recentDocumentsList =
+    document.getElementById("recentDocumentsList");
+
+function overviewDate(value) {
+    if (!value) return "-";
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) return "-";
+
+    return date.toLocaleDateString("hr-HR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+    });
+}
+
+function overviewEmpty(element, message) {
+    if (!element) return;
+
+    element.innerHTML = `
+        <p class="overview-empty">
+            ${escapeHTML(message)}
+        </p>
+    `;
+}
+
+async function loadRecentMessages() {
+    if (!recentMessagesList || !currentSession) return;
+
+    const { data, error } = await supabaseClient
+        .from("support_messages")
+        .select("*")
+        .eq("user_id", currentSession.user.id)
+        .order("created_at", { ascending: false })
+        .limit(4);
+
+    if (error) {
+        console.error("Recent messages error:", error);
+        overviewEmpty(
+            recentMessagesList,
+            "Poruke trenutno nisu dostupne."
+        );
+        return;
+    }
+
+    if (!data?.length) {
+        overviewEmpty(
+            recentMessagesList,
+            "Trenutno nema poruka."
+        );
+        return;
+    }
+
+    recentMessagesList.innerHTML = data.map(item => {
+        const fromAdmin = item.sender_role === "admin";
+
+        const sender = fromAdmin
+            ? "PTech Digital"
+            : "Vi";
+
+        const content =
+            item.message ||
+            item.content ||
+            item.body ||
+            "Nova poruka";
+
+        const initial = fromAdmin ? "P" : "V";
+
+        return `
+            <a class="overview-row" href="messages.html">
+                <span class="overview-avatar">
+                    ${initial}
+                </span>
+
+                <span class="overview-row-main">
+                    <strong>${escapeHTML(sender)}</strong>
+                    <small>${escapeHTML(content)}</small>
+                </span>
+
+                <time class="overview-row-date">
+                    ${overviewDate(item.created_at)}
+                </time>
+            </a>
+        `;
+    }).join("");
+}
+
+async function loadRecentDocuments() {
+    if (!recentDocumentsList || !currentSession) return;
+
+    const projectIds = projects.map(project => project.id);
+
+    if (!projectIds.length) {
+        overviewEmpty(
+            recentDocumentsList,
+            "Trenutno nema dokumenata."
+        );
+        return;
+    }
+
+    const { data, error } = await supabaseClient
+        .from("project_documents")
+        .select(
+            "id, name, created_at, project_id, " +
+            "file_url, file_size"
+        )
+        .in("project_id", projectIds)
+        .order("created_at", { ascending: false })
+        .limit(4);
+
+    if (error) {
+        console.error("Recent documents error:", error);
+        overviewEmpty(
+            recentDocumentsList,
+            "Dokumenti trenutno nisu dostupni."
+        );
+        return;
+    }
+
+    if (!data?.length) {
+        overviewEmpty(
+            recentDocumentsList,
+            "Trenutno nema dokumenata."
+        );
+        return;
+    }
+
+    recentDocumentsList.innerHTML = data.map(item => {
+        const extension = String(item.name || "")
+            .split(".")
+            .pop()
+            .toUpperCase();
+
+        const fileType =
+            extension.length <= 4 ? extension : "FILE";
+
+        const size = item.file_size
+            ? formatFileSize(item.file_size)
+            : "";
+
+        return `
+            <div class="overview-row">
+                <span class="overview-file-icon">
+                    ${escapeHTML(fileType)}
+                </span>
+
+                <span class="overview-row-main">
+                    <strong>
+                        ${escapeHTML(item.name || "Dokument")}
+                    </strong>
+
+                    <small>
+                        ${escapeHTML(size)}
+                    </small>
+                </span>
+
+                <time class="overview-row-date">
+                    ${overviewDate(item.created_at)}
+                </time>
+
+                <a
+                    class="overview-download"
+                    href="documents.html"
+                    aria-label="Otvori dokumente"
+                    title="Otvori dokumente"
+                >
+                    &darr;
+                </a>
+            </div>
+        `;
+    }).join("");
+}
+
+async function loadDashboardOverview() {
+    if (!currentSession) return;
+
+    await Promise.all([
+        loadRecentMessages(),
+        loadRecentDocuments()
+    ]);
+}
+
+
+/* =========================================
    START
 ========================================= */
 
