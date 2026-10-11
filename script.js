@@ -1720,6 +1720,133 @@ document.addEventListener(
     }
 );
 
+
+// =========================================
+// DESKTOP - STRELICE ZA PROJEKTE
+// =========================================
+
+(function setupDesktopProjectNavigation() {
+
+    const previousButton =
+        document.getElementById("previousProjectButton");
+
+    const nextButton =
+        document.getElementById("nextProjectButton");
+
+    const slider =
+        document.getElementById("projectsSlider");
+
+    if (!previousButton || !nextButton || !slider) {
+        return;
+    }
+
+    function getSlides() {
+        return Array.from(
+            slider.querySelectorAll(".project-slide")
+        );
+    }
+
+    function getCurrentIndex() {
+        const slides = getSlides();
+
+        if (slides.length === 0) {
+            return 0;
+        }
+
+        const sliderCenter =
+            slider.scrollLeft + slider.clientWidth / 2;
+
+        let closestIndex = 0;
+        let smallestDistance = Infinity;
+
+        slides.forEach((slide, index) => {
+
+            const slideCenter =
+                slide.offsetLeft - slider.offsetLeft
+                + slide.offsetWidth / 2;
+
+            const distance =
+                Math.abs(sliderCenter - slideCenter);
+
+            if (distance < smallestDistance) {
+                smallestDistance = distance;
+                closestIndex = index;
+            }
+
+        });
+
+        return closestIndex;
+    }
+
+    function updateButtons() {
+
+        const slides = getSlides();
+        const hasMultipleProjects = slides.length > 1;
+
+        previousButton.hidden = !hasMultipleProjects;
+        nextButton.hidden = !hasMultipleProjects;
+
+        if (!hasMultipleProjects) {
+            return;
+        }
+
+        const currentIndex = getCurrentIndex();
+
+        previousButton.disabled = currentIndex === 0;
+        nextButton.disabled =
+            currentIndex === slides.length - 1;
+    }
+
+    function goToProject(direction) {
+
+        const slides = getSlides();
+
+        if (slides.length < 2) {
+            return;
+        }
+
+        const currentIndex = getCurrentIndex();
+
+        const targetIndex = Math.max(
+            0,
+            Math.min(
+                slides.length - 1,
+                currentIndex + direction
+            )
+        );
+
+        slider.scrollTo({
+            left: slides[targetIndex].offsetLeft
+                - slider.offsetLeft,
+            behavior: "smooth"
+        });
+
+        window.setTimeout(updateButtons, 400);
+    }
+
+    previousButton.addEventListener("click", () => {
+        goToProject(-1);
+    });
+
+    nextButton.addEventListener("click", () => {
+        goToProject(1);
+    });
+
+    slider.addEventListener("scroll", updateButtons, {
+        passive: true
+    });
+
+    const observer = new MutationObserver(updateButtons);
+
+    observer.observe(slider, {
+        childList: true
+    });
+
+    updateButtons();
+
+})();
+
+
 /* =========================================
    START
 ========================================= */
