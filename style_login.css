@@ -1698,3 +1698,217 @@ body:not(.light-mode) .theme-slider {
         animation: none;
     }
 }
+
+/* ==========================================
+   PTECH LOGIN — PARTICLES FIX
+   SUBlTLE HORIZONTAL LIGHT TRAILS
+========================================== */
+
+
+/* UKLANJAMO STARE DIJAGONALNE TRAKE */
+
+.login-area::before,
+.login-area::after {
+    background-image: none !important;
+    background-repeat: no-repeat !important;
+    animation: none !important;
+}
+
+
+/* GLAVNA DESNA POZADINA */
+
+.login-area,
+body.light-mode .login-area {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            ellipse at 35% 45%,
+            rgba(211, 164, 132, 0.13),
+            transparent 68%
+        ),
+        linear-gradient(
+            135deg,
+            #fbf8f5,
+            #f5eee8 55%,
+            #faf7f3
+        );
+}
+
+
+/* SITNE HORIZONTALNE SVJETLEĆE CRTICE */
+
+.login-area::before {
+    content: "";
+
+    position: absolute;
+    z-index: 0;
+
+    inset: 0;
+
+    opacity: 0.65;
+
+    background-image:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(189, 133, 97, 0.25),
+            rgba(255, 255, 255, 0.95),
+            transparent
+        ),
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(196, 144, 111, 0.22),
+            transparent
+        ),
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(212, 166, 136, 0.28),
+            transparent
+        ),
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(184, 132, 100, 0.2),
+            transparent
+        );
+
+    background-size:
+        120px 1px,
+        180px 1px,
+        90px 1px,
+        150px 1px;
+
+    background-position:
+        8% 24%,
+        48% 43%,
+        20% 69%,
+        70% 83%;
+
+    background-repeat: no-repeat;
+
+    animation:
+        ptech-light-trails 15s linear infinite !important;
+
+    pointer-events: none;
+}
+
+
+/* MALE SJAJNE TOČKICE */
+
+.login-area::after {
+    content: "";
+
+    position: absolute;
+    z-index: 0;
+
+    inset: 0;
+
+    opacity: 0.45;
+
+    background-image:
+        radial-gradient(
+            circle,
+            rgba(186, 129, 91, 0.6) 0 1px,
+            transparent 3px
+        ),
+        radial-gradient(
+            circle,
+            rgba(198, 143, 107, 0.5) 0 1px,
+            transparent 3px
+        ),
+        radial-gradient(
+            circle,
+            rgba(214, 163, 127, 0.5) 0 1px,
+            transparent 3px
+        );
+
+    background-size:
+        5px 5px,
+        5px 5px,
+        5px 5px;
+
+    background-position:
+        15% 18%,
+        60% 53%,
+        35% 80%;
+
+    background-repeat: no-repeat;
+
+    animation:
+        ptech-light-dots 18s linear infinite !important;
+
+    pointer-events: none;
+}
+
+
+/* CRTICE PUTUJU SLIJEVA NADESNO */
+
+@keyframes ptech-light-trails {
+
+    0% {
+        transform: translateX(-30%);
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 0.65;
+    }
+
+    85% {
+        opacity: 0.65;
+    }
+
+    100% {
+        transform: translateX(45%);
+        opacity: 0;
+    }
+}
+
+
+/* TOČKICE SE KREĆU SPORIJE */
+
+@keyframes ptech-light-dots {
+
+    0% {
+        transform: translateX(-20%);
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 0.45;
+    }
+
+    80% {
+        opacity: 0.45;
+    }
+
+    100% {
+        transform: translateX(35%);
+        opacity: 0;
+    }
+}
+
+
+/* LOGIN KARTICA IZNAD PARTICLESA */
+
+.login-card,
+body.light-mode .login-card {
+    position: relative;
+    z-index: 2;
+}
+
+
+/* POŠTUJ POSTAVKE SMANJENOG KRETANJA */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .login-area::before,
+    .login-area::after {
+        animation: none !important;
+    }
+}
