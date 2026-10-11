@@ -1,64 +1,112 @@
+
+/* ==========================================
+   PTECH DIGITAL — LOGIN
+========================================== */
+
 const SUPABASE_URL =
     "https://agivwsbczzvvuzszcvxz.supabase.co";
 
 const SUPABASE_KEY =
     "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
 
-const supabaseClient =
-    supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
 
-/* =========================
+/* ==========================================
    ELEMENTI
-========================= */
+========================================== */
 
 const loginForm =
-    document.getElementById(
-        "loginForm"
-    );
+    document.getElementById("loginForm");
 
 const loginButton =
-    document.getElementById(
-        "loginButton"
-    );
+    document.getElementById("loginButton");
 
 const loginError =
-    document.getElementById(
-        "loginError"
-    );
+    document.getElementById("loginError");
 
 const emailInput =
-    document.getElementById(
-        "email"
-    );
+    document.getElementById("email");
 
 const passwordInput =
-    document.getElementById(
-        "password"
-    );
+    document.getElementById("password");
 
 const togglePassword =
-    document.getElementById(
-        "togglePassword"
-    );
+    document.getElementById("togglePassword");
 
 const capsLockWarning =
-    document.getElementById(
-        "capsLockWarning"
-    );
+    document.getElementById("capsLockWarning");
 
 const themeToggle =
-    document.getElementById(
-        "themeToggle"
-    );
+    document.getElementById("themeToggle");
 
 
-/* =========================
-   LOGIN
-========================= */
+/* ==========================================
+   PORUKE O POGREŠCI
+========================================== */
+
+function showLoginError(message) {
+    if (!loginError) return;
+
+    loginError.textContent = message;
+    loginError.classList.add("show");
+}
+
+function clearLoginError() {
+    if (!loginError) return;
+
+    loginError.textContent = "";
+    loginError.classList.remove("show");
+}
+
+
+/* ==========================================
+   GUMB ZA PRIJAVU
+========================================== */
+
+function resetLoginButton() {
+    if (!loginButton) return;
+
+    loginButton.disabled = false;
+
+    loginButton.innerHTML = `
+        <span>Prijavi se</span>
+        <svg
+            class="login-arrow"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+        >
+            <path d="M5 12h14"></path>
+            <path d="m13 6 6 6-6 6"></path>
+        </svg>
+    `;
+}
+
+
+/* ==========================================
+   ANIMACIJA POGREŠKE
+========================================== */
+
+function shakeLoginCard() {
+    const card =
+        document.querySelector(".login-card");
+
+    if (!card) return;
+
+    card.classList.remove("shake");
+
+    void card.offsetWidth;
+
+    card.classList.add("shake");
+}
+
+
+/* ==========================================
+   SUPABASE PRIJAVA
+========================================== */
 
 if (loginForm) {
 
@@ -68,342 +116,127 @@ if (loginForm) {
 
             event.preventDefault();
 
-
-            /* RESET ERROR */
-
-            if (loginError) {
-
-                loginError.textContent =
-                    "";
-
-                loginError.classList.remove(
-                    "show"
-                );
-            }
-
-
-            /* BUTTON */
-
-            if (loginButton) {
-
-                loginButton.disabled =
-                    true;
-
-                loginButton.textContent =
-                    "Prijava...";
-            }
-
+            clearLoginError();
 
             const email =
-                emailInput
-                    ? emailInput.value.trim()
-                    : "";
+                emailInput?.value.trim() || "";
 
             const password =
-                passwordInput
-                    ? passwordInput.value
-                    : "";
+                passwordInput?.value || "";
 
-
-            /* =========================
-               VALIDACIJA
-            ========================= */
-
-            if (
-                !email ||
-                !password
-            ) {
-
+            if (!email || !password) {
                 showLoginError(
                     "Unesi e-mail i lozinku."
                 );
-
-                resetLoginButton();
-
                 return;
             }
 
-
-            /* =========================
-               SUPABASE LOGIN
-            ========================= */
-
-            const {
-                data,
-                error
-            } =
-                await supabaseClient
-                    .auth
-                    .signInWithPassword({
-                        email: email,
-                        password: password
-                    });
-
-
-            /* =========================
-               LOGIN ERROR
-            ========================= */
-
-            if (error) {
-
-                console.error(
-                    "Login error:",
-                    error
-                );
-
-
-                showLoginError(
-                    "Pogrešan e-mail ili lozinka."
-                );
-
-
-                shakeLoginCard();
-
-                resetLoginButton();
-
-                return;
+            if (loginButton) {
+                loginButton.disabled = true;
+                loginButton.textContent = "Prijava...";
             }
 
+            try {
 
-            /* =========================
-               USER PROVJERA
-            ========================= */
+                const { data, error } =
+                    await supabaseClient.auth
+                        .signInWithPassword({
+                            email,
+                            password
+                        });
 
-            if (
-                !data ||
-                !data.user
-            ) {
+                if (error || !data?.user) {
 
-                showLoginError(
-                    "Prijava nije uspjela."
-                );
+                    showLoginError(
+                        "Pogrešan e-mail ili lozinka."
+                    );
 
-                resetLoginButton();
-
-                return;
-            }
-
-
-            /* =========================
-               SPREMI USER
-            ========================= */
-
-            localStorage.setItem(
-                "user",
-                email
-            );
+                    shakeLoginCard();
+                    return;
+                }
 
 
-            /* =========================
-               DOHVATI PROFIL
-            ========================= */
+                /* DOHVAT PROFILA */
 
-            const {
-                data: profile,
-                error: profileError
-            } =
-                await supabaseClient
+                const {
+                    data: profile,
+                    error: profileError
+                } = await supabaseClient
                     .from("profiles")
-                    .select(`
-                        id,
-                        display_name,
-                        role
-                    `)
-                    .eq(
-                        "id",
-                        data.user.id
-                    )
+                    .select("id, display_name, role")
+                    .eq("id", data.user.id)
                     .maybeSingle();
 
 
-            console.log(
-                "LOGIN USER:",
-                data.user.id
-            );
+                if (profileError || !profile) {
 
-            console.log(
-                "PROFILE:",
-                profile
-            );
+                    showLoginError(
+                        profileError
+                            ? "Prijava je uspjela, ali profil nije moguće učitati."
+                            : "Korisnički profil nije pronađen."
+                    );
 
-            console.log(
-                "PROFILE ERROR:",
-                profileError
-            );
+                    return;
+                }
 
 
-            /* =========================
-               PROFILE ERROR
-            ========================= */
+                /* SPREMI EMAIL */
 
-            if (profileError) {
-
-                console.error(
-                    "Greška kod dohvaćanja profila:",
-                    profileError
+                localStorage.setItem(
+                    "user",
+                    email
                 );
 
 
-                showLoginError(
-                    "Prijava je uspjela, ali profil nije moguće učitati."
-                );
+                /* REDIRECT PREMA ULOZI */
 
-                resetLoginButton();
-
-                return;
-            }
-
-
-            if (!profile) {
-
-                showLoginError(
-                    "Korisnički profil nije pronađen."
-                );
-
-                resetLoginButton();
-
-                return;
-            }
-
-
-            /* =========================
-               ROLE
-            ========================= */
-
-            const role =
-                String(
+                const role = String(
                     profile.role || "client"
-                )
-                    .trim()
-                    .toLowerCase();
-
-
-            console.log(
-                "ROLE:",
-                role
-            );
-
-
-            /* =========================
-               REDIRECT
-            ========================= */
-
-            if (
-                role === "admin"
-            ) {
+                ).trim().toLowerCase();
 
                 window.location.href =
-                    "admin.html";
+                    role === "admin"
+                        ? "admin.html"
+                        : "form.html";
 
-                return;
+            } catch (err) {
+
+                console.error(
+                    "Greška prijave:",
+                    err
+                );
+
+                showLoginError(
+                    "Došlo je do pogreške pri povezivanju. Pokušajte ponovno."
+                );
+
+            } finally {
+
+                resetLoginButton();
+
             }
-
-
-            window.location.href =
-                "form.html";
         }
     );
 }
 
 
-/* =========================
-   LOGIN ERROR
-========================= */
-
-function showLoginError(
-    message
-) {
-
-    if (!loginError) {
-        return;
-    }
-
-
-    loginError.textContent =
-        message;
-
-    loginError.classList.add(
-        "show"
-    );
-}
-
-
-/* =========================
-   RESET BUTTON
-========================= */
-
-function resetLoginButton() {
-
-    if (!loginButton) {
-        return;
-    }
-
-
-    loginButton.disabled =
-        false;
-
-    loginButton.textContent =
-        "Prijavi se";
-}
-
-
-/* =========================
-   SHAKE
-========================= */
-
-function shakeLoginCard() {
-
-    const loginCard =
-        document.querySelector(
-            ".big_bubble"
-        );
-
-
-    if (!loginCard) {
-        return;
-    }
-
-
-    loginCard.classList.remove(
-        "shake"
-    );
-
-
-    void loginCard.offsetWidth;
-
-
-    loginCard.classList.add(
-        "shake"
-    );
-}
-
-
-/* =========================
-   THEME
-========================= */
+/* ==========================================
+   TAMNA / SVIJETLA TEMA
+========================================== */
 
 const savedTheme =
-    localStorage.getItem(
-        "theme"
-    );
+    localStorage.getItem("theme");
 
-
-if (
-    savedTheme === "light"
-) {
+if (savedTheme === "light") {
 
     document.body.classList.add(
         "light-mode"
     );
 
-
     if (themeToggle) {
-
-        themeToggle.checked =
-            true;
+        themeToggle.checked = true;
     }
 }
-
 
 if (themeToggle) {
 
@@ -411,77 +244,55 @@ if (themeToggle) {
         "change",
         function () {
 
-            if (
-                themeToggle.checked
-            ) {
+            const light =
+                themeToggle.checked;
 
-                document.body.classList.add(
-                    "light-mode"
-                );
+            document.body.classList.toggle(
+                "light-mode",
+                light
+            );
 
-                localStorage.setItem(
-                    "theme",
-                    "light"
-                );
-
-            }
-
-            else {
-
-                document.body.classList.remove(
-                    "light-mode"
-                );
-
-                localStorage.setItem(
-                    "theme",
-                    "dark"
-                );
-            }
+            localStorage.setItem(
+                "theme",
+                light ? "light" : "dark"
+            );
         }
     );
 }
 
 
-/* =========================
-   SHOW / HIDE PASSWORD
-========================= */
+/* ==========================================
+   PRIKAZ / SAKRIVANJE LOZINKE
+========================================== */
 
-if (
-    togglePassword &&
-    passwordInput
-) {
+if (togglePassword && passwordInput) {
 
     togglePassword.addEventListener(
         "click",
-        function (event) {
+        function () {
 
-            event.preventDefault();
-
-
-            const isPassword =
-                passwordInput.type ===
-                "password";
-
+            const visible =
+                passwordInput.type === "password";
 
             passwordInput.type =
-                isPassword
-                    ? "text"
-                    : "password";
-
+                visible ? "text" : "password";
 
             togglePassword.classList.toggle(
                 "password-visible",
-                isPassword
+                visible
             );
-
 
             togglePassword.setAttribute(
                 "aria-label",
-                isPassword
+                visible
                     ? "Sakrij lozinku"
                     : "Prikaži lozinku"
             );
 
+            togglePassword.setAttribute(
+                "aria-pressed",
+                String(visible)
+            );
 
             passwordInput.focus();
         }
@@ -489,51 +300,29 @@ if (
 }
 
 
-/* =========================
+/* ==========================================
    CAPS LOCK
-========================= */
+========================================== */
 
-if (
-    passwordInput &&
-    capsLockWarning
-) {
+if (passwordInput && capsLockWarning) {
 
-    function checkCapsLock(event) {
+    const checkCapsLock = function (event) {
 
-        const capsLockOn =
-            event.getModifierState(
-                "CapsLock"
-            );
-
-
-        if (capsLockOn) {
-
-            capsLockWarning.classList.add(
-                "show"
-            );
-
-        }
-
-        else {
-
-            capsLockWarning.classList.remove(
-                "show"
-            );
-        }
-    }
-
+        capsLockWarning.classList.toggle(
+            "show",
+            event.getModifierState("CapsLock")
+        );
+    };
 
     passwordInput.addEventListener(
         "keyup",
         checkCapsLock
     );
 
-
     passwordInput.addEventListener(
         "keydown",
         checkCapsLock
     );
-
 
     passwordInput.addEventListener(
         "blur",
