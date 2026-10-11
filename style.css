@@ -2351,3 +2351,362 @@ body:not(.light-mode) .materials-cancel {
         scroll-behavior: auto !important;
     }
 }
+
+/* ===================================================
+   PTECH DIGITAL — DESKTOP VISUAL REFINEMENT
+   Referentni izgled: Graphite / Champagne
+   =================================================== */
+
+@media (min-width: 901px) {
+
+    /* Ukloni vodoravno pomicanje */
+
+    html,
+    body {
+        max-width: 100%;
+        overflow-x: clip;
+    }
+
+    .dashboard.desktop-layout,
+    .desktop-main,
+    .dashboard-content {
+        min-width: 0;
+    }
+
+    /* Pozadina s nježnim valovima */
+
+    .desktop-main {
+        background:
+            radial-gradient(
+                ellipse 680px 270px at 52% -5%,
+                rgba(255, 255, 255, 0.82),
+                transparent 85%
+            ),
+            radial-gradient(
+                ellipse 850px 450px at 105% 43%,
+                rgba(182, 143, 118, 0.12),
+                transparent 82%
+            ),
+            linear-gradient(
+                155deg,
+                #f6f2ee 0%,
+                #eee8e3 52%,
+                #f4efeb 100%
+            );
+    }
+
+    .desktop-main::before {
+        top: -280px;
+        right: -150px;
+
+        width: 1100px;
+        height: 520px;
+
+        border: none;
+        border-bottom:
+            2px solid rgba(255, 255, 255, 0.65);
+
+        border-radius: 0 0 55% 65%;
+
+        transform: rotate(-9deg);
+
+        background:
+            linear-gradient(
+                170deg,
+                rgba(255, 255, 255, 0.26),
+                rgba(193, 164, 145, 0.09)
+            );
+    }
+
+    .desktop-main::after {
+        left: -150px;
+        bottom: -240px;
+
+        width: 850px;
+        height: 420px;
+
+        border: none;
+        border-top:
+            1px solid rgba(255, 255, 255, 0.55);
+
+        border-radius: 55% 65% 0 0;
+
+        transform: rotate(-11deg);
+
+        background:
+            linear-gradient(
+                20deg,
+                rgba(132, 148, 136, 0.08),
+                transparent 75%
+            );
+    }
+
+    /* Sidebar s brončanim valom */
+
+    .desktop-sidebar {
+        background:
+            radial-gradient(
+                ellipse 360px 400px at -40% 90%,
+                rgba(158, 111, 83, 0.19),
+                transparent 80%
+            ),
+            linear-gradient(
+                160deg,
+                #303035,
+                #27272c 72%,
+                #242428
+            );
+    }
+
+    .desktop-sidebar::after {
+        left: -100px;
+        bottom: 105px;
+
+        width: 450px;
+        height: 290px;
+
+        border: none;
+        border-top:
+            1px solid rgba(209, 166, 135, 0.25);
+
+        border-radius: 55% 50% 0 0;
+
+        transform: rotate(18deg);
+
+        background:
+            linear-gradient(
+                150deg,
+                rgba(171, 117, 83, 0.20),
+                transparent 75%
+            );
+    }
+
+    /* Prostraniji sadržaj */
+
+    .dashboard-content {
+        padding: 32px 42px 0;
+    }
+
+    .welcome {
+        margin-bottom: 28px;
+    }
+
+    .welcome h2 {
+        font-size: 38px;
+        letter-spacing: -1px;
+    }
+
+    .welcome h2::after {
+        content: none !important;
+    }
+
+    .welcome p {
+        font-size: 17px;
+    }
+
+    .section-title,
+    .actions-header h2 {
+        font-size: 24px;
+    }
+
+    /* Navigacija projekata */
+
+    .project-nav-button {
+        width: 43px;
+        height: 43px;
+
+        border-radius: 11px;
+
+        background: #fffcf8;
+        border-color: #e6d9d0;
+
+        font-size: 28px;
+    }
+
+    .project-nav-button:not(:disabled):hover {
+        background: #a67b61;
+        color: #ffffff;
+    }
+
+    .project-counter {
+        padding: 10px 15px;
+        font-size: 15px;
+    }
+
+    /* Glavna projektna kartica */
+
+    .project-card {
+        padding: 23px 25px;
+
+        border-radius: 17px;
+        border-color: #e7dcd3;
+
+        background:
+            linear-gradient(
+                130deg,
+                rgba(255, 252, 249, 0.98),
+                rgba(255, 250, 246, 0.94)
+            );
+
+        box-shadow:
+            0 13px 32px rgba(65, 49, 39, 0.09);
+    }
+
+    .project-card::before {
+        display: none;
+    }
+
+    .project-heading {
+        margin-bottom: 20px;
+    }
+
+    .project-icon {
+        width: 70px;
+        height: 70px;
+        flex-basis: 70px;
+
+        border-radius: 15px;
+    }
+
+    .project-main h3 {
+        font-size: 29px;
+    }
+
+    .project-main p {
+        font-size: 17px;
+    }
+
+    .stat-card {
+        min-height: 83px;
+        background: #f1ece8;
+    }
+
+    .stat-label {
+        font-size: 15px;
+    }
+
+    .stat-card strong {
+        font-size: 16px;
+    }
+
+    /* Brze akcije */
+
+    .actions-section {
+        margin-top: 24px;
+    }
+
+    .actions-grid {
+        gap: 16px;
+    }
+
+    .action-card {
+        min-height: 222px;
+        padding: 22px;
+
+        border-radius: 16px;
+
+        box-shadow:
+            0 11px 26px rgba(65, 49, 39, 0.08);
+    }
+
+    .action-icon {
+        width: 48px;
+        height: 48px;
+
+        margin-bottom: 16px;
+
+        font-size: 25px;
+    }
+
+    .action-card strong {
+        font-size: 18px;
+        margin-bottom: 7px;
+    }
+
+    .action-card p {
+        font-size: 15px;
+        line-height: 1.5;
+    }
+
+    /* Gumbi poput onih na referentnoj slici */
+
+    .action-button {
+        min-height: 39px;
+
+        padding: 10px 16px;
+
+        border-radius: 10px;
+
+        font-size: 14px;
+        font-weight: 800;
+    }
+
+    .action-card:first-child .action-button {
+        background: #9b735b;
+        border-color: #9b735b;
+        color: #ffffff;
+    }
+
+    .action-card:nth-child(2) .action-button {
+        background: transparent;
+        border-color: #aa91ac;
+        color: #5f4566;
+    }
+
+    .action-card:nth-child(3) .action-button {
+        background: transparent;
+        border-color: #91a997;
+        color: #3e6651;
+    }
+
+    .action-card:nth-child(4) .action-button {
+        background: transparent;
+        border-color: #aa91ac;
+        color: #5f4566;
+    }
+
+    /* Onemogućena akcija ostaje onemogućena */
+
+    .action-card:disabled,
+    .action-card[aria-disabled="true"] {
+        opacity: 0.48;
+        cursor: default;
+    }
+
+    /* Tamna tema */
+
+    body:not(.light-mode) .desktop-main {
+        background:
+            radial-gradient(
+                ellipse 700px 400px at 100% 10%,
+                rgba(155, 115, 91, 0.10),
+                transparent 80%
+            ),
+            #252529;
+    }
+
+    body:not(.light-mode) .project-card {
+        background: #343136;
+        border-color: #5b493e;
+    }
+
+    body:not(.light-mode) .stat-card {
+        background: #3b373b;
+    }
+
+    body:not(.light-mode) .action-card {
+        background: #343136;
+        border-color: #514747;
+    }
+
+    body:not(.light-mode) .project-nav-button {
+        background: #473b36;
+        color: #dfb49b;
+        border-color: #6b5142;
+    }
+
+    body:not(.light-mode) .action-card:first-child .action-button {
+        background: #9b735b;
+        color: #ffffff;
+    }
+}
