@@ -2968,3 +2968,39 @@ body:not(.light-mode) .overview-empty {
 
 }
 
+
+/* =========================================
+   STICKY TOP NAVIGATION - DESKTOP
+========================================= */
+
+@media (min-width: 901px) {
+
+    .desktop-main {
+        overflow: visible;
+    }
+
+    .dashboard-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+
+        width: 100%;
+
+        background: rgba(255, 252, 249, 0.97);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+
+        border-bottom: 1px solid rgba(155, 115, 91, 0.10);
+    }
+
+    body:not(.light-mode) .dashboard-header {
+        background: rgba(48, 49, 56, 0.97);
+        border-bottom-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .dashboard-content {
+        position: relative;
+        z-index: 1;
+    }
+
+}
