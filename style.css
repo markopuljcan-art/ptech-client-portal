@@ -2457,6 +2457,748 @@ body.light-mode .materials-cancel {
 }
 
 
+/* =====================================================
+   PTECH DIGITAL — SIGNATURE DESIGN 2026
+   Grafit • Bronca • Krem • Kadulja
+   Samo desktop — mobilni dizajn ostaje netaknut
+   ===================================================== */
+
+@media (min-width: 901px) {
+
+    /* -----------------------------------------
+       1. OSNOVNE BOJE
+       ----------------------------------------- */
+
+    :root {
+        --orange: #9b735b;
+        --orange-light: #b58b72;
+        --orange-dark: #79523e;
+        --orange-border: rgba(155, 115, 91, 0.30);
+
+        --sidebar-width: 254px;
+        --header-height: 82px;
+    }
+
+    /* -----------------------------------------
+       2. LIGHT MODE — POZADINA
+       ----------------------------------------- */
+
+    body.light-mode {
+        --text: #303138;
+        --muted: #77736f;
+        --surface: #fffcf8;
+        --surface-soft: #f5f0eb;
+        --surface-muted: #eee8e2;
+        --page-background: #f0ede9;
+
+        --shadow:
+            0 10px 30px rgba(65, 51, 43, 0.055);
+
+        color: #303138;
+
+        background: #f0ede9;
+    }
+
+    body.light-mode .dashboard.desktop-layout,
+    body.light-mode .desktop-main {
+        background: #f0ede9;
+    }
+
+    /* Suptilne boje kroz cijelu stranicu */
+
+    body.light-mode .desktop-main {
+        background:
+            radial-gradient(
+                ellipse 520px 340px at 100% 12%,
+                rgba(188, 151, 132, 0.13),
+                transparent 75%
+            ),
+            radial-gradient(
+                ellipse 480px 350px at 4% 88%,
+                rgba(132, 148, 136, 0.09),
+                transparent 75%
+            ),
+            #f0ede9;
+    }
+
+    /* -----------------------------------------
+       3. TAMNI BOČNI IZBORNIK
+       ----------------------------------------- */
+
+    .desktop-sidebar,
+    body.light-mode .desktop-sidebar {
+        background:
+            linear-gradient(
+                165deg,
+                #29292d 0%,
+                #303035 55%,
+                #252529 100%
+            );
+
+        border-right:
+            1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .sidebar-brand-text strong,
+    body.light-mode .sidebar-brand-text strong {
+        color: #fffaf5;
+    }
+
+    .sidebar-brand-text small,
+    body.light-mode .sidebar-brand-text small {
+        color: #b8ada7;
+    }
+
+    .brand-logo {
+        background:
+            linear-gradient(
+                135deg,
+                #d4aa8c,
+                #a7775d
+            );
+
+        color: #29262a;
+
+        box-shadow:
+            0 7px 20px rgba(0, 0, 0, 0.13);
+    }
+
+    .sidebar-link,
+    body.light-mode .sidebar-link {
+        color: #d2ced0;
+    }
+
+    .sidebar-link:hover,
+    body.light-mode .sidebar-link:hover {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.07);
+    }
+
+    .sidebar-link.active,
+    .sidebar-link[aria-current="page"],
+    body.light-mode .sidebar-link.active,
+    body.light-mode .sidebar-link[aria-current="page"] {
+        color: #fffaf5;
+
+        background:
+            linear-gradient(
+                90deg,
+                rgba(172, 123, 94, 0.48),
+                rgba(172, 123, 94, 0.19)
+            );
+    }
+
+    .sidebar-link.active::before,
+    .sidebar-link[aria-current="page"]::before {
+        background: #d5a182;
+    }
+
+    .sidebar-message-indicator {
+        background: #d5a182;
+    }
+
+    .sidebar-bottom,
+    body.light-mode .sidebar-bottom {
+        border-top-color:
+            rgba(255, 255, 255, 0.10);
+    }
+
+    .sidebar-bottom a,
+    body.light-mode .sidebar-bottom a {
+        color: #d2ced0;
+    }
+
+    .sidebar-bottom a:hover,
+    body.light-mode .sidebar-bottom a:hover {
+        color: #e5b99c;
+    }
+
+    .sidebar-bottom p,
+    body.light-mode .sidebar-bottom p {
+        color: #9e999c;
+    }
+
+    /* -----------------------------------------
+       4. GORNJA TRAKA
+       ----------------------------------------- */
+
+    .dashboard-header,
+    body.light-mode .dashboard-header {
+        background: rgba(255, 252, 248, 0.90);
+
+        border-bottom:
+            1px solid rgba(89, 72, 61, 0.09);
+    }
+
+    .user-avatar,
+    body.light-mode .user-avatar {
+        background: #eee1d7;
+    }
+
+    .user-avatar svg,
+    body.light-mode .user-avatar svg {
+        stroke: #916b55;
+    }
+
+    #userTop,
+    body.light-mode #userTop {
+        color: #303138;
+    }
+
+    .logout-button,
+    body.light-mode .logout-button {
+        color: #656067;
+    }
+
+    .logout-button:hover,
+    body.light-mode .logout-button:hover {
+        color: #303138;
+        background: #eee8e2;
+    }
+
+    .header-separator,
+    body.light-mode .header-separator {
+        background: #e2dcd6;
+    }
+
+    /* Pretraga ostaje uklonjena */
+
+    .desktop-search {
+        display: none !important;
+    }
+
+    /* -----------------------------------------
+       5. POZDRAV I NASLOVI
+       ----------------------------------------- */
+
+    .welcome h2,
+    body.light-mode .welcome h2 {
+        color: #817b7a;
+    }
+
+    .welcome h2 strong,
+    body.light-mode .welcome h2 strong {
+        color: #303138;
+    }
+
+    .welcome p,
+    body.light-mode .welcome p {
+        color: #746f71;
+    }
+
+    .section-title,
+    .actions-header h2,
+    body.light-mode .section-title,
+    body.light-mode .actions-header h2 {
+        color: #303138;
+    }
+
+    .actions-header p,
+    body.light-mode .actions-header p {
+        color: #77716f;
+    }
+
+    /* -----------------------------------------
+       6. NAVIGACIJA IZMEĐU PROJEKATA
+       ----------------------------------------- */
+
+    .project-counter,
+    body.light-mode .project-counter {
+        color: #665d59;
+        background: #fffcf8;
+        border-color: #e5dad1;
+    }
+
+    .project-nav-button,
+    body.light-mode .project-nav-button {
+        color: #805b46;
+
+        background: #f6eae0;
+
+        border-color: #e8d4c4;
+    }
+
+    .project-nav-button:hover:not(:disabled) {
+        background: #ebd7c8;
+    }
+
+    .project-nav-button:disabled {
+        opacity: 0.35;
+    }
+
+    /* -----------------------------------------
+       7. GLAVNA KARTICA PROJEKTA
+       ----------------------------------------- */
+
+    .project-card,
+    body.light-mode .project-card {
+        background:
+            linear-gradient(
+                135deg,
+                #fffcf8 0%,
+                #fcf8f3 100%
+            );
+
+        border: 1px solid #e4d9d0;
+
+        border-radius: 19px;
+
+        box-shadow:
+            0 12px 32px rgba(76, 59, 49, 0.06);
+    }
+
+    .project-card-link:hover,
+    body.light-mode .project-card-link:hover {
+        border-color: #b58b72;
+
+        box-shadow:
+            0 16px 38px rgba(76, 59, 49, 0.11);
+    }
+
+    .project-icon,
+    body.light-mode .project-icon {
+        color: #936d56;
+
+        background:
+            linear-gradient(
+                135deg,
+                #efe0d3,
+                #f7ece3
+            );
+    }
+
+    .project-main h3,
+    body.light-mode .project-main h3 {
+        color: #303138;
+    }
+
+    .project-main p,
+    body.light-mode .project-main p {
+        color: #827b78;
+    }
+
+    .project-open-arrow,
+    body.light-mode .project-open-arrow {
+        color: #a49a94;
+    }
+
+    .project-card-link:hover .project-open-arrow {
+        color: #91684f;
+    }
+
+    /* -----------------------------------------
+       8. STATUS PROJEKTA
+       ----------------------------------------- */
+
+    .status-progress,
+    body.light-mode .status-progress {
+        color: #80563e;
+
+        background: #f3e5d9;
+
+        border-color: #e6cdbb;
+    }
+
+    .status-progress::before {
+        background: #a7785a;
+    }
+
+    .status-done,
+    body.light-mode .status-done {
+        color: #486c57;
+
+        background: #e7efe7;
+
+        border-color: #c9ddcc;
+    }
+
+    .status-done::before {
+        background: #71917b;
+    }
+
+    .status-waiting,
+    body.light-mode .status-waiting {
+        color: #6c6870;
+
+        background: #eeebed;
+
+        border-color: #ddd8dd;
+    }
+
+    .status-waiting::before {
+        background: #98909a;
+    }
+
+    /* -----------------------------------------
+       9. STATISTIKE PROJEKTA
+       ----------------------------------------- */
+
+    .stat-card,
+    body.light-mode .stat-card {
+        background: #f3eee9;
+
+        border: 1px solid #ebe3dc;
+
+        border-radius: 13px;
+    }
+
+    .stat-icon {
+        color: #98715b;
+    }
+
+    .stat-label,
+    body.light-mode .stat-label {
+        color: #77716f;
+    }
+
+    .stat-card strong,
+    body.light-mode .stat-card strong {
+        color: #303138;
+    }
+
+    .package-name,
+    body.light-mode .package-name {
+        color: #805b46;
+    }
+
+    .progress-container,
+    body.light-mode .progress-container {
+        background: #e0d8d2;
+    }
+
+    .progress-bar {
+        background:
+            linear-gradient(
+                90deg,
+                #926a53,
+                #c59a7f
+            );
+
+        box-shadow: none;
+    }
+
+    /* -----------------------------------------
+       10. TOČKICE ISPOD PROJEKATA
+       ----------------------------------------- */
+
+    .slider-dot,
+    body.light-mode .slider-dot {
+        background: #d4c9c1;
+    }
+
+    .slider-dot.active,
+    body.light-mode .slider-dot.active {
+        background: #9b735b;
+    }
+
+    /* -----------------------------------------
+       11. BRZE AKCIJE
+       ----------------------------------------- */
+
+    .action-card,
+    body.light-mode .action-card {
+        background: #fffcf8;
+
+        border: 1px solid #e8dfd8;
+
+        border-radius: 16px;
+
+        box-shadow:
+            0 7px 22px rgba(76, 59, 49, 0.045);
+    }
+
+    .action-card:not(:disabled):not([aria-disabled="true"]):hover,
+    body.light-mode .action-card:not(:disabled):not([aria-disabled="true"]):hover {
+        background: #fffaf5;
+
+        border-color: #b99a85;
+
+        box-shadow:
+            0 13px 28px rgba(76, 59, 49, 0.09);
+    }
+
+    .action-icon,
+    body.light-mode .action-icon {
+        background: #f1e4d9;
+        color: #926b54;
+    }
+
+    .action-card strong,
+    body.light-mode .action-card strong {
+        color: #303138;
+    }
+
+    .action-card p,
+    body.light-mode .action-card p {
+        color: #77716f;
+    }
+
+    .action-button,
+    body.light-mode .action-button {
+        background: #f1e4d9;
+
+        border: 1px solid #e7d3c3;
+
+        color: #80553d;
+    }
+
+    /* -----------------------------------------
+       12. FOOTER
+       ----------------------------------------- */
+
+    .footer,
+    body.light-mode .footer {
+        color: #948c89;
+    }
+
+    /* -----------------------------------------
+       13. MODAL ZA DOSTAVU MATERIJALA
+       ----------------------------------------- */
+
+    .materials-modal,
+    body.light-mode .materials-modal {
+        background: #fffcf8;
+        color: #303138;
+
+        border-color: #e5d7cb;
+    }
+
+    .materials-modal h2,
+    .materials-dropzone strong,
+    body.light-mode .materials-modal h2,
+    body.light-mode .materials-dropzone strong {
+        color: #303138;
+    }
+
+    .materials-eyebrow {
+        color: #936b53;
+    }
+
+    #materialsProjectName,
+    .materials-hint,
+    .materials-dropzone > span:not(.materials-upload-icon),
+    body.light-mode #materialsProjectName,
+    body.light-mode .materials-hint,
+    body.light-mode .materials-dropzone > span:not(.materials-upload-icon) {
+        color: #77716f;
+    }
+
+    .materials-close,
+    body.light-mode .materials-close {
+        color: #303138;
+
+        background: #f1eae4;
+
+        border-color: #e5d9d0;
+    }
+
+    .materials-dropzone,
+    body.light-mode .materials-dropzone {
+        background: #f8f1eb;
+
+        border-color: #c5a28c;
+    }
+
+    .materials-upload-icon {
+        color: #926b54;
+        background: #eddfd3;
+    }
+
+    #materialsFiles,
+    body.light-mode #materialsFiles {
+        color: #5e5855;
+    }
+
+    #materialsFiles::file-selector-button {
+        background: #ead9cb;
+        color: #76523e;
+        border-color: #d9bda9;
+    }
+
+    .materials-file-item,
+    body.light-mode .materials-file-item {
+        color: #303138;
+        background: #f4eee9;
+        border-color: #e4dad2;
+    }
+
+    .materials-status,
+    body.light-mode .materials-status {
+        color: #605b59;
+    }
+
+    .materials-cancel,
+    body.light-mode .materials-cancel {
+        background: #ebe5df;
+        color: #303138;
+    }
+
+    .materials-submit {
+        background:
+            linear-gradient(
+                135deg,
+                #b58b72,
+                #896149
+            );
+
+        color: #ffffff;
+    }
+
+    /* -----------------------------------------
+       14. TAMNI MODE
+       ----------------------------------------- */
+
+    body:not(.light-mode) {
+        --text: #f4f0ec;
+        --muted: #b4aba6;
+        --surface: #302f33;
+        --surface-soft: #37353a;
+        --surface-muted: #403c40;
+        --page-background: #252529;
+
+        background: #252529;
+    }
+
+    body:not(.light-mode) .dashboard.desktop-layout,
+    body:not(.light-mode) .desktop-main {
+        background:
+            radial-gradient(
+                ellipse 500px 350px at 100% 12%,
+                rgba(155, 115, 91, 0.09),
+                transparent 75%
+            ),
+            #252529;
+    }
+
+    body:not(.light-mode) .dashboard-header {
+        background: #2b2a2e;
+        border-bottom-color: #403b3d;
+    }
+
+    body:not(.light-mode) #userTop {
+        color: #f4f0ec;
+    }
+
+    body:not(.light-mode) .logout-button {
+        color: #d4cac5;
+    }
+
+    body:not(.light-mode) .welcome h2 {
+        color: #c0b8b3;
+    }
+
+    body:not(.light-mode) .welcome h2 strong,
+    body:not(.light-mode) .section-title,
+    body:not(.light-mode) .actions-header h2,
+    body:not(.light-mode) .project-main h3 {
+        color: #f4f0ec;
+    }
+
+    body:not(.light-mode) .welcome p,
+    body:not(.light-mode) .actions-header p,
+    body:not(.light-mode) .project-main p {
+        color: #b4aba6;
+    }
+
+    body:not(.light-mode) .project-card {
+        background: #302e32;
+        border-color: #59483e;
+    }
+
+    body:not(.light-mode) .project-counter {
+        background: #373337;
+        color: #d4c9c2;
+        border-color: #514741;
+    }
+
+    body:not(.light-mode) .project-nav-button {
+        background: #473b36;
+        color: #dfb49b;
+        border-color: #6b5142;
+    }
+
+    body:not(.light-mode) .project-icon {
+        background: #473a34;
+        color: #d4a78b;
+    }
+
+    body:not(.light-mode) .stat-card {
+        background: #39363a;
+        border-color: #4a4445;
+    }
+
+    body:not(.light-mode) .stat-card strong {
+        color: #f4f0ec;
+    }
+
+    body:not(.light-mode) .stat-label {
+        color: #b4aaa5;
+    }
+
+    body:not(.light-mode) .progress-container {
+        background: #50494a;
+    }
+
+    body:not(.light-mode) .action-card {
+        background: #302e32;
+        border-color: #4a4344;
+    }
+
+    body:not(.light-mode) .action-card strong {
+        color: #f4f0ec;
+    }
+
+    body:not(.light-mode) .action-card p {
+        color: #b4aaa5;
+    }
+
+    body:not(.light-mode) .action-icon {
+        background: #493b35;
+        color: #d6ab8f;
+    }
+
+    body:not(.light-mode) .action-button {
+        background: #483a34;
+        color: #e4baa0;
+        border-color: #705344;
+    }
+
+    body:not(.light-mode) .materials-modal {
+        background: #302e32;
+        color: #f4f0ec;
+    }
+
+    body:not(.light-mode) .materials-modal h2,
+    body:not(.light-mode) .materials-dropzone strong {
+        color: #f4f0ec;
+    }
+
+    body:not(.light-mode) .materials-dropzone {
+        background: #393237;
+        border-color: #8c6b58;
+    }
+
+    body:not(.light-mode) .materials-file-item {
+        background: #3c383c;
+        color: #f4f0ec;
+        border-color: #554b49;
+    }
+
+    body:not(.light-mode) .materials-cancel {
+        background: #494348;
+        color: #f4f0ec;
+    }
+
+    body:not(.light-mode) .materials-status {
+        color: #d1c7c1;
+    }
+
+    body:not(.light-mode) .footer {
+        color: #a99e99;
+    }
+
+}
+
 /* -----------------------------------------------------
    21. ACCESSIBILITY
    ----------------------------------------------------- */
