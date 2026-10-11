@@ -1,6 +1,12 @@
 
 /* ==========================================
-   PTECH DIGITAL — LOGIN
+   PTECH DIGITAL — LOGIN.JS
+   SUPABASE AUTH + LIGHT THEME
+========================================== */
+
+
+/* ==========================================
+   1. SUPABASE
 ========================================== */
 
 const SUPABASE_URL =
@@ -16,7 +22,7 @@ const supabaseClient = supabase.createClient(
 
 
 /* ==========================================
-   ELEMENTI
+   2. ELEMENTI
 ========================================== */
 
 const loginForm =
@@ -45,67 +51,92 @@ const themeToggle =
 
 
 /* ==========================================
-   PORUKE O POGREŠCI
+   3. PRIKAZ POGREŠKE
 ========================================== */
 
 function showLoginError(message) {
-    if (!loginError) return;
+
+    if (!loginError) {
+        return;
+    }
 
     loginError.textContent = message;
+
     loginError.classList.add("show");
 }
 
+
 function clearLoginError() {
-    if (!loginError) return;
+
+    if (!loginError) {
+        return;
+    }
 
     loginError.textContent = "";
+
     loginError.classList.remove("show");
 }
 
 
 /* ==========================================
-   GUMB ZA PRIJAVU
+   4. GUMB ZA PRIJAVU
 ========================================== */
 
-function resetLoginButton() {
-    if (!loginButton) return;
+function setLoginLoading(loading) {
 
-    loginButton.disabled = false;
+    if (!loginButton) {
+        return;
+    }
 
-    loginButton.innerHTML = `
-        <span>Prijavi se</span>
-        <svg
-            class="login-arrow"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-        >
-            <path d="M5 12h14"></path>
-            <path d="m13 6 6 6-6 6"></path>
-        </svg>
-    `;
+    loginButton.disabled = loading;
+
+    if (loading) {
+
+        loginButton.innerHTML = `
+            <span>Prijava...</span>
+        `;
+
+    } else {
+
+        loginButton.innerHTML = `
+            <span>Prijavi se</span>
+
+            <svg
+                class="login-arrow"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+            >
+                <path d="M5 12h14"></path>
+                <path d="m13 6 6 6-6 6"></path>
+            </svg>
+        `;
+    }
 }
 
 
 /* ==========================================
-   ANIMACIJA POGREŠKE
+   5. ANIMACIJA POGREŠNE PRIJAVE
 ========================================== */
 
 function shakeLoginCard() {
-    const card =
+
+    const loginCard =
         document.querySelector(".login-card");
 
-    if (!card) return;
+    if (!loginCard) {
+        return;
+    }
 
-    card.classList.remove("shake");
+    loginCard.classList.remove("shake");
 
-    void card.offsetWidth;
+    void loginCard.offsetWidth;
 
-    card.classList.add("shake");
+    loginCard.classList.add("shake");
 }
 
 
 /* ==========================================
-   SUPABASE PRIJAVA
+   6. PRIJAVA KORISNIKA
 ========================================== */
 
 if (loginForm) {
@@ -119,39 +150,78 @@ if (loginForm) {
             clearLoginError();
 
             const email =
-                emailInput?.value.trim() || "";
+                emailInput
+                    ? emailInput.value.trim()
+                    : "";
 
             const password =
-                passwordInput?.value || "";
+                passwordInput
+                    ? passwordInput.value
+                    : "";
+
+
+            /* VALIDACIJA */
 
             if (!email || !password) {
+
                 showLoginError(
                     "Unesi e-mail i lozinku."
                 );
+
+                shakeLoginCard();
+
                 return;
             }
 
-            if (loginButton) {
-                loginButton.disabled = true;
-                loginButton.textContent = "Prijava...";
-            }
+
+            /* BLOKIRAJ GUMB */
+
+            setLoginLoading(true);
+
 
             try {
 
-                const { data, error } =
-                    await supabaseClient.auth
-                        .signInWithPassword({
-                            email,
-                            password
-                        });
+                /* SUPABASE LOGIN */
 
-                if (error || !data?.user) {
+                const {
+                    data,
+                    error
+                } = await supabaseClient.auth
+                    .signInWithPassword({
+                        email: email,
+                        password: password
+                    });
+
+
+                /* POGREŠNI PODACI */
+
+                if (error) {
+
+                    console.error(
+                        "Login error:",
+                        error
+                    );
 
                     showLoginError(
                         "Pogrešan e-mail ili lozinka."
                     );
 
                     shakeLoginCard();
+
+                    return;
+                }
+
+
+                /* PROVJERA KORISNIKA */
+
+                if (!data || !data.user) {
+
+                    showLoginError(
+                        "Prijava nije uspjela. Pokušajte ponovno."
+                    );
+
+                    shakeLoginCard();
+
                     return;
                 }
 
@@ -163,17 +233,39 @@ if (loginForm) {
                     error: profileError
                 } = await supabaseClient
                     .from("profiles")
-                    .select("id, display_name, role")
-                    .eq("id", data.user.id)
+                    .select(
+                        "id, display_name, role"
+                    )
+                    .eq(
+                        "id",
+                        data.user.id
+                    )
                     .maybeSingle();
 
 
-                if (profileError || !profile) {
+                /* POGREŠKA PROFILA */
+
+                if (profileError) {
+
+                    console.error(
+                        "Profile error:",
+                        profileError
+                    );
 
                     showLoginError(
-                        profileError
-                            ? "Prijava je uspjela, ali profil nije moguće učitati."
-                            : "Korisnički profil nije pronađen."
+                        "Prijava je uspjela, ali profil nije moguće učitati."
+                    );
+
+                    return;
+                }
+
+
+                /* PROFIL NE POSTOJI */
+
+                if (!profile) {
+
+                    showLoginError(
+                        "Korisnički profil nije pronađen."
                     );
 
                     return;
@@ -188,21 +280,35 @@ if (loginForm) {
                 );
 
 
-                /* REDIRECT PREMA ULOZI */
+                /* KORISNIČKA ULOGA */
 
                 const role = String(
                     profile.role || "client"
-                ).trim().toLowerCase();
+                )
+                    .trim()
+                    .toLowerCase();
+
+
+                /* ADMINISTRATOR */
+
+                if (role === "admin") {
+
+                    window.location.href =
+                        "admin.html";
+
+                    return;
+                }
+
+
+                /* KLIJENT */
 
                 window.location.href =
-                    role === "admin"
-                        ? "admin.html"
-                        : "form.html";
+                    "form.html";
 
             } catch (err) {
 
                 console.error(
-                    "Greška prijave:",
+                    "Unexpected login error:",
                     err
                 );
 
@@ -210,10 +316,11 @@ if (loginForm) {
                     "Došlo je do pogreške pri povezivanju. Pokušajte ponovno."
                 );
 
+                shakeLoginCard();
+
             } finally {
 
-                resetLoginButton();
-
+                setLoginLoading(false);
             }
         }
     );
@@ -221,24 +328,31 @@ if (loginForm) {
 
 
 /* ==========================================
-   TAMNA / SVIJETLA TEMA
+   7. SVIJETLA TEMA KAO ZADANA
 ========================================== */
 
+/*
+   Ako korisnik još nije odabrao temu,
+   automatski se koristi svijetla.
+
+   Ako je korisnik ranije odabrao tamnu,
+   njegova postavka ostaje spremljena.
+*/
+
 const savedTheme =
-    localStorage.getItem("theme");
+    localStorage.getItem("theme") || "light";
 
-if (savedTheme === "light") {
+const isLightTheme =
+    savedTheme === "light";
 
-    document.body.classList.add(
-        "light-mode"
-    );
-
-    if (themeToggle) {
-        themeToggle.checked = true;
-    }
-}
+document.body.classList.toggle(
+    "light-mode",
+    isLightTheme
+);
 
 if (themeToggle) {
+
+    themeToggle.checked = isLightTheme;
 
     themeToggle.addEventListener(
         "change",
@@ -262,36 +376,40 @@ if (themeToggle) {
 
 
 /* ==========================================
-   PRIKAZ / SAKRIVANJE LOZINKE
+   8. PRIKAZ / SAKRIVANJE LOZINKE
 ========================================== */
 
 if (togglePassword && passwordInput) {
 
     togglePassword.addEventListener(
         "click",
-        function () {
+        function (event) {
 
-            const visible =
+            event.preventDefault();
+
+            const isPassword =
                 passwordInput.type === "password";
 
             passwordInput.type =
-                visible ? "text" : "password";
+                isPassword
+                    ? "text"
+                    : "password";
 
             togglePassword.classList.toggle(
                 "password-visible",
-                visible
+                isPassword
             );
 
             togglePassword.setAttribute(
                 "aria-label",
-                visible
+                isPassword
                     ? "Sakrij lozinku"
                     : "Prikaži lozinku"
             );
 
             togglePassword.setAttribute(
                 "aria-pressed",
-                String(visible)
+                String(isPassword)
             );
 
             passwordInput.focus();
@@ -301,18 +419,22 @@ if (togglePassword && passwordInput) {
 
 
 /* ==========================================
-   CAPS LOCK
+   9. CAPS LOCK UPOZORENJE
 ========================================== */
 
 if (passwordInput && capsLockWarning) {
 
-    const checkCapsLock = function (event) {
+    function checkCapsLock(event) {
+
+        const capsLockOn =
+            event.getModifierState("CapsLock");
 
         capsLockWarning.classList.toggle(
             "show",
-            event.getModifierState("CapsLock")
+            capsLockOn
         );
-    };
+    }
+
 
     passwordInput.addEventListener(
         "keyup",
