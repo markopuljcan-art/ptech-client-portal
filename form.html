@@ -12,7 +12,7 @@
 
     <link
         rel="stylesheet"
-        href="./style.css?v=16"
+        href="./style.css?v=17"
     >
 
     <script
@@ -20,24 +20,44 @@
     ></script>
 
     <script
-        src="./script.js?v=16"
+        src="./script.js?v=17"
         defer
     ></script>
 </head>
 
 <body>
 
-    <main class="dashboard">
+    <main class="dashboard desktop-layout">
+        <!-- Desktop navigacija: na mobitelima cemo kasnije napraviti zaseban prikaz -->
+        <aside class="desktop-sidebar" aria-label="Glavna navigacija">
+            <a class="sidebar-brand" href="form.html">
+                <span class="brand-logo">P</span>
+                <span class="sidebar-brand-text"><strong>PTech Digital</strong><small>CLIENT PORTAL</small></span>
+            </a>
+            <nav class="sidebar-nav" aria-label="Stranice portala">
+                <a href="form.html" class="sidebar-link active" aria-current="page"><span aria-hidden="true">⌂</span> Početna</a>
+                <a href="my-projects.html" class="sidebar-link"><span aria-hidden="true">▱</span> Projekti</a>
+                <a href="documents.html" class="sidebar-link"><span aria-hidden="true">▤</span> Dokumenti</a>
+                <a href="messages.html" class="sidebar-link"><span aria-hidden="true">▢</span> Poruke <span class="sidebar-message-indicator" aria-hidden="true"></span></a>
+                <a href="profile.html" class="sidebar-link"><span aria-hidden="true">♙</span> Profil</a>
+            </nav>
+            <div class="sidebar-bottom"><a href="messages.html">ⓘ &nbsp; Pomoć i podrška</a><p>© PTech Digital 2026.<br>Sva prava zadržana.</p></div>
+        </aside>
+        <div class="desktop-main">
 
         <!-- HEADER -->
         <header class="dashboard-header">
 
-            <a href="form.html" class="brand">
+            <a href="form.html" class="brand mobile-brand">
                 <div class="brand-logo">P</div>
                 <h1>PTech Digital Client Portal</h1>
             </a>
 
             <div class="header-actions">
+                <label class="desktop-search" aria-label="Pretraži portal">
+                    <span aria-hidden="true">⌕</span>
+                    <input id="portalSearch" type="search" disabled title="Pretraživanje dodajemo u sljedećem koraku" placeholder="Pretraži projekte..." autocomplete="off">
+                </label>
 
                 <div class="user-box">
                     <div class="user-avatar">
@@ -248,7 +268,7 @@
 
         </div>
 
-        <!-- DONJA NAVIGACIJA -->
+        <!-- DONJA NAVIGACIJA (za kasniji mobilni dizajn) -->
         <nav class="bottom-nav">
 
             <!-- POCETNA -->
@@ -348,6 +368,7 @@
 
         </nav>
 
+        </div><!-- /desktop-main -->
     </main>
 
     <!-- =====================================
