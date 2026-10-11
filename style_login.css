@@ -1087,3 +1087,614 @@ body.light-mode .login-error {
         scroll-behavior: auto !important;
     }
 }
+
+
+/* ==================================================
+   PTECH DIGITAL
+   LIGHT LOGIN — FINAL VISUAL DESIGN
+   LEFT CIRCLE + MOVING LIGHT PARTICLES
+================================================== */
+
+
+/* ==========================================
+   1. OSNOVNA SVIJETLA TEMA
+========================================== */
+
+:root {
+    color-scheme: light;
+}
+
+html {
+    min-height: 100%;
+    background: #f8f5f1;
+}
+
+body,
+body.light-mode {
+    min-height: 100vh;
+
+    background: #f8f5f1;
+    color: #303139;
+
+    overflow-x: clip;
+}
+
+
+/* ==========================================
+   2. GLAVNI RASPORED
+   LIJEVO MANJE / DESNO VIŠE
+========================================== */
+
+.login-shell {
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 48%)
+        minmax(0, 52%);
+
+    min-height: 100vh;
+
+    isolation: isolate;
+}
+
+
+/* ==========================================
+   3. LIJEVA POZADINA
+========================================== */
+
+.login-intro,
+body.light-mode .login-intro {
+    position: relative;
+
+    isolation: isolate;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            ellipse at 10% 45%,
+            rgba(205, 157, 124, 0.13),
+            transparent 67%
+        ),
+        linear-gradient(
+            145deg,
+            #f8f3ee 0%,
+            #f2eae2 55%,
+            #f8f4f0 100%
+        );
+
+    color: #303139;
+}
+
+
+/* ==========================================
+   4. VELIKI KRUG NA LIJEVOJ STRANI
+========================================== */
+
+.login-intro::before,
+body.light-mode .login-intro::before {
+    content: "";
+
+    position: absolute;
+
+    z-index: -1;
+
+    width: 1050px;
+    height: 1050px;
+
+    left: -530px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    border-radius: 50%;
+
+    border:
+        1.5px solid rgba(190, 128, 87, 0.55);
+
+    background:
+        radial-gradient(
+            circle at 58% 43%,
+            rgba(227, 185, 157, 0.12),
+            rgba(213, 163, 131, 0.08) 50%,
+            rgba(196, 139, 102, 0.035) 70%,
+            transparent 78%
+        );
+
+    box-shadow:
+        0 0 0 1px rgba(196, 139, 102, 0.035),
+        inset 0 0 130px rgba(197, 147, 113, 0.055);
+
+    pointer-events: none;
+}
+
+
+/* UKLANJAMO STARI DONJI DEKORATIVNI KRUG */
+
+.login-intro::after,
+body.light-mode .login-intro::after {
+    display: none;
+}
+
+
+/* ==========================================
+   5. SVJETLEĆE CRTICE — PARTICLES
+========================================== */
+
+/*
+   Koristimo CSS animirane slojeve.
+   Nema dodatnih biblioteka ni JavaScripta.
+*/
+
+.login-area {
+    position: relative;
+
+    isolation: isolate;
+
+    overflow: hidden;
+}
+
+.login-area::before,
+.login-area::after {
+    content: "";
+
+    position: absolute;
+
+    z-index: -1;
+
+    inset: -15%;
+
+    pointer-events: none;
+
+    background-repeat: repeat;
+
+    will-change: transform;
+}
+
+
+/* PRVI SLOJ — TANKE SVJETLEĆE CRTICE */
+
+.login-area::before {
+    opacity: 0.65;
+
+    background-image:
+        linear-gradient(
+            100deg,
+            transparent 0%,
+            rgba(213, 167, 133, 0.08) 40%,
+            rgba(197, 135, 96, 0.36) 49%,
+            rgba(255, 255, 255, 0.9) 50%,
+            rgba(197, 135, 96, 0.26) 51%,
+            transparent 60%
+        ),
+
+        linear-gradient(
+            96deg,
+            transparent 0%,
+            rgba(192, 137, 101, 0.23) 48%,
+            rgba(255, 255, 255, 0.75) 50%,
+            transparent 55%
+        );
+
+    background-size:
+        620px 210px,
+        830px 340px;
+
+    animation:
+        ptech-particles-slow 24s linear infinite;
+}
+
+
+/* DRUGI SLOJ — SITNE SVJETLEĆE TOČKE */
+
+.login-area::after {
+    opacity: 0.58;
+
+    background-image:
+        radial-gradient(
+            circle,
+            rgba(255, 255, 255, 1) 0 2px,
+            rgba(209, 150, 111, 0.32) 3px,
+            transparent 8px
+        ),
+
+        radial-gradient(
+            circle,
+            rgba(195, 135, 96, 0.65) 0 1px,
+            transparent 4px
+        ),
+
+        linear-gradient(
+            100deg,
+            transparent 35%,
+            rgba(216, 168, 134, 0.2) 50%,
+            transparent 65%
+        );
+
+    background-size:
+        370px 260px,
+        230px 190px,
+        520px 290px;
+
+    background-position:
+        0 30px,
+        100px 110px,
+        40px 0;
+
+    animation:
+        ptech-particles-fast 16s linear infinite;
+}
+
+
+/* ANIMACIJE IDU LIJEVO -> DESNO */
+
+@keyframes ptech-particles-slow {
+
+    from {
+        transform: translateX(-18%);
+    }
+
+    to {
+        transform: translateX(18%);
+    }
+}
+
+@keyframes ptech-particles-fast {
+
+    from {
+        transform: translateX(-12%);
+    }
+
+    to {
+        transform: translateX(12%);
+    }
+}
+
+
+/* ==========================================
+   6. DESNA POZADINA
+========================================== */
+
+.login-area,
+body.light-mode .login-area {
+    background:
+        radial-gradient(
+            ellipse at 65% 45%,
+            rgba(219, 174, 143, 0.15),
+            transparent 65%
+        ),
+        linear-gradient(
+            135deg,
+            #faf7f4,
+            #f6f0ea 55%,
+            #fbf8f5
+        );
+
+    padding:
+        80px 55px 50px;
+}
+
+
+/* ==========================================
+   7. VEĆA LOGIN KARTICA
+========================================== */
+
+.login-card,
+body.light-mode .login-card {
+    position: relative;
+
+    z-index: 2;
+
+    width: 100%;
+    max-width: 570px;
+
+    padding:
+        44px 50px 36px;
+
+    border:
+        1px solid rgba(192, 154, 127, 0.19);
+
+    border-radius: 24px;
+
+    background:
+        rgba(255, 253, 250, 0.96);
+
+    box-shadow:
+        0 28px 75px rgba(103, 72, 53, 0.11),
+        0 8px 22px rgba(103, 72, 53, 0.035);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+
+/* ==========================================
+   8. LIJEVI TEKST
+========================================== */
+
+.intro-brand,
+body.light-mode .intro-brand {
+    color: #303139;
+}
+
+.intro-content h1,
+body.light-mode .intro-content h1 {
+    color: #303139;
+}
+
+.intro-content h1 em,
+body.light-mode .intro-content h1 em {
+    color: #a4775d;
+}
+
+.intro-description,
+body.light-mode .intro-description {
+    color: #706762;
+}
+
+.intro-feature strong,
+body.light-mode .intro-feature strong {
+    color: #343137;
+}
+
+.intro-feature small,
+body.light-mode .intro-feature small {
+    color: #77706b;
+}
+
+.eyebrow,
+body.light-mode .eyebrow {
+    color: #9e7053;
+}
+
+.feature-icon,
+body.light-mode .feature-icon {
+    background: rgba(211, 165, 132, 0.2);
+
+    color: #a27456;
+
+    border-color:
+        rgba(194, 142, 106, 0.14);
+}
+
+
+/* ==========================================
+   9. NASLOV LOGIN KARTICE
+========================================== */
+
+.login-card h2,
+body.light-mode .login-card h2 {
+    color: #303139;
+
+    font-size: 36px;
+
+    letter-spacing: -1px;
+}
+
+.login-subtitle,
+body.light-mode .login-subtitle {
+    color: #7a706b;
+}
+
+.login-kicker {
+    color: #c08e6d;
+}
+
+.login-secure,
+body.light-mode .login-secure {
+    color: #82766e;
+}
+
+
+/* ==========================================
+   10. INPUT POLJA
+========================================== */
+
+.form-group label,
+body.light-mode .form-group label {
+    color: #403a37;
+}
+
+#email,
+#password,
+body.light-mode #email,
+body.light-mode #password {
+    height: 59px;
+
+    background: #faf8f6;
+
+    color: #303139;
+
+    border:
+        1px solid #e4d9d0;
+
+    border-radius: 12px;
+}
+
+#email:focus,
+#password:focus {
+    background: #fff;
+
+    border-color: #b88a6c;
+
+    box-shadow:
+        0 0 0 3px rgba(184, 138, 108, 0.12);
+}
+
+
+/* CHROME AUTOFILL — BEZ PLAVE POZADINE */
+
+#email:-webkit-autofill,
+#email:-webkit-autofill:hover,
+#email:-webkit-autofill:focus,
+#password:-webkit-autofill,
+#password:-webkit-autofill:hover,
+#password:-webkit-autofill:focus {
+    -webkit-text-fill-color: #303139;
+
+    -webkit-box-shadow:
+        0 0 0 1000px #faf8f6 inset;
+
+    box-shadow:
+        0 0 0 1000px #faf8f6 inset;
+
+    caret-color: #303139;
+
+    transition:
+        background-color 9999s ease-out;
+}
+
+
+/* ==========================================
+   11. GUMB
+========================================== */
+
+#loginButton {
+    height: 60px;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            105deg,
+            #c69a7d,
+            #966b50
+        );
+
+    color: #fff;
+
+    font-size: 16px;
+}
+
+#loginButton:hover:not(:disabled) {
+    box-shadow:
+        0 14px 30px rgba(151, 107, 80, 0.23);
+}
+
+
+/* ==========================================
+   12. DONJI DIO KARTICE
+========================================== */
+
+.login-help,
+body.light-mode .login-help {
+    border-top:
+        1px solid #eee3db;
+}
+
+.login-help span,
+body.light-mode .login-help span {
+    color: #353139;
+}
+
+.login-help p,
+body.light-mode .login-help p {
+    color: #817771;
+}
+
+.login-footer,
+body.light-mode .login-footer {
+    color: #9b918a;
+}
+
+
+/* ==========================================
+   13. PREKIDAČ TEME
+========================================== */
+
+/*
+   Ostavljen je vizualno isti.
+   Svijetla tema je uvijek aktivna,
+   bez obzira na staru spremljenu temu.
+*/
+
+body:not(.light-mode) .theme-slider {
+    background: #fffaf5;
+    border-color: #dfd0c4;
+}
+
+
+/* ==========================================
+   14. RESPONSIVE
+========================================== */
+
+@media (max-width: 1100px) {
+
+    .login-shell {
+        grid-template-columns:
+            minmax(0, 46%)
+            minmax(0, 54%);
+    }
+
+    .login-intro {
+        padding-left: 35px;
+        padding-right: 25px;
+    }
+
+    .intro-content h1 {
+        font-size: 43px;
+    }
+
+    .login-area {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .login-card {
+        padding: 35px 30px;
+    }
+
+    .login-card h2 {
+        font-size: 30px;
+    }
+}
+
+
+@media (max-width: 760px) {
+
+    .login-shell {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .login-intro {
+        padding: 26px 22px 30px;
+    }
+
+    .login-intro::before,
+    body.light-mode .login-intro::before {
+        width: 650px;
+        height: 650px;
+
+        left: -420px;
+    }
+
+    .login-area {
+        padding: 50px 16px 35px;
+    }
+
+    .login-card,
+    body.light-mode .login-card {
+        max-width: 570px;
+        padding: 30px 24px;
+    }
+
+    .login-card h2 {
+        font-size: 29px;
+    }
+}
+
+
+/* ==========================================
+   15. SMANJENO KRETANJE
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .login-area::before,
+    .login-area::after {
+        animation: none;
+    }
+}
