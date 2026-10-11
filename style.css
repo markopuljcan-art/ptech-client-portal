@@ -3198,7 +3198,11 @@ body.light-mode .materials-cancel {
     }
 
 }
+/* Ukloni emoji koji maše pokraj pozdrava */
 
+.welcome h2::after {
+    content: none !important;
+}
 /* -----------------------------------------------------
    21. ACCESSIBILITY
    ----------------------------------------------------- */
