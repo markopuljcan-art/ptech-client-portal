@@ -1,2047 +1,458 @@
 
-/* =========================================
+/* ==========================================
    PTECH DIGITAL CLIENT PORTAL
-   COMPLETE SCRIPT.JS
-========================================= */
+   DASHBOARD OVERVIEW
+   Nedavne poruke + Korisni dokumenti
+========================================== */
 
-const SUPABASE_URL =
-    "https://agivwsbczzvvuzszcvxz.supabase.co";
+(() => {
+    "use strict";
 
-const SUPABASE_KEY =
-    "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
+    const SUPABASE_URL =
+        "https://agivwsbczzvvuzszcvxz.supabase.co";
 
-const supabaseClient = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
+    const SUPABASE_KEY =
+        "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
 
-/* =========================================
-   GLOBAL
-========================================= */
-
-let projects = [];
-let activeProjectIndex = 0;
-let currentSession = null;
-let currentUserName = "Klijent";
-let supportRealtimeChannel = null;
-let actionUpdateToken = 0;
-
-let materialsBusy = false;
-let materialsProject = null;
-let materialsSelectedFiles = [];
-let materialsPreviousFocus = null;
-
-const MATERIALS_BUCKET = "project-materials";
-const MATERIALS_MAX_FILES = 10;
-const MATERIALS_MAX_FILE_SIZE = 10 * 1024 * 1024;
-
-const MATERIALS_ALLOWED_EXTENSIONS = new Set([
-    "jpg",
-    "jpeg",
-    "png",
-    "gif",
-    "webp",
-    "svg",
-    "avif",
-    "heic",
-    "heif",
-    "pdf",
-    "doc",
-    "docx",
-    "xls",
-    "xlsx",
-    "ppt",
-    "pptx",
-    "zip",
-    "txt"
-]);
-
-/* =========================================
-   ELEMENTS
-========================================= */
-
-const projectsSlider =
-    document.getElementById("projectsSlider");
-
-const sliderDots =
-    document.getElementById("sliderDots");
-
-const currentProject =
-    document.getElementById("currentProject");
-
-const totalProjects =
-    document.getElementById("totalProjects");
-
-const userTop =
-    document.getElementById("userTop");
-
-const userGreeting =
-    document.getElementById("userGreeting");
-
-const logoutButton =
-    document.getElementById("logoutButton");
-
-const themeToggle =
-    document.getElementById("themeToggle");
-
-const approveDesignAction =
-    document.getElementById("approveDesignAction");
-
-const revisionAction =
-    document.getElementById("revisionAction");
-
-const revisionActionText =
-    document.getElementById("revisionActionText");
-
-const actionsProjectLabel =
-    document.getElementById("actionsProjectLabel");
-
-const messagesUnreadBadge =
-    document.getElementById("messagesUnreadBadge");
-
-/* MATERIALS */
-
-const materialsAction =
-    document.getElementById("materialsAction");
-
-const materialsActionText =
-    document.getElementById("materialsActionText");
-
-const materialsOverlay =
-    document.getElementById("materialsOverlay");
-
-const materialsForm =
-    document.getElementById("materialsForm");
-
-const materialsFiles =
-    document.getElementById("materialsFiles");
-
-const materialsFileList =
-    document.getElementById("materialsFileList");
-
-const materialsProjectName =
-    document.getElementById("materialsProjectName");
-
-const materialsStatus =
-    document.getElementById("materialsStatus");
-
-const materialsSubmit =
-    document.getElementById("materialsSubmit");
-
-const materialsClose =
-    document.getElementById("materialsClose");
-
-const materialsCancel =
-    document.getElementById("materialsCancel");
-
-const materialsDropzone =
-    document.getElementById("materialsDropzone");
-
-/* =========================================
-   HELPERS
-========================================= */
-
-function escapeHTML(value) {
-    return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-}
-
-function formatDate(value) {
-    if (!value) return "-";
-
-    const raw = String(value).slice(0, 10);
-    const date = new Date(raw + "T00:00:00");
-
-    if (Number.isNaN(date.getTime())) {
-        return "-";
-    }
-
-    return date.toLocaleDateString("hr-HR", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric"
-    });
-}
-
-function formatFileSize(bytes) {
-    if (bytes < 1024) {
-        return `${bytes} B`;
-    }
-
-    if (bytes < 1024 * 1024) {
-        return `${(bytes / 1024).toFixed(1)} KB`;
-    }
-
-    return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
-}
-
-function getActiveProject() {
-    return projects[activeProjectIndex] || null;
-}
-
-function getProjectLabel(project) {
-    return (
-        project?.type ||
-        project?.name ||
-        "Projekt"
-    );
-}
-
-function getStatusClass(status) {
-    const value = String(status || "")
-        .trim()
-        .toLowerCase();
-
-    if (
-        value === "završeno" ||
-        value === "zavrseno"
-    ) {
-        return "status-done";
-    }
-
-    if (
-        value === "na čekanju" ||
-        value === "na cekanju"
-    ) {
-        return "status-waiting";
-    }
-
-    return "status-progress";
-}
-
-/* =========================================
-   THEME
-========================================= */
-
-function applyTheme(theme) {
-    const finalTheme =
-        theme === "light" ? "light" : "dark";
-
-    document.body.classList.toggle(
-        "light-mode",
-        finalTheme === "light"
+    const db = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
     );
 
-    if (themeToggle) {
-        themeToggle.checked =
-            finalTheme === "light";
+    const messagesContainer =
+        document.getElementById("recentMessagesList");
+
+    const documentsContainer =
+        document.getElementById("recentDocumentsList");
+
+    let signedInUser = null;
+    let realtimeChannel = null;
+
+    /* ======================================
+       POMOĆNE FUNKCIJE
+    ====================================== */
+
+    function escapeHtml(value) {
+        return String(value ?? "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
     }
 
-    localStorage.setItem(
-        "theme",
-        finalTheme
-    );
-}
+    function formatDate(value) {
+        if (!value) return "-";
 
-function loadTheme() {
-    const savedTheme =
-        localStorage.getItem("theme");
+        const date = new Date(value);
 
-    applyTheme(
-        savedTheme === "light"
-            ? "light"
-            : "dark"
-    );
-}
-
-themeToggle?.addEventListener(
-    "change",
-    function () {
-        applyTheme(
-            themeToggle.checked
-                ? "light"
-                : "dark"
-        );
-    }
-);
-
-loadTheme();
-
-/* =========================================
-   LATEST PROJECT UPDATE
-========================================= */
-
-async function loadLatestUpdate(
-    projectId,
-    element
-) {
-    if (!projectId || !element) return;
-
-    const { data, error } =
-        await supabaseClient
-            .from("activities")
-            .select("activity_date")
-            .eq("project_id", projectId)
-            .not("activity_date", "is", null)
-            .order("activity_date", {
-                ascending: false
-            })
-            .limit(1);
-
-    if (error) {
-        console.error(
-            "Greška kod zadnjeg ažuriranja:",
-            error
-        );
-
-        element.textContent = "-";
-        return;
-    }
-
-    if (!data || data.length === 0) {
-        element.textContent = "-";
-        return;
-    }
-
-    element.textContent =
-        formatDate(data[0].activity_date);
-}
-
-/* =========================================
-   MATERIALS BUTTON STATE
-========================================= */
-
-function updateMaterialsAction() {
-    if (!materialsAction) return;
-
-    const available =
-        Boolean(currentSession) &&
-        Boolean(getActiveProject()) &&
-        !materialsBusy;
-
-    materialsAction.disabled = !available;
-
-    materialsAction.setAttribute(
-        "aria-disabled",
-        String(!available)
-    );
-
-    if (materialsActionText) {
-        if (materialsBusy) {
-            materialsActionText.textContent =
-                "Slanje u tijeku";
-        } else if (!available) {
-            materialsActionText.textContent =
-                "Nema projekta";
-        } else {
-            materialsActionText.textContent =
-                "Učitaj datoteke";
-        }
-    }
-}
-
-/* =========================================
-   PROJECT ACTIONS
-========================================= */
-
-async function updateProjectActions() {
-    const token = ++actionUpdateToken;
-    const project = getActiveProject();
-
-    updateMaterialsAction();
-
-    if (!project) {
-        if (approveDesignAction) {
-            approveDesignAction.href = "#";
-
-            approveDesignAction.setAttribute(
-                "aria-disabled",
-                "true"
-            );
+        if (Number.isNaN(date.getTime())) {
+            return "-";
         }
 
-        if (revisionAction) {
-            revisionAction.href = "#";
+        return date.toLocaleDateString("hr-HR", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        });
+    }
 
-            revisionAction.setAttribute(
-                "aria-disabled",
-                "true"
-            );
+    function formatSize(value) {
+        const bytes = Number(value || 0);
+
+        if (!bytes) return "";
+
+        if (bytes < 1024) {
+            return `${bytes} B`;
         }
 
-        if (revisionActionText) {
-            revisionActionText.textContent =
-                "Nema dizajna";
+        if (bytes < 1024 * 1024) {
+            return `${(bytes / 1024).toFixed(1)} KB`;
         }
 
-        if (actionsProjectLabel) {
-            actionsProjectLabel.textContent =
-                "Trenutno nema dostupnog projekta.";
+        return `${(
+            bytes / (1024 * 1024)
+        ).toFixed(1)} MB`;
+    }
+
+    function showEmpty(container, message) {
+        if (!container) return;
+
+        container.replaceChildren();
+
+        const paragraph =
+            document.createElement("p");
+
+        paragraph.className = "overview-empty";
+        paragraph.textContent = message;
+
+        container.appendChild(paragraph);
+    }
+
+    function fileLabel(name) {
+        const extension = String(name || "")
+            .split(".")
+            .pop()
+            .toUpperCase();
+
+        if (
+            extension.length > 0 &&
+            extension.length <= 4
+        ) {
+            return extension;
         }
 
-        return;
+        return "FILE";
     }
 
-    if (actionsProjectLabel) {
-        actionsProjectLabel.textContent =
-            `Akcije za: ${getProjectLabel(project)}`;
-    }
+    /* ======================================
+       NEDAVNE PORUKE
+    ====================================== */
 
-    /* APPROVE */
+    async function loadRecentMessages() {
+        if (!messagesContainer || !signedInUser) {
+            return;
+        }
 
-    if (approveDesignAction) {
-        approveDesignAction.href =
-            `approve.html?id=${encodeURIComponent(project.id)}`;
-
-        approveDesignAction.removeAttribute(
-            "aria-disabled"
-        );
-    }
-
-    /* REVISION - LOADING */
-
-    if (revisionAction) {
-        revisionAction.href = "#";
-
-        revisionAction.setAttribute(
-            "aria-disabled",
-            "true"
-        );
-    }
-
-    if (revisionActionText) {
-        revisionActionText.textContent =
-            "Provjeravam...";
-    }
-
-    /* LATEST DESIGN */
-
-    const { data, error } =
-        await supabaseClient
-            .from("project_designs")
-            .select("id, project_id, created_at")
-            .eq("project_id", project.id)
+        const { data, error } = await db
+            .from("support_messages")
+            .select("*")
+            .eq("user_id", signedInUser.id)
             .order("created_at", {
                 ascending: false
             })
-            .limit(1);
+            .limit(3);
 
-    if (token !== actionUpdateToken) {
-        return;
-    }
-
-    if (error || !data || data.length === 0) {
         if (error) {
             console.error(
-                "Greška kod provjere dizajna:",
+                "Greška kod nedavnih poruka:",
                 error
             );
-        }
 
-        if (revisionAction) {
-            revisionAction.href = "#";
-
-            revisionAction.setAttribute(
-                "aria-disabled",
-                "true"
+            showEmpty(
+                messagesContainer,
+                "Poruke trenutno nisu dostupne."
             );
+
+            return;
         }
 
-        if (revisionActionText) {
-            revisionActionText.textContent =
-                "Nema dizajna";
+        if (!data || data.length === 0) {
+            showEmpty(
+                messagesContainer,
+                "Trenutno nema poruka."
+            );
+
+            return;
         }
 
-        return;
-    }
+        messagesContainer.innerHTML =
+            data.map(message => {
+                const isAdmin =
+                    message.sender_role === "admin";
 
-    const design = data[0];
+                const sender = isAdmin
+                    ? "PTech Digital"
+                    : "Vi";
 
-    if (revisionAction) {
-        revisionAction.href =
-            `revision.html?id=${encodeURIComponent(project.id)}` +
-            `&design=${encodeURIComponent(design.id)}`;
+                const content =
+                    message.message ??
+                    message.content ??
+                    message.body ??
+                    "Poruka";
 
-        revisionAction.removeAttribute(
-            "aria-disabled"
-        );
-    }
+                const unread =
+                    isAdmin &&
+                    !message.client_read_at;
 
-    if (revisionActionText) {
-        revisionActionText.textContent =
-            "Nova izmjena";
-    }
-}
-
-/* =========================================
-   PREVENT DISABLED LINKS
-========================================= */
-
-revisionAction?.addEventListener(
-    "click",
-    function (event) {
-        if (
-            revisionAction.getAttribute(
-                "aria-disabled"
-            ) === "true"
-        ) {
-            event.preventDefault();
-        }
-    }
-);
-
-approveDesignAction?.addEventListener(
-    "click",
-    function (event) {
-        if (
-            approveDesignAction.getAttribute(
-                "aria-disabled"
-            ) === "true"
-        ) {
-            event.preventDefault();
-        }
-    }
-);
-
-/* =========================================
-   RENDER PROJECTS
-========================================= */
-
-function renderProjects() {
-    if (
-        !projectsSlider ||
-        !sliderDots ||
-        !currentProject ||
-        !totalProjects
-    ) {
-        return;
-    }
-
-    projectsSlider.innerHTML = "";
-    sliderDots.innerHTML = "";
-
-    totalProjects.textContent =
-        String(projects.length);
-
-    if (projects.length === 0) {
-        activeProjectIndex = 0;
-        currentProject.textContent = "0";
-
-        projectsSlider.innerHTML = `
-            <div class="no-projects">
-                Trenutno nema aktivnih projekata.
-            </div>
-        `;
-
-        updateProjectActions();
-        return;
-    }
-
-    projects.forEach(function (project, index) {
-        const statusClass =
-            getStatusClass(project.status);
-
-        const progress = Math.max(
-            0,
-            Math.min(
-                100,
-                Number(project.progress) || 0
-            )
-        );
-
-        const slide =
-            document.createElement("div");
-
-        slide.className = "project-slide";
-
-        slide.innerHTML = `
-            <a
-                class="project-card project-card-link"
-                href="project.html?id=${encodeURIComponent(project.id)}"
-            >
-                <div class="project-heading">
-
-                    <div class="project-main">
-
-                        <div class="project-icon">
-                            <svg viewBox="0 0 24 24">
-                                <rect
-                                    x="3"
-                                    y="4"
-                                    width="18"
-                                    height="13"
-                                    rx="2"
-                                ></rect>
-                                <path d="M8 21h8"></path>
-                                <path d="M12 17v4"></path>
-                            </svg>
-                        </div>
-
-                        <div class="project-title-wrap">
-                            <h3>
-                                ${escapeHTML(project.type || "Projekt")}
-                            </h3>
-                            <p>
-                                ${escapeHTML(project.name || "")}
-                            </p>
-                        </div>
-
-                    </div>
-
-                    <div class="project-heading-right">
-
-                        <span class="status-badge ${statusClass}">
-                            ${escapeHTML(project.status || "-")}
+                return `
+                    <a
+                        href="messages.html"
+                        class="overview-row"
+                    >
+                        <span class="overview-avatar">
+                            ${isAdmin ? "P" : "V"}
                         </span>
 
-                        <span
-                            class="project-open-arrow"
-                            aria-hidden="true"
-                        >
-                            &gt;
-                        </span>
-
-                    </div>
-                </div>
-
-                <div class="project-stats">
-
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <svg viewBox="0 0 24 24">
-                                <rect
-                                    x="3"
-                                    y="7"
-                                    width="18"
-                                    height="13"
-                                    rx="2"
-                                ></rect>
-                                <path d="M8 7V5"></path>
-                                <path d="M16 7V5"></path>
-                                <path d="M8 5h8"></path>
-                            </svg>
-                        </div>
-
-                        <div>
-                            <span class="stat-label">
-                                Paket
-                            </span>
-                            <strong class="package-name">
-                                ${escapeHTML(project.package || "-")}
-                            </strong>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M5 20V12"></path>
-                                <path d="M10 20V7"></path>
-                                <path d="M15 20V4"></path>
-                                <path d="M20 20V10"></path>
-                            </svg>
-                        </div>
-
-                        <div class="progress-info">
-                            <span class="stat-label">
-                                Napredak
-                            </span>
-
-                            <div class="progress-row">
-                                <div class="progress-container">
-                                    <div
-                                        class="progress-bar"
-                                        style="width: ${progress}%"
-                                    ></div>
-                                </div>
-
-                                <strong>${progress}%</strong>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <svg viewBox="0 0 24 24">
-                                <rect
-                                    x="3"
-                                    y="5"
-                                    width="18"
-                                    height="16"
-                                    rx="2"
-                                ></rect>
-                                <path d="M8 3v4"></path>
-                                <path d="M16 3v4"></path>
-                                <path d="M3 10h18"></path>
-                            </svg>
-                        </div>
-
-                        <div>
-                            <span class="stat-label">
-                                Rok
-                            </span>
+                        <span class="overview-row-main">
                             <strong>
-                                ${formatDate(project.deadline)}
+                                ${escapeHtml(sender)}
+                                ${unread ? "•" : ""}
                             </strong>
-                        </div>
-                    </div>
 
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path
-                                    d="M20 11a8 8 0 1 1-2.34-5.66"
-                                ></path>
-                                <path d="M20 4v7h-7"></path>
-                            </svg>
-                        </div>
+                            <small>
+                                ${escapeHtml(content)}
+                            </small>
+                        </span>
 
-                        <div>
-                            <span class="stat-label">
-                                Zadnje ažurirano
-                            </span>
-
-                            <strong class="latest-update">
-                                -
-                            </strong>
-                        </div>
-                    </div>
-
-                </div>
-            </a>
-        `;
-
-        projectsSlider.appendChild(slide);
-
-        const latestUpdate =
-            slide.querySelector(".latest-update");
-
-        loadLatestUpdate(
-            project.id,
-            latestUpdate
-        );
-
-        const dot =
-            document.createElement("button");
-
-        dot.type = "button";
-        dot.className = "slider-dot";
-
-        dot.setAttribute(
-            "aria-label",
-            `Prikaži projekt ${index + 1}`
-        );
-
-        if (index === 0) {
-            dot.classList.add("active");
-        }
-
-        dot.addEventListener(
-            "click",
-            function () {
-                const slides =
-                    projectsSlider.querySelectorAll(
-                        ".project-slide"
-                    );
-
-                const targetSlide = slides[index];
-
-                if (!targetSlide) return;
-
-                projectsSlider.scrollTo({
-                    left: targetSlide.offsetLeft,
-                    behavior: "smooth"
-                });
-            }
-        );
-
-        sliderDots.appendChild(dot);
-    });
-
-    activeProjectIndex = 0;
-    currentProject.textContent = "1";
-
-    updateProjectActions();
-}
-
-/* =========================================
-   PROJECT SLIDER
-========================================= */
-
-function setupProjectSlider() {
-    if (!projectsSlider || !currentProject) {
-        return;
+                        <time class="overview-row-date">
+                            ${formatDate(
+                                message.created_at
+                            )}
+                        </time>
+                    </a>
+                `;
+            }).join("");
     }
 
-    let scrollTimeout;
+    /* ======================================
+       KORISNI DOKUMENTI
+    ====================================== */
 
-    projectsSlider.addEventListener(
-        "scroll",
-        function () {
-            clearTimeout(scrollTimeout);
+    async function loadRecentDocuments() {
+        if (!documentsContainer || !signedInUser) {
+            return;
+        }
 
-            scrollTimeout = setTimeout(
-                function () {
-                    if (projects.length === 0) {
-                        return;
-                    }
+        /* Učitaj samo projekte korisnika */
 
-                    const slides = Array.from(
-                        projectsSlider.querySelectorAll(
-                            ".project-slide"
-                        )
-                    );
+        const {
+            data: userProjects,
+            error: projectsError
+        } = await db
+            .from("projects")
+            .select("id")
+            .eq("user_id", signedInUser.id);
 
-                    if (slides.length === 0) {
-                        return;
-                    }
-
-                    let index = 0;
-                    let smallestDistance = Infinity;
-
-                    slides.forEach(function (
-                        slide,
-                        slideIndex
-                    ) {
-                        const distance = Math.abs(
-                            projectsSlider.scrollLeft -
-                            slide.offsetLeft
-                        );
-
-                        if (distance < smallestDistance) {
-                            smallestDistance = distance;
-                            index = slideIndex;
-                        }
-                    });
-
-                    if (activeProjectIndex !== index) {
-                        activeProjectIndex = index;
-                        updateProjectActions();
-                    }
-
-                    currentProject.textContent =
-                        String(index + 1);
-
-                    const dots =
-                        sliderDots?.querySelectorAll(
-                            ".slider-dot"
-                        ) || [];
-
-                    dots.forEach(function (
-                        dot,
-                        dotIndex
-                    ) {
-                        dot.classList.toggle(
-                            "active",
-                            dotIndex === index
-                        );
-                    });
-                },
-                100
+        if (projectsError) {
+            console.error(
+                "Greška kod projekata:",
+                projectsError
             );
+
+            showEmpty(
+                documentsContainer,
+                "Dokumenti trenutno nisu dostupni."
+            );
+
+            return;
         }
-    );
-}
 
-/* =========================================
-   UNREAD SUPPORT MESSAGES
-========================================= */
+        const projectIds =
+            (userProjects || []).map(
+                project => project.id
+            );
 
-async function loadMessagesUnreadCount(userId) {
-    if (!messagesUnreadBadge || !userId) {
-        return;
-    }
+        if (projectIds.length === 0) {
+            showEmpty(
+                documentsContainer,
+                "Trenutno nema dokumenata."
+            );
 
-    const { count, error } =
-        await supabaseClient
-            .from("support_messages")
-            .select("id", {
-                count: "exact",
-                head: true
+            return;
+        }
+
+        /* Dokumenti iz postojeće tablice */
+
+        const { data, error } = await db
+            .from("project_documents")
+            .select(`
+                id,
+                name,
+                created_at,
+                project_id,
+                file_size
+            `)
+            .in("project_id", projectIds)
+            .order("created_at", {
+                ascending: false
             })
-            .eq("user_id", userId)
-            .eq("sender_role", "admin")
-            .is("client_read_at", null);
+            .limit(3);
 
-    if (error) {
-        console.error(
-            "Greška kod brojanja poruka:",
-            error
-        );
-        return;
+        if (error) {
+            console.error(
+                "Greška kod dokumenata:",
+                error
+            );
+
+            showEmpty(
+                documentsContainer,
+                "Dokumenti trenutno nisu dostupni."
+            );
+
+            return;
+        }
+
+        if (!data || data.length === 0) {
+            showEmpty(
+                documentsContainer,
+                "Trenutno nema dokumenata."
+            );
+
+            return;
+        }
+
+        documentsContainer.innerHTML =
+            data.map(item => {
+                const name =
+                    item.name || "Dokument";
+
+                const size =
+                    formatSize(item.file_size);
+
+                return `
+                    <div class="overview-row">
+                        <span class="overview-file-icon">
+                            ${escapeHtml(
+                                fileLabel(name)
+                            )}
+                        </span>
+
+                        <span class="overview-row-main">
+                            <strong>
+                                ${escapeHtml(name)}
+                            </strong>
+
+                            <small>
+                                ${escapeHtml(size)}
+                            </small>
+                        </span>
+
+                        <time class="overview-row-date">
+                            ${formatDate(
+                                item.created_at
+                            )}
+                        </time>
+
+                        <a
+                            class="overview-download"
+                            href="documents.html"
+                            aria-label="Otvori dokumente"
+                            title="Otvori dokumente"
+                        >
+                            &darr;
+                        </a>
+                    </div>
+                `;
+            }).join("");
     }
 
-    const unreadCount = count || 0;
+    /* ======================================
+       OSVJEŽAVANJE
+    ====================================== */
 
-    if (unreadCount > 0) {
-        messagesUnreadBadge.hidden = false;
+    async function refreshOverview() {
+        if (!signedInUser) return;
 
-        messagesUnreadBadge.textContent =
-            unreadCount > 99
-                ? "99+"
-                : String(unreadCount);
-    } else {
-        messagesUnreadBadge.hidden = true;
-        messagesUnreadBadge.textContent = "0";
-    }
-}
-
-/* =========================================
-   SUPPORT REALTIME
-========================================= */
-
-function subscribeToSupportRealtime(userId) {
-    if (!userId || supportRealtimeChannel) {
-        return;
+        await Promise.all([
+            loadRecentMessages(),
+            loadRecentDocuments()
+        ]);
     }
 
-    supportRealtimeChannel =
-        supabaseClient
-            .channel(`home-support-${userId}`)
+    /* ======================================
+       REALTIME PORUKE
+    ====================================== */
+
+    function subscribeToMessages() {
+        if (!signedInUser || realtimeChannel) {
+            return;
+        }
+
+        realtimeChannel = db
+            .channel(
+                `dashboard-overview-${signedInUser.id}`
+            )
             .on(
                 "postgres_changes",
                 {
                     event: "*",
                     schema: "public",
                     table: "support_messages",
-                    filter: `user_id=eq.${userId}`
+                    filter:
+                        `user_id=eq.${signedInUser.id}`
                 },
-                async function () {
-                    await loadMessagesUnreadCount(
-                        userId
-                    );
+                () => {
+                    loadRecentMessages();
                 }
             )
             .subscribe();
-}
-
-/* =========================================
-   MATERIALS - NAME SANITIZATION
-========================================= */
-
-/*
-   Storage path:
-
-   ime-klijenta--USER_UUID/
-       projekt-PROJECT_ID/
-           naziv-JEDINSTVENI_ID.ext
-
-   Prvi folder mora sadrzavati "--"
-   prije korisnickog UUID-a jer to
-   provjeravaju Supabase RLS pravila.
-*/
-
-function sanitizeMaterialsFolderName(value) {
-    const normalized = String(value || "klijent")
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase()
-        .replace(/đ/g, "d")
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/-+/g, "-")
-        .replace(/^-|-$/g, "")
-        .slice(0, 60)
-        .replace(/-$/g, "");
-
-    return normalized || "klijent";
-}
-
-function sanitizeMaterialsFileName(value) {
-    const raw = String(value || "datoteka");
-
-    const lastDot = raw.lastIndexOf(".");
-
-    const base = lastDot > 0
-        ? raw.slice(0, lastDot)
-        : raw;
-
-    return (
-        sanitizeMaterialsFolderName(base)
-            .slice(0, 65) ||
-        "datoteka"
-    );
-}
-
-function getMaterialsExtension(fileName) {
-    const name = String(fileName || "");
-    const index = name.lastIndexOf(".");
-
-    if (index < 0) return "";
-
-    return name.slice(index + 1).toLowerCase();
-}
-
-function createMaterialsUniqueId() {
-    if (
-        typeof crypto !== "undefined" &&
-        typeof crypto.randomUUID === "function"
-    ) {
-        return crypto.randomUUID();
     }
 
-    const randomValues = new Uint8Array(16);
-    crypto.getRandomValues(randomValues);
+    /* ======================================
+       POKRETANJE
+    ====================================== */
 
-    return Array.from(randomValues)
-        .map(value =>
-            value.toString(16).padStart(2, "0")
-        )
-        .join("");
-}
-
-function buildMaterialsStoragePath(
-    userId,
-    projectId,
-    file
-) {
-    const clientFolder =
-        sanitizeMaterialsFolderName(
-            currentUserName
-        );
-
-    const projectNumber = Number(projectId);
-
-    if (
-        !Number.isSafeInteger(projectNumber) ||
-        projectNumber <= 0
-    ) {
-        throw new Error(
-            "Neispravan broj projekta."
-        );
-    }
-
-    const extension =
-        getMaterialsExtension(file.name);
-
-    const safeName =
-        sanitizeMaterialsFileName(file.name);
-
-    const uniqueId =
-        createMaterialsUniqueId();
-
-    const fileName =
-        `${safeName}-${uniqueId}.${extension}`;
-
-    return (
-        `${clientFolder}--${userId}/` +
-        `projekt-${projectNumber}/` +
-        fileName
-    );
-}
-
-/* =========================================
-   MATERIALS - STATUS
-========================================= */
-
-function materialsSetStatus(
-    message,
-    type = ""
-) {
-    if (!materialsStatus) return;
-
-    materialsStatus.textContent = message;
-
-    materialsStatus.classList.remove(
-        "success",
-        "error"
-    );
-
-    if (type) {
-        materialsStatus.classList.add(type);
-    }
-}
-
-function materialsSetBusy(busy) {
-    materialsBusy = Boolean(busy);
-
-    if (materialsSubmit) {
-        materialsSubmit.disabled =
-            materialsBusy;
-
-        materialsSubmit.textContent =
-            materialsBusy
-                ? "Slanje u tijeku..."
-                : "Pošalji materijale";
-    }
-
-    if (materialsClose) {
-        materialsClose.disabled =
-            materialsBusy;
-    }
-
-    if (materialsCancel) {
-        materialsCancel.disabled =
-            materialsBusy;
-    }
-
-    if (materialsFiles) {
-        materialsFiles.disabled =
-            materialsBusy;
-    }
-
-    updateMaterialsAction();
-}
-
-/* =========================================
-   MATERIALS - FILE VALIDATION
-========================================= */
-
-function validateMaterialsFiles(files) {
-    if (!files.length) {
-        return "Odaberi barem jednu datoteku.";
-    }
-
-    if (files.length > MATERIALS_MAX_FILES) {
-        return (
-            `Možeš poslati najviše ` +
-            `${MATERIALS_MAX_FILES} datoteka odjednom.`
-        );
-    }
-
-    for (const file of files) {
-        if (file.size === 0) {
-            return (
-                `Datoteka "${file.name}" je prazna.`
-            );
-        }
-
-        if (file.size > MATERIALS_MAX_FILE_SIZE) {
-            return (
-                `Datoteka "${file.name}" je prevelika. ` +
-                `Najviše 10 MB po datoteci.`
-            );
-        }
-
-        const extension =
-            getMaterialsExtension(file.name);
-
+    async function startOverview() {
         if (
-            !MATERIALS_ALLOWED_EXTENSIONS.has(
-                extension
-            )
+            !messagesContainer &&
+            !documentsContainer
         ) {
-            return (
-                `Vrsta datoteke "${file.name}" ` +
-                `nije podržana.`
-            );
-        }
-    }
-
-    return null;
-}
-
-/* =========================================
-   MATERIALS - FILE LIST
-========================================= */
-
-function renderMaterialsFileList() {
-    if (!materialsFileList) return;
-
-    materialsFileList.replaceChildren();
-
-    if (materialsSelectedFiles.length === 0) {
-        return;
-    }
-
-    materialsSelectedFiles.forEach(
-        function (file, index) {
-            const item =
-                document.createElement("div");
-
-            item.className =
-                "materials-file-item";
-
-            const fileName =
-                document.createElement("strong");
-
-            fileName.textContent =
-                `${index + 1}. ${file.name}`;
-
-            const fileSize =
-                document.createElement("span");
-
-            fileSize.textContent =
-                ` · ${formatFileSize(file.size)}`;
-
-            item.appendChild(fileName);
-            item.appendChild(fileSize);
-
-            materialsFileList.appendChild(item);
-        }
-    );
-}
-
-function setMaterialsSelectedFiles(files) {
-    if (materialsBusy) return;
-
-    materialsSelectedFiles =
-        Array.from(files || []);
-
-    renderMaterialsFileList();
-
-    const validationError =
-        validateMaterialsFiles(
-            materialsSelectedFiles
-        );
-
-    if (materialsSelectedFiles.length === 0) {
-        materialsSetStatus("");
-        return;
-    }
-
-    if (validationError) {
-        materialsSetStatus(
-            validationError,
-            "error"
-        );
-    } else {
-        materialsSetStatus(
-            `Odabrano datoteka: ` +
-            `${materialsSelectedFiles.length}`
-        );
-    }
-}
-
-/* =========================================
-   MATERIALS - OPEN MODAL
-========================================= */
-
-function openMaterialsModal() {
-    const project = getActiveProject();
-
-    if (
-        !materialsOverlay ||
-        !materialsForm
-    ) {
-        console.error(
-            "Prozor za materijale nije pronađen."
-        );
-        return;
-    }
-
-    if (!currentSession) {
-        alert("Moraš biti prijavljen.");
-        return;
-    }
-
-    if (!project) {
-        alert("Prvo odaberi projekt.");
-        return;
-    }
-
-    if (materialsBusy) return;
-
-    materialsProject = {
-        id: project.id,
-        name: project.name,
-        type: project.type
-    };
-
-    materialsPreviousFocus =
-        document.activeElement;
-
-    if (materialsProjectName) {
-        materialsProjectName.textContent =
-            `${getProjectLabel(project)}` +
-            ` · ${project.name || "Projekt"}` +
-            ` · Projekt #${project.id}`;
-    }
-
-    materialsForm.reset();
-
-    materialsSelectedFiles = [];
-    renderMaterialsFileList();
-
-    materialsSetStatus("");
-
-    materialsOverlay.hidden = false;
-
-    document.body.classList.add(
-        "materials-modal-open"
-    );
-
-    materialsClose?.focus();
-}
-
-/* =========================================
-   MATERIALS - CLOSE MODAL
-========================================= */
-
-function closeMaterialsModal() {
-    if (!materialsOverlay || materialsBusy) {
-        return;
-    }
-
-    materialsOverlay.hidden = true;
-
-    document.body.classList.remove(
-        "materials-modal-open"
-    );
-
-    materialsProject = null;
-    materialsSelectedFiles = [];
-
-    if (materialsForm) {
-        materialsForm.reset();
-    }
-
-    renderMaterialsFileList();
-    materialsSetStatus("");
-
-    if (
-        materialsPreviousFocus &&
-        typeof materialsPreviousFocus.focus ===
-            "function"
-    ) {
-        materialsPreviousFocus.focus();
-    }
-}
-
-/* =========================================
-   MATERIALS - EVENTS
-========================================= */
-
-materialsAction?.addEventListener(
-    "click",
-    function () {
-        if (!materialsAction.disabled) {
-            openMaterialsModal();
-        }
-    }
-);
-
-materialsClose?.addEventListener(
-    "click",
-    closeMaterialsModal
-);
-
-materialsCancel?.addEventListener(
-    "click",
-    closeMaterialsModal
-);
-
-materialsOverlay?.addEventListener(
-    "click",
-    function (event) {
-        if (event.target === materialsOverlay) {
-            closeMaterialsModal();
-        }
-    }
-);
-
-document.addEventListener(
-    "keydown",
-    function (event) {
-        if (
-            event.key === "Escape" &&
-            materialsOverlay &&
-            !materialsOverlay.hidden
-        ) {
-            closeMaterialsModal();
-        }
-    }
-);
-
-materialsFiles?.addEventListener(
-    "change",
-    function () {
-        setMaterialsSelectedFiles(
-            materialsFiles.files
-        );
-    }
-);
-
-/* =========================================
-   MATERIALS - DRAG AND DROP
-========================================= */
-
-if (materialsDropzone) {
-    materialsDropzone.addEventListener(
-        "dragover",
-        function (event) {
-            event.preventDefault();
-
-            if (!materialsBusy) {
-                materialsDropzone.classList.add(
-                    "dragover"
-                );
-            }
-        }
-    );
-
-    materialsDropzone.addEventListener(
-        "dragleave",
-        function () {
-            materialsDropzone.classList.remove(
-                "dragover"
-            );
-        }
-    );
-
-    materialsDropzone.addEventListener(
-        "drop",
-        function (event) {
-            event.preventDefault();
-
-            materialsDropzone.classList.remove(
-                "dragover"
-            );
-
-            if (materialsBusy) return;
-
-            const files =
-                event.dataTransfer?.files;
-
-            if (files && files.length > 0) {
-                /*
-                 * Datoteke cuvamo u vlastitom
-                 * popisu jer file input ne mora
-                 * dopustati programsko postavljanje.
-                 */
-                setMaterialsSelectedFiles(files);
-            }
-        }
-    );
-}
-
-/* =========================================
-   MATERIALS - UPLOAD TO SUPABASE
-========================================= */
-
-materialsForm?.addEventListener(
-    "submit",
-    async function (event) {
-        event.preventDefault();
-
-        if (materialsBusy) return;
-
-        if (!materialsProject) {
-            materialsSetStatus(
-                "Projekt nije odabran.",
-                "error"
-            );
             return;
         }
 
-        const files =
-            [...materialsSelectedFiles];
-
-        const validationError =
-            validateMaterialsFiles(files);
-
-        if (validationError) {
-            materialsSetStatus(
-                validationError,
-                "error"
+        if (!window.supabase) {
+            console.error(
+                "Supabase biblioteka nije učitana."
             );
+
             return;
         }
 
-        materialsSetBusy(true);
+        const {
+            data: { session },
+            error
+        } = await db.auth.getSession();
 
-        let uploadedCount = 0;
+        if (error || !session) {
+            showEmpty(
+                messagesContainer,
+                "Prijavi se za pregled poruka."
+            );
 
-        try {
-            /*
-             * Ponovno provjeravamo korisnika
-             * prije slanja datoteka.
-             */
-            const {
-                data: userData,
-                error: userError
-            } =
-                await supabaseClient.auth.getUser();
+            showEmpty(
+                documentsContainer,
+                "Prijavi se za pregled dokumenata."
+            );
 
+            return;
+        }
+
+        signedInUser = session.user;
+
+        await refreshOverview();
+
+        subscribeToMessages();
+    }
+
+    document.addEventListener(
+        "visibilitychange",
+        () => {
             if (
-                userError ||
-                !userData?.user
+                document.visibilityState === "visible" &&
+                signedInUser
             ) {
-                throw new Error(
-                    "Sesija je istekla. Prijavi se ponovno."
-                );
+                refreshOverview();
             }
+        }
+    );
 
-            const userId =
-                userData.user.id;
+    db.auth.onAuthStateChange(
+        (event, session) => {
+            if (event === "SIGNED_OUT") {
+                signedInUser = null;
 
-            /*
-             * Potvrdimo da projekt pripada
-             * trenutno prijavljenom korisniku.
-             */
-            const {
-                data: ownedProject,
-                error: projectError
-            } =
-                await supabaseClient
-                    .from("projects")
-                    .select("id")
-                    .eq("id", materialsProject.id)
-                    .eq("user_id", userId)
-                    .maybeSingle();
-
-            if (projectError) {
-                throw projectError;
-            }
-
-            if (!ownedProject) {
-                throw new Error(
-                    "Nemaš pristup odabranom projektu."
-                );
-            }
-
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-
-                materialsSetStatus(
-                    `Šaljem datoteku ${i + 1} od ` +
-                    `${files.length}:\n${file.name}`
-                );
-
-                const storagePath =
-                    buildMaterialsStoragePath(
-                        userId,
-                        materialsProject.id,
-                        file
+                if (realtimeChannel) {
+                    db.removeChannel(
+                        realtimeChannel
                     );
 
-                const {
-                    error: uploadError
-                } =
-                    await supabaseClient.storage
-                        .from(MATERIALS_BUCKET)
-                        .upload(
-                            storagePath,
-                            file,
-                            {
-                                upsert: false,
-                                cacheControl: "3600",
-                                contentType:
-                                    file.type ||
-                                    "application/octet-stream"
-                            }
-                        );
-
-                if (uploadError) {
-                    throw new Error(
-                        `Neuspjelo slanje "${file.name}": ` +
-                        uploadError.message
-                    );
+                    realtimeChannel = null;
                 }
 
-                uploadedCount++;
+                showEmpty(
+                    messagesContainer,
+                    "Prijavi se za pregled poruka."
+                );
+
+                showEmpty(
+                    documentsContainer,
+                    "Prijavi se za pregled dokumenata."
+                );
             }
-
-            materialsSetStatus(
-                `Uspješno poslano ${uploadedCount} ` +
-                `od ${files.length} datoteka!\n` +
-                `Materijali su spremljeni uz projekt ` +
-                `#${materialsProject.id}.`,
-                "success"
-            );
-
-            materialsSelectedFiles = [];
-            renderMaterialsFileList();
-
-            if (materialsForm) {
-                materialsForm.reset();
-            }
-        } catch (error) {
-            console.error(
-                "Greška kod slanja materijala:",
-                error
-            );
-
-            let message =
-                error?.message ||
-                "Nepoznata greška.";
-
-            if (
-                /row-level security|policy|403|unauthorized/i
-                    .test(message)
-            ) {
-                message +=
-                    "\nProvjeri Storage RLS pravila " +
-                    "za bucket project-materials.";
-            }
-
-            materialsSetStatus(
-                `Poslano ${uploadedCount} od ` +
-                `${files.length} datoteka.\n` +
-                `Greška: ${message}`,
-                "error"
-            );
-        } finally {
-            materialsSetBusy(false);
         }
-    }
-);
-
-/* =========================================
-   DASHBOARD LOAD
-========================================= */
-
-async function loadDashboard() {
-    const {
-        data: { session },
-        error: sessionError
-    } =
-        await supabaseClient.auth.getSession();
-
-    if (sessionError || !session) {
-        window.location.href =
-            "login.html";
-        return;
-    }
-
-    currentSession = session;
-
-    updateMaterialsAction();
-
-    /* SUPPORT MESSAGES */
-
-    await loadMessagesUnreadCount(
-        session.user.id
     );
 
-    subscribeToSupportRealtime(
-        session.user.id
-    );
-
-    /* PROFILE */
-
-    const {
-        data: profile,
-        error: profileError
-    } =
-        await supabaseClient
-            .from("profiles")
-            .select("display_name")
-            .eq("id", session.user.id)
-            .maybeSingle();
-
-    if (profileError) {
-        console.error(
-            "Greška kod profila:",
-            profileError
-        );
-    }
-
-    const userName =
-        profile?.display_name ||
-        session.user.email?.split("@")[0] ||
-        "Klijent";
-
-    currentUserName = userName;
-
-    if (userTop) {
-        userTop.textContent = userName;
-    }
-
-    if (userGreeting) {
-        userGreeting.textContent = userName;
-    }
-
-    /* PROJECTS */
-
-    const {
-        data,
-        error: projectError
-    } =
-        await supabaseClient
-            .from("projects")
-            .select(`
-                id,
-                type,
-                name,
-                status,
-                progress,
-                deadline,
-                package
-            `)
-            .eq(
-                "user_id",
-                session.user.id
-            );
-
-    if (projectError) {
-        console.error(
-            "Greška kod projekata:",
-            projectError
-        );
-
-        projects = [];
-        renderProjects();
-        return;
-    }
-
-    projects = data || [];
-
-    renderProjects();
-}
-
-/* =========================================
-   LOGOUT
-========================================= */
-
-logoutButton?.addEventListener(
-    "click",
-    async function () {
-        if (materialsBusy) {
-            alert(
-                "Pričekaj završetak slanja materijala."
-            );
-            return;
-        }
-
-        if (supportRealtimeChannel) {
-            await supabaseClient.removeChannel(
-                supportRealtimeChannel
-            );
-
-            supportRealtimeChannel = null;
-        }
-
-        await supabaseClient.auth.signOut();
-
-        window.location.href =
-            "login.html";
-    }
-);
-
-/* =========================================
-   VISIBILITY
-========================================= */
-
-document.addEventListener(
-    "visibilitychange",
-    async function () {
-        if (
-            document.visibilityState === "visible" &&
-            currentSession
-        ) {
-            await loadMessagesUnreadCount(
-                currentSession.user.id
-            );
-        }
-    }
-);
-
-
-// =========================================
-// DESKTOP - STRELICE ZA PROJEKTE
-// =========================================
-
-(function setupDesktopProjectNavigation() {
-
-    const previousButton =
-        document.getElementById("previousProjectButton");
-
-    const nextButton =
-        document.getElementById("nextProjectButton");
-
-    const slider =
-        document.getElementById("projectsSlider");
-
-    if (!previousButton || !nextButton || !slider) {
-        return;
-    }
-
-    function getSlides() {
-        return Array.from(
-            slider.querySelectorAll(".project-slide")
-        );
-    }
-
-    function getCurrentIndex() {
-        const slides = getSlides();
-
-        if (slides.length === 0) {
-            return 0;
-        }
-
-        const sliderCenter =
-            slider.scrollLeft + slider.clientWidth / 2;
-
-        let closestIndex = 0;
-        let smallestDistance = Infinity;
-
-        slides.forEach((slide, index) => {
-
-            const slideCenter =
-                slide.offsetLeft - slider.offsetLeft
-                + slide.offsetWidth / 2;
-
-            const distance =
-                Math.abs(sliderCenter - slideCenter);
-
-            if (distance < smallestDistance) {
-                smallestDistance = distance;
-                closestIndex = index;
-            }
-
-        });
-
-        return closestIndex;
-    }
-
-    function updateButtons() {
-
-        const slides = getSlides();
-        const hasMultipleProjects = slides.length > 1;
-
-        previousButton.hidden = !hasMultipleProjects;
-        nextButton.hidden = !hasMultipleProjects;
-
-        if (!hasMultipleProjects) {
-            return;
-        }
-
-        const currentIndex = getCurrentIndex();
-
-        previousButton.disabled = currentIndex === 0;
-        nextButton.disabled =
-            currentIndex === slides.length - 1;
-    }
-
-    function goToProject(direction) {
-
-        const slides = getSlides();
-
-        if (slides.length < 2) {
-            return;
-        }
-
-        const currentIndex = getCurrentIndex();
-
-        const targetIndex = Math.max(
-            0,
-            Math.min(
-                slides.length - 1,
-                currentIndex + direction
-            )
-        );
-
-        slider.scrollTo({
-            left: slides[targetIndex].offsetLeft
-                - slider.offsetLeft,
-            behavior: "smooth"
-        });
-
-        window.setTimeout(updateButtons, 400);
-    }
-
-    previousButton.addEventListener("click", () => {
-        goToProject(-1);
-    });
-
-    nextButton.addEventListener("click", () => {
-        goToProject(1);
-    });
-
-    slider.addEventListener("scroll", updateButtons, {
-        passive: true
-    });
-
-    const observer = new MutationObserver(updateButtons);
-
-    observer.observe(slider, {
-        childList: true
-    });
-
-    updateButtons();
+    startOverview();
 
 })();
-
-
-/* =========================================
-   DASHBOARD - RECENT MESSAGES & DOCUMENTS
-========================================= */
-
-const recentMessagesList =
-    document.getElementById("recentMessagesList");
-
-const recentDocumentsList =
-    document.getElementById("recentDocumentsList");
-
-function overviewDate(value) {
-    if (!value) return "-";
-
-    const date = new Date(value);
-
-    if (Number.isNaN(date.getTime())) return "-";
-
-    return date.toLocaleDateString("hr-HR", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric"
-    });
-}
-
-function overviewEmpty(element, message) {
-    if (!element) return;
-
-    element.innerHTML = `
-        <p class="overview-empty">
-            ${escapeHTML(message)}
-        </p>
-    `;
-}
-
-async function loadRecentMessages() {
-    if (!recentMessagesList || !currentSession) return;
-
-    const { data, error } = await supabaseClient
-        .from("support_messages")
-        .select("*")
-        .eq("user_id", currentSession.user.id)
-        .order("created_at", { ascending: false })
-        .limit(4);
-
-    if (error) {
-        console.error("Recent messages error:", error);
-        overviewEmpty(
-            recentMessagesList,
-            "Poruke trenutno nisu dostupne."
-        );
-        return;
-    }
-
-    if (!data?.length) {
-        overviewEmpty(
-            recentMessagesList,
-            "Trenutno nema poruka."
-        );
-        return;
-    }
-
-    recentMessagesList.innerHTML = data.map(item => {
-        const fromAdmin = item.sender_role === "admin";
-
-        const sender = fromAdmin
-            ? "PTech Digital"
-            : "Vi";
-
-        const content =
-            item.message ||
-            item.content ||
-            item.body ||
-            "Nova poruka";
-
-        const initial = fromAdmin ? "P" : "V";
-
-        return `
-            <a class="overview-row" href="messages.html">
-                <span class="overview-avatar">
-                    ${initial}
-                </span>
-
-                <span class="overview-row-main">
-                    <strong>${escapeHTML(sender)}</strong>
-                    <small>${escapeHTML(content)}</small>
-                </span>
-
-                <time class="overview-row-date">
-                    ${overviewDate(item.created_at)}
-                </time>
-            </a>
-        `;
-    }).join("");
-}
-
-async function loadRecentDocuments() {
-    if (!recentDocumentsList || !currentSession) return;
-
-    const projectIds = projects.map(project => project.id);
-
-    if (!projectIds.length) {
-        overviewEmpty(
-            recentDocumentsList,
-            "Trenutno nema dokumenata."
-        );
-        return;
-    }
-
-    const { data, error } = await supabaseClient
-        .from("project_documents")
-        .select(
-            "id, name, created_at, project_id, " +
-            "file_url, file_size"
-        )
-        .in("project_id", projectIds)
-        .order("created_at", { ascending: false })
-        .limit(4);
-
-    if (error) {
-        console.error("Recent documents error:", error);
-        overviewEmpty(
-            recentDocumentsList,
-            "Dokumenti trenutno nisu dostupni."
-        );
-        return;
-    }
-
-    if (!data?.length) {
-        overviewEmpty(
-            recentDocumentsList,
-            "Trenutno nema dokumenata."
-        );
-        return;
-    }
-
-    recentDocumentsList.innerHTML = data.map(item => {
-        const extension = String(item.name || "")
-            .split(".")
-            .pop()
-            .toUpperCase();
-
-        const fileType =
-            extension.length <= 4 ? extension : "FILE";
-
-        const size = item.file_size
-            ? formatFileSize(item.file_size)
-            : "";
-
-        return `
-            <div class="overview-row">
-                <span class="overview-file-icon">
-                    ${escapeHTML(fileType)}
-                </span>
-
-                <span class="overview-row-main">
-                    <strong>
-                        ${escapeHTML(item.name || "Dokument")}
-                    </strong>
-
-                    <small>
-                        ${escapeHTML(size)}
-                    </small>
-                </span>
-
-                <time class="overview-row-date">
-                    ${overviewDate(item.created_at)}
-                </time>
-
-                <a
-                    class="overview-download"
-                    href="documents.html"
-                    aria-label="Otvori dokumente"
-                    title="Otvori dokumente"
-                >
-                    &darr;
-                </a>
-            </div>
-        `;
-    }).join("");
-}
-
-async function loadDashboardOverview() {
-    if (!currentSession) return;
-
-    await Promise.all([
-        loadRecentMessages(),
-        loadRecentDocuments()
-    ]);
-}
-
-
-/* =========================================
-   START
-========================================= */
-
-setupProjectSlider();
-updateMaterialsAction();
-loadDashboard();
