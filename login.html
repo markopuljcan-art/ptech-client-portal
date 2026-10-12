@@ -4,40 +4,48 @@
 
 <head>
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
-    <meta name="theme-color" content="#f7f2ed">
+
+    <meta
+        name="theme-color"
+        content="#f8f2ed"
+    >
 
     <title>Prijava | PTech Digital</title>
 
     <link
         rel="stylesheet"
-        href="style_login.css?v=7"
+        href="style_login.css?v=10"
     >
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="login.js?v=7" defer></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+    <script src="login.js?v=10" defer></script>
 </head>
 
-<body class="light-mode">
+<body>
 
-    <div class="login-shell">
+    <main class="login-shell">
 
-        <!-- =========================
+        <!-- ======================================
              LIJEVA STRANA
-        ========================== -->
+        ======================================= -->
 
         <section class="login-intro">
 
             <div class="intro-orb" aria-hidden="true"></div>
 
+            <!-- LOGO -->
+
             <div class="intro-brand">
 
-                <div class="intro-brand-icon">
-                    P
-                </div>
+                <div class="intro-brand-icon">P</div>
 
                 <div class="intro-brand-name">
                     <span>PTech</span>
@@ -47,6 +55,8 @@
 
             </div>
 
+
+            <!-- GLAVNI TEKST -->
 
             <div class="intro-content">
 
@@ -61,18 +71,20 @@
                 </h1>
 
                 <p class="intro-description">
-                    Pratite napredak projekta, pregledajte dokumente
-                    i komunicirajte s našim timom — jednostavno,
-                    sigurno i pregledno.
+                    Pratite napredak projekta, pregledajte
+                    dokumente i komunicirajte s našim timom —
+                    jednostavno, sigurno i pregledno.
                 </p>
 
+
+                <!-- PREDNOSTI -->
 
                 <div class="intro-features">
 
                     <div class="intro-feature">
 
                         <div class="feature-icon">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
                                 <path d="M5 19L19 5"></path>
                                 <path d="M8 5h11v11"></path>
                             </svg>
@@ -81,7 +93,8 @@
                         <div>
                             <strong>Pregled projekata</strong>
                             <p>
-                                Uvijek znate u kojoj je fazi vaš projekt.
+                                Uvijek znate u kojoj je fazi
+                                vaš projekt.
                             </p>
                         </div>
 
@@ -91,7 +104,7 @@
                     <div class="intro-feature">
 
                         <div class="feature-icon">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
                                 <rect
                                     x="5"
                                     y="3"
@@ -99,16 +112,17 @@
                                     height="18"
                                     rx="2"
                                 ></rect>
-                                <path d="M8 8h8"></path>
-                                <path d="M8 12h8"></path>
-                                <path d="M8 16h5"></path>
+                                <path d="M9 8h6"></path>
+                                <path d="M9 12h6"></path>
+                                <path d="M9 16h4"></path>
                             </svg>
                         </div>
 
                         <div>
                             <strong>Dokumenti na jednom mjestu</strong>
                             <p>
-                                Važne datoteke dostupne su vam u portalu.
+                                Važne datoteke dostupne su
+                                vam u portalu.
                             </p>
                         </div>
 
@@ -118,7 +132,7 @@
                     <div class="intro-feature">
 
                         <div class="feature-icon">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
                                 <rect
                                     x="3"
                                     y="5"
@@ -133,7 +147,8 @@
                         <div>
                             <strong>Izravna komunikacija</strong>
                             <p>
-                                Sve poruke povezane s vašom suradnjom.
+                                Sve poruke povezane s vašom
+                                suradnjom.
                             </p>
                         </div>
 
@@ -144,6 +159,8 @@
             </div>
 
 
+            <!-- DONJI DIO -->
+
             <div class="intro-bottom">
                 PTECH DIGITAL
                 <span>•</span>
@@ -153,13 +170,79 @@
         </section>
 
 
-        <!-- =========================
+        <!-- ======================================
+             VALOVITI PRIJELAZ
+        ======================================= -->
+
+        <div class="login-wave" aria-hidden="true">
+
+            <svg
+                viewBox="0 0 180 1000"
+                preserveAspectRatio="none"
+            >
+
+                <defs>
+
+                    <linearGradient
+                        id="waveGradient"
+                        x1="0"
+                        y1="0"
+                        x2="1"
+                        y2="0"
+                    >
+                        <stop
+                            offset="0%"
+                            stop-color="#d8ac8b"
+                            stop-opacity="0.8"
+                        ></stop>
+
+                        <stop
+                            offset="100%"
+                            stop-color="#fffaf6"
+                            stop-opacity="1"
+                        ></stop>
+                    </linearGradient>
+
+                </defs>
+
+                <path
+                    d="
+                        M0 0
+                        H70
+                        C145 100 145 180 80 270
+                        C10 370 135 410 105 520
+                        C70 620 15 670 95 760
+                        C155 840 90 930 45 1000
+                        H0
+                        Z
+                    "
+                    fill="url(#waveGradient)"
+                ></path>
+
+                <path
+                    d="
+                        M70 0
+                        C145 100 145 180 80 270
+                        C10 370 135 410 105 520
+                        C70 620 15 670 95 760
+                        C155 840 90 930 45 1000
+                    "
+                    fill="none"
+                    stroke="#fff3e7"
+                    stroke-width="3"
+                    stroke-opacity="0.8"
+                ></path>
+
+            </svg>
+
+        </div>
+
+
+        <!-- ======================================
              DESNA STRANA
-        ========================== -->
+        ======================================= -->
 
         <section class="login-area">
-
-            <!-- ANIMIRANE CRTICE -->
 
             <canvas
                 id="loginParticles"
@@ -169,7 +252,7 @@
 
             <!-- LOGIN KARTICA -->
 
-            <main class="login-card">
+            <div class="login-card">
 
                 <div class="login-card-top">
 
@@ -178,7 +261,7 @@
                     </span>
 
                     <span class="login-secure">
-                        ◈ SIGURAN PRISTUP
+                        ♧ SIGURAN PRISTUP
                     </span>
 
                 </div>
@@ -189,9 +272,7 @@
                 </div>
 
 
-                <h2>
-                    Prijavite se u portal
-                </h2>
+                <h2>Prijavite se u portal</h2>
 
                 <p class="login-subtitle">
                     Unesite svoje pristupne podatke za nastavak.
@@ -222,15 +303,15 @@
                                     height="14"
                                     rx="2"
                                 ></rect>
+
                                 <path d="M3 7l9 6 9-6"></path>
                             </svg>
 
                             <input
                                 type="email"
                                 id="email"
-                                name="email"
                                 placeholder="ime@tvrtka.hr"
-                                autocomplete="email"
+                                autocomplete="username"
                                 required
                             >
 
@@ -261,13 +342,15 @@
                                     height="10"
                                     rx="2"
                                 ></rect>
-                                <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+
+                                <path
+                                    d="M8 10V7a4 4 0 0 1 8 0v3"
+                                ></path>
                             </svg>
 
                             <input
                                 type="password"
                                 id="password"
-                                name="password"
                                 placeholder="Unesite lozinku"
                                 autocomplete="current-password"
                                 required
@@ -278,7 +361,6 @@
                                 id="togglePassword"
                                 class="toggle-password"
                                 aria-label="Prikaži lozinku"
-                                aria-pressed="false"
                             >
 
                                 <svg
@@ -303,6 +385,7 @@
                                         x2="20"
                                         y2="20"
                                     ></line>
+
                                 </svg>
 
                             </button>
@@ -315,7 +398,6 @@
                     <p
                         id="capsLockWarning"
                         class="caps-lock-warning"
-                        role="status"
                     >
                         ⚠ Caps Lock je uključen
                     </p>
@@ -325,7 +407,6 @@
                         id="loginError"
                         class="login-error"
                         role="alert"
-                        aria-live="polite"
                     ></p>
 
 
@@ -369,7 +450,114 @@
                     © PTech Digital 2026. • Sva prava zadržana.
                 </div>
 
-            </main>
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ======================================
+         PTECH DIGITALNI ASISTENT
+    ======================================= -->
+
+    <div class="support-widget">
+
+        <!-- OTVORI CHAT -->
+
+        <button
+            type="button"
+            id="supportToggle"
+            class="support-toggle"
+            aria-expanded="false"
+            aria-controls="supportPanel"
+        >
+
+            <span class="support-avatar">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <rect
+                        x="4"
+                        y="7"
+                        width="16"
+                        height="13"
+                        rx="4"
+                    ></rect>
+                    <path d="M12 3v4"></path>
+                    <path d="M9 3h6"></path>
+                    <circle cx="9" cy="13" r="1"></circle>
+                    <circle cx="15" cy="13" r="1"></circle>
+                    <path d="M9 17h6"></path>
+                </svg>
+            </span>
+
+            <span class="support-toggle-text">
+                <strong>PTech podrška</strong>
+                <small>Automatski asistent</small>
+            </span>
+
+            <span class="support-status">
+                <span></span>
+                Dostupan
+            </span>
+
+            <span class="support-chevron">
+                ›
+            </span>
+
+        </button>
+
+
+        <!-- CHAT PROZOR -->
+
+        <section
+            id="supportPanel"
+            class="support-panel"
+            aria-label="PTech automatska podrška"
+            hidden
+        >
+
+            <div class="support-header">
+
+                <div class="support-header-avatar">
+                    P
+                </div>
+
+                <div class="support-header-info">
+                    <strong>PTech podrška</strong>
+                    <small>Automatski asistent</small>
+                </div>
+
+                <button
+                    type="button"
+                    id="supportClose"
+                    class="support-close"
+                    aria-label="Zatvori podršku"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div
+                id="supportMessages"
+                class="support-messages"
+                aria-live="polite"
+            ></div>
+
+
+            <div class="support-questions">
+
+                <p>Odaberite pitanje:</p>
+
+                <div id="supportQuestionList"></div>
+
+            </div>
+
+
+            <div class="support-note">
+                Odgovori su automatski i informativni.
+            </div>
 
         </section>
 
