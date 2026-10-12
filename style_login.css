@@ -1,31 +1,246 @@
 
-/* ==========================================
-   PTECH DIGITAL
-   PREMIUM LOGO POLISH — FINAL
-========================================== */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
 
+/* ==================================================
+   PTECH DIGITAL — CLIENT PORTAL LOGIN
+   PREMIUM BRONZE DESIGN
+   Kompatibilno s index.html i login.js
+================================================== */
 
-/* ==========================================
-   1. GORNJI LIJEVI LOGO
-========================================== */
+/* ===================== VARIABLES ===================== */
+
+:root {
+    --cream: #fffaf5;
+    --cream-light: #fffdf9;
+    --bronze: #bb8767;
+    --bronze-dark: #995e3e;
+    --bronze-light: #edc6a7;
+    --navy: #202534;
+    --muted: #776961;
+    --border: #ead8ca;
+    --white: #ffffff;
+}
+
+/* ===================== RESET ===================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    background: var(--cream);
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    color: var(--navy);
+    background: var(--cream);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+    outline: 3px solid rgba(187, 135, 103, 0.45);
+    outline-offset: 3px;
+}
+
+svg {
+    display: block;
+}
+
+/* ===================== PAGE ===================== */
+
+.login-page {
+    position: relative;
+    isolation: isolate;
+
+    display: grid;
+    grid-template-columns: 49% 51%;
+
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100svh;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            ellipse at 80% 52%,
+            #ffffff 0%,
+            #fffaf5 68%,
+            #f9eee5 100%
+        );
+}
+
+/* ==================================================
+   SMEĐA POZADINA I SLOJEVITI VAL
+   Jedinstveni oblik preko cijele visine
+================================================== */
+
+.login-page::before {
+    content: "";
+
+    position: absolute;
+    z-index: 0;
+
+    top: 0;
+    left: 0;
+
+    width: 59%;
+    height: 100%;
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='bronze' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0%25' stop-color='%23d4a07c'/%3E%3Cstop offset='48%25' stop-color='%23bb8767'/%3E%3Cstop offset='83%25' stop-color='%23be8e70'/%3E%3Cstop offset='100%25' stop-color='%23e9c0a2'/%3E%3C/linearGradient%3E%3ClinearGradient id='edge' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0%25' stop-color='%23ffe8d1' stop-opacity='.2'/%3E%3Cstop offset='55%25' stop-color='%23fff7eb' stop-opacity='.95'/%3E%3Cstop offset='100%25' stop-color='%23ffffff' stop-opacity='.45'/%3E%3C/linearGradient%3E%3Cfilter id='glow' x='-50%25' y='-50%25' width='200%25' height='200%25'%3E%3CfeGaussianBlur stdDeviation='11'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M0 0 H720 C741 87 834 164 820 263 C805 348 726 388 741 479 C755 559 839 609 812 703 C785 793 716 860 710 1000 H0 Z' fill='url(%23bronze)'/%3E%3Cpath d='M720 0 C741 87 834 164 820 263 C805 348 726 388 741 479 C755 559 839 609 812 703 C785 793 716 860 710 1000' fill='none' stroke='%23fff3df' stroke-opacity='.9' stroke-width='25' filter='url(%23glow)'/%3E%3Cpath d='M720 0 C741 87 834 164 820 263 C805 348 726 388 741 479 C755 559 839 609 812 703 C785 793 716 860 710 1000' fill='none' stroke='url(%23edge)' stroke-width='5'/%3E%3Cpath d='M676 0 C701 89 787 167 780 267 C772 350 681 391 698 482 C715 562 798 614 773 700 C747 794 684 860 664 1000' fill='none' stroke='%23fff0df' stroke-opacity='.42' stroke-width='2'/%3E%3C/svg%3E");
+
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: left center;
+
+    pointer-events: none;
+}
+
+/* ===================== TOP RIGHT CIRCLE ===================== */
+
+.login-page::after {
+    content: "";
+
+    position: absolute;
+    z-index: 0;
+
+    top: -420px;
+    right: -325px;
+
+    width: 610px;
+    height: 610px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 34% 65%,
+            #f0d2bd 0%,
+            #e7bca0 42%,
+            #d3a080 100%
+        );
+
+    border: 1px solid rgba(156, 95, 58, 0.2);
+
+    box-shadow:
+        0 0 0 26px rgba(213, 155, 112, 0.055),
+        0 0 0 63px rgba(213, 155, 112, 0.025);
+
+    pointer-events: none;
+}
+
+/* ==================================================
+   LEFT SECTION
+================================================== */
+
+.login-left {
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+    min-height: 100vh;
+    min-height: 100svh;
+
+    padding:
+        45px
+        24px
+        135px
+        clamp(40px, 5vw, 82px);
+
+    background: transparent;
+}
+
+/* ===================== LARGE OUTLINE ===================== */
+
+.login-left::before {
+    content: "";
+
+    position: absolute;
+    z-index: 0;
+
+    top: 50%;
+    left: -465px;
+
+    width: 900px;
+    height: 900px;
+
+    transform: translateY(-50%);
+
+    border: 1px solid rgba(121, 67, 39, 0.4);
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 0 1px rgba(255, 231, 209, 0.14);
+
+    pointer-events: none;
+}
+
+/* ===================== SOFT LEFT GLOW ===================== */
+
+.login-left::after {
+    content: "";
+
+    position: absolute;
+    z-index: 0;
+
+    inset: 0;
+
+    background:
+        radial-gradient(
+            ellipse 340px 330px at 12% 42%,
+            rgba(255, 231, 204, 0.37),
+            transparent 78%
+        ),
+        radial-gradient(
+            ellipse 370px 290px at 62% 94%,
+            rgba(255, 216, 177, 0.14),
+            transparent 75%
+        );
+
+    pointer-events: none;
+}
+
+/* ==================================================
+   TOP LEFT — FULL PTECH DIGITAL LOGO
+   Bez pozadinske kockice
+================================================== */
 
 .login-brand {
     position: absolute;
-    z-index: 10;
+    z-index: 5;
 
-    top: 18px;
-    left: clamp(35px, 4.8vw, 80px);
+    top: 14px;
+    left: clamp(40px, 5vw, 82px);
 
     margin: 0;
     padding: 0;
-
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
 }
-
-
-/* Link oko logotipa */
 
 .login-brand .brand {
     display: inline-flex;
@@ -35,181 +250,1302 @@
     margin: 0;
     padding: 0;
 
-    border: none !important;
-    border-radius: 0 !important;
-
-    background: transparent !important;
-    box-shadow: none !important;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
 
     text-decoration: none;
 }
 
-
-/* Puni PTech Digital logo */
+/* Transparentni puni PNG */
 
 .brand-logo-image {
     display: block;
 
-    width: 175px;
-    height: 175px;
-
-    max-width: none;
+    width: 200px;
+    height: 200px;
 
     object-fit: contain;
     object-position: center;
 
-    background: transparent !important;
-
-    border: none !important;
-    border-radius: 0 !important;
-
-    box-shadow: none !important;
-
-    filter: none;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
 
     transition:
         transform 0.25s ease,
         opacity 0.25s ease;
 }
 
-
-/* Suptilan hover */
-
-.login-brand .brand:hover .brand-logo-image {
+.brand:hover .brand-logo-image {
     transform: translateY(-2px);
-    opacity: 0.96;
+    opacity: 0.95;
 }
 
+/* ==================================================
+   LEFT MARKETING CONTENT
+================================================== */
 
-/* ==========================================
-   2. LOGIN KARTICA — CENTRIRANI SIMBOL
-========================================== */
-
-.login-card .login-logo {
+.login-hero {
     position: relative;
+    z-index: 2;
+
+    width: 100%;
+    max-width: 575px;
+
+    margin-top: auto;
+    margin-bottom: auto;
+
+    padding: 75px 0 0;
+}
+
+.hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 28px;
+
+    color: #925436;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 2.4px;
+    text-transform: uppercase;
+}
+
+.hero-eyebrow::before {
+    content: "";
+
+    flex: 0 0 7px;
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #a66c47;
+
+    box-shadow:
+        0 0 0 5px rgba(166, 108, 71, 0.14);
+}
+
+.login-hero h1 {
+    margin: 0;
+
+    color: #192131;
+
+    font-size: clamp(35px, 3.35vw, 55px);
+    font-weight: 900;
+
+    line-height: 1.12;
+    letter-spacing: -2.5px;
+}
+
+.login-hero h1 span {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #975934;
+}
+
+.hero-description {
+    max-width: 495px;
+
+    margin: 28px 0 35px;
+
+    color: #69574d;
+
+    font-size: 13px;
+    line-height: 1.85;
+}
+
+/* ===================== FEATURES ===================== */
+
+.feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.feature-icon {
+    display: grid;
+    place-items: center;
+
+    flex: 0 0 45px;
+
+    width: 45px;
+    height: 45px;
+
+    border-radius: 12px;
+
+    background: rgba(255, 241, 226, 0.5);
+    border: 1px solid rgba(255, 251, 242, 0.2);
+
+    color: #a66b44;
+}
+
+.feature-icon svg {
+    width: 21px;
+    height: 21px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.feature-item strong {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #252632;
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.feature-item p {
+    margin: 0;
+
+    color: #735f54;
+
+    font-size: 11px;
+    line-height: 1.55;
+}
+
+/* ==================================================
+   LEFT FOOTER
+   Ispod support gumba — nema preklapanja
+================================================== */
+
+.login-left-footer {
+    position: absolute;
+    z-index: 4;
+
+    left: clamp(40px, 5vw, 82px);
+    bottom: 28px;
+
+    margin: 0;
+    padding: 0;
+
+    color: #70503d;
+
+    font-size: 8px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+    white-space: nowrap;
+}
+
+/* ==================================================
+   RIGHT SECTION
+================================================== */
+
+.login-right {
+    position: relative;
+    z-index: 1;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    width: 100%;
-    max-width: none;
-    height: 88px;
+    min-width: 0;
+    min-height: 100vh;
+    min-height: 100svh;
 
-    margin: 5px 0 25px;
-    padding: 0;
+    padding:
+        55px
+        clamp(30px, 4vw, 65px)
+        55px
+        clamp(28px, 3.6vw, 60px);
 
-    border: none !important;
-    border-radius: 0 !important;
-
-    background: transparent !important;
-    box-shadow: none !important;
+    background: transparent;
 }
 
+/* ===================== TOP RIGHT OUTLINE ===================== */
 
-/* Brončani simbol */
+.login-right::before {
+    content: "";
+
+    position: absolute;
+    z-index: 0;
+
+    top: -570px;
+    right: -575px;
+
+    width: 800px;
+    height: 800px;
+
+    border: 1px solid rgba(165, 96, 56, 0.38);
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 0 36px rgba(217, 150, 103, 0.045),
+        0 0 0 77px rgba(217, 150, 103, 0.025);
+
+    pointer-events: none;
+}
+
+/* ===================== LOWER RIGHT CIRCLE ===================== */
+
+.login-right::after {
+    content: "";
+
+    position: absolute;
+    z-index: 0;
+
+    right: -395px;
+    bottom: -460px;
+
+    width: 630px;
+    height: 630px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 34% 28%,
+            #edc9af 0%,
+            #d9aa8b 69%,
+            #c48e6c 100%
+        );
+
+    border: 1px solid rgba(157, 94, 57, 0.2);
+
+    box-shadow:
+        0 0 0 30px rgba(223, 170, 130, 0.05),
+        0 0 0 70px rgba(223, 170, 130, 0.02);
+
+    pointer-events: none;
+}
+
+/* ==================================================
+   PARTICLES — ANIMIRANE BRONČANE CRTICE
+   Koristi vrijednosti iz postojećeg login.js
+================================================== */
+
+.particles {
+    position: absolute;
+    z-index: 1;
+
+    top: 0;
+    bottom: 0;
+    left: -16%;
+
+    width: 116%;
+
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+
+    top: var(--particle-top, 50%);
+    left: -145px;
+
+    width: var(--particle-width, 85px);
+    height: 1px;
+
+    opacity: var(--particle-opacity, 0.6);
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(203, 126, 77, 0.1) 20%,
+            rgba(195, 108, 57, 0.45) 75%,
+            rgba(169, 83, 32, 0.92) 100%
+        );
+
+    box-shadow:
+        0 0 6px rgba(187, 108, 59, 0.25);
+
+    animation:
+        particleTravel
+        var(--particle-duration, 16s)
+        linear
+        var(--particle-delay, 0s)
+        infinite;
+}
+
+.particle::after {
+    content: "";
+
+    position: absolute;
+
+    right: -1px;
+    top: -2px;
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background: #c27b4b;
+
+    box-shadow:
+        0 0 8px rgba(192, 105, 53, 0.6);
+}
+
+/* Još dvije dekorativne linije */
+
+.particles::before,
+.particles::after {
+    content: "";
+
+    position: absolute;
+
+    left: -130px;
+
+    width: 115px;
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(191, 105, 54, 0.56)
+        );
+
+    animation:
+        particleTravel 17s linear infinite;
+}
+
+.particles::before {
+    top: 23%;
+    animation-delay: -5s;
+}
+
+.particles::after {
+    top: 81%;
+    animation-delay: -12s;
+}
+
+@keyframes particleTravel {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(calc(70vw + 280px));
+    }
+}
+
+/* ==================================================
+   LOGIN CARD
+================================================== */
+
+.login-card {
+    position: relative;
+    z-index: 3;
+
+    width: 100%;
+    max-width: 535px;
+
+    padding: 40px 44px 30px;
+
+    border: 1px solid rgba(233, 215, 201, 0.9);
+    border-radius: 25px;
+
+    background: rgba(255, 255, 255, 0.975);
+
+    box-shadow:
+        0 28px 72px rgba(103, 62, 38, 0.14),
+        0 7px 22px rgba(103, 62, 38, 0.04),
+        0 0 45px rgba(255, 227, 197, 0.09);
+}
+
+/* ===================== CARD TOP ===================== */
+
+.login-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    margin-bottom: 19px;
+
+    color: #a96138;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 1.8px;
+}
+
+.login-card-top span:last-child {
+    color: #8c796e;
+
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+
+    white-space: nowrap;
+}
+
+/* ==================================================
+   CENTERED LOGO INSIDE LOGIN CARD
+   Samo simbol, bez kockice
+================================================== */
+
+.login-card .login-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 95px;
+
+    margin: 0 0 20px;
+    padding: 0;
+
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
 
 .login-logo-image {
     display: block;
 
-    width: 85px;
-    height: 85px;
-
-    flex-shrink: 0;
+    width: 91px;
+    height: 91px;
 
     object-fit: contain;
-    object-position: center;
 
     margin: 0 auto;
-    padding: 0;
 
-    background: transparent !important;
-
-    border: none !important;
-    border-radius: 0 !important;
-
-    box-shadow: none !important;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
 
     filter:
-        drop-shadow(
-            0 5px 9px rgba(133, 78, 43, 0.10)
-        );
+        drop-shadow(0 5px 8px rgba(136, 79, 43, 0.10));
 }
 
-
-/* ==========================================
-   3. NASLOV ISPOD LOGOTIPA
-========================================== */
+/* ===================== CARD TEXT ===================== */
 
 .login-card h2 {
-    margin-top: 0;
-    margin-bottom: 12px;
+    margin: 0 0 12px;
 
     color: #202534;
 
+    font-size: clamp(26px, 2.3vw, 33px);
     font-weight: 900;
-    letter-spacing: -1.4px;
+
+    line-height: 1.2;
+    letter-spacing: -1.5px;
 }
 
 .login-subtitle {
-    margin-top: 0;
-    margin-bottom: 31px;
+    margin: 0 0 30px;
 
-    color: #81736c;
+    color: #80726b;
+
+    font-size: 12px;
     line-height: 1.7;
 }
 
+/* ==================================================
+   LOGIN FORM
+================================================== */
 
-/* ==========================================
-   4. RAZMAK UNUTAR KARTICE
-========================================== */
-
-.login-card-top {
-    margin-bottom: 21px;
+#loginForm {
+    display: flex;
+    flex-direction: column;
 }
 
-.login-card {
-    overflow: visible;
+.form-group {
+    margin-bottom: 19px;
 }
 
+.form-group label {
+    display: block;
 
-/* ==========================================
-   5. MANJI LAPTOP
-========================================== */
+    margin-bottom: 10px;
 
-@media (max-width: 1200px) {
+    color: #303038;
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+/* ===================== INPUT WRAPPER ===================== */
+
+.input-wrapper {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    height: 53px;
+
+    border: 1px solid #e6d5c8;
+    border-radius: 11px;
+
+    background: #fcfaf8;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.input-wrapper:focus-within {
+    border-color: #bc855f;
+
+    box-shadow:
+        0 0 0 4px rgba(188, 133, 95, 0.12);
+}
+
+/* ===================== INPUT ICONS ===================== */
+
+.input-wrapper > svg {
+    position: absolute;
+
+    left: 16px;
+    top: 50%;
+
+    width: 18px;
+    height: 18px;
+
+    transform: translateY(-50%);
+
+    fill: none;
+    stroke: #98715a;
+    stroke-width: 1.7;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+    pointer-events: none;
+}
+
+/* ===================== INPUT FIELDS ===================== */
+
+.input-wrapper input {
+    width: 100%;
+    height: 100%;
+
+    padding: 0 46px;
+
+    border: 0;
+    outline: 0;
+    border-radius: 11px;
+
+    background: transparent;
+
+    color: #292c35;
+
+    font-size: 12px;
+}
+
+.input-wrapper input::placeholder {
+    color: #aa9b90;
+}
+
+/* ===================== CHROME AUTOFILL FIX ===================== */
+
+.input-wrapper input:-webkit-autofill,
+.input-wrapper input:-webkit-autofill:hover,
+.input-wrapper input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #292c35 !important;
+
+    -webkit-box-shadow:
+        0 0 0 1000px #fcfaf8 inset !important;
+
+    box-shadow:
+        0 0 0 1000px #fcfaf8 inset !important;
+
+    caret-color: #292c35;
+
+    transition:
+        background-color 9999s ease-in-out 0s;
+}
+
+/* ===================== SHOW PASSWORD ===================== */
+
+.password-toggle {
+    position: absolute;
+
+    top: 50%;
+    right: 9px;
+
+    display: grid;
+    place-items: center;
+
+    width: 36px;
+    height: 36px;
+
+    padding: 0;
+
+    transform: translateY(-50%);
+
+    border: 0;
+    border-radius: 8px;
+
+    background: transparent;
+    color: #946f57;
+}
+
+.password-toggle:hover {
+    background: #f4e9e1;
+}
+
+.password-toggle svg {
+    width: 20px;
+    height: 20px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ==================================================
+   CAPS LOCK & ERRORS
+================================================== */
+
+.caps-warning {
+    display: none;
+
+    margin: -4px 0 14px;
+
+    color: #a66b3e;
+
+    font-size: 11px;
+}
+
+.caps-warning.show {
+    display: block !important;
+}
+
+.caps-warning[hidden]:not(.show) {
+    display: none !important;
+}
+
+.login-error {
+    display: none;
+
+    margin: 0 0 15px;
+    padding: 12px 13px;
+
+    border: 1px solid #ecc7bf;
+    border-radius: 9px;
+
+    background: #fff1ee;
+    color: #a33d35;
+
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.login-error.show,
+.login-error:not(:empty) {
+    display: block;
+}
+
+/* ==================================================
+   LOGIN BUTTON
+================================================== */
+
+#loginButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-height: 54px;
+
+    margin-top: 17px;
+    padding: 14px 20px;
+
+    border: 0;
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            105deg,
+            #daa882 0%,
+            #a36d4c 100%
+        );
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    box-shadow:
+        0 9px 21px rgba(152, 94, 57, 0.11);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+}
+
+#loginButton:hover:not(:disabled) {
+    transform: translateY(-2px);
+
+    filter: brightness(1.04);
+
+    box-shadow:
+        0 13px 27px rgba(152, 94, 57, 0.23);
+}
+
+#loginButton:disabled {
+    cursor: wait;
+    opacity: 0.7;
+}
+
+/* ===================== CARD FOOTER ===================== */
+
+.login-footer {
+    margin-top: 27px;
+    padding-top: 23px;
+
+    border-top: 1px solid #eee2d9;
+
+    color: #ac9b90;
+
+    font-size: 10px;
+    text-align: center;
+}
+
+/* ==================================================
+   PTECH SUPPORT LAUNCHER
+================================================== */
+
+.support-widget {
+    position: fixed;
+    z-index: 100;
+
+    left: clamp(40px, 5vw, 82px);
+    bottom: 67px;
+}
+
+.support-launcher {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    width: 335px;
+    max-width: calc(100vw - 36px);
+
+    min-height: 68px;
+
+    padding: 10px 13px;
+
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 999px;
+
+    background: rgba(255, 250, 243, 0.98);
+
+    color: #30313a;
+
+    box-shadow:
+        0 14px 35px rgba(105, 60, 34, 0.18);
+
+    text-align: left;
+
+    transition: transform 0.2s ease;
+}
+
+.support-launcher:hover {
+    transform: translateY(-2px);
+}
+
+/* ===================== SUPPORT ICON ===================== */
+
+.support-trigger-icon {
+    display: grid;
+    place-items: center;
+
+    flex: 0 0 45px;
+
+    width: 45px;
+    height: 45px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            145deg,
+            #d7a17a,
+            #a96b43
+        );
+
+    color: white;
+}
+
+.support-trigger-icon svg {
+    width: 24px;
+    height: 24px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ===================== SUPPORT TEXT ===================== */
+
+.support-trigger-text {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    min-width: 0;
+}
+
+.support-trigger-text strong {
+    color: #2d2d35;
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.support-trigger-text small {
+    color: #8d7e73;
+    font-size: 10px;
+}
+
+.support-status {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    margin-left: auto;
+
+    color: #726760;
+
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+.support-status > span {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #27b96a;
+
+    box-shadow:
+        0 0 0 4px rgba(39, 185, 106, 0.08);
+}
+
+.support-chevron {
+    color: #9e6340;
+    font-size: 23px;
+}
+
+/* ==================================================
+   SUPPORT CHAT
+================================================== */
+
+.support-panel {
+    position: absolute;
+    z-index: 101;
+
+    left: 0;
+    bottom: 82px;
+
+    display: flex;
+    flex-direction: column;
+
+    width: 355px;
+    max-width: calc(100vw - 36px);
+    max-height: min(510px, 65vh);
+
+    overflow: hidden;
+
+    border: 1px solid #e7d3c3;
+    border-radius: 20px;
+
+    background: #fffdfa;
+
+    box-shadow:
+        0 22px 55px rgba(82, 51, 35, 0.22);
+}
+
+.support-panel[hidden] {
+    display: none !important;
+}
+
+/* ===================== CHAT HEADER ===================== */
+
+.support-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    flex-shrink: 0;
+
+    padding: 17px;
+
+    background:
+        linear-gradient(
+            105deg,
+            #d5a07b,
+            #a36a48
+        );
+
+    color: #ffffff;
+}
+
+.support-avatar {
+    display: grid;
+    place-items: center;
+
+    flex: 0 0 39px;
+
+    width: 39px;
+    height: 39px;
+
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.23);
+
+    font-size: 22px;
+    font-weight: 900;
+}
+
+.support-header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.support-header-text strong {
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.support-header-text small {
+    font-size: 10px;
+    opacity: 0.9;
+}
+
+.support-close {
+    margin-left: auto;
+
+    width: 32px;
+    height: 32px;
+
+    border: 0;
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.18);
+    color: white;
+
+    font-size: 23px;
+}
+
+/* ===================== CHAT MESSAGES ===================== */
+
+.support-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+
+    min-height: 100px;
+
+    padding: 18px;
+
+    overflow-y: auto;
+
+    background: #fffdfa;
+}
+
+.support-message {
+    max-width: 90%;
+
+    padding: 12px 13px;
+
+    border-radius: 12px;
+
+    font-size: 11px;
+    line-height: 1.65;
+
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.support-message.bot {
+    align-self: flex-start;
+
+    background: #f4e9e0;
+    color: #554135;
+
+    border-bottom-left-radius: 4px;
+}
+
+.support-message.user {
+    align-self: flex-end;
+
+    background: #b17a56;
+    color: white;
+
+    border-bottom-right-radius: 4px;
+}
+
+/* ===================== CHAT QUESTIONS ===================== */
+
+.support-questions {
+    flex-shrink: 0;
+
+    padding: 13px 17px 16px;
+
+    border-top: 1px solid #f1e4d9;
+}
+
+.support-questions > span {
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: #8d7461;
+
+    font-size: 10px;
+    font-weight: 800;
+}
+
+#supportQuestionList {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+#supportQuestionList button {
+    width: 100%;
+
+    padding: 10px 12px;
+
+    border: 1px solid #e9d5c6;
+    border-radius: 9px;
+
+    background: #fff8f2;
+    color: #915a39;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    text-align: left;
+}
+
+#supportQuestionList button:hover {
+    background: #f4e5d9;
+}
+
+.support-note {
+    flex-shrink: 0;
+
+    padding: 10px;
+
+    border-top: 1px solid #f0e5dc;
+
+    color: #a9988b;
+
+    font-size: 9px;
+    text-align: center;
+}
+
+/* ==================================================
+   SHAKE ANIMATION
+================================================== */
+
+@keyframes loginShake {
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20%,
+    60% {
+        transform: translateX(-6px);
+    }
+
+    40%,
+    80% {
+        transform: translateX(6px);
+    }
+}
+
+.login-card.shake {
+    animation: loginShake 0.4s ease;
+}
+
+/* ==================================================
+   LAPTOP
+================================================== */
+
+@media (max-width: 1250px) {
+
+    .login-left {
+        padding-left: 4.5vw;
+    }
 
     .login-brand {
-        top: 20px;
-        left: 35px;
+        left: 4.5vw;
     }
 
     .brand-logo-image {
-        width: 155px;
-        height: 155px;
+        width: 175px;
+        height: 175px;
     }
 
-    .login-logo-image {
-        width: 77px;
-        height: 77px;
+    .login-hero h1 {
+        font-size: clamp(33px, 3.5vw, 47px);
+        letter-spacing: -2px;
+    }
+
+    .login-right {
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+
+    .login-card {
+        padding: 34px 31px 27px;
+    }
+
+    .support-widget {
+        left: 28px;
+    }
+
+    .login-left-footer {
+        left: 28px;
+    }
+}
+
+/* ==================================================
+   TABLET
+================================================== */
+
+@media (max-width: 950px) {
+
+    .login-page {
+        grid-template-columns: 47% 53%;
+    }
+
+    .login-page::before {
+        width: 62%;
+    }
+
+    .login-left {
+        padding-left: 26px;
+    }
+
+    .login-brand {
+        left: 26px;
+    }
+
+    .brand-logo-image {
+        width: 150px;
+        height: 150px;
+    }
+
+    .login-hero h1 {
+        font-size: 34px;
+    }
+
+    .hero-description {
+        font-size: 12px;
+    }
+
+    .login-right {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .login-card {
+        padding: 29px 24px 25px;
+    }
+
+    .login-card h2 {
+        font-size: 26px;
     }
 
     .login-card .login-logo {
         height: 80px;
-        margin-bottom: 22px;
     }
 
+    .login-logo-image {
+        width: 76px;
+        height: 76px;
+    }
+
+    .support-launcher {
+        width: 295px;
+    }
+
+    .login-left-footer {
+        display: none;
+    }
 }
 
+/* ==================================================
+   MOBILE
+================================================== */
 
-/* ==========================================
-   6. TABLET
-========================================== */
+@media (max-width: 760px) {
 
-@media (max-width: 900px) {
+    .login-page {
+        display: flex;
+        flex-direction: column;
+
+        min-height: 100svh;
+        overflow: hidden;
+    }
+
+    .login-page::before {
+        width: 100%;
+        height: 550px;
+
+        background-image:
+            linear-gradient(
+                145deg,
+                #c99573,
+                #e9bea0
+            );
+
+        border-radius: 0 0 38% 9%;
+    }
+
+    .login-page::after {
+        width: 340px;
+        height: 340px;
+
+        top: -220px;
+        right: -235px;
+    }
+
+    .login-left {
+        min-height: auto;
+        padding: 27px 24px 0;
+    }
 
     .login-brand {
-        top: 20px;
+        top: 8px;
         left: 24px;
     }
 
@@ -218,37 +1554,138 @@
         height: 135px;
     }
 
-    .login-logo-image {
-        width: 72px;
-        height: 72px;
+    .login-left::before {
+        width: 520px;
+        height: 520px;
+
+        left: -320px;
+        top: 280px;
     }
 
-    .login-card .login-logo {
-        height: 76px;
+    .login-hero {
+        max-width: 560px;
+
+        margin: 165px 0 0;
+        padding: 0 0 20px;
     }
 
+    .login-hero h1 {
+        font-size: clamp(33px, 7vw, 45px);
+    }
+
+    .hero-description {
+        margin: 22px 0 26px;
+        font-size: 12px;
+    }
+
+    .feature-list {
+        gap: 14px;
+    }
+
+    .login-left-footer {
+        display: none;
+    }
+
+    .login-right {
+        min-height: auto;
+
+        padding: 45px 20px 145px;
+    }
+
+    .login-right::before {
+        display: none;
+    }
+
+    .login-right::after {
+        width: 430px;
+        height: 430px;
+
+        right: -300px;
+        bottom: -310px;
+    }
+
+    .login-card {
+        max-width: 535px;
+    }
+
+    .support-widget {
+        left: 15px;
+        bottom: 15px;
+    }
+
+    .support-launcher {
+        width: 295px;
+    }
+
+    .support-panel {
+        bottom: 78px;
+        max-height: min(470px, 65vh);
+    }
 }
 
+/* ==================================================
+   SMALL MOBILE
+================================================== */
 
-/* ==========================================
-   7. MOBITEL
-========================================== */
+@media (max-width: 440px) {
 
-@media (max-width: 760px) {
+    .login-left {
+        padding: 25px 20px 0;
+    }
 
     .login-brand {
-        top: 16px;
         left: 20px;
     }
 
     .brand-logo-image {
-        width: 125px;
-        height: 125px;
+        width: 120px;
+        height: 120px;
+    }
+
+    .login-hero {
+        margin-top: 142px;
+    }
+
+    .hero-eyebrow {
+        font-size: 8px;
+        letter-spacing: 1.6px;
+    }
+
+    .login-hero h1 {
+        font-size: 33px;
+        letter-spacing: -1.8px;
+    }
+
+    .feature-icon {
+        flex-basis: 41px;
+        width: 41px;
+        height: 41px;
+    }
+
+    .login-right {
+        padding: 35px 15px 135px;
+    }
+
+    .login-card {
+        padding: 28px 23px 25px;
+        border-radius: 21px;
+    }
+
+    .login-card-top {
+        font-size: 8px;
+    }
+
+    .login-card-top span:last-child {
+        font-size: 7px;
+    }
+
+    .login-card h2 {
+        font-size: 25px;
     }
 
     .login-card .login-logo {
-        height: 72px;
-        margin: 4px 0 20px;
+        height: 74px;
+        margin-bottom: 17px;
     }
 
     .login-logo-image {
@@ -256,45 +1693,27 @@
         height: 70px;
     }
 
-    .login-card h2 {
-        letter-spacing: -1px;
+    .support-launcher {
+        width: 285px;
     }
-
 }
 
-
-/* ==========================================
-   8. MALI MOBITEL
-========================================== */
-
-@media (max-width: 440px) {
-
-    .brand-logo-image {
-        width: 112px;
-        height: 112px;
-    }
-
-    .login-logo-image {
-        width: 63px;
-        height: 63px;
-    }
-
-    .login-card .login-logo {
-        height: 66px;
-        margin-bottom: 18px;
-    }
-
-}
-
-
-/* ==========================================
-   9. REDUCED MOTION
-========================================== */
+/* ==================================================
+   REDUCED MOTION
+================================================== */
 
 @media (prefers-reduced-motion: reduce) {
 
-    .brand-logo-image {
-        transition: none !important;
+    .particle,
+    .particles::before,
+    .particles::after {
+        display: none !important;
+        animation: none !important;
     }
 
+    .brand-logo-image,
+    .support-launcher,
+    #loginButton {
+        transition: none !important;
+    }
 }
