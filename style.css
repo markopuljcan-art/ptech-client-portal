@@ -2498,8 +2498,36 @@ body.portal-desktop .desktop-main::before {
     z-index: -1;
 }
 
+/* Tihi, pokretni particles kao na loginu - samo CSS. */
 body.portal-desktop .desktop-main::after {
-    display: none;
+    content: "";
+    display: block;
+    position: absolute;
+    top: var(--header-height);
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+    z-index: 0;
+    pointer-events: none;
+    border: 0;
+    border-radius: 0;
+    transform: none;
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%221240%22%20height%3D%22900%22%20viewBox%3D%220%200%201240%20900%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22trail%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23bd8867%22%20stop-opacity%3D%220%22%2F%3E%3Cstop%20offset%3D%220.6%22%20stop-color%3D%22%23bd8867%22%20stop-opacity%3D%220.56%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23bd8867%22%20stop-opacity%3D%220.88%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cg%20opacity%3D%220.42%22%3E%3Cline%20x1%3D%22115%22%20y1%3D%2290%22%20x2%3D%22191%22%20y2%3D%2290%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%22191%22%20cy%3D%2290%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.32%22%3E%3Cline%20x1%3D%22410%22%20y1%3D%22145%22%20x2%3D%22528%22%20y2%3D%22145%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%22528%22%20cy%3D%22145%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.48%22%3E%3Cline%20x1%3D%22785%22%20y1%3D%2293%22%20x2%3D%22897%22%20y2%3D%2293%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%22897%22%20cy%3D%2293%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.46%22%3E%3Cline%20x1%3D%221080%22%20y1%3D%22180%22%20x2%3D%221152%22%20y2%3D%22180%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%221152%22%20cy%3D%22180%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.47%22%3E%3Cline%20x1%3D%22257%22%20y1%3D%22265%22%20x2%3D%22349%22%20y2%3D%22265%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%22349%22%20cy%3D%22265%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.27%22%3E%3Cline%20x1%3D%22625%22%20y1%3D%22315%22%20x2%3D%22773%22%20y2%3D%22315%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%22773%22%20cy%3D%22315%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.51%22%3E%3Cline%20x1%3D%22925%22%20y1%3D%22275%22%20x2%3D%221010%22%20y2%3D%22275%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%221010%22%20cy%3D%22275%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.36%22%3E%3Cline%20x1%3D%22122%22%20y1%3D%22415%22%20x2%3D%22238%22%20y2%3D%22415%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%22238%22%20cy%3D%22415%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.47%22%3E%3Cline%20x1%3D%22490%22%20y1%3D%22473%22%20x2%3D%22560%22%20y2%3D%22473%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%22560%22%20cy%3D%22473%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.31%22%3E%3Cline%20x1%3D%221060%22%20y1%3D%22447%22%20x2%3D%221200%22%20y2%3D%22447%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%221200%22%20cy%3D%22447%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.42%22%3E%3Cline%20x1%3D%22816%22%20y1%3D%22562%22%20x2%3D%22921%22%20y2%3D%22562%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%22921%22%20cy%3D%22562%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.44%22%3E%3Cline%20x1%3D%22180%22%20y1%3D%22621%22%20x2%3D%22268%22%20y2%3D%22621%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%22268%22%20cy%3D%22621%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.35%22%3E%3Cline%20x1%3D%22551%22%20y1%3D%22692%22%20x2%3D%22676%22%20y2%3D%22692%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%22676%22%20cy%3D%22692%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.52%22%3E%3Cline%20x1%3D%22980%22%20y1%3D%22740%22%20x2%3D%221082%22%20y2%3D%22740%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%221082%22%20cy%3D%22740%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.29%22%3E%3Cline%20x1%3D%22355%22%20y1%3D%22835%22%20x2%3D%22490%22%20y2%3D%22835%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%22490%22%20cy%3D%22835%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.42%22%3E%3Cline%20x1%3D%221150%22%20y1%3D%22838%22%20x2%3D%221221%22%20y2%3D%22838%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%221221%22%20cy%3D%22838%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+    background-repeat: repeat;
+    background-size: 1240px 900px;
+    opacity: 0.65;
+    animation: ptech-particles-drift 32s linear infinite;
+}
+
+body.portal-desktop:not(.light-mode) .desktop-main::after {
+    opacity: 0.38;
+}
+
+@keyframes ptech-particles-drift {
+    from { background-position: 0 0; }
+    to   { background-position: 1240px 0; }
 }
 
 /* 22.2. Lijevi sidebar */
@@ -2531,20 +2559,25 @@ body.portal-desktop:not(.light-mode) .desktop-sidebar {
     border-right: 1px solid rgba(233, 193, 164, 0.08);
 }
 
-/* Dekorativni krug pri dnu */
+/* Zakrivljene sjajne linije kao na referentnoj slici. */
 body.portal-desktop .desktop-sidebar::after {
-    width: 380px;
-    height: 380px;
-    left: -155px;
-    bottom: -225px;
-    transform: rotate(-14deg);
-    border: 55px solid rgba(255, 248, 239, 0.13);
-    background: transparent;
+    content: "";
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    border: 0;
+    border-radius: 0;
+    transform: none;
+    background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20244%201000%22%20preserveAspectRatio%3D%22none%22%3E%0A%20%3Cdefs%3E%3ClinearGradient%20id%3D%22edge%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%220%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23fffaf1%22%20stop-opacity%3D%220%22%2F%3E%3Cstop%20offset%3D%220.86%22%20stop-color%3D%22%23fffaf1%22%20stop-opacity%3D%220.08%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fffaf1%22%20stop-opacity%3D%220.36%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%0A%20%3Cpath%20d%3D%22M157%20-40%20C%20250%2054%20190%20156%20239%20243%20C%20285%20321%20189%20439%20237%20506%20C%20270%20589%20174%20633%20104%20698%20C%2021%20785%2056%20876%20240%201036%22%20stroke%3D%22%23fff8ec%22%20stroke-width%3D%221.75%22%20stroke-opacity%3D%220.83%22%20fill%3D%22none%22%2F%3E%0A%20%3Cpath%20d%3D%22M-80%2038%20C%2025%2061%20106%20111%20155%20205%20C%20194%20281%20168%20360%20107%20416%20C%2055%20460%20-26%20469%20-75%20518%22%20stroke%3D%22%23ad724e%22%20stroke-width%3D%221%22%20stroke-opacity%3D%220.23%22%20fill%3D%22none%22%2F%3E%0A%20%3Cpath%20d%3D%22M-70%20618%20C%2042%20560%20163%20577%20243%20667%20L244%20996%20L-70%20996%20Z%22%20fill%3D%22url%28%23edge%29%22%20opacity%3D%220.18%22%2F%3E%0A%20%3Cpath%20d%3D%22M-62%20682%20C%2062%20595%20211%20640%20247%20739%20C%20291%20863%20174%20936%20-28%201006%22%20stroke%3D%22%23fff9ef%22%20stroke-width%3D%221.55%22%20stroke-opacity%3D%220.75%22%20fill%3D%22none%22%2F%3E%0A%20%3Cpath%20d%3D%22M-79%20745%20C%2058%20672%20163%20731%20195%20838%20C%20215%20906%20201%20961%20258%201038%22%20stroke%3D%22%23f9e7d7%22%20stroke-width%3D%221.05%22%20stroke-opacity%3D%220.48%22%20fill%3D%22none%22%2F%3E%0A%20%3Cpath%20d%3D%22M-55%20913%20C%2045%20827%20136%20858%20192%20939%20C%20211%20969%20226%20986%20260%201008%22%20stroke%3D%22%23ad724e%22%20stroke-width%3D%221%22%20stroke-opacity%3D%220.25%22%20fill%3D%22none%22%2F%3E%0A%3C%2Fsvg%3E") center / 100% 100% no-repeat;
+    opacity: 1;
     pointer-events: none;
 }
 
 body.portal-desktop:not(.light-mode) .desktop-sidebar::after {
-    border-color: rgba(207, 156, 118, 0.08);
+    opacity: 0.42;
 }
 
 /* Pravi PTech simbol: ne zahtijeva promjenu HTML-a.
@@ -3190,5 +3223,19 @@ body.portal-desktop .nav-notification {
     body.portal-desktop .dashboard-content {
         padding-left: 12px;
         padding-right: 12px;
+    }
+}
+
+
+/* 23. ANIMIRANI PARTICLES I WAVE — RESPONSIVE / A11Y */
+@media (max-width: 700px) {
+    body.portal-desktop .desktop-main::after {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.portal-desktop .desktop-main::after {
+        animation: none;
     }
 }
