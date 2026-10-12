@@ -1,8 +1,11 @@
-
-/* ================================================
+/* =====================================================
    PTECH DIGITAL CLIENT PORTAL
-   SIGNATURE DESIGN — GRAPHITE & CHAMPAGNE
-   ================================================ */
+   Premium Champagne Light + Navy Dark
+   Originalne funkcionalnosti i sticky scroll sacuvani
+   ===================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
+
 
 /* 1. OSNOVNE POSTAVKE */
 
@@ -54,7 +57,7 @@ body {
     padding: 0;
     min-height: 100vh;
 
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
     color: var(--text);
 
     background: var(--page-background);
@@ -1694,238 +1697,167 @@ body.materials-modal-open {
     overflow: hidden;
 }
 
-/* 15. LIGHT MODE */
 
-body.light-mode {
-    --text: #303138;
-    --muted: #77716f;
-    --page-background: #f0ede9;
+/* =========================================
+   DASHBOARD OVERVIEW PANELS
+========================================= */
 
+.dashboard-overview {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 18px;
+    margin-bottom: 28px;
+}
+
+.overview-panel {
+    min-width: 0;
+    padding: 20px;
+    border: 1px solid #e8ded7;
+    border-radius: 16px;
+    background: rgba(255, 252, 249, 0.94);
+    box-shadow: 0 12px 30px rgba(60, 45, 35, 0.07);
+}
+
+.overview-panel-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.overview-panel-header h2 {
+    margin: 0 0 5px;
     color: #303138;
-    background: #f0ede9;
+    font-size: 19px;
+    font-weight: 800;
 }
 
-/* 16. DARK MODE */
-
-body:not(.light-mode) {
-    --text: #f4f0ec;
-    --muted: #b4aaa5;
-    --page-background: #252529;
-
-    color: #f4f0ec;
-    background: #252529;
+.overview-panel-header p {
+    margin: 0;
+    color: #77716e;
+    font-size: 13px;
 }
 
-body:not(.light-mode) .dashboard.desktop-layout {
-    background: #252529;
+.overview-panel-header > a {
+    flex-shrink: 0;
+    color: #936b54;
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
 }
 
-body:not(.light-mode) .desktop-main {
-    background:
-        radial-gradient(
-            ellipse 520px 420px at 95% 12%,
-            rgba(155, 115, 91, 0.12),
-            transparent 75%
-        ),
-        #252529;
+.overview-panel-header > a:hover {
+    text-decoration: underline;
 }
 
-body:not(.light-mode) .dashboard-header {
-    background: #2b2a2e;
-    border-bottom-color: #403b3d;
+.overview-list {
+    display: flex;
+    flex-direction: column;
 }
 
-body:not(.light-mode) #userTop {
-    color: #f4f0ec;
+.overview-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    padding: 11px 0;
+    border-bottom: 1px solid #eee7e1;
+    color: inherit;
+    text-decoration: none;
 }
 
-body:not(.light-mode) .logout-button {
-    color: #d4cac5;
+.overview-row:last-child {
+    border-bottom: 0;
 }
 
-body:not(.light-mode) .logout-button:hover {
-    background: #3b373a;
-    color: #ffffff;
+a.overview-row:hover {
+    background: rgba(155, 115, 91, 0.05);
 }
 
-body:not(.light-mode) .header-separator {
-    background: #4b4444;
+.overview-avatar,
+.overview-file-icon {
+    display: flex;
+    flex: 0 0 39px;
+    width: 39px;
+    height: 39px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: #e8d8cb;
+    color: #76513c;
+    font-weight: 800;
 }
 
-body:not(.light-mode) .user-avatar {
-    background: #483a34;
+.overview-file-icon {
+    background: #eee5df;
+    font-size: 11px;
 }
 
-body:not(.light-mode) .user-avatar svg {
-    stroke: #d6ab8f;
+.overview-row-main {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
 }
 
-body:not(.light-mode) .welcome h2 {
-    color: #c0b8b3;
+.overview-row-main strong {
+    overflow: hidden;
+    color: #303138;
+    font-size: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-body:not(.light-mode) .welcome h2 strong,
-body:not(.light-mode) .section-title,
-body:not(.light-mode) .actions-header h2 {
-    color: #f4f0ec;
+.overview-row-main small {
+    overflow: hidden;
+    color: #77716e;
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-body:not(.light-mode) .welcome p,
-body:not(.light-mode) .actions-header p {
-    color: #b4aaa5;
+.overview-row-date {
+    flex-shrink: 0;
+    color: #77716e;
+    font-size: 12px;
+    white-space: nowrap;
 }
 
-body:not(.light-mode) .project-card {
-    background:
-        linear-gradient(135deg, #343136, #2e2d32);
-
-    border-color: #5b493e;
+.overview-download {
+    display: flex;
+    flex: 0 0 28px;
+    width: 28px;
+    height: 28px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    color: #76513c;
+    font-size: 20px;
+    text-decoration: none;
 }
 
-body:not(.light-mode) .project-main h3 {
-    color: #f4f0ec;
+.overview-download:hover {
+    background: #eee5df;
 }
 
-body:not(.light-mode) .project-main p {
-    color: #b4aaa5;
+.overview-empty {
+    padding: 24px 8px;
+    color: #77716e;
+    font-size: 14px;
+    text-align: center;
 }
 
-body:not(.light-mode) .project-counter {
-    background: #373337;
-    color: #d4c9c2;
-    border-color: #514741;
+
+@media (max-width: 1100px) {
+    .dashboard-overview {
+        grid-template-columns: 1fr;
+    }
 }
 
-body:not(.light-mode) .project-nav-button {
-    background: #473b36;
-    color: #dfb49b;
-    border-color: #6b5142;
-}
 
-body:not(.light-mode) .project-icon {
-    background: #493b35;
-    color: #d4a78b;
-}
-
-body:not(.light-mode) .stat-card {
-    background: #3b373b;
-    border-color: #514748;
-}
-
-body:not(.light-mode) .stat-label {
-    color: #b4aaa5;
-}
-
-body:not(.light-mode) .stat-card strong {
-    color: #f4f0ec;
-}
-
-body:not(.light-mode) .package-name {
-    color: #dfb49b;
-}
-
-body:not(.light-mode) .progress-container {
-    background: #51494a;
-}
-
-body:not(.light-mode) .slider-dot {
-    background: #5e5553;
-}
-
-body:not(.light-mode) .slider-dot.active {
-    background: #c59a7f;
-}
-
-body:not(.light-mode) .action-card {
-    background:
-        linear-gradient(155deg, #363338, #302e33);
-
-    border-color: #4f4544;
-}
-
-body:not(.light-mode) .action-card strong {
-    color: #f4f0ec;
-}
-
-body:not(.light-mode) .action-card p {
-    color: #b4aaa5;
-}
-
-body:not(.light-mode) .action-icon {
-    background: #493b35;
-    color: #d6ab8f;
-}
-
-body:not(.light-mode) .action-button {
-    background: #493b35;
-    color: #e4baa0;
-    border-color: #705344;
-}
-
-body:not(.light-mode) .no-projects {
-    background: #302e32;
-    color: #b4aaa5;
-    border-color: #5a4b43;
-}
-
-body:not(.light-mode) .footer {
-    color: #a99e99;
-}
-
-body:not(.light-mode) .materials-modal {
-    background: #302e32;
-    color: #f4f0ec;
-    border-color: #59483e;
-}
-
-body:not(.light-mode) .materials-modal h2,
-body:not(.light-mode) .materials-dropzone strong {
-    color: #f4f0ec;
-}
-
-body:not(.light-mode) #materialsProjectName,
-body:not(.light-mode) .materials-hint,
-body:not(.light-mode) .materials-dropzone > span:not(.materials-upload-icon) {
-    color: #b4aaa5;
-}
-
-body:not(.light-mode) .materials-close {
-    background: #494348;
-    color: #ffffff;
-    border-color: #655655;
-}
-
-body:not(.light-mode) .materials-dropzone {
-    background: #393237;
-    border-color: #8c6b58;
-}
-
-body:not(.light-mode) #materialsFiles {
-    color: #d1c7c1;
-}
-
-body:not(.light-mode) .materials-file-item {
-    background: #3c383c;
-    color: #f4f0ec;
-    border-color: #554b49;
-}
-
-body:not(.light-mode) .materials-status {
-    color: #d1c7c1;
-}
-
-body:not(.light-mode) .materials-status.success {
-    color: #81c999;
-}
-
-body:not(.light-mode) .materials-status.error {
-    color: #ff9999;
-}
-
-body:not(.light-mode) .materials-cancel {
-    background: #494348;
-    color: #f4f0ec;
-}
 
 /* 17. UŽI DESKTOP */
 
@@ -2352,548 +2284,6 @@ body:not(.light-mode) .materials-cancel {
     }
 }
 
-/* ===================================================
-   PTECH DIGITAL — DESKTOP VISUAL REFINEMENT
-   Referentni izgled: Graphite / Champagne
-   =================================================== */
-
-@media (min-width: 901px) {
-
-    /* Ukloni vodoravno pomicanje */
-
-    html,
-    body {
-        max-width: 100%;
-        overflow-x: clip;
-    }
-
-    .dashboard.desktop-layout,
-    .desktop-main,
-    .dashboard-content {
-        min-width: 0;
-    }
-
-    /* Pozadina s nježnim valovima */
-
-    .desktop-main {
-        background:
-            radial-gradient(
-                ellipse 680px 270px at 52% -5%,
-                rgba(255, 255, 255, 0.82),
-                transparent 85%
-            ),
-            radial-gradient(
-                ellipse 850px 450px at 105% 43%,
-                rgba(182, 143, 118, 0.12),
-                transparent 82%
-            ),
-            linear-gradient(
-                155deg,
-                #f6f2ee 0%,
-                #eee8e3 52%,
-                #f4efeb 100%
-            );
-    }
-
-    .desktop-main::before {
-        top: -280px;
-        right: -150px;
-
-        width: 1100px;
-        height: 520px;
-
-        border: none;
-        border-bottom:
-            2px solid rgba(255, 255, 255, 0.65);
-
-        border-radius: 0 0 55% 65%;
-
-        transform: rotate(-9deg);
-
-        background:
-            linear-gradient(
-                170deg,
-                rgba(255, 255, 255, 0.26),
-                rgba(193, 164, 145, 0.09)
-            );
-    }
-
-    .desktop-main::after {
-        left: -150px;
-        bottom: -240px;
-
-        width: 850px;
-        height: 420px;
-
-        border: none;
-        border-top:
-            1px solid rgba(255, 255, 255, 0.55);
-
-        border-radius: 55% 65% 0 0;
-
-        transform: rotate(-11deg);
-
-        background:
-            linear-gradient(
-                20deg,
-                rgba(132, 148, 136, 0.08),
-                transparent 75%
-            );
-    }
-
-    /* Sidebar s brončanim valom */
-
-    .desktop-sidebar {
-        background:
-            radial-gradient(
-                ellipse 360px 400px at -40% 90%,
-                rgba(158, 111, 83, 0.19),
-                transparent 80%
-            ),
-            linear-gradient(
-                160deg,
-                #303035,
-                #27272c 72%,
-                #242428
-            );
-    }
-
-    .desktop-sidebar::after {
-        left: -100px;
-        bottom: 105px;
-
-        width: 450px;
-        height: 290px;
-
-        border: none;
-        border-top:
-            1px solid rgba(209, 166, 135, 0.25);
-
-        border-radius: 55% 50% 0 0;
-
-        transform: rotate(18deg);
-
-        background:
-            linear-gradient(
-                150deg,
-                rgba(171, 117, 83, 0.20),
-                transparent 75%
-            );
-    }
-
-    /* Prostraniji sadržaj */
-
-    .dashboard-content {
-        padding: 32px 42px 0;
-    }
-
-    .welcome {
-        margin-bottom: 28px;
-    }
-
-    .welcome h2 {
-        font-size: 38px;
-        letter-spacing: -1px;
-    }
-
-    .welcome h2::after {
-        content: none !important;
-    }
-
-    .welcome p {
-        font-size: 17px;
-    }
-
-    .section-title,
-    .actions-header h2 {
-        font-size: 24px;
-    }
-
-    /* Navigacija projekata */
-
-    .project-nav-button {
-        width: 43px;
-        height: 43px;
-
-        border-radius: 11px;
-
-        background: #fffcf8;
-        border-color: #e6d9d0;
-
-        font-size: 28px;
-    }
-
-    .project-nav-button:not(:disabled):hover {
-        background: #a67b61;
-        color: #ffffff;
-    }
-
-    .project-counter {
-        padding: 10px 15px;
-        font-size: 15px;
-    }
-
-    /* Glavna projektna kartica */
-
-    .project-card {
-        padding: 23px 25px;
-
-        border-radius: 17px;
-        border-color: #e7dcd3;
-
-        background:
-            linear-gradient(
-                130deg,
-                rgba(255, 252, 249, 0.98),
-                rgba(255, 250, 246, 0.94)
-            );
-
-        box-shadow:
-            0 13px 32px rgba(65, 49, 39, 0.09);
-    }
-
-    .project-card::before {
-        display: none;
-    }
-
-    .project-heading {
-        margin-bottom: 20px;
-    }
-
-    .project-icon {
-        width: 70px;
-        height: 70px;
-        flex-basis: 70px;
-
-        border-radius: 15px;
-    }
-
-    .project-main h3 {
-        font-size: 29px;
-    }
-
-    .project-main p {
-        font-size: 17px;
-    }
-
-    .stat-card {
-        min-height: 83px;
-        background: #f1ece8;
-    }
-
-    .stat-label {
-        font-size: 15px;
-    }
-
-    .stat-card strong {
-        font-size: 16px;
-    }
-
-    /* Brze akcije */
-
-    .actions-section {
-        margin-top: 24px;
-    }
-
-    .actions-grid {
-        gap: 16px;
-    }
-
-    .action-card {
-        min-height: 222px;
-        padding: 22px;
-
-        border-radius: 16px;
-
-        box-shadow:
-            0 11px 26px rgba(65, 49, 39, 0.08);
-    }
-
-    .action-icon {
-        width: 48px;
-        height: 48px;
-
-        margin-bottom: 16px;
-
-        font-size: 25px;
-    }
-
-    .action-card strong {
-        font-size: 18px;
-        margin-bottom: 7px;
-    }
-
-    .action-card p {
-        font-size: 15px;
-        line-height: 1.5;
-    }
-
-    /* Gumbi poput onih na referentnoj slici */
-
-    .action-button {
-        min-height: 39px;
-
-        padding: 10px 16px;
-
-        border-radius: 10px;
-
-        font-size: 14px;
-        font-weight: 800;
-    }
-
-    .action-card:first-child .action-button {
-        background: #9b735b;
-        border-color: #9b735b;
-        color: #ffffff;
-    }
-
-    .action-card:nth-child(2) .action-button {
-        background: transparent;
-        border-color: #aa91ac;
-        color: #5f4566;
-    }
-
-    .action-card:nth-child(3) .action-button {
-        background: transparent;
-        border-color: #91a997;
-        color: #3e6651;
-    }
-
-    .action-card:nth-child(4) .action-button {
-        background: transparent;
-        border-color: #aa91ac;
-        color: #5f4566;
-    }
-
-    /* Onemogućena akcija ostaje onemogućena */
-
-    .action-card:disabled,
-    .action-card[aria-disabled="true"] {
-        opacity: 0.48;
-        cursor: default;
-    }
-
-    /* Tamna tema */
-
-    body:not(.light-mode) .desktop-main {
-        background:
-            radial-gradient(
-                ellipse 700px 400px at 100% 10%,
-                rgba(155, 115, 91, 0.10),
-                transparent 80%
-            ),
-            #252529;
-    }
-
-    body:not(.light-mode) .project-card {
-        background: #343136;
-        border-color: #5b493e;
-    }
-
-    body:not(.light-mode) .stat-card {
-        background: #3b373b;
-    }
-
-    body:not(.light-mode) .action-card {
-        background: #343136;
-        border-color: #514747;
-    }
-
-    body:not(.light-mode) .project-nav-button {
-        background: #473b36;
-        color: #dfb49b;
-        border-color: #6b5142;
-    }
-
-    body:not(.light-mode) .action-card:first-child .action-button {
-        background: #9b735b;
-        color: #ffffff;
-    }
-}
-
-/* =========================================
-   DASHBOARD OVERVIEW PANELS
-========================================= */
-
-.dashboard-overview {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-    margin-top: 18px;
-    margin-bottom: 28px;
-}
-
-.overview-panel {
-    min-width: 0;
-    padding: 20px;
-    border: 1px solid #e8ded7;
-    border-radius: 16px;
-    background: rgba(255, 252, 249, 0.94);
-    box-shadow: 0 12px 30px rgba(60, 45, 35, 0.07);
-}
-
-.overview-panel-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 14px;
-}
-
-.overview-panel-header h2 {
-    margin: 0 0 5px;
-    color: #303138;
-    font-size: 19px;
-    font-weight: 800;
-}
-
-.overview-panel-header p {
-    margin: 0;
-    color: #77716e;
-    font-size: 13px;
-}
-
-.overview-panel-header > a {
-    flex-shrink: 0;
-    color: #936b54;
-    font-size: 13px;
-    font-weight: 800;
-    text-decoration: none;
-}
-
-.overview-panel-header > a:hover {
-    text-decoration: underline;
-}
-
-.overview-list {
-    display: flex;
-    flex-direction: column;
-}
-
-.overview-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-width: 0;
-    padding: 11px 0;
-    border-bottom: 1px solid #eee7e1;
-    color: inherit;
-    text-decoration: none;
-}
-
-.overview-row:last-child {
-    border-bottom: 0;
-}
-
-a.overview-row:hover {
-    background: rgba(155, 115, 91, 0.05);
-}
-
-.overview-avatar,
-.overview-file-icon {
-    display: flex;
-    flex: 0 0 39px;
-    width: 39px;
-    height: 39px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 12px;
-    background: #e8d8cb;
-    color: #76513c;
-    font-weight: 800;
-}
-
-.overview-file-icon {
-    background: #eee5df;
-    font-size: 11px;
-}
-
-.overview-row-main {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    gap: 3px;
-    min-width: 0;
-}
-
-.overview-row-main strong {
-    overflow: hidden;
-    color: #303138;
-    font-size: 14px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.overview-row-main small {
-    overflow: hidden;
-    color: #77716e;
-    font-size: 12px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.overview-row-date {
-    flex-shrink: 0;
-    color: #77716e;
-    font-size: 12px;
-    white-space: nowrap;
-}
-
-.overview-download {
-    display: flex;
-    flex: 0 0 28px;
-    width: 28px;
-    height: 28px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    color: #76513c;
-    font-size: 20px;
-    text-decoration: none;
-}
-
-.overview-download:hover {
-    background: #eee5df;
-}
-
-.overview-empty {
-    padding: 24px 8px;
-    color: #77716e;
-    font-size: 14px;
-    text-align: center;
-}
-
-body:not(.light-mode) .overview-panel {
-    background: #343136;
-    border-color: #514747;
-}
-
-body:not(.light-mode) .overview-panel-header h2,
-body:not(.light-mode) .overview-row-main strong {
-    color: #f5eee8;
-}
-
-body:not(.light-mode) .overview-row {
-    border-color: #514747;
-}
-
-body:not(.light-mode) .overview-panel-header p,
-body:not(.light-mode) .overview-row-main small,
-body:not(.light-mode) .overview-row-date,
-body:not(.light-mode) .overview-empty {
-    color: #c5b8b0;
-}
-
-@media (max-width: 1100px) {
-    .dashboard-overview {
-        grid-template-columns: 1fr;
-    }
-}
-
-
-/* =========================================
-   DESKTOP SCROLL / BACKGROUND FIX
-========================================= */
 
 /* =========================================
    PTECH DIGITAL
@@ -2999,4 +2389,806 @@ body:not(.light-mode) .overview-empty {
         margin-bottom: 24px;
     }
 
+}
+
+/* ============================================================
+   22. PTECH DIGITAL — PREMIUM DESIGN SYSTEM
+   Light: champagne / bronze / cream
+   Dark: navy / bronze
+   Jedna CSS datoteka, bez dodatnog dashboard-theme.css.
+   ============================================================ */
+
+/* Tokeni postoje samo na dashboardu kako ostale stranice
+   koje dijele style.css ne bi mijenjale svoj izgled. */
+
+body.portal-desktop.light-mode {
+    --ui-bg: #fffaf5;
+    --ui-bg-top: #fffdf9;
+    --ui-bg-bottom: #f9f0e8;
+    --ui-card: #fffdfb;
+    --ui-card-to: #fff8f2;
+    --ui-card-inset: #f8efe8;
+    --ui-line: #ead8ca;
+    --ui-text: #202534;
+    --ui-subtle: #776961;
+    --ui-secondary: #8a786d;
+    --ui-copper: #995e3e;
+    --ui-copper-bright: #bb8767;
+    --ui-copper-soft: #f2dfd1;
+    --ui-shadow: 0 16px 42px rgba(106, 65, 39, 0.09);
+    --ui-hover-shadow: 0 20px 45px rgba(106, 65, 39, 0.14);
+    --ui-sidebar-text: #51382b;
+    --ui-sidebar-muted: #755342;
+    --ui-sidebar-selected-text: #573b2d;
+    --ui-sidebar-selected: rgba(255, 252, 247, 0.83);
+    --ui-header: rgba(255, 251, 247, 0.97);
+    --ui-track: #e8d8ca;
+    --ui-avatar: #f3e2d4;
+    --ui-file: #f3e1d3;
+    --ui-footer: #98877b;
+    --ui-modal-backdrop: rgba(26, 22, 22, 0.52);
+}
+
+body.portal-desktop:not(.light-mode) {
+    --ui-bg: #1b2232;
+    --ui-bg-top: #20293b;
+    --ui-bg-bottom: #1a2232;
+    --ui-card: #2b354b;
+    --ui-card-to: #263146;
+    --ui-card-inset: #354158;
+    --ui-line: #46516a;
+    --ui-text: #fff9f4;
+    --ui-subtle: #bcc5d4;
+    --ui-secondary: #aab6c9;
+    --ui-copper: #e7ba98;
+    --ui-copper-bright: #d5a07b;
+    --ui-copper-soft: #444259;
+    --ui-shadow: 0 16px 42px rgba(5, 10, 22, 0.23);
+    --ui-hover-shadow: 0 20px 45px rgba(5, 10, 22, 0.32);
+    --ui-sidebar-text: #e4e8f0;
+    --ui-sidebar-muted: #afbad0;
+    --ui-sidebar-selected-text: #fff9f4;
+    --ui-sidebar-selected: rgba(199, 139, 99, 0.23);
+    --ui-header: rgba(31, 40, 58, 0.97);
+    --ui-track: #49546d;
+    --ui-avatar: #38465e;
+    --ui-file: #3b465e;
+    --ui-footer: #a4afbf;
+    --ui-modal-backdrop: rgba(7, 12, 22, 0.73);
+}
+
+/* 22.1. Globalni izgled dashboarda */
+
+body.portal-desktop {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Arial, sans-serif;
+    background: var(--ui-bg);
+    color: var(--ui-text);
+}
+
+body.portal-desktop .dashboard.desktop-layout {
+    background: var(--ui-bg);
+}
+
+body.portal-desktop .desktop-main {
+    background:
+        radial-gradient(ellipse 700px 420px at 98% 7%,
+            rgba(190, 135, 98, 0.13), transparent 78%),
+        radial-gradient(ellipse 650px 400px at -10% 90%,
+            rgba(196, 151, 119, 0.07), transparent 76%),
+        linear-gradient(155deg,
+            var(--ui-bg-top),
+            var(--ui-bg) 58%,
+            var(--ui-bg-bottom));
+}
+
+/* Suptilni val u pozadini ne prekriva sadrzaj */
+body.portal-desktop .desktop-main::before {
+    top: -250px;
+    right: -155px;
+    width: min(1080px, 90vw);
+    height: 510px;
+    border: 0;
+    border-bottom: 1px solid rgba(194, 140, 101, 0.18);
+    border-radius: 0 0 56% 63%;
+    transform: rotate(-9deg);
+    background: linear-gradient(170deg,
+        rgba(229, 185, 148, 0.05), transparent 76%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+body.portal-desktop .desktop-main::after {
+    display: none;
+}
+
+/* 22.2. Lijevi sidebar */
+
+body.portal-desktop .desktop-sidebar {
+    color: var(--ui-sidebar-text);
+    box-shadow: 10px 0 34px rgba(48, 35, 27, 0.08);
+}
+
+body.portal-desktop.light-mode .desktop-sidebar {
+    background:
+        radial-gradient(ellipse 360px 460px at -42% 91%,
+            rgba(255, 249, 241, 0.25), transparent 78%),
+        linear-gradient(164deg,
+            #e8bea0 0%,
+            #d9a989 53%,
+            #c79474 100%);
+    border-right: 1px solid rgba(128, 81, 53, 0.13);
+}
+
+body.portal-desktop:not(.light-mode) .desktop-sidebar {
+    background:
+        radial-gradient(ellipse 310px 420px at -45% 91%,
+            rgba(187, 123, 84, 0.13), transparent 79%),
+        linear-gradient(160deg,
+            #2c374f 0%,
+            #222d42 63%,
+            #1a2436 100%);
+    border-right: 1px solid rgba(233, 193, 164, 0.08);
+}
+
+/* Dekorativni krug pri dnu */
+body.portal-desktop .desktop-sidebar::after {
+    width: 380px;
+    height: 380px;
+    left: -155px;
+    bottom: -225px;
+    transform: rotate(-14deg);
+    border: 55px solid rgba(255, 248, 239, 0.13);
+    background: transparent;
+    pointer-events: none;
+}
+
+body.portal-desktop:not(.light-mode) .desktop-sidebar::after {
+    border-color: rgba(207, 156, 118, 0.08);
+}
+
+/* Pravi PTech simbol: ne zahtijeva promjenu HTML-a.
+   Postojeci znak 'P' u brand-logo postaje nevidljiv. */
+body.portal-desktop .sidebar-brand .brand-logo,
+body.portal-desktop .mobile-brand .brand-logo {
+    background-image:
+        url("./assets/ptech-icon.png"),
+        linear-gradient(145deg, #fffaf3, #f1d9c5);
+    background-repeat: no-repeat;
+    background-position: center, center;
+    background-size: 33px auto, cover;
+    background-color: #fff6ec;
+    font-size: 0;
+    border: 1px solid rgba(255, 255, 255, 0.56);
+    box-shadow: 0 9px 23px rgba(91, 56, 35, 0.14);
+    border-radius: 13px;
+}
+
+body.portal-desktop .sidebar-brand-text strong {
+    color: var(--ui-text);
+    font-size: 17px;
+    letter-spacing: -0.55px;
+}
+
+body.portal-desktop.light-mode .sidebar-brand-text strong {
+    color: #202534;
+}
+
+body.portal-desktop:not(.light-mode) .sidebar-brand-text strong {
+    color: #fffaf5;
+}
+
+body.portal-desktop .sidebar-brand-text small {
+    color: var(--ui-sidebar-muted);
+    font-size: 10px;
+    letter-spacing: 1.2px;
+}
+
+body.portal-desktop .sidebar-nav {
+    gap: 9px;
+}
+
+body.portal-desktop .sidebar-link {
+    min-height: 49px;
+    border: 1px solid transparent;
+    border-radius: 14px;
+    color: var(--ui-sidebar-text);
+    font-size: 15px;
+    font-weight: 650;
+    transition: background 0.22s ease,
+        color 0.22s ease, transform 0.22s ease;
+}
+
+body.portal-desktop .sidebar-link:hover {
+    background: rgba(255, 250, 244, 0.23);
+    color: var(--ui-sidebar-selected-text);
+    transform: translateX(2px);
+}
+
+body.portal-desktop:not(.light-mode) .sidebar-link:hover {
+    background: rgba(208, 156, 120, 0.1);
+}
+
+body.portal-desktop .sidebar-link.active,
+body.portal-desktop .sidebar-link[aria-current="page"] {
+    background: var(--ui-sidebar-selected);
+    color: var(--ui-sidebar-selected-text);
+    font-weight: 800;
+    box-shadow: 0 7px 20px rgba(91, 58, 38, 0.08);
+}
+
+body.portal-desktop.light-mode .sidebar-link.active,
+body.portal-desktop.light-mode .sidebar-link[aria-current="page"] {
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+body.portal-desktop .sidebar-link.active::before,
+body.portal-desktop .sidebar-link[aria-current="page"]::before {
+    background: var(--ui-copper-bright);
+}
+
+body.portal-desktop .sidebar-bottom {
+    border-top-color: rgba(94, 68, 52, 0.17);
+}
+
+body.portal-desktop:not(.light-mode) .sidebar-bottom {
+    border-top-color: rgba(237, 213, 197, 0.12);
+}
+
+body.portal-desktop .sidebar-bottom a {
+    color: var(--ui-sidebar-text);
+}
+
+body.portal-desktop .sidebar-bottom a:hover {
+    color: var(--ui-sidebar-selected-text);
+}
+
+body.portal-desktop .sidebar-bottom p {
+    color: var(--ui-sidebar-muted);
+    font-size: 12px;
+}
+
+/* 22.3. Header: sticky vrijednosti ostaju u scroll-fix dijelu */
+
+body.portal-desktop .dashboard-header {
+    background: var(--ui-header);
+    border-bottom: 1px solid var(--ui-line);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+}
+
+body.portal-desktop #userTop {
+    color: var(--ui-text);
+}
+
+body.portal-desktop .user-avatar {
+    background: var(--ui-avatar);
+    border: 1px solid var(--ui-line);
+}
+
+body.portal-desktop .user-avatar svg {
+    stroke: var(--ui-copper);
+}
+
+body.portal-desktop .header-separator {
+    background: var(--ui-line);
+}
+
+body.portal-desktop .logout-button {
+    color: var(--ui-subtle);
+}
+
+body.portal-desktop .logout-button:hover {
+    color: var(--ui-text);
+    background: var(--ui-copper-soft);
+}
+
+/* Light = sun / Dark = moon */
+body.portal-desktop .theme-slider {
+    background: var(--ui-copper-soft);
+    border-color: var(--ui-line);
+}
+
+body.portal-desktop .theme-slider::before {
+    background: linear-gradient(135deg, #d6a17e, #995e3e);
+}
+
+/* 22.4. Naslovi i sadrzaj */
+
+body.portal-desktop .welcome h2 {
+    color: var(--ui-secondary);
+    font-weight: 500;
+    letter-spacing: -1px;
+}
+
+body.portal-desktop .welcome h2 strong,
+body.portal-desktop .section-title,
+body.portal-desktop .actions-header h2 {
+    color: var(--ui-text);
+    font-weight: 800;
+}
+
+body.portal-desktop .welcome h2 strong {
+    font-weight: 900;
+}
+
+body.portal-desktop .welcome p,
+body.portal-desktop .actions-header p {
+    color: var(--ui-subtle);
+}
+
+/* 22.5. Slider i projektna kartica */
+
+body.portal-desktop .project-counter,
+body.portal-desktop .project-nav-button {
+    color: var(--ui-copper);
+    background: var(--ui-card);
+    border: 1px solid var(--ui-line);
+}
+
+body.portal-desktop .project-nav-button {
+    border-radius: 12px;
+}
+
+body.portal-desktop .project-nav-button:hover:not(:disabled) {
+    background: var(--ui-copper-soft);
+    color: var(--ui-text);
+}
+
+body.portal-desktop .slider-dot {
+    background: var(--ui-line);
+}
+
+body.portal-desktop .slider-dot.active {
+    background: var(--ui-copper-bright);
+}
+
+body.portal-desktop .project-card {
+    padding: 25px 27px;
+    background:
+        radial-gradient(ellipse 370px 250px at 100% 0%,
+            rgba(198, 142, 105, 0.09), transparent 80%),
+        linear-gradient(135deg, var(--ui-card), var(--ui-card-to));
+    border: 1px solid var(--ui-line);
+    border-radius: 24px;
+    box-shadow: var(--ui-shadow);
+}
+
+body.portal-desktop .project-card::before {
+    display: none;
+}
+
+body.portal-desktop .project-card-link:hover {
+    border-color: var(--ui-copper-bright);
+    box-shadow: var(--ui-hover-shadow);
+}
+
+body.portal-desktop .project-icon {
+    background: var(--ui-copper-soft);
+    color: var(--ui-copper);
+    border: 1px solid var(--ui-line);
+    border-radius: 19px;
+}
+
+body.portal-desktop .project-main h3 {
+    color: var(--ui-text);
+}
+
+body.portal-desktop .project-main p {
+    color: var(--ui-subtle);
+}
+
+body.portal-desktop .project-open-arrow {
+    color: var(--ui-secondary);
+}
+
+body.portal-desktop .project-card-link:hover .project-open-arrow {
+    color: var(--ui-copper);
+}
+
+body.portal-desktop .stat-card {
+    background: var(--ui-card-inset);
+    border: 1px solid var(--ui-line);
+    border-radius: 16px;
+}
+
+body.portal-desktop .stat-icon,
+body.portal-desktop .package-name {
+    color: var(--ui-copper);
+}
+
+body.portal-desktop .stat-label {
+    color: var(--ui-subtle);
+}
+
+body.portal-desktop .stat-card strong {
+    color: var(--ui-text);
+}
+
+body.portal-desktop .progress-container {
+    background: var(--ui-track);
+}
+
+body.portal-desktop .progress-bar {
+    background: linear-gradient(90deg, #a26b49, #dfac89);
+}
+
+body.portal-desktop .no-projects {
+    background: var(--ui-card);
+    border-color: var(--ui-line);
+    color: var(--ui-subtle);
+    border-radius: 20px;
+}
+
+/* Statusi zadrzavaju semanticke boje */
+body.portal-desktop.light-mode .status-progress {
+    color: #885233;
+    background: #f7e5d8;
+    border-color: #e7c6ac;
+}
+
+body.portal-desktop:not(.light-mode) .status-progress {
+    color: #edc6a7;
+    background: #493b3d;
+    border-color: #725548;
+}
+
+body.portal-desktop:not(.light-mode) .status-done {
+    color: #abdbb7;
+    background: #263f3b;
+    border-color: #45685d;
+}
+
+body.portal-desktop:not(.light-mode) .status-waiting {
+    color: #d1d1d8;
+    background: #3a4050;
+    border-color: #555c6b;
+}
+
+/* 22.6. Brze akcije */
+
+body.portal-desktop .action-card {
+    background: linear-gradient(155deg, var(--ui-card), var(--ui-card-to));
+    border: 1px solid var(--ui-line);
+    border-radius: 22px;
+    box-shadow: var(--ui-shadow);
+}
+
+body.portal-desktop .action-card:not(:disabled):not([aria-disabled="true"]):hover {
+    transform: translateY(-4px);
+    border-color: var(--ui-copper-bright);
+    box-shadow: var(--ui-hover-shadow);
+}
+
+body.portal-desktop .action-icon {
+    color: var(--ui-copper);
+    background: var(--ui-copper-soft);
+    border: 1px solid var(--ui-line);
+    border-radius: 15px;
+}
+
+body.portal-desktop .action-card:nth-child(3) .action-icon {
+    background: var(--ui-copper-soft);
+    color: var(--ui-copper);
+}
+
+body.portal-desktop .action-card strong {
+    color: var(--ui-text);
+}
+
+body.portal-desktop .action-card p {
+    color: var(--ui-subtle);
+}
+
+body.portal-desktop .action-button {
+    border-radius: 11px;
+    background: var(--ui-copper-soft);
+    color: var(--ui-copper);
+    border-color: var(--ui-line);
+}
+
+body.portal-desktop .action-card:first-child .action-button {
+    color: white;
+    border-color: transparent;
+    background: linear-gradient(115deg, #d6a27e, #a26a46);
+}
+
+body.portal-desktop .action-card:disabled,
+body.portal-desktop .action-card[aria-disabled="true"] {
+    opacity: 0.48;
+    cursor: default;
+}
+
+/* 22.7. Nedavne poruke i dokumenti */
+
+body.portal-desktop .overview-panel {
+    padding: 23px;
+    border-radius: 23px;
+    background: var(--ui-card);
+    border: 1px solid var(--ui-line);
+    box-shadow: var(--ui-shadow);
+}
+
+body.portal-desktop .overview-panel-header h2,
+body.portal-desktop .overview-row-main strong {
+    color: var(--ui-text);
+}
+
+body.portal-desktop .overview-panel-header p,
+body.portal-desktop .overview-row-main small,
+body.portal-desktop .overview-row-date,
+body.portal-desktop .overview-empty {
+    color: var(--ui-subtle);
+}
+
+body.portal-desktop .overview-panel-header > a,
+body.portal-desktop .overview-download {
+    color: var(--ui-copper);
+}
+
+body.portal-desktop .overview-row {
+    border-bottom-color: var(--ui-line);
+}
+
+body.portal-desktop a.overview-row:hover {
+    background: var(--ui-copper-soft);
+}
+
+body.portal-desktop .overview-avatar,
+body.portal-desktop .overview-file-icon {
+    background: var(--ui-file);
+    color: var(--ui-copper);
+}
+
+body.portal-desktop .overview-download:hover {
+    background: var(--ui-copper-soft);
+}
+
+body.portal-desktop .footer {
+    color: var(--ui-footer);
+}
+
+/* 22.8. Prozor za dostavu materijala */
+
+body.portal-desktop .materials-overlay {
+    background: var(--ui-modal-backdrop);
+}
+
+body.portal-desktop .materials-modal {
+    color: var(--ui-text);
+    background: var(--ui-card);
+    border: 1px solid var(--ui-line);
+    border-radius: 24px;
+}
+
+body.portal-desktop .materials-eyebrow {
+    color: var(--ui-copper);
+}
+
+body.portal-desktop .materials-modal h2,
+body.portal-desktop .materials-dropzone strong {
+    color: var(--ui-text);
+}
+
+body.portal-desktop #materialsProjectName,
+body.portal-desktop .materials-hint,
+body.portal-desktop .materials-dropzone > span:not(.materials-upload-icon) {
+    color: var(--ui-subtle);
+}
+
+body.portal-desktop .materials-close,
+body.portal-desktop .materials-cancel {
+    background: var(--ui-card-inset);
+    color: var(--ui-text);
+    border-color: var(--ui-line);
+}
+
+body.portal-desktop .materials-dropzone {
+    background: var(--ui-card-inset);
+    border-color: var(--ui-copper-bright);
+}
+
+body.portal-desktop .materials-dropzone:hover,
+body.portal-desktop .materials-dropzone.dragover {
+    background: var(--ui-copper-soft);
+}
+
+body.portal-desktop .materials-upload-icon {
+    background: var(--ui-copper-soft);
+    color: var(--ui-copper);
+}
+
+body.portal-desktop #materialsFiles,
+body.portal-desktop .materials-status {
+    color: var(--ui-subtle);
+}
+
+body.portal-desktop #materialsFiles::file-selector-button {
+    background: var(--ui-copper-soft);
+    color: var(--ui-copper);
+    border-color: var(--ui-line);
+}
+
+body.portal-desktop .materials-file-item {
+    background: var(--ui-card-inset);
+    color: var(--ui-text);
+    border-color: var(--ui-line);
+}
+
+body.portal-desktop .materials-status.success {
+    color: #4c9b6a;
+}
+
+body.portal-desktop:not(.light-mode) .materials-status.success {
+    color: #9fddb5;
+}
+
+body.portal-desktop .materials-status.error {
+    color: #c95656;
+}
+
+body.portal-desktop:not(.light-mode) .materials-status.error {
+    color: #ffaaa7;
+}
+
+body.portal-desktop .materials-submit {
+    color: white;
+    background: linear-gradient(115deg, #d6a27e, #a26a46);
+}
+
+/* 22.9. Mobilni header / donja navigacija */
+
+body.portal-desktop .mobile-brand h1 {
+    color: var(--ui-text);
+}
+
+body.portal-desktop .bottom-nav {
+    background: var(--ui-header);
+    border-top: 1px solid var(--ui-line);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+}
+
+body.portal-desktop .bottom-nav-item {
+    color: var(--ui-subtle);
+}
+
+body.portal-desktop .bottom-nav-item.active {
+    color: var(--ui-copper);
+}
+
+body.portal-desktop .bottom-nav-item.active::before {
+    background: var(--ui-copper-bright);
+}
+
+body.portal-desktop .nav-notification {
+    border-color: var(--ui-bg);
+}
+
+@media (min-width: 901px) {
+    /* Zadrzava se isti sticky mehanizam, samo siri sidebar
+       radi ispravnog prikaza logotipa i navigacije. */
+    body.portal-desktop .dashboard.desktop-layout {
+        grid-template-columns: 244px minmax(0, 1fr);
+    }
+
+    body.portal-desktop .dashboard-content {
+        padding: 32px 42px 28px;
+    }
+
+    body.portal-desktop .welcome {
+        margin-bottom: 28px;
+    }
+
+    body.portal-desktop .welcome h2 {
+        font-size: 38px;
+    }
+
+    body.portal-desktop .welcome p {
+        font-size: 16px;
+    }
+
+    body.portal-desktop .section-title,
+    body.portal-desktop .actions-header h2 {
+        font-size: 24px;
+    }
+
+    body.portal-desktop .action-card {
+        min-height: 208px;
+        padding: 22px;
+    }
+
+    body.portal-desktop .action-icon {
+        width: 47px;
+        height: 47px;
+        margin-bottom: 16px;
+    }
+
+    body.portal-desktop .action-card strong {
+        font-size: 17px;
+    }
+
+    body.portal-desktop .action-card p {
+        font-size: 14px;
+    }
+
+    body.portal-desktop .action-button {
+        min-height: 38px;
+        padding: 9px 15px;
+        font-size: 13px;
+    }
+}
+
+@media (min-width: 901px) and (max-width: 1150px) {
+    body.portal-desktop .dashboard.desktop-layout {
+        grid-template-columns: 224px minmax(0, 1fr);
+    }
+
+    body.portal-desktop .dashboard-content {
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+
+    body.portal-desktop .sidebar-brand-text strong {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 900px) {
+    body.portal-desktop .sidebar-brand-text strong {
+        font-size: 14px;
+    }
+
+    body.portal-desktop .dashboard-content {
+        padding-left: 22px;
+        padding-right: 22px;
+    }
+}
+
+@media (max-width: 700px) {
+    body.portal-desktop .dashboard-content {
+        padding: 23px 15px 0;
+    }
+
+    body.portal-desktop .project-card {
+        padding: 17px;
+        border-radius: 19px;
+    }
+
+    body.portal-desktop .action-card {
+        border-radius: 17px;
+        padding: 14px;
+    }
+
+    body.portal-desktop .action-card strong {
+        font-size: 13px;
+    }
+
+    body.portal-desktop .action-card p {
+        font-size: 11px;
+    }
+
+    body.portal-desktop .overview-panel {
+        padding: 17px;
+        border-radius: 18px;
+    }
+
+    body.portal-desktop .overview-row-date {
+        font-size: 10px;
+    }
+
+    body.portal-desktop .materials-modal {
+        border-radius: 18px;
+    }
+
+    body.portal-desktop .mobile-brand .brand-logo {
+        background-size: 30px auto, cover;
+    }
+}
+
+@media (max-width: 390px) {
+    body.portal-desktop .dashboard-content {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
 }
