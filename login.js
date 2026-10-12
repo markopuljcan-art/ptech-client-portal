@@ -764,49 +764,40 @@ if (passwordInput && capsLockWarning) {
 
     const questions = [
 
-        {
-            question: "Kako se prijaviti?",
+    {
+        question: "Kako se prijaviti?",
 
-            answer:
-                "Za prijavu unesite e-mail adresu i lozinku koje vam je dodijelio PTech Digital."
-        },
+        answer:
+            "Za prijavu unesite e-mail adresu i lozinku " +
+            "koje vam je dodijelio PTech Digital. " +
+            "Nakon uspješne prijave automatski ćete " +
+            "biti preusmjereni u svoj korisnički portal."
+    },
 
-        {
-            question: "Zaboravio sam lozinku.",
+    {
+        question: "Lozinka ili mail nisu točni",
 
-            answer:
-                "Ako ste zaboravili lozinku, obratite se PTech Digital podršci kako biste zatražili pomoć s pristupom."
-        },
+        answer:
+            "Provjerite jeste li ispravno upisali " +
+            "e-mail adresu i lozinku. Obratite pozornost " +
+            "na velika i mala slova te provjerite " +
+            "je li uključen Caps Lock. " +
+            "Ako prijava i dalje ne uspijeva, " +
+            "obratite se PTech Digital timu."
+    },
 
-        {
-            question: "Gdje mogu vidjeti projekt?",
+    {
+        question: "Nemam pristupne podatke",
 
-            answer:
-                "Nakon prijave otvorite odjeljak 'Moji projekti'. Tamo možete pregledati dostupne informacije i napredak svojih projekata."
-        },
+        answer:
+            "Pristupne podatke za portal dodjeljuje " +
+            "PTech Digital nakon dogovorene suradnje. " +
+            "Ako ih još niste dobili, obratite se " +
+            "osobi iz PTech Digital tima s kojom " +
+            "ste dogovorili projekt."
+    }
 
-        {
-            question: "Gdje su dokumenti?",
-
-            answer:
-                "Dokumente povezane s vašim projektom pronaći ćete u odjeljku 'Dokumenti' nakon prijave."
-        },
-
-        {
-            question: "Kako poslati poruku?",
-
-            answer:
-                "Nakon prijave otvorite odjeljak 'Poruke' kako biste komunicirali s PTech Digital timom."
-        },
-
-        {
-            question: "Nemam pristupne podatke.",
-
-            answer:
-                "Pristupne podatke dodjeljuje PTech Digital. Ako ih još niste dobili, obratite se osobi s kojom ste dogovorili suradnju."
-        }
-
-    ];
+];
 
 
     /* DODAVANJE PORUKE */
