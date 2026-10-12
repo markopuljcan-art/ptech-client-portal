@@ -1717,3 +1717,34 @@ svg {
         transition: none !important;
     }
 }
+/* GORE LIJEVO - manji simbol s bež kockicom iza */
+
+.login-brand {
+    position: absolute;
+    top: 24px;
+    left: clamp(32px, 4vw, 64px);
+    z-index: 10;
+}
+
+.login-brand .brand {
+    width: 74px;
+    height: 74px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, #f3e4d7, #e7c4a9);
+    border: 1px solid rgba(186, 136, 101, 0.22);
+    border-radius: 20px;
+    box-shadow:
+        0 10px 24px rgba(132, 90, 60, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    text-decoration: none;
+    overflow: hidden;
+}
+
+.login-brand .brand-logo-image {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    display: block;
+}
