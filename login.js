@@ -1,7 +1,7 @@
 
 /* ==========================================
-   PTECH DIGITAL CLIENT PORTAL
-   LOGIN + CINEMATIC PORTAL TRANSITION
+   PTECH DIGITAL
+   SMOOTH PORTAL LOGIN — V13
 ========================================== */
 
 /* ==========================================
@@ -23,14 +23,29 @@ const supabaseClient = supabase.createClient(
    ELEMENTS
 ========================================== */
 
-const loginForm = document.getElementById("loginForm");
-const loginButton = document.getElementById("loginButton");
-const loginError = document.getElementById("loginError");
-const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
-const togglePassword = document.getElementById("togglePassword");
-const capsLockWarning = document.getElementById("capsLockWarning");
-const loginCard = document.querySelector(".login-card");
+const loginForm =
+    document.getElementById("loginForm");
+
+const loginButton =
+    document.getElementById("loginButton");
+
+const loginError =
+    document.getElementById("loginError");
+
+const emailInput =
+    document.getElementById("email");
+
+const passwordInput =
+    document.getElementById("password");
+
+const togglePassword =
+    document.getElementById("togglePassword");
+
+const capsLockWarning =
+    document.getElementById("capsLockWarning");
+
+const loginCard =
+    document.querySelector(".login-card");
 
 let isRedirecting = false;
 
@@ -56,6 +71,7 @@ function setLoginLoading(loading) {
     if (!loginButton) return;
 
     loginButton.disabled = loading;
+
     loginButton.textContent = loading
         ? "Prijava..."
         : "Prijavi se";
@@ -65,37 +81,30 @@ function shakeLoginCard() {
     if (!loginCard) return;
 
     loginCard.classList.remove("shake");
-
     void loginCard.offsetWidth;
-
     loginCard.classList.add("shake");
 }
 
 /* ==========================================
-   PORTAL TRANSITION CONFIGURATION
+   TRANSITION SETTINGS
 ========================================== */
 
 /*
-   Pozicija centra iz tvojeg screenshota.
-
-   52.5% = malo desno od sredine
-   50%   = sredina po visini
-
-   Tu je bio plavi kruzic.
+   Sredisnja tocka:
+   mjesto plavog kruzica sa screenshota.
 */
 
 const PORTAL_X = "52.5%";
 const PORTAL_Y = "50%";
 
 /*
-   Ukupno trajanje animacije.
-   Povecaj za sporiji prijelaz.
+   Ukupno trajanje prijelaza.
 */
 
-const PORTAL_DURATION = 2800;
+const PORTAL_DURATION = 2500;
 
 /* ==========================================
-   PORTAL TRANSITION CSS
+   SMOOTH TRANSITION STYLES
 ========================================== */
 
 function installPortalStyles() {
@@ -105,35 +114,33 @@ function installPortalStyles() {
     }
 
     const style = document.createElement("style");
-
     style.id = "ptech-portal-styles";
 
     style.textContent = `
 
-        /* ====================================
-           PORTAL VARIABLES
-        ==================================== */
-
         :root {
             --portal-x: ${PORTAL_X};
             --portal-y: ${PORTAL_Y};
-        }
 
-        /* ====================================
-           LOCK PAGE
-        ==================================== */
+            /*
+               Jednaka krivulja za pomicanje
+               i zoom, bez naglih promjena.
+            */
+
+            --portal-ease:
+                cubic-bezier(.35, .08, .62, 1);
+        }
 
         body.portal-entering {
             overflow: hidden !important;
         }
 
-        body.portal-entering .support-widget {
-            pointer-events: none;
-        }
+        /*
+           1. CAMERA ZOOM
 
-        /* ====================================
-           CAMERA ZOOM TOWARD CENTER
-        ==================================== */
+           Samo transform, bez blur efekta.
+           GPU-friendly animacija.
+        */
 
         body.portal-entering .login-page {
             transform-origin:
@@ -141,120 +148,97 @@ function installPortalStyles() {
                 var(--portal-y);
 
             animation:
-                portalCameraDive
-                1550ms
-                cubic-bezier(.42, 0, .14, 1)
+                portalCameraZoom
+                1280ms
+                var(--portal-ease)
                 both;
 
             pointer-events: none;
-            will-change: transform, filter;
+            will-change: transform;
         }
 
-        @keyframes portalCameraDive {
-
-            0% {
-                transform: scale(1);
-                filter: blur(0);
+        @keyframes portalCameraZoom {
+            from {
+                transform: translateZ(0) scale(1);
             }
 
-            20% {
-                transform: scale(1.025);
-                filter: blur(0);
-            }
-
-            48% {
-                transform: scale(1.17);
-                filter: blur(.2px);
-            }
-
-            75% {
-                transform: scale(1.65);
-                filter: blur(1.5px);
-            }
-
-            100% {
-                transform: scale(2.8);
-                filter: blur(5px);
+            to {
+                transform: translateZ(0) scale(2.35);
             }
         }
 
-        /* ====================================
-           LEFT SIDE EXITS TO THE LEFT
-        ==================================== */
+        /*
+           2. LEFT SIDE MOVES LEFT
+        */
 
         body.portal-entering .login-left {
             animation:
-                portalLeftExit
-                1420ms
-                cubic-bezier(.36, 0, .18, 1)
+                portalMoveLeft
+                1280ms
+                var(--portal-ease)
                 both;
 
             will-change: transform, opacity;
         }
 
-        @keyframes portalLeftExit {
-
-            0% {
-                transform: translateX(0);
+        @keyframes portalMoveLeft {
+            from {
+                transform: translate3d(0, 0, 0);
                 opacity: 1;
             }
 
-            26% {
-                transform: translateX(-2vw);
-                opacity: 1;
-            }
-
-            63% {
-                transform: translateX(-11vw);
-                opacity: .85;
-            }
-
-            100% {
-                transform: translateX(-37vw);
+            to {
+                transform: translate3d(-29vw, 0, 0);
                 opacity: 0;
             }
         }
 
-        /* ====================================
-           RIGHT SIDE EXITS TO THE RIGHT
-        ==================================== */
+        /*
+           3. RIGHT SIDE MOVES RIGHT
+        */
 
         body.portal-entering .login-right {
             animation:
-                portalRightExit
-                1420ms
-                cubic-bezier(.36, 0, .18, 1)
+                portalMoveRight
+                1280ms
+                var(--portal-ease)
                 both;
 
             will-change: transform, opacity;
         }
 
-        @keyframes portalRightExit {
-
-            0% {
-                transform: translateX(0);
+        @keyframes portalMoveRight {
+            from {
+                transform: translate3d(0, 0, 0);
                 opacity: 1;
             }
 
-            26% {
-                transform: translateX(2vw);
-                opacity: 1;
-            }
-
-            63% {
-                transform: translateX(11vw);
-                opacity: .85;
-            }
-
-            100% {
-                transform: translateX(37vw);
+            to {
+                transform: translate3d(29vw, 0, 0);
                 opacity: 0;
             }
         }
 
-        /* ====================================
-           TRANSITION LAYER
-        ==================================== */
+        /*
+           Zaustavljamo pozadinske particles
+           tijekom zooma da rasteretimo GPU.
+        */
+
+        body.portal-entering .particle,
+        body.portal-entering .particles::before,
+        body.portal-entering .particles::after {
+            animation-play-state: paused !important;
+        }
+
+        body.portal-entering .support-widget {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 220ms ease;
+        }
+
+        /*
+           4. FULLSCREEN TRANSITION LAYER
+        */
 
         .ptech-portal-transition {
             position: fixed;
@@ -263,88 +247,78 @@ function installPortalStyles() {
             z-index: 99999;
 
             overflow: hidden;
+
             pointer-events: all;
+            isolation: isolate;
 
             font-family: "Inter", sans-serif;
         }
 
-        /* ====================================
-           GROWING LIGHT FROM BLUE-MARKED POINT
-        ==================================== */
+        /*
+           5. GROWING PORTAL
+
+           Umjesto animiranja clip-patha,
+           koristimo jednostavni scale().
+
+           Portal se otvara iz plave tocke.
+        */
 
         .portal-light {
             position: absolute;
-            inset: 0;
+
+            left: var(--portal-x);
+            top: var(--portal-y);
+
+            width: 100vmax;
+            height: 100vmax;
+
+            border-radius: 50%;
 
             background:
                 radial-gradient(
-                    circle at
-                    var(--portal-x)
-                    var(--portal-y),
-
+                    circle,
                     #ffffff 0%,
-                    #fffdf9 38%,
-                    #f9e9d8 75%,
-                    #f0d2b7 100%
+                    #fffdf9 42%,
+                    #f6e3d2 77%,
+                    #e5bda0 100%
                 );
 
-            clip-path:
-                circle(
-                    0px at
-                    var(--portal-x)
-                    var(--portal-y)
-                );
+            transform:
+                translate3d(-50%, -50%, 0)
+                scale(.001);
+
+            transform-origin: center;
 
             animation:
-                portalLightExpand
+                portalLightGrow
                 1370ms
-                cubic-bezier(.32, 0, .12, 1)
-                270ms
+                cubic-bezier(.35, 0, .7, 1)
+                100ms
                 both;
+
+            will-change: transform;
         }
 
-        @keyframes portalLightExpand {
-
-            0% {
-                clip-path:
-                    circle(
-                        0px at
-                        var(--portal-x)
-                        var(--portal-y)
-                    );
+        @keyframes portalLightGrow {
+            from {
+                transform:
+                    translate3d(-50%, -50%, 0)
+                    scale(.001);
             }
 
-            26% {
-                clip-path:
-                    circle(
-                        24px at
-                        var(--portal-x)
-                        var(--portal-y)
-                    );
-            }
-
-            55% {
-                clip-path:
-                    circle(
-                        145px at
-                        var(--portal-x)
-                        var(--portal-y)
-                    );
-            }
-
-            100% {
-                clip-path:
-                    circle(
-                        160vmax at
-                        var(--portal-x)
-                        var(--portal-y)
-                    );
+            to {
+                transform:
+                    translate3d(-50%, -50%, 0)
+                    scale(1.9);
             }
         }
 
-        /* ====================================
-           GLOW AT THE ENTRY POINT
-        ==================================== */
+        /*
+           6. CENTRAL GLOW
+
+           Jedan suptilan svijetli kruzic,
+           bez animiranih sjenki.
+        */
 
         .portal-core {
             position: absolute;
@@ -352,107 +326,61 @@ function installPortalStyles() {
             left: var(--portal-x);
             top: var(--portal-y);
 
-            width: 42px;
-            height: 42px;
-
-            margin-left: -21px;
-            margin-top: -21px;
+            width: 90px;
+            height: 90px;
 
             border-radius: 50%;
 
-            background: #fffaf0;
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,.95),
+                    rgba(255,241,220,.4) 72%,
+                    transparent
+                );
 
-            box-shadow:
-                0 0 18px 8px rgba(255,248,231,.7),
-                0 0 60px 20px rgba(255,219,172,.42),
-                0 0 120px 40px rgba(255,236,208,.3);
+            transform:
+                translate3d(-50%, -50%, 0)
+                scale(.05);
 
             opacity: 0;
 
             animation:
-                portalCorePulse
-                1120ms
-                cubic-bezier(.3, 0, .15, 1)
-                170ms
-                both;
-
-            pointer-events: none;
-        }
-
-        @keyframes portalCorePulse {
-
-            0% {
-                opacity: 0;
-                transform: scale(.15);
-            }
-
-            25% {
-                opacity: 1;
-                transform: scale(.75);
-            }
-
-            55% {
-                opacity: 1;
-                transform: scale(2.3);
-            }
-
-            100% {
-                opacity: 0;
-                transform: scale(13);
-            }
-        }
-
-        /* ====================================
-           EXPANDING RING
-        ==================================== */
-
-        .portal-ring {
-            position: absolute;
-
-            left: var(--portal-x);
-            top: var(--portal-y);
-
-            width: 70px;
-            height: 70px;
-
-            margin-left: -35px;
-            margin-top: -35px;
-
-            border: 1px solid rgba(205,145,99,.5);
-            border-radius: 50%;
-
-            opacity: 0;
-
-            animation:
-                portalRingExpand
-                1050ms
+                portalCoreGrow
+                900ms
                 ease-out
-                220ms
+                90ms
                 both;
 
-            pointer-events: none;
+            will-change: transform, opacity;
         }
 
-        @keyframes portalRingExpand {
-
+        @keyframes portalCoreGrow {
             0% {
+                transform:
+                    translate3d(-50%, -50%, 0)
+                    scale(.05);
                 opacity: 0;
-                transform: scale(.2);
             }
 
             25% {
-                opacity: .8;
+                opacity: .9;
             }
 
             100% {
+                transform:
+                    translate3d(-50%, -50%, 0)
+                    scale(7);
                 opacity: 0;
-                transform: scale(9);
             }
         }
 
-        /* ====================================
-           FINAL LOADING SCREEN
-        ==================================== */
+        /*
+           7. FINAL LOADING SCREEN
+
+           Pojavljuje se dok svijetli
+           krug zavrsava svoj zoom.
+        */
 
         .portal-finish {
             position: absolute;
@@ -462,28 +390,27 @@ function installPortalStyles() {
             align-items: center;
             justify-content: center;
 
-            padding: 25px;
+            padding: 24px;
 
             background:
                 radial-gradient(
                     circle at 50% 45%,
                     #ffffff 0%,
-                    #fffdf9 48%,
+                    #fffdf9 54%,
                     #f7e9dc 100%
                 );
 
             opacity: 0;
 
             animation:
-                portalFinishReveal
-                550ms
-                ease
-                1250ms
+                portalFinalFade
+                380ms
+                ease-out
+                1190ms
                 both;
         }
 
-        @keyframes portalFinishReveal {
-
+        @keyframes portalFinalFade {
             from {
                 opacity: 0;
             }
@@ -493,9 +420,9 @@ function installPortalStyles() {
             }
         }
 
-        /* ====================================
-           LOGO CONTENT
-        ==================================== */
+        /*
+           8. LOGO REVEAL
+        */
 
         .portal-finish-content {
             display: flex;
@@ -509,38 +436,38 @@ function installPortalStyles() {
             text-align: center;
 
             opacity: 0;
+
             transform:
-                translateY(22px)
-                scale(.85);
+                translate3d(0, 15px, 0)
+                scale(.94);
 
             animation:
-                portalLogoAppear
-                660ms
-                cubic-bezier(.16, .85, .22, 1)
-                1540ms
+                portalLogoReveal
+                620ms
+                cubic-bezier(.22, .8, .22, 1)
+                1380ms
                 both;
+
+            will-change: transform, opacity;
         }
 
-        @keyframes portalLogoAppear {
-
+        @keyframes portalLogoReveal {
             from {
                 opacity: 0;
+
                 transform:
-                    translateY(22px)
-                    scale(.85);
+                    translate3d(0, 15px, 0)
+                    scale(.94);
             }
 
             to {
                 opacity: 1;
+
                 transform:
-                    translateY(0)
+                    translate3d(0, 0, 0)
                     scale(1);
             }
         }
-
-        /* ====================================
-           FULL BRAND LOGO
-        ==================================== */
 
         .portal-finish-logo {
             display: block;
@@ -550,16 +477,11 @@ function installPortalStyles() {
             height: auto;
 
             object-fit: contain;
-
-            filter:
-                drop-shadow(
-                    0 10px 20px rgba(150,95,60,.12)
-                );
         }
 
-        /* ====================================
-           LOADING INDICATOR
-        ==================================== */
+        /*
+           9. LOADING SPINNER
+        */
 
         .portal-loader {
             display: flex;
@@ -567,7 +489,7 @@ function installPortalStyles() {
             justify-content: center;
             gap: 12px;
 
-            margin-top: 4px;
+            margin-top: 5px;
 
             color: #936c52;
 
@@ -579,28 +501,25 @@ function installPortalStyles() {
             width: 20px;
             height: 20px;
 
-            border-radius: 50%;
+            border: 2px solid
+                rgba(168,104,62,.15);
 
-            border: 2px solid rgba(168,104,62,.15);
             border-top-color: #ac744f;
 
+            border-radius: 50%;
+
             animation:
-                portalSpin
-                .7s
+                portalSpinnerRotate
+                850ms
                 linear
                 infinite;
         }
 
-        @keyframes portalSpin {
-
+        @keyframes portalSpinnerRotate {
             to {
                 transform: rotate(360deg);
             }
         }
-
-        /* ====================================
-           BOTTOM BRAND
-        ==================================== */
 
         .portal-bottom {
             position: absolute;
@@ -619,12 +538,11 @@ function installPortalStyles() {
             letter-spacing: 2px;
         }
 
-        /* ====================================
-           MOBILE
-        ==================================== */
+        /*
+           10. MOBILE
+        */
 
         @media (max-width: 760px) {
-
             .portal-finish-logo {
                 width: 195px;
             }
@@ -639,9 +557,9 @@ function installPortalStyles() {
             }
         }
 
-        /* ====================================
-           REDUCED MOTION
-        ==================================== */
+        /*
+           11. REDUCED MOTION
+        */
 
         @media (prefers-reduced-motion: reduce) {
 
@@ -650,10 +568,9 @@ function installPortalStyles() {
             body.portal-entering .login-right,
             .portal-light,
             .portal-core,
-            .portal-ring,
             .portal-finish,
-            .portal-finish-content {
-
+            .portal-finish-content,
+            .portal-spinner {
                 animation: none !important;
             }
 
@@ -661,8 +578,6 @@ function installPortalStyles() {
             .portal-finish,
             .portal-finish-content {
                 opacity: 1;
-                transform: none;
-                clip-path: none;
             }
         }
     `;
@@ -671,7 +586,7 @@ function installPortalStyles() {
 }
 
 /* ==========================================
-   START CLIENT PORTAL TRANSITION
+   START SMOOTH TRANSITION
 ========================================== */
 
 function startClientTransition() {
@@ -684,11 +599,11 @@ function startClientTransition() {
         loginButton.disabled = true;
     }
 
-    const reduceMotion = window.matchMedia(
+    const reducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    if (reduceMotion) {
+    if (reducedMotion) {
         window.location.replace("form.html");
         return;
     }
@@ -707,12 +622,8 @@ function startClientTransition() {
     );
 
     overlay.innerHTML = `
-
         <div class="portal-light"></div>
-
         <div class="portal-core"></div>
-
-        <div class="portal-ring"></div>
 
         <div class="portal-finish">
 
@@ -720,8 +631,8 @@ function startClientTransition() {
 
                 <img
                     src="assets/ptech-logo.png"
-                    class="portal-finish-logo"
                     alt="PTech Digital"
+                    class="portal-finish-logo"
                 >
 
                 <div class="portal-loader">
@@ -731,7 +642,9 @@ function startClientTransition() {
                         aria-hidden="true"
                     ></span>
 
-                    <span>Otvaramo vaš portal...</span>
+                    <span>
+                        Otvaramo vaš portal...
+                    </span>
 
                 </div>
 
@@ -747,20 +660,22 @@ function startClientTransition() {
     document.body.appendChild(overlay);
 
     /*
-       Pokretanje u sljedecem frameu
-       pomaze pregledniku da prijelaz
-       bude ravnomjerniji.
+       Dva animation framea omogućuju
+       pregledniku da pripremi slojeve
+       prije pocetka animacije.
     */
 
     requestAnimationFrame(() => {
 
-        document.body.classList.add(
-            "portal-entering"
-        );
+        requestAnimationFrame(() => {
+
+            document.body.classList.add(
+                "portal-entering"
+            );
+
+        });
 
     });
-
-    /* Redirect nakon animacije */
 
     window.setTimeout(() => {
 
@@ -804,13 +719,12 @@ if (loginForm) {
 
             try {
 
-                /* AUTHENTICATION */
-
                 const { data, error } =
-                    await supabaseClient.auth.signInWithPassword({
-                        email,
-                        password
-                    });
+                    await supabaseClient.auth
+                        .signInWithPassword({
+                            email,
+                            password
+                        });
 
                 if (error || !data?.user) {
 
@@ -822,8 +736,6 @@ if (loginForm) {
 
                     return;
                 }
-
-                /* USER PROFILE */
 
                 const {
                     data: profile,
@@ -857,20 +769,14 @@ if (loginForm) {
                     return;
                 }
 
-                /* STORE USER */
-
                 localStorage.setItem(
                     "user",
                     data.user.email || email
                 );
 
-                /* ROLE */
-
                 const role = String(
                     profile.role || "client"
                 ).trim().toLowerCase();
-
-                /* ADMIN */
 
                 if (role === "admin") {
 
@@ -882,8 +788,6 @@ if (loginForm) {
 
                     return;
                 }
-
-                /* CLIENT — PORTAL ANIMATION */
 
                 startClientTransition();
 
@@ -909,7 +813,7 @@ if (loginForm) {
 }
 
 /* ==========================================
-   SHOW / HIDE PASSWORD
+   PASSWORD TOGGLE
 ========================================== */
 
 if (togglePassword && passwordInput) {
@@ -942,7 +846,7 @@ if (togglePassword && passwordInput) {
 }
 
 /* ==========================================
-   CAPS LOCK WARNING
+   CAPS LOCK
 ========================================== */
 
 if (passwordInput && capsLockWarning) {
@@ -1057,7 +961,7 @@ function createParticles() {
 createParticles();
 
 /* ==========================================
-   PTECH SUPPORT BOT
+   SUPPORT BOT
 ========================================== */
 
 const supportTrigger =
@@ -1074,10 +978,6 @@ const supportMessages =
 
 const supportQuestionList =
     document.getElementById("supportQuestionList");
-
-/* ==========================================
-   FAQ QUESTIONS
-========================================== */
 
 const supportQuestions = [
 
@@ -1109,17 +1009,16 @@ const supportQuestions = [
             "Ako ih još niste dobili, javite se osobi " +
             "iz našeg tima s kojom ste dogovorili suradnju."
     }
+
 ];
 
 /* ==========================================
-   OPEN / CLOSE SUPPORT
+   SUPPORT OPEN / CLOSE
 ========================================== */
 
 function setSupportOpen(open) {
 
-    if (!supportPanel || !supportTrigger) {
-        return;
-    }
+    if (!supportPanel || !supportTrigger) return;
 
     supportPanel.hidden = !open;
 
@@ -1150,8 +1049,8 @@ if (supportClose) {
         function () {
 
             setSupportOpen(false);
-
             supportTrigger?.focus();
+
         }
     );
 }
@@ -1189,7 +1088,7 @@ function addSupportMessage(text, type) {
 }
 
 /* ==========================================
-   RENDER FAQ BUTTONS
+   FAQ BUTTONS
 ========================================== */
 
 function renderSupportQuestions() {
@@ -1220,6 +1119,7 @@ function renderSupportQuestions() {
                     item.answer,
                     "bot"
                 );
+
             }
         );
 
