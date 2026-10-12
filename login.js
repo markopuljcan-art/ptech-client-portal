@@ -1,13 +1,13 @@
 
-/* ==================================================
-   PTECH DIGITAL CLIENT PORTAL
-   LOGIN + SUPABASE + PARTICLES
-================================================== */
+/* ==========================================================
+   PTECH DIGITAL — LOGIN JAVASCRIPT
+   SUPABASE + PARTICLES + SUPPORT ASSISTANT
+========================================================== */
 
 
-/* ==========================================
+/* ==========================================================
    1. SUPABASE
-========================================== */
+========================================================== */
 
 const SUPABASE_URL =
     "https://agivwsbczzvvuzszcvxz.supabase.co";
@@ -21,9 +21,9 @@ const supabaseClient = supabase.createClient(
 );
 
 
-/* ==========================================
+/* ==========================================================
    2. ELEMENTI
-========================================== */
+========================================================== */
 
 const loginForm =
     document.getElementById("loginForm");
@@ -47,15 +47,16 @@ const capsLockWarning =
     document.getElementById("capsLockWarning");
 
 
-/* ==========================================
-   3. LOGIN ERROR
-========================================== */
+/* ==========================================================
+   3. POMOĆNE FUNKCIJE
+========================================================== */
 
 function showLoginError(message) {
 
     if (!loginError) return;
 
     loginError.textContent = message;
+
     loginError.classList.add("show");
 }
 
@@ -65,47 +66,26 @@ function clearLoginError() {
     if (!loginError) return;
 
     loginError.textContent = "";
+
     loginError.classList.remove("show");
 }
 
 
-/* ==========================================
-   4. LOGIN BUTTON
-========================================== */
-
-function setLoginLoading(loading) {
+function setLoginLoading(isLoading) {
 
     if (!loginButton) return;
 
-    loginButton.disabled = loading;
+    loginButton.disabled = isLoading;
 
-    if (loading) {
+    const label = loginButton.querySelector("span");
 
-        loginButton.innerHTML = `
-            <span>Prijava...</span>
-        `;
-
-    } else {
-
-        loginButton.innerHTML = `
-            <span>Prijavi se</span>
-
-            <svg
-                class="login-arrow"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-            >
-                <path d="M5 12h14"></path>
-                <path d="m13 6 6 6-6 6"></path>
-            </svg>
-        `;
+    if (label) {
+        label.textContent = isLoading
+            ? "Prijava..."
+            : "Prijavi se";
     }
 }
 
-
-/* ==========================================
-   5. SHAKE ANIMACIJA
-========================================== */
 
 function shakeLoginCard() {
 
@@ -122,9 +102,9 @@ function shakeLoginCard() {
 }
 
 
-/* ==========================================
-   6. SUPABASE LOGIN
-========================================== */
+/* ==========================================================
+   4. LOGIN
+========================================================== */
 
 if (loginForm) {
 
@@ -136,19 +116,20 @@ if (loginForm) {
 
             clearLoginError();
 
-            const email =
-                emailInput?.value.trim() || "";
+            const email = emailInput
+                ? emailInput.value.trim()
+                : "";
 
-            const password =
-                passwordInput?.value || "";
+            const password = passwordInput
+                ? passwordInput.value
+                : "";
 
             if (!email || !password) {
 
                 showLoginError(
-                    "Unesi e-mail i lozinku."
+                    "Unesite e-mail adresu i lozinku."
                 );
 
-                shakeLoginCard();
                 return;
             }
 
@@ -156,7 +137,7 @@ if (loginForm) {
 
             try {
 
-                /* PRIJAVA */
+                /* SUPABASE PRIJAVA */
 
                 const {
                     data,
@@ -167,76 +148,107 @@ if (loginForm) {
                         password
                     });
 
+                if (error) {
 
-                if (error || !data?.user) {
+                    console.error(
+                        "Greška prijave:",
+                        error
+                    );
 
                     showLoginError(
                         "Pogrešan e-mail ili lozinka."
                     );
 
                     shakeLoginCard();
+
                     return;
                 }
 
-
-                /* DOHVAT PROFILA */
-
-                const {
-                    data: profile,
-                    error: profileError
-                } = await supabaseClient
-                    .from("profiles")
-                    .select("id, display_name, role")
-                    .eq("id", data.user.id)
-                    .maybeSingle();
-
-
-                if (profileError || !profile) {
+                if (!data || !data.user) {
 
                     showLoginError(
-                        profileError
-                            ? "Prijava je uspjela, ali profil nije moguće učitati."
-                            : "Korisnički profil nije pronađen."
+                        "Prijava nije uspjela."
                     );
 
                     return;
                 }
 
 
-                /* SPREMI EMAIL */
+                /* PROFIL KORISNIKA */
+
+                const {
+                    data: profile,
+                    error: profileError
+                } = await supabaseClient
+                    .from("profiles")
+                    .select(
+                        "id, display_name, role"
+                    )
+                    .eq("id", data.user.id)
+                    .maybeSingle();
+
+
+                if (profileError) {
+
+                    console.error(
+                        "Greška profila:",
+                        profileError
+                    );
+
+                    showLoginError(
+                        "Prijava je uspjela, ali profil nije moguće učitati."
+                    );
+
+                    return;
+                }
+
+                if (!profile) {
+
+                    showLoginError(
+                        "Korisnički profil nije pronađen."
+                    );
+
+                    return;
+                }
+
+
+                /* SPREMI KORISNIKA */
 
                 localStorage.setItem(
                     "user",
-                    email
+                    data.user.email || email
                 );
-
-
-                /* PROVJERA ULOGE */
-
-                const role = String(
-                    profile.role || "client"
-                ).trim().toLowerCase();
 
 
                 /* PREUSMJERAVANJE */
 
-                window.location.href =
-                    role === "admin"
-                        ? "admin.html"
-                        : "form.html";
+                const role = String(
+                    profile.role || "client"
+                )
+                    .trim()
+                    .toLowerCase();
 
-            } catch (err) {
+                if (role === "admin") {
+
+                    window.location.href =
+                        "admin.html";
+
+                    return;
+                }
+
+                window.location.href =
+                    "form.html";
+
+            } catch (error) {
 
                 console.error(
-                    "Login error:",
-                    err
+                    "Neočekivana greška:",
+                    error
                 );
 
                 showLoginError(
-                    "Došlo je do pogreške pri povezivanju. Pokušajte ponovno."
+                    "Došlo je do problema s povezivanjem. Pokušajte ponovno."
                 );
-
-                shakeLoginCard();
 
             } finally {
 
@@ -247,17 +259,15 @@ if (loginForm) {
 }
 
 
-/* ==========================================
-   7. PRIKAZ / SAKRIVANJE LOZINKE
-========================================== */
+/* ==========================================================
+   5. PRIKAZ / SAKRIVANJE LOZINKE
+========================================================== */
 
 if (togglePassword && passwordInput) {
 
     togglePassword.addEventListener(
         "click",
-        function (event) {
-
-            event.preventDefault();
+        function () {
 
             const showPassword =
                 passwordInput.type === "password";
@@ -279,28 +289,26 @@ if (togglePassword && passwordInput) {
                     : "Prikaži lozinku"
             );
 
-            togglePassword.setAttribute(
-                "aria-pressed",
-                String(showPassword)
-            );
-
             passwordInput.focus();
         }
     );
 }
 
 
-/* ==========================================
-   8. CAPS LOCK
-========================================== */
+/* ==========================================================
+   6. CAPS LOCK
+========================================================== */
 
 if (passwordInput && capsLockWarning) {
 
     function checkCapsLock(event) {
 
+        const isOn =
+            event.getModifierState("CapsLock");
+
         capsLockWarning.classList.toggle(
             "show",
-            event.getModifierState("CapsLock")
+            isOn
         );
     }
 
@@ -326,18 +334,14 @@ if (passwordInput && capsLockWarning) {
 }
 
 
-/* ==================================================
-   9. ANIMIRANE SVJETLEĆE CRTICE
-================================================== */
+/* ==========================================================
+   7. ANIMIRANI PARTICLESI
+========================================================== */
 
-/* ==================================================
-   9. PTECH DIGITAL — PREMIUM LIGHT PARTICLES
-   Izraženije brončane crtice + nježan sjaj
-================================================== */
+(function initParticles() {
 
-(function initLoginParticles() {
-
-    const canvas = document.getElementById("loginParticles");
+    const canvas =
+        document.getElementById("loginParticles");
 
     if (!canvas) return;
 
@@ -349,7 +353,7 @@ if (passwordInput && capsLockWarning) {
         "(prefers-reduced-motion: reduce)"
     );
 
-    const PARTICLE_COUNT = 55;
+    const PARTICLE_COUNT = 52;
 
     let particles = [];
     let width = 0;
@@ -358,41 +362,47 @@ if (passwordInput && capsLockWarning) {
     let lastFrameTime = 0;
 
 
-    /* NOVA ČESTICA */
-
     function createParticle(randomPosition = true) {
 
         return {
+
             x: randomPosition
                 ? Math.random() * width
                 : -140 - Math.random() * 100,
 
-            y: 20 + Math.random() * Math.max(1, height - 40),
+            y: 20 +
+                Math.random() *
+                Math.max(1, height - 40),
 
-            length: 30 + Math.random() * 105,
+            length:
+                30 + Math.random() * 105,
 
-            speed: 16 + Math.random() * 34,
+            speed:
+                16 + Math.random() * 34,
 
-            opacity: 0.25 + Math.random() * 0.32,
+            opacity:
+                0.25 + Math.random() * 0.32,
 
-            thickness: 0.7 + Math.random() * 0.9,
+            thickness:
+                0.7 + Math.random() * 0.9,
 
-            radius: 0.8 + Math.random() * 1.3,
+            radius:
+                0.8 + Math.random() * 1.3,
 
-            phase: Math.random() * Math.PI * 2,
+            phase:
+                Math.random() * Math.PI * 2,
 
-            pulseSpeed: 0.5 + Math.random() * 1.1,
+            pulseSpeed:
+                0.5 + Math.random() * 1.1
 
-            life: Math.random() * Math.PI * 2
         };
     }
 
 
-    /* VELIČINA CANVASA */
-
     function resizeCanvas() {
 
-        const rect = canvas.getBoundingClientRect();
+        const rect =
+            canvas.getBoundingClientRect();
 
         width = rect.width;
         height = rect.height;
@@ -404,10 +414,20 @@ if (passwordInput && capsLockWarning) {
             2
         );
 
-        canvas.width = Math.round(width * dpr);
-        canvas.height = Math.round(height * dpr);
+        canvas.width =
+            Math.round(width * dpr);
 
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        canvas.height =
+            Math.round(height * dpr);
+
+        ctx.setTransform(
+            dpr,
+            0,
+            0,
+            dpr,
+            0,
+            0
+        );
 
         particles = Array.from(
             { length: PARTICLE_COUNT },
@@ -418,11 +438,14 @@ if (passwordInput && capsLockWarning) {
     }
 
 
-    /* CRTANJE ČESTICA */
-
     function drawParticles(time) {
 
-        ctx.clearRect(0, 0, width, height);
+        ctx.clearRect(
+            0,
+            0,
+            width,
+            height
+        );
 
         for (const particle of particles) {
 
@@ -435,8 +458,14 @@ if (passwordInput && capsLockWarning) {
 
             const edgeFade = Math.min(
                 1,
-                Math.max(0, particle.x / 110),
-                Math.max(0, (width - particle.x) / 110)
+                Math.max(
+                    0,
+                    particle.x / 110
+                ),
+                Math.max(
+                    0,
+                    (width - particle.x) / 110
+                )
             );
 
             const alpha =
@@ -447,28 +476,29 @@ if (passwordInput && capsLockWarning) {
             if (alpha <= 0) continue;
 
 
-            /* SJAJ ISPOD CRTICE */
+            /* SVIJETLEĆI TRAG */
 
-            const glowGradient = ctx.createLinearGradient(
-                particle.x - particle.length,
-                particle.y,
-                particle.x,
-                particle.y
-            );
+            const glow =
+                ctx.createLinearGradient(
+                    particle.x - particle.length,
+                    particle.y,
+                    particle.x,
+                    particle.y
+                );
 
-            glowGradient.addColorStop(
+            glow.addColorStop(
                 0,
                 "rgba(190, 125, 82, 0)"
             );
 
-            glowGradient.addColorStop(
+            glow.addColorStop(
                 0.65,
-                `rgba(207, 145, 103, ${alpha * 0.3})`
+                `rgba(207,145,103,${alpha * 0.3})`
             );
 
-            glowGradient.addColorStop(
+            glow.addColorStop(
                 1,
-                `rgba(207, 145, 103, ${alpha * 0.65})`
+                `rgba(207,145,103,${alpha * 0.65})`
             );
 
             ctx.beginPath();
@@ -483,33 +513,37 @@ if (passwordInput && capsLockWarning) {
                 particle.y
             );
 
-            ctx.strokeStyle = glowGradient;
-            ctx.lineWidth = particle.thickness + 3;
+            ctx.strokeStyle = glow;
+
+            ctx.lineWidth =
+                particle.thickness + 3;
+
             ctx.stroke();
 
 
-            /* GLAVNA TANKA CRTICA */
+            /* GLAVNA CRTICA */
 
-            const lineGradient = ctx.createLinearGradient(
-                particle.x - particle.length,
-                particle.y,
-                particle.x,
-                particle.y
-            );
+            const line =
+                ctx.createLinearGradient(
+                    particle.x - particle.length,
+                    particle.y,
+                    particle.x,
+                    particle.y
+                );
 
-            lineGradient.addColorStop(
+            line.addColorStop(
                 0,
-                "rgba(166, 105, 67, 0)"
+                "rgba(166,105,67,0)"
             );
 
-            lineGradient.addColorStop(
+            line.addColorStop(
                 0.55,
-                `rgba(183, 116, 74, ${alpha * 0.7})`
+                `rgba(183,116,74,${alpha * 0.7})`
             );
 
-            lineGradient.addColorStop(
+            line.addColorStop(
                 1,
-                `rgba(160, 94, 54, ${alpha})`
+                `rgba(160,94,54,${alpha})`
             );
 
             ctx.beginPath();
@@ -524,35 +558,39 @@ if (passwordInput && capsLockWarning) {
                 particle.y
             );
 
-            ctx.strokeStyle = lineGradient;
-            ctx.lineWidth = particle.thickness;
+            ctx.strokeStyle = line;
+
+            ctx.lineWidth =
+                particle.thickness;
+
             ctx.stroke();
 
 
-            /* SVJETLEĆA TOČKA NA VRHU */
+            /* TOČKICA NA VRHU */
 
-            const dotGlow = ctx.createRadialGradient(
-                particle.x,
-                particle.y,
-                0,
-                particle.x,
-                particle.y,
-                particle.radius * 5
-            );
+            const dotGlow =
+                ctx.createRadialGradient(
+                    particle.x,
+                    particle.y,
+                    0,
+                    particle.x,
+                    particle.y,
+                    particle.radius * 5
+                );
 
             dotGlow.addColorStop(
                 0,
-                `rgba(194, 123, 77, ${alpha * 0.85})`
+                `rgba(194,123,77,${alpha * 0.85})`
             );
 
             dotGlow.addColorStop(
                 0.4,
-                `rgba(217, 161, 121, ${alpha * 0.35})`
+                `rgba(217,161,121,${alpha * 0.35})`
             );
 
             dotGlow.addColorStop(
                 1,
-                "rgba(217, 161, 121, 0)"
+                "rgba(217,161,121,0)"
             );
 
             ctx.beginPath();
@@ -569,8 +607,6 @@ if (passwordInput && capsLockWarning) {
             ctx.fill();
 
 
-            /* MALA JASNA TOČKICA */
-
             ctx.beginPath();
 
             ctx.arc(
@@ -582,14 +618,12 @@ if (passwordInput && capsLockWarning) {
             );
 
             ctx.fillStyle =
-                `rgba(164, 98, 58, ${alpha})`;
+                `rgba(164,98,58,${alpha})`;
 
             ctx.fill();
         }
     }
 
-
-    /* ANIMACIJA */
 
     function animate(timestamp) {
 
@@ -604,35 +638,44 @@ if (passwordInput && capsLockWarning) {
 
         lastFrameTime = timestamp;
 
-        const time = timestamp / 1000;
+        for (
+            let i = 0;
+            i < particles.length;
+            i++
+        ) {
 
-        for (let i = 0; i < particles.length; i++) {
-
-            particles[i].x += particles[i].speed * delta;
+            particles[i].x +=
+                particles[i].speed * delta;
 
             if (
                 particles[i].x -
                 particles[i].length > width
             ) {
-                particles[i] = createParticle(false);
+
+                particles[i] =
+                    createParticle(false);
             }
         }
 
-        drawParticles(time);
+        drawParticles(timestamp / 1000);
 
-        animationId = requestAnimationFrame(animate);
+        animationId =
+            requestAnimationFrame(animate);
     }
 
-
-    /* START / STOP */
 
     function stopAnimation() {
 
         if (animationId !== null) {
-            cancelAnimationFrame(animationId);
+
+            cancelAnimationFrame(
+                animationId
+            );
+
             animationId = null;
         }
     }
+
 
     function startAnimation() {
 
@@ -643,22 +686,27 @@ if (passwordInput && capsLockWarning) {
         if (!width || !height) return;
 
         if (reducedMotion.matches) {
+
             drawParticles(0);
+
             return;
         }
 
         if (document.hidden) return;
 
-        animationId = requestAnimationFrame(animate);
+        animationId =
+            requestAnimationFrame(animate);
     }
 
 
-    /* DOGAĐAJI */
+    window.addEventListener(
+        "resize",
+        function () {
 
-    window.addEventListener("resize", function () {
-        resizeCanvas();
-        startAnimation();
-    });
+            resizeCanvas();
+            startAnimation();
+        }
+    );
 
     document.addEventListener(
         "visibilitychange",
@@ -666,16 +714,229 @@ if (passwordInput && capsLockWarning) {
     );
 
     if (reducedMotion.addEventListener) {
+
         reducedMotion.addEventListener(
             "change",
             startAnimation
         );
     }
 
-
-    /* POKRETANJE */
-
     resizeCanvas();
     startAnimation();
+
+})();
+
+
+/* ==========================================================
+   8. PTECH AUTOMATSKI ASISTENT
+========================================================== */
+
+(function initSupportAssistant() {
+
+    const toggle =
+        document.getElementById("supportToggle");
+
+    const panel =
+        document.getElementById("supportPanel");
+
+    const closeButton =
+        document.getElementById("supportClose");
+
+    const messages =
+        document.getElementById("supportMessages");
+
+    const questionList =
+        document.getElementById("supportQuestionList");
+
+
+    if (
+        !toggle ||
+        !panel ||
+        !closeButton ||
+        !messages ||
+        !questionList
+    ) {
+        return;
+    }
+
+
+    /* PITANJA I ODGOVORI */
+
+    const questions = [
+
+        {
+            question: "Kako se prijaviti?",
+
+            answer:
+                "Za prijavu unesite e-mail adresu i lozinku koje vam je dodijelio PTech Digital."
+        },
+
+        {
+            question: "Zaboravio sam lozinku.",
+
+            answer:
+                "Ako ste zaboravili lozinku, obratite se PTech Digital podršci kako biste zatražili pomoć s pristupom."
+        },
+
+        {
+            question: "Gdje mogu vidjeti projekt?",
+
+            answer:
+                "Nakon prijave otvorite odjeljak 'Moji projekti'. Tamo možete pregledati dostupne informacije i napredak svojih projekata."
+        },
+
+        {
+            question: "Gdje su dokumenti?",
+
+            answer:
+                "Dokumente povezane s vašim projektom pronaći ćete u odjeljku 'Dokumenti' nakon prijave."
+        },
+
+        {
+            question: "Kako poslati poruku?",
+
+            answer:
+                "Nakon prijave otvorite odjeljak 'Poruke' kako biste komunicirali s PTech Digital timom."
+        },
+
+        {
+            question: "Nemam pristupne podatke.",
+
+            answer:
+                "Pristupne podatke dodjeljuje PTech Digital. Ako ih još niste dobili, obratite se osobi s kojom ste dogovorili suradnju."
+        }
+
+    ];
+
+
+    /* DODAVANJE PORUKE */
+
+    function addMessage(text, sender) {
+
+        const message =
+            document.createElement("div");
+
+        message.className =
+            `support-message ${sender}`;
+
+        message.textContent = text;
+
+        messages.appendChild(message);
+
+        messages.scrollTop =
+            messages.scrollHeight;
+    }
+
+
+    /* PRIKAZ PITANJA */
+
+    questions.forEach(function (item) {
+
+        const button =
+            document.createElement("button");
+
+        button.type = "button";
+
+        button.className =
+            "support-question";
+
+        button.textContent =
+            item.question;
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                addMessage(
+                    item.question,
+                    "user"
+                );
+
+                addMessage(
+                    item.answer,
+                    "bot"
+                );
+            }
+        );
+
+        questionList.appendChild(button);
+    });
+
+
+    /* OTVARANJE */
+
+    function openSupport() {
+
+        panel.hidden = false;
+
+        toggle.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+
+        if (!messages.children.length) {
+
+            addMessage(
+                "Pozdrav! 👋 Dobro došli u PTech Digital podršku. Odaberite pitanje ispod i rado ćemo vam pomoći.",
+                "bot"
+            );
+        }
+
+        closeButton.focus();
+    }
+
+
+    /* ZATVARANJE */
+
+    function closeSupport() {
+
+        panel.hidden = true;
+
+        toggle.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+        toggle.focus();
+    }
+
+
+    /* DOGAĐAJI */
+
+    toggle.addEventListener(
+        "click",
+        function () {
+
+            if (panel.hidden) {
+
+                openSupport();
+
+            } else {
+
+                closeSupport();
+            }
+        }
+    );
+
+
+    closeButton.addEventListener(
+        "click",
+        closeSupport
+    );
+
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Escape" &&
+                !panel.hidden
+            ) {
+
+                closeSupport();
+            }
+        }
+    );
 
 })();
