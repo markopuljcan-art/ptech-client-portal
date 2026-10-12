@@ -1680,6 +1680,43 @@ svg {
     }
 }
 
+/* PTECH DIGITAL — NOVI LOGO */
+
+.brand-logo-image {
+    display: block;
+    width: 175px;
+    height: 115px;
+    object-fit: contain;
+    object-position: left center;
+}
+
+.login-logo {
+    width: 60px;
+    height: 60px;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.login-logo-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+@media (max-width: 760px) {
+    .brand-logo-image {
+        width: 145px;
+        height: 95px;
+    }
+
+    .login-logo {
+        width: 54px;
+        height: 54px;
+    }
+}
+
 /* ================================================
    REDUCED MOTION
 ================================================ */
