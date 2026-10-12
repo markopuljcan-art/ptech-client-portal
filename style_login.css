@@ -235,7 +235,7 @@ a:focus-visible {
     position: absolute;
     z-index: 10;
 
-    top: 22px;
+    top: 47px;
     left: clamp(40px, 5vw, 82px);
 
     margin: 0;
