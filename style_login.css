@@ -1,22 +1,19 @@
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
 
-/* =========================================
+/* ==========================================
    PTECH DIGITAL — LOGIN
-   ========================================= */
+   WARM CHAMPAGNE / ORGANIC DESIGN
+========================================== */
 
 :root {
-    --brown: #d9ad91;
-    --brown-light: #e8c2a9;
-    --brown-dark: #9d6748;
-
     --cream: #fffbf7;
-    --cream-soft: #faf5ef;
-
-    --ink: #2d303a;
-    --muted: #746b66;
-
-    --border: #ead9ce;
+    --brown: #d8ad90;
+    --brown-deep: #a16b4b;
+    --brown-light: #e9c5ad;
+    --ink: #2b2e38;
+    --muted: #786e68;
+    --border: #eadbd0;
     --white: #ffffff;
 }
 
@@ -37,8 +34,9 @@ html {
 }
 
 body {
-    font-family: 'DM Sans', sans-serif;
+    font-family: "Inter", sans-serif;
     color: var(--ink);
+    background: var(--cream);
     -webkit-font-smoothing: antialiased;
 }
 
@@ -48,26 +46,30 @@ input {
 }
 
 button {
-    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
 }
 
 button:focus-visible,
 input:focus-visible,
 a:focus-visible {
-    outline: 3px solid rgba(159, 103, 72, 0.4);
+    outline: 3px solid rgba(165, 105, 68, 0.35);
     outline-offset: 3px;
 }
 
-/* =========================================
-   GLAVNA STRANICA I POZADINA
-   ========================================= */
+svg {
+    display: block;
+}
+
+/* ==========================================
+   GLAVNI RASPORED
+========================================== */
 
 .login-page {
     position: relative;
     isolation: isolate;
 
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 49% 51%;
 
     width: 100%;
     min-height: 100vh;
@@ -75,125 +77,77 @@ a:focus-visible {
 
     overflow: hidden;
 
-    background: var(--cream);
+    background:
+        radial-gradient(
+            ellipse at 78% 50%,
+            #ffffff 0%,
+            #fffbf7 70%
+        );
 }
 
-/*
-   Cijela smeđa površina i organski val
-   crtaju se kao JEDNA pozadina.
+/* ==========================================
+   JEDINSTVENA SMEĐA POZADINA S VALOM
 
-   Nema ravne granice između stupaca.
-*/
+   Val je nacrtan izravno u SVG-u.
+   Nema ravne vertikalne crte niti
+   odvojenih odrezanih krugova.
+========================================== */
 
 .login-page::before {
     content: "";
 
     position: absolute;
-    z-index: -1;
+    z-index: 0;
 
     top: 0;
-    bottom: 0;
     left: 0;
 
-    width: 59%;
+    width: 58%;
     height: 100%;
 
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 1000' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0%25' stop-color='%23d9ad91'/%3E%3Cstop offset='70%25' stop-color='%23e4bba0'/%3E%3Cstop offset='100%25' stop-color='%23eac5ad'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 0 H730 C700 85 770 135 805 210 C865 335 695 365 705 480 C715 560 850 615 820 725 C795 825 690 875 745 1000 H0 Z' fill='url(%23g)'/%3E%3C/svg%3E");
+    pointer-events: none;
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0%25' stop-color='%23d5a789'/%3E%3Cstop offset='62%25' stop-color='%23e3b99e'/%3E%3Cstop offset='100%25' stop-color='%23ebc8b1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 0 H835 C805 100 880 165 855 250 C833 330 772 374 795 458 C813 529 892 568 879 653 C865 740 788 785 805 858 C816 922 851 950 831 1000 H0 Z' fill='url(%23bg)'/%3E%3C/svg%3E");
 
     background-repeat: no-repeat;
     background-position: left center;
     background-size: 100% 100%;
-
-    pointer-events: none;
 }
 
-/* =========================================
-   DESNI ISPUNJENI SMEĐI KRUGOVI
-   ========================================= */
+/* ==========================================
+   GORNJI DESNI SMEĐI KRUG
+========================================== */
 
 .login-page::after {
     content: "";
 
     position: absolute;
-    z-index: -1;
-
-    top: -275px;
-    right: -185px;
-
-    width: 500px;
-    height: 500px;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle at 35% 65%,
-            #e8bea2 0%,
-            #d8a789 75%,
-            #cb9879 100%
-        );
-
-    box-shadow:
-        inset 0 0 0 1px rgba(161, 101, 66, 0.16);
-
-    pointer-events: none;
-}
-
-.login-right::after {
-    content: "";
-
-    position: absolute;
-    z-index: -1;
-
-    right: -235px;
-    bottom: -370px;
-
-    width: 560px;
-    height: 560px;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle at 30% 30%,
-            #e8bea2 0%,
-            #d7a688 75%,
-            #ca9778 100%
-        );
-
-    box-shadow:
-        inset 0 0 0 1px rgba(161, 101, 66, 0.16);
-
-    pointer-events: none;
-}
-
-/* =========================================
-   LIJEVI VELIKI TANKI KRUG
-   ========================================= */
-
-.login-left::before {
-    content: "";
-
-    position: absolute;
     z-index: 0;
 
-    width: 870px;
-    height: 870px;
+    width: 520px;
+    height: 520px;
 
-    left: -475px;
-    top: 50%;
+    top: -345px;
+    right: -285px;
 
-    transform: translateY(-50%);
-
-    border: 1px solid rgba(132, 77, 48, 0.3);
     border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 30% 70%,
+            #e8c1a8 0%,
+            #d6a587 70%,
+            #c89576 100%
+        );
+
+    border: 1px solid rgba(158, 98, 62, 0.18);
 
     pointer-events: none;
 }
 
-/* =========================================
+/* ==========================================
    LIJEVA STRANA
-   ========================================= */
+========================================== */
 
 .login-left {
     position: relative;
@@ -203,12 +157,51 @@ a:focus-visible {
     flex-direction: column;
 
     min-width: 0;
+    min-height: 100vh;
     min-height: 100svh;
 
-    padding: 43px 0 30px 5%;
+    padding:
+        42px
+        20px
+        38px
+        clamp(45px, 5vw, 86px);
 
     background: transparent !important;
+
+    overflow: visible;
 }
+
+/* Veliki tanki krug iza lijevog teksta */
+
+.login-left::before {
+    content: "";
+
+    position: absolute;
+    z-index: 0;
+
+    width: 850px;
+    height: 850px;
+
+    top: 50%;
+    left: -470px;
+
+    transform: translateY(-50%);
+
+    border: 1px solid rgba(128, 77, 48, 0.28);
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+/* Uklanja stare dekoracije */
+
+.login-left::after {
+    content: none !important;
+}
+
+/* ==========================================
+   LOGO
+========================================== */
 
 .login-brand {
     position: relative;
@@ -230,22 +223,27 @@ a:focus-visible {
     display: grid;
     place-items: center;
 
-    width: 47px;
-    height: 47px;
+    flex-shrink: 0;
+
+    width: 50px;
+    height: 50px;
 
     border-radius: 13px;
 
-    background: linear-gradient(
-        145deg,
-        #eac4a9,
-        #c99371
-    );
+    background:
+        linear-gradient(
+            145deg,
+            #edc6aa,
+            #c89470
+        );
 
-    color: #28303c;
+    color: #2c303a;
 
-    font-family: 'Manrope', sans-serif;
-    font-size: 26px;
-    font-weight: 800;
+    font-size: 27px;
+    font-weight: 900;
+
+    box-shadow:
+        0 9px 20px rgba(120, 75, 46, 0.1);
 }
 
 .brand-text {
@@ -256,141 +254,149 @@ a:focus-visible {
 .brand-text strong {
     display: block;
 
-    font-family: 'Manrope', sans-serif;
-    font-size: 20px;
-    font-weight: 800;
-    line-height: 0.96;
-    letter-spacing: -0.9px;
+    font-size: 21px;
+    font-weight: 900;
+
+    line-height: 0.98;
+    letter-spacing: -1px;
 }
 
 .brand-text strong span {
     display: block;
-    color: #976446;
+    color: #966344;
 }
 
 .brand-text small {
+    display: block;
+
     margin-top: 8px;
 
-    color: #6d5449;
+    color: #73594d;
 
     font-size: 8px;
     font-weight: 800;
-    letter-spacing: 2.7px;
+
+    letter-spacing: 2.6px;
 }
 
-/* =========================================
+/* ==========================================
    LIJEVI SADRŽAJ
-   ========================================= */
+========================================== */
 
 .login-hero {
     position: relative;
     z-index: 2;
 
     width: 100%;
-    max-width: 570px;
+    max-width: 555px;
 
     margin-top: auto;
     margin-bottom: auto;
 
-    padding: 45px 28px 65px 0;
+    padding: 48px 0 70px;
 }
 
 .hero-eyebrow {
     display: flex;
     align-items: center;
-    gap: 9px;
+    gap: 10px;
 
-    margin-bottom: 27px;
+    margin-bottom: 28px;
 
-    color: #955e3d;
+    color: #955e3e;
 
     font-size: 10px;
     font-weight: 800;
-    letter-spacing: 2.4px;
+
+    letter-spacing: 2.2px;
 }
 
 .hero-eyebrow::before {
     content: "";
 
+    flex-shrink: 0;
+
     width: 7px;
     height: 7px;
 
-    flex-shrink: 0;
-
     border-radius: 50%;
-    background: #a46e4d;
+
+    background: #a36d4b;
 
     box-shadow:
-        0 0 0 5px rgba(164, 110, 77, 0.12);
+        0 0 0 5px rgba(163, 109, 75, 0.12);
 }
 
 .login-hero h1 {
     margin: 0;
 
-    font-family: 'Manrope', sans-serif;
-    font-size: clamp(35px, 3.25vw, 56px);
-    font-weight: 800;
-    line-height: 1.16;
-    letter-spacing: -2.5px;
+    color: #2b2e38;
 
-    color: #292e39;
+    font-size: clamp(36px, 3.3vw, 55px);
+    font-weight: 900;
+
+    line-height: 1.13;
+    letter-spacing: -2.5px;
 }
 
 .login-hero h1 span {
     display: block;
-    margin-top: 3px;
-    color: #9b6342;
+
+    margin-top: 4px;
+
+    color: #9b6545;
 }
 
 .hero-description {
     max-width: 485px;
 
-    margin: 27px 0 33px;
+    margin: 28px 0 34px;
 
-    color: #655c58;
+    color: #655b56;
 
     font-size: 13px;
     line-height: 1.85;
 }
 
-/* =========================================
-   ZNAČAJKE
-   ========================================= */
+/* ==========================================
+   TRI ZNAČAJKE
+========================================== */
 
 .feature-list {
     display: flex;
     flex-direction: column;
-    gap: 17px;
+    gap: 18px;
 }
 
 .feature-item {
     display: flex;
     align-items: center;
-    gap: 13px;
+    gap: 14px;
 }
 
 .feature-icon {
     display: grid;
     place-items: center;
 
-    flex: 0 0 39px;
+    flex: 0 0 42px;
 
-    width: 39px;
-    height: 39px;
+    width: 42px;
+    height: 42px;
 
     border-radius: 11px;
 
-    background: rgba(255, 249, 243, 0.45);
-    color: #a46e4e;
+    background: rgba(255, 248, 241, 0.48);
+    color: #a26c49;
 }
 
 .feature-icon svg {
-    width: 18px;
-    height: 18px;
+    width: 19px;
+    height: 19px;
 
     fill: none;
     stroke: currentColor;
     stroke-width: 1.7;
+
     stroke-linecap: round;
     stroke-linejoin: round;
 }
@@ -398,9 +404,9 @@ a:focus-visible {
 .feature-item strong {
     display: block;
 
-    margin-bottom: 3px;
+    margin-bottom: 5px;
 
-    color: #2e3038;
+    color: #303039;
 
     font-size: 12px;
     font-weight: 800;
@@ -409,33 +415,40 @@ a:focus-visible {
 .feature-item p {
     margin: 0;
 
-    color: #786b64;
+    color: #766861;
 
     font-size: 10.5px;
-    line-height: 1.6;
+    line-height: 1.5;
 }
 
-/* =========================================
-   LIJEVI DONJI POTPIS
-   ========================================= */
+/* ==========================================
+   DONJI POTPIS
+
+   Na desktopu je DESNO od podrške,
+   tako da se više ne preklapaju.
+========================================== */
 
 .login-left-footer {
-    position: relative;
-    z-index: 2;
+    position: absolute;
+    z-index: 3;
 
-    margin-top: auto;
-    padding-bottom: 0;
+    left: 365px;
+    bottom: 46px;
 
-    color: #806253;
+    padding: 0;
+
+    color: #795f51;
 
     font-size: 8px;
     font-weight: 800;
-    letter-spacing: 2.2px;
+    letter-spacing: 1.7px;
+
+    white-space: nowrap;
 }
 
-/* =========================================
+/* ==========================================
    DESNA STRANA
-   ========================================= */
+========================================== */
 
 .login-right {
     position: relative;
@@ -446,56 +459,219 @@ a:focus-visible {
     justify-content: center;
 
     min-width: 0;
+    min-height: 100vh;
     min-height: 100svh;
 
-    padding: 50px 7% 50px 10%;
+    padding:
+        55px
+        clamp(32px, 5vw, 78px)
+        55px
+        clamp(48px, 7vw, 110px);
 
     background: transparent !important;
+
+    overflow: visible;
 }
 
-/* =========================================
+/* Nema gornje dekoracije iz starog CSS-a */
+
+.login-right::before {
+    content: none !important;
+}
+
+/* ==========================================
+   DONJI DESNI SMEĐI KRUG
+========================================== */
+
+.login-right::after {
+    content: "";
+
+    position: absolute;
+    z-index: 0;
+
+    width: 550px;
+    height: 550px;
+
+    right: -330px;
+    bottom: -375px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 32% 30%,
+            #e9c3a9 0%,
+            #d5a283 73%,
+            #c79171 100%
+        );
+
+    border: 1px solid rgba(158, 98, 62, 0.18);
+
+    pointer-events: none;
+}
+
+/* ==========================================
+   PARTICLES — POPRAVLJENO!
+
+   JS već šalje:
+   --particle-top
+   --particle-width
+   --particle-duration
+   --particle-delay
+   --particle-opacity
+
+   Sada ih CSS zaista koristi.
+========================================== */
+
+.particles {
+    position: absolute;
+    z-index: 1;
+
+    inset: 0;
+
+    overflow: hidden;
+
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+
+    left: -135px;
+    top: var(--particle-top, 50%);
+
+    width: var(--particle-width, 75px);
+    height: 1px;
+
+    opacity: var(--particle-opacity, 0.5);
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(186, 115, 73, 0.06) 20%,
+            rgba(190, 116, 71, 0.55) 100%
+        );
+
+    box-shadow:
+        0 0 5px rgba(184, 112, 68, 0.11);
+
+    animation:
+        particleTravel
+        var(--particle-duration, 16s)
+        linear
+        var(--particle-delay, 0s)
+        infinite;
+}
+
+.particle::after {
+    content: "";
+
+    position: absolute;
+
+    right: 0;
+    top: -1.5px;
+
+    width: 4px;
+    height: 4px;
+
+    border-radius: 50%;
+
+    background: #c28b68;
+
+    box-shadow:
+        0 0 7px rgba(194, 139, 104, 0.45);
+}
+
+/* Dvije dodatne crtice kao dekoracija */
+
+.particles::before,
+.particles::after {
+    content: "";
+
+    position: absolute;
+
+    left: -120px;
+
+    width: 95px;
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(174, 103, 63, 0.45)
+        );
+
+    pointer-events: none;
+
+    animation:
+        particleTravel 15s linear infinite;
+}
+
+.particles::before {
+    top: 26%;
+    animation-delay: -6s;
+}
+
+.particles::after {
+    top: 77%;
+    animation-delay: -11s;
+}
+
+@keyframes particleTravel {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(calc(55vw + 260px));
+    }
+}
+
+/* ==========================================
    LOGIN KARTICA
-   ========================================= */
+========================================== */
 
 .login-card {
     position: relative;
-    z-index: 5;
+    z-index: 3;
 
     width: 100%;
-    max-width: 470px;
+    max-width: 505px;
 
-    padding: 38px 40px 29px;
+    padding: 43px 43px 31px;
 
-    border: 1px solid #efe0d6;
+    border: 1px solid rgba(232, 213, 201, 0.85);
     border-radius: 23px;
 
-    background: rgba(255, 255, 255, 0.97);
+    background: rgba(255, 255, 255, 0.975);
 
     box-shadow:
-        0 24px 50px rgba(116, 78, 54, 0.12),
-        0 4px 12px rgba(116, 78, 54, 0.035);
+        0 26px 65px rgba(113, 72, 47, 0.12),
+        0 5px 17px rgba(113, 72, 47, 0.035);
 }
 
 .login-card-top {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 10px;
+    justify-content: space-between;
+    gap: 12px;
 
-    margin-bottom: 26px;
+    margin-bottom: 28px;
+
+    color: #b07551;
 
     font-size: 9px;
     font-weight: 800;
-    letter-spacing: 1.9px;
-
-    color: #b06f49;
+    letter-spacing: 1.8px;
 }
 
 .login-card-top span:last-child {
-    color: #7c7069;
+    color: #82746d;
 
     font-size: 8px;
-    letter-spacing: 0.4px;
+    letter-spacing: 0.3px;
 
     white-space: nowrap;
 }
@@ -504,61 +680,66 @@ a:focus-visible {
     display: grid;
     place-items: center;
 
-    width: 45px;
-    height: 45px;
+    width: 49px;
+    height: 49px;
 
-    margin-bottom: 24px;
+    margin-bottom: 25px;
 
     border-radius: 12px;
 
-    background: linear-gradient(
-        145deg,
-        #e9bda0,
-        #c48c69
-    );
+    background:
+        linear-gradient(
+            145deg,
+            #e9bda0,
+            #c58d6b
+        );
 
-    color: #27303b;
+    color: #2c303a;
 
-    font-family: 'Manrope', sans-serif;
-    font-size: 25px;
-    font-weight: 800;
+    font-size: 27px;
+    font-weight: 900;
 }
 
 .login-card h2 {
     margin: 0 0 12px;
 
-    color: #292e39;
+    color: #292d37;
 
-    font-family: 'Manrope', sans-serif;
-    font-size: 29px;
-    font-weight: 800;
-    letter-spacing: -1.5px;
+    font-size: clamp(26px, 2.1vw, 32px);
+    font-weight: 900;
+
     line-height: 1.2;
+    letter-spacing: -1.3px;
 }
 
 .login-subtitle {
-    margin: 0 0 29px;
+    margin: 0 0 32px;
 
-    color: #8a7d75;
+    color: #827973;
 
     font-size: 12px;
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
-/* =========================================
-   FORMA
-   ========================================= */
+/* ==========================================
+   LOGIN FORMA
+========================================== */
+
+#loginForm {
+    display: flex;
+    flex-direction: column;
+}
 
 .form-group {
-    margin-bottom: 18px;
+    margin-bottom: 19px;
 }
 
 .form-group label {
     display: block;
 
-    margin-bottom: 9px;
+    margin-bottom: 10px;
 
-    color: #35343a;
+    color: #38353a;
 
     font-size: 11px;
     font-weight: 800;
@@ -571,12 +752,12 @@ a:focus-visible {
     align-items: center;
 
     width: 100%;
-    height: 47px;
+    height: 52px;
 
-    border: 1px solid #e7d4c7;
+    border: 1px solid #e8d9cf;
     border-radius: 11px;
 
-    background: #fbf9f7;
+    background: #faf8f6;
 
     transition:
         border-color 0.2s ease,
@@ -584,10 +765,10 @@ a:focus-visible {
 }
 
 .input-wrapper:focus-within {
-    border-color: #bf8967;
+    border-color: #bf8a6a;
 
     box-shadow:
-        0 0 0 3px rgba(191, 137, 103, 0.12);
+        0 0 0 4px rgba(191, 138, 106, 0.12);
 }
 
 .input-wrapper > svg {
@@ -596,14 +777,15 @@ a:focus-visible {
     left: 15px;
     top: 50%;
 
-    width: 17px;
-    height: 17px;
+    width: 18px;
+    height: 18px;
 
     transform: translateY(-50%);
 
     fill: none;
-    stroke: #a08472;
+    stroke: #a08777;
     stroke-width: 1.6;
+
     stroke-linecap: round;
     stroke-linejoin: round;
 
@@ -614,50 +796,75 @@ a:focus-visible {
     width: 100%;
     height: 100%;
 
-    padding: 0 43px 0 43px;
+    padding: 0 45px;
 
     border: 0;
     outline: 0;
 
     border-radius: 11px;
+
     background: transparent;
 
-    color: #303039;
+    color: #30313a;
 
     font-size: 12px;
 }
 
 .input-wrapper input::placeholder {
-    color: #ac9c91;
+    color: #a99d94;
 }
+
+/* ==========================================
+   CHROME AUTOFILL
+========================================== */
+
+.input-wrapper input:-webkit-autofill,
+.input-wrapper input:-webkit-autofill:hover,
+.input-wrapper input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #30313a !important;
+
+    -webkit-box-shadow:
+        0 0 0 1000px #faf8f6 inset !important;
+
+    box-shadow:
+        0 0 0 1000px #faf8f6 inset !important;
+
+    caret-color: #30313a;
+
+    transition:
+        background-color 9999s ease-in-out 0s;
+}
+
+/* ==========================================
+   PRIKAŽI / SAKRIJ LOZINKU
+========================================== */
 
 .password-toggle {
     position: absolute;
 
     top: 50%;
-    right: 9px;
+    right: 8px;
 
     display: grid;
     place-items: center;
 
-    width: 34px;
-    height: 34px;
+    width: 37px;
+    height: 37px;
 
     padding: 0;
 
     transform: translateY(-50%);
 
     border: 0;
-    border-radius: 8px;
+    border-radius: 9px;
 
     background: transparent;
-    color: #a08472;
 
-    cursor: pointer;
+    color: #a08777;
 }
 
 .password-toggle:hover {
-    background: #f2e6dc;
+    background: #f2e8e0;
 }
 
 .password-toggle svg {
@@ -667,51 +874,57 @@ a:focus-visible {
     fill: none;
     stroke: currentColor;
     stroke-width: 1.7;
+
     stroke-linecap: round;
     stroke-linejoin: round;
 }
 
-/* =========================================
-   UPOZORENJA I GREŠKE
-   ========================================= */
+/* ==========================================
+   CAPS LOCK I GREŠKE
+========================================== */
 
 .caps-warning {
-    margin: -7px 0 15px;
+    display: none;
 
-    color: #aa6d3e;
+    margin: -4px 0 13px;
 
+    color: #a46a3b;
     font-size: 11px;
-    font-weight: 600;
 }
 
-.caps-warning[hidden] {
+.caps-warning.show,
+.caps-warning.show[hidden] {
+    display: block !important;
+}
+
+.caps-warning[hidden]:not(.show) {
     display: none !important;
 }
 
 .login-error {
     display: none;
 
-    margin: 0 0 14px;
+    margin: 0 0 15px;
+    padding: 12px 13px;
 
-    padding: 11px 13px;
-
-    border: 1px solid #f0c9c3;
+    border: 1px solid #f0cbc4;
     border-radius: 9px;
 
-    background: #fff3f1;
-    color: #ae4941;
+    background: #fff2ef;
+    color: #a54136;
 
     font-size: 11px;
     line-height: 1.6;
 }
 
+.login-error.show,
 .login-error:not(:empty) {
     display: block;
 }
 
-/* =========================================
+/* ==========================================
    GUMB PRIJAVA
-   ========================================= */
+========================================== */
 
 #loginButton {
     display: flex;
@@ -719,162 +932,103 @@ a:focus-visible {
     justify-content: center;
 
     width: 100%;
-    min-height: 49px;
+    min-height: 53px;
 
-    margin-top: 20px;
-    padding: 12px 18px;
+    margin-top: 18px;
+    padding: 13px 20px;
 
     border: 0;
-    border-radius: 10px;
+    border-radius: 11px;
 
-    background: linear-gradient(
-        100deg,
-        #ca9778 0%,
-        #a57355 100%
-    );
+    background:
+        linear-gradient(
+            105deg,
+            #ca9a7c 0%,
+            #a47354 100%
+        );
 
-    color: #ffffff;
+    color: white;
 
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 800;
-
-    cursor: pointer;
 
     transition:
         transform 0.2s ease,
-        box-shadow 0.2s ease,
-        filter 0.2s ease;
+        box-shadow 0.2s ease;
 }
 
 #loginButton:hover:not(:disabled) {
-    transform: translateY(-1px);
+    transform: translateY(-2px);
 
     box-shadow:
-        0 8px 20px rgba(157, 103, 72, 0.2);
-
-    filter: brightness(1.04);
+        0 12px 25px rgba(164, 115, 84, 0.23);
 }
 
 #loginButton:disabled {
-    opacity: 0.65;
     cursor: wait;
+    opacity: 0.7;
 }
 
-/* =========================================
+/* ==========================================
    DONJI DIO KARTICE
-   ========================================= */
+========================================== */
 
 .login-footer {
-    margin-top: 24px;
-    padding-top: 22px;
+    margin-top: 28px;
+    padding-top: 24px;
 
-    border-top: 1px solid #f0e4dc;
+    border-top: 1px solid #eee4de;
 
-    color: #b4a49b;
+    color: #b2a59d;
 
     font-size: 10px;
     text-align: center;
 }
 
-/* =========================================
-   ANIMIRANE ČESTICE
-   ========================================= */
-
-.particles {
-    position: absolute;
-    z-index: 1;
-
-    inset: 0;
-
-    overflow: hidden;
-    pointer-events: none;
-}
-
-.particle {
-    position: absolute;
-
-    width: 65px;
-    height: 1px;
-
-    background: linear-gradient(
-        to right,
-        transparent,
-        rgba(198, 142, 106, 0.45)
-    );
-
-    animation: particleMove 10s linear infinite;
-}
-
-.particle::after {
-    content: "";
-
-    position: absolute;
-    right: 0;
-    top: -1px;
-
-    width: 3px;
-    height: 3px;
-
-    border-radius: 50%;
-
-    background: rgba(198, 142, 106, 0.65);
-}
-
-@keyframes particleMove {
-    0% {
-        transform: translateX(-90px);
-        opacity: 0;
-    }
-
-    15% {
-        opacity: 0.65;
-    }
-
-    85% {
-        opacity: 0.65;
-    }
-
-    100% {
-        transform: translateX(250px);
-        opacity: 0;
-    }
-}
-
-/* =========================================
-   PTECH PODRŠKA — POZICIJA
-   ========================================= */
+/* ==========================================
+   PTECH PODRŠKA
+========================================== */
 
 .support-widget {
     position: fixed;
     z-index: 100;
 
-    left: 28px;
+    left: 27px;
     bottom: 26px;
+
+    font-family: inherit;
 }
 
 .support-launcher {
+    position: relative;
+
     display: flex;
     align-items: center;
     gap: 12px;
 
     width: 312px;
     max-width: calc(100vw - 36px);
-    min-height: 62px;
+    min-height: 63px;
 
     padding: 10px 13px;
 
-    border: 1px solid rgba(255,255,255,0.85);
+    border: 1px solid rgba(255, 255, 255, 0.88);
     border-radius: 999px;
 
-    background: rgba(255,251,247,0.98);
+    background: rgba(255, 251, 247, 0.98);
 
     box-shadow:
-        0 12px 30px rgba(95, 62, 42, 0.12);
+        0 14px 35px rgba(95, 62, 42, 0.14);
 
     color: #30313a;
 
     text-align: left;
-    cursor: pointer;
+
+    transition: transform 0.2s ease;
+}
+
+.support-launcher:hover {
+    transform: translateY(-2px);
 }
 
 .support-trigger-icon {
@@ -888,13 +1042,14 @@ a:focus-visible {
 
     border-radius: 50%;
 
-    background: linear-gradient(
-        145deg,
-        #c99778,
-        #a87657
-    );
+    background:
+        linear-gradient(
+            145deg,
+            #cb9978,
+            #a87455
+        );
 
-    color: #ffffff;
+    color: white;
 }
 
 .support-trigger-icon svg {
@@ -903,7 +1058,8 @@ a:focus-visible {
 
     fill: none;
     stroke: currentColor;
-    stroke-width: 1.6;
+    stroke-width: 1.7;
+
     stroke-linecap: round;
     stroke-linejoin: round;
 }
@@ -911,7 +1067,7 @@ a:focus-visible {
 .support-trigger-text {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 4px;
 
     min-width: 0;
 }
@@ -922,7 +1078,7 @@ a:focus-visible {
 }
 
 .support-trigger-text small {
-    color: #8a7b71;
+    color: #897a70;
     font-size: 10px;
 }
 
@@ -933,9 +1089,9 @@ a:focus-visible {
 
     margin-left: auto;
 
-    color: #7c756e;
-    font-size: 10px;
+    color: #7d746e;
 
+    font-size: 10px;
     white-space: nowrap;
 }
 
@@ -944,35 +1100,33 @@ a:focus-visible {
     height: 7px;
 
     border-radius: 50%;
-    background: #35bc72;
+
+    background: #35b96f;
 }
 
 .support-chevron {
-    color: #a46c4b;
+    color: #a46e4b;
     font-size: 23px;
 }
 
-/* =========================================
-   CHAT PANEL
-   ========================================= */
-
-.support-panel[hidden] {
-    display: none !important;
-}
+/* ==========================================
+   CHAT PROZOR
+========================================== */
 
 .support-panel {
     position: absolute;
+    z-index: 101;
 
     left: 0;
-    bottom: 77px;
+    bottom: 78px;
 
-    width: 350px;
+    width: 355px;
     max-width: calc(100vw - 36px);
 
     overflow: hidden;
 
-    border: 1px solid #e4cfc1;
-    border-radius: 22px;
+    border: 1px solid #e7d4c6;
+    border-radius: 20px;
 
     background: #fffdfb;
 
@@ -980,29 +1134,42 @@ a:focus-visible {
         0 22px 55px rgba(83, 52, 36, 0.18);
 }
 
+.support-panel[hidden] {
+    display: none !important;
+}
+
 .support-header {
     display: flex;
     align-items: center;
     gap: 12px;
 
-    padding: 18px;
+    padding: 17px 18px;
 
-    background: #f5e5d8;
+    background:
+        linear-gradient(
+            105deg,
+            #d5a383,
+            #ac7857
+        );
+
+    color: #fff;
 }
 
 .support-avatar {
     display: grid;
     place-items: center;
 
+    flex: 0 0 38px;
+
     width: 38px;
     height: 38px;
 
     border-radius: 11px;
 
-    background: #b98260;
-    color: #ffffff;
+    background: rgba(255, 255, 255, 0.22);
 
-    font-weight: 800;
+    font-size: 21px;
+    font-weight: 900;
 }
 
 .support-header-text {
@@ -1012,53 +1179,81 @@ a:focus-visible {
 }
 
 .support-header-text strong {
-    font-size: 13px;
+    font-size: 12px;
+    font-weight: 800;
 }
 
 .support-header-text small {
-    color: #806a5c;
     font-size: 10px;
+    opacity: 0.9;
 }
 
 .support-close {
     margin-left: auto;
 
-    width: 30px;
-    height: 30px;
+    width: 31px;
+    height: 31px;
 
     border: 0;
     border-radius: 8px;
 
-    background: rgba(255,255,255,0.6);
-    color: #76513b;
+    background: rgba(255, 255, 255, 0.18);
 
-    font-size: 22px;
-    cursor: pointer;
+    color: white;
+
+    font-size: 23px;
 }
 
 .support-messages {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 11px;
 
     min-height: 110px;
-    max-height: 245px;
-
-    overflow-y: auto;
+    max-height: 240px;
 
     padding: 18px;
 
-    font-size: 12px;
-    line-height: 1.6;
+    overflow-y: auto;
+
+    background: #fffdfa;
 }
 
-.support-messages > * {
-    max-width: 92%;
+.support-message {
+    max-width: 88%;
+    padding: 11px 13px;
+
+    border-radius: 12px;
+
+    font-size: 11px;
+    line-height: 1.65;
+
     overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.support-message.bot {
+    align-self: flex-start;
+
+    background: #f5ebe3;
+    color: #514138;
+
+    border-bottom-left-radius: 4px;
+}
+
+.support-message.user {
+    align-self: flex-end;
+
+    background: #b47d5b;
+    color: white;
+
+    border-bottom-right-radius: 4px;
 }
 
 .support-questions {
-    padding: 0 18px 16px;
+    padding: 13px 17px 16px;
+
+    border-top: 1px solid #f1e6de;
 }
 
 .support-questions > span {
@@ -1066,10 +1261,10 @@ a:focus-visible {
 
     margin-bottom: 10px;
 
-    color: #8b7363;
+    color: #8a7161;
 
-    font-size: 11px;
-    font-weight: 700;
+    font-size: 10px;
+    font-weight: 800;
 }
 
 #supportQuestionList {
@@ -1083,55 +1278,87 @@ a:focus-visible {
 
     padding: 10px 12px;
 
-    border: 1px solid #ead7ca;
-    border-radius: 10px;
+    border: 1px solid #ead7c9;
+    border-radius: 9px;
 
-    background: #fff8f3;
-    color: #855638;
+    background: #fff9f5;
+    color: #925f43;
 
     font-size: 11px;
     font-weight: 700;
 
     text-align: left;
-    cursor: pointer;
 }
 
 #supportQuestionList button:hover {
-    background: #f5e5d8;
+    background: #f6e9df;
 }
 
 .support-note {
-    padding: 11px 18px;
+    padding: 11px 14px;
 
-    border-top: 1px solid #f0e4dc;
+    border-top: 1px solid #f1e8e1;
 
-    color: #a39286;
+    color: #a99b91;
 
-    font-size: 10px;
+    font-size: 9px;
     text-align: center;
 }
 
-/* =========================================
-   RESPONSIVE
-   ========================================= */
+/* ==========================================
+   SHAKE ANIMACIJA
+========================================== */
 
-@media (min-width: 1600px) {
-    .login-left {
-        padding-left: 5%;
+@keyframes loginShake {
+    0%, 100% {
+        transform: translateX(0);
     }
 
-    .login-hero {
-        max-width: 620px;
+    20%, 60% {
+        transform: translateX(-6px);
     }
 
-    .login-right {
-        padding-left: 12%;
+    40%, 80% {
+        transform: translateX(6px);
     }
 }
 
-@media (max-width: 1100px) {
+.login-card.shake {
+    animation: loginShake 0.4s ease;
+}
+
+/* ==========================================
+   SREDNJI DESKTOP / LAPTOP
+========================================== */
+
+@media (max-width: 1250px) {
+    .login-hero h1 {
+        font-size: clamp(32px, 3.4vw, 45px);
+        letter-spacing: -1.9px;
+    }
+
+    .login-card {
+        padding: 35px 30px 28px;
+    }
+
+    .login-right {
+        padding-left: 60px;
+        padding-right: 42px;
+    }
+
+    .login-left-footer {
+        left: 35px;
+        bottom: 112px;
+    }
+}
+
+/* ==========================================
+   MANJI LAPTOP
+========================================== */
+
+@media (max-width: 980px) {
     .login-page {
-        grid-template-columns: 48% 52%;
+        grid-template-columns: 47% 53%;
     }
 
     .login-page::before {
@@ -1139,24 +1366,36 @@ a:focus-visible {
     }
 
     .login-left {
-        padding-left: 6%;
+        padding-left: 30px;
     }
 
     .login-hero h1 {
-        font-size: clamp(31px, 3.4vw, 43px);
-        letter-spacing: -1.8px;
+        font-size: 33px;
+    }
+
+    .hero-description {
+        font-size: 12px;
     }
 
     .login-right {
-        padding: 35px 6% 35px 9%;
+        padding-left: 45px;
+        padding-right: 25px;
     }
 
     .login-card {
-        padding: 30px 27px 25px;
+        padding: 31px 25px 26px;
+    }
+
+    .login-card h2 {
+        font-size: 25px;
     }
 }
 
-@media (max-width: 800px) {
+/* ==========================================
+   MOBITEL I TABLET
+========================================== */
+
+@media (max-width: 760px) {
     .login-page {
         display: flex;
         flex-direction: column;
@@ -1167,54 +1406,54 @@ a:focus-visible {
     }
 
     .login-page::before {
-        top: 0;
-        bottom: auto;
-
         width: 100%;
-        height: 550px;
+        height: 540px;
 
-        background-image: linear-gradient(
-            145deg,
-            #d9ad91,
-            #e9c3aa
-        );
+        background-image:
+            linear-gradient(
+                145deg,
+                #d6a789 0%,
+                #e9c3aa 100%
+            );
 
-        border-radius: 0 0 45% 10%;
+        border-radius: 0 0 38% 9%;
     }
 
     .login-page::after {
-        top: -170px;
-        right: -210px;
+        width: 330px;
+        height: 330px;
 
-        width: 350px;
-        height: 350px;
+        top: -205px;
+        right: -230px;
     }
 
     .login-left {
         min-height: auto;
-        padding: 28px 7% 0;
+
+        padding: 27px 24px 0;
     }
 
     .login-left::before {
-        width: 500px;
-        height: 500px;
+        width: 520px;
+        height: 520px;
 
-        left: -310px;
+        left: -320px;
+        top: 260px;
     }
 
     .login-hero {
-        max-width: 550px;
+        max-width: 560px;
 
         margin: 55px 0 0;
-        padding: 0 0 20px;
+        padding: 0 0 22px;
     }
 
     .login-hero h1 {
-        font-size: clamp(34px, 7vw, 48px);
+        font-size: clamp(33px, 7vw, 43px);
     }
 
     .hero-description {
-        margin: 22px 0 25px;
+        margin: 21px 0 25px;
     }
 
     .feature-list {
@@ -1228,66 +1467,84 @@ a:focus-visible {
     .login-right {
         min-height: auto;
 
-        padding: 45px 6% 125px;
+        padding: 42px 20px 125px;
     }
 
     .login-right::after {
-        right: -240px;
-        bottom: -210px;
+        width: 390px;
+        height: 390px;
 
-        width: 410px;
-        height: 410px;
+        right: -245px;
+        bottom: -240px;
     }
 
     .login-card {
-        max-width: 470px;
+        max-width: 490px;
     }
 
     .support-widget {
-        left: 15px;
+        left: 16px;
         bottom: 15px;
+    }
+
+    .support-panel {
+        bottom: 76px;
+    }
+
+    .particles::before,
+    .particles::after {
+        display: none;
     }
 }
 
-@media (max-width: 480px) {
+/* ==========================================
+   MALI MOBITEL
+========================================== */
+
+@media (max-width: 440px) {
     .login-left {
-        padding: 25px 6% 0;
+        padding: 25px 20px 0;
     }
 
     .brand-icon {
-        width: 43px;
-        height: 43px;
+        width: 44px;
+        height: 44px;
+        font-size: 24px;
+    }
+
+    .brand-text strong {
+        font-size: 19px;
     }
 
     .login-hero {
         margin-top: 42px;
     }
 
-    .login-hero h1 {
-        font-size: 34px;
-        letter-spacing: -1.6px;
-    }
-
     .hero-eyebrow {
         font-size: 8px;
-        letter-spacing: 1.7px;
+        letter-spacing: 1.6px;
+    }
+
+    .login-hero h1 {
+        font-size: 33px;
+        letter-spacing: -1.7px;
     }
 
     .hero-description {
         font-size: 12px;
     }
 
+    .feature-item p {
+        font-size: 10px;
+    }
+
     .login-right {
-        padding: 35px 5% 115px;
+        padding: 32px 16px 115px;
     }
 
     .login-card {
-        padding: 27px 22px 24px;
+        padding: 28px 23px 25px;
         border-radius: 20px;
-    }
-
-    .login-card h2 {
-        font-size: 25px;
     }
 
     .login-card-top {
@@ -1298,16 +1555,29 @@ a:focus-visible {
         font-size: 7px;
     }
 
+    .login-card h2 {
+        font-size: 25px;
+    }
+
     .support-launcher {
-        width: 280px;
+        width: 288px;
     }
 }
 
+/* ==========================================
+   PRISTUPAČNOST
+========================================== */
+
 @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
+    .particle,
+    .particles::before,
+    .particles::after {
+        animation: none !important;
+        display: none !important;
+    }
+
+    .support-launcher,
+    #loginButton {
+        transition: none !important;
     }
 }
