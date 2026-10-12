@@ -1,8 +1,8 @@
+
 /* ==========================================
    PTECH DIGITAL
-   LOGIN + SUPPORT BOT
+   LOGIN + ANIMATED TRANSITION + SUPPORT
 ========================================== */
-
 
 /* ==========================================
    SUPABASE
@@ -14,11 +14,10 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
 
-const supabaseClient =
-    supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
 
 /* ==========================================
@@ -49,9 +48,389 @@ const capsLockWarning =
 const loginCard =
     document.querySelector(".login-card");
 
+let isRedirecting = false;
+
 
 /* ==========================================
-   LOGIN
+   LOGIN HELPERS
+========================================== */
+
+function showLoginError(message) {
+    if (!loginError) return;
+
+    loginError.textContent = message;
+    loginError.classList.add("show");
+}
+
+function clearLoginError() {
+    if (!loginError) return;
+
+    loginError.textContent = "";
+    loginError.classList.remove("show");
+}
+
+function setLoginLoading(loading) {
+    if (!loginButton) return;
+
+    loginButton.disabled = loading;
+    loginButton.textContent = loading
+        ? "Prijava..."
+        : "Prijavi se";
+}
+
+function shakeLoginCard() {
+    if (!loginCard) return;
+
+    loginCard.classList.remove("shake");
+    void loginCard.offsetWidth;
+    loginCard.classList.add("shake");
+}
+
+
+/* ==========================================
+   ANIMATED LOGIN TRANSITION
+========================================== */
+
+function installTransitionStyles() {
+
+    if (document.getElementById("ptech-transition-styles")) {
+        return;
+    }
+
+    const style = document.createElement("style");
+
+    style.id = "ptech-transition-styles";
+
+    style.textContent = `
+
+        /* ZOOM POSTOJECE LOGIN STRANICE */
+
+        body.ptech-exiting .login-page {
+            transform-origin: 50% 50%;
+
+            animation:
+                ptechPageZoom
+                850ms
+                cubic-bezier(.22,.65,.25,1)
+                forwards;
+
+            pointer-events: none;
+        }
+
+        @keyframes ptechPageZoom {
+            0% {
+                transform: scale(1);
+                filter: blur(0);
+                opacity: 1;
+            }
+
+            55% {
+                transform: scale(1.09);
+                filter: blur(2px);
+                opacity: .72;
+            }
+
+            100% {
+                transform: scale(1.22);
+                filter: blur(9px);
+                opacity: 0;
+            }
+        }
+
+        /* POZADINA PRIJELAZA */
+
+        .ptech-transition {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 24px;
+
+            background:
+                radial-gradient(
+                    circle at 50% 48%,
+                    #ffffff 0%,
+                    #fffaf5 48%,
+                    #f1dfd0 100%
+                );
+
+            opacity: 0;
+
+            animation:
+                ptechOverlayFade
+                750ms
+                ease
+                240ms
+                forwards;
+
+            pointer-events: all;
+        }
+
+        @keyframes ptechOverlayFade {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* DEKORATIVNI KRUG U POZADINI */
+
+        .ptech-transition::before {
+            content: "";
+
+            position: absolute;
+
+            width: min(620px, 92vw);
+            height: min(620px, 92vw);
+
+            border: 1px solid rgba(180, 117, 76, .13);
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 0 35px rgba(185, 125, 88, .035),
+                0 0 0 80px rgba(185, 125, 88, .02);
+
+            pointer-events: none;
+        }
+
+        /* SADRZAJ UCITAVANJA */
+
+        .ptech-transition-content {
+            position: relative;
+            z-index: 2;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            width: 100%;
+            max-width: 380px;
+
+            text-align: center;
+
+            opacity: 0;
+            transform: translateY(20px) scale(.88);
+
+            animation:
+                ptechLogoReveal
+                650ms
+                cubic-bezier(.18,.75,.24,1)
+                550ms
+                forwards;
+        }
+
+        @keyframes ptechLogoReveal {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(.88);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* PUNI PTECH DIGITAL LOGO */
+
+        .ptech-transition-logo {
+            display: block;
+
+            width: 245px;
+            max-width: 72vw;
+            height: auto;
+
+            object-fit: contain;
+
+            filter:
+                drop-shadow(
+                    0 12px 25px rgba(156, 101, 65, .12)
+                );
+        }
+
+        /* LOADER */
+
+        .ptech-transition-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+
+            margin-top: 5px;
+
+            color: #86634e;
+
+            font-family: "Inter", sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: .15px;
+        }
+
+        .ptech-transition-spinner {
+            display: block;
+
+            width: 21px;
+            height: 21px;
+
+            border-radius: 50%;
+
+            border: 2px solid rgba(174, 112, 72, .18);
+            border-top-color: #ae7048;
+
+            animation:
+                ptechSpinner 750ms linear infinite;
+        }
+
+        @keyframes ptechSpinner {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* DONJI NATPIS */
+
+        .ptech-transition-footer {
+            position: absolute;
+
+            bottom: 34px;
+            left: 0;
+            right: 0;
+
+            color: #b19b8b;
+
+            text-align: center;
+
+            font-family: "Inter", sans-serif;
+            font-size: 9px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+        }
+
+        /* MOBITEL */
+
+        @media (max-width: 600px) {
+            .ptech-transition-logo {
+                width: 200px;
+            }
+
+            .ptech-transition-loading {
+                font-size: 11px;
+            }
+
+            .ptech-transition-footer {
+                bottom: 24px;
+                font-size: 8px;
+                letter-spacing: 1.4px;
+            }
+        }
+
+        /* PRISTUPACNOST */
+
+        @media (prefers-reduced-motion: reduce) {
+            body.ptech-exiting .login-page,
+            .ptech-transition,
+            .ptech-transition-content,
+            .ptech-transition-spinner {
+                animation: none !important;
+            }
+
+            .ptech-transition,
+            .ptech-transition-content {
+                opacity: 1;
+                transform: none;
+            }
+        }
+    `;
+
+    document.head.appendChild(style);
+}
+
+
+/* ==========================================
+   SHOW TRANSITION AND REDIRECT
+========================================== */
+
+function startClientTransition() {
+
+    if (isRedirecting) return;
+
+    isRedirecting = true;
+
+    if (loginButton) {
+        loginButton.disabled = true;
+    }
+
+    const reducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    /* Bez animacije za korisnike koji to preferiraju */
+
+    if (reducedMotion) {
+        window.location.replace("form.html");
+        return;
+    }
+
+    installTransitionStyles();
+
+    const overlay = document.createElement("div");
+
+    overlay.className = "ptech-transition";
+
+    overlay.setAttribute("role", "status");
+    overlay.setAttribute("aria-live", "polite");
+    overlay.setAttribute("aria-label", "Otvaranje portala");
+
+    overlay.innerHTML = `
+        <div class="ptech-transition-content">
+
+            <img
+                src="assets/ptech-logo.png"
+                alt="PTech Digital"
+                class="ptech-transition-logo"
+            >
+
+            <div class="ptech-transition-loading">
+
+                <span
+                    class="ptech-transition-spinner"
+                    aria-hidden="true"
+                ></span>
+
+                <span>Otvaramo vaš portal...</span>
+
+            </div>
+
+        </div>
+
+        <div class="ptech-transition-footer">
+            PTECH DIGITAL · CLIENT PORTAL
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    document.body.classList.add("ptech-exiting");
+
+    /* Dovoljno vremena za zoom + logo + loading */
+
+    window.setTimeout(function () {
+        window.location.replace("form.html");
+    }, 2200);
+}
+
+
+/* ==========================================
+   LOGIN FORM
 ========================================== */
 
 if (loginForm) {
@@ -62,20 +441,20 @@ if (loginForm) {
 
             event.preventDefault();
 
+            if (isRedirecting) return;
+
             clearLoginError();
 
             const email =
-                emailInput.value.trim();
+                emailInput?.value.trim() || "";
 
             const password =
-                passwordInput.value;
+                passwordInput?.value || "";
 
             if (!email || !password) {
-
                 showLoginError(
                     "Unesite e-mail adresu i lozinku."
                 );
-
                 return;
             }
 
@@ -85,50 +464,32 @@ if (loginForm) {
 
                 /* SUPABASE AUTH */
 
-                const {
-                    data,
-                    error
-                } =
+                const { data, error } =
                     await supabaseClient.auth.signInWithPassword({
                         email,
                         password
                     });
 
-                if (error) {
-
-                    console.error("Login error:", error);
+                if (error || !data?.user) {
 
                     showLoginError(
                         "E-mail adresa ili lozinka nisu točni."
                     );
 
                     shakeLoginCard();
-
                     return;
                 }
-
-                if (!data || !data.user) {
-
-                    showLoginError(
-                        "Prijava nije uspjela. Pokušajte ponovno."
-                    );
-
-                    return;
-                }
-
 
                 /* PROFILE */
 
                 const {
                     data: profile,
                     error: profileError
-                } =
-                    await supabaseClient
-                        .from("profiles")
-                        .select("id, display_name, role")
-                        .eq("id", data.user.id)
-                        .maybeSingle();
-
+                } = await supabaseClient
+                    .from("profiles")
+                    .select("id, display_name, role")
+                    .eq("id", data.user.id)
+                    .maybeSingle();
 
                 if (profileError) {
 
@@ -153,7 +514,6 @@ if (loginForm) {
                     return;
                 }
 
-
                 /* USER DATA */
 
                 localStorage.setItem(
@@ -161,25 +521,23 @@ if (loginForm) {
                     data.user.email || email
                 );
 
-
                 /* ROLE */
 
-                const role =
-                    String(profile.role || "client")
-                        .trim()
-                        .toLowerCase();
+                const role = String(
+                    profile.role || "client"
+                ).trim().toLowerCase();
 
-
-                /* REDIRECT */
+                /* ADMIN - POSTOJECI REDIRECT */
 
                 if (role === "admin") {
-
-                    window.location.href = "admin.html";
-
+                    isRedirecting = true;
+                    window.location.replace("admin.html");
                     return;
                 }
 
-                window.location.href = "form.html";
+                /* CLIENT - NOVA ANIMACIJA */
+
+                startClientTransition();
 
             } catch (error) {
 
@@ -194,68 +552,13 @@ if (loginForm) {
 
             } finally {
 
-                setLoginLoading(false);
+                if (!isRedirecting) {
+                    setLoginLoading(false);
+                }
 
             }
-
         }
     );
-
-}
-
-
-/* ==========================================
-   LOGIN HELPERS
-========================================== */
-
-function showLoginError(message) {
-
-    if (!loginError) {
-        return;
-    }
-
-    loginError.textContent = message;
-
-    loginError.classList.add("show");
-}
-
-
-function clearLoginError() {
-
-    if (!loginError) {
-        return;
-    }
-
-    loginError.textContent = "";
-
-    loginError.classList.remove("show");
-}
-
-
-function setLoginLoading(loading) {
-
-    if (!loginButton) {
-        return;
-    }
-
-    loginButton.disabled = loading;
-
-    loginButton.textContent =
-        loading ? "Prijava..." : "Prijavi se";
-}
-
-
-function shakeLoginCard() {
-
-    if (!loginCard) {
-        return;
-    }
-
-    loginCard.classList.remove("shake");
-
-    void loginCard.offsetWidth;
-
-    loginCard.classList.add("shake");
 }
 
 
@@ -282,11 +585,15 @@ if (togglePassword && passwordInput) {
                     : "Prikaži lozinku"
             );
 
+            togglePassword.setAttribute(
+                "aria-pressed",
+                String(isHidden)
+            );
+
             passwordInput.focus();
 
         }
     );
-
 }
 
 
@@ -306,6 +613,8 @@ if (passwordInput && capsLockWarning) {
             "show",
             Boolean(isOn)
         );
+
+        capsLockWarning.hidden = !isOn;
     }
 
     passwordInput.addEventListener(
@@ -323,10 +632,10 @@ if (passwordInput && capsLockWarning) {
         function () {
 
             capsLockWarning.classList.remove("show");
+            capsLockWarning.hidden = true;
 
         }
     );
-
 }
 
 
@@ -339,17 +648,17 @@ function createParticles() {
     const container =
         document.getElementById("particles");
 
-    if (!container) {
+    if (!container) return;
+
+    if (window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+    ).matches) {
         return;
     }
 
-    if (
-        window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-        ).matches
-    ) {
-        return;
-    }
+    /* Sprjecava duplo stvaranje */
+
+    container.replaceChildren();
 
     const count = 34;
 
@@ -403,7 +712,6 @@ function createParticles() {
         container.appendChild(particle);
 
     }
-
 }
 
 createParticles();
@@ -430,7 +738,7 @@ const supportQuestionList =
 
 
 /* ==========================================
-   QUESTIONS AND ANSWERS
+   SUPPORT QUESTIONS
 ========================================== */
 
 const supportQuestions = [
@@ -468,7 +776,7 @@ const supportQuestions = [
 
 
 /* ==========================================
-   OPEN / CLOSE SUPPORT
+   SUPPORT OPEN / CLOSE
 ========================================== */
 
 function setSupportOpen(open) {
@@ -483,23 +791,17 @@ function setSupportOpen(open) {
         "aria-expanded",
         String(open)
     );
-
 }
 
-
-if (supportTrigger) {
+if (supportTrigger && supportPanel) {
 
     supportTrigger.addEventListener(
         "click",
         function () {
-
             setSupportOpen(supportPanel.hidden);
-
         }
     );
-
 }
-
 
 if (supportClose) {
 
@@ -509,22 +811,18 @@ if (supportClose) {
 
             setSupportOpen(false);
 
-            supportTrigger.focus();
+            supportTrigger?.focus();
 
         }
     );
-
 }
-
 
 document.addEventListener(
     "keydown",
     function (event) {
 
         if (event.key === "Escape") {
-
             setSupportOpen(false);
-
         }
 
     }
@@ -537,9 +835,7 @@ document.addEventListener(
 
 function addSupportMessage(text, type) {
 
-    if (!supportMessages) {
-        return;
-    }
+    if (!supportMessages) return;
 
     const message =
         document.createElement("div");
@@ -553,21 +849,18 @@ function addSupportMessage(text, type) {
 
     supportMessages.scrollTop =
         supportMessages.scrollHeight;
-
 }
 
 
 /* ==========================================
-   RENDER QUESTIONS
+   SUPPORT QUESTIONS RENDER
 ========================================== */
 
 function renderSupportQuestions() {
 
-    if (!supportQuestionList) {
-        return;
-    }
+    if (!supportQuestionList) return;
 
-    supportQuestionList.innerHTML = "";
+    supportQuestionList.replaceChildren();
 
     supportQuestions.forEach(function (item) {
 
@@ -575,9 +868,7 @@ function renderSupportQuestions() {
             document.createElement("button");
 
         button.type = "button";
-
         button.className = "support-question";
-
         button.textContent = item.question;
 
         button.addEventListener(
@@ -600,12 +891,11 @@ function renderSupportQuestions() {
         supportQuestionList.appendChild(button);
 
     });
-
 }
 
 
 /* ==========================================
-   INITIAL SUPPORT MESSAGE
+   INITIAL BOT MESSAGE
 ========================================== */
 
 if (supportMessages) {
