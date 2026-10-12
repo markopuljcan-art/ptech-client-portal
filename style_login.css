@@ -1,36 +1,20 @@
 
 /* ==========================================================
-   PTECH DIGITAL CLIENT PORTAL
-   LOGIN DESIGN — CHAMPAGNE FLOW
-   FULL CSS
-========================================================== */
-
-
-/* ==========================================================
-   1. GLOBALNE POSTAVKE
+   PTECH DIGITAL — LOGIN
+   CHAMPAGNE WAVE + SUPPORT CHAT
 ========================================================== */
 
 :root {
     color-scheme: light;
 
-    --bg-main: #faf6f2;
-    --bg-warm: #f3e7de;
-    --bg-soft: #fffaf6;
+    --ink: #292d36;
+    --muted: #756d68;
 
-    --card-bg: rgba(255, 253, 250, 0.96);
+    --bronze: #a67657;
+    --bronze-dark: #946448;
 
-    --text-primary: #292d36;
-    --text-secondary: #756f6d;
-
-    --bronze: #a77759;
-    --bronze-dark: #97684d;
-    --bronze-light: #d8a789;
-
-    --border: #eadfd7;
-
-    --shadow:
-        0 30px 85px rgba(108, 72, 49, 0.12),
-        0 8px 24px rgba(108, 72, 49, 0.035);
+    --cream: #fffaf6;
+    --border: #eaded5;
 }
 
 * {
@@ -39,35 +23,17 @@
 
 html {
     min-height: 100%;
-    background: var(--bg-main);
 }
 
 body {
     margin: 0;
     min-height: 100vh;
 
-    overflow-x: clip;
+    overflow-x: hidden;
 
-    color: var(--text-primary);
+    color: var(--ink);
 
-    background:
-        radial-gradient(
-            ellipse at 15% 50%,
-            rgba(218, 168, 134, 0.18),
-            transparent 46%
-        ),
-        radial-gradient(
-            ellipse at 100% 40%,
-            rgba(225, 180, 151, 0.15),
-            transparent 43%
-        ),
-        linear-gradient(
-            105deg,
-            #f6ede6 0%,
-            #f9f3ee 37%,
-            #fffaf7 60%,
-            #f9f1eb 100%
-        );
+    background: #fffaf6;
 
     font-family:
         Inter,
@@ -91,13 +57,13 @@ button {
 
 button:focus-visible,
 input:focus-visible {
-    outline: 3px solid rgba(174, 125, 92, 0.35);
+    outline: 3px solid rgba(166, 118, 87, 0.3);
     outline-offset: 3px;
 }
 
 
 /* ==========================================================
-   2. GLAVNI RASPORED
+   MAIN LAYOUT
 ========================================================== */
 
 .login-shell {
@@ -105,49 +71,31 @@ input:focus-visible {
     isolation: isolate;
 
     display: grid;
-
-    grid-template-columns:
-        minmax(0, 48%)
-        minmax(0, 52%);
+    grid-template-columns: 48% 52%;
 
     min-height: 100vh;
 
     overflow: hidden;
 
-    /*
-       Jedna zajednička pozadina.
-       Obje strane su prozirne pa nema
-       vidljive vertikalne granice.
-    */
-
     background:
         radial-gradient(
-            ellipse at 9% 49%,
-            rgba(219, 165, 129, 0.19),
-            transparent 43%
-        ),
-        radial-gradient(
-            ellipse at 94% 45%,
-            rgba(225, 179, 149, 0.15),
-            transparent 38%
-        ),
-        radial-gradient(
-            ellipse at 53% 53%,
-            rgba(255, 255, 255, 0.65),
-            transparent 44%
+            ellipse at 13% 52%,
+            rgba(180, 113, 75, 0.20),
+            transparent 39%
         ),
         linear-gradient(
             105deg,
-            #f7eee7 0%,
-            #faf5f0 42%,
-            #fffaf7 63%,
-            #f9f0e9 100%
+            #d8b092 0%,
+            #e8c9b0 34%,
+            #f6e9dc 48%,
+            #fffaf6 62%,
+            #fff8f3 100%
         );
 }
 
 
 /* ==========================================================
-   3. LIJEVA STRANA
+   LEFT PANEL
 ========================================================== */
 
 .login-intro {
@@ -161,139 +109,70 @@ input:focus-visible {
     min-height: 100vh;
 
     padding:
-        45px clamp(35px, 5vw, 85px)
+        46px clamp(36px, 5vw, 85px)
         38px;
 
-    /*
-       Prozirno: koristi zajedničku
-       pozadinu .login-shell.
-    */
-
-    background: transparent;
+    background:
+        radial-gradient(
+            ellipse at 24% 46%,
+            rgba(255, 240, 225, 0.38),
+            transparent 60%
+        ),
+        linear-gradient(
+            120deg,
+            #d7a988 0%,
+            #dcb397 47%,
+            #e9cbb3 100%
+        );
 }
 
 
-/* ==========================================================
-   4. VELIKI LIJEVI KRUG
-========================================================== */
+/* LEFT DECORATIVE CIRCLE */
 
 .intro-orb {
     position: absolute;
-    z-index: -1;
+    z-index: 0;
 
     width: 1060px;
     height: 1060px;
 
-    left: -550px;
+    left: -560px;
     top: 50%;
 
     transform: translateY(-50%);
 
     border:
-        1.4px solid rgba(194, 128, 85, 0.48);
+        1.5px solid rgba(144, 84, 50, 0.50);
 
     border-radius: 50%;
 
     background:
         radial-gradient(
-            circle at 60% 45%,
-            rgba(224, 170, 133, 0.17),
-            rgba(222, 165, 127, 0.075) 50%,
-            transparent 76%
+            circle at 65% 50%,
+            rgba(255, 239, 222, 0.16),
+            transparent 72%
         );
-
-    box-shadow:
-        inset 0 0 130px rgba(195, 137, 97, 0.035);
 
     pointer-events: none;
 }
 
-
-/* ==========================================================
-   5. DESNI UKRASNI KRUGOVI
-========================================================== */
-
-/*
-   Krug gore desno i krug dolje desno.
-
-   Oba su iza login kartice.
-   Nisu dodatni HTML elementi.
-*/
-
-.login-shell::before,
-.login-shell::after {
-    content: "";
-
-    position: absolute;
-
-    z-index: -1;
-
-    width: 790px;
-    height: 790px;
-
-    border-radius: 50%;
-
-    border:
-        1.4px solid rgba(201, 132, 90, 0.40);
-
-    pointer-events: none;
-}
-
-
-/* GORNJI DESNI KRUG */
-
-.login-shell::before {
-    top: -420px;
-    right: -470px;
-
-    background:
-        radial-gradient(
-            circle at 42% 60%,
-            rgba(232, 185, 153, 0.12),
-            rgba(223, 166, 127, 0.07) 48%,
-            transparent 75%
-        );
-
-    box-shadow:
-        0 0 0 25px rgba(210, 153, 114, 0.025),
-        0 0 0 52px rgba(210, 153, 114, 0.018);
-}
-
-
-/* DONJI DESNI KRUG */
-
-.login-shell::after {
-    right: -530px;
-    bottom: -570px;
-
-    width: 850px;
-    height: 850px;
-
-    background:
-        radial-gradient(
-            circle at 35% 35%,
-            rgba(225, 175, 142, 0.12),
-            transparent 70%
-        );
-
-    box-shadow:
-        0 0 0 26px rgba(210, 153, 114, 0.023);
+.intro-brand,
+.intro-content,
+.intro-bottom {
+    position: relative;
+    z-index: 2;
 }
 
 
 /* ==========================================================
-   6. LOGO LIJEVO
+   BRAND
 ========================================================== */
 
 .intro-brand {
-    position: relative;
-    z-index: 2;
-
     display: flex;
     align-items: center;
 
-    gap: 15px;
-
+    gap: 16px;
     width: fit-content;
 }
 
@@ -302,51 +181,49 @@ input:focus-visible {
     display: grid;
     place-items: center;
 
-    background:
-        linear-gradient(
-            135deg,
-            #e7b99a,
-            #bb8866
-        );
-
-    color: #29252a;
+    color: #28252a;
 
     font-weight: 900;
 
+    background:
+        linear-gradient(
+            135deg,
+            #efc19e,
+            #bc8662
+        );
+
     box-shadow:
-        0 12px 24px rgba(150, 100, 68, 0.15);
+        0 10px 25px rgba(108, 68, 42, 0.13);
 }
 
 .intro-brand-icon {
-    width: 56px;
-    height: 56px;
+    width: 58px;
+    height: 58px;
 
     border-radius: 15px;
 
-    font-size: 31px;
+    font-size: 32px;
 }
 
 .intro-brand-name {
     display: flex;
     flex-direction: column;
 
-    color: var(--text-primary);
-
     font-size: 25px;
     font-weight: 800;
 
-    line-height: 1.04;
+    line-height: 1.05;
     letter-spacing: -0.7px;
 }
 
 .intro-brand-name strong {
-    color: #a67456;
+    color: #86543b;
 }
 
 .intro-brand-name small {
     margin-top: 8px;
 
-    color: #8c817b;
+    color: #6e5c52;
 
     font-size: 10px;
     font-weight: 800;
@@ -356,81 +233,70 @@ input:focus-visible {
 
 
 /* ==========================================================
-   7. LIJEVI GLAVNI SADRŽAJ
+   INTRO CONTENT
 ========================================================== */
 
 .intro-content {
-    position: relative;
-    z-index: 2;
-
-    max-width: 640px;
-
-    margin: 65px 0;
+    max-width: 650px;
+    margin: 55px 0 70px;
 }
 
 .eyebrow {
     display: flex;
     align-items: center;
 
-    gap: 10px;
+    gap: 11px;
 
-    margin-bottom: 26px;
+    margin-bottom: 27px;
 
-    color: #a27152;
+    color: #8f583b;
 
     font-size: 11px;
     font-weight: 800;
 
-    letter-spacing: 1.8px;
+    letter-spacing: 1.9px;
 }
 
 .eyebrow-dot {
     width: 7px;
     height: 7px;
 
-    flex-shrink: 0;
-
     border-radius: 50%;
 
-    background: #b78361;
+    background: #9f6343;
 
     box-shadow:
-        0 0 0 5px rgba(183, 131, 97, 0.12);
+        0 0 0 5px rgba(159, 99, 67, 0.13);
 }
 
 .intro-content h1 {
     margin: 0;
 
-    color: var(--text-primary);
-
     font-size: clamp(39px, 4.1vw, 63px);
     font-weight: 800;
 
     line-height: 1.1;
-    letter-spacing: -2.3px;
+    letter-spacing: -2.4px;
 }
 
 .intro-content h1 span {
     display: block;
-
-    color: #a67557;
+    color: #925b3d;
 }
 
 .intro-description {
-    max-width: 510px;
+    max-width: 520px;
 
-    margin: 25px 0 34px;
+    margin: 27px 0 35px;
 
-    color: #726b68;
+    color: #5f554f;
 
     font-size: 16px;
     line-height: 1.8;
 }
 
 
-/* ==========================================================
-   8. PREDNOSTI PORTALA
-========================================================== */
+/* FEATURES */
 
 .intro-features {
     display: flex;
@@ -450,18 +316,17 @@ input:focus-visible {
     display: grid;
     place-items: center;
 
-    flex: 0 0 48px;
+    flex: 0 0 49px;
 
-    width: 48px;
-    height: 48px;
+    width: 49px;
+    height: 49px;
 
     border:
-        1px solid rgba(183, 131, 97, 0.13);
+        1px solid rgba(143, 86, 50, 0.13);
 
     border-radius: 13px;
 
-    background:
-        rgba(219, 177, 149, 0.23);
+    background: rgba(255, 245, 234, 0.35);
 }
 
 .feature-icon svg {
@@ -469,7 +334,7 @@ input:focus-visible {
     height: 22px;
 
     fill: none;
-    stroke: #a87859;
+    stroke: #955c3c;
 
     stroke-width: 1.7;
     stroke-linecap: round;
@@ -481,7 +346,7 @@ input:focus-visible {
 
     margin-bottom: 5px;
 
-    color: #303139;
+    color: #292d36;
 
     font-size: 15px;
     font-weight: 750;
@@ -490,22 +355,14 @@ input:focus-visible {
 .intro-feature p {
     margin: 0;
 
-    color: #79716d;
+    color: #665a53;
 
     font-size: 13px;
     line-height: 1.5;
 }
 
-
-/* ==========================================================
-   9. LIJEVI FOOTER
-========================================================== */
-
 .intro-bottom {
-    position: relative;
-    z-index: 2;
-
-    color: #8d827c;
+    color: #775f52;
 
     font-size: 10px;
     font-weight: 800;
@@ -515,13 +372,45 @@ input:focus-visible {
 
 .intro-bottom span {
     margin: 0 8px;
-
-    color: #b48362;
+    color: #965c3e;
 }
 
 
 /* ==========================================================
-   10. DESNA STRANA
+   ORGANIC WAVE DIVIDER
+========================================================== */
+
+.login-wave {
+    position: absolute;
+
+    z-index: 1;
+
+    top: 0;
+    bottom: 0;
+
+    left: calc(48% - 85px);
+
+    width: 180px;
+    height: 100%;
+
+    pointer-events: none;
+
+    filter:
+        drop-shadow(
+            10px 0 17px rgba(172, 116, 76, 0.08)
+        );
+}
+
+.login-wave svg {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+}
+
+
+/* ==========================================================
+   RIGHT PANEL
 ========================================================== */
 
 .login-area {
@@ -537,25 +426,62 @@ input:focus-visible {
 
     padding: 65px 40px;
 
-    /*
-       Nema zasebne pozadine.
-       Time uklanjamo oštru granicu
-       između lijeve i desne strane.
-    */
-
-    background: transparent;
+    background:
+        radial-gradient(
+            ellipse at 80% 40%,
+            rgba(223, 172, 137, 0.14),
+            transparent 48%
+        ),
+        linear-gradient(
+            115deg,
+            #fff7ef 0%,
+            #fffaf6 55%,
+            #f9eee6 100%
+        );
 }
 
 
-/* ==========================================================
-   11. PARTICLES CANVAS
-========================================================== */
+/* RIGHT DECORATIVE ARCS */
+
+.login-area::before,
+.login-area::after {
+    content: "";
+
+    position: absolute;
+    z-index: 0;
+
+    width: 780px;
+    height: 780px;
+
+    border:
+        1.3px solid rgba(182, 114, 72, 0.33);
+
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+.login-area::before {
+    top: -480px;
+    right: -460px;
+}
+
+.login-area::after {
+    bottom: -570px;
+    right: -490px;
+
+    width: 850px;
+    height: 850px;
+}
+
+
+/* PARTICLES */
 
 #loginParticles {
     position: absolute;
     inset: 0;
 
-    z-index: 0;
+    z-index: 1;
 
     display: block;
 
@@ -567,7 +493,7 @@ input:focus-visible {
 
 
 /* ==========================================================
-   12. LOGIN KARTICA
+   LOGIN CARD
 ========================================================== */
 
 .login-card {
@@ -582,22 +508,20 @@ input:focus-visible {
         35px;
 
     border:
-        1px solid rgba(190, 148, 118, 0.19);
+        1px solid rgba(193, 153, 122, 0.18);
 
-    border-radius: 25px;
+    border-radius: 26px;
 
-    background: var(--card-bg);
+    background:
+        rgba(255, 253, 250, 0.97);
 
-    box-shadow: var(--shadow);
+    box-shadow:
+        0 32px 90px rgba(123, 81, 53, 0.15),
+        0 8px 25px rgba(123, 81, 53, 0.045);
 
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
 }
-
-
-/* ==========================================================
-   13. VRH KARTICE
-========================================================== */
 
 .login-card-top {
     display: flex;
@@ -610,7 +534,7 @@ input:focus-visible {
 }
 
 .login-kicker {
-    color: #c08d6b;
+    color: #bc855e;
 
     font-size: 10px;
     font-weight: 800;
@@ -619,7 +543,7 @@ input:focus-visible {
 }
 
 .login-secure {
-    color: #8c8079;
+    color: #8b7d73;
 
     font-size: 10px;
     font-weight: 700;
@@ -641,8 +565,6 @@ input:focus-visible {
 .login-card h2 {
     margin: 0;
 
-    color: #292d36;
-
     font-size: clamp(29px, 2.7vw, 37px);
     font-weight: 800;
 
@@ -661,7 +583,7 @@ input:focus-visible {
 
 
 /* ==========================================================
-   14. FORMA
+   FORM
 ========================================================== */
 
 #loginForm {
@@ -697,9 +619,7 @@ input:focus-visible {
 
     padding: 0 50px;
 
-    border:
-        1px solid #e6dbd3;
-
+    border: 1px solid #e6dbd3;
     border-radius: 12px;
 
     outline: none;
@@ -724,11 +644,6 @@ input:focus-visible {
     color: #a39992;
 }
 
-#email:hover,
-#password:hover {
-    border-color: #d2b5a0;
-}
-
 #email:focus,
 #password:focus {
     border-color: #b98c6d;
@@ -738,11 +653,6 @@ input:focus-visible {
     box-shadow:
         0 0 0 3px rgba(185, 140, 109, 0.12);
 }
-
-
-/* ==========================================================
-   15. AUTOFILL
-========================================================== */
 
 #email:-webkit-autofill,
 #email:-webkit-autofill:hover,
@@ -757,17 +667,10 @@ input:focus-visible {
 
     box-shadow:
         0 0 0 1000px #faf8f6 inset;
-
-    caret-color: #303139;
-
-    transition:
-        background-color 9999s ease-out;
 }
 
 
-/* ==========================================================
-   16. INPUT IKONE
-========================================================== */
+/* INPUT ICONS */
 
 .input-icon,
 .password-icon {
@@ -791,15 +694,8 @@ input:focus-visible {
     pointer-events: none;
 }
 
-.input-wrapper:focus-within .input-icon,
-.password-wrapper:focus-within .password-icon {
-    stroke: #ae7c5d;
-}
 
-
-/* ==========================================================
-   17. PRIKAZ / SAKRIVANJE LOZINKE
-========================================================== */
+/* PASSWORD TOGGLE */
 
 .toggle-password {
     position: absolute;
@@ -822,13 +718,10 @@ input:focus-visible {
 
     background: transparent;
     color: #937f73;
-
-    cursor: pointer;
 }
 
 .toggle-password:hover {
     background: #f0e8e1;
-    color: #6d4c38;
 }
 
 .eye-svg {
@@ -852,48 +745,32 @@ input:focus-visible {
 }
 
 
-/* ==========================================================
-   18. CAPS LOCK
-========================================================== */
+/* WARNINGS */
 
-.caps-lock-warning {
+.caps-lock-warning,
+.login-error {
     display: none;
 
     margin: -8px 0 -5px;
 
-    color: #a96c38;
-
     font-size: 12px;
 }
 
-.caps-lock-warning.show {
-    display: block;
+.caps-lock-warning {
+    color: #a96c38;
 }
-
-
-/* ==========================================================
-   19. LOGIN ERROR
-========================================================== */
 
 .login-error {
-    display: none;
-
-    margin: -6px 0 0;
-
     color: #b94141;
-
-    font-size: 13px;
-    line-height: 1.5;
 }
 
+.caps-lock-warning.show,
 .login-error.show {
     display: block;
 }
 
 
-/* ==========================================================
-   20. GUMB ZA PRIJAVU
-========================================================== */
+/* LOGIN BUTTON */
 
 #loginButton {
     position: relative;
@@ -922,12 +799,9 @@ input:focus-visible {
     font-size: 16px;
     font-weight: 800;
 
-    cursor: pointer;
-
     transition:
         transform 0.2s ease,
-        box-shadow 0.2s ease,
-        filter 0.2s ease;
+        box-shadow 0.2s ease;
 }
 
 #loginButton:hover:not(:disabled) {
@@ -935,12 +809,6 @@ input:focus-visible {
 
     box-shadow:
         0 14px 30px rgba(155, 111, 82, 0.24);
-
-    filter: brightness(1.03);
-}
-
-#loginButton:active:not(:disabled) {
-    transform: translateY(0);
 }
 
 #loginButton:disabled {
@@ -964,16 +832,13 @@ input:focus-visible {
 }
 
 
-/* ==========================================================
-   21. PODRŠKA
-========================================================== */
+/* HELP + FOOTER */
 
 .login-help {
     margin-top: 28px;
     padding-top: 22px;
 
-    border-top:
-        1px solid #eee4dc;
+    border-top: 1px solid #eee4dc;
 
     text-align: center;
 }
@@ -984,7 +849,6 @@ input:focus-visible {
     color: #343139;
 
     font-size: 13px;
-    font-weight: 750;
 }
 
 .login-help p {
@@ -994,11 +858,6 @@ input:focus-visible {
 
     font-size: 12px;
 }
-
-
-/* ==========================================================
-   22. FOOTER
-========================================================== */
 
 .login-footer {
     margin-top: 29px;
@@ -1011,18 +870,354 @@ input:focus-visible {
 
 
 /* ==========================================================
-   23. SHAKE ANIMACIJA
+   SUPPORT WIDGET
+========================================================== */
+
+.support-widget {
+    position: fixed;
+
+    z-index: 1000;
+
+    left: 35px;
+    bottom: 62px;
+
+    width: min(390px, calc(100vw - 32px));
+}
+
+
+/* SUPPORT LAUNCHER */
+
+.support-toggle {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    width: 100%;
+    min-height: 76px;
+
+    padding: 10px 15px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.7);
+
+    border-radius: 50px;
+
+    background:
+        rgba(255, 247, 238, 0.93);
+
+    box-shadow:
+        0 14px 35px rgba(92, 54, 33, 0.18);
+
+    text-align: left;
+
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.support-toggle:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 18px 40px rgba(92, 54, 33, 0.22);
+}
+
+.support-avatar {
+    display: grid;
+    place-items: center;
+
+    flex: 0 0 48px;
+
+    width: 48px;
+    height: 48px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #d9a47f,
+            #a66e4a
+        );
+}
+
+.support-avatar svg {
+    width: 27px;
+    height: 27px;
+
+    fill: none;
+    stroke: white;
+
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.support-toggle-text {
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+
+    flex: 1;
+    min-width: 0;
+}
+
+.support-toggle-text strong {
+    color: #302b2b;
+
+    font-size: 14px;
+}
+
+.support-toggle-text small {
+    color: #776a62;
+
+    font-size: 11px;
+}
+
+.support-status {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    color: #4f5146;
+
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.support-status span {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #35b96e;
+}
+
+.support-chevron {
+    margin-left: 2px;
+
+    color: #966344;
+
+    font-size: 27px;
+    line-height: 1;
+}
+
+
+/* SUPPORT PANEL */
+
+.support-panel {
+    position: absolute;
+
+    left: 0;
+    bottom: calc(100% + 15px);
+
+    width: 100%;
+    max-height: min(560px, calc(100vh - 170px));
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    border:
+        1px solid rgba(178, 126, 89, 0.2);
+
+    border-radius: 23px;
+
+    background: #fffdfa;
+
+    box-shadow:
+        0 25px 75px rgba(77, 45, 28, 0.22);
+}
+
+.support-panel[hidden] {
+    display: none;
+}
+
+.support-header {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 17px 20px;
+
+    background:
+        linear-gradient(
+            105deg,
+            #d5a482,
+            #a87554
+        );
+}
+
+.support-header-avatar {
+    display: grid;
+    place-items: center;
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.3);
+
+    color: #fff;
+    font-size: 23px;
+    font-weight: 900;
+}
+
+.support-header-info {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+
+    flex: 1;
+
+    color: white;
+}
+
+.support-header-info strong {
+    font-size: 14px;
+}
+
+.support-header-info small {
+    font-size: 11px;
+    opacity: 0.88;
+}
+
+.support-close {
+    width: 33px;
+    height: 33px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: rgba(255, 255, 255, 0.18);
+
+    color: white;
+
+    font-size: 26px;
+    line-height: 1;
+}
+
+.support-messages {
+    display: flex;
+    flex-direction: column;
+
+    gap: 13px;
+
+    min-height: 130px;
+
+    padding: 20px;
+
+    overflow-y: auto;
+}
+
+.support-message {
+    max-width: 92%;
+
+    padding: 12px 14px;
+
+    border-radius: 14px;
+
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.support-message.bot {
+    align-self: flex-start;
+
+    background: #f5ebe2;
+    color: #4c403a;
+
+    border-bottom-left-radius: 5px;
+}
+
+.support-message.user {
+    align-self: flex-end;
+
+    background: #ac7a5a;
+    color: white;
+
+    border-bottom-right-radius: 5px;
+}
+
+.support-questions {
+    padding: 0 20px 17px;
+}
+
+.support-questions p {
+    margin: 0 0 11px;
+
+    color: #7c6c61;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+#supportQuestionList {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 8px;
+}
+
+.support-question {
+    padding: 9px 11px;
+
+    border:
+        1px solid #e5d3c5;
+
+    border-radius: 11px;
+
+    background: #fffaf6;
+
+    color: #855d45;
+
+    font-size: 12px;
+    font-weight: 650;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.support-question:hover {
+    background: #f4e5d9;
+    border-color: #cda98e;
+}
+
+.support-note {
+    padding: 12px 20px;
+
+    border-top:
+        1px solid #f0e6df;
+
+    color: #a0948c;
+
+    text-align: center;
+    font-size: 10px;
+}
+
+
+/* ==========================================================
+   SHAKE
 ========================================================== */
 
 .login-card.shake {
-    animation:
-        login-shake 0.35s ease;
+    animation: login-shake 0.35s ease;
 }
 
 @keyframes login-shake {
-
-    0%,
-    100% {
+    0%, 100% {
         transform: translateX(0);
     }
 
@@ -1041,24 +1236,26 @@ input:focus-visible {
 
 
 /* ==========================================================
-   24. TABLET
+   TABLET
 ========================================================== */
 
 @media (max-width: 1100px) {
 
     .login-shell {
-        grid-template-columns:
-            minmax(0, 46%)
-            minmax(0, 54%);
+        grid-template-columns: 46% 54%;
     }
 
     .login-intro {
         padding-left: 35px;
-        padding-right: 25px;
+        padding-right: 30px;
     }
 
     .intro-content h1 {
         font-size: 43px;
+    }
+
+    .login-wave {
+        left: calc(46% - 85px);
     }
 
     .login-area {
@@ -1069,18 +1266,21 @@ input:focus-visible {
         padding: 36px 30px;
     }
 
-    .login-card h2 {
-        font-size: 31px;
+    .support-widget {
+        left: 20px;
+        bottom: 20px;
+
+        width: min(330px, calc(100vw - 40px));
     }
 
-    .login-shell::before {
-        right: -570px;
+    .support-toggle {
+        min-height: 66px;
     }
 }
 
 
 /* ==========================================================
-   25. MOBITEL
+   MOBILE
 ========================================================== */
 
 @media (max-width: 760px) {
@@ -1088,30 +1288,12 @@ input:focus-visible {
     .login-shell {
         display: flex;
         flex-direction: column;
-
-        background:
-            radial-gradient(
-                ellipse at 0% 18%,
-                rgba(219, 165, 129, 0.16),
-                transparent 48%
-            ),
-            radial-gradient(
-                ellipse at 100% 85%,
-                rgba(225, 179, 149, 0.12),
-                transparent 45%
-            ),
-            linear-gradient(
-                180deg,
-                #f7eee7,
-                #fffaf7 55%,
-                #f9f1eb
-            );
     }
 
     .login-intro {
         min-height: auto;
 
-        padding: 27px 23px 30px;
+        padding: 28px 23px 35px;
     }
 
     .intro-orb {
@@ -1122,7 +1304,7 @@ input:focus-visible {
     }
 
     .intro-content {
-        margin: 40px 0 10px;
+        margin: 42px 0 15px;
     }
 
     .intro-content h1 {
@@ -1137,19 +1319,20 @@ input:focus-visible {
     }
 
     .intro-features,
-    .intro-bottom {
+    .intro-bottom,
+    .login-wave {
         display: none;
     }
 
     .login-area {
         min-height: auto;
-        flex: 1;
 
-        padding: 45px 16px 35px;
+        padding: 45px 16px 115px;
     }
 
     .login-card {
         max-width: 570px;
+
         padding: 31px 24px;
     }
 
@@ -1157,46 +1340,25 @@ input:focus-visible {
         font-size: 29px;
     }
 
-    .login-shell::before {
-        width: 480px;
-        height: 480px;
+    .support-widget {
+        left: 16px;
+        bottom: 16px;
 
-        top: 110px;
-        right: -380px;
+        width: min(360px, calc(100vw - 32px));
     }
 
-    .login-shell::after {
-        width: 500px;
-        height: 500px;
-
-        right: -380px;
-        bottom: -330px;
-    }
-}
-
-
-/* ==========================================================
-   26. MALI MOBITEL
-========================================================== */
-
-@media (max-width: 380px) {
-
-    .login-card {
-        padding: 27px 19px;
+    .support-toggle {
+        min-height: 62px;
     }
 
-    .login-card-top {
-        flex-wrap: wrap;
-    }
-
-    .intro-brand-name {
-        font-size: 22px;
+    .support-panel {
+        max-height: min(520px, calc(100vh - 110px));
     }
 }
 
 
 /* ==========================================================
-   27. SMANJENO KRETANJE
+   REDUCED MOTION
 ========================================================== */
 
 @media (prefers-reduced-motion: reduce) {
