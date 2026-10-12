@@ -1,21 +1,29 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
 
-/* ==========================================
-   PTECH DIGITAL — LOGIN
-   WARM CHAMPAGNE / ORGANIC DESIGN
-========================================== */
+/* ================================================
+   PTECH DIGITAL CLIENT PORTAL
+   PREMIUM BRONZE LOGIN — VERSION 14
+================================================ */
 
 :root {
-    --cream: #fffbf7;
-    --brown: #d8ad90;
-    --brown-deep: #a16b4b;
-    --brown-light: #e9c5ad;
-    --ink: #2b2e38;
-    --muted: #786e68;
-    --border: #eadbd0;
+    --cream: #fffaf5;
+    --cream-bright: #fffdf9;
+
+    --bronze: #bb8767;
+    --bronze-dark: #995e3e;
+    --bronze-light: #edc6a7;
+
+    --text: #202534;
+    --muted: #776961;
+
+    --border: #ead8ca;
     --white: #ffffff;
 }
+
+/* ================================================
+   RESET
+================================================ */
 
 * {
     box-sizing: border-box;
@@ -35,7 +43,7 @@ html {
 
 body {
     font-family: "Inter", sans-serif;
-    color: var(--ink);
+    color: var(--text);
     background: var(--cream);
     -webkit-font-smoothing: antialiased;
 }
@@ -50,9 +58,9 @@ button {
 }
 
 button:focus-visible,
-input:focus-visible,
-a:focus-visible {
-    outline: 3px solid rgba(165, 105, 68, 0.35);
+a:focus-visible,
+input:focus-visible {
+    outline: 3px solid rgba(188, 123, 78, 0.42);
     outline-offset: 3px;
 }
 
@@ -60,9 +68,9 @@ svg {
     display: block;
 }
 
-/* ==========================================
-   GLAVNI RASPORED
-========================================== */
+/* ================================================
+   GLAVNI LAYOUT
+================================================ */
 
 .login-page {
     position: relative;
@@ -72,6 +80,7 @@ svg {
     grid-template-columns: 49% 51%;
 
     width: 100%;
+
     min-height: 100vh;
     min-height: 100svh;
 
@@ -79,19 +88,19 @@ svg {
 
     background:
         radial-gradient(
-            ellipse at 78% 50%,
+            ellipse at 80% 52%,
             #ffffff 0%,
-            #fffbf7 70%
+            #fffaf5 66%,
+            #f9eee4 100%
         );
 }
 
-/* ==========================================
-   JEDINSTVENA SMEĐA POZADINA S VALOM
+/* ================================================
+   BRONČANA POZADINA + VAL
 
-   Val je nacrtan izravno u SVG-u.
-   Nema ravne vertikalne crte niti
-   odvojenih odrezanih krugova.
-========================================== */
+   Sve je dio jednog SVG oblika.
+   Rub vala ima više slojeva svjetla.
+================================================ */
 
 .login-page::before {
     content: "";
@@ -99,24 +108,24 @@ svg {
     position: absolute;
     z-index: 0;
 
-    top: 0;
     left: 0;
+    top: 0;
 
     width: 58%;
     height: 100%;
 
     pointer-events: none;
 
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0%25' stop-color='%23d5a789'/%3E%3Cstop offset='62%25' stop-color='%23e3b99e'/%3E%3Cstop offset='100%25' stop-color='%23ebc8b1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 0 H835 C805 100 880 165 855 250 C833 330 772 374 795 458 C813 529 892 568 879 653 C865 740 788 785 805 858 C816 922 851 950 831 1000 H0 Z' fill='url(%23bg)'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='bronze' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0%25' stop-color='%23d4a07c'/%3E%3Cstop offset='46%25' stop-color='%23ba8464'/%3E%3Cstop offset='80%25' stop-color='%23bc8a6b'/%3E%3Cstop offset='100%25' stop-color='%23edc5a7'/%3E%3C/linearGradient%3E%3ClinearGradient id='edge' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0%25' stop-color='%23fff4e6' stop-opacity='.2'/%3E%3Cstop offset='55%25' stop-color='%23fff8e8' stop-opacity='.95'/%3E%3Cstop offset='100%25' stop-color='%23ffffff' stop-opacity='.45'/%3E%3C/linearGradient%3E%3Cfilter id='glow' x='-50%25' y='-50%25' width='200%25' height='200%25'%3E%3CfeGaussianBlur stdDeviation='10'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M0 0 H710 C740 90 840 160 825 260 C810 350 720 380 735 475 C755 565 845 605 810 700 C780 790 720 850 695 1000 H0 Z' fill='url(%23bronze)'/%3E%3Cpath d='M710 0 C740 90 840 160 825 260 C810 350 720 380 735 475 C755 565 845 605 810 700 C780 790 720 850 695 1000' fill='none' stroke='%23fff2dc' stroke-opacity='.85' stroke-width='24' filter='url(%23glow)'/%3E%3Cpath d='M710 0 C740 90 840 160 825 260 C810 350 720 380 735 475 C755 565 845 605 810 700 C780 790 720 850 695 1000' fill='none' stroke='url(%23edge)' stroke-width='5'/%3E%3Cpath d='M670 0 C690 100 790 170 785 270 C780 350 684 390 695 478 C710 560 800 610 770 696 C744 790 680 850 660 1000' fill='none' stroke='%23ffead8' stroke-opacity='.38' stroke-width='2'/%3E%3C/svg%3E");
 
     background-repeat: no-repeat;
     background-position: left center;
     background-size: 100% 100%;
 }
 
-/* ==========================================
-   GORNJI DESNI SMEĐI KRUG
-========================================== */
+/* ================================================
+   GORNJI DESNI KRUG
+================================================ */
 
 .login-page::after {
     content: "";
@@ -124,30 +133,35 @@ svg {
     position: absolute;
     z-index: 0;
 
-    width: 520px;
-    height: 520px;
+    width: 610px;
+    height: 610px;
 
-    top: -345px;
-    right: -285px;
+    top: -425px;
+    right: -325px;
 
     border-radius: 50%;
 
     background:
         radial-gradient(
-            circle at 30% 70%,
-            #e8c1a8 0%,
-            #d6a587 70%,
-            #c89576 100%
+            circle at 35% 65%,
+            #f0d2bc 0%,
+            #e8bda0 42%,
+            #d5a182 100%
         );
 
-    border: 1px solid rgba(158, 98, 62, 0.18);
+    border: 1px solid rgba(157, 94, 54, 0.22);
+
+    box-shadow:
+        0 0 0 27px rgba(221, 164, 122, 0.06),
+        0 0 0 57px rgba(221, 164, 122, 0.035),
+        inset 0 0 70px rgba(255, 248, 233, 0.16);
 
     pointer-events: none;
 }
 
-/* ==========================================
+/* ================================================
    LIJEVA STRANA
-========================================== */
+================================================ */
 
 .login-left {
     position: relative;
@@ -157,21 +171,22 @@ svg {
     flex-direction: column;
 
     min-width: 0;
+
     min-height: 100vh;
     min-height: 100svh;
 
     padding:
         42px
-        20px
-        38px
-        clamp(45px, 5vw, 86px);
+        24px
+        110px
+        clamp(45px, 5.2vw, 85px);
 
     background: transparent !important;
 
     overflow: visible;
 }
 
-/* Veliki tanki krug iza lijevog teksta */
+/* Veliki brončani kružni obrub */
 
 .login-left::before {
     content: "";
@@ -179,29 +194,71 @@ svg {
     position: absolute;
     z-index: 0;
 
-    width: 850px;
-    height: 850px;
+    width: 900px;
+    height: 900px;
 
+    left: -465px;
     top: 50%;
-    left: -470px;
 
     transform: translateY(-50%);
 
-    border: 1px solid rgba(128, 77, 48, 0.28);
+    border: 1.5px solid rgba(125, 67, 38, 0.45);
     border-radius: 50%;
+
+    box-shadow:
+        0 0 0 1px rgba(255, 235, 216, 0.18),
+        0 0 55px rgba(255, 240, 224, 0.13);
 
     pointer-events: none;
 }
 
-/* Uklanja stare dekoracije */
+/* Nježni svjetlosni odsjaji na lijevoj strani */
 
 .login-left::after {
-    content: none !important;
+    content: "";
+
+    position: absolute;
+    z-index: 0;
+
+    inset: 0;
+
+    background:
+        radial-gradient(
+            ellipse 350px 350px at 10% 39%,
+            rgba(255, 232, 207, 0.42),
+            transparent 76%
+        ),
+
+        radial-gradient(
+            ellipse 330px 280px at 62% 92%,
+            rgba(255, 215, 174, 0.2),
+            transparent 74%
+        ),
+
+        radial-gradient(
+            circle 3px at 90% 17%,
+            rgba(255, 248, 225, 0.8),
+            transparent
+        ),
+
+        radial-gradient(
+            circle 3px at 67% 79%,
+            rgba(255, 248, 225, 0.7),
+            transparent
+        ),
+
+        radial-gradient(
+            circle 2px at 32% 67%,
+            rgba(255, 248, 225, 0.6),
+            transparent
+        );
+
+    pointer-events: none;
 }
 
-/* ==========================================
-   LOGO
-========================================== */
+/* ================================================
+   BRAND
+================================================ */
 
 .login-brand {
     position: relative;
@@ -213,10 +270,10 @@ svg {
 .brand {
     display: inline-flex;
     align-items: center;
-    gap: 13px;
+    gap: 15px;
 
     text-decoration: none;
-    color: var(--ink);
+    color: var(--text);
 }
 
 .brand-icon {
@@ -225,25 +282,26 @@ svg {
 
     flex-shrink: 0;
 
-    width: 50px;
-    height: 50px;
+    width: 54px;
+    height: 54px;
 
-    border-radius: 13px;
+    border-radius: 14px;
 
     background:
         linear-gradient(
-            145deg,
-            #edc6aa,
-            #c89470
+            135deg,
+            #f1cca8,
+            #bc7f53
         );
 
-    color: #2c303a;
+    color: #1d2634;
 
-    font-size: 27px;
+    font-size: 29px;
     font-weight: 900;
 
     box-shadow:
-        0 9px 20px rgba(120, 75, 46, 0.1);
+        0 10px 24px rgba(106, 56, 27, 0.17),
+        inset 0 1px 0 rgba(255, 250, 237, 0.38);
 }
 
 .brand-text {
@@ -254,61 +312,60 @@ svg {
 .brand-text strong {
     display: block;
 
-    font-size: 21px;
+    font-size: 23px;
     font-weight: 900;
 
-    line-height: 0.98;
+    line-height: 0.96;
     letter-spacing: -1px;
 }
 
 .brand-text strong span {
     display: block;
-    color: #966344;
+    color: #985934;
 }
 
 .brand-text small {
     display: block;
 
-    margin-top: 8px;
+    margin-top: 10px;
 
-    color: #73594d;
-
-    font-size: 8px;
+    font-size: 9px;
     font-weight: 800;
 
-    letter-spacing: 2.6px;
+    letter-spacing: 2.8px;
+    color: #675047;
 }
 
-/* ==========================================
-   LIJEVI SADRŽAJ
-========================================== */
+/* ================================================
+   LIJEVI NASLOV I OPIS
+================================================ */
 
 .login-hero {
     position: relative;
     z-index: 2;
 
     width: 100%;
-    max-width: 555px;
+    max-width: 585px;
 
     margin-top: auto;
     margin-bottom: auto;
 
-    padding: 48px 0 70px;
+    padding: 45px 0 15px;
 }
 
 .hero-eyebrow {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 11px;
 
-    margin-bottom: 28px;
+    margin-bottom: 29px;
 
-    color: #955e3e;
+    color: #915437;
 
     font-size: 10px;
     font-weight: 800;
 
-    letter-spacing: 2.2px;
+    letter-spacing: 2.6px;
 }
 
 .hero-eyebrow::before {
@@ -321,77 +378,80 @@ svg {
 
     border-radius: 50%;
 
-    background: #a36d4b;
+    background: #a1643e;
 
     box-shadow:
-        0 0 0 5px rgba(163, 109, 75, 0.12);
+        0 0 0 5px rgba(164, 100, 62, 0.12);
 }
 
 .login-hero h1 {
     margin: 0;
 
-    color: #2b2e38;
+    color: #171d2d;
 
-    font-size: clamp(36px, 3.3vw, 55px);
+    font-size: clamp(36px, 3.45vw, 58px);
     font-weight: 900;
 
-    line-height: 1.13;
-    letter-spacing: -2.5px;
+    line-height: 1.11;
+    letter-spacing: -2.8px;
 }
 
 .login-hero h1 span {
     display: block;
 
-    margin-top: 4px;
+    margin-top: 6px;
 
-    color: #9b6545;
+    color: #94532f;
 }
 
 .hero-description {
-    max-width: 485px;
+    max-width: 510px;
 
-    margin: 28px 0 34px;
+    margin: 30px 0 36px;
 
-    color: #655b56;
+    color: #68564d;
 
-    font-size: 13px;
-    line-height: 1.85;
+    font-size: 14px;
+    line-height: 1.8;
 }
 
-/* ==========================================
-   TRI ZNAČAJKE
-========================================== */
+/* ================================================
+   TRI PREDNOSTI
+================================================ */
 
 .feature-list {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 20px;
 }
 
 .feature-item {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 15px;
 }
 
 .feature-icon {
     display: grid;
     place-items: center;
 
-    flex: 0 0 42px;
+    flex: 0 0 48px;
 
-    width: 42px;
-    height: 42px;
+    width: 48px;
+    height: 48px;
 
-    border-radius: 11px;
+    border-radius: 13px;
 
-    background: rgba(255, 248, 241, 0.48);
-    color: #a26c49;
+    background: rgba(255, 237, 220, 0.51);
+
+    border: 1px solid rgba(255, 247, 235, 0.3);
+
+    color: #a26643;
 }
 
 .feature-icon svg {
-    width: 19px;
-    height: 19px;
+    width: 22px;
+    height: 22px;
 
     fill: none;
     stroke: currentColor;
@@ -406,49 +466,46 @@ svg {
 
     margin-bottom: 5px;
 
-    color: #303039;
+    color: #222330;
 
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 800;
 }
 
 .feature-item p {
     margin: 0;
 
-    color: #766861;
+    color: #715d52;
 
-    font-size: 10.5px;
-    line-height: 1.5;
+    font-size: 11px;
+    line-height: 1.6;
 }
 
-/* ==========================================
+/* ================================================
    DONJI POTPIS
-
-   Na desktopu je DESNO od podrške,
-   tako da se više ne preklapaju.
-========================================== */
+================================================ */
 
 .login-left-footer {
     position: absolute;
-    z-index: 3;
+    z-index: 5;
 
-    left: 365px;
-    bottom: 46px;
+    left: clamp(45px, 5.2vw, 85px);
+    bottom: 27px;
 
     padding: 0;
 
-    color: #795f51;
+    color: #70503f;
 
-    font-size: 8px;
+    font-size: 9px;
     font-weight: 800;
-    letter-spacing: 1.7px;
 
+    letter-spacing: 2.2px;
     white-space: nowrap;
 }
 
-/* ==========================================
+/* ================================================
    DESNA STRANA
-========================================== */
+================================================ */
 
 .login-right {
     position: relative;
@@ -459,29 +516,44 @@ svg {
     justify-content: center;
 
     min-width: 0;
+
     min-height: 100vh;
     min-height: 100svh;
 
     padding:
-        55px
-        clamp(32px, 5vw, 78px)
-        55px
-        clamp(48px, 7vw, 110px);
+        50px
+        clamp(34px, 3.8vw, 68px)
+        50px
+        clamp(30px, 3.2vw, 58px);
 
     background: transparent !important;
-
-    overflow: visible;
 }
 
-/* Nema gornje dekoracije iz starog CSS-a */
+/* Dodatni kružni obrubi desno gore */
 
 .login-right::before {
-    content: none !important;
+    content: "";
+
+    position: absolute;
+    z-index: 0;
+
+    width: 780px;
+    height: 780px;
+
+    top: -550px;
+    right: -565px;
+
+    border: 1px solid rgba(166, 95, 54, 0.42);
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 0 31px rgba(217, 148, 96, 0.045),
+        0 0 0 69px rgba(217, 148, 96, 0.025);
+
+    pointer-events: none;
 }
 
-/* ==========================================
-   DONJI DESNI SMEĐI KRUG
-========================================== */
+/* Donji desni ispunjeni krug */
 
 .login-right::after {
     content: "";
@@ -489,79 +561,79 @@ svg {
     position: absolute;
     z-index: 0;
 
-    width: 550px;
-    height: 550px;
+    width: 640px;
+    height: 640px;
 
-    right: -330px;
-    bottom: -375px;
+    right: -400px;
+    bottom: -460px;
 
     border-radius: 50%;
 
     background:
         radial-gradient(
-            circle at 32% 30%,
-            #e9c3a9 0%,
-            #d5a283 73%,
-            #c79171 100%
+            circle at 35% 28%,
+            #edc8ae 0%,
+            #d9a98a 68%,
+            #c28b68 100%
         );
 
-    border: 1px solid rgba(158, 98, 62, 0.18);
+    border: 1px solid rgba(154, 88, 51, 0.24);
+
+    box-shadow:
+        0 0 0 28px rgba(223, 166, 122, 0.055),
+        0 0 0 70px rgba(223, 166, 122, 0.025);
 
     pointer-events: none;
 }
 
-/* ==========================================
-   PARTICLES — POPRAVLJENO!
+/* ================================================
+   PARTICLES — ANIMIRANE BRONČANE LINIJE
 
-   JS već šalje:
-   --particle-top
-   --particle-width
-   --particle-duration
-   --particle-delay
-   --particle-opacity
-
-   Sada ih CSS zaista koristi.
-========================================== */
+   Kompatibilno s postojećim login.js
+================================================ */
 
 .particles {
     position: absolute;
     z-index: 1;
 
-    inset: 0;
+    top: 0;
+    bottom: 0;
+    left: -16%;
+
+    width: 116%;
 
     overflow: hidden;
-
     pointer-events: none;
 }
 
 .particle {
     position: absolute;
 
-    left: -135px;
     top: var(--particle-top, 50%);
+    left: -130px;
 
-    width: var(--particle-width, 75px);
+    width: var(--particle-width, 85px);
     height: 1px;
 
-    opacity: var(--particle-opacity, 0.5);
+    opacity: var(--particle-opacity, 0.6);
 
     background:
         linear-gradient(
             90deg,
             transparent 0%,
-            rgba(186, 115, 73, 0.06) 20%,
-            rgba(190, 116, 71, 0.55) 100%
+            rgba(201, 119, 62, 0.1) 15%,
+            rgba(201, 119, 62, 0.45) 70%,
+            rgba(174, 89, 38, 0.95) 100%
         );
 
     box-shadow:
-        0 0 5px rgba(184, 112, 68, 0.11);
+        0 0 5px rgba(192, 111, 65, 0.3);
 
-    animation:
-        particleTravel
-        var(--particle-duration, 16s)
-        linear
-        var(--particle-delay, 0s)
-        infinite;
+    animation-name: particleTravel;
+    animation-duration: var(--particle-duration, 16s);
+    animation-delay: var(--particle-delay, 0s);
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
 }
 
 .particle::after {
@@ -569,21 +641,22 @@ svg {
 
     position: absolute;
 
-    right: 0;
-    top: -1.5px;
+    right: -1px;
+    top: -2.5px;
 
-    width: 4px;
-    height: 4px;
+    width: 6px;
+    height: 6px;
 
     border-radius: 50%;
 
-    background: #c28b68;
+    background: #c47a49;
 
     box-shadow:
-        0 0 7px rgba(194, 139, 104, 0.45);
+        0 0 7px rgba(192, 110, 54, 0.65),
+        0 0 15px rgba(192, 110, 54, 0.25);
 }
 
-/* Dvije dodatne crtice kao dekoracija */
+/* Dodatne dekorativne linije */
 
 .particles::before,
 .particles::after {
@@ -593,29 +666,26 @@ svg {
 
     left: -120px;
 
-    width: 95px;
+    width: 120px;
     height: 1px;
 
     background:
         linear-gradient(
             90deg,
             transparent,
-            rgba(174, 103, 63, 0.45)
+            rgba(181, 91, 38, 0.5)
         );
 
-    pointer-events: none;
-
-    animation:
-        particleTravel 15s linear infinite;
+    animation: particleTravel 17s linear infinite;
 }
 
 .particles::before {
-    top: 26%;
-    animation-delay: -6s;
+    top: 21%;
+    animation-delay: -5s;
 }
 
 .particles::after {
-    top: 77%;
+    top: 84%;
     animation-delay: -11s;
 }
 
@@ -625,105 +695,118 @@ svg {
     }
 
     to {
-        transform: translateX(calc(55vw + 260px));
+        transform: translateX(calc(65vw + 280px));
     }
 }
 
-/* ==========================================
+/* ================================================
    LOGIN KARTICA
-========================================== */
+================================================ */
 
 .login-card {
     position: relative;
     z-index: 3;
 
     width: 100%;
-    max-width: 505px;
+    max-width: 545px;
 
-    padding: 43px 43px 31px;
+    padding: 44px 46px 32px;
 
-    border: 1px solid rgba(232, 213, 201, 0.85);
-    border-radius: 23px;
+    border: 1px solid rgba(235, 217, 202, 0.9);
+    border-radius: 26px;
 
     background: rgba(255, 255, 255, 0.975);
 
     box-shadow:
-        0 26px 65px rgba(113, 72, 47, 0.12),
-        0 5px 17px rgba(113, 72, 47, 0.035);
+        0 28px 70px rgba(102, 63, 38, 0.14),
+        0 8px 24px rgba(102, 63, 38, 0.04),
+        0 0 42px rgba(255, 225, 194, 0.11);
 }
+
+/* Oznake iznad logina */
 
 .login-card-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     gap: 12px;
 
     margin-bottom: 28px;
 
-    color: #b07551;
+    color: #af6339;
 
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 800;
-    letter-spacing: 1.8px;
+
+    letter-spacing: 1.9px;
 }
 
 .login-card-top span:last-child {
-    color: #82746d;
+    color: #8b7668;
 
-    font-size: 8px;
-    letter-spacing: 0.3px;
+    font-size: 9px;
+    font-weight: 700;
 
+    letter-spacing: 0.5px;
     white-space: nowrap;
 }
+
+/* Logo unutar kartice */
 
 .login-logo {
     display: grid;
     place-items: center;
 
-    width: 49px;
-    height: 49px;
+    width: 55px;
+    height: 55px;
 
     margin-bottom: 25px;
 
-    border-radius: 12px;
+    border-radius: 14px;
 
     background:
         linear-gradient(
             145deg,
-            #e9bda0,
-            #c58d6b
+            #f0c39f,
+            #c58758
         );
 
-    color: #2c303a;
+    color: #1e2634;
 
-    font-size: 27px;
+    font-size: 29px;
     font-weight: 900;
+
+    box-shadow:
+        0 11px 23px rgba(147, 86, 42, 0.16);
 }
+
+/* Naslov */
 
 .login-card h2 {
     margin: 0 0 12px;
 
-    color: #292d37;
+    color: #1d2231;
 
-    font-size: clamp(26px, 2.1vw, 32px);
+    font-size: clamp(27px, 2.3vw, 34px);
     font-weight: 900;
 
     line-height: 1.2;
-    letter-spacing: -1.3px;
+    letter-spacing: -1.6px;
 }
 
 .login-subtitle {
-    margin: 0 0 32px;
+    margin: 0 0 33px;
 
-    color: #827973;
+    color: #81736c;
 
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.7;
 }
 
-/* ==========================================
-   LOGIN FORMA
-========================================== */
+/* ================================================
+   FORM
+================================================ */
 
 #loginForm {
     display: flex;
@@ -731,17 +814,17 @@ svg {
 }
 
 .form-group {
-    margin-bottom: 19px;
+    margin-bottom: 21px;
 }
 
 .form-group label {
     display: block;
 
-    margin-bottom: 10px;
+    margin-bottom: 11px;
 
-    color: #38353a;
+    color: #2d2d34;
 
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 800;
 }
 
@@ -752,12 +835,12 @@ svg {
     align-items: center;
 
     width: 100%;
-    height: 52px;
+    height: 55px;
 
-    border: 1px solid #e8d9cf;
+    border: 1px solid #e6d3c3;
     border-radius: 11px;
 
-    background: #faf8f6;
+    background: #fcfaf8;
 
     transition:
         border-color 0.2s ease,
@@ -765,26 +848,26 @@ svg {
 }
 
 .input-wrapper:focus-within {
-    border-color: #bf8a6a;
+    border-color: #bd855e;
 
     box-shadow:
-        0 0 0 4px rgba(191, 138, 106, 0.12);
+        0 0 0 4px rgba(189, 133, 94, 0.12);
 }
 
 .input-wrapper > svg {
     position: absolute;
 
-    left: 15px;
+    left: 16px;
     top: 50%;
 
-    width: 18px;
-    height: 18px;
+    width: 19px;
+    height: 19px;
 
     transform: translateY(-50%);
 
     fill: none;
-    stroke: #a08777;
-    stroke-width: 1.6;
+    stroke: #936b52;
+    stroke-width: 1.7;
 
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -796,7 +879,7 @@ svg {
     width: 100%;
     height: 100%;
 
-    padding: 0 45px;
+    padding: 0 47px;
 
     border: 0;
     outline: 0;
@@ -805,51 +888,49 @@ svg {
 
     background: transparent;
 
-    color: #30313a;
+    color: #2c2c33;
 
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .input-wrapper input::placeholder {
-    color: #a99d94;
+    color: #a99c91;
 }
 
-/* ==========================================
-   CHROME AUTOFILL
-========================================== */
+/* Chrome autofill */
 
 .input-wrapper input:-webkit-autofill,
 .input-wrapper input:-webkit-autofill:hover,
 .input-wrapper input:-webkit-autofill:focus {
-    -webkit-text-fill-color: #30313a !important;
+    -webkit-text-fill-color: #2c2c33 !important;
 
     -webkit-box-shadow:
-        0 0 0 1000px #faf8f6 inset !important;
+        0 0 0 1000px #fcfaf8 inset !important;
 
     box-shadow:
-        0 0 0 1000px #faf8f6 inset !important;
+        0 0 0 1000px #fcfaf8 inset !important;
 
-    caret-color: #30313a;
+    caret-color: #2c2c33;
 
     transition:
         background-color 9999s ease-in-out 0s;
 }
 
-/* ==========================================
-   PRIKAŽI / SAKRIJ LOZINKU
-========================================== */
+/* ================================================
+   PASSWORD TOGGLE
+================================================ */
 
 .password-toggle {
     position: absolute;
 
     top: 50%;
-    right: 8px;
+    right: 9px;
 
     display: grid;
     place-items: center;
 
-    width: 37px;
-    height: 37px;
+    width: 36px;
+    height: 36px;
 
     padding: 0;
 
@@ -859,17 +940,16 @@ svg {
     border-radius: 9px;
 
     background: transparent;
-
-    color: #a08777;
+    color: #926b54;
 }
 
 .password-toggle:hover {
-    background: #f2e8e0;
+    background: #f5ebe4;
 }
 
 .password-toggle svg {
-    width: 19px;
-    height: 19px;
+    width: 20px;
+    height: 20px;
 
     fill: none;
     stroke: currentColor;
@@ -879,21 +959,21 @@ svg {
     stroke-linejoin: round;
 }
 
-/* ==========================================
-   CAPS LOCK I GREŠKE
-========================================== */
+/* ================================================
+   UPOZORENJA I GREŠKE
+================================================ */
 
 .caps-warning {
     display: none;
 
-    margin: -4px 0 13px;
+    margin: -4px 0 14px;
 
-    color: #a46a3b;
+    color: #a56c40;
+
     font-size: 11px;
 }
 
-.caps-warning.show,
-.caps-warning.show[hidden] {
+.caps-warning.show {
     display: block !important;
 }
 
@@ -904,14 +984,14 @@ svg {
 .login-error {
     display: none;
 
-    margin: 0 0 15px;
-    padding: 12px 13px;
+    margin: 0 0 14px;
+    padding: 12px 14px;
 
-    border: 1px solid #f0cbc4;
+    border: 1px solid #efc8c0;
     border-radius: 9px;
 
     background: #fff2ef;
-    color: #a54136;
+    color: #a64136;
 
     font-size: 11px;
     line-height: 1.6;
@@ -922,9 +1002,9 @@ svg {
     display: block;
 }
 
-/* ==========================================
-   GUMB PRIJAVA
-========================================== */
+/* ================================================
+   PRIJAVI SE GUMB
+================================================ */
 
 #loginButton {
     display: flex;
@@ -932,10 +1012,10 @@ svg {
     justify-content: center;
 
     width: 100%;
-    min-height: 53px;
+    min-height: 56px;
 
-    margin-top: 18px;
-    padding: 13px 20px;
+    margin-top: 17px;
+    padding: 14px 20px;
 
     border: 0;
     border-radius: 11px;
@@ -943,25 +1023,31 @@ svg {
     background:
         linear-gradient(
             105deg,
-            #ca9a7c 0%,
-            #a47354 100%
+            #daa882,
+            #a36d4c
         );
 
     color: white;
 
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 800;
+
+    box-shadow:
+        0 8px 20px rgba(152, 94, 57, 0.12);
 
     transition:
         transform 0.2s ease,
-        box-shadow 0.2s ease;
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
 }
 
 #loginButton:hover:not(:disabled) {
     transform: translateY(-2px);
 
+    filter: brightness(1.04);
+
     box-shadow:
-        0 12px 25px rgba(164, 115, 84, 0.23);
+        0 14px 26px rgba(152, 94, 57, 0.23);
 }
 
 #loginButton:disabled {
@@ -969,34 +1055,32 @@ svg {
     opacity: 0.7;
 }
 
-/* ==========================================
+/* ================================================
    DONJI DIO KARTICE
-========================================== */
+================================================ */
 
 .login-footer {
     margin-top: 28px;
-    padding-top: 24px;
+    padding-top: 25px;
 
-    border-top: 1px solid #eee4de;
+    border-top: 1px solid #eee1d7;
 
-    color: #b2a59d;
+    color: #ab9a8e;
 
-    font-size: 10px;
+    font-size: 11px;
     text-align: center;
 }
 
-/* ==========================================
-   PTECH PODRŠKA
-========================================== */
+/* ================================================
+   SUPPORT WIDGET
+================================================ */
 
 .support-widget {
     position: fixed;
     z-index: 100;
 
-    left: 27px;
-    bottom: 26px;
-
-    font-family: inherit;
+    left: clamp(35px, 4.8vw, 80px);
+    bottom: 69px;
 }
 
 .support-launcher {
@@ -1004,23 +1088,25 @@ svg {
 
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 13px;
 
-    width: 312px;
+    width: 345px;
     max-width: calc(100vw - 36px);
-    min-height: 63px;
 
-    padding: 10px 13px;
+    min-height: 70px;
 
-    border: 1px solid rgba(255, 255, 255, 0.88);
+    padding: 10px 14px;
+
+    border: 1px solid rgba(255, 255, 255, 0.85);
     border-radius: 999px;
 
-    background: rgba(255, 251, 247, 0.98);
+    background: rgba(255, 249, 241, 0.97);
+
+    color: #2c2c34;
 
     box-shadow:
-        0 14px 35px rgba(95, 62, 42, 0.14);
-
-    color: #30313a;
+        0 15px 34px rgba(108, 57, 29, 0.19),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
 
     text-align: left;
 
@@ -1028,37 +1114,40 @@ svg {
 }
 
 .support-launcher:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
 }
 
 .support-trigger-icon {
     display: grid;
     place-items: center;
 
-    flex: 0 0 42px;
+    flex: 0 0 47px;
 
-    width: 42px;
-    height: 42px;
+    width: 47px;
+    height: 47px;
 
     border-radius: 50%;
 
     background:
         linear-gradient(
             145deg,
-            #cb9978,
-            #a87455
+            #d8a37c,
+            #a96b43
         );
 
     color: white;
+
+    box-shadow:
+        0 5px 12px rgba(123, 68, 34, 0.15);
 }
 
 .support-trigger-icon svg {
-    width: 21px;
-    height: 21px;
+    width: 25px;
+    height: 25px;
 
     fill: none;
     stroke: currentColor;
-    stroke-width: 1.7;
+    stroke-width: 1.8;
 
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -1067,71 +1156,78 @@ svg {
 .support-trigger-text {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 5px;
 
     min-width: 0;
 }
 
 .support-trigger-text strong {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 800;
 }
 
 .support-trigger-text small {
-    color: #897a70;
+    color: #8d7c6e;
     font-size: 10px;
 }
 
 .support-status {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
 
     margin-left: auto;
 
-    color: #7d746e;
-
+    color: #6f655f;
     font-size: 10px;
+
     white-space: nowrap;
 }
 
 .support-status > span {
-    width: 7px;
-    height: 7px;
+    width: 8px;
+    height: 8px;
 
     border-radius: 50%;
 
-    background: #35b96f;
+    background: #22b96a;
+
+    box-shadow:
+        0 0 0 4px rgba(34, 185, 106, 0.08);
 }
 
 .support-chevron {
-    color: #a46e4b;
-    font-size: 23px;
+    color: #9b5f3d;
+    font-size: 24px;
 }
 
-/* ==========================================
-   CHAT PROZOR
-========================================== */
+/* ================================================
+   SUPPORT CHAT
+================================================ */
 
 .support-panel {
     position: absolute;
     z-index: 101;
 
     left: 0;
-    bottom: 78px;
+    bottom: 83px;
+
+    display: flex;
+    flex-direction: column;
 
     width: 355px;
     max-width: calc(100vw - 36px);
+    max-height: min(510px, 65vh);
 
     overflow: hidden;
 
-    border: 1px solid #e7d4c6;
+    border: 1px solid #e7d2c1;
     border-radius: 20px;
 
-    background: #fffdfb;
+    background: #fffdfa;
 
     box-shadow:
-        0 22px 55px rgba(83, 52, 36, 0.18);
+        0 22px 55px rgba(83, 52, 36, 0.22);
 }
 
 .support-panel[hidden] {
@@ -1143,32 +1239,34 @@ svg {
     align-items: center;
     gap: 12px;
 
-    padding: 17px 18px;
+    flex-shrink: 0;
+
+    padding: 17px;
 
     background:
         linear-gradient(
             105deg,
-            #d5a383,
-            #ac7857
+            #d9a27e,
+            #a36a48
         );
 
-    color: #fff;
+    color: white;
 }
 
 .support-avatar {
     display: grid;
     place-items: center;
 
-    flex: 0 0 38px;
+    flex: 0 0 39px;
 
-    width: 38px;
-    height: 38px;
+    width: 39px;
+    height: 39px;
 
-    border-radius: 11px;
+    border-radius: 12px;
 
     background: rgba(255, 255, 255, 0.22);
 
-    font-size: 21px;
+    font-size: 22px;
     font-weight: 900;
 }
 
@@ -1179,26 +1277,24 @@ svg {
 }
 
 .support-header-text strong {
-    font-size: 12px;
-    font-weight: 800;
+    font-size: 13px;
 }
 
 .support-header-text small {
     font-size: 10px;
-    opacity: 0.9;
+    opacity: 0.85;
 }
 
 .support-close {
     margin-left: auto;
 
-    width: 31px;
-    height: 31px;
+    width: 32px;
+    height: 32px;
 
     border: 0;
-    border-radius: 8px;
+    border-radius: 9px;
 
     background: rgba(255, 255, 255, 0.18);
-
     color: white;
 
     font-size: 23px;
@@ -1209,8 +1305,7 @@ svg {
     flex-direction: column;
     gap: 11px;
 
-    min-height: 110px;
-    max-height: 240px;
+    min-height: 100px;
 
     padding: 18px;
 
@@ -1220,7 +1315,8 @@ svg {
 }
 
 .support-message {
-    max-width: 88%;
+    max-width: 90%;
+
     padding: 11px 13px;
 
     border-radius: 12px;
@@ -1235,8 +1331,8 @@ svg {
 .support-message.bot {
     align-self: flex-start;
 
-    background: #f5ebe3;
-    color: #514138;
+    background: #f4e9e0;
+    color: #554135;
 
     border-bottom-left-radius: 4px;
 }
@@ -1244,16 +1340,18 @@ svg {
 .support-message.user {
     align-self: flex-end;
 
-    background: #b47d5b;
+    background: #b17a56;
     color: white;
 
     border-bottom-right-radius: 4px;
 }
 
 .support-questions {
+    flex-shrink: 0;
+
     padding: 13px 17px 16px;
 
-    border-top: 1px solid #f1e6de;
+    border-top: 1px solid #f1e4d9;
 }
 
 .support-questions > span {
@@ -1261,7 +1359,7 @@ svg {
 
     margin-bottom: 10px;
 
-    color: #8a7161;
+    color: #8d7461;
 
     font-size: 10px;
     font-weight: 800;
@@ -1270,7 +1368,7 @@ svg {
 #supportQuestionList {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 7px;
 }
 
 #supportQuestionList button {
@@ -1278,11 +1376,11 @@ svg {
 
     padding: 10px 12px;
 
-    border: 1px solid #ead7c9;
+    border: 1px solid #e9d5c6;
     border-radius: 9px;
 
-    background: #fff9f5;
-    color: #925f43;
+    background: #fff8f2;
+    color: #915a39;
 
     font-size: 11px;
     font-weight: 700;
@@ -1291,23 +1389,25 @@ svg {
 }
 
 #supportQuestionList button:hover {
-    background: #f6e9df;
+    background: #f4e5d9;
 }
 
 .support-note {
-    padding: 11px 14px;
+    flex-shrink: 0;
 
-    border-top: 1px solid #f1e8e1;
+    padding: 10px;
 
-    color: #a99b91;
+    border-top: 1px solid #f0e5dc;
+
+    color: #a9988b;
 
     font-size: 9px;
     text-align: center;
 }
 
-/* ==========================================
-   SHAKE ANIMACIJA
-========================================== */
+/* ================================================
+   ERROR SHAKE
+================================================ */
 
 @keyframes loginShake {
     0%, 100% {
@@ -1327,50 +1427,59 @@ svg {
     animation: loginShake 0.4s ease;
 }
 
-/* ==========================================
-   SREDNJI DESKTOP / LAPTOP
-========================================== */
+/* ================================================
+   LAPTOP
+================================================ */
 
 @media (max-width: 1250px) {
+
+    .login-left {
+        padding-left: 4.5vw;
+    }
+
     .login-hero h1 {
-        font-size: clamp(32px, 3.4vw, 45px);
-        letter-spacing: -1.9px;
+        font-size: clamp(34px, 3.4vw, 47px);
+        letter-spacing: -2px;
     }
 
     .login-card {
-        padding: 35px 30px 28px;
+        padding: 37px 33px 28px;
     }
 
     .login-right {
-        padding-left: 60px;
-        padding-right: 42px;
+        padding-left: 32px;
+        padding-right: 34px;
+    }
+
+    .support-widget {
+        left: 28px;
     }
 
     .login-left-footer {
-        left: 35px;
-        bottom: 112px;
+        left: 28px;
     }
 }
 
-/* ==========================================
-   MANJI LAPTOP
-========================================== */
+/* ================================================
+   TABLET
+================================================ */
 
-@media (max-width: 980px) {
+@media (max-width: 950px) {
+
     .login-page {
         grid-template-columns: 47% 53%;
     }
 
     .login-page::before {
-        width: 61%;
+        width: 62%;
     }
 
     .login-left {
-        padding-left: 30px;
+        padding-left: 26px;
     }
 
     .login-hero h1 {
-        font-size: 33px;
+        font-size: 35px;
     }
 
     .hero-description {
@@ -1378,86 +1487,92 @@ svg {
     }
 
     .login-right {
-        padding-left: 45px;
-        padding-right: 25px;
+        padding-left: 20px;
+        padding-right: 20px;
     }
 
     .login-card {
-        padding: 31px 25px 26px;
+        padding: 30px 25px 26px;
     }
 
     .login-card h2 {
-        font-size: 25px;
+        font-size: 27px;
+    }
+
+    .support-launcher {
+        width: 295px;
+    }
+
+    .login-left-footer {
+        font-size: 8px;
     }
 }
 
-/* ==========================================
-   MOBITEL I TABLET
-========================================== */
+/* ================================================
+   MOBILE
+================================================ */
 
 @media (max-width: 760px) {
+
     .login-page {
         display: flex;
         flex-direction: column;
 
         min-height: 100svh;
-
         overflow: hidden;
     }
 
     .login-page::before {
         width: 100%;
-        height: 540px;
+        height: 580px;
 
         background-image:
             linear-gradient(
                 145deg,
-                #d6a789 0%,
-                #e9c3aa 100%
+                #c89570,
+                #e9bea0
             );
 
-        border-radius: 0 0 38% 9%;
+        border-radius: 0 0 35% 8%;
     }
 
     .login-page::after {
-        width: 330px;
-        height: 330px;
+        width: 340px;
+        height: 340px;
 
-        top: -205px;
-        right: -230px;
+        top: -215px;
+        right: -235px;
     }
 
     .login-left {
         min-height: auto;
 
-        padding: 27px 24px 0;
+        padding: 28px 24px 0;
     }
 
     .login-left::before {
-        width: 520px;
-        height: 520px;
+        width: 530px;
+        height: 530px;
 
-        left: -320px;
-        top: 260px;
+        left: -330px;
+        top: 290px;
     }
 
     .login-hero {
-        max-width: 560px;
-
-        margin: 55px 0 0;
-        padding: 0 0 22px;
+        margin: 58px 0 0;
+        padding: 0 0 24px;
     }
 
     .login-hero h1 {
-        font-size: clamp(33px, 7vw, 43px);
+        font-size: clamp(34px, 7vw, 45px);
     }
 
     .hero-description {
-        margin: 21px 0 25px;
+        font-size: 12px;
     }
 
     .feature-list {
-        gap: 13px;
+        gap: 14px;
     }
 
     .login-left-footer {
@@ -1467,57 +1582,60 @@ svg {
     .login-right {
         min-height: auto;
 
-        padding: 42px 20px 125px;
+        padding: 46px 20px 145px;
+    }
+
+    .login-right::before {
+        display: none;
     }
 
     .login-right::after {
-        width: 390px;
-        height: 390px;
+        width: 430px;
+        height: 430px;
 
-        right: -245px;
-        bottom: -240px;
+        right: -295px;
+        bottom: -300px;
     }
 
     .login-card {
-        max-width: 490px;
+        max-width: 545px;
     }
 
     .support-widget {
-        left: 16px;
+        left: 15px;
         bottom: 15px;
     }
 
-    .support-panel {
-        bottom: 76px;
+    .support-launcher {
+        width: 300px;
     }
 
-    .particles::before,
-    .particles::after {
-        display: none;
+    .support-panel {
+        bottom: 78px;
     }
 }
 
-/* ==========================================
-   MALI MOBITEL
-========================================== */
+/* ================================================
+   SMALL MOBILE
+================================================ */
 
 @media (max-width: 440px) {
+
     .login-left {
         padding: 25px 20px 0;
     }
 
     .brand-icon {
-        width: 44px;
-        height: 44px;
-        font-size: 24px;
+        width: 46px;
+        height: 46px;
     }
 
     .brand-text strong {
-        font-size: 19px;
+        font-size: 20px;
     }
 
     .login-hero {
-        margin-top: 42px;
+        margin-top: 45px;
     }
 
     .hero-eyebrow {
@@ -1526,25 +1644,27 @@ svg {
     }
 
     .login-hero h1 {
-        font-size: 33px;
-        letter-spacing: -1.7px;
+        font-size: 34px;
+        letter-spacing: -1.8px;
     }
 
-    .hero-description {
-        font-size: 12px;
-    }
-
-    .feature-item p {
-        font-size: 10px;
+    .feature-icon {
+        flex-basis: 41px;
+        width: 41px;
+        height: 41px;
     }
 
     .login-right {
-        padding: 32px 16px 115px;
+        padding: 35px 15px 135px;
     }
 
     .login-card {
-        padding: 28px 23px 25px;
-        border-radius: 20px;
+        padding: 29px 24px 26px;
+        border-radius: 21px;
+    }
+
+    .login-card h2 {
+        font-size: 25px;
     }
 
     .login-card-top {
@@ -1555,29 +1675,26 @@ svg {
         font-size: 7px;
     }
 
-    .login-card h2 {
-        font-size: 25px;
-    }
-
     .support-launcher {
-        width: 288px;
+        width: 285px;
     }
 }
 
-/* ==========================================
-   PRISTUPAČNOST
-========================================== */
+/* ================================================
+   REDUCED MOTION
+================================================ */
 
 @media (prefers-reduced-motion: reduce) {
+
     .particle,
     .particles::before,
     .particles::after {
-        animation: none !important;
         display: none !important;
+        animation: none !important;
     }
 
-    .support-launcher,
-    #loginButton {
-        transition: none !important;
+    #loginButton,
+    .support-launcher {
+        transition: none;
     }
 }
