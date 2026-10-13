@@ -1,46 +1,43 @@
+
 /* =====================================================
    PTECH DIGITAL CLIENT PORTAL
-   Premium Champagne Light + Navy Dark
-   Originalne funkcionalnosti i sticky scroll sacuvani
-   ===================================================== */
+   PREMIUM BRONZE LIGHT + NAVY DARK
+   STYLE.CSS — FINAL
+===================================================== */
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
 
-
-/* 1. OSNOVNE POSTAVKE */
+/* =====================================================
+   1. OSNOVNE POSTAVKE
+===================================================== */
 
 :root {
-    --bronze: #9b735b;
-    --bronze-light: #c7a18a;
-    --bronze-dark: #76513e;
-    --sage: #849488;
-
-    --graphite: #303138;
-    --graphite-dark: #26262b;
-
-    --cream: #fffcf8;
-    --stone: #f0ede9;
-    --stone-dark: #e7dfd8;
-
-    --text: #303138;
-    --muted: #77716f;
+    --bronze: #bb8767;
+    --bronze-light: #edc6a7;
+    --bronze-dark: #995e3e;
 
     --orange: var(--bronze);
     --orange-light: var(--bronze-light);
     --orange-dark: var(--bronze-dark);
 
-    --sidebar-width: 254px;
+    --navy: #202534;
+    --sage: #849488;
+
+    --sidebar-width: 244px;
     --header-height: 82px;
 
-    --surface: var(--cream);
-    --surface-soft: #f7f2ed;
-    --surface-muted: #eee8e2;
-    --page-background: var(--stone);
+    --text: #202534;
+    --muted: #776961;
+    --cream: #fffaf5;
+    --stone: #f6e9df;
 
-    --border: rgba(92, 74, 64, 0.12);
+    --page-background: #fffaf5;
+    --surface: #fffaf5;
+    --surface-soft: #f5e7dc;
+    --surface-muted: #ecd0bb;
+    --border: rgba(153, 94, 62, 0.16);
 
-    --shadow:
-        0 12px 35px rgba(69, 51, 41, 0.07);
+    --shadow: 0 16px 42px rgba(112, 67, 42, 0.10);
 }
 
 * {
@@ -53,13 +50,12 @@ html {
 }
 
 body {
+    min-height: 100vh;
     margin: 0;
     padding: 0;
-    min-height: 100vh;
 
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-family: "Inter", Arial, sans-serif;
     color: var(--text);
-
     background: var(--page-background);
 }
 
@@ -85,35 +81,105 @@ svg {
 
 button:focus-visible,
 a:focus-visible,
-input:focus-visible {
-    outline: 3px solid rgba(155, 115, 91, 0.45);
+input:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid rgba(187, 135, 103, 0.50);
     outline-offset: 3px;
 }
 
-/* 2. GLAVNI RASPORED */
+[hidden] {
+    display: none !important;
+}
+
+/* =====================================================
+   2. LIGHT MODE VARIABLES
+===================================================== */
+
+body.portal-desktop.light-mode {
+    --ui-bg: #fffaf5;
+    --ui-bg-top: #fffdfa;
+    --ui-bg-bottom: #f8eee5;
+
+    --ui-card: #fff8f1;
+    --ui-card-end: #f4dfce;
+    --ui-card-inset: #f3ddca;
+
+    --ui-border: #e5bea2;
+    --ui-text: #202534;
+    --ui-muted: #745f52;
+    --ui-muted-soft: #927768;
+
+    --ui-copper: #995e3e;
+    --ui-copper-light: #c8916d;
+    --ui-copper-soft: #efd3bd;
+
+    --ui-track: #e4c7b2;
+    --ui-header: rgba(255, 251, 247, 0.97);
+
+    --ui-sidebar-text: #4d3325;
+    --ui-sidebar-muted: #76513e;
+    --ui-sidebar-active: rgba(255, 253, 248, 0.90);
+
+    --ui-shadow: 0 16px 42px rgba(126, 75, 42, 0.10);
+    --ui-hover-shadow: 0 21px 46px rgba(126, 75, 42, 0.16);
+}
+
+/* =====================================================
+   3. DARK MODE VARIABLES
+===================================================== */
+
+body.portal-desktop:not(.light-mode) {
+    --ui-bg: #1b2232;
+    --ui-bg-top: #222d42;
+    --ui-bg-bottom: #192133;
+
+    --ui-card: #2c364b;
+    --ui-card-end: #263147;
+    --ui-card-inset: #364158;
+
+    --ui-border: #48536b;
+    --ui-text: #fff9f3;
+    --ui-muted: #c1c9d6;
+    --ui-muted-soft: #aab5c6;
+
+    --ui-copper: #edc6a7;
+    --ui-copper-light: #d8a17c;
+    --ui-copper-soft: #494052;
+
+    --ui-track: #505a70;
+    --ui-header: rgba(31, 40, 58, 0.97);
+
+    --ui-sidebar-text: #e8eaf0;
+    --ui-sidebar-muted: #b5bdd0;
+    --ui-sidebar-active: rgba(199, 139, 99, 0.25);
+
+    --ui-shadow: 0 16px 42px rgba(5, 10, 22, 0.24);
+    --ui-hover-shadow: 0 21px 48px rgba(5, 10, 22, 0.35);
+}
+
+/* =====================================================
+   4. GLAVNI RASPORED
+===================================================== */
+
+body.portal-desktop {
+    background: var(--ui-bg);
+    color: var(--ui-text);
+}
 
 .dashboard.desktop-layout {
-    position: relative;
-
     display: grid;
-    grid-template-columns:
-        var(--sidebar-width) minmax(0, 1fr);
+    grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
 
     width: 100%;
-    max-width: none;
     min-height: 100vh;
 
     overflow: visible;
-
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-
-    background: var(--page-background);
+    background: var(--ui-bg);
 }
 
 .desktop-main {
     position: relative;
+    isolation: isolate;
 
     display: flex;
     flex-direction: column;
@@ -121,66 +187,168 @@ input:focus-visible {
     min-width: 0;
     min-height: 100vh;
 
-    isolation: isolate;
+    overflow: visible;
 
     background:
         radial-gradient(
-            ellipse 580px 440px at 96% 17%,
-            rgba(181, 139, 114, 0.19),
-            transparent 74%
+            ellipse 670px 470px at 99% 9%,
+            rgba(211, 152, 111, 0.15),
+            transparent 77%
         ),
         radial-gradient(
-            ellipse 570px 480px at 5% 88%,
-            rgba(132, 148, 136, 0.14),
-            transparent 76%
+            ellipse 590px 390px at 0% 94%,
+            rgba(210, 160, 125, 0.09),
+            transparent 77%
         ),
         linear-gradient(
-            145deg,
-            #f4f0ec,
-            #eee9e4 55%,
-            #f3eee9
+            155deg,
+            var(--ui-bg-top) 0%,
+            var(--ui-bg) 58%,
+            var(--ui-bg-bottom) 100%
         );
 }
 
-/* Dekorativni oblici u pozadini */
+/* =====================================================
+   5. VELIKI KRUG DESNO U POZADINI
+===================================================== */
 
 .desktop-main::before {
     content: "";
 
     position: absolute;
-    z-index: -1;
+    z-index: 0;
 
-    top: 115px;
-    right: -170px;
+    top: -410px;
+    right: -310px;
 
-    width: 520px;
-    height: 520px;
+    width: 960px;
+    height: 960px;
 
-    border: 75px solid rgba(172, 129, 102, 0.065);
     border-radius: 50%;
+
+    border: 1px solid rgba(189, 123, 80, 0.23);
+
+    background:
+        radial-gradient(
+            circle at center,
+            transparent 49%,
+            rgba(228, 166, 123, 0.12) 68%,
+            rgba(240, 198, 168, 0.20) 80%,
+            transparent 81%
+        );
+
+    box-shadow:
+        0 0 0 72px rgba(204, 137, 92, 0.025),
+        0 0 0 154px rgba(214, 154, 113, 0.018);
 
     pointer-events: none;
 }
+
+body.portal-desktop:not(.light-mode) .desktop-main::before {
+    border-color: rgba(224, 169, 131, 0.12);
+
+    background:
+        radial-gradient(
+            circle at center,
+            transparent 48%,
+            rgba(199, 138, 97, 0.06) 68%,
+            rgba(199, 138, 97, 0.10) 79%,
+            transparent 80%
+        );
+}
+
+/* =====================================================
+   6. ANIMIRANI PARTICLES — LOGIN STYLE
+   Cisti CSS, bez dodatnog JavaScripta
+===================================================== */
 
 .desktop-main::after {
     content: "";
 
     position: absolute;
-    z-index: -1;
+    z-index: 0;
 
-    left: -230px;
-    bottom: 20px;
-
-    width: 480px;
-    height: 480px;
-
-    border: 65px solid rgba(132, 148, 136, 0.075);
-    border-radius: 50%;
+    inset: var(--header-height) 0 0;
 
     pointer-events: none;
+
+    background-image:
+        radial-gradient(
+            circle,
+            rgba(179, 104, 61, 0.65) 0 2px,
+            transparent 2.5px
+        ),
+        linear-gradient(
+            90deg,
+            transparent 0 15%,
+            rgba(187, 135, 103, 0.12) 55%,
+            rgba(187, 135, 103, 0.46) 100%
+        ),
+        radial-gradient(
+            circle,
+            rgba(179, 104, 61, 0.46) 0 2px,
+            transparent 2.5px
+        ),
+        linear-gradient(
+            90deg,
+            transparent 0 15%,
+            rgba(187, 135, 103, 0.08) 55%,
+            rgba(187, 135, 103, 0.32) 100%
+        );
+
+    background-size:
+        950px 190px,
+        90px 1px,
+        1200px 260px,
+        65px 1px;
+
+    background-position:
+        -475px 60px,
+        -90px 155px,
+        -600px 85px,
+        -65px 245px;
+
+    background-repeat: repeat;
+
+    opacity: 0.52;
+
+    animation: ptech-particles-move 24s linear infinite;
 }
 
-/* 3. BOČNA NAVIGACIJA */
+@keyframes ptech-particles-move {
+    from {
+        background-position:
+            -475px 60px,
+            -90px 155px,
+            -600px 85px,
+            -65px 245px;
+    }
+
+    to {
+        background-position:
+            475px 60px,
+            860px 155px,
+            600px 85px,
+            1135px 245px;
+    }
+}
+
+body.portal-desktop:not(.light-mode) .desktop-main::after {
+    opacity: 0.22;
+}
+
+/* Sadrzaj uvijek ostaje iznad dekoracija */
+
+.dashboard-content,
+.dashboard-header,
+.bottom-nav {
+    position: relative;
+    z-index: 1;
+}
+
+/* =====================================================
+   7. SIDEBAR — BRONZE / NAVY
+===================================================== */
 
 .desktop-sidebar {
     position: sticky;
@@ -190,47 +358,101 @@ input:focus-visible {
     flex-direction: column;
 
     height: 100vh;
-    min-height: 680px;
+    min-height: 0;
 
-    padding: 29px 17px 22px;
+    padding: 29px 15px 22px;
+
+    align-self: start;
 
     overflow: hidden;
 
+    color: var(--ui-sidebar-text);
+
+    box-shadow: 10px 0 34px rgba(72, 44, 28, 0.08);
+}
+
+body.portal-desktop.light-mode .desktop-sidebar {
     background:
         radial-gradient(
-            ellipse 300px 340px at -50% 95%,
-            rgba(155, 115, 91, 0.20),
-            transparent 75%
+            ellipse 280px 350px at -35% 92%,
+            rgba(255, 246, 235, 0.26),
+            transparent 77%
+        ),
+        linear-gradient(
+            163deg,
+            #e8bd9d 0%,
+            #d6a483 54%,
+            #bd896b 100%
+        );
+
+    border-right: 1px solid rgba(122, 72, 40, 0.15);
+}
+
+body.portal-desktop:not(.light-mode) .desktop-sidebar {
+    background:
+        radial-gradient(
+            ellipse 300px 400px at -30% 90%,
+            rgba(190, 123, 84, 0.15),
+            transparent 77%
         ),
         linear-gradient(
             165deg,
-            #303035,
-            #28282d 65%,
-            #242428
+            #2b3750,
+            #222d42 62%,
+            #1a2436
         );
 
-    color: #f8f4f0;
+    border-right: 1px solid rgba(233, 193, 164, 0.09);
+}
 
-    border-right:
-        1px solid rgba(255, 255, 255, 0.07);
+/* Zakrivljene linije na lijevoj strani */
+
+.desktop-sidebar::before {
+    content: "";
+
+    position: absolute;
+
+    width: 350px;
+    height: 650px;
+
+    top: -130px;
+    right: -225px;
+
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 248, 237, 0.69);
+
+    transform: rotate(-13deg);
+
+    pointer-events: none;
 }
 
 .desktop-sidebar::after {
     content: "";
 
     position: absolute;
-    z-index: 0;
 
-    width: 300px;
-    height: 300px;
+    width: 440px;
+    height: 550px;
 
-    bottom: -190px;
-    left: -120px;
+    left: -260px;
+    bottom: -270px;
 
-    border: 48px solid rgba(197, 151, 123, 0.08);
     border-radius: 50%;
 
+    border: 1.5px solid rgba(255, 248, 237, 0.75);
+
+    box-shadow:
+        34px -20px 0 -33px rgba(255, 248, 237, 0.60),
+        65px 18px 0 -64px rgba(255, 248, 237, 0.45);
+
+    transform: rotate(20deg);
+
     pointer-events: none;
+}
+
+body.portal-desktop:not(.light-mode) .desktop-sidebar::before,
+body.portal-desktop:not(.light-mode) .desktop-sidebar::after {
+    border-color: rgba(232, 188, 157, 0.25);
 }
 
 .desktop-sidebar > * {
@@ -238,15 +460,19 @@ input:focus-visible {
     z-index: 1;
 }
 
+/* =====================================================
+   8. SIDEBAR LOGO
+===================================================== */
+
 .sidebar-brand {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 11px;
 
-    padding: 3px 12px 30px;
+    padding: 3px 10px 30px;
 
-    color: inherit;
     text-decoration: none;
+    color: inherit;
 }
 
 .brand-logo {
@@ -258,52 +484,93 @@ input:focus-visible {
     height: 43px;
     flex: 0 0 43px;
 
-    border-radius: 12px;
+    border-radius: 13px;
 
     background:
-        linear-gradient(135deg, #d8b29a, #a4775d);
+        linear-gradient(
+            145deg,
+            #fffaf2,
+            #f1d9c5
+        );
 
-    color: #282429;
-
-    font-size: 25px;
+    color: #995e3e;
+    font-size: 24px;
     font-weight: 900;
 
-    box-shadow:
-        0 7px 20px rgba(0, 0, 0, 0.13);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+
+    box-shadow: 0 9px 22px rgba(91, 56, 35, 0.14);
+}
+
+/* Logo bez promjene HTML-a */
+
+.sidebar-brand .brand-logo,
+.mobile-brand .brand-logo {
+    background-image:
+        url("./assets/ptech-icon.png"),
+        linear-gradient(145deg, #fffaf2, #f1d9c5);
+
+    background-repeat: no-repeat;
+
+    background-position: center, center;
+
+    background-size: 33px auto, cover;
+
+    font-size: 0;
+}
+
+.brand-logo img {
+    display: block;
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
 }
 
 .sidebar-brand-text {
     display: flex;
     flex-direction: column;
-    gap: 4px;
 
+    gap: 4px;
     min-width: 0;
 }
 
 .sidebar-brand-text strong {
-    color: #fffaf5;
+    color: #202534;
 
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 800;
-    letter-spacing: -0.4px;
 
+    letter-spacing: -0.5px;
     white-space: nowrap;
 }
 
 .sidebar-brand-text small {
-    color: #c5b6ad;
+    color: #714b36;
 
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 800;
-    letter-spacing: 1.5px;
+
+    letter-spacing: 1.2px;
 }
+
+body.portal-desktop:not(.light-mode) .sidebar-brand-text strong {
+    color: #fffaf5;
+}
+
+body.portal-desktop:not(.light-mode) .sidebar-brand-text small {
+    color: #d8ac8d;
+}
+
+/* =====================================================
+   9. SIDEBAR NAVIGACIJA
+===================================================== */
 
 .sidebar-nav {
     display: flex;
     flex-direction: column;
-    gap: 7px;
 
-    margin-top: 19px;
+    gap: 8px;
+    margin-top: 12px;
 }
 
 .sidebar-link {
@@ -311,22 +578,26 @@ input:focus-visible {
 
     display: flex;
     align-items: center;
-    gap: 14px;
 
-    min-height: 48px;
-    padding: 11px 15px;
+    gap: 13px;
 
-    border-radius: 11px;
+    min-height: 49px;
+    padding: 11px 14px;
 
-    color: #d0cbd0;
+    border-radius: 14px;
+    border: 1px solid transparent;
+
     text-decoration: none;
 
-    font-size: 16px;
-    font-weight: 600;
+    color: var(--ui-sidebar-text);
+
+    font-size: 15px;
+    font-weight: 650;
 
     transition:
-        color 0.2s ease,
-        background 0.2s ease;
+        background 0.22s ease,
+        color 0.22s ease,
+        transform 0.22s ease;
 }
 
 .sidebar-link > span:first-child {
@@ -342,22 +613,19 @@ input:focus-visible {
 }
 
 .sidebar-link:hover {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.07);
+    background: rgba(255, 250, 244, 0.25);
+    transform: translateX(2px);
 }
 
 .sidebar-link.active,
 .sidebar-link[aria-current="page"] {
-    color: #fffaf5;
+    background: var(--ui-sidebar-active);
 
-    background:
-        linear-gradient(
-            90deg,
-            rgba(171, 125, 97, 0.49),
-            rgba(171, 125, 97, 0.18)
-        );
+    color: var(--ui-sidebar-text);
 
     font-weight: 800;
+
+    box-shadow: 0 8px 22px rgba(92, 51, 29, 0.08);
 }
 
 .sidebar-link.active::before,
@@ -365,14 +633,23 @@ input:focus-visible {
     content: "";
 
     position: absolute;
+    top: 9px;
+    bottom: 9px;
     left: 0;
-    top: 10px;
-    bottom: 10px;
 
     width: 3px;
 
     border-radius: 999px;
-    background: #d4a184;
+    background: #a66d49;
+}
+
+body.portal-desktop:not(.light-mode) .sidebar-link:hover {
+    background: rgba(218, 166, 127, 0.10);
+}
+
+body.portal-desktop:not(.light-mode) .sidebar-link.active,
+body.portal-desktop:not(.light-mode) .sidebar-link[aria-current="page"] {
+    color: #fffaf5;
 }
 
 .sidebar-message-indicator {
@@ -382,65 +659,74 @@ input:focus-visible {
     margin-left: auto;
 
     border-radius: 50%;
-    background: var(--bronze-light);
+    background: #b97953;
 
     opacity: 0;
 }
 
 .sidebar-bottom {
     margin-top: auto;
-    padding: 22px 12px 0;
 
-    border-top:
-        1px solid rgba(255, 255, 255, 0.10);
+    padding: 19px 10px 0;
+
+    border-top: 1px solid rgba(118, 75, 47, 0.20);
 }
 
 .sidebar-bottom a {
     display: flex;
     align-items: center;
 
-    min-height: 39px;
+    min-height: 40px;
 
-    color: #d2ced0;
-    text-decoration: none;
+    color: var(--ui-sidebar-text);
 
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
+
+    text-decoration: none;
 }
 
 .sidebar-bottom a:hover {
-    color: #e3b99e;
+    text-decoration: underline;
 }
 
 .sidebar-bottom p {
-    margin: 22px 0 0;
+    margin: 20px 0 0;
 
-    color: #aaa1a1;
+    color: var(--ui-sidebar-muted);
 
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.8;
 }
 
-/* 4. GORNJA TRAKA */
+body.portal-desktop:not(.light-mode) .sidebar-bottom {
+    border-top-color: rgba(255, 255, 255, 0.12);
+}
+
+/* =====================================================
+   10. GORNJA TRAKA — HEADER
+===================================================== */
 
 .dashboard-header {
-    position: relative;
-
     display: flex;
     align-items: center;
     justify-content: flex-end;
+
     gap: 20px;
 
     width: 100%;
     min-height: var(--header-height);
+
     padding: 16px 42px;
 
     flex-shrink: 0;
 
-    background: rgba(255, 252, 248, 0.93);
+    background: var(--ui-header);
 
-    border-bottom:
-        1px solid rgba(92, 74, 64, 0.10);
+    border-bottom: 1px solid var(--ui-border);
+
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
 }
 
 .mobile-brand {
@@ -451,8 +737,8 @@ input:focus-visible {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 18px;
 
+    gap: 18px;
     width: 100%;
 
     white-space: nowrap;
@@ -465,11 +751,12 @@ input:focus-visible {
 .user-box {
     display: flex;
     align-items: center;
+
     gap: 11px;
 
     flex-shrink: 0;
 
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
 }
 
@@ -483,7 +770,10 @@ input:focus-visible {
     flex: 0 0 38px;
 
     border-radius: 50%;
-    background: #eee0d5;
+
+    background: var(--ui-copper-soft);
+
+    border: 1px solid var(--ui-border);
 }
 
 .user-avatar svg {
@@ -491,12 +781,12 @@ input:focus-visible {
     height: 21px;
 
     fill: none;
-    stroke: #916a53;
+    stroke: var(--ui-copper);
     stroke-width: 1.8;
 }
 
 #userTop {
-    color: #303138;
+    color: var(--ui-text);
 }
 
 .header-separator {
@@ -504,26 +794,27 @@ input:focus-visible {
     height: 28px;
     flex: 0 0 1px;
 
-    background: #e2d9d2;
+    background: var(--ui-border);
 }
 
 .logout-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
     gap: 8px;
 
     min-width: max-content;
     padding: 9px 10px;
 
     border: none;
-    border-radius: 9px;
+    border-radius: 10px;
 
     background: transparent;
-    color: #665f60;
+    color: var(--ui-muted);
 
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 15px;
+    font-weight: 650;
 
     cursor: pointer;
 }
@@ -535,16 +826,19 @@ input:focus-visible {
     fill: none;
     stroke: currentColor;
     stroke-width: 1.8;
+
     stroke-linecap: round;
     stroke-linejoin: round;
 }
 
 .logout-button:hover {
-    color: #303138;
-    background: #eee6df;
+    background: var(--ui-copper-soft);
+    color: var(--ui-copper);
 }
 
-/* 5. PREBACIVANJE TEME */
+/* =====================================================
+   11. PREKIDAC TEME
+===================================================== */
 
 .theme-switch {
     position: relative;
@@ -570,10 +864,10 @@ input:focus-visible {
     position: absolute;
     inset: 0;
 
-    border: 1px solid #d8ccc3;
     border-radius: 999px;
 
-    background: #eae0d8;
+    background: var(--ui-copper-soft);
+    border: 1px solid var(--ui-border);
 
     cursor: pointer;
 }
@@ -595,16 +889,16 @@ input:focus-visible {
     border-radius: 50%;
 
     background:
-        linear-gradient(135deg, #c9a58d, #92684f);
+        linear-gradient(
+            135deg,
+            #d9a17c,
+            #995e3e
+        );
 
-    color: #ffffff;
+    color: white;
     font-size: 13px;
 
     transition: transform 0.25s ease;
-}
-
-.theme-switch input:checked + .theme-slider {
-    background: #fffaf5;
 }
 
 .theme-switch input:checked + .theme-slider::before {
@@ -613,14 +907,17 @@ input:focus-visible {
 }
 
 .theme-switch input:focus-visible + .theme-slider {
-    outline: 3px solid rgba(155, 115, 91, 0.45);
+    outline: 3px solid rgba(187, 135, 103, 0.5);
     outline-offset: 3px;
 }
 
-/* 6. SADRŽAJ */
+/* =====================================================
+   12. GLAVNI SADRZAJ
+===================================================== */
 
 .dashboard-content {
     position: relative;
+    z-index: 1;
 
     display: flex;
     flex-direction: column;
@@ -630,29 +927,30 @@ input:focus-visible {
     max-width: 1560px;
 
     margin: 0 auto;
-    padding: 38px 48px 0;
+    padding: 32px 42px 28px;
+
+    min-width: 0;
 }
 
 .welcome {
-    margin-bottom: 34px;
+    margin-bottom: 29px;
 }
 
 .welcome h2 {
     margin: 0 0 10px;
 
-    color: #827b78;
+    color: var(--ui-muted-soft);
 
-    font-size: clamp(29px, 2.3vw, 36px);
-    font-weight: 400;
-    letter-spacing: -0.7px;
+    font-size: clamp(29px, 2.4vw, 38px);
+    font-weight: 500;
+
+    letter-spacing: -1px;
 }
 
 .welcome h2 strong {
-    color: #303138;
-    font-weight: 800;
+    color: var(--ui-text);
+    font-weight: 900;
 }
-
-/* Uklonjen emoji koji maše */
 
 .welcome h2::after {
     content: none;
@@ -661,7 +959,7 @@ input:focus-visible {
 .welcome p {
     margin: 0;
 
-    color: #77716f;
+    color: var(--ui-muted);
 
     font-size: 16px;
     line-height: 1.6;
@@ -675,42 +973,46 @@ input:focus-visible {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 20px;
 
-    margin-bottom: 18px;
+    gap: 20px;
+    margin-bottom: 17px;
 }
 
 .section-title {
     margin: 0;
 
-    color: #303138;
+    color: var(--ui-text);
 
-    font-size: 23px;
+    font-size: 24px;
     font-weight: 800;
-    letter-spacing: -0.4px;
+
+    letter-spacing: -0.5px;
 }
 
-/* 7. PROJEKTI — SLIDER */
+/* =====================================================
+   13. PROJEKTNI SLIDER
+===================================================== */
 
 .project-navigation {
     display: flex;
     align-items: center;
+
     gap: 10px;
 }
 
 .project-counter {
     flex-shrink: 0;
 
-    padding: 7px 12px;
+    padding: 10px 15px;
 
-    border: 1px solid #e6d9cf;
+    background: var(--ui-card);
+    color: var(--ui-copper);
+
+    border: 1px solid var(--ui-border);
     border-radius: 999px;
 
-    background: #fffcf8;
-    color: #675e59;
-
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 800;
 }
 
 .project-nav-button {
@@ -718,14 +1020,14 @@ input:focus-visible {
     align-items: center;
     justify-content: center;
 
-    width: 36px;
-    height: 36px;
+    width: 41px;
+    height: 41px;
 
-    border: 1px solid #e3ccbc;
-    border-radius: 10px;
+    background: var(--ui-card);
+    color: var(--ui-copper);
 
-    background: #f1e3d8;
-    color: #805b46;
+    border: 1px solid var(--ui-border);
+    border-radius: 12px;
 
     font-size: 27px;
     line-height: 1;
@@ -733,12 +1035,8 @@ input:focus-visible {
     cursor: pointer;
 }
 
-.project-nav-button[hidden] {
-    display: none !important;
-}
-
 .project-nav-button:hover:not(:disabled) {
-    background: #e6d1c1;
+    background: var(--ui-copper-soft);
 }
 
 .project-nav-button:disabled {
@@ -748,8 +1046,8 @@ input:focus-visible {
 
 .projects-slider {
     display: flex;
-    gap: 18px;
 
+    gap: 18px;
     width: 100%;
 
     overflow-x: auto;
@@ -759,6 +1057,7 @@ input:focus-visible {
     scroll-behavior: smooth;
 
     scrollbar-width: none;
+
     overscroll-behavior-x: contain;
 
     touch-action: pan-x;
@@ -781,10 +1080,11 @@ input:focus-visible {
     display: flex;
     align-items: center;
     justify-content: center;
+
     gap: 8px;
 
     min-height: 24px;
-    margin-top: 15px;
+    margin-top: 14px;
 }
 
 .slider-dot {
@@ -792,11 +1092,11 @@ input:focus-visible {
     height: 8px;
 
     padding: 0;
-
     border: none;
+
     border-radius: 999px;
 
-    background: #d5c8bf;
+    background: var(--ui-copper-soft);
 
     cursor: pointer;
 
@@ -807,51 +1107,50 @@ input:focus-visible {
 
 .slider-dot.active {
     width: 26px;
-    background: var(--bronze);
+    background: var(--ui-copper-light);
 }
 
-/* 8. GLAVNA KARTICA PROJEKTA */
+/* =====================================================
+   14. GLAVNA KARTICA PROJEKTA — BRONZE
+===================================================== */
 
 .project-card {
     position: relative;
 
     display: block;
 
-    padding: 27px 29px;
+    padding: 23px 25px;
 
     overflow: hidden;
 
-    border: 1px solid #e4d5c9;
-    border-radius: 19px;
+    border: 1px solid var(--ui-border);
+    border-radius: 24px;
 
     background:
-        radial-gradient(
-            ellipse 360px 260px at 100% 0%,
-            rgba(190, 149, 122, 0.13),
-            transparent 85%
-        ),
         linear-gradient(
-            135deg,
-            #fffcf8,
-            #f9f3ed
+            130deg,
+            var(--ui-card),
+            var(--ui-card-end)
         );
 
-    box-shadow:
-        0 15px 38px rgba(77, 55, 42, 0.08);
+    box-shadow: var(--ui-shadow);
+
+    color: var(--ui-text);
 }
 
 .project-card::before {
     content: "";
 
     position: absolute;
-    top: -150px;
-    right: -90px;
+    top: -180px;
+    right: -130px;
 
-    width: 320px;
-    height: 320px;
+    width: 340px;
+    height: 340px;
 
-    border: 42px solid rgba(172, 129, 102, 0.055);
     border-radius: 50%;
+
+    border: 1px solid rgba(193, 132, 92, 0.20);
 
     pointer-events: none;
 }
@@ -868,32 +1167,29 @@ input:focus-visible {
     cursor: pointer;
 
     transition:
-        transform 0.2s ease,
         border-color 0.2s ease,
         box-shadow 0.2s ease;
 }
 
 .project-card-link:hover {
-    border-color: #b68b72;
-
-    box-shadow:
-        0 19px 43px rgba(77, 55, 42, 0.12);
+    border-color: var(--ui-copper-light);
+    box-shadow: var(--ui-hover-shadow);
 }
 
 .project-heading {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 25px;
 
-    margin-bottom: 26px;
+    gap: 24px;
+    margin-bottom: 21px;
 }
 
 .project-main {
     display: flex;
     align-items: center;
-    gap: 20px;
 
+    gap: 18px;
     min-width: 0;
 }
 
@@ -906,21 +1202,28 @@ input:focus-visible {
     height: 70px;
     flex: 0 0 70px;
 
-    border-radius: 16px;
+    border-radius: 18px;
 
     background:
-        linear-gradient(135deg, #ead7c7, #f5e9df);
+        linear-gradient(
+            140deg,
+            #f2d4bd,
+            #d4a27f
+        );
 
-    color: #936b54;
+    color: #995e3e;
+
+    border: 1px solid rgba(174, 110, 69, 0.18);
 }
 
 .project-icon svg {
-    width: 37px;
-    height: 37px;
+    width: 36px;
+    height: 36px;
 
     fill: none;
     stroke: currentColor;
     stroke-width: 1.7;
+
     stroke-linecap: round;
     stroke-linejoin: round;
 }
@@ -932,11 +1235,12 @@ input:focus-visible {
 .project-main h3 {
     margin: 0 0 7px;
 
-    color: #303138;
+    color: var(--ui-text);
 
     font-size: clamp(23px, 2vw, 29px);
     font-weight: 800;
-    letter-spacing: -0.5px;
+
+    letter-spacing: -0.6px;
 
     overflow-wrap: anywhere;
 }
@@ -944,7 +1248,7 @@ input:focus-visible {
 .project-main p {
     margin: 0;
 
-    color: #827a76;
+    color: var(--ui-muted);
 
     font-size: 16px;
     line-height: 1.5;
@@ -953,28 +1257,27 @@ input:focus-visible {
 .project-heading-right {
     display: flex;
     align-items: center;
-    gap: 17px;
 
+    gap: 15px;
     flex-shrink: 0;
 }
 
 .project-open-arrow {
-    color: #a59a92;
+    color: var(--ui-copper);
 
     font-size: 27px;
-    font-weight: 700;
+    font-weight: 800;
 
-    transition:
-        color 0.2s ease,
-        transform 0.2s ease;
+    transition: transform 0.2s ease;
 }
 
 .project-card-link:hover .project-open-arrow {
-    color: var(--bronze);
     transform: translateX(4px);
 }
 
-/* 9. STATUS PROJEKTA */
+/* =====================================================
+   15. STATUS PROJEKTA
+===================================================== */
 
 .status-badge {
     display: inline-flex;
@@ -984,8 +1287,9 @@ input:focus-visible {
 
     border-radius: 999px;
 
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
+
     white-space: nowrap;
 }
 
@@ -1001,36 +1305,38 @@ input:focus-visible {
 }
 
 .status-progress {
-    color: #80573e;
-    background: #f1e1d4;
-    border: 1px solid #e6cdbb;
+    color: #995e3e;
+    background: #f3d9c5;
+    border: 1px solid #e3b89a;
 }
 
 .status-progress::before {
-    background: #a7785a;
+    background: #b77e58;
 }
 
 .status-done {
-    color: #486c57;
-    background: #e5eee6;
-    border: 1px solid #c9ddcc;
+    color: #54715b;
+    background: #e2ede3;
+    border: 1px solid #c6d9ca;
 }
 
 .status-done::before {
-    background: #71917b;
+    background: #6d9376;
 }
 
 .status-waiting {
-    color: #6c6870;
-    background: #eeebed;
-    border: 1px solid #ddd8dd;
+    color: #74686b;
+    background: #ede7e7;
+    border: 1px solid #dad0d0;
 }
 
 .status-waiting::before {
-    background: #98909a;
+    background: #94858b;
 }
 
-/* 10. INFORMACIJE O PROJEKTU */
+/* =====================================================
+   16. INFORMACIJSKI BUBBLES U PROJEKTU
+===================================================== */
 
 .project-stats {
     display: grid;
@@ -1047,22 +1353,23 @@ input:focus-visible {
 .stat-card {
     display: flex;
     align-items: center;
+
     gap: 12px;
 
     min-width: 0;
-    min-height: 85px;
+    min-height: 83px;
 
     padding: 16px;
 
-    border: 1px solid #e8ded6;
-    border-radius: 13px;
+    background: var(--ui-card-inset);
 
-    background: rgba(239, 231, 224, 0.75);
+    border: 1px solid var(--ui-border);
+    border-radius: 15px;
 }
 
 .stat-icon {
     flex-shrink: 0;
-    color: #98715b;
+    color: var(--ui-copper);
 }
 
 .stat-icon svg {
@@ -1072,21 +1379,22 @@ input:focus-visible {
     fill: none;
     stroke: currentColor;
     stroke-width: 1.7;
+
     stroke-linecap: round;
     stroke-linejoin: round;
 }
 
 .stat-label {
     display: block;
-
     margin-bottom: 6px;
 
-    color: #77716f;
+    color: var(--ui-muted);
+
     font-size: 14px;
 }
 
 .stat-card strong {
-    color: #303138;
+    color: var(--ui-text);
 
     font-size: 15px;
     line-height: 1.4;
@@ -1095,7 +1403,7 @@ input:focus-visible {
 }
 
 .package-name {
-    color: #805b46;
+    color: var(--ui-copper);
     font-weight: 800;
 }
 
@@ -1107,6 +1415,7 @@ input:focus-visible {
 .progress-row {
     display: flex;
     align-items: center;
+
     gap: 10px;
 }
 
@@ -1119,7 +1428,8 @@ input:focus-visible {
     overflow: hidden;
 
     border-radius: 999px;
-    background: #ded3cb;
+
+    background: var(--ui-track);
 }
 
 .progress-bar {
@@ -1128,25 +1438,32 @@ input:focus-visible {
     border-radius: inherit;
 
     background:
-        linear-gradient(90deg, #926a53, #c59a7f);
+        linear-gradient(
+            90deg,
+            #995e3e,
+            #dca584
+        );
 }
 
 .no-projects {
     width: 100%;
-    padding: 45px 20px;
+    padding: 44px 20px;
 
-    border: 1px dashed #d8c6b9;
-    border-radius: 16px;
+    border: 1px dashed var(--ui-border);
+    border-radius: 20px;
 
-    background: #fffcf8;
-    color: #77716f;
+    background: var(--ui-card);
+    color: var(--ui-muted);
 
     text-align: center;
+
     font-size: 14px;
     line-height: 1.6;
 }
 
-/* 11. BRZE AKCIJE */
+/* =====================================================
+   17. BRZE AKCIJE — SVE BAKRENE
+===================================================== */
 
 .actions-section {
     margin-top: 28px;
@@ -1159,17 +1476,18 @@ input:focus-visible {
 .actions-header h2 {
     margin: 0 0 6px;
 
-    color: #303138;
+    color: var(--ui-text);
 
-    font-size: 23px;
+    font-size: 24px;
     font-weight: 800;
-    letter-spacing: -0.4px;
+
+    letter-spacing: -0.5px;
 }
 
 .actions-header p {
     margin: 0;
 
-    color: #77716f;
+    color: var(--ui-muted);
 
     font-size: 14px;
     line-height: 1.5;
@@ -1177,7 +1495,9 @@ input:focus-visible {
 
 .actions-grid {
     display: grid;
+
     grid-template-columns: repeat(4, minmax(0, 1fr));
+
     gap: 15px;
 }
 
@@ -1189,120 +1509,170 @@ input:focus-visible {
     align-items: flex-start;
 
     min-width: 0;
-    min-height: 191px;
+    min-height: 208px;
 
-    padding: 20px;
+    padding: 22px;
 
-    border: 1px solid #e6d9cf;
-    border-radius: 17px;
+    overflow: hidden;
 
     background:
         linear-gradient(
-            155deg,
-            #fffcf8,
-            #f9f2ec
+            150deg,
+            var(--ui-card),
+            var(--ui-card-end)
         );
 
-    color: inherit;
-    text-decoration: none;
+    border: 1px solid var(--ui-border);
+    border-radius: 22px;
+
+    color: var(--ui-text);
+
     text-align: left;
+    text-decoration: none;
 
     cursor: pointer;
 
-    box-shadow:
-        0 9px 25px rgba(76, 59, 49, 0.055);
+    box-shadow: var(--ui-shadow);
 
     transition:
-        transform 0.2s ease,
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        border-color 0.22s ease;
 }
 
-/* Diskretno različite nijanse */
+/* Sve cetiri kartice imaju istu bakrenu paletu */
 
-.action-card:nth-child(2) {
+body.portal-desktop.light-mode .action-card:nth-child(n) {
     background:
-        linear-gradient(155deg, #faf7f4, #eee8e4);
-}
+        linear-gradient(
+            145deg,
+            #fff9f3 0%,
+            #f9e9dc 55%,
+            #e9bea0 100%
+        );
 
-.action-card:nth-child(3) {
-    background:
-        linear-gradient(155deg, #f9fbf8, #e8eee7);
-}
-
-.action-card:nth-child(4) {
-    background:
-        linear-gradient(155deg, #fffcf8, #eee6de);
+    border-color: #e1b89b;
 }
 
 .action-card:not(:disabled):not([aria-disabled="true"]):hover {
-    transform: translateY(-3px);
+    transform: translateY(-4px);
 
-    border-color: #b58b72;
+    border-color: var(--ui-copper-light);
 
-    box-shadow:
-        0 16px 32px rgba(76, 59, 49, 0.11);
+    box-shadow: var(--ui-hover-shadow);
+}
+
+/* Mali bakreni krugovi u akcijama */
+
+.action-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 190px;
+    height: 190px;
+
+    right: -125px;
+    bottom: -115px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(181, 116, 76, 0.14);
+
+    pointer-events: none;
 }
 
 .action-icon {
+    position: relative;
+    z-index: 1;
+
     display: flex;
     align-items: center;
     justify-content: center;
 
-    width: 43px;
-    height: 43px;
+    width: 48px;
+    height: 48px;
 
-    margin-bottom: 14px;
+    margin-bottom: 16px;
 
-    border-radius: 12px;
+    border-radius: 15px;
 
-    background: #efdfd2;
-    color: #91694f;
+    background:
+        linear-gradient(
+            145deg,
+            #f1d2bb,
+            #d9a27c
+        );
 
-    font-size: 22px;
+    color: #995e3e;
+
+    border: 1px solid rgba(167, 100, 59, 0.12);
+
+    font-size: 24px;
     font-weight: 800;
 }
 
-.action-card:nth-child(3) .action-icon {
-    background: #dce7dc;
-    color: #657f6d;
+body.portal-desktop:not(.light-mode) .action-icon {
+    background: #4c4551;
+    color: #edc6a7;
 }
 
 .action-card strong {
+    position: relative;
+    z-index: 1;
+
     margin-bottom: 7px;
 
-    color: #303138;
+    color: var(--ui-text);
 
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 800;
 }
 
 .action-card p {
+    position: relative;
+    z-index: 1;
+
     margin: 0 0 18px;
 
-    color: #77716f;
+    color: var(--ui-muted);
 
     font-size: 14px;
     line-height: 1.55;
 }
 
+/* Svi gumbi bakreni */
+
 .action-button {
+    position: relative;
+    z-index: 1;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
     margin-top: auto;
-    padding: 8px 13px;
 
-    border: 1px solid #e3cbb9;
-    border-radius: 999px;
+    min-height: 39px;
+    padding: 9px 15px;
 
-    background: #efdfd2;
-    color: #80553d;
+    border: 1px solid rgba(166, 99, 57, 0.15);
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            115deg,
+            #d5a17c,
+            #a26845
+        );
+
+    color: #ffffff;
 
     font-size: 13px;
     font-weight: 800;
 }
+
+/* Nedostupne akcije i dalje ostaju onemogucene */
 
 .action-card-disabled,
 .action-card[aria-disabled="true"],
@@ -1315,22 +1685,578 @@ input:focus-visible {
 .action-card[aria-disabled="true"]:hover,
 .action-card:disabled:hover {
     transform: none;
-    box-shadow: none;
+    box-shadow: var(--ui-shadow);
 }
 
-/* 12. FOOTER */
+.action-card[aria-disabled="true"] .action-button,
+.action-card:disabled .action-button {
+    background: var(--ui-copper-soft);
+    color: var(--ui-copper);
+}
+
+/* =====================================================
+   18. NEDAVNE PORUKE I KORISNI DOKUMENTI
+===================================================== */
+
+.dashboard-overview {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+
+    margin-top: 18px;
+    margin-bottom: 26px;
+}
+
+.overview-panel {
+    min-width: 0;
+
+    padding: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            var(--ui-card),
+            var(--ui-card-end)
+        );
+
+    border: 1px solid var(--ui-border);
+    border-radius: 23px;
+
+    box-shadow: var(--ui-shadow);
+}
+
+.overview-panel-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.overview-panel-header h2 {
+    margin: 0 0 5px;
+
+    color: var(--ui-text);
+
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.overview-panel-header p {
+    margin: 0;
+
+    color: var(--ui-muted);
+
+    font-size: 13px;
+}
+
+.overview-panel-header > a {
+    flex-shrink: 0;
+
+    color: var(--ui-copper);
+
+    font-size: 13px;
+    font-weight: 800;
+
+    text-decoration: none;
+}
+
+.overview-panel-header > a:hover {
+    text-decoration: underline;
+}
+
+.overview-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.overview-row {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+    min-width: 0;
+
+    padding: 11px 0;
+
+    border-bottom: 1px solid var(--ui-border);
+
+    color: inherit;
+    text-decoration: none;
+}
+
+.overview-row:last-child {
+    border-bottom: 0;
+}
+
+a.overview-row:hover {
+    background: rgba(187, 135, 103, 0.07);
+}
+
+.overview-avatar,
+.overview-file-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 39px;
+    height: 39px;
+    flex: 0 0 39px;
+
+    border-radius: 12px;
+
+    background: var(--ui-copper-soft);
+    color: var(--ui-copper);
+
+    font-weight: 800;
+}
+
+.overview-file-icon {
+    font-size: 11px;
+}
+
+.overview-row-main {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+    gap: 3px;
+    min-width: 0;
+}
+
+.overview-row-main strong {
+    overflow: hidden;
+
+    color: var(--ui-text);
+
+    font-size: 14px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.overview-row-main small {
+    overflow: hidden;
+
+    color: var(--ui-muted);
+
+    font-size: 12px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.overview-row-date {
+    flex-shrink: 0;
+
+    color: var(--ui-muted);
+
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.overview-download {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 28px;
+    height: 28px;
+    flex: 0 0 28px;
+
+    border-radius: 8px;
+
+    color: var(--ui-copper);
+
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.overview-download:hover {
+    background: var(--ui-copper-soft);
+}
+
+.overview-empty {
+    padding: 23px 8px;
+
+    color: var(--ui-muted);
+
+    text-align: center;
+    font-size: 14px;
+}
+
+/* =====================================================
+   19. FOOTER
+===================================================== */
 
 .footer {
     margin-top: auto;
-    padding: 35px 0 23px;
 
-    color: #928985;
+    padding: 30px 0 22px;
+
+    color: var(--ui-muted-soft);
 
     text-align: center;
     font-size: 13px;
 }
 
-/* 13. MOBILNA DONJA NAVIGACIJA */
+/* =====================================================
+   20. MODAL ZA DOSTAVU MATERIJALA
+===================================================== */
+
+.materials-overlay {
+    position: fixed;
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(22, 19, 20, 0.70);
+
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+
+.materials-overlay[hidden] {
+    display: none !important;
+}
+
+.materials-modal {
+    width: 100%;
+    max-width: 560px;
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 28px;
+
+    border: 1px solid var(--ui-border);
+    border-radius: 24px;
+
+    background: var(--ui-card);
+    color: var(--ui-text);
+
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.26);
+}
+
+.materials-modal-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.materials-eyebrow {
+    color: var(--ui-copper);
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 1.3px;
+}
+
+.materials-modal h2 {
+    margin: 9px 0 8px;
+
+    color: var(--ui-text);
+    font-size: 26px;
+}
+
+#materialsProjectName {
+    margin: 0;
+
+    color: var(--ui-muted);
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.materials-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+
+    border: 1px solid var(--ui-border);
+    border-radius: 10px;
+
+    background: var(--ui-card-inset);
+    color: var(--ui-text);
+
+    font-size: 25px;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+.materials-close:hover {
+    color: var(--ui-copper);
+    border-color: var(--ui-copper-light);
+}
+
+.materials-dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    min-height: 190px;
+    padding: 24px;
+
+    border: 2px dashed var(--ui-copper-light);
+    border-radius: 17px;
+
+    background: var(--ui-card-inset);
+
+    text-align: center;
+    cursor: pointer;
+}
+
+.materials-dropzone:hover,
+.materials-dropzone.dragover {
+    border-color: var(--ui-copper);
+    background: var(--ui-copper-soft);
+}
+
+.materials-upload-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 54px;
+    height: 54px;
+
+    border-radius: 15px;
+
+    background: var(--ui-copper-soft);
+    color: var(--ui-copper);
+
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.materials-dropzone strong {
+    color: var(--ui-text);
+    font-size: 16px;
+}
+
+.materials-dropzone > span:not(.materials-upload-icon) {
+    color: var(--ui-muted);
+
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+#materialsFiles {
+    width: 100%;
+    max-width: 340px;
+
+    margin-top: 8px;
+
+    color: var(--ui-muted);
+    font-size: 12px;
+}
+
+#materialsFiles::file-selector-button {
+    margin-right: 10px;
+    padding: 9px 12px;
+
+    border: 1px solid var(--ui-border);
+    border-radius: 8px;
+
+    background: var(--ui-copper-soft);
+    color: var(--ui-copper);
+
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.materials-file-list {
+    display: grid;
+    gap: 8px;
+
+    margin-top: 16px;
+}
+
+.materials-file-item {
+    padding: 12px 14px;
+
+    background: var(--ui-card-inset);
+    color: var(--ui-text);
+
+    border: 1px solid var(--ui-border);
+    border-radius: 11px;
+
+    font-size: 13px;
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
+}
+
+.materials-hint {
+    margin: 16px 0 0;
+
+    color: var(--ui-muted);
+
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.materials-status {
+    min-height: 20px;
+    margin: 12px 0 0;
+
+    color: var(--ui-muted);
+
+    font-size: 13px;
+    line-height: 1.6;
+
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+}
+
+.materials-status.success {
+    color: #4c9768;
+}
+
+.materials-status.error {
+    color: #c95656;
+}
+
+.materials-modal-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 12px;
+    margin-top: 22px;
+}
+
+.materials-cancel,
+.materials-submit {
+    min-height: 43px;
+    padding: 11px 18px;
+
+    border: none;
+    border-radius: 11px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.materials-cancel {
+    background: var(--ui-card-inset);
+    color: var(--ui-text);
+}
+
+.materials-submit {
+    background:
+        linear-gradient(
+            110deg,
+            #d4a07c,
+            #995e3e
+        );
+
+    color: #ffffff;
+}
+
+.materials-submit:hover:not(:disabled) {
+    filter: brightness(1.06);
+}
+
+.materials-submit:disabled,
+.materials-cancel:disabled,
+.materials-close:disabled {
+    opacity: 0.55;
+    cursor: wait;
+}
+
+body.materials-modal-open {
+    overflow: hidden;
+}
+
+/* =====================================================
+   21. DARK MODE — DODATNE POSTAVKE
+===================================================== */
+
+body.portal-desktop:not(.light-mode) .project-icon {
+    background: #41455a;
+    border-color: #566077;
+    color: #edc6a7;
+}
+
+body.portal-desktop:not(.light-mode) .stat-card {
+    background: #374258;
+}
+
+body.portal-desktop:not(.light-mode) .status-progress {
+    color: #edc6a7;
+    background: #493f43;
+    border-color: #765644;
+}
+
+body.portal-desktop:not(.light-mode) .status-done {
+    color: #b3e0bf;
+    background: #334a43;
+    border-color: #486f5c;
+}
+
+body.portal-desktop:not(.light-mode) .status-waiting {
+    color: #d2c8d1;
+    background: #41414d;
+    border-color: #626073;
+}
+
+body.portal-desktop:not(.light-mode) .action-card:nth-child(n) {
+    background:
+        linear-gradient(
+            145deg,
+            #303b52,
+            #283248
+        );
+}
+
+body.portal-desktop:not(.light-mode) .action-card:nth-child(n) .action-button {
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            115deg,
+            #c58b66,
+            #915b3d
+        );
+}
+
+body.portal-desktop:not(.light-mode) .action-card:disabled .action-button,
+body.portal-desktop:not(.light-mode) .action-card[aria-disabled="true"] .action-button {
+    background: #49465a;
+    color: #edc6a7;
+}
+
+body.portal-desktop:not(.light-mode) .materials-overlay {
+    background: rgba(5, 10, 20, 0.76);
+}
+
+/* =====================================================
+   22. MOBILNA DONJA NAVIGACIJA
+===================================================== */
 
 .bottom-nav {
     display: none;
@@ -1343,11 +2269,13 @@ input:focus-visible {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
     gap: 5px;
 
     min-height: 54px;
 
-    color: rgba(255, 255, 255, 0.60);
+    color: var(--ui-muted);
+
     text-decoration: none;
 
     font-size: 11px;
@@ -1361,12 +2289,13 @@ input:focus-visible {
     fill: none;
     stroke: currentColor;
     stroke-width: 1.8;
+
     stroke-linecap: round;
     stroke-linejoin: round;
 }
 
 .bottom-nav-item.active {
-    color: var(--bronze-light);
+    color: var(--ui-copper);
 }
 
 .bottom-nav-item.active::before {
@@ -1379,7 +2308,7 @@ input:focus-visible {
     height: 3px;
 
     border-radius: 999px;
-    background: var(--bronze);
+    background: var(--ui-copper-light);
 }
 
 .bottom-nav-icon-wrap {
@@ -1404,7 +2333,7 @@ input:focus-visible {
 
     padding: 0 4px;
 
-    border: 2px solid #29292d;
+    border: 2px solid var(--ui-bg);
     border-radius: 999px;
 
     background: #c85d4f;
@@ -1414,456 +2343,85 @@ input:focus-visible {
     font-weight: 700;
 }
 
-.nav-notification[hidden] {
-    display: none !important;
-}
+/* =====================================================
+   23. STICKY HEADER + SCROLL FIX
+   Vazno: zadrzati ove postavke
+===================================================== */
 
-/* 14. MODAL ZA DOSTAVU MATERIJALA */
+@media (min-width: 901px) {
 
-.materials-overlay[hidden] {
-    display: none !important;
-}
+    html,
+    body {
+        max-width: 100%;
+        overflow-x: clip;
+    }
 
-.materials-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
+    .dashboard.desktop-layout {
+        display: grid;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+        grid-template-columns:
+            var(--sidebar-width) minmax(0, 1fr);
 
-    padding: 20px;
+        min-height: 100vh;
+        align-items: stretch;
+    }
 
-    background: rgba(22, 20, 20, 0.72);
-    backdrop-filter: blur(8px);
-}
+    .desktop-sidebar {
+        position: sticky;
+        top: 0;
 
-.materials-modal {
-    width: 100%;
-    max-width: 560px;
-    max-height: 90vh;
+        height: 100vh;
+        min-height: 0;
 
-    overflow-y: auto;
+        align-self: start;
 
-    padding: 28px;
+        overflow: hidden;
+    }
 
-    border: 1px solid #e4d4c7;
-    border-radius: 22px;
+    .desktop-main {
+        position: relative;
 
-    background: #fffcf8;
-    color: #303138;
+        min-width: 0;
+        min-height: 100vh;
+        height: auto;
 
-    box-shadow:
-        0 30px 90px rgba(0, 0, 0, 0.28);
-}
+        overflow: visible;
+        isolation: isolate;
+    }
 
-.materials-modal-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 18px;
+    .dashboard-header {
+        position: sticky;
+        top: 0;
 
-    margin-bottom: 22px;
-}
+        z-index: 1000;
 
-.materials-eyebrow {
-    color: #936b53;
+        width: 100%;
 
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.3px;
-}
+        background: var(--ui-header);
 
-.materials-modal h2 {
-    margin: 9px 0 8px;
+        -webkit-backdrop-filter: blur(16px);
+        backdrop-filter: blur(16px);
 
-    color: #303138;
-    font-size: 26px;
-}
+        border-bottom: 1px solid var(--ui-border);
+    }
 
-#materialsProjectName {
-    margin: 0;
+    .dashboard-content {
+        position: relative;
+        z-index: 1;
 
-    color: #77716f;
-
-    font-size: 13px;
-    line-height: 1.5;
-}
-
-.materials-close {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 38px;
-    height: 38px;
-    flex: 0 0 38px;
-
-    border: 1px solid #e2d5cb;
-    border-radius: 10px;
-
-    background: #f0e8e1;
-    color: #303138;
-
-    font-size: 25px;
-    line-height: 1;
-
-    cursor: pointer;
-}
-
-.materials-close:hover {
-    color: var(--bronze-dark);
-    border-color: var(--bronze);
-}
-
-.materials-dropzone {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-
-    min-height: 190px;
-    padding: 24px;
-
-    border: 2px dashed #c5a28c;
-    border-radius: 16px;
-
-    background: #f8f0e9;
-
-    text-align: center;
-    cursor: pointer;
-}
-
-.materials-dropzone:hover,
-.materials-dropzone.dragover {
-    border-color: var(--bronze);
-    background: #f3e6da;
-}
-
-.materials-upload-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 54px;
-    height: 54px;
-
-    border-radius: 15px;
-
-    background: #ead9cb;
-    color: #916a53;
-
-    font-size: 30px;
-    font-weight: 700;
-}
-
-.materials-dropzone strong {
-    color: #303138;
-    font-size: 16px;
-}
-
-.materials-dropzone > span:not(.materials-upload-icon) {
-    color: #77716f;
-
-    font-size: 12px;
-    line-height: 1.5;
-}
-
-#materialsFiles {
-    width: 100%;
-    max-width: 340px;
-
-    margin-top: 8px;
-
-    color: #665e59;
-    font-size: 12px;
-}
-
-#materialsFiles::file-selector-button {
-    margin-right: 10px;
-    padding: 9px 12px;
-
-    border: 1px solid #d9bda9;
-    border-radius: 8px;
-
-    background: #ead9cb;
-    color: #76523e;
-
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.materials-file-list {
-    display: grid;
-    gap: 8px;
-
-    margin-top: 16px;
-}
-
-.materials-file-item {
-    padding: 12px 14px;
-
-    border: 1px solid #e4d9d0;
-    border-radius: 11px;
-
-    background: #f4eee9;
-    color: #303138;
-
-    font-size: 13px;
-    line-height: 1.5;
-
-    overflow-wrap: anywhere;
-}
-
-.materials-hint {
-    margin: 16px 0 0;
-
-    color: #77716f;
-
-    font-size: 12px;
-    line-height: 1.6;
-}
-
-.materials-status {
-    min-height: 20px;
-    margin: 12px 0 0;
-
-    color: #665e59;
-
-    font-size: 13px;
-    line-height: 1.6;
-
-    white-space: pre-line;
-    overflow-wrap: anywhere;
-}
-
-.materials-status.success {
-    color: #36784c;
-}
-
-.materials-status.error {
-    color: #bd4545;
-}
-
-.materials-modal-actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 12px;
-
-    margin-top: 22px;
-}
-
-.materials-cancel,
-.materials-submit {
-    min-height: 43px;
-    padding: 11px 18px;
-
-    border: none;
-    border-radius: 10px;
-
-    font-size: 13px;
-    font-weight: 700;
-
-    cursor: pointer;
-}
-
-.materials-cancel {
-    background: #ebe4de;
-    color: #303138;
-}
-
-.materials-submit {
-    background:
-        linear-gradient(135deg, #b58b72, #896149);
-
-    color: #ffffff;
-}
-
-.materials-submit:hover:not(:disabled) {
-    filter: brightness(1.06);
-}
-
-.materials-submit:disabled,
-.materials-cancel:disabled,
-.materials-close:disabled {
-    opacity: 0.55;
-    cursor: wait;
-}
-
-body.materials-modal-open {
-    overflow: hidden;
-}
-
-
-/* =========================================
-   DASHBOARD OVERVIEW PANELS
-========================================= */
-
-.dashboard-overview {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-    margin-top: 18px;
-    margin-bottom: 28px;
-}
-
-.overview-panel {
-    min-width: 0;
-    padding: 20px;
-    border: 1px solid #e8ded7;
-    border-radius: 16px;
-    background: rgba(255, 252, 249, 0.94);
-    box-shadow: 0 12px 30px rgba(60, 45, 35, 0.07);
-}
-
-.overview-panel-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 14px;
-}
-
-.overview-panel-header h2 {
-    margin: 0 0 5px;
-    color: #303138;
-    font-size: 19px;
-    font-weight: 800;
-}
-
-.overview-panel-header p {
-    margin: 0;
-    color: #77716e;
-    font-size: 13px;
-}
-
-.overview-panel-header > a {
-    flex-shrink: 0;
-    color: #936b54;
-    font-size: 13px;
-    font-weight: 800;
-    text-decoration: none;
-}
-
-.overview-panel-header > a:hover {
-    text-decoration: underline;
-}
-
-.overview-list {
-    display: flex;
-    flex-direction: column;
-}
-
-.overview-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-width: 0;
-    padding: 11px 0;
-    border-bottom: 1px solid #eee7e1;
-    color: inherit;
-    text-decoration: none;
-}
-
-.overview-row:last-child {
-    border-bottom: 0;
-}
-
-a.overview-row:hover {
-    background: rgba(155, 115, 91, 0.05);
-}
-
-.overview-avatar,
-.overview-file-icon {
-    display: flex;
-    flex: 0 0 39px;
-    width: 39px;
-    height: 39px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 12px;
-    background: #e8d8cb;
-    color: #76513c;
-    font-weight: 800;
-}
-
-.overview-file-icon {
-    background: #eee5df;
-    font-size: 11px;
-}
-
-.overview-row-main {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    gap: 3px;
-    min-width: 0;
-}
-
-.overview-row-main strong {
-    overflow: hidden;
-    color: #303138;
-    font-size: 14px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.overview-row-main small {
-    overflow: hidden;
-    color: #77716e;
-    font-size: 12px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.overview-row-date {
-    flex-shrink: 0;
-    color: #77716e;
-    font-size: 12px;
-    white-space: nowrap;
-}
-
-.overview-download {
-    display: flex;
-    flex: 0 0 28px;
-    width: 28px;
-    height: 28px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    color: #76513c;
-    font-size: 20px;
-    text-decoration: none;
-}
-
-.overview-download:hover {
-    background: #eee5df;
-}
-
-.overview-empty {
-    padding: 24px 8px;
-    color: #77716e;
-    font-size: 14px;
-    text-align: center;
-}
-
-
-@media (max-width: 1100px) {
-    .dashboard-overview {
-        grid-template-columns: 1fr;
+        min-height: 0;
+        padding-bottom: 28px;
     }
 }
 
-
-
-/* 17. UŽI DESKTOP */
+/* =====================================================
+   24. RESPONSIVE — UZI DESKTOP
+===================================================== */
 
 @media (max-width: 1250px) {
+
     :root {
-        --sidebar-width: 228px;
+        --sidebar-width: 224px;
     }
 
     .dashboard-header {
@@ -1877,23 +2435,28 @@ a.overview-row:hover {
     }
 
     .project-stats {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .actions-grid {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .action-card {
-        min-height: 165px;
+        min-height: 180px;
+    }
+
+    .sidebar-brand-text strong {
+        font-size: 15px;
     }
 }
 
-/* 18. TABLET — PRIVREMENI RASPORED */
+/* =====================================================
+   25. RESPONSIVE — TABLET
+===================================================== */
 
 @media (max-width: 900px) {
+
     :root {
         --sidebar-width: 210px;
     }
@@ -1930,10 +2493,6 @@ a.overview-row:hover {
         padding: 20px;
     }
 
-    .project-heading {
-        gap: 12px;
-    }
-
     .project-icon {
         width: 55px;
         height: 55px;
@@ -1954,9 +2513,12 @@ a.overview-row:hover {
     }
 }
 
-/* 19. MOBITEL — PRIVREMENI RASPORED */
+/* =====================================================
+   26. RESPONSIVE — MOBITEL
+===================================================== */
 
 @media (max-width: 700px) {
+
     body {
         padding: 0;
     }
@@ -1964,6 +2526,7 @@ a.overview-row:hover {
     .dashboard.desktop-layout {
         display: flex;
         flex-direction: column;
+
         min-height: 100vh;
     }
 
@@ -1983,16 +2546,19 @@ a.overview-row:hover {
 
     .dashboard-header {
         min-height: auto;
+
         padding: 15px;
 
         flex-direction: column;
         align-items: stretch;
+
         gap: 13px;
     }
 
     .mobile-brand {
         display: flex;
         align-items: center;
+
         gap: 11px;
 
         color: inherit;
@@ -2004,25 +2570,22 @@ a.overview-row:hover {
         height: 41px;
         flex-basis: 41px;
 
-        font-size: 23px;
+        background-size: 30px auto, cover;
     }
 
     .mobile-brand h1 {
         margin: 0;
 
-        color: #303138;
+        color: var(--ui-text);
 
         font-size: 17px;
         font-weight: 800;
     }
 
-    body:not(.light-mode) .mobile-brand h1 {
-        color: #f4f0ec;
-    }
-
     .header-actions {
         width: 100%;
         justify-content: space-between;
+
         gap: 8px;
     }
 
@@ -2062,7 +2625,7 @@ a.overview-row:hover {
     }
 
     .welcome h2 {
-        font-size: 23px;
+        font-size: 24px;
     }
 
     .welcome p {
@@ -2075,6 +2638,7 @@ a.overview-row:hover {
 
     .project-card {
         padding: 17px;
+        border-radius: 19px;
     }
 
     .project-heading {
@@ -2111,8 +2675,7 @@ a.overview-row:hover {
     }
 
     .project-stats {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 10px;
     }
 
@@ -2134,14 +2697,19 @@ a.overview-row:hover {
     }
 
     .actions-grid {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 10px;
     }
 
     .action-card {
-        min-height: 155px;
+        min-height: 160px;
         padding: 13px;
+    }
+
+    .action-icon {
+        width: 42px;
+        height: 42px;
+        margin-bottom: 13px;
     }
 
     .action-card strong {
@@ -2149,12 +2717,28 @@ a.overview-row:hover {
     }
 
     .action-card p {
-        font-size: 10px;
+        font-size: 11px;
     }
 
     .action-button {
-        padding: 6px 9px;
-        font-size: 9px;
+        padding: 7px 10px;
+        min-height: 32px;
+
+        font-size: 10px;
+    }
+
+    .dashboard-overview {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .overview-panel {
+        padding: 16px;
+        border-radius: 18px;
+    }
+
+    .overview-row-date {
+        font-size: 10px;
     }
 
     .footer {
@@ -2165,11 +2749,13 @@ a.overview-row:hover {
     .bottom-nav {
         position: sticky;
         bottom: 0;
+
         z-index: 20;
 
         display: grid;
-        grid-template-columns:
-            repeat(5, minmax(0, 1fr));
+
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+
         align-items: center;
 
         width: 100%;
@@ -2177,29 +2763,17 @@ a.overview-row:hover {
         margin-top: auto;
         padding: 9px 5px 10px;
 
-        border-top:
-            1px solid rgba(255, 255, 255, 0.10);
+        background: var(--ui-header);
+        border-top: 1px solid var(--ui-border);
 
-        background: #29292d;
+        -webkit-backdrop-filter: blur(16px);
         backdrop-filter: blur(16px);
-    }
-
-    body.light-mode .bottom-nav {
-        background: #fffcf8;
-        border-top-color: #e7dbd2;
-    }
-
-    body.light-mode .bottom-nav-item {
-        color: #817a76;
-    }
-
-    body.light-mode .bottom-nav-item.active {
-        color: var(--bronze-dark);
     }
 
     .bottom-nav-item {
         min-height: 49px;
         gap: 4px;
+
         font-size: 9px;
     }
 
@@ -2235,9 +2809,12 @@ a.overview-row:hover {
     }
 }
 
-/* 20. MALI MOBITEL */
+/* =====================================================
+   27. MALI MOBITEL
+===================================================== */
 
 @media (max-width: 390px) {
+
     .mobile-brand h1 {
         font-size: 15px;
     }
@@ -2259,18 +2836,18 @@ a.overview-row:hover {
         padding-right: 12px;
     }
 
-    .project-stats {
-        grid-template-columns: 1fr;
-    }
-
+    .project-stats,
     .actions-grid {
         grid-template-columns: 1fr;
     }
 }
 
-/* 21. PRISTUPAČNOST */
+/* =====================================================
+   28. PRISTUPACNOST
+===================================================== */
 
 @media (prefers-reduced-motion: reduce) {
+
     html {
         scroll-behavior: auto;
     }
@@ -2284,958 +2861,6 @@ a.overview-row:hover {
     }
 }
 
-
-/* =========================================
-   PTECH DIGITAL
-   STICKY HEADER + SCROLL FIX
-========================================= */
-
-@media (min-width: 901px) {
-
-    html,
-    body {
-        max-width: 100%;
-        overflow-x: clip;
-    }
-
-    /* Glavni raspored */
-
-    .dashboard.desktop-layout {
-        display: grid;
-        grid-template-columns: 204px minmax(0, 1fr);
-        min-height: 100vh;
-        align-items: stretch;
-    }
-
-    /* Sidebar ostaje na mjestu */
-
-    .desktop-sidebar {
-        position: sticky;
-        top: 0;
-
-        height: 100vh;
-        min-height: 0;
-        align-self: start;
-
-        overflow: hidden;
-    }
-
-    /* Glavni sadržaj */
-
-    .desktop-main {
-        position: relative;
-
-        min-width: 0;
-        min-height: 100vh;
-        height: auto;
-
-        overflow: visible;
-        isolation: isolate;
-    }
-
-    /* Uklanja donji val koji izlazi ispod footera */
-
-    .desktop-main::after {
-        display: none;
-    }
-
-    /* Gornji dekorativni val ostaje */
-
-    .desktop-main::before {
-        pointer-events: none;
-        z-index: -1;
-    }
-
-    /* Sticky gornja navigacija */
-
-    .dashboard-header {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-
-        width: 100%;
-
-        background: rgba(255, 252, 249, 0.97);
-
-        -webkit-backdrop-filter: blur(16px);
-        backdrop-filter: blur(16px);
-
-        border-bottom:
-            1px solid rgba(155, 115, 91, 0.10);
-    }
-
-    /* Sticky navigacija u tamnoj temi */
-
-    body:not(.light-mode) .dashboard-header {
-        background: rgba(48, 49, 56, 0.97);
-
-        border-bottom-color:
-            rgba(255, 255, 255, 0.08);
-    }
-
-    /* Sadržaj iznad dekorativne pozadine */
-
-    .dashboard-content {
-        position: relative;
-        z-index: 1;
-
-        min-height: 0;
-        padding-bottom: 28px;
-    }
-
-    /* Donje kartice */
-
-    .dashboard-overview {
-        margin-bottom: 24px;
-    }
-
-}
-
-/* ============================================================
-   22. PTECH DIGITAL — PREMIUM DESIGN SYSTEM
-   Light: champagne / bronze / cream
-   Dark: navy / bronze
-   Jedna CSS datoteka, bez dodatnog dashboard-theme.css.
-   ============================================================ */
-
-/* Tokeni postoje samo na dashboardu kako ostale stranice
-   koje dijele style.css ne bi mijenjale svoj izgled. */
-
-body.portal-desktop.light-mode {
-    --ui-bg: #fffaf5;
-    --ui-bg-top: #fffdf9;
-    --ui-bg-bottom: #f9f0e8;
-    --ui-card: #fffdfb;
-    --ui-card-to: #fff8f2;
-    --ui-card-inset: #f8efe8;
-    --ui-line: #ead8ca;
-    --ui-text: #202534;
-    --ui-subtle: #776961;
-    --ui-secondary: #8a786d;
-    --ui-copper: #995e3e;
-    --ui-copper-bright: #bb8767;
-    --ui-copper-soft: #f2dfd1;
-    --ui-shadow: 0 16px 42px rgba(106, 65, 39, 0.09);
-    --ui-hover-shadow: 0 20px 45px rgba(106, 65, 39, 0.14);
-    --ui-sidebar-text: #51382b;
-    --ui-sidebar-muted: #755342;
-    --ui-sidebar-selected-text: #573b2d;
-    --ui-sidebar-selected: rgba(255, 252, 247, 0.83);
-    --ui-header: rgba(255, 251, 247, 0.97);
-    --ui-track: #e8d8ca;
-    --ui-avatar: #f3e2d4;
-    --ui-file: #f3e1d3;
-    --ui-footer: #98877b;
-    --ui-modal-backdrop: rgba(26, 22, 22, 0.52);
-}
-
-body.portal-desktop:not(.light-mode) {
-    --ui-bg: #1b2232;
-    --ui-bg-top: #20293b;
-    --ui-bg-bottom: #1a2232;
-    --ui-card: #2b354b;
-    --ui-card-to: #263146;
-    --ui-card-inset: #354158;
-    --ui-line: #46516a;
-    --ui-text: #fff9f4;
-    --ui-subtle: #bcc5d4;
-    --ui-secondary: #aab6c9;
-    --ui-copper: #e7ba98;
-    --ui-copper-bright: #d5a07b;
-    --ui-copper-soft: #444259;
-    --ui-shadow: 0 16px 42px rgba(5, 10, 22, 0.23);
-    --ui-hover-shadow: 0 20px 45px rgba(5, 10, 22, 0.32);
-    --ui-sidebar-text: #e4e8f0;
-    --ui-sidebar-muted: #afbad0;
-    --ui-sidebar-selected-text: #fff9f4;
-    --ui-sidebar-selected: rgba(199, 139, 99, 0.23);
-    --ui-header: rgba(31, 40, 58, 0.97);
-    --ui-track: #49546d;
-    --ui-avatar: #38465e;
-    --ui-file: #3b465e;
-    --ui-footer: #a4afbf;
-    --ui-modal-backdrop: rgba(7, 12, 22, 0.73);
-}
-
-/* 22.1. Globalni izgled dashboarda */
-
-body.portal-desktop {
-    font-family: "Inter", -apple-system, BlinkMacSystemFont,
-        "Segoe UI", Arial, sans-serif;
-    background: var(--ui-bg);
-    color: var(--ui-text);
-}
-
-body.portal-desktop .dashboard.desktop-layout {
-    background: var(--ui-bg);
-}
-
-body.portal-desktop .desktop-main {
-    background:
-        radial-gradient(ellipse 700px 420px at 98% 7%,
-            rgba(190, 135, 98, 0.13), transparent 78%),
-        radial-gradient(ellipse 650px 400px at -10% 90%,
-            rgba(196, 151, 119, 0.07), transparent 76%),
-        linear-gradient(155deg,
-            var(--ui-bg-top),
-            var(--ui-bg) 58%,
-            var(--ui-bg-bottom));
-}
-
-/* Suptilni val u pozadini ne prekriva sadrzaj */
-body.portal-desktop .desktop-main::before {
-    top: -250px;
-    right: -155px;
-    width: min(1080px, 90vw);
-    height: 510px;
-    border: 0;
-    border-bottom: 1px solid rgba(194, 140, 101, 0.18);
-    border-radius: 0 0 56% 63%;
-    transform: rotate(-9deg);
-    background: linear-gradient(170deg,
-        rgba(229, 185, 148, 0.05), transparent 76%);
-    pointer-events: none;
-    z-index: -1;
-}
-
-/* Tihi, pokretni particles kao na loginu - samo CSS. */
-body.portal-desktop .desktop-main::after {
-    content: "";
-    display: block;
-    position: absolute;
-    top: var(--header-height);
-    right: 0;
-    bottom: 0;
-    left: 0;
-    width: auto;
-    height: auto;
-    z-index: 0;
-    pointer-events: none;
-    border: 0;
-    border-radius: 0;
-    transform: none;
-    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%221240%22%20height%3D%22900%22%20viewBox%3D%220%200%201240%20900%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22trail%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23bd8867%22%20stop-opacity%3D%220%22%2F%3E%3Cstop%20offset%3D%220.6%22%20stop-color%3D%22%23bd8867%22%20stop-opacity%3D%220.56%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23bd8867%22%20stop-opacity%3D%220.88%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cg%20opacity%3D%220.42%22%3E%3Cline%20x1%3D%22115%22%20y1%3D%2290%22%20x2%3D%22191%22%20y2%3D%2290%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%22191%22%20cy%3D%2290%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.32%22%3E%3Cline%20x1%3D%22410%22%20y1%3D%22145%22%20x2%3D%22528%22%20y2%3D%22145%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%22528%22%20cy%3D%22145%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.48%22%3E%3Cline%20x1%3D%22785%22%20y1%3D%2293%22%20x2%3D%22897%22%20y2%3D%2293%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%22897%22%20cy%3D%2293%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.46%22%3E%3Cline%20x1%3D%221080%22%20y1%3D%22180%22%20x2%3D%221152%22%20y2%3D%22180%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%221152%22%20cy%3D%22180%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.47%22%3E%3Cline%20x1%3D%22257%22%20y1%3D%22265%22%20x2%3D%22349%22%20y2%3D%22265%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%22349%22%20cy%3D%22265%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.27%22%3E%3Cline%20x1%3D%22625%22%20y1%3D%22315%22%20x2%3D%22773%22%20y2%3D%22315%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%22773%22%20cy%3D%22315%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.51%22%3E%3Cline%20x1%3D%22925%22%20y1%3D%22275%22%20x2%3D%221010%22%20y2%3D%22275%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%221010%22%20cy%3D%22275%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.36%22%3E%3Cline%20x1%3D%22122%22%20y1%3D%22415%22%20x2%3D%22238%22%20y2%3D%22415%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%22238%22%20cy%3D%22415%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.47%22%3E%3Cline%20x1%3D%22490%22%20y1%3D%22473%22%20x2%3D%22560%22%20y2%3D%22473%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%22560%22%20cy%3D%22473%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.31%22%3E%3Cline%20x1%3D%221060%22%20y1%3D%22447%22%20x2%3D%221200%22%20y2%3D%22447%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%221200%22%20cy%3D%22447%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.42%22%3E%3Cline%20x1%3D%22816%22%20y1%3D%22562%22%20x2%3D%22921%22%20y2%3D%22562%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%22921%22%20cy%3D%22562%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.44%22%3E%3Cline%20x1%3D%22180%22%20y1%3D%22621%22%20x2%3D%22268%22%20y2%3D%22621%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%22268%22%20cy%3D%22621%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.35%22%3E%3Cline%20x1%3D%22551%22%20y1%3D%22692%22%20x2%3D%22676%22%20y2%3D%22692%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%22676%22%20cy%3D%22692%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.52%22%3E%3Cline%20x1%3D%22980%22%20y1%3D%22740%22%20x2%3D%221082%22%20y2%3D%22740%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%221082%22%20cy%3D%22740%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.29%22%3E%3Cline%20x1%3D%22355%22%20y1%3D%22835%22%20x2%3D%22490%22%20y2%3D%22835%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%22490%22%20cy%3D%22835%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%220.42%22%3E%3Cline%20x1%3D%221150%22%20y1%3D%22838%22%20x2%3D%221221%22%20y2%3D%22838%22%20stroke%3D%22url%28%23trail%29%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%221221%22%20cy%3D%22838%22%20r%3D%222%22%20fill%3D%22%23c18a65%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
-    background-repeat: repeat;
-    background-size: 1240px 900px;
-    opacity: 0.65;
-    animation: ptech-particles-drift 32s linear infinite;
-}
-
-body.portal-desktop:not(.light-mode) .desktop-main::after {
-    opacity: 0.38;
-}
-
-@keyframes ptech-particles-drift {
-    from { background-position: 0 0; }
-    to   { background-position: 1240px 0; }
-}
-
-/* 22.2. Lijevi sidebar */
-
-body.portal-desktop .desktop-sidebar {
-    color: var(--ui-sidebar-text);
-    box-shadow: 10px 0 34px rgba(48, 35, 27, 0.08);
-}
-
-body.portal-desktop.light-mode .desktop-sidebar {
-    background:
-        radial-gradient(ellipse 360px 460px at -42% 91%,
-            rgba(255, 249, 241, 0.25), transparent 78%),
-        linear-gradient(164deg,
-            #e8bea0 0%,
-            #d9a989 53%,
-            #c79474 100%);
-    border-right: 1px solid rgba(128, 81, 53, 0.13);
-}
-
-body.portal-desktop:not(.light-mode) .desktop-sidebar {
-    background:
-        radial-gradient(ellipse 310px 420px at -45% 91%,
-            rgba(187, 123, 84, 0.13), transparent 79%),
-        linear-gradient(160deg,
-            #2c374f 0%,
-            #222d42 63%,
-            #1a2436 100%);
-    border-right: 1px solid rgba(233, 193, 164, 0.08);
-}
-
-/* Zakrivljene sjajne linije kao na referentnoj slici. */
-body.portal-desktop .desktop-sidebar::after {
-    content: "";
-    display: block;
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    border: 0;
-    border-radius: 0;
-    transform: none;
-    background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20244%201000%22%20preserveAspectRatio%3D%22none%22%3E%0A%20%3Cdefs%3E%3ClinearGradient%20id%3D%22edge%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%220%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23fffaf1%22%20stop-opacity%3D%220%22%2F%3E%3Cstop%20offset%3D%220.86%22%20stop-color%3D%22%23fffaf1%22%20stop-opacity%3D%220.08%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fffaf1%22%20stop-opacity%3D%220.36%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%0A%20%3Cpath%20d%3D%22M157%20-40%20C%20250%2054%20190%20156%20239%20243%20C%20285%20321%20189%20439%20237%20506%20C%20270%20589%20174%20633%20104%20698%20C%2021%20785%2056%20876%20240%201036%22%20stroke%3D%22%23fff8ec%22%20stroke-width%3D%221.75%22%20stroke-opacity%3D%220.83%22%20fill%3D%22none%22%2F%3E%0A%20%3Cpath%20d%3D%22M-80%2038%20C%2025%2061%20106%20111%20155%20205%20C%20194%20281%20168%20360%20107%20416%20C%2055%20460%20-26%20469%20-75%20518%22%20stroke%3D%22%23ad724e%22%20stroke-width%3D%221%22%20stroke-opacity%3D%220.23%22%20fill%3D%22none%22%2F%3E%0A%20%3Cpath%20d%3D%22M-70%20618%20C%2042%20560%20163%20577%20243%20667%20L244%20996%20L-70%20996%20Z%22%20fill%3D%22url%28%23edge%29%22%20opacity%3D%220.18%22%2F%3E%0A%20%3Cpath%20d%3D%22M-62%20682%20C%2062%20595%20211%20640%20247%20739%20C%20291%20863%20174%20936%20-28%201006%22%20stroke%3D%22%23fff9ef%22%20stroke-width%3D%221.55%22%20stroke-opacity%3D%220.75%22%20fill%3D%22none%22%2F%3E%0A%20%3Cpath%20d%3D%22M-79%20745%20C%2058%20672%20163%20731%20195%20838%20C%20215%20906%20201%20961%20258%201038%22%20stroke%3D%22%23f9e7d7%22%20stroke-width%3D%221.05%22%20stroke-opacity%3D%220.48%22%20fill%3D%22none%22%2F%3E%0A%20%3Cpath%20d%3D%22M-55%20913%20C%2045%20827%20136%20858%20192%20939%20C%20211%20969%20226%20986%20260%201008%22%20stroke%3D%22%23ad724e%22%20stroke-width%3D%221%22%20stroke-opacity%3D%220.25%22%20fill%3D%22none%22%2F%3E%0A%3C%2Fsvg%3E") center / 100% 100% no-repeat;
-    opacity: 1;
-    pointer-events: none;
-}
-
-body.portal-desktop:not(.light-mode) .desktop-sidebar::after {
-    opacity: 0.42;
-}
-
-/* Pravi PTech simbol: ne zahtijeva promjenu HTML-a.
-   Postojeci znak 'P' u brand-logo postaje nevidljiv. */
-body.portal-desktop .sidebar-brand .brand-logo,
-body.portal-desktop .mobile-brand .brand-logo {
-    background-image:
-        url("./assets/ptech-icon.png"),
-        linear-gradient(145deg, #fffaf3, #f1d9c5);
-    background-repeat: no-repeat;
-    background-position: center, center;
-    background-size: 33px auto, cover;
-    background-color: #fff6ec;
-    font-size: 0;
-    border: 1px solid rgba(255, 255, 255, 0.56);
-    box-shadow: 0 9px 23px rgba(91, 56, 35, 0.14);
-    border-radius: 13px;
-}
-
-body.portal-desktop .sidebar-brand-text strong {
-    color: var(--ui-text);
-    font-size: 17px;
-    letter-spacing: -0.55px;
-}
-
-body.portal-desktop.light-mode .sidebar-brand-text strong {
-    color: #202534;
-}
-
-body.portal-desktop:not(.light-mode) .sidebar-brand-text strong {
-    color: #fffaf5;
-}
-
-body.portal-desktop .sidebar-brand-text small {
-    color: var(--ui-sidebar-muted);
-    font-size: 10px;
-    letter-spacing: 1.2px;
-}
-
-body.portal-desktop .sidebar-nav {
-    gap: 9px;
-}
-
-body.portal-desktop .sidebar-link {
-    min-height: 49px;
-    border: 1px solid transparent;
-    border-radius: 14px;
-    color: var(--ui-sidebar-text);
-    font-size: 15px;
-    font-weight: 650;
-    transition: background 0.22s ease,
-        color 0.22s ease, transform 0.22s ease;
-}
-
-body.portal-desktop .sidebar-link:hover {
-    background: rgba(255, 250, 244, 0.23);
-    color: var(--ui-sidebar-selected-text);
-    transform: translateX(2px);
-}
-
-body.portal-desktop:not(.light-mode) .sidebar-link:hover {
-    background: rgba(208, 156, 120, 0.1);
-}
-
-body.portal-desktop .sidebar-link.active,
-body.portal-desktop .sidebar-link[aria-current="page"] {
-    background: var(--ui-sidebar-selected);
-    color: var(--ui-sidebar-selected-text);
-    font-weight: 800;
-    box-shadow: 0 7px 20px rgba(91, 58, 38, 0.08);
-}
-
-body.portal-desktop.light-mode .sidebar-link.active,
-body.portal-desktop.light-mode .sidebar-link[aria-current="page"] {
-    border-color: rgba(255, 255, 255, 0.6);
-}
-
-body.portal-desktop .sidebar-link.active::before,
-body.portal-desktop .sidebar-link[aria-current="page"]::before {
-    background: var(--ui-copper-bright);
-}
-
-body.portal-desktop .sidebar-bottom {
-    border-top-color: rgba(94, 68, 52, 0.17);
-}
-
-body.portal-desktop:not(.light-mode) .sidebar-bottom {
-    border-top-color: rgba(237, 213, 197, 0.12);
-}
-
-body.portal-desktop .sidebar-bottom a {
-    color: var(--ui-sidebar-text);
-}
-
-body.portal-desktop .sidebar-bottom a:hover {
-    color: var(--ui-sidebar-selected-text);
-}
-
-body.portal-desktop .sidebar-bottom p {
-    color: var(--ui-sidebar-muted);
-    font-size: 12px;
-}
-
-/* 22.3. Header: sticky vrijednosti ostaju u scroll-fix dijelu */
-
-body.portal-desktop .dashboard-header {
-    background: var(--ui-header);
-    border-bottom: 1px solid var(--ui-line);
-    -webkit-backdrop-filter: blur(16px);
-    backdrop-filter: blur(16px);
-}
-
-body.portal-desktop #userTop {
-    color: var(--ui-text);
-}
-
-body.portal-desktop .user-avatar {
-    background: var(--ui-avatar);
-    border: 1px solid var(--ui-line);
-}
-
-body.portal-desktop .user-avatar svg {
-    stroke: var(--ui-copper);
-}
-
-body.portal-desktop .header-separator {
-    background: var(--ui-line);
-}
-
-body.portal-desktop .logout-button {
-    color: var(--ui-subtle);
-}
-
-body.portal-desktop .logout-button:hover {
-    color: var(--ui-text);
-    background: var(--ui-copper-soft);
-}
-
-/* Light = sun / Dark = moon */
-body.portal-desktop .theme-slider {
-    background: var(--ui-copper-soft);
-    border-color: var(--ui-line);
-}
-
-body.portal-desktop .theme-slider::before {
-    background: linear-gradient(135deg, #d6a17e, #995e3e);
-}
-
-/* 22.4. Naslovi i sadrzaj */
-
-body.portal-desktop .welcome h2 {
-    color: var(--ui-secondary);
-    font-weight: 500;
-    letter-spacing: -1px;
-}
-
-body.portal-desktop .welcome h2 strong,
-body.portal-desktop .section-title,
-body.portal-desktop .actions-header h2 {
-    color: var(--ui-text);
-    font-weight: 800;
-}
-
-body.portal-desktop .welcome h2 strong {
-    font-weight: 900;
-}
-
-body.portal-desktop .welcome p,
-body.portal-desktop .actions-header p {
-    color: var(--ui-subtle);
-}
-
-/* 22.5. Slider i projektna kartica */
-
-body.portal-desktop .project-counter,
-body.portal-desktop .project-nav-button {
-    color: var(--ui-copper);
-    background: var(--ui-card);
-    border: 1px solid var(--ui-line);
-}
-
-body.portal-desktop .project-nav-button {
-    border-radius: 12px;
-}
-
-body.portal-desktop .project-nav-button:hover:not(:disabled) {
-    background: var(--ui-copper-soft);
-    color: var(--ui-text);
-}
-
-body.portal-desktop .slider-dot {
-    background: var(--ui-line);
-}
-
-body.portal-desktop .slider-dot.active {
-    background: var(--ui-copper-bright);
-}
-
-body.portal-desktop .project-card {
-    padding: 25px 27px;
-    background:
-        radial-gradient(ellipse 370px 250px at 100% 0%,
-            rgba(198, 142, 105, 0.09), transparent 80%),
-        linear-gradient(135deg, var(--ui-card), var(--ui-card-to));
-    border: 1px solid var(--ui-line);
-    border-radius: 24px;
-    box-shadow: var(--ui-shadow);
-}
-
-body.portal-desktop .project-card::before {
-    display: none;
-}
-
-body.portal-desktop .project-card-link:hover {
-    border-color: var(--ui-copper-bright);
-    box-shadow: var(--ui-hover-shadow);
-}
-
-body.portal-desktop .project-icon {
-    background: var(--ui-copper-soft);
-    color: var(--ui-copper);
-    border: 1px solid var(--ui-line);
-    border-radius: 19px;
-}
-
-body.portal-desktop .project-main h3 {
-    color: var(--ui-text);
-}
-
-body.portal-desktop .project-main p {
-    color: var(--ui-subtle);
-}
-
-body.portal-desktop .project-open-arrow {
-    color: var(--ui-secondary);
-}
-
-body.portal-desktop .project-card-link:hover .project-open-arrow {
-    color: var(--ui-copper);
-}
-
-body.portal-desktop .stat-card {
-    background: var(--ui-card-inset);
-    border: 1px solid var(--ui-line);
-    border-radius: 16px;
-}
-
-body.portal-desktop .stat-icon,
-body.portal-desktop .package-name {
-    color: var(--ui-copper);
-}
-
-body.portal-desktop .stat-label {
-    color: var(--ui-subtle);
-}
-
-body.portal-desktop .stat-card strong {
-    color: var(--ui-text);
-}
-
-body.portal-desktop .progress-container {
-    background: var(--ui-track);
-}
-
-body.portal-desktop .progress-bar {
-    background: linear-gradient(90deg, #a26b49, #dfac89);
-}
-
-body.portal-desktop .no-projects {
-    background: var(--ui-card);
-    border-color: var(--ui-line);
-    color: var(--ui-subtle);
-    border-radius: 20px;
-}
-
-/* Statusi zadrzavaju semanticke boje */
-body.portal-desktop.light-mode .status-progress {
-    color: #885233;
-    background: #f7e5d8;
-    border-color: #e7c6ac;
-}
-
-body.portal-desktop:not(.light-mode) .status-progress {
-    color: #edc6a7;
-    background: #493b3d;
-    border-color: #725548;
-}
-
-body.portal-desktop:not(.light-mode) .status-done {
-    color: #abdbb7;
-    background: #263f3b;
-    border-color: #45685d;
-}
-
-body.portal-desktop:not(.light-mode) .status-waiting {
-    color: #d1d1d8;
-    background: #3a4050;
-    border-color: #555c6b;
-}
-
-/* 22.6. Brze akcije */
-
-body.portal-desktop .action-card {
-    background: linear-gradient(155deg, var(--ui-card), var(--ui-card-to));
-    border: 1px solid var(--ui-line);
-    border-radius: 22px;
-    box-shadow: var(--ui-shadow);
-}
-
-body.portal-desktop .action-card:not(:disabled):not([aria-disabled="true"]):hover {
-    transform: translateY(-4px);
-    border-color: var(--ui-copper-bright);
-    box-shadow: var(--ui-hover-shadow);
-}
-
-body.portal-desktop .action-icon {
-    color: var(--ui-copper);
-    background: var(--ui-copper-soft);
-    border: 1px solid var(--ui-line);
-    border-radius: 15px;
-}
-
-body.portal-desktop .action-card:nth-child(3) .action-icon {
-    background: var(--ui-copper-soft);
-    color: var(--ui-copper);
-}
-
-body.portal-desktop .action-card strong {
-    color: var(--ui-text);
-}
-
-body.portal-desktop .action-card p {
-    color: var(--ui-subtle);
-}
-
-body.portal-desktop .action-button {
-    border-radius: 11px;
-    background: var(--ui-copper-soft);
-    color: var(--ui-copper);
-    border-color: var(--ui-line);
-}
-
-body.portal-desktop .action-card:first-child .action-button {
-    color: white;
-    border-color: transparent;
-    background: linear-gradient(115deg, #d6a27e, #a26a46);
-}
-
-body.portal-desktop .action-card:disabled,
-body.portal-desktop .action-card[aria-disabled="true"] {
-    opacity: 0.48;
-    cursor: default;
-}
-
-/* 22.7. Nedavne poruke i dokumenti */
-
-body.portal-desktop .overview-panel {
-    padding: 23px;
-    border-radius: 23px;
-    background: var(--ui-card);
-    border: 1px solid var(--ui-line);
-    box-shadow: var(--ui-shadow);
-}
-
-body.portal-desktop .overview-panel-header h2,
-body.portal-desktop .overview-row-main strong {
-    color: var(--ui-text);
-}
-
-body.portal-desktop .overview-panel-header p,
-body.portal-desktop .overview-row-main small,
-body.portal-desktop .overview-row-date,
-body.portal-desktop .overview-empty {
-    color: var(--ui-subtle);
-}
-
-body.portal-desktop .overview-panel-header > a,
-body.portal-desktop .overview-download {
-    color: var(--ui-copper);
-}
-
-body.portal-desktop .overview-row {
-    border-bottom-color: var(--ui-line);
-}
-
-body.portal-desktop a.overview-row:hover {
-    background: var(--ui-copper-soft);
-}
-
-body.portal-desktop .overview-avatar,
-body.portal-desktop .overview-file-icon {
-    background: var(--ui-file);
-    color: var(--ui-copper);
-}
-
-body.portal-desktop .overview-download:hover {
-    background: var(--ui-copper-soft);
-}
-
-body.portal-desktop .footer {
-    color: var(--ui-footer);
-}
-
-/* 22.8. Prozor za dostavu materijala */
-
-body.portal-desktop .materials-overlay {
-    background: var(--ui-modal-backdrop);
-}
-
-body.portal-desktop .materials-modal {
-    color: var(--ui-text);
-    background: var(--ui-card);
-    border: 1px solid var(--ui-line);
-    border-radius: 24px;
-}
-
-body.portal-desktop .materials-eyebrow {
-    color: var(--ui-copper);
-}
-
-body.portal-desktop .materials-modal h2,
-body.portal-desktop .materials-dropzone strong {
-    color: var(--ui-text);
-}
-
-body.portal-desktop #materialsProjectName,
-body.portal-desktop .materials-hint,
-body.portal-desktop .materials-dropzone > span:not(.materials-upload-icon) {
-    color: var(--ui-subtle);
-}
-
-body.portal-desktop .materials-close,
-body.portal-desktop .materials-cancel {
-    background: var(--ui-card-inset);
-    color: var(--ui-text);
-    border-color: var(--ui-line);
-}
-
-body.portal-desktop .materials-dropzone {
-    background: var(--ui-card-inset);
-    border-color: var(--ui-copper-bright);
-}
-
-body.portal-desktop .materials-dropzone:hover,
-body.portal-desktop .materials-dropzone.dragover {
-    background: var(--ui-copper-soft);
-}
-
-body.portal-desktop .materials-upload-icon {
-    background: var(--ui-copper-soft);
-    color: var(--ui-copper);
-}
-
-body.portal-desktop #materialsFiles,
-body.portal-desktop .materials-status {
-    color: var(--ui-subtle);
-}
-
-body.portal-desktop #materialsFiles::file-selector-button {
-    background: var(--ui-copper-soft);
-    color: var(--ui-copper);
-    border-color: var(--ui-line);
-}
-
-body.portal-desktop .materials-file-item {
-    background: var(--ui-card-inset);
-    color: var(--ui-text);
-    border-color: var(--ui-line);
-}
-
-body.portal-desktop .materials-status.success {
-    color: #4c9b6a;
-}
-
-body.portal-desktop:not(.light-mode) .materials-status.success {
-    color: #9fddb5;
-}
-
-body.portal-desktop .materials-status.error {
-    color: #c95656;
-}
-
-body.portal-desktop:not(.light-mode) .materials-status.error {
-    color: #ffaaa7;
-}
-
-body.portal-desktop .materials-submit {
-    color: white;
-    background: linear-gradient(115deg, #d6a27e, #a26a46);
-}
-
-/* 22.9. Mobilni header / donja navigacija */
-
-body.portal-desktop .mobile-brand h1 {
-    color: var(--ui-text);
-}
-
-body.portal-desktop .bottom-nav {
-    background: var(--ui-header);
-    border-top: 1px solid var(--ui-line);
-    -webkit-backdrop-filter: blur(16px);
-    backdrop-filter: blur(16px);
-}
-
-body.portal-desktop .bottom-nav-item {
-    color: var(--ui-subtle);
-}
-
-body.portal-desktop .bottom-nav-item.active {
-    color: var(--ui-copper);
-}
-
-body.portal-desktop .bottom-nav-item.active::before {
-    background: var(--ui-copper-bright);
-}
-
-body.portal-desktop .nav-notification {
-    border-color: var(--ui-bg);
-}
-
-@media (min-width: 901px) {
-    /* Zadrzava se isti sticky mehanizam, samo siri sidebar
-       radi ispravnog prikaza logotipa i navigacije. */
-    body.portal-desktop .dashboard.desktop-layout {
-        grid-template-columns: 244px minmax(0, 1fr);
-    }
-
-    body.portal-desktop .dashboard-content {
-        padding: 32px 42px 28px;
-    }
-
-    body.portal-desktop .welcome {
-        margin-bottom: 28px;
-    }
-
-    body.portal-desktop .welcome h2 {
-        font-size: 38px;
-    }
-
-    body.portal-desktop .welcome p {
-        font-size: 16px;
-    }
-
-    body.portal-desktop .section-title,
-    body.portal-desktop .actions-header h2 {
-        font-size: 24px;
-    }
-
-    body.portal-desktop .action-card {
-        min-height: 208px;
-        padding: 22px;
-    }
-
-    body.portal-desktop .action-icon {
-        width: 47px;
-        height: 47px;
-        margin-bottom: 16px;
-    }
-
-    body.portal-desktop .action-card strong {
-        font-size: 17px;
-    }
-
-    body.portal-desktop .action-card p {
-        font-size: 14px;
-    }
-
-    body.portal-desktop .action-button {
-        min-height: 38px;
-        padding: 9px 15px;
-        font-size: 13px;
-    }
-}
-
-@media (min-width: 901px) and (max-width: 1150px) {
-    body.portal-desktop .dashboard.desktop-layout {
-        grid-template-columns: 224px minmax(0, 1fr);
-    }
-
-    body.portal-desktop .dashboard-content {
-        padding-left: 28px;
-        padding-right: 28px;
-    }
-
-    body.portal-desktop .sidebar-brand-text strong {
-        font-size: 15px;
-    }
-}
-
-@media (max-width: 900px) {
-    body.portal-desktop .sidebar-brand-text strong {
-        font-size: 14px;
-    }
-
-    body.portal-desktop .dashboard-content {
-        padding-left: 22px;
-        padding-right: 22px;
-    }
-}
-
-@media (max-width: 700px) {
-    body.portal-desktop .dashboard-content {
-        padding: 23px 15px 0;
-    }
-
-    body.portal-desktop .project-card {
-        padding: 17px;
-        border-radius: 19px;
-    }
-
-    body.portal-desktop .action-card {
-        border-radius: 17px;
-        padding: 14px;
-    }
-
-    body.portal-desktop .action-card strong {
-        font-size: 13px;
-    }
-
-    body.portal-desktop .action-card p {
-        font-size: 11px;
-    }
-
-    body.portal-desktop .overview-panel {
-        padding: 17px;
-        border-radius: 18px;
-    }
-
-    body.portal-desktop .overview-row-date {
-        font-size: 10px;
-    }
-
-    body.portal-desktop .materials-modal {
-        border-radius: 18px;
-    }
-
-    body.portal-desktop .mobile-brand .brand-logo {
-        background-size: 30px auto, cover;
-    }
-}
-
-@media (max-width: 390px) {
-    body.portal-desktop .dashboard-content {
-        padding-left: 12px;
-        padding-right: 12px;
-    }
-}
-
-
-/* 23. ANIMIRANI PARTICLES I WAVE — RESPONSIVE / A11Y */
-@media (max-width: 700px) {
-    body.portal-desktop .desktop-main::after {
-        display: none;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    body.portal-desktop .desktop-main::after {
-        animation: none;
-    }
-}
+/* =====================================================
+   END — PTECH DIGITAL CLIENT PORTAL
+===================================================== */
