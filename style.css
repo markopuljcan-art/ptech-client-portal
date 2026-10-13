@@ -2933,6 +2933,131 @@ body.portal-desktop:not(.light-mode) .materials-overlay {
     }
 }
 
+
+/* ================================================
+   PTECH DIGITAL — DASHBOARD PARTICLES
+   Isti princip animacije kao na login stranici
+================================================ */
+
+/* Uklanjamo prethodnu neuspjelu CSS-only verziju */
+
+body.portal-desktop .desktop-main::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* Sloj iza svih kartica */
+
+.dashboard-particles {
+    position: absolute;
+    inset: var(--header-height) 0 0;
+
+    z-index: 0;
+    overflow: hidden;
+
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Pojedinacna bakrena linijica */
+
+.dashboard-particle {
+    position: absolute;
+
+    top: var(--particle-top);
+    left: -130px;
+
+    width: var(--particle-width);
+    height: 1px;
+
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(183, 112, 71, 0.22) 30%,
+        rgba(183, 112, 71, 0.66) 100%
+    );
+
+    opacity: 0;
+
+    animation:
+        dashboardParticleMove
+        var(--particle-duration)
+        linear
+        var(--particle-delay)
+        infinite;
+}
+
+/* Tockica na desnom kraju linije */
+
+.dashboard-particle::after {
+    content: "";
+
+    position: absolute;
+
+    right: -1px;
+    top: -2px;
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background: rgba(184, 112, 70, 0.72);
+
+    box-shadow:
+        0 0 7px rgba(184, 112, 70, 0.32);
+}
+
+/* Svaki particle putuje preko cijelog ekrana */
+
+@keyframes dashboardParticleMove {
+    0% {
+        transform: translate3d(0, 0, 0);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: var(--particle-opacity);
+    }
+
+    90% {
+        opacity: var(--particle-opacity);
+    }
+
+    100% {
+        transform: translate3d(
+            calc(100vw + 260px),
+            0,
+            0
+        );
+
+        opacity: 0;
+    }
+}
+
+/* Tamna tema — diskretniji particles */
+
+body.portal-desktop:not(.light-mode)
+.dashboard-particles {
+    opacity: 0.55;
+}
+
+/* Sadrzaj je uvijek iznad animacije */
+
+.dashboard-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Prilagodba korisnicima koji ne zele animacije */
+
+@media (prefers-reduced-motion: reduce) {
+    .dashboard-particles {
+        display: none;
+    }
+}
+
+
 /* =====================================================
    28. PRISTUPACNOST
 ===================================================== */
