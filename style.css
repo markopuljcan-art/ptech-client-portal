@@ -262,6 +262,12 @@ body.portal-desktop:not(.light-mode) .desktop-main::before {
    Cisti CSS, bez dodatnog JavaScripta
 ===================================================== */
 
+
+/* =========================================
+   PTECH DIGITAL — BRONZE PARTICLES
+   Vise linijica s tockicama, bez pruga
+========================================= */
+
 .desktop-main::after {
     content: "";
 
@@ -272,64 +278,149 @@ body.portal-desktop:not(.light-mode) .desktop-main::before {
 
     pointer-events: none;
 
-    background-image:
-        radial-gradient(
-            circle,
-            rgba(179, 104, 61, 0.65) 0 2px,
-            transparent 2.5px
-        ),
-        linear-gradient(
-            90deg,
-            transparent 0 15%,
-            rgba(187, 135, 103, 0.12) 55%,
-            rgba(187, 135, 103, 0.46) 100%
-        ),
-        radial-gradient(
-            circle,
-            rgba(179, 104, 61, 0.46) 0 2px,
-            transparent 2.5px
-        ),
-        linear-gradient(
-            90deg,
-            transparent 0 15%,
-            rgba(187, 135, 103, 0.08) 55%,
-            rgba(187, 135, 103, 0.32) 100%
-        );
+    background:
+        /* PARTICLE 1 */
+        radial-gradient(circle at right center,
+            #bc815e 0 2px, transparent 3px)
+            7% 12% / 85px 7px no-repeat,
+        linear-gradient(90deg,
+            transparent, rgba(188,129,94,.48))
+            7% calc(12% + 3px) / 85px 1px no-repeat,
 
-    background-size:
-        950px 190px,
-        90px 1px,
-        1200px 260px,
-        65px 1px;
+        /* PARTICLE 2 */
+        radial-gradient(circle at right center,
+            #bc815e 0 2px, transparent 3px)
+            48% 8% / 65px 7px no-repeat,
+        linear-gradient(90deg,
+            transparent, rgba(188,129,94,.45))
+            48% calc(8% + 3px) / 65px 1px no-repeat,
 
-    background-position:
-        -475px 60px,
-        -90px 155px,
-        -600px 85px,
-        -65px 245px;
+        /* PARTICLE 3 */
+        radial-gradient(circle at right center,
+            #bc815e 0 2px, transparent 3px)
+            82% 17% / 100px 7px no-repeat,
+        linear-gradient(90deg,
+            transparent, rgba(188,129,94,.50))
+            82% calc(17% + 3px) / 100px 1px no-repeat,
 
-    background-repeat: no-repeat;
+        /* PARTICLE 4 */
+        radial-gradient(circle at right center,
+            #bc815e 0 2px, transparent 3px)
+            28% 25% / 75px 7px no-repeat,
+        linear-gradient(90deg,
+            transparent, rgba(188,129,94,.45))
+            28% calc(25% + 3px) / 75px 1px no-repeat,
 
-    opacity: 0.52;
+        /* PARTICLE 5 */
+        radial-gradient(circle at right center,
+            #bc815e 0 2px, transparent 3px)
+            69% 31% / 95px 7px no-repeat,
+        linear-gradient(90deg,
+            transparent, rgba(188,129,94,.45))
+            69% calc(31% + 3px) / 95px 1px no-repeat,
 
-    animation: ptech-particles-move 24s linear infinite;
+        /* PARTICLE 6 */
+        radial-gradient(circle at right center,
+            #bc815e 0 2px, transparent 3px)
+            13% 39% / 70px 7px no-repeat,
+        linear-gradient(90deg,
+            transparent, rgba(188,129,94,.45))
+            13% calc(39% + 3px) / 70px 1px no-repeat,
+
+        /* PARTICLE 7 */
+        radial-gradient(circle at right center,
+            #bc815e 0 2px, transparent 3px)
+            88% 44% / 85px 7px no-repeat,
+        linear-gradient(90deg,
+            transparent, rgba(188,129,94,.48))
+            88% calc(44% + 3px) / 85px 1px no-repeat,
+
+        /* PARTICLE 8 */
+        radial-gradient(circle at right center,
+            #bc815e 0 2px, transparent 3px)
+            39% 52% / 105px 7px no-repeat,
+        linear-gradient(90deg,
+            transparent, rgba(188,129,94,.45))
+            39% calc(52% + 3px) / 105px 1px no-repeat,
+
+        /* PARTICLE 9 */
+        radial-gradient(circle at right center,
+            #bc815e 0 2px, transparent 3px)
+            75% 59% / 65px 7px no-repeat,
+        linear-gradient(90deg,
+            transparent, rgba(188,129,94,.45))
+            75% calc(59% + 3px) / 65px 1px no-repeat,
+
+        /* PARTICLE 10 */
+        radial-gradient(circle at right center,
+            #bc815e 0 2px, transparent 3px)
+            17% 67% / 95px 7px no-repeat,
+        linear-gradient(90deg,
+            transparent, rgba(188,129,94,.45))
+            17% calc(67% + 3px) / 95px 1px no-repeat,
+
+        /* PARTICLE 11 */
+        radial-gradient(circle at right center,
+            #bc815e 0 2px, transparent 3px)
+            57% 72% / 78px 7px no-repeat,
+        linear-gradient(90deg,
+            transparent, rgba(188,129,94,.46))
+            57% calc(72% + 3px) / 78px 1px no-repeat,
+
+        /* PARTICLE 12 */
+        radial-gradient(circle at right center,
+            #bc815e 0 2px, transparent 3px)
+            91% 79% / 100px 7px no-repeat,
+        linear-gradient(90deg,
+            transparent, rgba(188,129,94,.46))
+            91% calc(79% + 3px) / 100px 1px no-repeat,
+
+        /* PARTICLE 13 */
+        radial-gradient(circle at right center,
+            #bc815e 0 2px, transparent 3px)
+            33% 86% / 80px 7px no-repeat,
+        linear-gradient(90deg,
+            transparent, rgba(188,129,94,.46))
+            33% calc(86% + 3px) / 80px 1px no-repeat,
+
+        /* PARTICLE 14 */
+        radial-gradient(circle at right center,
+            #bc815e 0 2px, transparent 3px)
+            72% 94% / 90px 7px no-repeat,
+        linear-gradient(90deg,
+            transparent, rgba(188,129,94,.48))
+            72% calc(94% + 3px) / 90px 1px no-repeat;
+
+    opacity: 0.78;
+
+    animation: ptech-particles-move
+        19s ease-in-out infinite alternate;
 }
+
+/* Njezno horizontalno pomicanje */
 
 @keyframes ptech-particles-move {
     from {
-        background-position:
-            -475px 60px,
-            -90px 155px,
-            -600px 85px,
-            -65px 245px;
+        transform: translateX(-5%);
     }
 
     to {
-        background-position:
-            475px 60px,
-            860px 155px,
-            600px 85px,
-            1135px 245px;
+        transform: translateX(5%);
+    }
+}
+
+/* DARK MODE */
+
+body.portal-desktop:not(.light-mode)
+.desktop-main::after {
+    opacity: 0.30;
+}
+
+/* Pristupacnost */
+
+@media (prefers-reduced-motion: reduce) {
+    .desktop-main::after {
+        animation: none;
     }
 }
 
