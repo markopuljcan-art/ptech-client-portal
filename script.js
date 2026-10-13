@@ -1316,6 +1316,109 @@ document.addEventListener(
     }
 );
 
+
+/* ================================================
+   PTECH DIGITAL
+   DASHBOARD PARTICLES — LOGIN STYLE
+================================================ */
+
+(function initDashboardParticles() {
+
+    const main = document.querySelector(
+        ".desktop-main"
+    );
+
+    if (!main) {
+        return;
+    }
+
+    // Sprjecava dvostruko stvaranje particlesa
+    if (
+        document.getElementById(
+            "dashboardParticles"
+        )
+    ) {
+        return;
+    }
+
+    // Postujemo postavke smanjenog kretanja
+    if (
+        window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches
+    ) {
+        return;
+    }
+
+    // Kreiramo sloj za particles
+    const container = document.createElement("div");
+
+    container.className = "dashboard-particles";
+    container.id = "dashboardParticles";
+
+    container.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    // Sloj postavljamo iza sadrzaja
+    main.prepend(container);
+
+    const particleCount = 34;
+
+    for (let i = 0; i < particleCount; i++) {
+
+        const particle = document.createElement("span");
+
+        particle.className = "dashboard-particle";
+
+        // Razlicita vertikalna pozicija
+        const top = 2 + Math.random() * 96;
+
+        // Razlicita duljina linije
+        const width = 35 + Math.random() * 65;
+
+        // Razlicita brzina kretanja
+        const duration = 13 + Math.random() * 11;
+
+        // Negativni delay daje raspored
+        // po cijelom ekranu odmah pri otvaranju
+        const delay = -Math.random() * 25;
+
+        // Razlicita prozirnost
+        const opacity = 0.36 + Math.random() * 0.38;
+
+        particle.style.setProperty(
+            "--particle-top",
+            top + "%"
+        );
+
+        particle.style.setProperty(
+            "--particle-width",
+            width + "px"
+        );
+
+        particle.style.setProperty(
+            "--particle-duration",
+            duration + "s"
+        );
+
+        particle.style.setProperty(
+            "--particle-delay",
+            delay + "s"
+        );
+
+        particle.style.setProperty(
+            "--particle-opacity",
+            opacity
+        );
+
+        container.appendChild(particle);
+    }
+
+})();
+
+
 /* START */
 
 updateMaterialsAction();
