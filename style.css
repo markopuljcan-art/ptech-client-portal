@@ -3241,6 +3241,130 @@ body {
     }
 }
 
+
+/* ==========================================
+   PTECH DIGITAL
+   DARK MODE — BOTTOM NAV FIX
+========================================== */
+
+@media (max-width: 1100px) {
+
+    /* Tamnoplava pozadina navigacije */
+
+    body:not(.light-mode) .bottom-nav {
+        background: rgba(29, 41, 61, 0.98) !important;
+
+        border-top: 1px solid
+            rgba(226, 181, 148, 0.18) !important;
+
+        box-shadow:
+            0 -8px 28px rgba(5, 12, 25, 0.22);
+
+        -webkit-backdrop-filter: blur(18px);
+        backdrop-filter: blur(18px);
+    }
+
+    /* Neaktivne ikone i tekst */
+
+    body:not(.light-mode) .bottom-nav-item {
+        color: #b6c2d3 !important;
+    }
+
+    /* Aktivna stranica — broncana */
+
+    body:not(.light-mode) .bottom-nav-item.active {
+        color: #e3b28e !important;
+    }
+
+    /* Crtica iznad aktivne ikone */
+
+    body:not(.light-mode)
+    .bottom-nav-item.active::before {
+        background: #e3b28e !important;
+    }
+
+    /* Ikone prate boju teksta */
+
+    body:not(.light-mode) .bottom-nav-item svg {
+        stroke: currentColor;
+    }
+
+    /* Badge za neprocitane poruke */
+
+    body:not(.light-mode) .nav-notification {
+        border-color: #1d293d;
+    }
+}
+
+
+/* ==========================================
+   PTECH DIGITAL — RESPONSIVE HEADER BRAND
+========================================== */
+
+/* Na desktopu je skriven jer imamo sidebar */
+
+.dashboard-mobile-brand {
+    display: none;
+}
+
+/* Kad sidebar ode dolje, pojavljuje se naslov */
+
+@media (max-width: 1100px) {
+
+    .dashboard-mobile-brand {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        flex: 1;
+        min-width: 0;
+        gap: 5px;
+    }
+
+    .dashboard-mobile-brand span {
+        color: #bc8562;
+
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1.8px;
+    }
+
+    .dashboard-mobile-brand strong {
+        color: #202534;
+
+        font-size: 17px;
+        font-weight: 900;
+        letter-spacing: -0.5px;
+    }
+
+    /* Dark mode */
+
+    body:not(.light-mode)
+    .dashboard-mobile-brand span {
+        color: #e3b28e;
+    }
+
+    body:not(.light-mode)
+    .dashboard-mobile-brand strong {
+        color: #fff8f2;
+    }
+}
+
+/* Manji mobiteli */
+
+@media (max-width: 480px) {
+
+    .dashboard-mobile-brand span {
+        font-size: 8px;
+        letter-spacing: 1.2px;
+    }
+
+    .dashboard-mobile-brand strong {
+        font-size: 14px;
+    }
+}
+
+
 /* =====================================================
    END — RESPONSIVE FIX
 ===================================================== */
