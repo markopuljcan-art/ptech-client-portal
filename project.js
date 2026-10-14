@@ -1030,7 +1030,7 @@ function getActivityStatusData(rawStatus) {
 
     return {
         className: "planned",
-        label: "Planirano",
+        label: "Na čekanju",
         icon: "○"
     };
 }
