@@ -2638,6 +2638,184 @@ body.light-mode .deadline-late .deadline-badge {
 }
 
 
+/* ================================================
+   PTECH DIGITAL — DEADLINE BUBBLES V60
+   Isti raspored u light i dark modeu
+================================================ */
+
+/* DARK MODE BOJE */
+
+body {
+    --deadline-bubble-bg: linear-gradient(
+        135deg,
+        rgba(218, 172, 140, 0.17),
+        rgba(160, 127, 121, 0.09)
+    );
+
+    --deadline-bubble-border:
+        rgba(231, 190, 159, 0.20);
+
+    --deadline-bubble-shadow:
+        0 5px 15px rgba(5, 12, 28, 0.10);
+}
+
+/* LIGHT MODE BOJE */
+
+body.light-mode {
+    --deadline-bubble-bg: linear-gradient(
+        135deg,
+        #f5d9c3,
+        #eabb99
+    );
+
+    --deadline-bubble-border:
+        rgba(255, 251, 245, 0.55);
+
+    --deadline-bubble-shadow:
+        0 5px 15px rgba(119, 75, 45, 0.06);
+}
+
+/* VELIKI BUBBLE ZA DATUM */
+
+.deadline-card .deadline-main-date {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    min-height: 87px;
+
+    margin-top: 23px;
+    padding: 19px 23px;
+
+    border: 1px solid var(--deadline-bubble-border);
+    border-radius: 16px;
+
+    background: var(--deadline-bubble-bg);
+
+    box-shadow: var(--deadline-bubble-shadow);
+
+    color: var(--card-text);
+
+    font-size: clamp(25px, 2.7vw, 33px);
+    font-weight: 900;
+}
+
+/* TRI BUBBLEA ISPOD DATUMA */
+
+.deadline-card .deadline-meta-grid {
+    display: grid;
+
+    grid-template-columns: repeat(
+        3,
+        minmax(0, 1fr)
+    );
+
+    gap: 13px;
+
+    margin-top: 13px;
+    padding-top: 0;
+
+    border-top: none;
+}
+
+/* POJEDINACNI BUBBLE */
+
+.deadline-card .deadline-meta-item {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: flex-start;
+
+    gap: 8px;
+
+    min-width: 0;
+    min-height: 116px;
+
+    padding: 19px 20px;
+
+    border: 1px solid var(--deadline-bubble-border);
+    border-radius: 15px;
+
+    background: var(--deadline-bubble-bg);
+
+    box-shadow: var(--deadline-bubble-shadow);
+}
+
+/* UKLANJA STARE RAZDJELNE LINIJE */
+
+.deadline-card .deadline-meta-item:first-child,
+.deadline-card .deadline-meta-item:last-child {
+    padding: 19px 20px;
+}
+
+.deadline-card .deadline-meta-item:not(:last-child) {
+    border: 1px solid var(--deadline-bubble-border);
+}
+
+/* NASLOVI I VRIJEDNOSTI */
+
+.deadline-card .deadline-meta-label {
+    color: var(--card-muted);
+
+    font-size: 10px;
+    font-weight: 750;
+
+    letter-spacing: 0.7px;
+}
+
+.deadline-card .deadline-meta-item strong {
+    color: var(--card-text);
+
+    font-size: 16px;
+    font-weight: 900;
+}
+
+.deadline-card .deadline-meta-item small {
+    color: var(--card-muted);
+
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+/* TABLET */
+
+@media (max-width: 1050px) {
+    .deadline-card .deadline-meta-grid {
+        grid-template-columns: repeat(
+            2,
+            minmax(0, 1fr)
+        );
+    }
+}
+
+/* MOBITEL */
+
+@media (max-width: 650px) {
+    .deadline-card .deadline-main-date {
+        min-height: 72px;
+        padding: 16px 17px;
+        font-size: 25px;
+    }
+
+    .deadline-card .deadline-meta-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .deadline-card .deadline-meta-item,
+    .deadline-card .deadline-meta-item:first-child,
+    .deadline-card .deadline-meta-item:last-child {
+        min-height: 88px;
+        padding: 16px 17px;
+    }
+
+    .deadline-card .deadline-meta-item:not(:last-child) {
+        border: 1px solid var(--deadline-bubble-border);
+    }
+}
+
+
 /* =====================================================
    31. REDUCED MOTION
 ===================================================== */
