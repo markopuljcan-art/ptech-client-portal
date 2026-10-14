@@ -1,8 +1,8 @@
+
 <!DOCTYPE html>
 <html lang="hr">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -10,61 +10,196 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <link
-        rel="stylesheet"
-        href="./project.css?v=51"
+    <meta
+        name="theme-color"
+        content="#fffaf5"
     >
 
-    <script
-        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-    ></script>
+    <title>PTech Digital | Projekt</title>
 
+    <!-- Sprjecava bljesak pogresne teme -->
+    <script>
+        (function () {
+            try {
+                const theme = localStorage.getItem("theme");
+
+                if (theme === "light") {
+                    document.documentElement.classList.add(
+                        "ptech-initial-light"
+                    );
+                }
+            } catch (error) {
+                // Stranica i dalje normalno radi.
+            }
+        })();
+    </script>
+
+    <link
+        rel="stylesheet"
+        href="./project.css?v=52"
+    >
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Postojeci JavaScript ostaje isti -->
     <script
         src="./project.js?v=51"
         defer
     ></script>
 
-    <title>
-        PTech Digital | Projekt
-    </title>
-
 </head>
-
 
 <body>
 
-    <main class="dashboard">
+<main class="dashboard desktop-layout">
 
+    <!-- ==========================================
+         DESKTOP SIDEBAR
+    ========================================== -->
 
-        <!-- =========================
-             HEADER
-        ========================== -->
+    <aside class="desktop-sidebar">
 
-        <header class="dashboard-header">
+        <a
+            href="form.html"
+            class="sidebar-brand"
+        >
+            <span class="sidebar-brand-logo">
+                <img
+                    src="assets/ptech-icon.png"
+                    alt=""
+                >
+            </span>
 
+            <span class="sidebar-brand-text">
+                <strong>PTech Digital</strong>
+                <small>CLIENT PORTAL</small>
+            </span>
+        </a>
 
-            <!-- BRAND -->
+        <div class="sidebar-navigation-title">
+            RADNI PROSTOR
+        </div>
+
+        <nav
+            class="sidebar-nav"
+            aria-label="Glavna navigacija"
+        >
 
             <a
                 href="form.html"
-                class="brand"
+                class="sidebar-link"
             >
-
-                <div class="brand-logo">
-                    P
-                </div>
-
-                <h1>
-                    PTech Digital Client Portal
-                </h1>
-
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 11.5L12 4l9 7.5"></path>
+                    <path d="M5 10.5V20h14v-9.5"></path>
+                    <path d="M9 20v-6h6v6"></path>
+                </svg>
+                <span>Početna</span>
             </a>
 
+            <a
+                href="my-projects.html"
+                class="sidebar-link active"
+                aria-current="page"
+            >
+                <svg viewBox="0 0 24 24">
+                    <rect
+                        x="4"
+                        y="5"
+                        width="16"
+                        height="15"
+                        rx="2"
+                    ></rect>
+                    <path d="M8 5V3"></path>
+                    <path d="M16 5V3"></path>
+                    <path d="M4 9h16"></path>
+                </svg>
+                <span>Projekti</span>
+            </a>
 
-            <!-- HEADER ACTIONS -->
+            <a
+                href="documents.html"
+                class="sidebar-link"
+            >
+                <svg viewBox="0 0 24 24">
+                    <path d="M4 4h6l2 2h8v14H4z"></path>
+                </svg>
+                <span>Dokumenti</span>
+            </a>
+
+            <a
+                href="messages.html"
+                class="sidebar-link"
+            >
+                <svg viewBox="0 0 24 24">
+                    <path d="M4 5h16v11H8l-4 4z"></path>
+                </svg>
+                <span>Poruke</span>
+            </a>
+
+            <a
+                href="profile.html"
+                class="sidebar-link"
+            >
+                <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="8" r="3"></circle>
+                    <path d="M5 20c0-4 3-7 7-7s7 3 7 7"></path>
+                </svg>
+                <span>Profil</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a
+                href="messages.html"
+                class="sidebar-help"
+            >
+                <span class="sidebar-help-icon">?</span>
+
+                <span>
+                    <strong>Pomoć i podrška</strong>
+                    <small>Tu smo za vaš projekt</small>
+                </span>
+
+                <span class="sidebar-help-arrow">↗</span>
+            </a>
+
+            <p>
+                © PTech Digital 2026.
+            </p>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ==========================================
+         MAIN
+    ========================================== -->
+
+    <div class="desktop-main">
+
+        <!-- ======================================
+             STICKY HEADER
+        ====================================== -->
+
+        <header class="dashboard-header">
+
+            <div class="header-page-title">
+
+                <span class="header-eyebrow">
+                    PTECH DIGITAL
+                </span>
+
+                <strong>
+                    Detalji projekta
+                </strong>
+
+            </div>
 
             <div class="header-actions">
-
 
                 <!-- USER -->
 
@@ -73,7 +208,6 @@
                     <div class="user-avatar">
 
                         <svg viewBox="0 0 24 24">
-
                             <circle
                                 cx="12"
                                 cy="8"
@@ -83,7 +217,6 @@
                             <path
                                 d="M5 20c0-4 3-7 7-7s7 3 7 7"
                             ></path>
-
                         </svg>
 
                     </div>
@@ -105,37 +238,25 @@
                     class="logout-button"
                     type="button"
                 >
-
                     <svg viewBox="0 0 24 24">
-
-                        <path
-                            d="M10 5H5v14h5"
-                        ></path>
-
-                        <path
-                            d="M14 8l4 4-4 4"
-                        ></path>
-
-                        <path
-                            d="M8 12h10"
-                        ></path>
-
+                        <path d="M10 5H5v14h5"></path>
+                        <path d="M14 8l4 4-4 4"></path>
+                        <path d="M8 12h10"></path>
                     </svg>
 
-                    <span>
-                        Odjava
-                    </span>
-
+                    <span>Odjava</span>
                 </button>
 
 
                 <span class="header-separator"></span>
 
 
-                <!-- THEME -->
+                <!-- LIGHT / DARK MODE -->
 
-                <label class="theme-switch">
-
+                <label
+                    class="theme-switch"
+                    title="Promijeni temu"
+                >
                     <input
                         type="checkbox"
                         id="themeToggle"
@@ -143,23 +264,49 @@
                     >
 
                     <span class="theme-slider"></span>
-
                 </label>
-
 
             </div>
 
         </header>
 
 
-        <!-- =========================
-             CONTENT
-        ========================== -->
+        <!-- ======================================
+             PARTICLES
+        ====================================== -->
+
+        <div
+            class="project-particles"
+            id="projectParticles"
+            aria-hidden="true"
+        ></div>
+
+
+        <!-- ======================================
+             PAGE CONTENT
+        ====================================== -->
 
         <div class="dashboard-content">
 
+            <div class="page-intro">
+                <span class="page-eyebrow">
+                    VAŠ DIGITALNI RADNI PROSTOR
+                </span>
 
-            <!-- PROJECT DETAIL -->
+                <h1>
+                    Pregled projekta
+                </h1>
+
+                <p>
+                    Sve važne informacije, aktivnosti i rokovi
+                    vašeg projekta na jednom mjestu.
+                </p>
+            </div>
+
+
+            <!-- ==================================
+                 PROJECT DETAILS
+            ================================== -->
 
             <div id="projectDetail">
 
@@ -170,83 +317,55 @@
             </div>
 
 
-            <!-- =========================
+            <!-- ==================================
                  ACTIVITIES
-            ========================== -->
+            ================================== -->
 
             <section class="dashboard-section">
 
                 <div class="activities-detail-card">
 
-
                     <div class="activities-card-heading">
 
                         <div class="activities-heading-left">
 
-
                             <div class="activities-main-icon">
 
                                 <svg viewBox="0 0 24 24">
-
-                                    <path
-                                        d="M5 20V12"
-                                    ></path>
-
-                                    <path
-                                        d="M10 20V7"
-                                    ></path>
-
-                                    <path
-                                        d="M15 20V4"
-                                    ></path>
-
-                                    <path
-                                        d="M20 20V10"
-                                    ></path>
-
+                                    <path d="M5 20V12"></path>
+                                    <path d="M10 20V7"></path>
+                                    <path d="M15 20V4"></path>
+                                    <path d="M20 20V10"></path>
                                 </svg>
 
                             </div>
 
-
                             <div>
-
-                                <h3>
-                                    Aktivnosti
-                                </h3>
-
-                                <p>
-                                    Pregled napretka projekta
-                                </p>
-
+                                <h3>Aktivnosti</h3>
+                                <p>Pregled napretka projekta</p>
                             </div>
-
 
                         </div>
 
                     </div>
-
 
                     <div
                         class="activities-card"
                         id="projectActivities"
                     >
-
                         <div class="empty-state">
                             Učitavanje aktivnosti...
                         </div>
-
                     </div>
-
 
                 </div>
 
             </section>
 
 
-            <!-- =========================
+            <!-- ==================================
                  DEADLINE
-            ========================== -->
+            ================================== -->
 
             <section class="dashboard-section">
 
@@ -264,97 +383,63 @@
             <!-- FOOTER -->
 
             <footer class="footer">
-
                 © PTech Digital 2026.
                 • Sva prava zadržana.
-
             </footer>
-
 
         </div>
 
 
-        <!-- =========================
-             BOTTOM NAV
-        ========================== -->
+        <!-- ======================================
+             MOBILE BOTTOM NAVIGATION
+        ====================================== -->
 
-        <nav class="bottom-nav">
-
-
-            <!-- HOME -->
+        <nav
+            class="bottom-nav"
+            aria-label="Mobilna navigacija"
+        >
 
             <a
                 href="form.html"
                 class="bottom-nav-item"
             >
-
                 <svg viewBox="0 0 24 24">
-
-                    <path
-                        d="M3 11.5L12 4l9 7.5"
-                    ></path>
-
-                    <path
-                        d="M5 10.5V20h14v-9.5"
-                    ></path>
-
-                    <path
-                        d="M9 20v-6h6v6"
-                    ></path>
-
+                    <path d="M3 11.5L12 4l9 7.5"></path>
+                    <path d="M5 10.5V20h14v-9.5"></path>
+                    <path d="M9 20v-6h6v6"></path>
                 </svg>
-
-                <span>
-                    Početna
-                </span>
-
+                <span>Početna</span>
             </a>
 
-
-            <!-- MESSAGES -->
 
             <a
                 href="messages.html"
                 class="bottom-nav-item"
             >
-
                 <div class="bottom-nav-icon-wrap">
 
                     <svg viewBox="0 0 24 24">
-
-                        <path
-                            d="M4 5h16v11H8l-4 4z"
-                        ></path>
-
+                        <path d="M4 5h16v11H8l-4 4z"></path>
                     </svg>
-
 
                     <span
                         id="messagesUnreadBadge"
                         class="nav-notification"
                         hidden
-                    >
-                        0
-                    </span>
+                    >0</span>
 
                 </div>
 
-                <span>
-                    Poruke
-                </span>
-
+                <span>Poruke</span>
             </a>
 
-
-            <!-- PROJECTS -->
 
             <a
                 href="my-projects.html"
                 class="bottom-nav-item active"
+                aria-current="page"
             >
-
                 <svg viewBox="0 0 24 24">
-
                     <rect
                         x="4"
                         y="5"
@@ -362,83 +447,103 @@
                         height="15"
                         rx="2"
                     ></rect>
-
-                    <path
-                        d="M8 5V3"
-                    ></path>
-
-                    <path
-                        d="M16 5V3"
-                    ></path>
-
-                    <path
-                        d="M4 9h16"
-                    ></path>
-
+                    <path d="M8 5V3"></path>
+                    <path d="M16 5V3"></path>
+                    <path d="M4 9h16"></path>
                 </svg>
-
-                <span>
-                    Projekti
-                </span>
-
+                <span>Projekti</span>
             </a>
 
-
-            <!-- DOCUMENTS -->
 
             <a
                 href="documents.html"
                 class="bottom-nav-item"
             >
-
                 <svg viewBox="0 0 24 24">
-
-                    <path
-                        d="M4 4h6l2 2h8v14H4z"
-                    ></path>
-
+                    <path d="M4 4h6l2 2h8v14H4z"></path>
                 </svg>
-
-                <span>
-                    Dokumenti
-                </span>
-
+                <span>Dokumenti</span>
             </a>
 
-
-            <!-- PROFILE -->
 
             <a
                 href="profile.html"
                 class="bottom-nav-item"
             >
-
                 <svg viewBox="0 0 24 24">
-
-                    <circle
-                        cx="12"
-                        cy="8"
-                        r="3"
-                    ></circle>
-
-                    <path
-                        d="M5 20c0-4 3-7 7-7s7 3 7 7"
-                    ></path>
-
+                    <circle cx="12" cy="8" r="3"></circle>
+                    <path d="M5 20c0-4 3-7 7-7s7 3 7 7"></path>
                 </svg>
-
-                <span>
-                    Profil
-                </span>
-
+                <span>Profil</span>
             </a>
-
 
         </nav>
 
+    </div>
 
-    </main>
+</main>
+
+
+<!-- ==========================================
+     PARTICLES — SAME STYLE AS DASHBOARD
+     Ne dira project.js
+========================================== -->
+
+<script>
+(function () {
+
+    const container = document.getElementById(
+        "projectParticles"
+    );
+
+    if (!container) return;
+
+    if (
+        window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches
+    ) {
+        return;
+    }
+
+    const count = 34;
+
+    for (let i = 0; i < count; i++) {
+
+        const particle = document.createElement("span");
+
+        particle.className = "project-particle";
+
+        particle.style.setProperty(
+            "--particle-top",
+            (Math.random() * 96 + 2) + "%"
+        );
+
+        particle.style.setProperty(
+            "--particle-width",
+            (Math.random() * 65 + 30) + "px"
+        );
+
+        particle.style.setProperty(
+            "--particle-duration",
+            (Math.random() * 10 + 12) + "s"
+        );
+
+        particle.style.setProperty(
+            "--particle-delay",
+            (Math.random() * -22) + "s"
+        );
+
+        particle.style.setProperty(
+            "--particle-opacity",
+            (Math.random() * 0.35 + 0.3)
+        );
+
+        container.appendChild(particle);
+    }
+
+})();
+</script>
 
 </body>
-
 </html>
