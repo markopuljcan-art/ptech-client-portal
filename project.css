@@ -3321,6 +3321,379 @@ body:not(.light-mode)
 }
 
 
+/* =====================================================
+   PTECH DIGITAL — PROJECT DARK MODE V57
+   USKLADIVANJE S LIGHT MODEOM
+   BEZ SIVIH BLOKOVA I TIMELINE CRTA
+===================================================== */
+
+/* ==========================================
+   GLAVNA KARTICA AKTIVNOSTI
+========================================== */
+
+body:not(.light-mode) .activities-detail-card {
+    background: linear-gradient(
+        135deg,
+        #34445f 0%,
+        #2c3c55 55%,
+        #26354d 100%
+    );
+
+    border: 1px solid rgba(222, 177, 142, 0.20);
+
+    box-shadow:
+        0 18px 42px rgba(6, 13, 29, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.045);
+}
+
+/* ==========================================
+   LISTA AKTIVNOSTI
+========================================== */
+
+body:not(.light-mode) .activities-card {
+    display: flex;
+    flex-direction: column;
+
+    gap: 11px;
+    padding: 0;
+
+    background: transparent;
+}
+
+/* Diskretna vanjska navy kartica
+   kao broncana podloga u light modeu */
+
+body:not(.light-mode)
+.activities-card > .activity-item {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    min-height: 85px;
+
+    padding: 9px 13px 9px 10px !important;
+
+    background: linear-gradient(
+        120deg,
+        #35445d 0%,
+        #304058 100%
+    ) !important;
+
+    border: 1px solid
+        rgba(220, 174, 140, 0.20) !important;
+
+    border-radius: 16px !important;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.045),
+        0 5px 16px rgba(7, 14, 29, 0.10) !important;
+
+    backdrop-filter: none !important;
+
+    transform: none !important;
+}
+
+/* Bez okomitih linija */
+
+body:not(.light-mode)
+.activities-card .activity-item::before,
+
+body:not(.light-mode)
+.activities-card .activity-item::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* ==========================================
+   LIJEVI KRUZICI
+========================================== */
+
+body:not(.light-mode) .activity-node {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 45px;
+    width: 45px;
+
+    padding: 0;
+
+    background: transparent;
+}
+
+body:not(.light-mode) .activity-node-dot {
+    display: grid;
+    place-items: center;
+
+    width: 35px;
+    height: 35px;
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 4px 12px rgba(5, 12, 26, 0.18);
+}
+
+/* Dovrseno */
+
+body:not(.light-mode)
+.activity-item.done .activity-node-dot {
+    background: #284b46;
+    border-color: rgba(143, 213, 165, 0.40);
+    color: #a9e5b8;
+}
+
+/* U tijeku */
+
+body:not(.light-mode)
+.activity-item.progress .activity-node-dot {
+    background: #514238;
+    border-color: rgba(238, 180, 130, 0.42);
+    color: #f2bd90;
+}
+
+/* Na cekanju */
+
+body:not(.light-mode)
+.activity-item.planned .activity-node-dot {
+    background: #3b465b;
+    border-color: rgba(206, 194, 182, 0.25);
+    color: #c9c6ca;
+}
+
+/* ==========================================
+   UNUTARNJE NAVY KAPSULE
+========================================== */
+
+body:not(.light-mode)
+.activities-card .activity-row {
+    flex: 1;
+    min-width: 0;
+
+    min-height: 64px;
+
+    padding: 12px 17px;
+
+    background: linear-gradient(
+        110deg,
+        #40526d 0%,
+        #394b65 56%,
+        #34465f 100%
+    ) !important;
+
+    border: 1px solid
+        rgba(222, 178, 145, 0.19) !important;
+
+    border-radius: 13px;
+
+    box-shadow:
+        0 5px 13px rgba(5, 12, 27, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* Trokutic koji povezuje kruzic i kapsulu */
+
+body:not(.light-mode) .activity-row::before {
+    background: #40526d;
+
+    border-left-color:
+        rgba(222, 178, 145, 0.19);
+
+    border-bottom-color:
+        rgba(222, 178, 145, 0.19);
+}
+
+/* ==========================================
+   NASLOVI I OPISI
+========================================== */
+
+body:not(.light-mode) .activity-title {
+    color: #fffaf5 !important;
+
+    font-size: 13px;
+    font-weight: 850;
+
+    line-height: 1.4;
+}
+
+body:not(.light-mode) .activity-description {
+    color: #d0d8e4 !important;
+
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* ==========================================
+   DATUMI
+========================================== */
+
+body:not(.light-mode) .activity-date-pill {
+    background: rgba(229, 187, 155, 0.13);
+
+    border: 1px solid rgba(235, 191, 156, 0.10);
+
+    color: #f0c5a4;
+
+    font-size: 11px;
+    font-weight: 750;
+}
+
+/* ==========================================
+   STATUSI
+========================================== */
+
+body:not(.light-mode)
+.activity-status-pill.done {
+    background: rgba(87, 172, 120, 0.19);
+    color: #a4e1b6;
+}
+
+body:not(.light-mode)
+.activity-status-pill.progress {
+    background: rgba(217, 145, 93, 0.21);
+    color: #f5bf91;
+}
+
+body:not(.light-mode)
+.activity-status-pill.planned {
+    background: rgba(166, 179, 196, 0.15);
+    color: #d8dce5;
+}
+
+/* ==========================================
+   GLAVNA IKONA SEKCIJE
+========================================== */
+
+body:not(.light-mode) .activities-main-icon {
+    background: rgba(226, 180, 145, 0.16);
+
+    border: 1px solid rgba(235, 191, 155, 0.19);
+
+    color: #efbf9b;
+}
+
+/* ==========================================
+   SUPOZITAN HOVER
+========================================== */
+
+@media (hover: hover) {
+
+    body:not(.light-mode)
+    .activities-card > .activity-item:hover {
+        background: linear-gradient(
+            120deg,
+            #3b4b65,
+            #34445e
+        ) !important;
+    }
+
+    body:not(.light-mode)
+    .activity-item:hover .activity-row {
+        background: linear-gradient(
+            110deg,
+            #455872,
+            #3b4e68
+        ) !important;
+
+        border-color:
+            rgba(231, 185, 153, 0.28) !important;
+    }
+}
+
+/* ==========================================
+   PROJEKTNE BRZE AKCIJE
+   Malo vise topline u dark modeu
+========================================== */
+
+body:not(.light-mode) .project-action-button {
+    background: linear-gradient(
+        115deg,
+        rgba(211, 157, 121, 0.15),
+        rgba(173, 124, 109, 0.08)
+    );
+
+    border-color: rgba(220, 174, 140, 0.22);
+}
+
+body:not(.light-mode) .project-action-icon {
+    background: rgba(230, 181, 142, 0.16);
+    color: #f0bd96;
+}
+
+/* ==========================================
+   ROK PROJEKTA
+   Samo blago uskladivanje
+========================================== */
+
+body:not(.light-mode) .deadline-card {
+    background: linear-gradient(
+        135deg,
+        #34445f 0%,
+        #2c3b54 55%,
+        #26354d 100%
+    );
+
+    border-color: rgba(222, 177, 142, 0.20);
+
+    box-shadow:
+        0 18px 42px rgba(6, 13, 29, 0.20);
+}
+
+/* ==========================================
+   TABLET
+========================================== */
+
+@media (max-width: 900px) {
+
+    body:not(.light-mode)
+    .activities-card .activity-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    body:not(.light-mode) .activity-side {
+        width: 100%;
+
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+}
+
+/* ==========================================
+   MOBITEL
+========================================== */
+
+@media (max-width: 640px) {
+
+    body:not(.light-mode)
+    .activities-card > .activity-item {
+        gap: 8px;
+
+        padding: 8px !important;
+    }
+
+    body:not(.light-mode) .activity-node {
+        flex: 0 0 34px;
+        width: 34px;
+    }
+
+    body:not(.light-mode) .activity-node-dot {
+        width: 29px;
+        height: 29px;
+    }
+
+    body:not(.light-mode)
+    .activities-card .activity-row {
+        padding: 12px;
+    }
+
+    body:not(.light-mode) .activity-side {
+        gap: 8px;
+    }
+}
+
+
 /* ==================================================
    27. ACCESSIBILITY
 ================================================== */
