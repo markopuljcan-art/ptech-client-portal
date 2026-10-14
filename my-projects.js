@@ -1,75 +1,81 @@
+
+/* =====================================================
+   PTECH DIGITAL CLIENT PORTAL
+   MY-PROJECTS.JS — V2
+
+   - Supabase Auth
+   - Korisnicki profil
+   - Dohvat projekata
+   - Pretraga i filteri
+   - Napredak i rokovi
+   - Zadnja aktivnost
+   - Light / Dark mode
+   - Logout
+   - Neprocitane poruke
+   - Realtime obavijesti
+   - Animirani particles
+===================================================== */
+
+
+/* =====================================================
+   SUPABASE
+===================================================== */
+
 const SUPABASE_URL =
     "https://agivwsbczzvvuzszcvxz.supabase.co";
 
 const SUPABASE_KEY =
     "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
 
-
-const supabaseClient =
-    supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
 
-/* =========================
+/* =====================================================
    ELEMENTI
-========================= */
+===================================================== */
 
 const clientName =
-    document.getElementById(
-        "clientName"
-    );
+    document.getElementById("clientName");
 
 const logoutButton =
-    document.getElementById(
-        "logoutButton"
-    );
+    document.getElementById("logoutButton");
 
 const themeToggle =
-    document.getElementById(
-        "themeToggle"
-    );
+    document.getElementById("themeToggle");
 
 const projectsGrid =
-    document.getElementById(
-        "projectsGrid"
-    );
+    document.getElementById("projectsGrid");
 
 const projectsCount =
-    document.getElementById(
-        "projectsCount"
-    );
+    document.getElementById("projectsCount");
 
 const projectSearch =
-    document.getElementById(
-        "projectSearch"
-    );
+    document.getElementById("projectSearch");
 
 const projectStatusFilter =
-    document.getElementById(
-        "projectStatusFilter"
-    );
+    document.getElementById("projectStatusFilter");
 
 const messagesUnreadBadge =
-    document.getElementById(
-        "messagesUnreadBadge"
-    );
+    document.getElementById("messagesUnreadBadge");
 
+
+/* =====================================================
+   GLOBAL
+===================================================== */
 
 let currentSession = null;
-
 let projects = [];
-
 let supportRealtimeChannel = null;
 
 
-/* =========================
+/* =====================================================
    HELPERS
-========================= */
+===================================================== */
 
 function escapeHtml(value) {
-
     return String(value ?? "")
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
@@ -85,19 +91,12 @@ function formatDate(value) {
         return "-";
     }
 
+    const raw = String(value).slice(0, 10);
+    const date = new Date(raw + "T00:00:00");
 
-    const date =
-        new Date(value);
-
-
-    if (
-        Number.isNaN(
-            date.getTime()
-        )
-    ) {
+    if (Number.isNaN(date.getTime())) {
         return "-";
     }
-
 
     return date.toLocaleDateString(
         "hr-HR",
@@ -111,7 +110,6 @@ function formatDate(value) {
 
 
 function normalizeText(value) {
-
     return String(value || "")
         .trim()
         .toLowerCase();
@@ -120,185 +118,193 @@ function normalizeText(value) {
 
 function getStatusClass(status) {
 
-    const normalized =
-        normalizeText(status);
-
+    const normalized = normalizeText(status);
 
     if (
         normalized === "završeno" ||
         normalized === "zavrseno"
     ) {
-
         return "done";
     }
-
 
     if (
         normalized === "na čekanju" ||
         normalized === "na cekanju"
     ) {
-
         return "waiting";
     }
-
 
     return "progress";
 }
 
 
-/* =========================
-   THEME
-========================= */
+/* =====================================================
+   LIGHT / DARK MODE
+===================================================== */
 
-function loadTheme() {
+function applyTheme(theme, save = true) {
 
-    const savedTheme =
-        localStorage.getItem(
-            "theme"
-        );
+    const finalTheme =
+        theme === "light" ? "light" : "dark";
 
+    document.documentElement.setAttribute(
+        "data-theme",
+        finalTheme
+    );
 
-    if (
-        savedTheme === "light"
-    ) {
+    document.body.classList.toggle(
+        "light-mode",
+        finalTheme === "light"
+    );
 
-        document.body.classList.add(
-            "light-mode"
-        );
+    if (themeToggle) {
+        themeToggle.checked =
+            finalTheme === "light";
+    }
 
+    const themeColor = document.querySelector(
+        'meta[name="theme-color"]'
+    );
 
-        if (themeToggle) {
+    if (themeColor) {
+        themeColor.content =
+            finalTheme === "light"
+                ? "#fffaf5"
+                : "#192337";
+    }
 
-            themeToggle.checked =
-                true;
+    if (save) {
+        try {
+            localStorage.setItem(
+                "theme",
+                finalTheme
+            );
+        } catch (error) {
+            // Tema radi i bez spremanja.
         }
     }
 }
 
 
-themeToggle
-    ?.addEventListener(
+function loadTheme() {
+
+    let savedTheme = "dark";
+
+    try {
+        savedTheme =
+            localStorage.getItem("theme");
+    } catch (error) {
+        // Zadana tema je dark.
+    }
+
+    applyTheme(
+        savedTheme === "light" ? "light" : "dark",
+        false
+    );
+}
+
+
+if (themeToggle) {
+    themeToggle.addEventListener(
         "change",
-        () => {
-
-            if (
+        function () {
+            applyTheme(
                 themeToggle.checked
-            ) {
-
-                document.body.classList.add(
-                    "light-mode"
-                );
-
-
-                localStorage.setItem(
-                    "theme",
-                    "light"
-                );
-
-            } else {
-
-                document.body.classList.remove(
-                    "light-mode"
-                );
-
-
-                localStorage.setItem(
-                    "theme",
-                    "dark"
-                );
-            }
+                    ? "light"
+                    : "dark"
+            );
         }
     );
-
+}
 
 loadTheme();
 
 
-/* =========================
+/* =====================================================
    LOGOUT
-========================= */
+===================================================== */
 
-logoutButton
-    ?.addEventListener(
+if (logoutButton) {
+    logoutButton.addEventListener(
         "click",
-        async () => {
+        async function () {
 
-            if (
-                supportRealtimeChannel
-            ) {
+            logoutButton.disabled = true;
 
-                await supabaseClient
-                    .removeChannel(
+            try {
+
+                if (supportRealtimeChannel) {
+                    await supabaseClient.removeChannel(
                         supportRealtimeChannel
                     );
+                    supportRealtimeChannel = null;
+                }
+
+                const { error } =
+                    await supabaseClient.auth.signOut();
+
+                if (error) {
+                    throw error;
+                }
+
+                window.location.href = "login.html";
+
+            } catch (error) {
+
+                console.error(
+                    "Logout error:",
+                    error
+                );
+
+                logoutButton.disabled = false;
             }
-
-
-            await supabaseClient
-                .auth
-                .signOut();
-
-
-            window.location.href =
-                "login.html";
         }
     );
+}
 
 
-/* =========================
+/* =====================================================
    PROFILE
-========================= */
+===================================================== */
 
 async function loadProfile() {
 
-    const {
-        data,
-        error
-    } =
+    if (!currentSession) return;
+
+    const { data, error } =
         await supabaseClient
             .from("profiles")
-            .select(
-                "display_name"
-            )
-            .eq(
-                "id",
-                currentSession.user.id
-            )
+            .select("display_name")
+            .eq("id", currentSession.user.id)
             .maybeSingle();
 
-
     if (error) {
-
         console.error(
             "Profile error:",
             error
         );
-
-        return;
     }
 
-
-    if (
-        clientName &&
-        data?.display_name
-    ) {
-
+    if (clientName) {
         clientName.textContent =
-            data.display_name;
+            data?.display_name ||
+            currentSession.user.email?.split("@")[0] ||
+            "Klijent";
     }
 }
 
 
-/* =========================
+/* =====================================================
    LOAD PROJECTS
-========================= */
+===================================================== */
 
 async function loadProjects() {
 
-    const {
-        data,
-        error
-    } =
+    if (!currentSession || !projectsGrid) {
+        return;
+    }
+
+    const { data, error } =
         await supabaseClient
             .from("projects")
             .select(`
@@ -317,11 +323,8 @@ async function loadProjects() {
             )
             .order(
                 "created_at",
-                {
-                    ascending: false
-                }
+                { ascending: false }
             );
-
 
     if (error) {
 
@@ -330,28 +333,28 @@ async function loadProjects() {
             error
         );
 
-
         projectsGrid.innerHTML = `
             <div class="projects-empty">
                 Projekte trenutno nije moguće učitati.
             </div>
         `;
 
-
         return;
     }
 
-
-    projects =
-        data || [];
-
+    projects = data || [];
 
     if (projectsCount) {
-
         projectsCount.textContent =
-            projects.length;
+            String(projects.length);
     }
 
+    /*
+       Najprije prikazi projekte.
+       Aktivnosti ucitavamo dodatno.
+    */
+
+    renderProjects();
 
     await loadLatestActivities();
 
@@ -359,85 +362,51 @@ async function loadProjects() {
 }
 
 
-/* =========================
+/* =====================================================
    LATEST ACTIVITIES
-========================= */
+===================================================== */
 
 async function loadLatestActivities() {
 
-    if (
-        projects.length === 0
-    ) {
+    if (!projects.length) {
         return;
     }
 
+    const projectIds = projects.map(
+        project => project.id
+    );
 
-    const projectIds =
-        projects.map(
-            project =>
-                project.id
-        );
-
-
-    const {
-        data,
-        error
-    } =
+    const { data, error } =
         await supabaseClient
             .from("activities")
             .select(`
                 project_id,
                 activity_date
             `)
-            .in(
-                "project_id",
-                projectIds
-            )
-            .not(
-                "activity_date",
-                "is",
-                null
-            )
+            .in("project_id", projectIds)
+            .not("activity_date", "is", null)
             .order(
                 "activity_date",
-                {
-                    ascending: false
-                }
+                { ascending: false }
             );
 
-
     if (error) {
-
         console.error(
             "Activities error:",
             error
         );
-
         return;
     }
 
+    const latestByProject = new Map();
 
-    const latestByProject =
-        new Map();
+    for (const activity of data || []) {
 
+        const key = String(
+            activity.project_id
+        );
 
-    for (
-        const activity
-        of data || []
-    ) {
-
-        const key =
-            String(
-                activity.project_id
-            );
-
-
-        if (
-            !latestByProject.has(
-                key
-            )
-        ) {
-
+        if (!latestByProject.has(key)) {
             latestByProject.set(
                 key,
                 activity.activity_date
@@ -445,341 +414,284 @@ async function loadLatestActivities() {
         }
     }
 
+    projects = projects.map(
+        project => ({
+            ...project,
 
-    projects =
-        projects.map(
-            project => ({
-
-                ...project,
-
-                latestActivity:
-                    latestByProject.get(
-                        String(project.id)
-                    ) ||
-                    null
-            })
-        );
+            latestActivity:
+                latestByProject.get(
+                    String(project.id)
+                ) || null
+        })
+    );
 }
 
 
-/* =========================
+/* =====================================================
    RENDER PROJECTS
-========================= */
+===================================================== */
 
 function renderProjects() {
 
-    if (!projectsGrid) {
-        return;
-    }
+    if (!projectsGrid) return;
 
+    const search = normalizeText(
+        projectSearch?.value
+    );
 
-    const search =
-        normalizeText(
-            projectSearch?.value
-        );
+    const selectedStatus = normalizeText(
+        projectStatusFilter?.value
+    );
 
+    const filtered = projects.filter(
+        project => {
 
-    const selectedStatus =
-        normalizeText(
-            projectStatusFilter?.value
-        );
+            const combinedText = normalizeText(`
+                ${project.type || ""}
+                ${project.name || ""}
+                ${project.package || ""}
+                ${project.status || ""}
+            `);
 
+            const projectStatus = normalizeText(
+                project.status
+            );
 
-    const filtered =
-        projects.filter(
-            project => {
+            const matchesSearch =
+                !search ||
+                combinedText.includes(search);
 
-                const combinedText =
-                    normalizeText(
-                        `
-                        ${project.type || ""}
-                        ${project.name || ""}
-                        ${project.package || ""}
-                        ${project.status || ""}
-                        `
-                    );
+            const matchesStatus =
+                !selectedStatus ||
+                projectStatus === selectedStatus;
 
+            return matchesSearch && matchesStatus;
+        }
+    );
 
-                const projectStatus =
-                    normalizeText(
-                        project.status
-                    );
+    /* EMPTY */
 
-
-                const matchesSearch =
-                    !search ||
-                    combinedText.includes(
-                        search
-                    );
-
-
-                const matchesStatus =
-                    !selectedStatus ||
-                    projectStatus ===
-                        selectedStatus;
-
-
-                return (
-                    matchesSearch &&
-                    matchesStatus
-                );
-            }
-        );
-
-
-    if (
-        filtered.length === 0
-    ) {
+    if (!filtered.length) {
 
         projectsGrid.innerHTML = `
             <div class="projects-empty">
-                Nema projekata koji odgovaraju odabranom filtru.
+                ${
+                    projects.length === 0
+                        ? "Trenutno nemate dodanih projekata."
+                        : "Nema projekata koji odgovaraju odabranom filtru."
+                }
             </div>
         `;
-
 
         return;
     }
 
+    /* CARDS */
 
-    projectsGrid.innerHTML =
-        filtered
-            .map(
-                project => {
+    projectsGrid.innerHTML = filtered.map(
+        project => {
 
-                    const progress =
-                        Math.max(
-                            0,
-                            Math.min(
-                                100,
-                                Number(
-                                    project.progress
-                                ) || 0
-                            )
-                        );
+            const rawProgress =
+                Number(project.progress || 0);
 
+            const progress =
+                Number.isFinite(rawProgress)
+                    ? Math.max(
+                        0,
+                        Math.min(100, rawProgress)
+                    )
+                    : 0;
 
-                    const statusClass =
-                        getStatusClass(
-                            project.status
-                        );
+            const statusClass =
+                getStatusClass(project.status);
 
+            const safeProjectId =
+                encodeURIComponent(
+                    String(project.id)
+                );
 
-                    return `
+            const latestDate =
+                project.latestActivity
+                    ? formatDate(project.latestActivity)
+                    : "-";
 
-                        <a
-                            href="project.html?id=${encodeURIComponent(
-                                project.id
-                            )}"
-                            class="project-card"
-                        >
+            return `
 
+                <a
+                    href="project.html?id=${safeProjectId}"
+                    class="project-card"
+                    aria-label="Otvori projekt ${escapeHtml(
+                        project.type ||
+                        project.name ||
+                        "Projekt"
+                    )}"
+                >
 
-                            <!-- TOP -->
+                    <!-- HEADER -->
 
-                            <div class="project-card-top">
+                    <div class="project-card-top">
 
+                        <div class="project-title-block">
 
-                                <div class="project-title-block">
+                            <div class="project-icon">
 
+                                <svg viewBox="0 0 24 24">
 
-                                    <div class="project-icon">
+                                    <rect
+                                        x="3"
+                                        y="4"
+                                        width="18"
+                                        height="13"
+                                        rx="2"
+                                    ></rect>
 
-                                        <svg viewBox="0 0 24 24">
+                                    <path d="M8 21h8"></path>
+                                    <path d="M12 17v4"></path>
 
-                                            <rect
-                                                x="3"
-                                                y="4"
-                                                width="18"
-                                                height="13"
-                                                rx="2">
-                                            </rect>
+                                </svg>
 
-                                            <path
-                                                d="M8 21h8">
-                                            </path>
+                            </div>
 
-                                            <path
-                                                d="M12 17v4">
-                                            </path>
+                            <div>
 
-                                        </svg>
-
-                                    </div>
-
-
-                                    <div>
-
-                                        <h2>
-                                            ${escapeHtml(
-                                                project.type ||
-                                                "Projekt"
-                                            )}
-                                        </h2>
-
-                                        <p>
-                                            ${escapeHtml(
-                                                project.name ||
-                                                ""
-                                            )}
-                                        </p>
-
-                                    </div>
-
-
-                                </div>
-
-
-                                <span
-                                    class="
-                                        project-status
-                                        ${statusClass}
-                                    "
-                                >
+                                <h2>
                                     ${escapeHtml(
-                                        project.status ||
-                                        "-"
+                                        project.type ||
+                                        project.name ||
+                                        "Projekt"
                                     )}
-                                </span>
+                                </h2>
 
-
-                            </div>
-
-
-                            <!-- INFO -->
-
-                            <div class="project-info-grid">
-
-
-                                <div class="project-info">
-
-                                    <span>
-                                        Paket
-                                    </span>
-
-                                    <strong>
-                                        ${escapeHtml(
-                                            project.package ||
-                                            "-"
-                                        )}
-                                    </strong>
-
-                                </div>
-
-
-                                <div class="project-info">
-
-                                    <span>
-                                        Rok
-                                    </span>
-
-                                    <strong>
-                                        ${formatDate(
-                                            project.deadline
-                                        )}
-                                    </strong>
-
-                                </div>
-
+                                <p>
+                                    ${escapeHtml(
+                                        project.name || ""
+                                    )}
+                                </p>
 
                             </div>
 
+                        </div>
 
-                            <!-- PROGRESS -->
+                        <span
+                            class="project-status ${statusClass}"
+                        >
+                            ${escapeHtml(
+                                project.status || "-"
+                            )}
+                        </span>
 
-                            <div class="project-progress">
-
-
-                                <div class="project-progress-top">
-
-                                    <span>
-                                        Napredak
-                                    </span>
-
-                                    <strong>
-                                        ${progress}%
-                                    </strong>
-
-                                </div>
+                    </div>
 
 
-                                <div class="project-progress-track">
+                    <!-- PACKAGE + DEADLINE -->
 
-                                    <div
-                                        class="project-progress-bar"
-                                        style="width:${progress}%"
-                                    >
-                                    </div>
+                    <div class="project-info-grid">
 
-                                </div>
+                        <div class="project-info">
 
+                            <span>Paket</span>
 
-                            </div>
+                            <strong>
+                                ${escapeHtml(
+                                    project.package || "-"
+                                )}
+                            </strong>
 
+                        </div>
 
-                            <!-- FOOTER -->
+                        <div class="project-info">
 
-                            <div class="project-card-footer">
+                            <span>Rok projekta</span>
 
+                            <strong>
+                                ${formatDate(
+                                    project.deadline
+                                )}
+                            </strong>
 
-                                <span class="project-update">
+                        </div>
 
-                                    Zadnje ažurirano:
-
-                                    ${
-                                        project.latestActivity
-                                            ? formatDate(
-                                                project.latestActivity
-                                            )
-                                            : "-"
-                                    }
-
-                                </span>
+                    </div>
 
 
-                                <span class="project-open">
+                    <!-- PROGRESS BUBBLE -->
 
-                                    Otvori projekt
+                    <div class="project-progress">
 
-                                    <span>
-                                        →
-                                    </span>
+                        <div class="project-progress-top">
 
-                                </span>
+                            <span>Napredak projekta</span>
+
+                            <strong>
+                                ${progress}%
+                            </strong>
+
+                        </div>
+
+                        <div class="project-progress-track">
+
+                            <div
+                                class="project-progress-bar"
+                                style="width: ${progress}%"
+                            ></div>
+
+                        </div>
+
+                    </div>
 
 
-                            </div>
+                    <!-- FOOTER -->
 
+                    <div class="project-card-footer">
 
-                        </a>
-                    `;
-                }
-            )
-            .join("");
+                        <span class="project-update">
+
+                            Zadnje ažurirano:
+                            <strong>${latestDate}</strong>
+
+                        </span>
+
+                        <span class="project-open">
+
+                            Otvori projekt
+
+                            <span aria-hidden="true">
+                                →
+                            </span>
+
+                        </span>
+
+                    </div>
+
+                </a>
+            `;
+        }
+    ).join("");
 }
 
 
-/* =========================
-   FILTERS
-========================= */
+/* =====================================================
+   SEARCH + FILTER
+===================================================== */
 
-projectSearch
-    ?.addEventListener(
+if (projectSearch) {
+    projectSearch.addEventListener(
         "input",
         renderProjects
     );
+}
 
-
-projectStatusFilter
-    ?.addEventListener(
+if (projectStatusFilter) {
+    projectStatusFilter.addEventListener(
         "change",
         renderProjects
     );
+}
 
 
-/* =========================
+/* =====================================================
    UNREAD MESSAGES
-========================= */
+===================================================== */
 
 async function loadMessagesUnreadCount() {
 
@@ -790,15 +702,9 @@ async function loadMessagesUnreadCount() {
         return;
     }
 
-
-    const {
-        count,
-        error
-    } =
+    const { count, error } =
         await supabaseClient
-            .from(
-                "support_messages"
-            )
+            .from("support_messages")
             .select(
                 "id",
                 {
@@ -819,52 +725,36 @@ async function loadMessagesUnreadCount() {
                 null
             );
 
-
     if (error) {
-
         console.error(
             "Unread support error:",
             error
         );
-
         return;
     }
 
+    const unreadCount = count || 0;
 
-    const unreadCount =
-        count || 0;
+    if (unreadCount > 0) {
 
-
-    if (
-        unreadCount > 0
-    ) {
-
-        messagesUnreadBadge.hidden =
-            false;
-
+        messagesUnreadBadge.hidden = false;
 
         messagesUnreadBadge.textContent =
             unreadCount > 99
                 ? "99+"
-                : String(
-                    unreadCount
-                );
+                : String(unreadCount);
 
     } else {
 
-        messagesUnreadBadge.hidden =
-            true;
-
-
-        messagesUnreadBadge.textContent =
-            "0";
+        messagesUnreadBadge.hidden = true;
+        messagesUnreadBadge.textContent = "0";
     }
 }
 
 
-/* =========================
+/* =====================================================
    REALTIME SUPPORT
-========================= */
+===================================================== */
 
 function subscribeToSupportRealtime() {
 
@@ -874,7 +764,6 @@ function subscribeToSupportRealtime() {
     ) {
         return;
     }
-
 
     supportRealtimeChannel =
         supabaseClient
@@ -890,8 +779,7 @@ function subscribeToSupportRealtime() {
                     filter:
                         `user_id=eq.${currentSession.user.id}`
                 },
-                async () => {
-
+                async function () {
                     await loadMessagesUnreadCount();
                 }
             )
@@ -899,77 +787,149 @@ function subscribeToSupportRealtime() {
 }
 
 
-/* =========================
+/* =====================================================
+   PARTICLES
+===================================================== */
+
+function createProjectParticles() {
+
+    const container =
+        document.getElementById(
+            "projectsParticles"
+        );
+
+    if (!container) return;
+
+    if (
+        window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches
+    ) {
+        return;
+    }
+
+    container.replaceChildren();
+
+    const count = 34;
+
+    for (let i = 0; i < count; i++) {
+
+        const particle =
+            document.createElement("span");
+
+        particle.className =
+            "projects-particle";
+
+        particle.style.setProperty(
+            "--particle-top",
+            (Math.random() * 96 + 2) + "%"
+        );
+
+        particle.style.setProperty(
+            "--particle-width",
+            (Math.random() * 65 + 30) + "px"
+        );
+
+        particle.style.setProperty(
+            "--particle-duration",
+            (Math.random() * 10 + 12) + "s"
+        );
+
+        particle.style.setProperty(
+            "--particle-delay",
+            (Math.random() * -22) + "s"
+        );
+
+        particle.style.setProperty(
+            "--particle-opacity",
+            String(
+                Math.random() * 0.35 + 0.3
+            )
+        );
+
+        container.appendChild(particle);
+    }
+}
+
+
+/* =====================================================
    VISIBILITY
-========================= */
+===================================================== */
 
 document.addEventListener(
     "visibilitychange",
-    async () => {
+    async function () {
 
         if (
-            document.visibilityState ===
-                "visible" &&
+            document.visibilityState === "visible" &&
             currentSession
         ) {
-
             await loadMessagesUnreadCount();
         }
     }
 );
 
 
-/* =========================
+/* =====================================================
    START
-========================= */
+===================================================== */
 
 async function startMyProjects() {
 
-    const {
-        data: {
-            session
-        },
-        error
-    } =
-        await supabaseClient
-            .auth
-            .getSession();
+    try {
 
+        const {
+            data: { session },
+            error
+        } =
+            await supabaseClient.auth.getSession();
 
-    if (
-        error ||
-        !session
-    ) {
+        if (error || !session) {
 
-        window.location.href =
-            "login.html";
+            window.location.href =
+                "login.html";
 
+            return;
+        }
 
-        return;
+        currentSession = session;
+
+        await Promise.all([
+            loadProfile(),
+            loadProjects(),
+            loadMessagesUnreadCount()
+        ]);
+
+        subscribeToSupportRealtime();
+
+    } catch (error) {
+
+        console.error(
+            "My Projects init error:",
+            error
+        );
+
+        if (projectsGrid) {
+            projectsGrid.innerHTML = `
+                <div class="projects-empty">
+                    Došlo je do pogreške pri učitavanju.
+                    Pokušajte osvježiti stranicu.
+                </div>
+            `;
+        }
     }
-
-
-    currentSession =
-        session;
-
-
-    await Promise.all([
-
-        loadProfile(),
-
-        loadProjects(),
-
-        loadMessagesUnreadCount()
-
-    ]);
-
-
-    subscribeToSupportRealtime();
 }
 
 
-/* =========================
+/* =====================================================
    INIT
-========================= */
+===================================================== */
+
+createProjectParticles();
 
 startMyProjects();
+
+
+/* =====================================================
+   END — MY-PROJECTS.JS V2
+===================================================== */
