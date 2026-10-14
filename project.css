@@ -2950,6 +2950,378 @@ body:not(.light-mode) .activities-card .empty-state {
 
 
 /* ==================================================
+   PTECH DIGITAL — DARK MODE FIX V56
+   PREMIUM NAVY ACTIVITIES
+   Bez sivih pravokutnika
+================================================== */
+
+/* ==========================================
+   GLAVNA KARTICA AKTIVNOSTI
+========================================== */
+
+body:not(.light-mode) .activities-detail-card {
+    background: linear-gradient(
+        145deg,
+        #303f59 0%,
+        #293850 50%,
+        #243248 100%
+    );
+
+    border: 1px solid rgba(218, 166, 127, 0.19);
+
+    box-shadow:
+        0 18px 40px rgba(5, 12, 27, 0.19),
+        inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+/* ==========================================
+   UKLANJAMO SIVE VANJSKE KARTICE
+========================================== */
+
+body:not(.light-mode)
+.activities-card .activity-item {
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    min-height: 70px;
+    padding: 0 !important;
+
+    background: transparent !important;
+
+    border: none !important;
+    border-radius: 0 !important;
+
+    box-shadow: none !important;
+
+    backdrop-filter: none !important;
+
+    transform: none;
+}
+
+/* Uklanjamo sve stare timeline crte */
+
+body:not(.light-mode)
+.activities-card .activity-item::before,
+
+body:not(.light-mode)
+.activities-card .activity-item::after {
+
+    content: none !important;
+    display: none !important;
+}
+
+/* ==========================================
+   RAZMAK IZMEDU AKTIVNOSTI
+========================================== */
+
+body:not(.light-mode) .activities-card {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+
+    padding: 0;
+
+    background: transparent;
+}
+
+/* ==========================================
+   KRUZNE IKONE LIJEVO
+========================================== */
+
+body:not(.light-mode) .activity-node {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 43px;
+    width: 43px;
+
+    padding: 0;
+
+    background: transparent !important;
+}
+
+body:not(.light-mode) .activity-node-dot {
+    display: grid;
+    place-items: center;
+
+    width: 36px;
+    height: 36px;
+
+    border-radius: 50%;
+
+    background: #34435d;
+
+    border: 1px solid rgba(224, 178, 142, 0.32);
+
+    box-shadow:
+        0 4px 12px rgba(5, 12, 26, 0.15);
+}
+
+/* Dovrseno — zeleno */
+
+body:not(.light-mode)
+.activity-item.done .activity-node-dot {
+
+    background: #304b47;
+    border-color: rgba(138, 210, 165, 0.35);
+
+    color: #9cddb0;
+}
+
+/* U tijeku — bakreno */
+
+body:not(.light-mode)
+.activity-item.progress .activity-node-dot {
+
+    background: #51443f;
+    border-color: rgba(231, 169, 118, 0.38);
+
+    color: #f1bc91;
+}
+
+/* Na cekanju — neutralno */
+
+body:not(.light-mode)
+.activity-item.planned .activity-node-dot {
+
+    background: #394359;
+    border-color: rgba(207, 193, 181, 0.24);
+
+    color: #d2c4ba;
+}
+
+/* ==========================================
+   GLAVNE NAVY KAPSULE
+========================================== */
+
+body:not(.light-mode)
+.activities-card .activity-row {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    flex: 1;
+    min-width: 0;
+
+    gap: 16px;
+
+    min-height: 69px;
+
+    padding: 13px 18px;
+
+    background: linear-gradient(
+        115deg,
+        #394b65 0%,
+        #33445f 52%,
+        #2d3e58 100%
+    ) !important;
+
+    border: 1px solid rgba(219, 173, 141, 0.19) !important;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 6px 17px rgba(8, 15, 30, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+/* Mali spoj izmedu kruga i kapsule */
+
+body:not(.light-mode)
+.activity-row::before {
+
+    background: #394b65;
+
+    border-left-color: rgba(219, 173, 141, 0.19);
+    border-bottom-color: rgba(219, 173, 141, 0.19);
+}
+
+/* ==========================================
+   NASLOV I OPIS
+========================================== */
+
+body:not(.light-mode) .activity-title {
+    color: #fffaf5 !important;
+
+    font-size: 14px;
+    font-weight: 850;
+}
+
+body:not(.light-mode) .activity-description {
+    color: #cbd4e2 !important;
+
+    font-size: 11px;
+    line-height: 1.55;
+}
+
+/* ==========================================
+   DATUM
+========================================== */
+
+body:not(.light-mode) .activity-date-pill {
+    background: rgba(228, 181, 147, 0.11);
+
+    border: 1px solid rgba(228, 181, 147, 0.09);
+
+    color: #f0c5a4;
+}
+
+/* ==========================================
+   STATUSI
+========================================== */
+
+/* Dovrseno */
+
+body:not(.light-mode)
+.activity-status-pill.done {
+
+    background: rgba(92, 167, 117, 0.19);
+    color: #a5e0b5;
+}
+
+/* U tijeku */
+
+body:not(.light-mode)
+.activity-status-pill.progress {
+
+    background: rgba(217, 146, 94, 0.20);
+    color: #f3b78a;
+}
+
+/* Na cekanju */
+
+body:not(.light-mode)
+.activity-status-pill.planned {
+
+    background: rgba(183, 185, 196, 0.11);
+    color: #d3d5df;
+}
+
+/* ==========================================
+   HOVER
+========================================== */
+
+@media (hover: hover) {
+
+    body:not(.light-mode)
+    .activity-item:hover .activity-row {
+
+        background: linear-gradient(
+            115deg,
+            #40536e,
+            #354861
+        ) !important;
+
+        border-color:
+            rgba(231, 185, 153, 0.32) !important;
+
+        transform: translateY(-1px);
+    }
+}
+
+/* ==========================================
+   ROK PROJEKTA — USKLADENI DARK MODE
+========================================== */
+
+body:not(.light-mode) .deadline-card {
+
+    background: linear-gradient(
+        145deg,
+        #303f59,
+        #26354e 65%,
+        #223147
+    );
+
+    border: 1px solid rgba(218, 166, 127, 0.19);
+
+    box-shadow:
+        0 18px 40px rgba(5, 12, 27, 0.16);
+}
+
+body:not(.light-mode) .deadline-main-icon {
+
+    background: rgba(226, 181, 148, 0.14);
+
+    color: #efbd98;
+}
+
+body:not(.light-mode) .deadline-main-date {
+    color: #fffaf5;
+}
+
+body:not(.light-mode) .deadline-meta-grid {
+    border-top-color:
+        rgba(232, 189, 157, 0.18);
+}
+
+body:not(.light-mode)
+.deadline-meta-item:not(:last-child) {
+
+    border-right-color:
+        rgba(232, 189, 157, 0.18);
+}
+
+/* ==========================================
+   MOBITEL
+========================================== */
+
+@media (max-width: 900px) {
+
+    body:not(.light-mode)
+    .activities-card .activity-row {
+
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    body:not(.light-mode) .activity-side {
+        width: 100%;
+
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 640px) {
+
+    body:not(.light-mode)
+    .activities-card .activity-item {
+
+        gap: 8px;
+    }
+
+    body:not(.light-mode)
+    .activities-card .activity-row {
+
+        padding: 12px;
+    }
+
+    body:not(.light-mode) .activity-node {
+        flex-basis: 35px;
+        width: 35px;
+    }
+
+    body:not(.light-mode) .activity-node-dot {
+        width: 30px;
+        height: 30px;
+    }
+
+    body:not(.light-mode)
+    .deadline-meta-item:not(:last-child) {
+
+        border-right: none;
+        border-bottom: 1px solid rgba(232, 189, 157, 0.18);
+    }
+}
+
+
+/* ==================================================
    27. ACCESSIBILITY
 ================================================== */
 
