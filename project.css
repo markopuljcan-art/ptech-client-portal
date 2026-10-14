@@ -2456,6 +2456,469 @@ body {
     overflow-x: clip;
 }
 
+/* =========================================================
+   ACTIVITIES — EXACT LOOK LIKE MOCKUP
+========================================================= */
+
+.activities-detail-card {
+    position: relative;
+    overflow: hidden;
+
+    padding: 24px 22px 22px;
+    border-radius: 26px;
+
+    background: linear-gradient(135deg, #dba57f 0%, #cf956f 55%, #c88864 100%);
+    border: 1px solid rgba(255, 237, 221, 0.35);
+
+    box-shadow:
+        0 18px 40px rgba(141, 93, 61, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.activities-detail-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    background:
+        radial-gradient(circle at top right, rgba(255,255,255,0.10), transparent 35%),
+        radial-gradient(circle at bottom left, rgba(255,255,255,0.07), transparent 25%);
+}
+
+.activities-card-heading {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 18px;
+}
+
+.activities-heading-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.activities-main-icon {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 14px;
+    background: rgba(255, 244, 233, 0.72);
+    color: #a35f36;
+
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+}
+
+.activities-main-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.activities-heading-left h3 {
+    margin: 0 0 4px;
+    color: #17233e;
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1.1;
+}
+
+.activities-heading-left p {
+    margin: 0;
+    color: rgba(45, 33, 27, 0.72);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.activities-card {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    padding-left: 6px;
+}
+
+/* svaki red */
+.activity-item {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    gap: 16px;
+    min-height: 74px;
+}
+
+/* vertikalna timeline linija */
+.activity-item::before {
+    content: "";
+    position: absolute;
+    left: 22px;
+    top: 34px;
+    bottom: -18px;
+    width: 2px;
+    background: rgba(255, 243, 230, 0.5);
+    z-index: 0;
+}
+
+.activity-item:last-child::before {
+    display: none;
+}
+
+/* lijevi node */
+.activity-node {
+    position: relative;
+    z-index: 2;
+
+    width: 44px;
+    flex: 0 0 44px;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 8px;
+}
+
+.activity-node-dot {
+    width: 36px;
+    height: 36px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+    font-size: 16px;
+    font-weight: 900;
+    line-height: 1;
+
+    background: #fff7ef;
+    border: 1px solid #efcfb5;
+    color: #9a5b33;
+
+    box-shadow:
+        0 8px 16px rgba(121, 75, 48, 0.08),
+        inset 0 1px 0 rgba(255,255,255,0.6);
+}
+
+/* status boje na node-u */
+.activity-item.done .activity-node-dot {
+    background: #e2f3e5;
+    border-color: #b9dfc1;
+    color: #277345;
+}
+
+.activity-item.progress .activity-node-dot {
+    background: #fff1e3;
+    border-color: #f2caa8;
+    color: #c66d2b;
+}
+
+.activity-item.planned .activity-node-dot {
+    background: #f8eee6;
+    border-color: #e7cdbb;
+    color: #9d7a63;
+}
+
+/* desni svijetli bubble */
+.activity-row {
+    position: relative;
+    z-index: 2;
+
+    flex: 1;
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+
+    padding: 14px 18px;
+    border-radius: 18px;
+
+    background: linear-gradient(180deg, #fff7f0 0%, #fbece0 100%);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+
+    box-shadow:
+        0 10px 22px rgba(118, 72, 45, 0.07),
+        inset 0 1px 0 rgba(255,255,255,0.65);
+}
+
+/* mali "spoj" između kruga i bubble-a */
+.activity-row::before {
+    content: "";
+    position: absolute;
+    left: -7px;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    background: #fff6ee;
+    border-left: 1px solid rgba(255,255,255,0.55);
+    border-bottom: 1px solid rgba(255,255,255,0.55);
+    transform: translateY(-50%) rotate(45deg);
+}
+
+.activity-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.activity-title {
+    display: block;
+    margin: 0 0 4px;
+
+    color: #18243f;
+    font-size: 15px;
+    font-weight: 850;
+    line-height: 1.2;
+}
+
+.activity-description {
+    margin: 0;
+
+    color: #5f554d;
+    font-size: 12px;
+    line-height: 1.45;
+    font-weight: 500;
+}
+
+.activity-side {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+}
+
+/* datum pill */
+.activity-date-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 9px 14px;
+    border-radius: 999px;
+
+    background: #fff3e9;
+    color: #9a6037;
+
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.activity-date-pill svg {
+    width: 15px;
+    height: 15px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* status pill */
+.activity-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 9px 14px;
+    min-width: 114px;
+    justify-content: center;
+
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 850;
+    white-space: nowrap;
+}
+
+.activity-status-pill .status-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: currentColor;
+    flex: 0 0 9px;
+}
+
+/* status boje */
+.activity-status-pill.done {
+    background: #dff1dd;
+    color: #2c7a45;
+}
+
+.activity-status-pill.progress {
+    background: #ffe5cb;
+    color: #c66d2b;
+}
+
+.activity-status-pill.planned {
+    background: #e6ddd8;
+    color: #6f645d;
+}
+
+/* empty state */
+.activities-card .empty-state {
+    padding: 22px;
+    border-radius: 16px;
+    background: rgba(255, 248, 241, 0.6);
+    border: 1px dashed rgba(151, 103, 66, 0.3);
+    color: #6a5140;
+}
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+body:not(.light-mode) .activities-detail-card {
+    background: linear-gradient(135deg, #32425c 0%, #2a3950 55%, #233146 100%);
+    border-color: rgba(226, 179, 143, 0.16);
+}
+
+body:not(.light-mode) .activities-heading-left h3 {
+    color: #fff8f2;
+}
+
+body:not(.light-mode) .activities-heading-left p {
+    color: #c7cdda;
+}
+
+body:not(.light-mode) .activities-main-icon {
+    background: rgba(226, 179, 143, 0.14);
+    color: #efc19b;
+}
+
+body:not(.light-mode) .activity-item::before {
+    background: rgba(236, 197, 165, 0.25);
+}
+
+body:not(.light-mode) .activity-row {
+    background: linear-gradient(180deg, #37475f 0%, #314158 100%);
+    border-color: rgba(228, 182, 147, 0.16);
+}
+
+body:not(.light-mode) .activity-row::before {
+    background: #37475f;
+    border-color: rgba(228, 182, 147, 0.16);
+}
+
+body:not(.light-mode) .activity-title {
+    color: #fff8f2;
+}
+
+body:not(.light-mode) .activity-description {
+    color: #cbd3dd;
+}
+
+body:not(.light-mode) .activity-node-dot {
+    background: #3a4a61;
+    border-color: rgba(227, 185, 151, 0.22);
+    color: #efc19b;
+}
+
+body:not(.light-mode) .activity-item.done .activity-node-dot {
+    background: rgba(95, 157, 113, 0.18);
+    color: #98d0a7;
+    border-color: rgba(152, 208, 167, 0.25);
+}
+
+body:not(.light-mode) .activity-item.progress .activity-node-dot {
+    background: rgba(214, 132, 70, 0.14);
+    color: #f0b17d;
+    border-color: rgba(240, 177, 125, 0.2);
+}
+
+body:not(.light-mode) .activity-item.planned .activity-node-dot {
+    background: rgba(190, 178, 168, 0.1);
+    color: #cfbeb1;
+    border-color: rgba(207, 190, 177, 0.14);
+}
+
+body:not(.light-mode) .activity-date-pill {
+    background: rgba(228, 182, 147, 0.12);
+    color: #efc19b;
+}
+
+body:not(.light-mode) .activity-status-pill.done {
+    background: rgba(100, 176, 122, 0.16);
+    color: #9fd5ad;
+}
+
+body:not(.light-mode) .activity-status-pill.progress {
+    background: rgba(223, 151, 95, 0.18);
+    color: #efb481;
+}
+
+body:not(.light-mode) .activity-status-pill.planned {
+    background: rgba(191, 178, 166, 0.14);
+    color: #cbbcb1;
+}
+
+body:not(.light-mode) .activities-card .empty-state {
+    background: rgba(227, 179, 142, 0.07);
+    border-color: rgba(227, 179, 142, 0.15);
+    color: #cbd3dd;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+    .activity-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .activity-side {
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 640px) {
+    .activities-detail-card {
+        padding: 18px 14px;
+        border-radius: 20px;
+    }
+
+    .activity-item {
+        gap: 10px;
+    }
+
+    .activity-node {
+        width: 36px;
+        flex: 0 0 36px;
+    }
+
+    .activity-item::before {
+        left: 18px;
+    }
+
+    .activity-node-dot {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
+
+    .activity-title {
+        font-size: 14px;
+    }
+
+    .activity-description {
+        font-size: 11px;
+    }
+
+    .activity-date-pill,
+    .activity-status-pill {
+        font-size: 11px;
+        padding: 8px 12px;
+    }
+}
 
 /* ==================================================
    27. ACCESSIBILITY
