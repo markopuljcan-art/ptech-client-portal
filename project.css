@@ -2211,6 +2211,16 @@ body:not(.light-mode) .deadline-late .deadline-badge {
     }
 }
 
+
+/* Sprijeci horizontalno pomicanje stranice */
+
+html,
+body {
+    max-width: 100%;
+    overflow-x: clip;
+}
+
+
 /* ==================================================
    27. ACCESSIBILITY
 ================================================== */
