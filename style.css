@@ -3049,6 +3049,203 @@ body.portal-desktop:not(.light-mode)
     z-index: 1;
 }
 
+
+/* =====================================================
+   PTECH DIGITAL — RESPONSIVE LAYOUT FIX
+
+   Desktop: sidebar lijevo
+   Uzi prozor: navigacija dolje
+   Bez horizontalnog scrolla
+===================================================== */
+
+/* SPRJECAVA HORIZONTALNI SCROLL */
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+}
+
+.dashboard.desktop-layout,
+.desktop-main,
+.dashboard-content {
+    min-width: 0;
+    max-width: 100%;
+}
+
+/* ==========================================
+   TABLET I SMANJENI DESKTOP PROZOR
+========================================== */
+
+@media (max-width: 1100px) {
+
+    /* Makni desktop raspored sa sidebarom */
+
+    .dashboard.desktop-layout {
+        display: block !important;
+
+        grid-template-columns: none !important;
+
+        width: 100%;
+        min-height: 100vh;
+    }
+
+    /* Sakrij lijevu navigaciju */
+
+    .desktop-sidebar {
+        display: none !important;
+    }
+
+    /* Glavni dio zauzima cijelu sirinu */
+
+    .desktop-main {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+
+        min-height: 100vh;
+
+        padding-bottom:
+            calc(82px + env(safe-area-inset-bottom));
+
+        overflow: visible;
+    }
+
+    /* Header ostaje sticky */
+
+    .dashboard-header {
+        position: sticky !important;
+
+        top: 0;
+        z-index: 1000;
+
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Sadrzaj se prilagodava prozoru */
+
+    .dashboard-content {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+
+        margin: 0 auto;
+
+        padding-left: clamp(16px, 3vw, 28px);
+        padding-right: clamp(16px, 3vw, 28px);
+    }
+
+    /* Navigacija ide na dno ekrana */
+
+    .bottom-nav {
+        position: fixed !important;
+
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        z-index: 1200;
+
+        display: grid !important;
+
+        grid-template-columns:
+            repeat(5, minmax(0, 1fr));
+
+        width: 100%;
+        min-height: 68px;
+
+        margin: 0;
+
+        padding:
+            7px 10px
+            max(7px, env(safe-area-inset-bottom));
+
+        background: var(
+            --header-bg,
+            rgba(255, 250, 245, 0.97)
+        );
+
+        border-top: 1px solid var(
+            --divider,
+            rgba(169, 113, 79, 0.16)
+        );
+
+        -webkit-backdrop-filter: blur(18px);
+        backdrop-filter: blur(18px);
+
+        box-shadow:
+            0 -5px 22px rgba(10, 18, 32, 0.07);
+    }
+
+    /* Ikone i tekst u donjoj navigaciji */
+
+    .bottom-nav-item {
+        display: flex;
+        flex-direction: column;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 5px;
+
+        min-width: 0;
+        min-height: 51px;
+
+        padding: 5px 2px;
+
+        font-size: 10px;
+        text-align: center;
+    }
+
+    .bottom-nav-item svg {
+        width: 21px;
+        height: 21px;
+    }
+
+    /* Kartice ne smiju siriti stranicu */
+
+    .projects-slider,
+    .actions-grid,
+    .dashboard-overview {
+        min-width: 0;
+        max-width: 100%;
+    }
+}
+
+/* ==========================================
+   MANJI MOBITELI
+========================================== */
+
+@media (max-width: 600px) {
+
+    .dashboard-content {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .bottom-nav {
+        padding-left: 3px;
+        padding-right: 3px;
+    }
+
+    .bottom-nav-item {
+        font-size: 9px;
+        gap: 4px;
+    }
+
+    .bottom-nav-item svg {
+        width: 19px;
+        height: 19px;
+    }
+}
+
+/* =====================================================
+   END — RESPONSIVE FIX
+===================================================== */
+
+
 /* Prilagodba korisnicima koji ne zele animacije */
 
 @media (prefers-reduced-motion: reduce) {
