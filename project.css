@@ -2920,6 +2920,35 @@ body:not(.light-mode) .activities-card .empty-state {
     }
 }
 
+
+/* ==========================================
+   PTECH DIGITAL
+   UKLANJANJE LINIJA ISPOD AKTIVNOSTI
+========================================== */
+
+/* Uklanja stare timeline crte */
+.activities-card .activity-item::before,
+.activities-card .activity-item::after {
+    content: none !important;
+    display: none !important;
+    background: none !important;
+    border: none !important;
+}
+
+/* Kružne ikone ostaju uredno poravnate */
+.activities-card .activity-node {
+    position: relative;
+    z-index: 2;
+}
+
+/* Bez dodatnih crta oko krugova */
+.activities-card .activity-node::before,
+.activities-card .activity-node::after {
+    content: none !important;
+    display: none !important;
+}
+
+
 /* ==================================================
    27. ACCESSIBILITY
 ================================================== */
