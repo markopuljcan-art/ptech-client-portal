@@ -15,11 +15,12 @@
                 const legacy = localStorage.getItem("ptech-theme");
                 theme = (saved || legacy) === "light" ? "light" : "dark";
             } catch (error) {}
+
             document.documentElement.setAttribute("data-theme", theme);
         })();
     </script>
 
-    <link rel="stylesheet" href="./documents.css?v=8">
+    <link rel="stylesheet" href="./documents.css?v=9">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="./documents.js?v=8" defer></script>
 </head>
@@ -28,13 +29,14 @@
 
 <main class="dashboard desktop-layout">
 
-    <!-- SIDEBAR -->
-    <aside class="desktop-sidebar">
+    <!-- DESKTOP SIDEBAR -->
 
+    <aside class="desktop-sidebar">
         <a href="form.html" class="sidebar-brand">
             <span class="sidebar-brand-logo">
                 <img src="./assets/ptech-icon.png" alt="">
             </span>
+
             <span class="sidebar-brand-text">
                 <strong>PTech Digital</strong>
                 <small>CLIENT PORTAL</small>
@@ -44,7 +46,7 @@
         <nav class="sidebar-nav" aria-label="Glavna navigacija">
 
             <a href="form.html" class="sidebar-link">
-                <svg viewBox="0 0 24 24">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M3 11.5L12 4l9 7.5"/>
                     <path d="M5 10.5V20h14v-9.5"/>
                     <path d="M9 20v-6h6v6"/>
@@ -53,7 +55,7 @@
             </a>
 
             <a href="my-projects.html" class="sidebar-link">
-                <svg viewBox="0 0 24 24">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
                     <rect x="4" y="5" width="16" height="15" rx="2"/>
                     <path d="M8 5V3M16 5V3M4 9h16"/>
                 </svg>
@@ -63,21 +65,22 @@
             <a href="documents.html"
                class="sidebar-link active"
                aria-current="page">
-                <svg viewBox="0 0 24 24">
+
+                <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M4 4h6l2 2h8v14H4z"/>
                 </svg>
                 <span>Dokumenti</span>
             </a>
 
             <a href="messages.html" class="sidebar-link">
-                <svg viewBox="0 0 24 24">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M4 5h16v11H8l-4 4z"/>
                 </svg>
                 <span>Poruke</span>
             </a>
 
             <a href="profile.html" class="sidebar-link">
-                <svg viewBox="0 0 24 24">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
                     <circle cx="12" cy="8" r="3"/>
                     <path d="M5 20c0-4 3-7 7-7s7 3 7 7"/>
                 </svg>
@@ -90,12 +93,16 @@
             <a href="messages.html" class="sidebar-help">
                 Pomoć i podrška
             </a>
+
             <p>© PTech Digital 2026.</p>
         </div>
     </aside>
 
     <!-- MAIN -->
+
     <div class="desktop-main">
+
+        <!-- STICKY HEADER -->
 
         <header class="dashboard-header">
             <div class="header-page-title">
@@ -104,37 +111,43 @@
             </div>
 
             <div class="header-actions">
+
                 <div class="user-box">
                     <div class="user-avatar">
-                        <svg viewBox="0 0 24 24">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
                             <circle cx="12" cy="8" r="3"/>
                             <path d="M5 20c0-4 3-7 7-7s7 3 7 7"/>
                         </svg>
                     </div>
+
                     <strong id="clientName">Klijent</strong>
                 </div>
 
-                <span class="header-separator"></span>
+                <span class="header-separator" aria-hidden="true"></span>
 
                 <button type="button"
                         class="logout-button"
                         id="logoutButton">
-                    <svg viewBox="0 0 24 24">
+
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M10 5H5v14h5"/>
                         <path d="M14 8l4 4-4 4"/>
                         <path d="M8 12h10"/>
                     </svg>
+
                     <span>Odjava</span>
                 </button>
 
-                <span class="header-separator"></span>
+                <span class="header-separator" aria-hidden="true"></span>
 
                 <label class="theme-switch" title="Promijeni temu">
                     <input type="checkbox"
                            id="themeToggle"
                            aria-label="Promijeni temu">
+
                     <span class="theme-slider"></span>
                 </label>
+
             </div>
         </header>
 
@@ -142,41 +155,40 @@
              id="documentsParticles"
              aria-hidden="true"></div>
 
+        <!-- PAGE CONTENT -->
+
         <div class="dashboard-content">
 
-            <!-- UVOD -->
             <section class="documents-page-header">
+
                 <div class="documents-heading">
                     <span class="documents-eyebrow">
                         VAŠ DIGITALNI RADNI PROSTOR
                     </span>
+
                     <h1>Moji dokumenti</h1>
+
                     <p>
-                        Svi važni dokumenti i materijali
-                        vaših projekata na jednom mjestu.
+                        Svi važni dokumenti i materijali vaših projekata
+                        na jednom mjestu.
                     </p>
                 </div>
 
-                <div class="documents-page-actions">
-                    <button type="button"
-                            id="openUploadButton"
-                            class="upload-launch-button">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M12 16V4"/>
-                            <path d="M7 9l5-5 5 5"/>
-                            <path d="M4 17v3h16v-3"/>
-                        </svg>
-                        <span>Učitaj dokumente</span>
-                    </button>
+                <button type="button"
+                        id="openUploadButton"
+                        class="upload-launch-button">
 
-                    <div class="documents-total-box">
-                        <span>UKUPNO DOKUMENATA</span>
-                        <strong id="documentsTotal">0</strong>
-                    </div>
-                </div>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 16V4M7 9l5-5 5 5M4 17v3h16v-3"/>
+                    </svg>
+
+                    <span>Učitaj dokumente</span>
+                </button>
+
             </section>
 
             <!-- FILTERI -->
+
             <section class="documents-toolbar"
                      aria-label="Pretraga i filtriranje dokumenata">
 
@@ -195,11 +207,13 @@
 
                 <select id="projectFilter"
                         aria-label="Filtriraj po projektu">
+
                     <option value="">Svi projekti</option>
                 </select>
 
                 <select id="typeFilter"
                         aria-label="Filtriraj po vrsti dokumenta">
+
                     <option value="">Sve vrste</option>
                     <option value="Ugovor">Ugovor</option>
                     <option value="Ponuda">Ponuda</option>
@@ -211,15 +225,19 @@
                     <option value="Materijali">Materijali</option>
                     <option value="Ostalo">Ostalo</option>
                 </select>
+
             </section>
 
-            <!-- POPIS DOKUMENATA -->
+            <!-- DOKUMENTI -->
+
             <section class="documents-panel">
 
                 <div class="documents-panel-header">
+
                     <div class="documents-panel-heading">
+
                         <div class="documents-panel-icon">
-                            <svg viewBox="0 0 24 24">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
                                 <path d="M4 4h6l2 2h8v14H4z"/>
                             </svg>
                         </div>
@@ -229,22 +247,28 @@
                             <h2>Dokumenti projekata</h2>
                             <p>Pregledajte ili preuzmite datoteke.</p>
                         </div>
+
                     </div>
 
                     <div class="documents-count-wrap">
                         <span>Prikazano</span>
-                        <strong id="documentsCount"
-                                class="documents-count">0</strong>
+
+                        <strong id="documentsCount" class="documents-count">
+                            0
+                        </strong>
                     </div>
+
                 </div>
 
                 <div id="documentsList"
                      class="documents-list"
                      aria-live="polite">
+
                     <div class="documents-empty">
                         Učitavanje dokumenata...
                     </div>
                 </div>
+
             </section>
 
             <div id="documentsMessage"
@@ -259,32 +283,36 @@
 
         </div>
 
-        <!-- MOBILE NAV - zadrzano -->
+        <!-- MOBILE NAVIGATION -->
+
         <nav class="bottom-nav" aria-label="Mobilna navigacija">
 
             <a href="form.html" class="bottom-nav-item">
-                <svg viewBox="0 0 24 24">
-                    <path d="M3 11.5L12 4l9 7.5"/>
-                    <path d="M5 10.5V20h14v-9.5"/>
-                    <path d="M9 20v-6h6v6"/>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 11.5L12 4l9 7.5M5 10.5V20h14v-9.5M9 20v-6h6v6"/>
                 </svg>
                 <span>Početna</span>
             </a>
 
             <a href="messages.html" class="bottom-nav-item">
+
                 <span class="bottom-nav-icon-wrap">
-                    <svg viewBox="0 0 24 24">
+
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M4 5h16v11H8l-4 4z"/>
                     </svg>
+
                     <span id="messagesUnreadBadge"
                           class="nav-notification"
                           hidden>0</span>
+
                 </span>
+
                 <span>Poruke</span>
             </a>
 
             <a href="my-projects.html" class="bottom-nav-item">
-                <svg viewBox="0 0 24 24">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
                     <rect x="4" y="5" width="16" height="15" rx="2"/>
                     <path d="M8 5V3M16 5V3M4 9h16"/>
                 </svg>
@@ -294,21 +322,23 @@
             <a href="documents.html"
                class="bottom-nav-item active"
                aria-current="page">
-                <svg viewBox="0 0 24 24">
+
+                <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M4 4h6l2 2h8v14H4z"/>
                 </svg>
+
                 <span>Dokumenti</span>
             </a>
 
             <a href="profile.html" class="bottom-nav-item">
-                <svg viewBox="0 0 24 24">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
                     <circle cx="12" cy="8" r="3"/>
                     <path d="M5 20c0-4 3-7 7-7s7 3 7 7"/>
                 </svg>
                 <span>Profil</span>
             </a>
-        </nav>
 
+        </nav>
     </div>
 </main>
 
@@ -326,173 +356,342 @@
 
     <div class="upload-screen">
 
-        <header class="upload-screen-header">
-            <div class="upload-screen-brand">
-                <div class="upload-screen-logo">
-                    <img src="./assets/ptech-icon.png" alt="">
-                </div>
+        <!-- FULLSCREEN HEADER -->
 
-                <div>
+        <header class="upload-screen-header">
+
+            <div class="upload-screen-brand">
+
+                <span class="upload-screen-logo">
+                    <img src="./assets/ptech-icon.png" alt="">
+                </span>
+
+                <span class="upload-screen-brand-text">
                     <strong>PTech Digital</strong>
-                    <span>CLIENT PORTAL / DOKUMENTI</span>
-                </div>
+                    <small>
+                        CLIENT PORTAL
+                        <span aria-hidden="true">/</span>
+                        DOKUMENTI
+                    </small>
+                </span>
+
             </div>
 
             <button type="button"
                     id="closeUploadButton"
                     class="upload-close-button"
                     aria-label="Zatvori učitavanje">
-                <svg viewBox="0 0 24 24">
+
+                <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M18 6L6 18M6 6l12 12"/>
                 </svg>
+
                 <span>Zatvori</span>
             </button>
+
         </header>
 
         <div class="upload-screen-content">
 
-            <div class="upload-intro">
-                <span class="documents-eyebrow">
-                    DOSTAVA MATERIJALA
-                </span>
+            <!-- LIJEVA STRANA -->
 
-                <h2 id="uploadHeading">Učitaj dokumente</h2>
+            <aside class="upload-info-panel">
 
-                <p>
-                    Odaberite projekt, vrstu dokumenta i
-                    datoteke koje želite dostaviti PTech Digitalu.
-                </p>
-            </div>
+                <div class="upload-info-inner">
 
-            <form id="uploadForm"
-                  class="upload-form"
-                  novalidate>
+                    <span class="upload-info-eyebrow">
+                        <span class="upload-info-dot"></span>
+                        PTECH DIGITAL / SIGURNA DOSTAVA
+                    </span>
 
-                <div class="upload-section-heading">
-                    <span class="upload-step">01</span>
-                    <div>
-                        <h3>Podaci o dokumentu</h3>
-                        <p>Odredite kojem projektu dokument pripada.</p>
-                    </div>
-                </div>
+                    <h2 id="uploadHeading">
+                        Pošaljite
+                        dokumente<span>.</span>
+                    </h2>
 
-                <div class="upload-fields-grid">
+                    <p class="upload-info-description">
+                        Pošaljite fotografije, dokumente ili potvrde
+                        uz projekt na kojem radimo. Sve ostaje povezano
+                        s vašim korisničkim računom.
+                    </p>
 
-                    <div class="upload-field">
-                        <label for="uploadProject">
-                            Projekt <span>*</span>
-                        </label>
-                        <select id="uploadProject"
-                                name="project"
-                                required>
-                            <option value="">Odaberite projekt</option>
-                        </select>
+                    <div class="upload-info-rule"></div>
+
+                    <div class="upload-how-title">
+                        JEDNOSTAVNO U TRI KORAKA
                     </div>
 
-                    <div class="upload-field">
-                        <label for="uploadCategory">
-                            Vrsta dokumenta <span>*</span>
-                        </label>
-                        <select id="uploadCategory"
-                                name="category"
-                                required>
-                            <option value="">Odaberite vrstu</option>
-                            <option value="Dizajn">Dizajn</option>
-                            <option value="Zahtjev za izmjenom">Zahtjev za izmjenom</option>
-                            <option value="Potvrda o plaćanju">Potvrda o plaćanju</option>
-                            <option value="Materijali">Materijali za projekt</option>
-                            <option value="Ugovor">Ugovor</option>
-                            <option value="Račun">Račun</option>
-                            <option value="Ponuda">Ponuda</option>
-                            <option value="Brief">Brief</option>
-                            <option value="Ostalo">Ostalo</option>
-                        </select>
+                    <div class="upload-how-list">
+
+                        <div class="upload-how-item">
+                            <span>01</span>
+                            <p>Odaberite projekt i vrstu dokumenta.</p>
+                        </div>
+
+                        <div class="upload-how-item">
+                            <span>02</span>
+                            <p>Dodajte datoteke s računala.</p>
+                        </div>
+
+                        <div class="upload-how-item">
+                            <span>03</span>
+                            <p>
+                                Po želji opišite što želite
+                                promijeniti ili dostaviti.
+                            </p>
+                        </div>
+
                     </div>
 
-                </div>
+                    <!-- LIVE SUMMARY -->
 
-                <div class="upload-field">
-                    <label for="uploadTitle">
-                        Naziv / svrha dokumenta
-                        <span class="optional-label">(neobavezno)</span>
-                    </label>
-                    <input type="text"
-                           id="uploadTitle"
-                           maxlength="150"
-                           placeholder="Npr. Novi prijedlog naslovnice">
-                </div>
+                    <div class="upload-summary">
 
-                <div class="upload-section-heading">
-                    <span class="upload-step">02</span>
-                    <div>
-                        <h3>Datoteke</h3>
-                        <p>Možete odabrati više datoteka odjednom.</p>
-                    </div>
-                </div>
-
-                <div class="upload-dropzone"
-                     id="uploadDropzone">
-
-                    <input type="file"
-                           id="uploadFiles"
-                           class="upload-file-input"
-                           accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx,.xls,.xlsx,.txt,.zip"
-                           multiple>
-
-                    <label for="uploadFiles"
-                           class="upload-dropzone-label">
-
-                        <span class="upload-dropzone-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M12 16V4"/>
-                                <path d="M7 9l5-5 5 5"/>
-                                <path d="M4 17v3h16v-3"/>
-                            </svg>
+                        <span class="upload-summary-eyebrow">
+                            VAŠ ODABIR
                         </span>
 
-                        <strong>Povucite datoteke ovdje</strong>
+                        <div class="upload-summary-row">
+                            <span>Projekt</span>
+                            <strong id="uploadSummaryProject">
+                                Nije odabran
+                            </strong>
+                        </div>
 
-                        <span>ili kliknite za odabir s računala</span>
+                        <div class="upload-summary-row">
+                            <span>Vrsta</span>
+                            <strong id="uploadSummaryCategory">
+                                Nije odabrana
+                            </strong>
+                        </div>
 
-                        <small>
-                            PDF, JPG, PNG, WEBP, DOC, DOCX,
-                            XLS, XLSX, TXT i ZIP
-                        </small>
+                        <div class="upload-summary-row">
+                            <span>Datoteke</span>
+                            <strong id="uploadSummaryFiles">0 od 5</strong>
+                        </div>
 
-                        <small>
-                            Maksimalno 5 datoteka,
-                            do 10 MB po datoteci
-                        </small>
-                    </label>
-                </div>
-
-                <div id="uploadFileList"
-                     class="upload-file-list"
-                     aria-live="polite"></div>
-
-                <div class="upload-section-heading">
-                    <span class="upload-step">03</span>
-                    <div>
-                        <h3>Dodatne informacije</h3>
-                        <p>Objasnite nam razlog slanja dokumenta.</p>
                     </div>
+
+                    <p class="upload-info-small">
+                        Do 5 datoteka • 10 MB po datoteci • Privatna pohrana
+                    </p>
+
+                </div>
+            </aside>
+
+
+            <!-- DESNA STRANA -->
+
+            <form id="uploadForm" class="upload-form" novalidate>
+
+                <div class="upload-form-intro">
+
+                    <span class="upload-form-eyebrow">
+                        NOVI DOKUMENT
+                    </span>
+
+                    <h3>Pripremite datoteke za slanje</h3>
+
+                    <p>
+                        Ispunite podatke i dodajte jednu ili više datoteka.
+                    </p>
+
                 </div>
 
-                <div class="upload-field">
-                    <label for="uploadNote">
-                        Napomena
-                        <span class="optional-label">(neobavezno)</span>
-                    </label>
+                <!-- KORAK 01 -->
 
-                    <textarea id="uploadNote"
-                              maxlength="1000"
-                              rows="5"
-                              placeholder="Npr. Želim promijeniti boju naslovnice prema priloženoj fotografiji..."></textarea>
+                <section class="upload-section"
+                         aria-labelledby="uploadSectionOne">
 
-                    <div class="upload-note-counter">
-                        <span id="uploadNoteCounter">0</span>/1000
+                    <div class="upload-section-heading">
+
+                        <span class="upload-step">01</span>
+
+                        <div>
+                            <h4 id="uploadSectionOne">
+                                Osnovne informacije
+                            </h4>
+
+                            <p>Odredite kojem projektu dokument pripada.</p>
+                        </div>
+
                     </div>
-                </div>
+
+                    <div class="upload-fields-grid">
+
+                        <div class="upload-field">
+                            <label for="uploadProject">
+                                Projekt
+                                <span class="required-mark">*</span>
+                            </label>
+
+                            <select id="uploadProject"
+                                    name="project"
+                                    required>
+                                <option value="">
+                                    Odaberite projekt
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="upload-field">
+
+                            <label for="uploadCategory">
+                                Vrsta dokumenta
+                                <span class="required-mark">*</span>
+                            </label>
+
+                            <select id="uploadCategory"
+                                    name="category"
+                                    required>
+
+                                <option value="">Odaberite vrstu</option>
+                                <option value="Dizajn">Dizajn</option>
+                                <option value="Zahtjev za izmjenom">Zahtjev za izmjenom</option>
+                                <option value="Potvrda o plaćanju">Potvrda o plaćanju</option>
+                                <option value="Materijali">Materijali za projekt</option>
+                                <option value="Ugovor">Ugovor</option>
+                                <option value="Račun">Račun</option>
+                                <option value="Ponuda">Ponuda</option>
+                                <option value="Brief">Brief</option>
+                                <option value="Ostalo">Ostalo</option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="upload-field upload-field-last">
+
+                        <label for="uploadTitle">
+                            Naziv / svrha dokumenta
+                            <span class="optional-label">
+                                (neobavezno)
+                            </span>
+                        </label>
+
+                        <input type="text"
+                               id="uploadTitle"
+                               maxlength="150"
+                               placeholder="Npr. Novi prijedlog naslovnice">
+
+                    </div>
+
+                </section>
+
+
+                <!-- KORAK 02 -->
+
+                <section class="upload-section"
+                         aria-labelledby="uploadSectionTwo">
+
+                    <div class="upload-section-heading">
+
+                        <span class="upload-step">02</span>
+
+                        <div>
+                            <h4 id="uploadSectionTwo">
+                                Priložite datoteke
+                            </h4>
+
+                            <p>
+                                Povucite datoteke ili ih odaberite s računala.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div id="uploadDropzone" class="upload-dropzone">
+
+                        <input type="file"
+                               id="uploadFiles"
+                               class="upload-file-input"
+                               accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx,.xls,.xlsx,.txt,.zip"
+                               multiple>
+
+                        <label for="uploadFiles"
+                               class="upload-dropzone-label">
+
+                            <span class="upload-dropzone-icon">
+
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M12 16V4M7 9l5-5 5 5M4 17v3h16v-3"/>
+                                </svg>
+
+                            </span>
+
+                            <strong>Povucite datoteke ovdje</strong>
+
+                            <span>
+                                ili kliknite za odabir s računala
+                            </span>
+
+                            <small>
+                                PDF, JPG, PNG, WEBP, DOC, DOCX,
+                                XLS, XLSX, TXT i ZIP
+                            </small>
+
+                            <small>
+                                Najviše 5 datoteka · do 10 MB po datoteci
+                            </small>
+
+                        </label>
+
+                    </div>
+
+                    <div id="uploadFileList"
+                         class="upload-file-list"
+                         aria-live="polite"></div>
+
+                </section>
+
+
+                <!-- KORAK 03 -->
+
+                <section class="upload-section"
+                         aria-labelledby="uploadSectionThree">
+
+                    <div class="upload-section-heading">
+
+                        <span class="upload-step">03</span>
+
+                        <div>
+                            <h4 id="uploadSectionThree">
+                                Dodatne informacije
+                            </h4>
+
+                            <p>
+                                Napomena će biti pridružena dokumentu.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="upload-field upload-field-last">
+
+                        <label for="uploadNote">
+                            Napomena
+                            <span class="optional-label">
+                                (neobavezno)
+                            </span>
+                        </label>
+
+                        <textarea id="uploadNote"
+                                  maxlength="1000"
+                                  rows="4"
+                                  placeholder="Npr. Molim promjenu boje naslovnice prema priloženoj fotografiji..."></textarea>
+
+                        <div class="upload-note-counter">
+                            <span id="uploadNoteCounter">0</span>/1000
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- STATUS -->
 
                 <div id="uploadStatus"
                      class="upload-status"
@@ -500,36 +699,95 @@
                      aria-live="polite"
                      hidden></div>
 
+
+                <!-- STICKY FOOTER -->
+
                 <div class="upload-form-footer">
+
                     <p>
-                        Dokumenti su dostupni kroz vaš
-                        korisnički račun i pripadajući projekt.
+                        Dokumenti se sigurno pohranjuju uz vaš projekt.
                     </p>
 
                     <div class="upload-footer-actions">
+
                         <button type="button"
                                 id="cancelUploadButton"
                                 class="upload-cancel-button">
+
                             Odustani
                         </button>
 
                         <button type="submit"
                                 id="submitUploadButton"
                                 class="upload-submit-button">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M12 16V4"/>
-                                <path d="M7 9l5-5 5 5"/>
-                                <path d="M4 17v3h16v-3"/>
+
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 16V4M7 9l5-5 5 5M4 17v3h16v-3"/>
                             </svg>
+
                             <span>Učitaj dokumente</span>
                         </button>
+
                     </div>
+
                 </div>
 
             </form>
         </div>
     </div>
 </section>
+
+
+<!-- SAMO VIZUALNI SAZETAK - BEZ SUPABASE IZMJENA -->
+
+<script>
+    (function () {
+        const byId = id => document.getElementById(id);
+
+        const project = byId("uploadProject");
+        const category = byId("uploadCategory");
+        const files = byId("uploadFileList");
+
+        const projectSummary = byId("uploadSummaryProject");
+        const categorySummary = byId("uploadSummaryCategory");
+        const filesSummary = byId("uploadSummaryFiles");
+
+        function refreshSummary() {
+            projectSummary.textContent = project.value
+                ? project.selectedOptions[0].textContent.trim()
+                : "Nije odabran";
+
+            categorySummary.textContent = category.value
+                ? category.selectedOptions[0].textContent.trim()
+                : "Nije odabrana";
+
+            filesSummary.textContent =
+                `${files.querySelectorAll(".upload-selected-file").length} od 5`;
+        }
+
+        project.addEventListener("change", refreshSummary);
+        category.addEventListener("change", refreshSummary);
+
+        new MutationObserver(refreshSummary).observe(
+            files,
+            { childList: true }
+        );
+
+        byId("openUploadButton").addEventListener("click", () => {
+            requestAnimationFrame(refreshSummary);
+        });
+
+        byId("cancelUploadButton").addEventListener("click", () => {
+            requestAnimationFrame(refreshSummary);
+        });
+
+        byId("closeUploadButton").addEventListener("click", () => {
+            requestAnimationFrame(refreshSummary);
+        });
+
+        refreshSummary();
+    })();
+</script>
 
 </body>
 </html>
