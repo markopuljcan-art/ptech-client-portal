@@ -691,16 +691,16 @@ body.portal-desktop:not(.light-mode) .sidebar-brand-text small {
         transform 0.22s ease;
 }
 
-.sidebar-link > span:first-child {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
+.sidebar-link > svg {
+    display: block;
     width: 21px;
+    height: 21px;
     flex: 0 0 21px;
-
-    font-size: 21px;
-    line-height: 1;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .sidebar-link:hover {
@@ -752,7 +752,7 @@ body.portal-desktop:not(.light-mode) .sidebar-link[aria-current="page"] {
     border-radius: 50%;
     background: #b97953;
 
-    opacity: 0;
+    opacity: 1;
 }
 
 .sidebar-bottom {
