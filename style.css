@@ -2934,6 +2934,122 @@ body.portal-desktop:not(.light-mode) .materials-overlay {
 }
 
 
+/* =====================================================
+   PTECH DIGITAL — DASHBOARD HEADER V FINAL
+   Isti gornji nav kao Moji projekti i Dokumenti
+===================================================== */
+
+/* Naslov je sada vidljiv i na desktopu */
+
+body.portal-desktop .dashboard-mobile-brand {
+    display: flex !important;
+
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+
+    flex: 1 1 auto;
+    min-width: 0;
+
+    gap: 5px;
+    margin: 0;
+    padding: 0;
+
+    text-align: left;
+}
+
+/* PTECH DIGITAL */
+
+body.portal-desktop .dashboard-mobile-brand span {
+    display: block;
+
+    margin: 0;
+
+    color: #bc8562;
+
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    line-height: 1.2;
+}
+
+/* Dashboard */
+
+body.portal-desktop .dashboard-mobile-brand strong {
+    display: block;
+
+    margin: 0;
+
+    color: #202534;
+
+    font-size: 17px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+}
+
+/* Dark mode */
+
+body.portal-desktop:not(.light-mode)
+.dashboard-mobile-brand span {
+    color: #e3b28e;
+}
+
+body.portal-desktop:not(.light-mode)
+.dashboard-mobile-brand strong {
+    color: #fff8f2;
+}
+
+/* DESKTOP HEADER */
+
+@media (min-width: 1101px) {
+
+    body.portal-desktop .dashboard-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+
+        align-items: center;
+        justify-content: space-between;
+
+        min-height: 75px;
+        padding: 12px clamp(22px, 3.5vw, 48px);
+
+        gap: 20px;
+    }
+
+    body.portal-desktop
+    .dashboard-header .header-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        flex: 0 0 auto;
+        width: auto;
+
+        gap: 15px;
+    }
+}
+
+/* MOBITEL — zadrzi postojeci responsive layout */
+
+@media (max-width: 600px) {
+
+    body.portal-desktop .dashboard-mobile-brand span {
+        font-size: 8px;
+        letter-spacing: 1px;
+    }
+
+    body.portal-desktop .dashboard-mobile-brand strong {
+        font-size: 14px;
+    }
+}
+
+
 /* ================================================
    PTECH DIGITAL — DASHBOARD PARTICLES
    Isti princip animacije kao na login stranici
