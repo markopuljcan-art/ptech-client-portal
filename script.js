@@ -480,17 +480,17 @@ function renderProjects() {
 
     activeProjectIndex = 0;
 
-currentProject.textContent = "1";
-totalProjects.textContent = String(projects.length);
+    currentProject.textContent = "1";
+    totalProjects.textContent = String(projects.length);
 
-sliderDots.querySelectorAll(".slider-dot").forEach(
-    (dot, index) => {
-        dot.classList.toggle("active", index === 0);
-    }
-);
+    sliderDots.querySelectorAll(".slider-dot").forEach(
+        (dot, index) => {
+            dot.classList.toggle("active", index === 0);
+        }
+    );
 
-updateProjectNavigation();
-updateProjectActions();
+    updateProjectNavigation();
+    updateProjectActions();
 }
 
 /* PROJECT SLIDER */
@@ -693,10 +693,23 @@ async function loadRecentMessages() {
 
 /* RECENT DOCUMENTS */
 
+/*
+ * Usklađeno sa stranicom Dokumenti:
+ * - project_documents (projektna dokumentacija)
+ * - project-materials (materijali poslani kroz Dashboard)
+ * - client_uploads (dokumenti poslani kroz fullscreen upload)
+ * Prikazuju se samo dokumenti korisnikovih projekata.
+ */
+
 async function loadRecentDocuments() {
     if (!recentDocumentsList || !currentSession) return;
 
+    const userId = currentSession.user.id;
     const projectIds = projects.map(project => project.id);
+
+    const ownedProjects = new Map(
+        projects.map(project => [String(project.id), project])
+    );
 
     if (!projectIds.length) {
         showOverviewMessage(
@@ -706,74 +719,264 @@ async function loadRecentDocuments() {
         return;
     }
 
-    const { data, error } = await supabaseClient
-        .from("project_documents")
-        .select(`
-            id,
-            name,
-            created_at,
-            project_id,
-            file_size
-        `)
-        .in("project_id", projectIds)
-        .order("created_at", { ascending: false })
-        .limit(4);
+    showOverviewMessage(
+        recentDocumentsList,
+        "Učitavanje dokumenata..."
+    );
 
-    if (error) {
-        console.error("Recent documents error:", error);
+    /* PROJECT DOCUMENTS */
 
+    const loadProjectDocuments = async () => {
+        const { data, error } = await supabaseClient
+            .from("project_documents")
+            .select(
+                "id, name, created_at, project_id, file_size, file_url, document_type"
+            )
+            .in("project_id", projectIds)
+            .order("created_at", { ascending: false })
+            .limit(4);
+
+        if (error) throw error;
+
+        return (data || []).map(item => ({
+            ...item,
+            source: "database",
+            bucket: "project-documents"
+        }));
+    };
+
+    /* CLIENT UPLOADS */
+
+    const loadClientDocuments = async () => {
+        const { data, error } = await supabaseClient
+            .from("client_uploads")
+            .select(
+                "id, title, original_file_name, category, created_at, project_id, file_size, file_path"
+            )
+            .eq("user_id", userId)
+            .in("project_id", projectIds.map(String))
+            .order("created_at", { ascending: false })
+            .limit(4);
+
+        if (error) throw error;
+
+        return (data || []).map(item => ({
+            id: item.id,
+            name: item.title || item.original_file_name,
+            original_file_name: item.original_file_name,
+            created_at: item.created_at,
+            project_id: item.project_id,
+            file_size: item.file_size,
+            file_url: item.file_path,
+            document_type: item.category,
+            source: "client",
+            bucket: "client-uploads"
+        }));
+    };
+
+    /* PROJECT MATERIALS */
+
+    const loadMaterialDocuments = async () => {
+        const folder =
+            `${sanitizeMaterialsFolderName(currentUserName)}--${userId}`;
+
+        const bucket = supabaseClient.storage.from(
+            "project-materials"
+        );
+
+        const results = await Promise.allSettled(
+            projects.map(async project => {
+                const basePath =
+                    `${folder}/projekt-${project.id}`;
+
+                const { data, error } = await bucket.list(
+                    basePath,
+                    {
+                        limit: 100,
+                        sortBy: {
+                            column: "created_at",
+                            order: "desc"
+                        }
+                    }
+                );
+
+                if (error) throw error;
+
+                return (data || [])
+                    .filter(file => file.id || file.metadata)
+                    .slice(0, 4)
+                    .map(file => ({
+                        id: `material:${basePath}/${file.name}`,
+                        name: file.name,
+                        original_file_name: file.name,
+                        created_at:
+                            file.created_at || file.updated_at,
+                        project_id: project.id,
+                        file_size: file.metadata?.size || 0,
+                        file_url: `${basePath}/${file.name}`,
+                        document_type: "Dizajn",
+                        source: "materials",
+                        bucket: "project-materials"
+                    }));
+            })
+        );
+
+        const successful = results
+            .filter(result => result.status === "fulfilled")
+            .flatMap(result => result.value);
+
+        for (const result of results) {
+            if (result.status === "rejected") {
+                console.error(
+                    "Dashboard materials error:",
+                    result.reason
+                );
+            }
+        }
+
+        if (
+            results.length &&
+            results.every(result => result.status === "rejected")
+        ) {
+            throw results[0].reason;
+        }
+
+        return successful;
+    };
+
+    /* COMBINE ALL SOURCES */
+
+    const results = await Promise.allSettled([
+        loadProjectDocuments(),
+        loadClientDocuments(),
+        loadMaterialDocuments()
+    ]);
+
+    const documents = results
+        .filter(result => result.status === "fulfilled")
+        .flatMap(result => result.value)
+        .filter(item =>
+            ownedProjects.has(String(item.project_id))
+        )
+        .sort((a, b) =>
+            new Date(b.created_at || 0) -
+            new Date(a.created_at || 0)
+        )
+        .slice(0, 4);
+
+    const failed = results.filter(
+        result => result.status === "rejected"
+    );
+
+    failed.forEach(result => {
+        console.error(
+            "Dashboard documents source error:",
+            result.reason
+        );
+    });
+
+    if (!documents.length) {
         showOverviewMessage(
             recentDocumentsList,
-            "Dokumenti trenutno nisu dostupni."
+            failed.length
+                ? "Dio dokumenata trenutno nije dostupan."
+                : "Trenutno nema dokumenata."
         );
         return;
     }
 
-    if (!data?.length) {
-        showOverviewMessage(
-            recentDocumentsList,
-            "Trenutno nema dokumenata."
-        );
-        return;
-    }
+    /* RENDER RECENT DOCUMENTS */
 
-    recentDocumentsList.innerHTML = data.map(item => {
-        const name = item.name || "Dokument";
+    const cards = await Promise.all(
+        documents.map(async item => {
+            const fileName =
+                item.original_file_name ||
+                item.name ||
+                "Dokument";
 
-        const extension = name.split(".")
-            .pop()
-            .toUpperCase();
+            const extension = fileName
+                .split(".")
+                .pop()
+                .toUpperCase();
 
-        const type = extension.length <= 4
-            ? extension
-            : "FILE";
+            const fileType = extension.length <= 4
+                ? extension
+                : "FILE";
 
-        return `
-            <div class="overview-row">
-                <span class="overview-file-icon">
-                    ${escapeHTML(type)}
-                </span>
+            const project = ownedProjects.get(
+                String(item.project_id)
+            );
 
-                <span class="overview-row-main">
-                    <strong>${escapeHTML(name)}</strong>
-                    <small>
-                        ${formatFileSize(item.file_size)}
-                    </small>
-                </span>
+            const projectName = getProjectLabel(project);
 
-                <time class="overview-row-date">
-                    ${formatDate(item.created_at)}
-                </time>
+            const description = [
+                projectName,
+                item.document_type || "Dokument",
+                formatFileSize(item.file_size)
+            ].join(" · ");
 
-                <a
-                    class="overview-download"
-                    href="documents.html"
-                    title="Otvori dokumente"
-                    aria-label="Otvori dokumente"
-                >&darr;</a>
-            </div>
-        `;
-    }).join("");
+            let openUrl = "documents.html";
+            let external = false;
+
+            const value = String(item.file_url || "");
+
+            if (/^https?:\/\//i.test(value)) {
+                openUrl = value;
+                external = true;
+
+            } else if (value) {
+                const { data, error } =
+                    await supabaseClient.storage
+                        .from(item.bucket)
+                        .createSignedUrl(value, 3600);
+
+                if (error) {
+                    console.error(
+                        "Document preview URL error:",
+                        error
+                    );
+                } else if (data?.signedUrl) {
+                    openUrl = data.signedUrl;
+                    external = true;
+                }
+            }
+
+            return `
+                <a class="overview-row"
+                   href="${escapeHTML(openUrl)}"
+                   ${external
+                       ? 'target="_blank" rel="noopener noreferrer"'
+                       : ''}
+                   aria-label="Otvori ${escapeHTML(item.name || fileName)}">
+
+                    <span class="overview-file-icon">
+                        ${escapeHTML(fileType)}
+                    </span>
+
+                    <span class="overview-row-main">
+                        <strong>
+                            ${escapeHTML(item.name || fileName)}
+                        </strong>
+
+                        <small>
+                            ${escapeHTML(description)}
+                        </small>
+                    </span>
+
+                    <time class="overview-row-date">
+                        ${formatDate(item.created_at)}
+                    </time>
+
+                    <span class="overview-download"
+                          aria-hidden="true">
+                        &#8599;
+                    </span>
+                </a>
+            `;
+        })
+    );
+
+    recentDocumentsList.innerHTML = cards.join("");
 }
 
 /* SUPPORT REALTIME */
@@ -1316,14 +1519,12 @@ document.addEventListener(
     }
 );
 
-
 /* ================================================
    PTECH DIGITAL
    DASHBOARD PARTICLES — LOGIN STYLE
 ================================================ */
 
 (function initDashboardParticles() {
-
     const main = document.querySelector(
         ".desktop-main"
     );
@@ -1332,7 +1533,6 @@ document.addEventListener(
         return;
     }
 
-    // Sprjecava dvostruko stvaranje particlesa
     if (
         document.getElementById(
             "dashboardParticles"
@@ -1341,7 +1541,6 @@ document.addEventListener(
         return;
     }
 
-    // Postujemo postavke smanjenog kretanja
     if (
         window.matchMedia(
             "(prefers-reduced-motion: reduce)"
@@ -1350,7 +1549,6 @@ document.addEventListener(
         return;
     }
 
-    // Kreiramo sloj za particles
     const container = document.createElement("div");
 
     container.className = "dashboard-particles";
@@ -1361,31 +1559,19 @@ document.addEventListener(
         "true"
     );
 
-    // Sloj postavljamo iza sadrzaja
     main.prepend(container);
 
     const particleCount = 34;
 
     for (let i = 0; i < particleCount; i++) {
-
         const particle = document.createElement("span");
 
         particle.className = "dashboard-particle";
 
-        // Razlicita vertikalna pozicija
         const top = 2 + Math.random() * 96;
-
-        // Razlicita duljina linije
         const width = 35 + Math.random() * 65;
-
-        // Razlicita brzina kretanja
         const duration = 13 + Math.random() * 11;
-
-        // Negativni delay daje raspored
-        // po cijelom ekranu odmah pri otvaranju
         const delay = -Math.random() * 25;
-
-        // Razlicita prozirnost
         const opacity = 0.36 + Math.random() * 0.38;
 
         particle.style.setProperty(
@@ -1415,9 +1601,7 @@ document.addEventListener(
 
         container.appendChild(particle);
     }
-
 })();
-
 
 /* START */
 
