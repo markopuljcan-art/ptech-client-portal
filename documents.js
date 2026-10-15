@@ -1,64 +1,93 @@
 
-const SUPABASE_URL = "https://agivwsbczzvvuzszcvxz.supabase.co";
-const SUPABASE_KEY = "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
+/* =====================================================
+   PTECH DIGITAL CLIENT PORTAL
+   DOCUMENTS.JS — V6
 
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+   - Supabase Auth
+   - Korisnicki profil
+   - Projekti
+   - Project documents
+   - Private project materials
+   - Signed URLs
+   - Pregled i preuzimanje
+   - Pretraga i filteri
+   - Light / Dark mode
+   - Logout
+   - Neprocitane poruke
+   - Realtime
+   - Particles
+===================================================== */
 
-const clientName = document.getElementById("clientName");
-const logoutButton = document.getElementById("logoutButton");
-const themeToggle = document.getElementById("themeToggle");
-const documentSearch = document.getElementById("documentSearch");
-const projectFilter = document.getElementById("projectFilter");
-const typeFilter = document.getElementById("typeFilter");
-const documentsCount = document.getElementById("documentsCount");
-const documentsList = document.getElementById("documentsList");
-const documentsMessage = document.getElementById("documentsMessage");
-const messagesUnreadBadge = document.querySelector(".nav-notification");
+
+/* =====================================================
+   SUPABASE
+===================================================== */
+
+const SUPABASE_URL =
+    "https://agivwsbczzvvuzszcvxz.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
+
+const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+/* =====================================================
+   ELEMENTI
+===================================================== */
+
+const clientName =
+    document.getElementById("clientName");
+
+const logoutButton =
+    document.getElementById("logoutButton");
+
+const themeToggle =
+    document.getElementById("themeToggle");
+
+const documentSearch =
+    document.getElementById("documentSearch");
+
+const projectFilter =
+    document.getElementById("projectFilter");
+
+const typeFilter =
+    document.getElementById("typeFilter");
+
+const documentsCount =
+    document.getElementById("documentsCount");
+
+const documentsTotal =
+    document.getElementById("documentsTotal");
+
+const documentsList =
+    document.getElementById("documentsList");
+
+const documentsMessage =
+    document.getElementById("documentsMessage");
+
+const messagesUnreadBadge =
+    document.getElementById("messagesUnreadBadge");
+
+
+/* =====================================================
+   GLOBAL
+===================================================== */
 
 let currentSession = null;
 let allProjects = [];
 let allDocuments = [];
+
 let supportRealtimeChannel = null;
 let renderVersion = 0;
 
-/* =========================
-   TEMA
-========================= */
 
-function applyTheme(theme) {
-    const finalTheme = theme === "light" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", finalTheme);
-    localStorage.setItem("ptech-theme", finalTheme);
-}
-
-function loadTheme() {
-    applyTheme(localStorage.getItem("ptech-theme"));
-}
-
-themeToggle?.addEventListener("click", () => {
-    const current = document.documentElement.getAttribute("data-theme");
-    applyTheme(current === "dark" ? "light" : "dark");
-});
-
-loadTheme();
-
-/* =========================
-   ODJAVA
-========================= */
-
-logoutButton?.addEventListener("click", async () => {
-    if (supportRealtimeChannel) {
-        await supabaseClient.removeChannel(supportRealtimeChannel);
-        supportRealtimeChannel = null;
-    }
-
-    await supabaseClient.auth.signOut();
-    window.location.href = "login.html";
-});
-
-/* =========================
-   POMOĆNE FUNKCIJE
-========================= */
+/* =====================================================
+   HELPERS
+===================================================== */
 
 function escapeHtml(value) {
     return String(value ?? "")
@@ -69,12 +98,19 @@ function escapeHtml(value) {
         .replaceAll("'", "&#039;");
 }
 
+
 function formatDate(value) {
     if (!value) return "-";
 
-    const date = new Date(value);
+    const text = String(value);
 
-    if (Number.isNaN(date.getTime())) return "-";
+    const date = /^\d{4}-\d{2}-\d{2}$/.test(text)
+        ? new Date(text + "T00:00:00")
+        : new Date(text);
+
+    if (Number.isNaN(date.getTime())) {
+        return "-";
+    }
 
     return date.toLocaleDateString("hr-HR", {
         day: "2-digit",
@@ -83,10 +119,13 @@ function formatDate(value) {
     });
 }
 
+
 function formatBytes(bytes) {
     const value = Number(bytes || 0);
 
-    if (value < 1024) return `${value} B`;
+    if (value < 1024) {
+        return `${value} B`;
+    }
 
     if (value < 1024 * 1024) {
         return `${(value / 1024).toFixed(1)} KB`;
@@ -95,26 +134,60 @@ function formatBytes(bytes) {
     return `${(value / (1024 * 1024)).toFixed(1)} MB`;
 }
 
+
 function getFileType(name) {
-    return String(name || "").split(".").pop().toLowerCase();
+    return String(name || "")
+        .split(".")
+        .pop()
+        .toLowerCase();
 }
+
 
 function getFileLabel(name) {
     const extension = getFileType(name);
 
     if (extension === "pdf") return "PDF";
-    if (["doc", "docx"].includes(extension)) return "DOC";
-    if (["xls", "xlsx"].includes(extension)) return "XLS";
-    if (["ppt", "pptx"].includes(extension)) return "PPT";
 
-    if (["jpg", "jpeg", "png", "webp", "gif", "svg"].includes(extension)) {
+    if (
+        ["doc", "docx"].includes(extension)
+    ) {
+        return "DOC";
+    }
+
+    if (
+        ["xls", "xlsx"].includes(extension)
+    ) {
+        return "XLS";
+    }
+
+    if (
+        ["ppt", "pptx"].includes(extension)
+    ) {
+        return "PPT";
+    }
+
+    if (
+        [
+            "jpg",
+            "jpeg",
+            "png",
+            "webp",
+            "gif",
+            "svg"
+        ].includes(extension)
+    ) {
         return "IMG";
     }
 
-    if (["zip", "rar", "7z"].includes(extension)) return "ZIP";
+    if (
+        ["zip", "rar", "7z"].includes(extension)
+    ) {
+        return "ZIP";
+    }
 
     return "FILE";
 }
+
 
 function safePathPart(value) {
     return String(value || "klijent")
@@ -127,13 +200,22 @@ function safePathPart(value) {
         .slice(0, 60) || "klijent";
 }
 
+
+/* =====================================================
+   STATUS MESSAGES
+===================================================== */
+
 function showMessage(message, type = "error") {
     if (!documentsMessage) return;
 
     documentsMessage.hidden = false;
-    documentsMessage.className = `documents-message ${type}`;
+
+    documentsMessage.className =
+        `documents-message ${type}`;
+
     documentsMessage.textContent = message;
 }
+
 
 function hideMessage() {
     if (!documentsMessage) return;
@@ -143,61 +225,212 @@ function hideMessage() {
     documentsMessage.textContent = "";
 }
 
-/* =========================
+
+/* =====================================================
+   LIGHT / DARK MODE
+   ISTA POSTAVKA KAO OSTATAK PORTALA
+===================================================== */
+
+function applyTheme(theme, save = true) {
+    const finalTheme =
+        theme === "light" ? "light" : "dark";
+
+    document.documentElement.setAttribute(
+        "data-theme",
+        finalTheme
+    );
+
+    document.body.classList.toggle(
+        "light-mode",
+        finalTheme === "light"
+    );
+
+    if (themeToggle) {
+        themeToggle.checked =
+            finalTheme === "light";
+    }
+
+    const themeColor = document.querySelector(
+        'meta[name="theme-color"]'
+    );
+
+    if (themeColor) {
+        themeColor.content =
+            finalTheme === "light"
+                ? "#fffaf5"
+                : "#192337";
+    }
+
+    if (save) {
+        try {
+            localStorage.setItem("theme", finalTheme);
+        } catch (error) {
+            // Tema i dalje radi u trenutnoj kartici.
+        }
+    }
+}
+
+
+function loadTheme() {
+    let savedTheme = "dark";
+
+    try {
+        savedTheme =
+            localStorage.getItem("theme") ||
+            localStorage.getItem("ptech-theme") ||
+            "dark";
+    } catch (error) {
+        // Koristi se zadana tema.
+    }
+
+    applyTheme(
+        savedTheme === "light" ? "light" : "dark",
+        false
+    );
+}
+
+
+themeToggle?.addEventListener(
+    "change",
+    function () {
+        applyTheme(
+            themeToggle.checked
+                ? "light"
+                : "dark"
+        );
+    }
+);
+
+loadTheme();
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+logoutButton?.addEventListener(
+    "click",
+    async function () {
+        logoutButton.disabled = true;
+
+        try {
+            if (supportRealtimeChannel) {
+                await supabaseClient.removeChannel(
+                    supportRealtimeChannel
+                );
+
+                supportRealtimeChannel = null;
+            }
+
+            const { error } =
+                await supabaseClient.auth.signOut();
+
+            if (error) {
+                throw error;
+            }
+
+            window.location.href = "login.html";
+
+        } catch (error) {
+            console.error("Logout error:", error);
+
+            logoutButton.disabled = false;
+
+            showMessage(
+                "Odjava trenutno nije moguća. Pokušajte ponovno."
+            );
+        }
+    }
+);
+
+
+/* =====================================================
    PROFIL
-========================= */
+===================================================== */
 
 async function loadProfile() {
     if (!currentSession) return;
 
-    const { data, error } = await supabaseClient
-        .from("profiles")
-        .select("id, display_name")
-        .eq("id", currentSession.user.id)
-        .maybeSingle();
+    const { data, error } =
+        await supabaseClient
+            .from("profiles")
+            .select("id, display_name")
+            .eq("id", currentSession.user.id)
+            .maybeSingle();
 
     if (error) {
         console.error("Profile error:", error);
-        return;
     }
 
-    if (data?.display_name && clientName) {
-        clientName.textContent = data.display_name;
+    if (clientName) {
+        clientName.textContent =
+            data?.display_name ||
+            currentSession.user.email?.split("@")[0] ||
+            "Klijent";
     }
 }
 
-/* =========================
+
+/* =====================================================
    PROJEKTI
-========================= */
+===================================================== */
 
 async function loadProjects() {
-    if (!currentSession) return;
+    if (!currentSession) return false;
 
-    const { data, error } = await supabaseClient
-        .from("projects")
-        .select("id, name, type, created_at")
-        .eq("user_id", currentSession.user.id)
-        .order("created_at", { ascending: false });
+    const { data, error } =
+        await supabaseClient
+            .from("projects")
+            .select(
+                "id, name, type, created_at"
+            )
+            .eq(
+                "user_id",
+                currentSession.user.id
+            )
+            .order(
+                "created_at",
+                { ascending: false }
+            );
 
     if (error) {
         console.error("Projects error:", error);
-        showMessage("Projekte nije moguće učitati.");
-        return;
+
+        showMessage(
+            "Projekte nije moguće učitati."
+        );
+
+        return false;
     }
 
     allProjects = data || [];
+
     buildProjectFilter();
+
+    return true;
 }
+
 
 function buildProjectFilter() {
     if (!projectFilter) return;
 
-    projectFilter.innerHTML = '<option value="">Svi projekti</option>';
+    projectFilter.replaceChildren();
+
+    const defaultOption =
+        document.createElement("option");
+
+    defaultOption.value = "";
+    defaultOption.textContent = "Svi projekti";
+
+    projectFilter.appendChild(defaultOption);
 
     for (const project of allProjects) {
-        const option = document.createElement("option");
+        const option =
+            document.createElement("option");
 
-        option.value = String(project.id);
+        option.value =
+            String(project.id);
+
         option.textContent =
             project.type ||
             project.name ||
@@ -207,95 +440,143 @@ function buildProjectFilter() {
     }
 }
 
-/* =========================
-   POSTOJEĆI DOKUMENTI
-   TABLICA project_documents
-========================= */
+
+/* =====================================================
+   PROJECT DOCUMENTS — BAZA
+===================================================== */
 
 async function loadDatabaseDocuments() {
-    const { data, error } = await supabaseClient
-        .from("project_documents")
-        .select(`
-            id,
-            created_at,
-            project_id,
-            name,
-            file_url,
-            document_type,
-            file_size
-        `)
-        .order("created_at", { ascending: false });
+    const { data, error } =
+        await supabaseClient
+            .from("project_documents")
+            .select(`
+                id,
+                created_at,
+                project_id,
+                name,
+                file_url,
+                document_type,
+                file_size
+            `)
+            .order(
+                "created_at",
+                { ascending: false }
+            );
 
     if (error) {
-        console.error("Documents database error:", error);
+        console.error(
+            "Documents database error:",
+            error
+        );
+
         throw error;
     }
 
-    return (data || []).map(item => ({
-        ...item,
-        source: "database",
-        bucket: "project-documents"
-    }));
+    return (data || []).map(
+        item => ({
+            ...item,
+            source: "database",
+            bucket: "project-documents"
+        })
+    );
 }
 
-/* =========================
-   POSLANI MATERIJALI
-   BUCKET project-materials
-========================= */
 
-    
+/* =====================================================
+   PROJECT MATERIALS — STORAGE
+
+   Zadrzavamo postojecu strukturu mapa:
+   ime-klijenta--user-id/projekt-ID
+===================================================== */
+
 async function loadMaterialDocuments() {
-    if (!currentSession || !allProjects.length) return [];
+    if (
+        !currentSession ||
+        !allProjects.length
+    ) {
+        return [];
+    }
 
-    const userId = currentSession.user.id;
-    const bucket = supabaseClient.storage.from("project-materials");
+    const userId =
+        currentSession.user.id;
+
+    const bucket =
+        supabaseClient.storage.from(
+            "project-materials"
+        );
+
     const materials = [];
 
-    // Mapa korištena prilikom slanja materijala.
-    const clientFolder = `${safePathPart(clientName?.textContent)}--${userId}`;
+    const clientFolder =
+        `${
+            safePathPart(clientName?.textContent)
+        }--${userId}`;
 
     for (const project of allProjects) {
-        const projectPath = `${clientFolder}/projekt-${project.id}`;
+        const projectPath =
+            `${clientFolder}/projekt-${project.id}`;
 
         let offset = 0;
         const limit = 100;
 
         while (true) {
-            const { data: files, error } = await bucket.list(projectPath, {
-                limit,
-                offset,
-                sortBy: {
-                    column: "created_at",
-                    order: "desc"
-                }
-            });
+            const { data: files, error } =
+                await bucket.list(
+                    projectPath,
+                    {
+                        limit,
+                        offset,
+                        sortBy: {
+                            column: "created_at",
+                            order: "desc"
+                        }
+                    }
+                );
 
             if (error) {
-                console.error("Greška pri učitavanju materijala:", projectPath, error);
+                console.error(
+                    "Materials loading error:",
+                    projectPath,
+                    error
+                );
+
                 throw error;
             }
 
             const batch = files || [];
 
             for (const file of batch) {
-                if (!file.id && !file.metadata) continue;
+                if (
+                    !file.id &&
+                    !file.metadata
+                ) {
+                    continue;
+                }
 
-                const filePath = `${projectPath}/${file.name}`;
+                const filePath =
+                    `${projectPath}/${file.name}`;
 
                 materials.push({
                     id: `material:${filePath}`,
-                    created_at: file.created_at || file.updated_at || null,
+                    created_at:
+                        file.created_at ||
+                        file.updated_at ||
+                        null,
                     project_id: project.id,
                     name: file.name,
                     file_url: filePath,
                     document_type: "Dizajn",
-                    file_size: file.metadata?.size || 0,
+                    file_size:
+                        file.metadata?.size || 0,
                     source: "materials",
                     bucket: "project-materials"
                 });
             }
 
-            if (batch.length < limit) break;
+            if (batch.length < limit) {
+                break;
+            }
+
             offset += limit;
         }
     }
@@ -304,9 +585,9 @@ async function loadMaterialDocuments() {
 }
 
 
-/* =========================
-   UČITAVANJE SVIH DOKUMENATA
-========================= */
+/* =====================================================
+   UCITAVANJE DOKUMENATA
+===================================================== */
 
 async function loadDocuments() {
     if (!documentsList) return;
@@ -317,10 +598,11 @@ async function loadDocuments() {
         </div>
     `;
 
-    const results = await Promise.allSettled([
-        loadDatabaseDocuments(),
-        loadMaterialDocuments()
-    ]);
+    const results =
+        await Promise.allSettled([
+            loadDatabaseDocuments(),
+            loadMaterialDocuments()
+        ]);
 
     const databaseResult = results[0];
     const materialsResult = results[1];
@@ -335,21 +617,33 @@ async function loadDocuments() {
             ? materialsResult.value
             : [];
 
-    if (databaseResult.status === "rejected") {
+    if (
+        databaseResult.status === "rejected"
+    ) {
         console.error(
-            "Database documents failed:",
+            "Database documents error:",
             databaseResult.reason
         );
     }
 
-    if (materialsResult.status === "rejected") {
+    if (
+        materialsResult.status === "rejected"
+    ) {
         console.error(
-            "Materials loading failed:",
+            "Material documents error:",
             materialsResult.reason
         );
     }
 
-    const projectMap = Object.fromEntries(
+    /*
+       Prikazujemo samo dokumente koji
+       pripadaju projektima prijavljenog klijenta.
+
+       Pristup samim datotekama dodatno ovisi
+       o Supabase RLS i Storage pravilima.
+    */
+
+    const projectMap = new Map(
         allProjects.map(project => [
             String(project.id),
             project
@@ -361,52 +655,63 @@ async function loadDocuments() {
         ...materialDocuments
     ];
 
-    /*
-       Prikazujemo samo dokumente projekata
-       koje je korisnik učitao iz svoje baze.
-    */
-
     allDocuments = combined
         .filter(item =>
-            Boolean(projectMap[String(item.project_id)])
+            projectMap.has(
+                String(item.project_id)
+            )
         )
         .map(item => ({
             ...item,
-            project:
-                projectMap[String(item.project_id)]
+
+            project: projectMap.get(
+                String(item.project_id)
+            )
         }))
         .sort((a, b) =>
             new Date(b.created_at || 0) -
             new Date(a.created_at || 0)
         );
 
+    if (documentsTotal) {
+        documentsTotal.textContent =
+            String(allDocuments.length);
+    }
+
     if (
         databaseResult.status === "rejected" ||
         materialsResult.status === "rejected"
     ) {
         showMessage(
-            "Dio dokumenata nije moguće učitati. Provjeri pristup Storage bucketu.",
+            "Dio dokumenata nije moguće učitati. Provjerite pristup Storage bucketu.",
             "error"
         );
     } else {
         hideMessage();
     }
 
-    applyFilters();
+    await applyFilters();
 }
 
-/* =========================
+
+/* =====================================================
    PRIVATNI LINKOVI
-========================= */
+===================================================== */
 
-async function getDocumentUrl(item, download = false) {
-    if (!item.file_url) return null;
+async function getDocumentUrl(
+    item,
+    download = false
+) {
+    if (!item.file_url) {
+        return null;
+    }
 
-    const value = String(item.file_url);
+    const value =
+        String(item.file_url);
 
     /*
-       Postojeći dokumenti mogu već imati
-       gotov javni URL.
+       Postojeci dokumenti mogu imati
+       spremljen gotov URL.
     */
 
     if (
@@ -421,17 +726,20 @@ async function getDocumentUrl(item, download = false) {
         "project-documents";
 
     const options = download
-        ? { download: item.name || true }
+        ? {
+            download: item.name || true
+        }
         : undefined;
 
-    const { data, error } = await supabaseClient
-        .storage
-        .from(bucketName)
-        .createSignedUrl(
-            value,
-            3600,
-            options
-        );
+    const { data, error } =
+        await supabaseClient
+            .storage
+            .from(bucketName)
+            .createSignedUrl(
+                value,
+                3600,
+                options
+            );
 
     if (error) {
         console.error(
@@ -440,31 +748,37 @@ async function getDocumentUrl(item, download = false) {
             value,
             error
         );
+
         return null;
     }
 
     return data?.signedUrl || null;
 }
 
-/* =========================
-   PRIKAZ DOKUMENATA
-========================= */
 
-async function renderDocuments(documents) {
+/* =====================================================
+   RENDER DOKUMENATA
+===================================================== */
+
+async function renderDocuments(items) {
     if (!documentsList) return;
 
-    const version = ++renderVersion;
+    const version =
+        ++renderVersion;
 
     if (documentsCount) {
-        documentsCount.textContent = String(documents.length);
+        documentsCount.textContent =
+            String(items.length);
     }
 
-    if (!documents.length) {
+    if (!items.length) {
         documentsList.innerHTML = `
             <div class="documents-empty">
-                Trenutno nema dokumenata.
+                Trenutno nema dokumenata koji
+                odgovaraju odabranim filterima.
             </div>
         `;
+
         return;
     }
 
@@ -475,129 +789,168 @@ async function renderDocuments(documents) {
     `;
 
     const cards = await Promise.all(
-        documents.map(async item => {
-            const [openUrl, downloadUrl] = await Promise.all([
-                getDocumentUrl(item, false),
-                getDocumentUrl(item, true)
-            ]);
+        items.map(
+            async item => {
 
-            const projectName =
-                item.project?.type ||
-                item.project?.name ||
-                "Projekt";
+                const [
+                    openUrl,
+                    downloadUrl
+                ] = await Promise.all([
+                    getDocumentUrl(
+                        item,
+                        false
+                    ),
+                    getDocumentUrl(
+                        item,
+                        true
+                    )
+                ]);
 
-            const category =
-                item.document_type ||
-                "Ostalo";
+                const projectName =
+                    item.project?.type ||
+                    item.project?.name ||
+                    "Projekt";
 
-            const materialLabel =
-                item.source === "materials"
-                    ? " · Poslani materijal"
-                    : "";
+                const category =
+                    item.document_type ||
+                    "Ostalo";
 
-            const openButton = openUrl
-                ? `
-                    <a
-                        href="${escapeHtml(openUrl)}"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="document-open-button"
-                    >
-                        Otvori
+                const materialLabel =
+                    item.source === "materials"
+                        ? " · Poslani materijal"
+                        : "";
 
-                        <svg viewBox="0 0 24 24">
-                            <path d="M14 5h5v5"></path>
-                            <path d="M10 14L19 5"></path>
-                            <path d="M19 13v6H5V5h6"></path>
-                        </svg>
-                    </a>
-                `
-                : "";
-
-            const downloadButton = downloadUrl
-                ? `
-                    <a
-                        href="${escapeHtml(downloadUrl)}"
-                        class="document-download-button"
-                    >
-                        Preuzmi
-
-                        <svg viewBox="0 0 24 24">
-                            <path d="M12 3v12"></path>
-                            <path d="M7 10l5 5 5-5"></path>
-                            <path d="M5 20h14"></path>
-                        </svg>
-                    </a>
-                `
-                : "";
-
-            const unavailable =
-                !openUrl && !downloadUrl
+                const openButton = openUrl
                     ? `
-                        <span class="document-unavailable">
-                            Nedostupno
-                        </span>
+                        <a
+                            href="${escapeHtml(openUrl)}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="document-open-button"
+                        >
+                            Otvori
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path d="M14 5h5v5"></path>
+                                <path d="M10 14L19 5"></path>
+                                <path d="M19 13v6H5V5h6"></path>
+                            </svg>
+                        </a>
                     `
                     : "";
 
-            return `
-                <article class="document-card">
+                const downloadButton =
+                    downloadUrl
+                        ? `
+                            <a
+                                href="${escapeHtml(downloadUrl)}"
+                                class="document-download-button"
+                            >
+                                Preuzmi
 
-                    <div class="document-main">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                >
+                                    <path d="M12 3v12"></path>
+                                    <path d="M7 10l5 5 5-5"></path>
+                                    <path d="M5 20h14"></path>
+                                </svg>
+                            </a>
+                        `
+                        : "";
 
-                        <div class="document-icon">
-                            ${getFileLabel(item.name)}
-                        </div>
-
-                        <div class="document-info">
-
-                            <strong>
-                                ${escapeHtml(item.name || "Dokument")}
-                            </strong>
-
-                            <span>
-                                ${escapeHtml(projectName)}
+                const unavailable =
+                    !openUrl && !downloadUrl
+                        ? `
+                            <span class="document-unavailable">
+                                Nedostupno
                             </span>
+                        `
+                        : "";
 
-                            <small>
-                                ${escapeHtml(category + materialLabel)}
-                                •
-                                ${formatDate(item.created_at)}
-                                •
-                                ${formatBytes(item.file_size)}
-                            </small>
+                return `
+                    <article class="document-card">
+
+                        <div class="document-main">
+
+                            <div class="document-icon">
+                                ${getFileLabel(item.name)}
+                            </div>
+
+                            <div class="document-info">
+
+                                <strong>
+                                    ${escapeHtml(
+                                        item.name ||
+                                        "Dokument"
+                                    )}
+                                </strong>
+
+                                <span>
+                                    ${escapeHtml(projectName)}
+                                </span>
+
+                                <small>
+                                    ${escapeHtml(
+                                        category + materialLabel
+                                    )}
+
+                                    ·
+
+                                    ${escapeHtml(
+                                        formatDate(
+                                            item.created_at
+                                        )
+                                    )}
+
+                                    ·
+
+                                    ${escapeHtml(
+                                        formatBytes(
+                                            item.file_size
+                                        )
+                                    )}
+                                </small>
+
+                            </div>
 
                         </div>
 
-                    </div>
+                        <div class="document-actions">
+                            ${openButton}
+                            ${downloadButton}
+                            ${unavailable}
+                        </div>
 
-                    <div class="document-actions">
-                        ${openButton}
-                        ${downloadButton}
-                        ${unavailable}
-                    </div>
-
-                </article>
-            `;
-        })
+                    </article>
+                `;
+            }
+        )
     );
 
     /*
-       Ako je korisnik u međuvremenu
-       promijenio filter, ne prikazujemo
-       rezultat prethodnog filtriranja.
+       Ne prikazuj stari rezultat ako je
+       korisnik u meduvremenu promijenio filter.
     */
 
-    if (version !== renderVersion) return;
+    if (version !== renderVersion) {
+        return;
+    }
 
-    documentsList.innerHTML = cards.join("");
+    documentsList.innerHTML =
+        cards.join("");
 }
 
-/* =========================
-   FILTERI
-========================= */
 
-function applyFilters() {
+/* =====================================================
+   FILTERI
+===================================================== */
+
+async function applyFilters() {
     const search = String(
         documentSearch?.value || ""
     ).trim().toLowerCase();
@@ -608,63 +961,106 @@ function applyFilters() {
     const type =
         typeFilter?.value || "";
 
-    const filtered = allDocuments.filter(item => {
-        const searchValue = `
-            ${item.name || ""}
-            ${item.project?.name || ""}
-            ${item.project?.type || ""}
-            ${item.document_type || ""}
-        `.toLowerCase();
+    const filtered = allDocuments.filter(
+        item => {
 
-        const matchesSearch =
-            !search ||
-            searchValue.includes(search);
+            const searchValue = `
+                ${item.name || ""}
+                ${item.project?.name || ""}
+                ${item.project?.type || ""}
+                ${item.document_type || ""}
+            `.toLowerCase();
 
-        const matchesProject =
-            !projectId ||
-            String(item.project_id) === projectId;
+            const matchesSearch =
+                !search ||
+                searchValue.includes(search);
 
-        const matchesType =
-            !type ||
-            String(item.document_type || "Ostalo") === type;
+            const matchesProject =
+                !projectId ||
+                String(item.project_id) ===
+                    projectId;
 
-        return (
-            matchesSearch &&
-            matchesProject &&
-            matchesType
-        );
-    });
+            const matchesType =
+                !type ||
+                String(
+                    item.document_type || "Ostalo"
+                ).toLowerCase() ===
+                    type.toLowerCase();
 
-    renderDocuments(filtered);
+            return (
+                matchesSearch &&
+                matchesProject &&
+                matchesType
+            );
+        }
+    );
+
+    await renderDocuments(filtered);
 }
 
-documentSearch?.addEventListener("input", applyFilters);
-projectFilter?.addEventListener("change", applyFilters);
-typeFilter?.addEventListener("change", applyFilters);
 
-/* =========================
-   NEPROČITANE PORUKE
-========================= */
+documentSearch?.addEventListener(
+    "input",
+    applyFilters
+);
+
+projectFilter?.addEventListener(
+    "change",
+    applyFilters
+);
+
+typeFilter?.addEventListener(
+    "change",
+    applyFilters
+);
+
+
+/* =====================================================
+   NEPROCITANE PORUKE
+===================================================== */
 
 async function loadMessagesUnreadCount() {
-    if (!messagesUnreadBadge || !currentSession) return;
-
-    const { count, error } = await supabaseClient
-        .from("support_messages")
-        .select("id", {
-            count: "exact",
-            head: true
-        })
-        .eq("user_id", currentSession.user.id)
-        .eq("sender_role", "admin")
-        .is("client_read_at", null);
-
-    if (error) {
-        console.error("Unread support error:", error);
+    if (
+        !messagesUnreadBadge ||
+        !currentSession
+    ) {
         return;
     }
 
-    const unreadCount = count || 0;
+    const { count, error } =
+        await supabaseClient
+            .from("support_messages")
+            .select(
+                "id",
+                {
+                    count: "exact",
+                    head: true
+                }
+            )
+            .eq(
+                "user_id",
+                currentSession.user.id
+            )
+            .eq(
+                "sender_role",
+                "admin"
+            )
+            .is(
+                "client_read_at",
+                null
+            );
+
+    if (error) {
+        console.error(
+            "Unread support error:",
+            error
+        );
+
+        return;
+    }
+
+    const unreadCount =
+        count || 0;
 
     messagesUnreadBadge.hidden =
         unreadCount === 0;
@@ -675,40 +1071,115 @@ async function loadMessagesUnreadCount() {
             : String(unreadCount);
 }
 
-/* =========================
-   REALTIME PORUKE
-========================= */
+
+/* =====================================================
+   REALTIME SUPPORT
+===================================================== */
 
 function subscribeToSupportRealtime() {
-    if (!currentSession || supportRealtimeChannel) return;
+    if (
+        !currentSession ||
+        supportRealtimeChannel
+    ) {
+        return;
+    }
 
-    supportRealtimeChannel = supabaseClient
-        .channel(
-            `documents-support-${currentSession.user.id}`
-        )
-        .on(
-            "postgres_changes",
-            {
-                event: "*",
-                schema: "public",
-                table: "support_messages",
-                filter:
-                    `user_id=eq.${currentSession.user.id}`
-            },
-            async () => {
-                await loadMessagesUnreadCount();
-            }
-        )
-        .subscribe();
+    supportRealtimeChannel =
+        supabaseClient
+            .channel(
+                `documents-support-${currentSession.user.id}`
+            )
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "support_messages",
+                    filter:
+                        `user_id=eq.${currentSession.user.id}`
+                },
+                async function () {
+                    await loadMessagesUnreadCount();
+                }
+            )
+            .subscribe();
 }
 
-/* =========================
+
+/* =====================================================
+   PARTICLES
+===================================================== */
+
+function createDocumentParticles() {
+    const container =
+        document.getElementById(
+            "documentsParticles"
+        );
+
+    if (!container) return;
+
+    if (
+        window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches
+    ) {
+        return;
+    }
+
+    container.replaceChildren();
+
+    const count = 34;
+
+    for (
+        let index = 0;
+        index < count;
+        index++
+    ) {
+        const particle =
+            document.createElement("span");
+
+        particle.className =
+            "documents-particle";
+
+        particle.style.setProperty(
+            "--particle-top",
+            (Math.random() * 96 + 2) + "%"
+        );
+
+        particle.style.setProperty(
+            "--particle-width",
+            (Math.random() * 65 + 30) + "px"
+        );
+
+        particle.style.setProperty(
+            "--particle-duration",
+            (Math.random() * 10 + 12) + "s"
+        );
+
+        particle.style.setProperty(
+            "--particle-delay",
+            (Math.random() * -22) + "s"
+        );
+
+        particle.style.setProperty(
+            "--particle-opacity",
+            String(
+                Math.random() * 0.35 + 0.3
+            )
+        );
+
+        container.appendChild(particle);
+    }
+}
+
+
+/* =====================================================
    POVRATAK NA STRANICU
-========================= */
+===================================================== */
 
 document.addEventListener(
     "visibilitychange",
-    async () => {
+    async function () {
         if (
             document.visibilityState === "visible" &&
             currentSession
@@ -719,31 +1190,83 @@ document.addEventListener(
     }
 );
 
-/* =========================
+
+/* =====================================================
    POKRETANJE
-========================= */
+===================================================== */
 
 async function startDocuments() {
     hideMessage();
 
-    const {
-        data: { session },
-        error
-    } = await supabaseClient.auth.getSession();
+    try {
+        const {
+            data: { session },
+            error
+        } =
+            await supabaseClient.auth.getSession();
 
-    if (error || !session) {
-        window.location.href = "login.html";
-        return;
+        if (error || !session) {
+            window.location.href =
+                "login.html";
+
+            return;
+        }
+
+        currentSession = session;
+
+        await loadProfile();
+
+        const projectsLoaded =
+            await loadProjects();
+
+        if (!projectsLoaded) {
+            if (documentsList) {
+                documentsList.innerHTML = `
+                    <div class="documents-empty">
+                        Projekte trenutno nije moguće učitati.
+                    </div>
+                `;
+            }
+
+            return;
+        }
+
+        await loadDocuments();
+
+        await loadMessagesUnreadCount();
+
+        subscribeToSupportRealtime();
+
+    } catch (error) {
+        console.error(
+            "Documents init error:",
+            error
+        );
+
+        showMessage(
+            "Došlo je do pogreške pri učitavanju dokumenata."
+        );
+
+        if (documentsList) {
+            documentsList.innerHTML = `
+                <div class="documents-empty">
+                    Pokušajte osvježiti stranicu.
+                </div>
+            `;
+        }
     }
-
-    currentSession = session;
-
-    await loadProfile();
-    await loadProjects();
-    await loadDocuments();
-    await loadMessagesUnreadCount();
-
-    subscribeToSupportRealtime();
 }
 
+
+/* =====================================================
+   INIT
+===================================================== */
+
+createDocumentParticles();
+
 startDocuments();
+
+
+/* =====================================================
+   END — DOCUMENTS.JS V6
+===================================================== */
