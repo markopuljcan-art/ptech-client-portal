@@ -415,32 +415,87 @@ body.light-mode .documents-toolbar select { background: linear-gradient(135deg,#
 }
 .upload-overlay::before { width: 740px; height: 740px; top: -515px; right: -250px; }
 .upload-overlay::after { width: 560px; height: 560px; bottom: -425px; left: -290px; }
-.upload-particles { position: fixed; inset: 82px 0 0; z-index: 0; overflow: hidden; pointer-events: none; }
+
+/* ==========================================
+   FULLSCREEN UPLOAD PARTICLES
+========================================== */
+
+.upload-particles {
+    position: fixed;
+    inset: 82px 0 0;
+    z-index: 0;
+
+    overflow: hidden;
+    pointer-events: none;
+}
+
 .upload-particle {
     position: absolute;
-    top: var(--up-top,50%);
+
+    top: var(--up-top, 50%);
     left: -145px;
-    width: var(--up-width,65px);
-    height: 1px;
+
+    width: var(--up-width, 65px);
+    height: 1.5px;
+
     opacity: 0;
-    background: linear-gradient(90deg,transparent,var(--upload-particle-line));
-    animation: uploadParticleTravel var(--up-time,19s) linear var(--up-delay,0s) infinite;
+
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--upload-particle-line) 100%
+    );
+
+    animation: uploadParticleTravel
+        var(--up-time, 19s)
+        linear
+        var(--up-delay, 0s)
+        infinite;
 }
+
+/* BRONČANA TOČKICA */
+
 .upload-particle::after {
     content: "";
+
     position: absolute;
-    top: -2px;
+
+    top: -2.5px;
     right: -1px;
-    width: 5px;
-    height: 5px;
+
+    width: 6px;
+    height: 6px;
+
     border-radius: 50%;
+
     background: var(--upload-particle-dot);
+
+    box-shadow:
+        0 0 8px rgba(195, 127, 84, 0.35);
 }
+
+/* ANIMACIJA */
+
 @keyframes uploadParticleTravel {
-    0% { transform: translateX(0); opacity: 0; }
-    12%,88% { opacity: var(--up-opacity,.35); }
-    100% { transform: translateX(calc(100vw + 280px)); opacity: 0; }
+    0% {
+        transform: translateX(0);
+        opacity: 0;
+    }
+
+    12% {
+        opacity: 0.65;
+    }
+
+    88% {
+        opacity: 0.65;
+    }
+
+    100% {
+        transform: translateX(calc(100vw + 280px));
+        opacity: 0;
+    }
 }
+
 .upload-screen { position: relative; z-index: 1; display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh; }
 .upload-screen-header {
     position: sticky; top: 0; z-index: 20;
