@@ -1877,6 +1877,88 @@ html[data-theme="dark"] .documents-particle {
 }
 
 
+/* ==========================================
+   PTECH DIGITAL
+   LIGHT MODE — TAMNIJI FILTER BUBBLE
+========================================== */
+
+/* Glavna kartica s pretragom i filterima */
+
+html[data-theme="light"] .documents-toolbar {
+    background: linear-gradient(
+        135deg,
+        #e9c3a8 0%,
+        #dfb293 55%,
+        #d6a383 100%
+    );
+
+    border: 1px solid rgba(176, 112, 72, 0.30);
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 10px 28px rgba(142, 91, 58, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.38);
+}
+
+/* Pretraga i oba filtera */
+
+html[data-theme="light"] .documents-search-wrap input,
+html[data-theme="light"] .documents-toolbar select {
+    background: linear-gradient(
+        135deg,
+        #f5dfcf,
+        #edcbb5
+    );
+
+    border: 1px solid rgba(172, 108, 67, 0.28);
+
+    color: #282b37;
+
+    border-radius: 12px;
+
+    box-shadow:
+        inset 0 1px 3px rgba(142, 91, 58, 0.05);
+}
+
+/* Placeholder */
+
+html[data-theme="light"]
+.documents-search-wrap input::placeholder {
+    color: #805e4a;
+    opacity: 1;
+}
+
+/* Ikona pretrage */
+
+html[data-theme="light"]
+.documents-search-wrap svg {
+    color: #995d39;
+}
+
+/* Hover i fokus */
+
+html[data-theme="light"]
+.documents-search-wrap input:hover,
+
+html[data-theme="light"]
+.documents-toolbar select:hover {
+    border-color: rgba(152, 86, 48, 0.45);
+}
+
+html[data-theme="light"]
+.documents-search-wrap input:focus,
+
+html[data-theme="light"]
+.documents-toolbar select:focus {
+    background: #fff3e8;
+
+    border-color: #ad754e;
+
+    box-shadow:
+        0 0 0 4px rgba(173, 117, 78, 0.15);
+}
+
 /* ===================================================
    VERY SMALL MOBILE
 =================================================== */
