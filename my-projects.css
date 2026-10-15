@@ -93,6 +93,7 @@ select:focus-visible {
 ===================================================== */
 
 body {
+   
     color-scheme: dark;
 
     /* PAGE */
@@ -192,7 +193,26 @@ body {
     --progress-bg: rgba(217, 145, 93, 0.20);
     --progress-color: #f2bd90;
 }
+   /* PROJECT CARDS */
 
+--project-card-bg: linear-gradient(
+    135deg,
+    #34445f 0%,
+    #2c3b54 55%,
+    #26354d 100%
+);
+
+--project-card-border: rgba(222, 177, 142, 0.20);
+
+/* INNER BUBBLES */
+
+--tile-bg: linear-gradient(
+    115deg,
+    rgba(215, 165, 129, 0.15),
+    rgba(174, 123, 107, 0.07)
+);
+
+--tile-border: rgba(223, 178, 145, 0.19);
 
 /* =====================================================
    3. LIGHT MODE
@@ -205,6 +225,20 @@ html[data-theme="light"] body,
 body.light-mode {
     color-scheme: light;
 
+   /* PROJECT CARDS */
+
+--project-card-bg: linear-gradient(
+    130deg,
+    #fff8f1 0%,
+    #f4dfce 100%
+);
+
+--project-card-border: #e5bea2;
+
+/* INNER BUBBLES */
+
+--tile-bg: #f3ddca;
+--tile-border: #e5bea2;
     /* PAGE */
 
     --page: #fffaf5;
@@ -1407,15 +1441,8 @@ html:not([data-theme="light"]) body:not(.light-mode)
 
     overflow: hidden;
 
-    border: 1px solid var(
-    --project-card-border,
-    var(--card-border)
-);
-
-background: var(
-    --project-card-bg,
-    var(--card-bg)
-);
+    background: var(--project-card-bg);
+    border: 1px solid var(--project-card-border);
 
     border-radius: 22px;
 
