@@ -1,2031 +1,1197 @@
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
+/* =====================================================
+   PTECH DIGITAL — DOCUMENTS.JS V8
+   Existing documents + private client uploads
+===================================================== */
 
-/* ===================================================
-   PTECH DIGITAL — DOCUMENTS V6
-   BRONZE / CREAM + NAVY / COPPER
-   RESPONSIVE CLIENT PORTAL
-=================================================== */
+/* SUPABASE */
 
-/* RESET */
+const SUPABASE_URL =
+    "https://agivwsbczzvvuzszcvxz.supabase.co";
 
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
+const SUPABASE_KEY =
+    "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
+
+const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+/* ELEMENTS */
+
+const $ = id => document.getElementById(id);
+
+const clientName = $("clientName");
+const logoutButton = $("logoutButton");
+const themeToggle = $("themeToggle");
+const documentSearch = $("documentSearch");
+const projectFilter = $("projectFilter");
+const typeFilter = $("typeFilter");
+const documentsCount = $("documentsCount");
+const documentsTotal = $("documentsTotal");
+const documentsList = $("documentsList");
+const documentsMessage = $("documentsMessage");
+const messagesUnreadBadge = $("messagesUnreadBadge");
+
+const uploadOverlay = $("uploadOverlay");
+const openUploadButton = $("openUploadButton");
+const closeUploadButton = $("closeUploadButton");
+const cancelUploadButton = $("cancelUploadButton");
+const uploadForm = $("uploadForm");
+const uploadProject = $("uploadProject");
+const uploadCategory = $("uploadCategory");
+const uploadTitle = $("uploadTitle");
+const uploadFiles = $("uploadFiles");
+const uploadDropzone = $("uploadDropzone");
+const uploadFileList = $("uploadFileList");
+const uploadNote = $("uploadNote");
+const uploadNoteCounter = $("uploadNoteCounter");
+const uploadStatus = $("uploadStatus");
+const submitUploadButton = $("submitUploadButton");
+
+const UPLOAD_BUCKET = "client-uploads";
+const MAX_FILES = 5;
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
+
+const MIME_TYPES = {
+    pdf: "application/pdf",
+    jpg: "image/jpeg",
+    jpeg: "image/jpeg",
+    png: "image/png",
+    webp: "image/webp",
+    doc: "application/msword",
+    docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    xls: "application/vnd.ms-excel",
+    xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    txt: "text/plain",
+    zip: "application/zip"
+};
+
+const ALLOWED_CATEGORIES = [
+    "Dizajn",
+    "Zahtjev za izmjenom",
+    "Potvrda o plaćanju",
+    "Materijali",
+    "Ugovor",
+    "Račun",
+    "Ponuda",
+    "Brief",
+    "Ostalo"
+];
+
+/* STATE */
+
+let currentSession = null;
+let allProjects = [];
+let allDocuments = [];
+let selectedFiles = [];
+let uploadBusy = false;
+let supportRealtimeChannel = null;
+let renderVersion = 0;
+let lastFocusedElement = null;
+
+/* HELPERS */
+
+function escapeHtml(value) {
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 }
 
-html {
-    min-height: 100%;
-    overflow-x: clip;
+function formatDate(value) {
+    if (!value) return "-";
+
+    const text = String(value);
+    const date = /^\d{4}-\d{2}-\d{2}$/.test(text)
+        ? new Date(text + "T00:00:00")
+        : new Date(text);
+
+    if (Number.isNaN(date.getTime())) return "-";
+
+    return date.toLocaleDateString("hr-HR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+    });
 }
 
-body {
-    margin: 0;
-    min-height: 100vh;
-    overflow-x: clip;
+function formatBytes(bytes) {
+    const value = Number(bytes || 0);
 
-    font-family: "Inter", sans-serif;
-    -webkit-font-smoothing: antialiased;
-
-    color: var(--text);
-    background: var(--page);
+    if (value < 1024) return `${value} B`;
+    if (value < 1048576) {
+        return `${(value / 1024).toFixed(1)} KB`;
+    }
+    return `${(value / 1048576).toFixed(1)} MB`;
 }
 
-button,
-input,
-select {
-    font: inherit;
+function getFileType(name) {
+    return String(name || "")
+        .split(".")
+        .pop()
+        .toLowerCase();
 }
 
-button {
-    cursor: pointer;
+function getFileLabel(name) {
+    const ext = getFileType(name);
+
+    if (ext === "pdf") return "PDF";
+    if (["doc", "docx"].includes(ext)) return "DOC";
+    if (["xls", "xlsx"].includes(ext)) return "XLS";
+    if (["ppt", "pptx"].includes(ext)) return "PPT";
+    if (["jpg", "jpeg", "png", "webp", "gif", "svg"].includes(ext)) return "IMG";
+    if (["zip", "rar", "7z"].includes(ext)) return "ZIP";
+
+    return "FILE";
 }
 
-svg {
-    display: block;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+function safePathPart(value) {
+    return String(value || "klijent")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/[^a-z0-9_-]+/g, "-")
+        .replace(/-+/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .slice(0, 60) || "klijent";
 }
 
-button:focus-visible,
-a:focus-visible,
-input:focus-visible,
-select:focus-visible {
-    outline: 3px solid var(--focus);
-    outline-offset: 3px;
+function projectLabel(project) {
+    return project.type ||
+        project.name ||
+        `Projekt #${project.id}`;
 }
 
-[hidden] {
-    display: none !important;
+function showMessage(message, type = "error") {
+    if (!documentsMessage) return;
+    documentsMessage.hidden = false;
+    documentsMessage.className = `documents-message ${type}`;
+    documentsMessage.textContent = message;
 }
 
+function hideMessage() {
+    if (!documentsMessage) return;
+    documentsMessage.hidden = true;
+    documentsMessage.className = "documents-message";
+    documentsMessage.textContent = "";
+}
 
-/* ===================================================
-   DARK MODE VARIABLES
-=================================================== */
+function showUploadStatus(message, type = "") {
+    if (!uploadStatus) return;
 
-body {
-    color-scheme: dark;
+    uploadStatus.hidden = false;
+    uploadStatus.className = `upload-status ${type}`;
+    uploadStatus.textContent = message;
+}
 
-    --page: #192337;
-    --text: #fff8f2;
-    --muted: #b8c4d4;
+function hideUploadStatus() {
+    if (!uploadStatus) return;
+    uploadStatus.hidden = true;
+    uploadStatus.textContent = "";
+    uploadStatus.className = "upload-status";
+}
 
-    --header-bg: rgba(29, 41, 61, 0.97);
-    --header-border: rgba(226, 181, 148, 0.13);
+/* THEME */
 
-    --sidebar-bg: linear-gradient(
-        155deg,
-        #35445f 0%,
-        #293851 52%,
-        #202d43 100%
+function applyTheme(theme, save = true) {
+    const finalTheme = theme === "light" ? "light" : "dark";
+
+    document.documentElement.setAttribute("data-theme", finalTheme);
+    document.body.classList.toggle(
+        "light-mode",
+        finalTheme === "light"
     );
 
-    --sidebar-text: #f7f0e9;
-    --sidebar-muted: #d1b8a5;
-    --sidebar-active: rgba(228, 182, 145, 0.17);
-    --sidebar-active-text: #f1c5a3;
-
-    --bronze: #e3b28e;
-    --bronze-deep: #c9926b;
-
-    --border: rgba(225, 178, 143, 0.19);
-    --divider: rgba(225, 178, 143, 0.15);
-    --focus: rgba(231, 180, 141, 0.65);
-
-    --icon-bg: rgba(226, 181, 148, 0.16);
-    --icon-text: #f0bd98;
-
-    --card-bg: linear-gradient(
-        135deg,
-        #34445f,
-        #2c3b54 55%,
-        #26354d
-    );
-
-    --card-border: rgba(222, 177, 142, 0.20);
-    --card-text: #fff8f2;
-    --card-muted: #c8d1df;
-
-    --tile-bg: linear-gradient(
-        115deg,
-        rgba(215, 165, 129, 0.15),
-        rgba(174, 123, 107, 0.07)
-    );
-
-    --tile-border: rgba(223, 178, 145, 0.19);
-
-    --input-bg: #26364e;
-    --input-text: #fff8f2;
-
-    --document-bg: linear-gradient(
-        115deg,
-        #40526d,
-        #394b65 56%,
-        #34465f
-    );
-
-    --document-border: rgba(222, 178, 145, 0.18);
-
-    --document-shadow:
-        0 5px 16px rgba(5, 12, 27, 0.10);
-
-    --document-title: #fffaf5;
-    --document-meta: #cbd5e2;
-
-    --action-bg: rgba(227, 181, 148, 0.13);
-    --action-border: rgba(227, 181, 148, 0.22);
-    --action-text: #efc4a3;
-
-    --card-shadow:
-        0 18px 42px rgba(6, 13, 29, 0.20);
-}
-
-
-/* ===================================================
-   LIGHT MODE VARIABLES
-   SAMO BOJE — ISTE DIMENZIJE
-=================================================== */
-
-html[data-theme="light"] body {
-    color-scheme: light;
-
-    --page: #fffaf5;
-    --text: #202534;
-    --muted: #806d61;
-
-    --header-bg: rgba(255, 250, 245, 0.97);
-    --header-border: rgba(171, 117, 81, 0.16);
-
-    --sidebar-bg: linear-gradient(
-        158deg,
-        #d7a27e,
-        #bc8767 49%,
-        #a97151
-    );
-
-    --sidebar-text: #292735;
-    --sidebar-muted: #7a503d;
-    --sidebar-active: rgba(255, 249, 240, 0.83);
-    --sidebar-active-text: #814c31;
-
-    --bronze: #bc8562;
-    --bronze-deep: #925735;
-
-    --border: rgba(169, 113, 79, 0.19);
-    --divider: rgba(169, 113, 79, 0.15);
-    --focus: rgba(194, 139, 98, 0.60);
-
-    --icon-bg: rgba(255, 246, 235, 0.65);
-    --icon-text: #945b37;
-
-    --card-bg: linear-gradient(
-        135deg,
-        #e1ac88,
-        #d09a76 50%,
-        #bf8867
-    );
-
-    --card-border: rgba(255, 239, 224, 0.42);
-    --card-text: #202534;
-    --card-muted: #725340;
-
-    --tile-bg: linear-gradient(
-        115deg,
-        #f3d8c4,
-        #e8ba99
-    );
-
-    --tile-border: rgba(255, 250, 244, 0.48);
-
-    --input-bg: #fff6ee;
-    --input-text: #202534;
-
-    --document-bg: linear-gradient(
-        110deg,
-        #fff8f2,
-        #f9e9dc
-    );
-
-    --document-border: rgba(255, 255, 255, 0.64);
-
-    --document-shadow:
-        0 5px 16px rgba(112, 69, 43, 0.07);
-
-    --document-title: #202534;
-    --document-meta: #69564a;
-
-    --action-bg: #fff3e8;
-    --action-border: rgba(178, 117, 75, 0.18);
-    --action-text: #925735;
-
-    --card-shadow:
-        0 15px 34px rgba(142, 91, 58, 0.13);
-}
-
-
-/* ===================================================
-   MAIN LAYOUT
-=================================================== */
-
-.dashboard.desktop-layout {
-    display: grid;
-    grid-template-columns: 224px minmax(0, 1fr);
-
-    width: 100%;
-    min-height: 100vh;
-}
-
-.desktop-main {
-    position: relative;
-    isolation: isolate;
-
-    min-width: 0;
-    min-height: 100vh;
-
-    background:
-        radial-gradient(
-            ellipse at 95% 9%,
-            rgba(194, 134, 93, 0.07),
-            transparent 33%
-        ),
-        var(--page);
-}
-
-
-/* ===================================================
-   SIDEBAR
-=================================================== */
-
-.desktop-sidebar {
-    position: sticky;
-    top: 0;
-    z-index: 30;
-
-    display: flex;
-    flex-direction: column;
-    align-self: start;
-
-    height: 100vh;
-    padding: 30px 15px 19px;
-
-    overflow: hidden;
-    isolation: isolate;
-
-    background: var(--sidebar-bg);
-    border-right: 1px solid rgba(125, 78, 49, 0.14);
-}
-
-.desktop-sidebar::before,
-.desktop-sidebar::after {
-    content: "";
-    position: absolute;
-    z-index: -1;
-
-    border: 1px solid rgba(255, 243, 228, 0.37);
-    border-radius: 50%;
-
-    pointer-events: none;
-}
-
-.desktop-sidebar::before {
-    width: 570px;
-    height: 570px;
-
-    top: -240px;
-    left: -370px;
-
-    box-shadow:
-        0 0 0 35px rgba(255, 247, 237, 0.055),
-        0 0 0 92px rgba(255, 247, 237, 0.025);
-}
-
-.desktop-sidebar::after {
-    width: 480px;
-    height: 480px;
-
-    right: -335px;
-    bottom: -225px;
-
-    box-shadow:
-        0 0 0 40px rgba(255, 243, 228, 0.04);
-}
-
-.sidebar-brand {
-    display: flex;
-    align-items: center;
-    gap: 11px;
-
-    min-height: 62px;
-    margin: 0 5px 38px;
-
-    color: var(--sidebar-text);
-    text-decoration: none;
-}
-
-.sidebar-brand-logo {
-    display: grid;
-    place-items: center;
-
-    flex: 0 0 46px;
-    width: 46px;
-    height: 46px;
-    padding: 5px;
-
-    border: 1px solid rgba(255, 255, 255, 0.58);
-    border-radius: 14px;
-
-    background: linear-gradient(
-        145deg,
-        #fff7ee,
-        #edcfb7
-    );
-
-    box-shadow:
-        0 7px 18px rgba(112, 68, 44, 0.13);
-}
-
-.sidebar-brand-logo img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.sidebar-brand-text {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    min-width: 0;
-}
-
-.sidebar-brand-text strong {
-    font-size: 13px;
-    font-weight: 900;
-    letter-spacing: -0.4px;
-    white-space: nowrap;
-}
-
-.sidebar-brand-text small {
-    color: var(--sidebar-muted);
-    font-size: 8px;
-    font-weight: 800;
-    letter-spacing: 2px;
-}
-
-.sidebar-navigation-title {
-    margin: 0 15px 13px;
-
-    color: var(--sidebar-muted);
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: 1.6px;
-}
-
-.sidebar-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.sidebar-link {
-    display: flex;
-    align-items: center;
-    gap: 13px;
-
-    min-height: 46px;
-    padding: 0 14px;
-
-    border: 1px solid transparent;
-    border-radius: 12px;
-
-    color: var(--sidebar-text);
-    text-decoration: none;
-
-    font-size: 12px;
-    font-weight: 750;
-
-    transition:
-        background 0.2s ease,
-        transform 0.2s ease;
-}
-
-.sidebar-link svg {
-    flex: 0 0 19px;
-    width: 19px;
-    height: 19px;
-}
-
-.sidebar-link:hover {
-    background: rgba(255, 247, 237, 0.10);
-    transform: translateX(2px);
-}
-
-.sidebar-link.active {
-    background: var(--sidebar-active);
-    border-color: rgba(238, 210, 189, 0.20);
-
-    color: var(--sidebar-active-text);
-
-    box-shadow:
-        0 8px 18px rgba(70, 43, 31, 0.06);
-}
-
-.sidebar-bottom {
-    position: relative;
-    z-index: 2;
-    margin-top: auto;
-}
-
-.sidebar-help {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    padding: 13px 10px;
-
-    border: 1px solid rgba(255, 251, 244, 0.19);
-    border-radius: 13px;
-
-    background: rgba(255, 248, 238, 0.12);
-    color: var(--sidebar-text);
-
-    text-decoration: none;
-}
-
-.sidebar-help-icon {
-    display: grid;
-    place-items: center;
-
-    flex: 0 0 34px;
-    width: 34px;
-    height: 34px;
-
-    border-radius: 10px;
-    background: #fff3e7;
-    color: #98603f;
-
-    font-size: 17px;
-    font-weight: 900;
-}
-
-.sidebar-help-text {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    min-width: 0;
-}
-
-.sidebar-help-text strong {
-    font-size: 10px;
-    font-weight: 800;
-}
-
-.sidebar-help-text small {
-    color: var(--sidebar-muted);
-    font-size: 9px;
-}
-
-.sidebar-help-arrow {
-    margin-left: auto;
-    color: var(--bronze);
-}
-
-.sidebar-bottom p {
-    margin: 21px 8px 0;
-
-    color: var(--sidebar-muted);
-    font-size: 9px;
-    text-align: center;
-}
-
-
-/* ===================================================
-   BACKGROUND ORNAMENT
-=================================================== */
-
-.desktop-main::before {
-    content: "";
-    position: absolute;
-    z-index: 0;
-
-    top: -480px;
-    right: -335px;
-
-    width: 930px;
-    height: 930px;
-
-    border: 1px solid rgba(187, 124, 82, 0.13);
-    border-radius: 50%;
-
-    background: radial-gradient(
-        circle at 38% 65%,
-        rgba(205, 148, 106, 0.15),
-        rgba(194, 131, 91, 0.06) 60%,
-        transparent 83%
-    );
-
-    box-shadow:
-        0 0 0 45px rgba(205, 145, 103, 0.025),
-        0 0 0 92px rgba(205, 145, 103, 0.012);
-
-    pointer-events: none;
-}
-
-html[data-theme="dark"] .desktop-main::before {
-    background: radial-gradient(
-        circle at 38% 65%,
-        rgba(153, 120, 124, 0.10),
-        rgba(119, 96, 109, 0.035) 65%,
-        transparent 85%
-    );
-
-    border-color: rgba(224, 170, 128, 0.08);
-}
-
-
-/* ===================================================
-   HEADER
-=================================================== */
-
-.dashboard-header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 20px;
-
-    min-height: 75px;
-
-    padding:
-        12px clamp(22px, 3.5vw, 48px);
-
-    background: var(--header-bg);
-
-    border-bottom: 1px solid var(--header-border);
-
-    -webkit-backdrop-filter: blur(18px);
-    backdrop-filter: blur(18px);
-}
-
-.header-page-title {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    min-width: 0;
-}
-
-.header-eyebrow {
-    color: var(--bronze);
-
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: 2px;
-}
-
-.header-page-title strong {
-    color: var(--text);
-
-    font-size: 17px;
-    font-weight: 900;
-    letter-spacing: -0.5px;
-}
-
-.header-actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-
-    flex: 0 0 auto;
-    gap: 15px;
-    min-width: 0;
-}
-
-.user-box {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-
-    min-width: 0;
-
-    color: var(--text);
-
-    font-size: 12px;
-    font-weight: 800;
-}
-
-.user-box strong {
-    max-width: 180px;
-
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.user-avatar {
-    display: grid;
-    place-items: center;
-
-    flex: 0 0 36px;
-    width: 36px;
-    height: 36px;
-
-    border-radius: 50%;
-
-    background: var(--icon-bg);
-    color: var(--bronze);
-}
-
-.user-avatar svg {
-    width: 19px;
-    height: 19px;
-}
-
-.header-separator {
-    flex: 0 0 1px;
-
-    width: 1px;
-    height: 28px;
-
-    background: var(--divider);
-}
-
-.logout-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    gap: 8px;
-    min-height: 39px;
-    padding: 8px 10px;
-
-    border: 0;
-    border-radius: 9px;
-
-    background: transparent;
-    color: var(--muted);
-
-    font-size: 12px;
-    font-weight: 700;
-}
-
-.logout-button:hover {
-    background: var(--icon-bg);
-    color: var(--bronze);
-}
-
-.logout-button svg {
-    width: 19px;
-    height: 19px;
-}
-
-
-/* ===================================================
-   THEME SWITCH
-=================================================== */
-
-.theme-switch {
-    position: relative;
-    display: block;
-
-    flex: 0 0 62px;
-    width: 62px;
-    height: 34px;
-}
-
-.theme-switch input {
-    position: absolute;
-
-    width: 1px;
-    height: 1px;
-    opacity: 0;
-}
-
-.theme-slider {
-    position: absolute;
-    inset: 0;
-
-    border: 1px solid var(--border);
-    border-radius: 999px;
-
-    background: #293750;
-    cursor: pointer;
-
-    transition:
-        background 0.25s ease,
-        border-color 0.25s ease;
-}
-
-.theme-slider::before {
-    content: "☾";
-
-    position: absolute;
-    top: 3px;
-    left: 3px;
-
-    display: grid;
-    place-items: center;
-
-    width: 26px;
-    height: 26px;
-
-    border-radius: 50%;
-
-    background: linear-gradient(
-        135deg,
-        #d9a581,
-        #a9704e
-    );
-
-    color: white;
-    font-size: 15px;
-
-    transition: transform 0.25s ease;
-}
-
-.theme-switch input:checked + .theme-slider {
-    background: #fffaf5;
-}
-
-.theme-switch input:checked + .theme-slider::before {
-    content: "☀";
-    transform: translateX(28px);
-}
-
-.theme-switch input:focus-visible + .theme-slider {
-    outline: 3px solid var(--focus);
-    outline-offset: 3px;
-}
-
-
-/* ===================================================
-   PARTICLES
-=================================================== */
-
-.documents-particles {
-    position: absolute;
-    inset: 75px 0 0;
-    z-index: 0;
-
-    overflow: hidden;
-    pointer-events: none;
-    user-select: none;
-}
-
-.documents-particle {
-    position: absolute;
-
-    top: var(--particle-top, 50%);
-    left: -145px;
-
-    width: var(--particle-width, 65px);
-    height: 1px;
-
-    opacity: 0;
-
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(194, 128, 83, 0.65)
-    );
-
-    animation:
-        documentsParticleTravel
-        var(--particle-duration, 17s)
-        linear
-        var(--particle-delay, 0s)
-        infinite;
-}
-
-.documents-particle::after {
-    content: "";
-
-    position: absolute;
-    top: -2px;
-    right: -1px;
-
-    width: 5px;
-    height: 5px;
-
-    border-radius: 50%;
-    background: #bc815e;
-
-    box-shadow:
-        0 0 8px rgba(184, 112, 70, 0.36);
-}
-
-html[data-theme="dark"] .documents-particles {
-    opacity: 0.65;
-}
-
-html[data-theme="dark"] .documents-particle {
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(235, 191, 158, 0.63)
-    );
-}
-
-@keyframes documentsParticleTravel {
-    0% {
-        transform: translate3d(0, 0, 0);
-        opacity: 0;
+    if (themeToggle) {
+        themeToggle.checked = finalTheme === "light";
     }
 
-    10%,
-    90% {
-        opacity: var(--particle-opacity, 0.5);
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) {
+        meta.content = finalTheme === "light"
+            ? "#fffaf5"
+            : "#192337";
     }
 
-    100% {
-        transform: translate3d(
-            calc(100vw + 270px),
-            0,
-            0
+    if (save) {
+        try {
+            localStorage.setItem("theme", finalTheme);
+        } catch (error) {}
+    }
+}
+
+function loadTheme() {
+    let saved = "dark";
+
+    try {
+        saved = localStorage.getItem("theme") ||
+            localStorage.getItem("ptech-theme") ||
+            "dark";
+    } catch (error) {}
+
+    applyTheme(saved, false);
+}
+
+themeToggle?.addEventListener("change", () => {
+    applyTheme(themeToggle.checked ? "light" : "dark");
+});
+
+loadTheme();
+
+/* LOGOUT */
+
+logoutButton?.addEventListener("click", async () => {
+    logoutButton.disabled = true;
+
+    try {
+        if (supportRealtimeChannel) {
+            await supabaseClient.removeChannel(supportRealtimeChannel);
+            supportRealtimeChannel = null;
+        }
+
+        const { error } = await supabaseClient.auth.signOut();
+        if (error) throw error;
+
+        window.location.href = "login.html";
+    } catch (error) {
+        console.error("Logout error:", error);
+        logoutButton.disabled = false;
+        showMessage("Odjava trenutno nije moguća. Pokušajte ponovno.");
+    }
+});
+
+/* PROFILE */
+
+async function loadProfile() {
+    if (!currentSession) return;
+
+    const { data, error } = await supabaseClient
+        .from("profiles")
+        .select("id, display_name")
+        .eq("id", currentSession.user.id)
+        .maybeSingle();
+
+    if (error) console.error("Profile error:", error);
+
+    if (clientName) {
+        clientName.textContent =
+            data?.display_name ||
+            currentSession.user.email?.split("@")[0] ||
+            "Klijent";
+    }
+}
+
+/* PROJECTS */
+
+async function loadProjects() {
+    if (!currentSession) return false;
+
+    const { data, error } = await supabaseClient
+        .from("projects")
+        .select("id, name, type, created_at")
+        .eq("user_id", currentSession.user.id)
+        .order("created_at", { ascending: false });
+
+    if (error) {
+        console.error("Projects error:", error);
+        showMessage("Projekte nije moguće učitati.");
+        return false;
+    }
+
+    allProjects = data || [];
+
+    buildProjectFilter();
+    buildUploadProjectOptions();
+
+    return true;
+}
+
+function buildProjectFilter() {
+    if (!projectFilter) return;
+
+    projectFilter.replaceChildren();
+
+    const option = document.createElement("option");
+    option.value = "";
+    option.textContent = "Svi projekti";
+    projectFilter.appendChild(option);
+
+    for (const project of allProjects) {
+        const item = document.createElement("option");
+        item.value = String(project.id);
+        item.textContent = projectLabel(project);
+        projectFilter.appendChild(item);
+    }
+}
+
+function buildUploadProjectOptions() {
+    if (!uploadProject) return;
+
+    uploadProject.replaceChildren();
+
+    const initial = document.createElement("option");
+    initial.value = "";
+    initial.textContent = "Odaberite projekt";
+    uploadProject.appendChild(initial);
+
+    for (const project of allProjects) {
+        const option = document.createElement("option");
+        option.value = String(project.id);
+        option.textContent = projectLabel(project);
+        uploadProject.appendChild(option);
+    }
+}
+
+/* EXISTING DATABASE DOCUMENTS */
+
+async function loadDatabaseDocuments() {
+    const { data, error } = await supabaseClient
+        .from("project_documents")
+        .select("id, created_at, project_id, name, file_url, document_type, file_size")
+        .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    return (data || []).map(item => ({
+        ...item,
+        source: "database",
+        bucket: "project-documents"
+    }));
+}
+
+/* EXISTING PROJECT MATERIALS */
+
+async function loadMaterialDocuments() {
+    if (!currentSession || !allProjects.length) return [];
+
+    const userId = currentSession.user.id;
+    const bucket = supabaseClient.storage.from("project-materials");
+    const materials = [];
+
+    const clientFolder =
+        `${safePathPart(clientName?.textContent)}--${userId}`;
+
+    for (const project of allProjects) {
+        const path = `${clientFolder}/projekt-${project.id}`;
+        let offset = 0;
+        const limit = 100;
+
+        while (true) {
+            const { data: files, error } = await bucket.list(path, {
+                limit,
+                offset,
+                sortBy: {
+                    column: "created_at",
+                    order: "desc"
+                }
+            });
+
+            if (error) {
+                console.error("Materials error:", path, error);
+                throw error;
+            }
+
+            const batch = files || [];
+
+            for (const file of batch) {
+                if (!file.id && !file.metadata) continue;
+
+                const filePath = `${path}/${file.name}`;
+
+                materials.push({
+                    id: `material:${filePath}`,
+                    created_at: file.created_at || file.updated_at || null,
+                    project_id: project.id,
+                    name: file.name,
+                    original_file_name: file.name,
+                    file_url: filePath,
+                    document_type: "Dizajn",
+                    file_size: file.metadata?.size || 0,
+                    source: "materials",
+                    bucket: "project-materials"
+                });
+            }
+
+            if (batch.length < limit) break;
+            offset += limit;
+        }
+    }
+
+    return materials;
+}
+
+/* NEW CLIENT UPLOADS */
+
+async function loadClientUploads() {
+    if (!currentSession) return [];
+
+    const { data, error } = await supabaseClient
+        .from("client_uploads")
+        .select(`
+            id,
+            created_at,
+            project_id,
+            title,
+            category,
+            note,
+            original_file_name,
+            file_path,
+            file_size
+        `)
+        .eq("user_id", currentSession.user.id)
+        .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    return (data || []).map(item => ({
+        id: item.id,
+        created_at: item.created_at,
+        project_id: item.project_id,
+        name: item.title || item.original_file_name,
+        original_file_name: item.original_file_name,
+        file_url: item.file_path,
+        document_type: item.category,
+        file_size: item.file_size,
+        note: item.note,
+        source: "client",
+        bucket: UPLOAD_BUCKET
+    }));
+}
+
+/* COMBINED DOCUMENT LIST */
+
+async function loadDocuments() {
+    if (!documentsList) return;
+
+    documentsList.innerHTML = `
+        <div class="documents-empty">
+            Učitavanje dokumenata...
+        </div>
+    `;
+
+    const results = await Promise.allSettled([
+        loadDatabaseDocuments(),
+        loadMaterialDocuments(),
+        loadClientUploads()
+    ]);
+
+    const combined = [];
+    let hasError = false;
+
+    for (const result of results) {
+        if (result.status === "fulfilled") {
+            combined.push(...result.value);
+        } else {
+            hasError = true;
+            console.error("Document source error:", result.reason);
+        }
+    }
+
+    const projectMap = new Map(
+        allProjects.map(project => [String(project.id), project])
+    );
+
+    allDocuments = combined
+        .filter(item => projectMap.has(String(item.project_id)))
+        .map(item => ({
+            ...item,
+            project: projectMap.get(String(item.project_id))
+        }))
+        .sort((a, b) =>
+            new Date(b.created_at || 0) -
+            new Date(a.created_at || 0)
         );
-        opacity: 0;
+
+    if (documentsTotal) {
+        documentsTotal.textContent = String(allDocuments.length);
+    }
+
+    if (hasError) {
+        showMessage(
+            "Dio dokumenata nije moguće učitati. Provjerite Supabase tablice i Storage pravila.",
+            "error"
+        );
+    } else {
+        hideMessage();
+    }
+
+    await applyFilters();
+}
+
+/* SIGNED URL */
+
+async function getDocumentUrl(item, download = false) {
+    if (!item.file_url) return null;
+
+    const value = String(item.file_url);
+
+    if (value.startsWith("https://") ||
+        value.startsWith("http://")) {
+        return value;
+    }
+
+    const bucketName = item.bucket || "project-documents";
+
+    const options = download
+        ? { download: item.original_file_name || item.name || true }
+        : undefined;
+
+    const { data, error } = await supabaseClient.storage
+        .from(bucketName)
+        .createSignedUrl(value, 3600, options);
+
+    if (error) {
+        console.error("Signed URL error:", error);
+        return null;
+    }
+
+    return data?.signedUrl || null;
+}
+
+/* RENDER */
+
+async function renderDocuments(items) {
+    if (!documentsList) return;
+
+    const version = ++renderVersion;
+
+    if (documentsCount) {
+        documentsCount.textContent = String(items.length);
+    }
+
+    if (!items.length) {
+        documentsList.innerHTML = `
+            <div class="documents-empty">
+                Trenutno nema dokumenata koji odgovaraju filterima.
+            </div>
+        `;
+        return;
+    }
+
+    documentsList.innerHTML = `
+        <div class="documents-empty">
+            Priprema dokumenata...
+        </div>
+    `;
+
+    const cards = await Promise.all(items.map(async item => {
+        const [openUrl, downloadUrl] = await Promise.all([
+            getDocumentUrl(item, false),
+            getDocumentUrl(item, true)
+        ]);
+
+        const projectName = projectLabel(item.project);
+        const category = item.document_type || "Ostalo";
+
+        const sourceLabel =
+            item.source === "materials" ? " · Poslani materijal" :
+            item.source === "client" ? " · Učitao klijent" :
+            "";
+
+        const note = item.note
+            ? `<small>Napomena: ${escapeHtml(item.note)}</small>`
+            : "";
+
+        const openButton = openUrl ? `
+            <a href="${escapeHtml(openUrl)}"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="document-open-button">
+                Otvori
+                <svg viewBox="0 0 24 24">
+                    <path d="M14 5h5v5M10 14L19 5M19 13v6H5V5h6"/>
+                </svg>
+            </a>
+        ` : "";
+
+        const downloadButton = downloadUrl ? `
+            <a href="${escapeHtml(downloadUrl)}"
+               class="document-download-button">
+                Preuzmi
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 3v12M7 10l5 5 5-5M5 20h14"/>
+                </svg>
+            </a>
+        ` : "";
+
+        const unavailable = (!openUrl && !downloadUrl)
+            ? `<span class="document-unavailable">Nedostupno</span>`
+            : "";
+
+        return `
+            <article class="document-card">
+                <div class="document-main">
+                    <div class="document-icon">
+                        ${getFileLabel(item.original_file_name || item.name)}
+                    </div>
+                    <div class="document-info">
+                        <strong>${escapeHtml(item.name || "Dokument")}</strong>
+                        <span>${escapeHtml(projectName)}</span>
+                        <small>
+                            ${escapeHtml(category + sourceLabel)}
+                            · ${escapeHtml(formatDate(item.created_at))}
+                            · ${escapeHtml(formatBytes(item.file_size))}
+                        </small>
+                        ${note}
+                    </div>
+                </div>
+                <div class="document-actions">
+                    ${openButton}
+                    ${downloadButton}
+                    ${unavailable}
+                </div>
+            </article>
+        `;
+    }));
+
+    if (version !== renderVersion) return;
+
+    documentsList.innerHTML = cards.join("");
+}
+
+/* FILTERS */
+
+async function applyFilters() {
+    const search = String(documentSearch?.value || "")
+        .trim().toLowerCase();
+
+    const projectId = projectFilter?.value || "";
+    const type = typeFilter?.value || "";
+
+    const filtered = allDocuments.filter(item => {
+        const searchValue = `
+            ${item.name || ""}
+            ${item.original_file_name || ""}
+            ${item.note || ""}
+            ${item.project?.name || ""}
+            ${item.project?.type || ""}
+            ${item.document_type || ""}
+        `.toLowerCase();
+
+        return (
+            (!search || searchValue.includes(search)) &&
+            (!projectId || String(item.project_id) === projectId) &&
+            (!type || String(item.document_type || "Ostalo")
+                .toLowerCase() === type.toLowerCase())
+        );
+    });
+
+    await renderDocuments(filtered);
+}
+
+documentSearch?.addEventListener("input", applyFilters);
+projectFilter?.addEventListener("change", applyFilters);
+typeFilter?.addEventListener("change", applyFilters);
+
+/* =====================================================
+   FULLSCREEN UPLOAD
+===================================================== */
+
+function setUploadBusy(busy) {
+    uploadBusy = busy;
+
+    if (submitUploadButton) {
+        submitUploadButton.disabled = busy;
+    }
+
+    if (cancelUploadButton) {
+        cancelUploadButton.disabled = busy;
+    }
+
+    if (closeUploadButton) {
+        closeUploadButton.disabled = busy;
+    }
+
+    if (uploadProject) uploadProject.disabled = busy;
+    if (uploadCategory) uploadCategory.disabled = busy;
+    if (uploadTitle) uploadTitle.disabled = busy;
+    if (uploadNote) uploadNote.disabled = busy;
+    if (uploadFiles) uploadFiles.disabled = busy;
+
+    uploadFileList?.querySelectorAll("button").forEach(button => {
+        button.disabled = busy;
+    });
+}
+
+function openUpload() {
+    if (!uploadOverlay || !currentSession) return;
+
+    lastFocusedElement = document.activeElement;
+
+    uploadOverlay.hidden = false;
+    document.body.classList.add("upload-open");
+
+    if (projectFilter?.value) {
+        uploadProject.value = projectFilter.value;
+    }
+
+    hideUploadStatus();
+    closeUploadButton?.focus();
+}
+
+function closeUpload() {
+    if (uploadBusy || !uploadOverlay) return;
+
+    uploadOverlay.hidden = true;
+    document.body.classList.remove("upload-open");
+
+    uploadForm?.reset();
+    selectedFiles = [];
+
+    renderSelectedFiles();
+    hideUploadStatus();
+
+    if (lastFocusedElement?.isConnected) {
+        lastFocusedElement.focus();
     }
 }
 
-
-/* ===================================================
-   CONTENT
-=================================================== */
-
-.dashboard-content {
-    position: relative;
-    z-index: 1;
-
-    display: flex;
-    flex-direction: column;
-
-    width: 100%;
-    max-width: 1350px;
-    min-height: calc(100vh - 75px);
-
-    margin: 0 auto;
-
-    padding:
-        35px clamp(22px, 3.5vw, 48px)
-        28px;
-}
-
-
-/* ===================================================
-   PAGE INTRO
-=================================================== */
-
-.documents-page-header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-
-    gap: 20px;
-    margin-bottom: 25px;
-}
-
-.documents-heading {
-    min-width: 0;
-}
-
-.documents-eyebrow {
-    display: block;
-
-    margin-bottom: 12px;
-
-    color: var(--bronze-deep);
-
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 2px;
-}
-
-.documents-page-header h1 {
-    margin: 0 0 10px;
-
-    color: var(--text);
-
-    font-size: clamp(27px, 2.9vw, 38px);
-    font-weight: 900;
-    letter-spacing: -1.6px;
-}
-
-.documents-page-header p {
-    max-width: 650px;
-    margin: 0;
-
-    color: var(--muted);
-
-    font-size: 12px;
-    line-height: 1.8;
-}
-
-/* UKUPAN BROJ DOKUMENATA */
-
-.documents-total-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    flex: 0 0 155px;
-    gap: 7px;
-
-    min-height: 98px;
-    padding: 16px;
-
-    border: 1px solid var(--card-border);
-    border-radius: 18px;
-
-    background: var(--card-bg);
-    box-shadow: var(--card-shadow);
-
-    text-align: center;
-}
-
-.documents-total-box span {
-    color: var(--card-muted);
-
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: 0.8px;
-}
-
-.documents-total-box strong {
-    color: var(--card-text);
-
-    font-size: 30px;
-    font-weight: 900;
-    line-height: 1;
-}
-
-
-/* ===================================================
-   FILTER TOOLBAR
-=================================================== */
-
-.documents-toolbar {
-    display: grid;
-
-    grid-template-columns:
-        minmax(0, 1fr)
-        210px
-        170px;
-
-    gap: 13px;
-
-    margin-bottom: 22px;
-    padding: 15px;
-
-    border: 1px solid var(--border);
-    border-radius: 17px;
-
-    background: var(--input-bg);
-
-    box-shadow:
-        0 8px 24px rgba(76, 47, 31, 0.035);
-}
-
-.documents-search-wrap {
-    position: relative;
-    min-width: 0;
-}
-
-.documents-search-wrap svg {
-    position: absolute;
-    top: 50%;
-    left: 15px;
-
-    width: 19px;
-    height: 19px;
-
-    transform: translateY(-50%);
-
-    color: var(--bronze);
-    pointer-events: none;
-}
-
-.documents-search-wrap input,
-.documents-toolbar select {
-    width: 100%;
-    height: 48px;
-
-    border: 1px solid var(--border);
-    border-radius: 11px;
-    outline: none;
-
-    background: var(--page);
-    color: var(--input-text);
-
-    font-size: 12px;
-
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-.documents-search-wrap input {
-    padding: 0 16px 0 45px;
-}
-
-.documents-toolbar select {
-    min-width: 0;
-    padding: 0 12px;
-
-    cursor: pointer;
-}
-
-.documents-search-wrap input::placeholder {
-    color: var(--muted);
-    opacity: 0.8;
-}
-
-.documents-search-wrap input:focus,
-.documents-toolbar select:focus {
-    border-color: var(--bronze);
-
-    box-shadow:
-        0 0 0 4px rgba(192, 135, 99, 0.12);
-}
-
-
-/* ===================================================
-   MAIN DOCUMENTS PANEL
-=================================================== */
-
-.documents-panel {
-    position: relative;
-    isolation: isolate;
-
-    min-width: 0;
-    min-height: 360px;
-
-    padding: 23px;
-
-    border: 1px solid var(--card-border);
-    border-radius: 22px;
-
-    background: var(--card-bg);
-    box-shadow: var(--card-shadow);
-
-    overflow: hidden;
-}
-
-.documents-panel::before {
-    content: "";
-
-    position: absolute;
-    z-index: -1;
-
-    top: -175px;
-    right: -145px;
-
-    width: 480px;
-    height: 480px;
-
-    border: 1px solid rgba(255, 249, 239, 0.16);
-    border-radius: 50%;
-
-    box-shadow:
-        0 0 0 35px rgba(255, 247, 236, 0.035);
-
-    pointer-events: none;
-}
-
-
-/* ===================================================
-   PANEL HEADER
-=================================================== */
-
-.documents-panel-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 18px;
-    margin-bottom: 20px;
-}
-
-.documents-panel-heading {
-    display: flex;
-    align-items: center;
-
-    gap: 13px;
-    min-width: 0;
-}
-
-.documents-panel-icon {
-    display: grid;
-    place-items: center;
-
-    flex: 0 0 46px;
-    width: 46px;
-    height: 46px;
-
-    border: 1px solid var(--tile-border);
-    border-radius: 13px;
-
-    background: var(--icon-bg);
-    color: var(--icon-text);
-}
-
-.documents-panel-icon svg {
-    width: 24px;
-    height: 24px;
-}
-
-.documents-panel-heading > div:last-child {
-    min-width: 0;
-}
-
-.documents-panel-heading span {
-    display: block;
-
-    margin-bottom: 4px;
-
-    color: var(--card-muted);
-
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: 1.2px;
-}
-
-.documents-panel-heading h2 {
-    margin: 0 0 5px;
-
-    color: var(--card-text);
-
-    font-size: 20px;
-    font-weight: 900;
-    letter-spacing: -0.5px;
-}
-
-.documents-panel-heading p {
-    margin: 0;
-
-    color: var(--card-muted);
-
-    font-size: 11px;
-    line-height: 1.5;
-}
-
-/* BROJ PRIKAZANIH DOKUMENATA */
-
-.documents-count-wrap {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-
-    flex-shrink: 0;
-}
-
-.documents-count-wrap > span {
-    color: var(--card-muted);
-
-    font-size: 10px;
-    font-weight: 700;
-}
-
-.documents-count {
-    display: grid;
-    place-items: center;
-
-    min-width: 36px;
-    height: 31px;
-    padding: 0 10px;
-
-    border: 1px solid var(--tile-border);
-    border-radius: 999px;
-
-    background: var(--icon-bg);
-    color: var(--card-text);
-
-    font-size: 12px;
-    font-weight: 900;
-}
-
-
-/* ===================================================
-   DOCUMENT LIST
-=================================================== */
-
-.documents-list {
-    display: flex;
-    flex-direction: column;
-
-    gap: 11px;
-    min-width: 0;
-}
-
-/* VANJSKI BUBBLE */
-
-.document-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 13px;
-
-    min-width: 0;
-    min-height: 93px;
-
-    padding: 10px 12px;
-
-    border: 1px solid var(--tile-border);
-    border-radius: 16px;
-
-    background: var(--tile-bg);
-
-    transition:
-        transform 0.2s ease,
-        border-color 0.2s ease;
-}
-
-.document-card:hover {
-    transform: translateY(-1px);
-    border-color: var(--bronze);
-}
-
-/* UNUTARNJA KAPSULA */
-
-.document-main {
-    display: flex;
-    align-items: center;
-
-    flex: 1;
-    gap: 13px;
-
-    min-width: 0;
-    min-height: 69px;
-
-    padding: 12px 15px;
-
-    border: 1px solid var(--document-border);
-    border-radius: 13px;
-
-    background: var(--document-bg);
-
-    box-shadow: var(--document-shadow);
-}
-
-/* IKONA DATOTEKE */
-
-.document-icon {
-    display: grid;
-    place-items: center;
-
-    flex: 0 0 45px;
-
-    width: 45px;
-    height: 45px;
-
-    border: 1px solid var(--tile-border);
-    border-radius: 12px;
-
-    background: var(--icon-bg);
-    color: var(--icon-text);
-
-    font-size: 11px;
-    font-weight: 900;
-    letter-spacing: 0.3px;
-}
-
-/* NAZIV I DETALJI */
-
-.document-info {
-    min-width: 0;
-}
-
-.document-info strong {
-    display: block;
-
-    margin-bottom: 6px;
-
-    color: var(--document-title);
-
-    font-size: 13px;
-    font-weight: 850;
-    line-height: 1.35;
-
-    overflow-wrap: anywhere;
-}
-
-.document-info > span {
-    display: block;
-
-    margin-bottom: 5px;
-
-    color: var(--document-meta);
-
-    font-size: 11px;
-    font-weight: 700;
-
-    overflow-wrap: anywhere;
-}
-
-.document-info small {
-    display: block;
-
-    color: var(--document-meta);
-
-    font-size: 10px;
-    line-height: 1.6;
-}
-
-
-/* ===================================================
-   DOCUMENT ACTIONS
-=================================================== */
-
-.document-actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-
-    flex: 0 0 auto;
-    gap: 8px;
-}
-
-.document-open-button,
-.document-download-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    gap: 7px;
-
-    min-height: 36px;
-    padding: 8px 12px;
-
-    border: 1px solid var(--action-border);
-    border-radius: 999px;
-
-    background: var(--action-bg);
-    color: var(--action-text);
-
-    text-decoration: none;
-
-    font-size: 11px;
-    font-weight: 800;
-    white-space: nowrap;
-
-    transition:
-        transform 0.2s ease,
-        filter 0.2s ease;
-}
-
-.document-open-button {
-    background: linear-gradient(
-        135deg,
-        #d6a17d,
-        #a76d4b
+openUploadButton?.addEventListener("click", openUpload);
+closeUploadButton?.addEventListener("click", closeUpload);
+cancelUploadButton?.addEventListener("click", closeUpload);
+
+document.addEventListener("keydown", event => {
+    if (!uploadOverlay || uploadOverlay.hidden) return;
+
+    if (event.key === "Escape" && !uploadBusy) {
+        closeUpload();
+        return;
+    }
+
+    if (event.key !== "Tab") return;
+
+    const elements = [...uploadOverlay.querySelectorAll(
+        'button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [href]'
+    )].filter(element =>
+        element.getClientRects().length > 0
     );
 
-    border-color: rgba(255, 236, 220, 0.25);
-    color: #ffffff;
+    if (!elements.length) return;
+
+    const first = elements[0];
+    const last = elements[elements.length - 1];
+
+    if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+    }
+});
+
+/* FILE SELECTION */
+
+function fileKey(file) {
+    return `${file.name}:${file.size}:${file.lastModified}`;
 }
 
-.document-open-button:hover,
-.document-download-button:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.06);
+function addFiles(files) {
+    if (uploadBusy) return;
+
+    const incoming = Array.from(files || []);
+    const next = [...selectedFiles];
+
+    for (const file of incoming) {
+        const extension = getFileType(file.name);
+
+        if (!Object.hasOwn(MIME_TYPES, extension)) {
+            showUploadStatus(
+                `Nepodržana vrsta datoteke: ${file.name}`,
+                "error"
+            );
+            return;
+        }
+
+        if (file.size === 0 || file.size > MAX_FILE_SIZE) {
+            showUploadStatus(
+                `Datoteka ${file.name} mora imati između 1 B i 10 MB.`,
+                "error"
+            );
+            return;
+        }
+
+        if (next.some(existing => fileKey(existing) === fileKey(file))) {
+            continue;
+        }
+
+        if (next.length >= MAX_FILES) {
+            showUploadStatus(
+                "Možete učitati najviše 5 datoteka odjednom.",
+                "error"
+            );
+            return;
+        }
+
+        next.push(file);
+    }
+
+    selectedFiles = next;
+    hideUploadStatus();
+    renderSelectedFiles();
 }
 
-.document-open-button svg,
-.document-download-button svg {
-    width: 14px;
-    height: 14px;
+function renderSelectedFiles() {
+    if (!uploadFileList) return;
+
+    uploadFileList.replaceChildren();
+
+    selectedFiles.forEach((file, index) => {
+        const row = document.createElement("div");
+        row.className = "upload-selected-file";
+
+        const info = document.createElement("div");
+        info.className = "upload-selected-info";
+
+        const name = document.createElement("strong");
+        name.textContent = file.name;
+
+        const size = document.createElement("span");
+        size.textContent = formatBytes(file.size);
+
+        info.append(name, size);
+
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "upload-remove-file";
+        remove.textContent = "Ukloni";
+        remove.disabled = uploadBusy;
+        remove.setAttribute(
+            "aria-label",
+            `Ukloni datoteku ${file.name}`
+        );
+
+        remove.addEventListener("click", () => {
+            selectedFiles.splice(index, 1);
+            renderSelectedFiles();
+        });
+
+        row.append(info, remove);
+        uploadFileList.appendChild(row);
+    });
 }
 
-.document-unavailable {
-    padding: 9px 12px;
+uploadFiles?.addEventListener("change", event => {
+    addFiles(event.target.files);
+    uploadFiles.value = "";
+});
 
-    border: 1px solid var(--tile-border);
-    border-radius: 999px;
+/* DRAG AND DROP */
 
-    color: var(--card-muted);
+if (uploadDropzone) {
+    ["dragenter", "dragover"].forEach(eventName => {
+        uploadDropzone.addEventListener(eventName, event => {
+            event.preventDefault();
+            if (!uploadBusy) uploadDropzone.classList.add("drag-over");
+        });
+    });
 
-    font-size: 10px;
-    font-weight: 750;
+    ["dragleave", "drop"].forEach(eventName => {
+        uploadDropzone.addEventListener(eventName, event => {
+            event.preventDefault();
+            uploadDropzone.classList.remove("drag-over");
+        });
+    });
+
+    uploadDropzone.addEventListener("drop", event => {
+        if (uploadBusy) return;
+        addFiles(event.dataTransfer?.files);
+    });
 }
 
+/* NOTE COUNTER */
 
-/* ===================================================
-   EMPTY / STATUS MESSAGES
-=================================================== */
+uploadNote?.addEventListener("input", () => {
+    if (uploadNoteCounter) {
+        uploadNoteCounter.textContent =
+            String(uploadNote.value.length);
+    }
+});
 
-.documents-empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* SUBMIT */
 
-    min-height: 230px;
-    padding: 30px;
+uploadForm?.addEventListener("submit", async event => {
+    event.preventDefault();
 
-    border: 1px dashed var(--tile-border);
-    border-radius: 14px;
+    if (uploadBusy) return;
 
-    background: var(--tile-bg);
-
-    color: var(--card-muted);
-
-    font-size: 12px;
-    line-height: 1.8;
-
-    text-align: center;
-}
-
-.documents-message {
-    margin-top: 15px;
-    padding: 13px 16px;
-
-    border: 1px solid var(--border);
-    border-radius: 12px;
-
-    background: var(--input-bg);
-
-    color: var(--text);
-    font-size: 12px;
-    line-height: 1.6;
-}
-
-.documents-message.error {
-    border-color: rgba(213, 108, 95, 0.35);
-    color: #d67769;
-}
-
-.documents-message.success {
-    border-color: rgba(89, 166, 115, 0.35);
-    color: #3e9a60;
-}
-
-
-/* ===================================================
-   FOOTER
-=================================================== */
-
-.footer {
-    margin-top: auto;
-    padding: 42px 0 8px;
-
-    color: var(--muted);
-
-    text-align: center;
-
-    font-size: 10px;
-    line-height: 1.6;
-}
-
-
-/* ===================================================
-   MOBILE BOTTOM NAV
-=================================================== */
-
-.bottom-nav {
-    display: none;
-}
-
-.bottom-nav-item {
-    position: relative;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    gap: 5px;
-
-    min-width: 0;
-    min-height: 54px;
-
-    color: var(--muted);
-    text-decoration: none;
-
-    font-size: 9px;
-    font-weight: 700;
-}
-
-.bottom-nav-item svg {
-    width: 20px;
-    height: 20px;
-}
-
-.bottom-nav-item.active {
-    color: var(--bronze);
-}
-
-.bottom-nav-icon-wrap {
-    position: relative;
-}
-
-.nav-notification {
-    position: absolute;
-
-    top: -7px;
-    right: -13px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    min-width: 17px;
-    height: 17px;
-    padding: 0 4px;
-
-    border: 2px solid var(--header-bg);
-    border-radius: 999px;
-
-    background: #c87860;
-    color: white;
-
-    font-size: 8px;
-    font-weight: 900;
-}
-
-.nav-notification[hidden] {
-    display: none !important;
-}
-
-
-/* ===================================================
-   SMALL DESKTOP
-=================================================== */
-
-@media (max-width: 1200px) {
-    .documents-toolbar {
-        grid-template-columns:
-            minmax(0, 1fr)
-            175px
-            145px;
+    if (!currentSession) {
+        showUploadStatus("Sesija je istekla. Prijavite se ponovno.", "error");
+        return;
     }
 
-    .document-card {
-        flex-wrap: wrap;
-    }
-
-    .document-actions {
-        width: 100%;
-        justify-content: flex-end;
-    }
-}
-
-
-/* ===================================================
-   TABLET: SIDEBAR IDE DOLJE
-=================================================== */
-
-@media (max-width: 1100px) {
-    .dashboard.desktop-layout {
-        display: block;
-        grid-template-columns: none;
-    }
-
-    .desktop-sidebar {
-        display: none;
-    }
-
-    .desktop-main {
-        width: 100%;
-        min-height: 100vh;
-
-        padding-bottom:
-            calc(82px + env(safe-area-inset-bottom));
-    }
-
-    .dashboard-header {
-        min-height: 75px;
-        padding: 12px 22px;
-    }
-
-    .dashboard-content {
-        min-height: auto;
-        padding: 28px 22px 35px;
-    }
-
-    .desktop-main::before {
-        top: -340px;
-        right: -390px;
-
-        width: 650px;
-        height: 650px;
-    }
-
-    .documents-toolbar {
-        grid-template-columns:
-            minmax(0, 1fr)
-            minmax(150px, 190px)
-            minmax(135px, 160px);
-    }
-
-    /* DONJA NAVIGACIJA */
-
-    .bottom-nav {
-        position: fixed;
-        z-index: 1200;
-
-        left: 0;
-        right: 0;
-        bottom: 0;
-
-        display: grid;
-
-        grid-template-columns:
-            repeat(5, minmax(0, 1fr));
-
-        min-height: 68px;
-
-        padding:
-            7px 10px
-            max(7px, env(safe-area-inset-bottom));
-
-        background: var(--header-bg);
-        border-top: 1px solid var(--header-border);
-
-        -webkit-backdrop-filter: blur(18px);
-        backdrop-filter: blur(18px);
-
-        box-shadow:
-            0 -8px 28px rgba(5, 12, 25, 0.12);
-    }
-
-    .bottom-nav-item.active::before {
-        content: "";
-
-        position: absolute;
-        top: -8px;
-
-        width: 29px;
-        height: 3px;
-
-        border-radius: 999px;
-        background: var(--bronze);
-    }
-}
-
-
-/* ===================================================
-   MOBILE FILTERS
-=================================================== */
-
-@media (max-width: 760px) {
-    .documents-toolbar {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-    }
-
-    .documents-search-wrap {
-        grid-column: 1 / -1;
-    }
-
-    .documents-page-header {
-        align-items: stretch;
-        flex-direction: column;
-        gap: 17px;
-    }
-
-    .documents-total-box {
-        flex: none;
-        flex-direction: row;
-        justify-content: space-between;
-
-        width: 100%;
-        min-height: 68px;
-        padding: 13px 18px;
-
-        text-align: left;
-    }
-
-    .documents-total-box strong {
-        font-size: 26px;
-    }
-
-    .documents-count-wrap > span {
-        display: none;
-    }
-}
-
-
-/* ===================================================
-   MOBILE
-=================================================== */
-
-@media (max-width: 650px) {
-    .dashboard-header {
-        gap: 8px;
-        padding: 12px 14px;
-    }
-
-    .header-page-title strong {
-        font-size: 14px;
-    }
-
-    .header-eyebrow {
-        font-size: 8px;
-        letter-spacing: 1px;
-    }
-
-    .header-actions {
-        gap: 7px;
-    }
-
-    .header-separator {
-        display: none;
-    }
-
-    .user-box {
-        gap: 5px;
-    }
-
-    .user-box strong {
-        max-width: 65px;
-        font-size: 10px;
-    }
-
-    .user-avatar {
-        flex: 0 0 30px;
-        width: 30px;
-        height: 30px;
-    }
-
-    .user-avatar svg {
-        width: 16px;
-        height: 16px;
-    }
-
-    .logout-button {
-        padding: 7px;
-    }
-
-    .logout-button span {
-        display: none;
-    }
-
-    .theme-switch {
-        flex: 0 0 55px;
-        width: 55px;
-        height: 32px;
-    }
-
-    .theme-slider::before {
-        width: 24px;
-        height: 24px;
-    }
-
-    .theme-switch input:checked + .theme-slider::before {
-        transform: translateX(23px);
-    }
-
-    .dashboard-content {
-        padding: 23px 15px 33px;
-    }
-
-    .documents-page-header h1 {
-        font-size: 28px;
-    }
-
-    .documents-toolbar {
-        gap: 10px;
-        padding: 12px;
-    }
-
-    .documents-panel {
-        padding: 16px;
-        border-radius: 18px;
-    }
-
-    .documents-panel-header {
-        gap: 10px;
-    }
-
-    .documents-panel-heading {
-        gap: 10px;
-    }
-
-    .documents-panel-icon {
-        flex: 0 0 40px;
-        width: 40px;
-        height: 40px;
-    }
-
-    .documents-panel-heading h2 {
-        font-size: 16px;
-    }
-
-    .documents-panel-heading p {
-        font-size: 10px;
-    }
-
-    .document-card {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
-
-        padding: 9px;
-    }
-
-    .document-main {
-        min-height: 66px;
-        padding: 11px;
-    }
-
-    .document-icon {
-        flex: 0 0 40px;
-        width: 40px;
-        height: 40px;
-    }
-
-    .document-info strong {
-        font-size: 12px;
-    }
-
-    .document-info small {
-        font-size: 9px;
-    }
-
-    .document-actions {
-        justify-content: flex-end;
-        gap: 8px;
-    }
-
-    .document-open-button,
-    .document-download-button {
-        min-height: 35px;
-        font-size: 10px;
-    }
-
-    .bottom-nav {
-        padding-left: 3px;
-        padding-right: 3px;
-    }
-
-    .bottom-nav-item {
-        font-size: 8px;
-    }
-
-    .bottom-nav-item svg {
-        width: 19px;
-        height: 19px;
-    }
-}
-
-
-/* ==========================================
-   PTECH DIGITAL
-   LIGHT MODE — TAMNIJI FILTER BUBBLE
-========================================== */
-
-/* Glavna kartica s pretragom i filterima */
-
-html[data-theme="light"] .documents-toolbar {
-    background: linear-gradient(
-        135deg,
-        #e9c3a8 0%,
-        #dfb293 55%,
-        #d6a383 100%
+    const projectId = String(uploadProject?.value || "");
+    const category = uploadCategory?.value || "";
+    const title = uploadTitle?.value.trim() || "";
+    const note = uploadNote?.value.trim() || "";
+
+    const ownsProject = allProjects.some(
+        project => String(project.id) === projectId
     );
 
-    border: 1px solid rgba(176, 112, 72, 0.30);
+    if (!ownsProject) {
+        showUploadStatus("Odaberite svoj projekt.", "error");
+        return;
+    }
 
-    border-radius: 18px;
+    if (!ALLOWED_CATEGORIES.includes(category)) {
+        showUploadStatus("Odaberite vrstu dokumenta.", "error");
+        return;
+    }
 
-    box-shadow:
-        0 10px 28px rgba(142, 91, 58, 0.10),
-        inset 0 1px 0 rgba(255, 255, 255, 0.38);
-}
+    if (!selectedFiles.length) {
+        showUploadStatus("Odaberite barem jednu datoteku.", "error");
+        return;
+    }
 
-/* Pretraga i oba filtera */
+    if (title.length > 150 || note.length > 1000) {
+        showUploadStatus("Naziv ili napomena predugački su.", "error");
+        return;
+    }
 
-html[data-theme="light"] .documents-search-wrap input,
-html[data-theme="light"] .documents-toolbar select {
-    background: linear-gradient(
-        135deg,
-        #f5dfcf,
-        #edcbb5
+    setUploadBusy(true);
+    hideUploadStatus();
+
+    const userId = currentSession.user.id;
+    const storage = supabaseClient.storage.from(UPLOAD_BUCKET);
+
+    let uploadedCount = 0;
+    let failedCount = 0;
+
+    for (let index = 0; index < selectedFiles.length; index++) {
+        const file = selectedFiles[index];
+        const extension = getFileType(file.name);
+
+        showUploadStatus(
+            `Učitavanje datoteke ${index + 1} od ${selectedFiles.length}: ${file.name}`
+        );
+
+        const filePath =
+            `${userId}/projekt-${projectId}/${crypto.randomUUID()}.${extension}`;
+
+        try {
+            const { error: uploadError } = await storage.upload(
+                filePath,
+                file,
+                {
+                    cacheControl: "3600",
+                    upsert: false,
+                    contentType: MIME_TYPES[extension]
+                }
+            );
+
+            if (uploadError) throw uploadError;
+
+            const displayTitle =
+                title && selectedFiles.length === 1
+                    ? title
+                    : file.name;
+
+            const { error: databaseError } = await supabaseClient
+                .from("client_uploads")
+                .insert({
+                    user_id: userId,
+                    project_id: projectId,
+                    title: displayTitle,
+                    category,
+                    note: note || null,
+                    original_file_name: file.name,
+                    file_path: filePath,
+                    file_size: file.size,
+                    content_type: MIME_TYPES[extension]
+                });
+
+            if (databaseError) {
+                const { error: cleanupError } =
+                    await storage.remove([filePath]);
+
+                if (cleanupError) {
+                    console.error("Upload cleanup error:", cleanupError);
+                }
+
+                throw databaseError;
+            }
+
+            uploadedCount++;
+
+        } catch (error) {
+            failedCount++;
+            console.error("Client upload error:", error);
+        }
+    }
+
+    setUploadBusy(false);
+
+    if (uploadedCount > 0) {
+        await loadDocuments();
+
+        showMessage(
+            `${uploadedCount} datoteka uspješno učitano.`,
+            "success"
+        );
+    }
+
+    if (failedCount === 0) {
+        closeUpload();
+        return;
+    }
+
+    showUploadStatus(
+        `Uspješno učitano: ${uploadedCount}. Neuspješno: ${failedCount}. Provjerite Supabase pravila i pokušajte ponovno samo s neuspjelim datotekama.`,
+        "error"
     );
 
-    border: 1px solid rgba(172, 108, 67, 0.28);
+    if (uploadedCount > 0) {
+        const successfullyProcessed = selectedFiles.slice(0, 0);
+        // Zadržavamo popis radi pregleda pogreške.
+        // Prije novog slanja korisnik može ukloniti već poslane datoteke.
+        void successfullyProcessed;
+    }
+});
 
-    color: #282b37;
+/* =====================================================
+   UNREAD MESSAGES
+===================================================== */
 
-    border-radius: 12px;
+async function loadMessagesUnreadCount() {
+    if (!messagesUnreadBadge || !currentSession) return;
 
-    box-shadow:
-        inset 0 1px 3px rgba(142, 91, 58, 0.05);
+    const { count, error } = await supabaseClient
+        .from("support_messages")
+        .select("id", { count: "exact", head: true })
+        .eq("user_id", currentSession.user.id)
+        .eq("sender_role", "admin")
+        .is("client_read_at", null);
+
+    if (error) {
+        console.error("Unread messages error:", error);
+        return;
+    }
+
+    const unread = count || 0;
+
+    messagesUnreadBadge.hidden = unread === 0;
+    messagesUnreadBadge.textContent =
+        unread > 99 ? "99+" : String(unread);
 }
 
-/* Placeholder */
+function subscribeToSupportRealtime() {
+    if (!currentSession || supportRealtimeChannel) return;
 
-html[data-theme="light"]
-.documents-search-wrap input::placeholder {
-    color: #805e4a;
-    opacity: 1;
+    supportRealtimeChannel = supabaseClient
+        .channel(`documents-support-${currentSession.user.id}`)
+        .on(
+            "postgres_changes",
+            {
+                event: "*",
+                schema: "public",
+                table: "support_messages",
+                filter: `user_id=eq.${currentSession.user.id}`
+            },
+            loadMessagesUnreadCount
+        )
+        .subscribe();
 }
 
-/* Ikona pretrage */
+/* =====================================================
+   PARTICLES
+===================================================== */
 
-html[data-theme="light"]
-.documents-search-wrap svg {
-    color: #995d39;
-}
+function createDocumentParticles() {
+    const container = $("documentsParticles");
+    if (!container) return;
 
-/* Hover i fokus */
-
-html[data-theme="light"]
-.documents-search-wrap input:hover,
-
-html[data-theme="light"]
-.documents-toolbar select:hover {
-    border-color: rgba(152, 86, 48, 0.45);
-}
-
-html[data-theme="light"]
-.documents-search-wrap input:focus,
-
-html[data-theme="light"]
-.documents-toolbar select:focus {
-    background: #fff3e8;
-
-    border-color: #ad754e;
-
-    box-shadow:
-        0 0 0 4px rgba(173, 117, 78, 0.15);
-}
-
-/* ===================================================
-   VERY SMALL MOBILE
-=================================================== */
-
-@media (max-width: 390px) {
-    .header-page-title strong {
-        font-size: 12px;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        return;
     }
 
-    .user-box strong {
-        display: none;
-    }
+    container.replaceChildren();
 
-    .theme-switch {
-        flex-basis: 52px;
-        width: 52px;
-    }
+    for (let i = 0; i < 34; i++) {
+        const particle = document.createElement("span");
+        particle.className = "documents-particle";
 
-    .theme-switch input:checked + .theme-slider::before {
-        transform: translateX(20px);
-    }
+        particle.style.setProperty(
+            "--particle-top",
+            `${Math.random() * 96 + 2}%`
+        );
 
-    .documents-toolbar {
-        grid-template-columns: 1fr;
-    }
+        particle.style.setProperty(
+            "--particle-width",
+            `${Math.random() * 65 + 30}px`
+        );
 
-    .documents-search-wrap {
-        grid-column: auto;
-    }
+        particle.style.setProperty(
+            "--particle-duration",
+            `${Math.random() * 10 + 12}s`
+        );
 
-    .document-actions {
-        justify-content: stretch;
-    }
+        particle.style.setProperty(
+            "--particle-delay",
+            `${Math.random() * -22}s`
+        );
 
-    .document-open-button,
-    .document-download-button {
-        flex: 1;
-    }
-}
+        particle.style.setProperty(
+            "--particle-opacity",
+            String(Math.random() * .35 + .3)
+        );
 
-
-/* ===================================================
-   REDUCED MOTION
-=================================================== */
-
-@media (prefers-reduced-motion: reduce) {
-    .documents-particles {
-        display: none;
-    }
-
-    .sidebar-link,
-    .document-card,
-    .document-open-button,
-    .document-download-button,
-    .theme-slider,
-    .theme-slider::before {
-        transition: none;
-    }
-
-    .sidebar-link:hover,
-    .document-card:hover,
-    .document-open-button:hover,
-    .document-download-button:hover {
-        transform: none;
+        container.appendChild(particle);
     }
 }
 
-/* ===================================================
-   END — DOCUMENTS.CSS V6
-=================================================== */
+/* REFRESH */
+
+document.addEventListener("visibilitychange", async () => {
+    if (document.visibilityState === "visible" && currentSession) {
+        await loadMessagesUnreadCount();
+        if (!uploadBusy) await loadDocuments();
+    }
+});
+
+/* START */
+
+async function startDocuments() {
+    hideMessage();
+
+    try {
+        const {
+            data: { session },
+            error
+        } = await supabaseClient.auth.getSession();
+
+        if (error || !session) {
+            window.location.href = "login.html";
+            return;
+        }
+
+        currentSession = session;
+
+        await loadProfile();
+
+        const projectsLoaded = await loadProjects();
+
+        if (!projectsLoaded) {
+            documentsList.innerHTML = `
+                <div class="documents-empty">
+                    Projekte nije moguće učitati.
+                </div>
+            `;
+            return;
+        }
+
+        await loadDocuments();
+        await loadMessagesUnreadCount();
+        subscribeToSupportRealtime();
+
+    } catch (error) {
+        console.error("Documents init error:", error);
+        showMessage("Došlo je do pogreške pri učitavanju dokumenata.");
+    }
+}
+
+createDocumentParticles();
+startDocuments();
