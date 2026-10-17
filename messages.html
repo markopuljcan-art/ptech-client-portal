@@ -1,356 +1,261 @@
-
 <!DOCTYPE html>
+
 <html lang="hr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>PTech Digital | Pomoć i podrška</title>
-
-    <link rel="stylesheet" href="./messages.css?v=10">
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="./messages.js?v=12" defer></script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#fffaf5" name="theme-color"/>
+<title>PTech Digital | Poruke i podrška</title>
+<link href="./messages.css?v=13" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script defer="" src="./messages.js?v=12"></script>
 </head>
 <body>
+<main class="dashboard desktop-layout">
+<aside aria-label="Glavna navigacija" class="desktop-sidebar">
+<a class="sidebar-brand" href="form.html"><span class="sidebar-brand-logo"><img alt="" src="./assets/ptech-icon.png"/></span><span class="sidebar-brand-text"><strong>PTech Digital</strong><small>CLIENT PORTAL</small></span></a>
+<nav aria-label="Stranice portala" class="sidebar-nav">
+<a class="sidebar-link" href="form.html"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M3 11.5L12 4l9 7.5M5 10.5V20h14v-9.5M9 20v-6h6v6"></path></svg><span>Početna</span></a>
+<a class="sidebar-link" href="my-projects.html"><svg aria-hidden="true" viewbox="0 0 24 24"><rect height="15" rx="2" width="16" x="4" y="5"></rect><path d="M8 5V3M16 5V3M4 9h16"></path></svg><span>Projekti</span></a>
+<a class="sidebar-link" href="documents.html"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M4 4h6l2 2h8v14H4z"></path></svg><span>Dokumenti</span></a>
+<a aria-current="page" class="sidebar-link active" href="messages.html"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"></path></svg><span>Poruke</span><span class="sidebar-unread" hidden="" id="desktopUnreadBadge">0</span></a>
+<a class="sidebar-link" href="profile.html"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="12" cy="8" r="3"></circle><path d="M5 20c0-4 3-7 7-7s7 3 7 7"></path></svg><span>Profil</span></a>
+</nav>
+<div class="sidebar-bottom"><a class="sidebar-help" href="#supportStart">Pomoć i podrška</a><p>© PTech Digital 2026.<br/>Sva prava zadržana.</p></div>
+</aside>
+<div class="desktop-main">
+<header class="dashboard-header">
+<div class="header-page-title"><span class="header-eyebrow">PTECH DIGITAL</span><strong>Poruke</strong></div>
+<div class="header-actions">
+<div class="user-box"><span class="user-avatar"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="12" cy="8" r="3"></circle><path d="M5 20c0-4 3-7 7-7s7 3 7 7"></path></svg></span><strong id="clientName">Klijent</strong></div>
+<span aria-hidden="true" class="header-separator"></span>
+<button class="logout-button" id="logoutButton" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M10 5H5v14h5M14 8l4 4-4 4M8 12h10"></path></svg><span>Odjava</span></button>
+<span aria-hidden="true" class="header-separator"></span>
+<label class="theme-switch" title="Promijeni temu"><input aria-label="Promijeni temu" id="themeToggle" type="checkbox"/><span class="theme-slider"></span></label>
+</div>
+</header>
+<div aria-hidden="true" class="messages-particles" id="messagesParticles"></div>
+<div class="dashboard-content" id="supportStart">
+<section class="support-page-header">
+<span class="support-eyebrow">KOMUNIKACIJA I PODRŠKA</span>
+<h1>Poruke i podrška<span>.</span></h1>
+<p>Sve informacije i pomoć za vaš projekt na jednom mjestu.</p>
+</section>
+<section aria-label="Razgovor s podrškom" class="support-hero">
+<div class="support-hero-content">
+<span class="hero-kicker"><span class="hero-kicker-dot"></span> PTECH DIGITAL PODRŠKA</span>
+<h2>Trebate pomoć oko projekta?</h2>
+<p>Odgovor na često pitanje pronađite uz našeg virtualnog asistenta ili pošaljite poruku PTech Digital timu.</p>
+<div class="hero-trust"><span><svg aria-hidden="true" viewbox="0 0 24 24"><path d="m5 12 5 5L20 7"></path></svg> Brza pomoć</span><span><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"></path></svg> Izravan razgovor</span></div>
+<button class="primary-action" id="openChatFromPage" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"></path></svg> Otvori razgovor <span aria-hidden="true">→</span></button>
+</div>
+<div aria-hidden="true" class="support-hero-aside">
+<div class="aside-glow"></div>
+<div class="hero-chat-art"><span class="chat-art-icon"><svg viewbox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"></path></svg></span><span class="chat-art-lines"><i></i><i></i><i></i></span></div>
+<span class="hero-art-label">VAŠA PODRŠKA, NA JEDNOM MJESTU</span>
+</div>
+</section>
+<div class="support-heading-row"><div><span class="support-small-title">CENTAR ZA POMOĆ</span><h2>Najčešća pitanja</h2><p>Odaberite temu i pogledajte detaljan odgovor.</p></div><span class="support-heading-count">6 tema</span></div>
+<section class="support-section">
 
-<main class="portal-shell">
-
-    <!-- HEADER -->
-    <header class="portal-topbar">
-
-        <a href="form.html" class="portal-brand">
-            <div class="portal-logo">P</div>
-            <strong>PTech Digital Client Portal</strong>
-        </a>
-
-        <div class="portal-topbar-actions">
-
-            <div class="portal-user">
-                <div class="portal-user-icon">
-                    <svg viewBox="0 0 24 24">
-                        <circle cx="12" cy="8" r="3"></circle>
-                        <path d="M5 20c0-4 3-7 7-7s7 3 7 7"></path>
-                    </svg>
-                </div>
-                <strong id="clientName">Klijent</strong>
-            </div>
-
-            <span class="portal-topbar-divider"></span>
-
-            <button type="button" id="logoutButton" class="portal-logout">
-                <svg viewBox="0 0 24 24">
-                    <path d="M10 5H5v14h5"></path>
-                    <path d="M14 8l4 4-4 4"></path>
-                    <path d="M8 12h10"></path>
-                </svg>
-                <span>Odjava</span>
-            </button>
-
-            <span class="portal-topbar-divider"></span>
-
-            <label class="theme-switch">
-                <input
-                    type="checkbox"
-                    id="themeToggle"
-                    aria-label="Promijeni temu"
-                >
-                <span class="theme-slider"></span>
-            </label>
-
-        </div>
-    </header>
-
-    <!-- CONTENT -->
-    <div class="portal-content">
-
-        <section class="support-page-header">
-            <span class="support-eyebrow">Pomoć i podrška</span>
-            <h1>Kako ti možemo pomoći?</h1>
-            <p>Brzo pronađi odgovor ili razgovaraj s našim asistentom.</p>
-        </section>
-
-        <!-- FAQ -->
-        <section class="support-section">
-
-            <div class="support-section-header">
-                <span>Brza pomoć</span>
-                <h2>Najčešća pitanja</h2>
-            </div>
-
-            <div class="help-grid">
-
-                <button type="button" class="help-card" data-help="approve">
-                    <span class="help-icon">✓</span>
-                    <strong>Kako odobriti dizajn?</strong>
-                    <p>Pogledaj dizajn i potvrdi konačnu verziju.</p>
-                </button>
-
-                <button type="button" class="help-card" data-help="revision">
-                    <span class="help-icon">↔</span>
-                    <strong>Kako zatražiti izmjenu?</strong>
-                    <p>Pošalji komentar i objasni što želiš promijeniti.</p>
-                </button>
-
-                <button type="button" class="help-card" data-help="documents">
-                    <span class="help-icon">▣</span>
-                    <strong>Gdje su moji dokumenti?</strong>
-                    <p>Ugovori, ponude i ostali dokumenti nalaze se pod Dokumenti.</p>
-                </button>
-
-                <button type="button" class="help-card" data-help="status">
-                    <span class="help-icon">▤</span>
-                    <strong>Kako pratiti projekt?</strong>
-                    <p>Status i napredak projekta možeš pratiti pod Projekti.</p>
-                </button>
-
-                <button type="button" class="help-card" data-help="billing">
-                    <span class="help-icon">€</span>
-                    <strong>Što se dodatno naplaćuje?</strong>
-                    <p>Novi zahtjevi izvan dogovorenog opsega mogu se dodatno naplatiti.</p>
-                </button>
-
-                <button type="button" class="help-card" data-help="support">
-                    <span class="help-icon">?</span>
-                    <strong>Trebam pomoć</strong>
-                    <p>Ako nisi pronašao odgovor, javi se našoj podršci.</p>
-                </button>
-
-            </div>
-        </section>
-
-        <!-- FAQ ANSWER -->
-        <section id="helpAnswer" class="help-answer" hidden>
-            <div class="help-answer-top">
-                <div>
-                    <span>Detaljan odgovor</span>
-                    <h3 id="helpAnswerTitle">Odgovor</h3>
-                </div>
-                <button type="button" id="closeHelpAnswer" aria-label="Zatvori">×</button>
-            </div>
-
-            <p id="helpAnswerText"></p>
-
-            <button type="button" id="askAiAboutThis" class="help-ask-ai">
+<div class="help-grid">
+<button class="help-card" data-help="approve" type="button">
+<span class="help-icon">✓</span>
+<strong>Kako odobriti dizajn?</strong>
+<p>Pogledaj dizajn i potvrdi konačnu verziju.</p>
+</button>
+<button class="help-card" data-help="revision" type="button">
+<span class="help-icon">↔</span>
+<strong>Kako zatražiti izmjenu?</strong>
+<p>Pošalji komentar i objasni što želiš promijeniti.</p>
+</button>
+<button class="help-card" data-help="documents" type="button">
+<span class="help-icon">▣</span>
+<strong>Gdje su moji dokumenti?</strong>
+<p>Ugovori, ponude i ostali dokumenti nalaze se pod Dokumenti.</p>
+</button>
+<button class="help-card" data-help="status" type="button">
+<span class="help-icon">▤</span>
+<strong>Kako pratiti projekt?</strong>
+<p>Status i napredak projekta možeš pratiti pod Projekti.</p>
+</button>
+<button class="help-card" data-help="billing" type="button">
+<span class="help-icon">€</span>
+<strong>Što se dodatno naplaćuje?</strong>
+<p>Novi zahtjevi izvan dogovorenog opsega mogu se dodatno naplatiti.</p>
+</button>
+<button class="help-card" data-help="support" type="button">
+<span class="help-icon">?</span>
+<strong>Trebam pomoć</strong>
+<p>Ako nisi pronašao odgovor, javi se našoj podršci.</p>
+</button>
+</div>
+</section>
+<section class="help-answer" hidden="" id="helpAnswer">
+<div class="help-answer-top">
+<div>
+<span>Detaljan odgovor</span>
+<h3 id="helpAnswerTitle">Odgovor</h3>
+</div>
+<button aria-label="Zatvori" id="closeHelpAnswer" type="button">×</button>
+</div>
+<p id="helpAnswerText"></p>
+<button class="help-ask-ai" id="askAiAboutThis" type="button">
                 Pitaj AI asistenta više →
             </button>
-        </section>
-
-        <!-- BILLING NOTICE -->
-        <section class="billing-notice">
-            <div class="billing-icon">!</div>
-            <div>
-                <strong>Napomena o dodatnim zahtjevima</strong>
-                <p>
+</section>
+<section class="billing-notice">
+<div class="billing-icon">!</div>
+<div>
+<strong>Napomena o dodatnim zahtjevima</strong>
+<p>
                     Zahtjevi za nove funkcionalnosti, dodatne izmjene ili rad izvan
                     dogovorenog opsega projekta mogu se dodatno naplatiti.
                     Prije početka dodatnog rada dobit ćeš potvrdu opsega i cijene.
                 </p>
-            </div>
-        </section>
-
-        <!-- SUPPORT INTRO -->
-        <section class="support-intro">
-            <div class="support-intro-icon">✦</div>
-            <div>
-                <span>PTech Digital podrška</span>
-                <h2>Trebaš dodatnu pomoć?</h2>
-                <p>
-                    Razgovaraj s našim virtualnim asistentom ili se poveži
-                    izravno s PTech Digital timom.
-                </p>
-            </div>
-            <button type="button" id="openChatFromPage">
-                Otvori razgovor →
-            </button>
-        </section>
-
-        <footer class="portal-footer">
-            © PTech Digital 2026. • Sva prava zadržana.
-        </footer>
-
-    </div>
-
-    <!-- BOTTOM NAV -->
-    <nav class="bottom-nav">
-
-        <a href="form.html" class="bottom-nav-item">
-            <svg viewBox="0 0 24 24">
-                <path d="M3 11.5L12 4l9 7.5"></path>
-                <path d="M5 10.5V20h14v-9.5"></path>
-                <path d="M9 20v-6h6v6"></path>
-            </svg>
-            <span>Početna</span>
-        </a>
-
-        <a href="messages.html" class="bottom-nav-item active">
-            <div class="bottom-nav-icon-wrap">
-                <svg viewBox="0 0 24 24">
-                    <path d="M4 5h16v11H8l-4 4z"></path>
-                </svg>
-                <span id="messagesUnreadBadge" class="nav-notification" hidden>0</span>
-            </div>
-            <span>Poruke</span>
-        </a>
-
-        <a href="my-projects.html" class="bottom-nav-item">
-            <svg viewBox="0 0 24 24">
-                <rect x="4" y="5" width="16" height="15" rx="2"></rect>
-                <path d="M8 5V3"></path>
-                <path d="M16 5V3"></path>
-                <path d="M4 9h16"></path>
-            </svg>
-            <span>Projekti</span>
-        </a>
-
-        <a href="documents.html" class="bottom-nav-item">
-            <svg viewBox="0 0 24 24">
-                <path d="M4 4h6l2 2h8v14H4z"></path>
-            </svg>
-            <span>Dokumenti</span>
-        </a>
-
-        <a href="profile.html" class="bottom-nav-item">
-            <svg viewBox="0 0 24 24">
-                <circle cx="12" cy="8" r="3"></circle>
-                <path d="M5 20c0-4 3-7 7-7s7 3 7 7"></path>
-            </svg>
-            <span>Profil</span>
-        </a>
-
-    </nav>
+</div>
+</section>
+<section class="support-assistance"><div class="support-assistance-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M9.8 9a2.4 2.4 0 0 1 4.4 1.3c0 1.6-2.2 2.1-2.2 3.6M12 17.2h.01"></path></svg></div><div><span>JOŠ TREBATE POMOĆ?</span><h2>PTech Digital tim je tu za vas.</h2><p>Otvorite razgovor i odaberite „Fizička podrška” za izravnu poruku timu.</p></div></section>
+<footer class="portal-footer">© PTech Digital 2026. • Sva prava zadržana.</footer>
+</div>
+<nav aria-label="Mobilna navigacija" class="bottom-nav">
+<a class="bottom-nav-item" href="form.html"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M3 11.5L12 4l9 7.5M5 10.5V20h14v-9.5M9 20v-6h6v6"></path></svg><span>Početna</span></a>
+<a aria-current="page" class="bottom-nav-item active" href="messages.html"><span class="bottom-nav-icon-wrap"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"></path></svg><span class="nav-notification" hidden="" id="messagesUnreadBadge">0</span></span><span>Poruke</span></a>
+<a class="bottom-nav-item" href="my-projects.html"><svg aria-hidden="true" viewbox="0 0 24 24"><rect height="15" rx="2" width="16" x="4" y="5"></rect><path d="M8 5V3M16 5V3M4 9h16"></path></svg><span>Projekti</span></a>
+<a class="bottom-nav-item" href="documents.html"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M4 4h6l2 2h8v14H4z"></path></svg><span>Dokumenti</span></a>
+<a class="bottom-nav-item" href="profile.html"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="12" cy="8" r="3"></circle><path d="M5 20c0-4 3-7 7-7s7 3 7 7"></path></svg><span>Profil</span></a>
+</nav>
+</div>
 </main>
-
-<!-- FLOATING CHAT BUTTON -->
-<button
-    type="button"
-    id="chatLauncher"
-    class="chat-launcher"
-    aria-label="Otvori PTech podršku"
-    aria-expanded="false"
->
-    <svg viewBox="0 0 24 24">
-        <path d="M4 5h16v11H8l-4 4z"></path>
-    </svg>
-    <span id="chatUnreadBadge" class="chat-unread" hidden>0</span>
+<button aria-expanded="false" aria-label="Otvori PTech podršku" class="chat-launcher" id="chatLauncher" type="button">
+<svg viewbox="0 0 24 24">
+<path d="M4 5h16v11H8l-4 4z"></path>
+</svg>
+<span class="chat-unread" hidden="" id="chatUnreadBadge">0</span>
 </button>
-
-<!-- FLOATING CHAT PANEL -->
-<section id="chatPanel" class="chat-panel" aria-label="PTech Digital chat" hidden>
-
-    <!-- CHAT HEADER -->
-    <div class="chat-header">
-        <div class="chat-brand-icon">P</div>
-
-        <div class="chat-header-info">
-            <strong>PTech Digital Podrška</strong>
-            <span id="chatHeaderStatus">
-                <i class="online-dot"></i>
+<section aria-label="PTech Digital chat" class="chat-panel" hidden="" id="chatPanel">
+<!-- CHAT HEADER -->
+<div class="chat-header">
+<div class="chat-brand-icon"><img alt="" src="./assets/ptech-icon.png"/></div>
+<div class="chat-header-info">
+<strong>PTech Digital Podrška</strong>
+<span id="chatHeaderStatus">
+<i class="online-dot"></i>
                 AI asistent • Dostupan 24/7
             </span>
-        </div>
-
-        <button type="button" id="minimizeChat" class="chat-header-button" aria-label="Minimiziraj">
+</div>
+<button aria-label="Minimiziraj" class="chat-header-button" id="minimizeChat" type="button">
             −
         </button>
-
-        <button type="button" id="closeChat" class="chat-header-button" aria-label="Zatvori">
+<button aria-label="Zatvori" class="chat-header-button" id="closeChat" type="button">
             ×
         </button>
-    </div>
-
-    <!-- CHAT MODE SWITCH -->
-    <div class="chat-tabs">
-        <button type="button" id="aiTab" class="chat-tab active">
+</div>
+<!-- CHAT MODE SWITCH -->
+<div class="chat-tabs">
+<button class="chat-tab active" id="aiTab" type="button">
             ✦ AI asistent
         </button>
-        <button type="button" id="humanTab" class="chat-tab">
+<button class="chat-tab" id="humanTab" type="button">
             ◉ Fizička podrška
-            <span id="humanTabUnread" class="tab-unread" hidden>0</span>
-        </button>
-    </div>
-
-    <!-- AI MESSAGES -->
-    <div id="aiMessages" class="chat-messages">
-        <div class="chat-welcome">
-            <div class="welcome-avatar">✦</div>
-            <strong>Bok! Ja sam PTech asistent 👋</strong>
-            <p>
+            <span class="tab-unread" hidden="" id="humanTabUnread">0</span>
+</button>
+</div>
+<!-- AI MESSAGES -->
+<div class="chat-messages" id="aiMessages">
+<div class="chat-welcome">
+<div class="welcome-avatar">✦</div>
+<strong>Bok! Ja sam PTech asistent 👋</strong>
+<p>
                 Mogu ti pomoći oko projekata, dizajna, izmjena,
                 dokumenata i naplate.
             </p>
-        </div>
-
-        <div class="chat-message bot">
-            <div class="message-avatar">P</div>
-            <div class="message-content">
-                <div class="message-bubble">
+</div>
+<div class="chat-message bot">
+<div class="message-avatar">P</div>
+<div class="message-content">
+<div class="message-bubble">
                     Bok! Kako ti mogu pomoći danas?
                     Možeš mi postaviti pitanje ili odabrati
                     jednu od ponuđenih tema.
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- HUMAN MESSAGES -->
-    <div id="supportMessages" class="chat-messages" hidden>
-        <div class="chat-empty">
+</div>
+</div>
+</div>
+<!-- HUMAN MESSAGES -->
+<div class="chat-messages" hidden="" id="supportMessages">
+<div class="chat-empty">
             Učitavanje razgovora...
         </div>
-    </div>
-
-    <!-- AI SUGGESTIONS -->
-    <div id="aiSuggestions" class="ai-suggestions">
-        <button type="button" data-ai-question="Kako mogu zatražiti izmjenu dizajna?">
+</div>
+<!-- AI SUGGESTIONS -->
+<div class="ai-suggestions" id="aiSuggestions">
+<button data-ai-question="Kako mogu zatražiti izmjenu dizajna?" type="button">
             Izmjena dizajna
         </button>
-        <button type="button" data-ai-question="Gdje mogu pronaći svoje dokumente?">
+<button data-ai-question="Gdje mogu pronaći svoje dokumente?" type="button">
             Dokumenti
         </button>
-        <button type="button" data-ai-question="Kako mogu pratiti projekt?">
+<button data-ai-question="Kako mogu pratiti projekt?" type="button">
             Status projekta
         </button>
-    </div>
-
-    <!-- HUMAN SUPPORT ACTION -->
-    <div id="humanSupportAction" class="human-support-action">
-        <button type="button" id="switchToHuman">
-            <span>♧</span>
-            <span>
-                <strong>Razgovaraj s osobom</strong>
-                <small>Poveži se s našim timom podrške</small>
-            </span>
-            <span>→</span>
-        </button>
-    </div>
-
-    <!-- CHAT ERROR -->
-    <div id="supportMessage" class="chat-notice" hidden></div>
-
-    <!-- CHAT COMPOSER -->
-    <div class="chat-compose">
-        <textarea
-            id="chatInput"
-            rows="1"
-            maxlength="2000"
-            placeholder="Napiši poruku..."
-            aria-label="Napiši poruku"
-        ></textarea>
-
-        <button type="button" id="sendChatMessage" aria-label="Pošalji poruku">
-            <svg viewBox="0 0 24 24">
-                <path d="M21 3L10 14"></path>
-                <path d="M21 3l-7 18-4-7-7-4z"></path>
-            </svg>
-        </button>
-    </div>
-
-    <div class="chat-footer">
-        <span id="chatFooterText">PTech AI • Informativni odgovori</span>
-    </div>
-
+</div>
+<!-- HUMAN SUPPORT ACTION -->
+<div class="human-support-action" id="humanSupportAction">
+<button id="switchToHuman" type="button">
+<span>♧</span>
+<span>
+<strong>Razgovaraj s osobom</strong>
+<small>Poveži se s našim timom podrške</small>
+</span>
+<span>→</span>
+</button>
+</div>
+<!-- CHAT ERROR -->
+<div class="chat-notice" hidden="" id="supportMessage"></div>
+<!-- CHAT COMPOSER -->
+<div class="chat-compose">
+<textarea aria-label="Napiši poruku" id="chatInput" maxlength="2000" placeholder="Napiši poruku..." rows="1"></textarea>
+<button aria-label="Pošalji poruku" id="sendChatMessage" type="button">
+<svg viewbox="0 0 24 24">
+<path d="M21 3L10 14"></path>
+<path d="M21 3l-7 18-4-7-7-4z"></path>
+</svg>
+</button>
+</div>
+<div class="chat-footer">
+<span id="chatFooterText">PTech AI • Informativni odgovori</span>
+</div>
 </section>
-
+<script>
+(function () {
+    // Samo dekoracija i sinkronizacija oznake nepročitanih poruka u sidebaru.
+    const root = document.getElementById("messagesParticles");
+    if (root && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        const positions = [8, 17, 29, 41, 53, 64, 76, 89];
+        positions.forEach((position, i) => {
+            const particle = document.createElement("span");
+            particle.className = "messages-particle";
+            particle.style.setProperty("--top", position + "%");
+            particle.style.setProperty("--width", (75 + (i * 29) % 75) + "px");
+            particle.style.setProperty("--duration", (19 + (i * 3) % 8) + "s");
+            particle.style.setProperty("--delay", (-3 * i) + "s");
+            root.appendChild(particle);
+        });
+    }
+    const original = document.getElementById("messagesUnreadBadge");
+    const desktop = document.getElementById("desktopUnreadBadge");
+    if (original && desktop) {
+        const sync = () => {
+            desktop.hidden = original.hidden;
+            desktop.textContent = original.textContent;
+        };
+        new MutationObserver(sync).observe(original, {
+            attributes: true, attributeFilter: ["hidden"], childList: true, characterData: true, subtree: true
+        });
+        sync();
+    }
+})();
+</script>
 </body>
 </html>
