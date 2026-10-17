@@ -278,7 +278,7 @@ function setupModals() {
         try {
             const { error } = await supabaseClient.auth.updateUser({ password });
             if (error) throw error;
-            event.currentTarget.reset();
+            el("passwordForm")?.reset();
             setStatus("passwordStatus", "Lozinka je uspješno promijenjena.", "success");
         } catch (error) {
             console.error("Change password:", error);
