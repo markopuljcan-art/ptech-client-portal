@@ -1,1678 +1,1119 @@
 
-/* =========================================
-   PTECH DIGITAL CLIENT PORTAL
-   MESSAGES.JS
+"use strict";
 
-   Besplatni pametni asistent
-   + Supabase fizicka podrska
-   + Realtime poruke
-   + Neprocitane poruke
-   + FAQ
-   + Dark / Light mode
-
-   NEMA PLACENOG AI API-JA
-========================================= */
-
-/* =========================================
-   SUPABASE
-========================================= */
+/* ==========================================
+   PTECH DIGITAL - PORUKE V17
+   FAQ + LOKALNI ASISTENT + SUPABASE REALTIME
+========================================== */
 
 const SUPABASE_URL =
-    "https://agivwsbczzvvuzszcvxz.supabase.co";
+  "https://agivwsbczzvvuzszcvxz.supabase.co";
 
 const SUPABASE_KEY =
-    "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
+  "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
 
-const supabaseClient = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
+const $ = id => document.getElementById(id);
+
+const db = window.supabase?.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
 );
 
-/* =========================================
-   ELEMENTI
-========================================= */
-
-const $ = (id) => document.getElementById(id);
-
-const clientName = $("clientName");
-const logoutButton = $("logoutButton");
-const themeToggle = $("themeToggle");
-
-const helpAnswer = $("helpAnswer");
-const helpAnswerTitle = $("helpAnswerTitle");
-const helpAnswerText = $("helpAnswerText");
-
-const chatLauncher = $("chatLauncher");
-const chatPanel = $("chatPanel");
-
-const closeChatButton = $("closeChat");
-const minimizeChatButton = $("minimizeChat");
-
-const aiTab = $("aiTab");
-const humanTab = $("humanTab");
-
-const aiMessages = $("aiMessages");
-const supportMessages = $("supportMessages");
-
-const aiSuggestions = $("aiSuggestions");
-const humanSupportAction = $("humanSupportAction");
-
-const chatInput = $("chatInput");
-const sendChatMessage = $("sendChatMessage");
-
-const chatHeaderStatus = $("chatHeaderStatus");
-const chatFooterText = $("chatFooterText");
-
-const messagesUnreadBadge = $("messagesUnreadBadge");
-const chatUnreadBadge = $("chatUnreadBadge");
-const humanTabUnread = $("humanTabUnread");
-
-const supportMessage = $("supportMessage");
-
-/* =========================================
-   STATE
-========================================= */
-
-let currentSession = null;
+let session = null;
 let realtimeChannel = null;
-
-let chatOpen = false;
-let chatMode = "ai";
-
-let sendingMessage = false;
-let currentHelpKey = null;
-let unreadCount = 0;
-
-let lastAiTopic = null;
-let lastAiTopics = [];
-
-let aiConversation = [];
-let supportLoadSequence = 0;
+let activeChat = "ai";
+let chatOpened = false;
+let sending = false;
 let markingRead = false;
+let supportLoadToken = 0;
+let lastTopic = null;
 
-/* =========================================
-   THEME
-========================================= */
+/* ==========================================
+   FAQ ODGOVORI
+========================================== */
 
-function applyTheme(theme) {
-    const isLight = theme === "light";
+const faq = {
 
-    document.body.classList.toggle(
-        "light-mode",
-        isLight
-    );
+  approve: {
+    title: "Kako odobriti dizajn?",
+    answer: `Za odobrenje dizajna otvori karticu Projekti i odaberi odgovarajući projekt.
 
-    if (themeToggle) {
-        themeToggle.checked = isLight;
-    }
+1. Otvori pregled dostavljenog dizajna.
+2. Provjeri tekstove, fotografije, boje i izgled na mobitelu.
+3. Ako je sve u redu i opcija je dostupna, klikni „Odobri dizajn”.
+4. Ako želiš doradu, prvo zatraži izmjenu.
 
-    localStorage.setItem(
-        "theme",
-        isLight ? "light" : "dark"
-    );
-}
+Ako opcija odobravanja nije dostupna, pošalji poruku PTech Digital timu.`
+  },
 
-applyTheme(
-    localStorage.getItem("theme") === "light"
-        ? "light"
-        : "dark"
-);
+  revision: {
+    title: "Kako zatražiti izmjenu?",
+    answer: `Otvorite odgovarajući projekt i, ako je dostupna, odaberite mogućnost za zahtjev za izmjenu.
 
-themeToggle?.addEventListener("change", () => {
-    applyTheme(
-        themeToggle.checked ? "light" : "dark"
-    );
-});
+U zahtjevu navedite što želite promijeniti, na kojoj se stranici ili dijelu dizajna nalazi i kako treba izgledati. Možete priložiti primjer kroz Dokumente.
 
-/* =========================================
-   FAQ PODACI
-========================================= */
+Dodatni rad izvan dogovorenog opsega može se dodatno naplatiti. Za dogovor se obratite podršci.`
+  },
 
-const helpContent = {
+  documents: {
+    title: "Gdje su moji dokumenti?",
+    answer: `Otvorite karticu Dokumenti u navigaciji. Ondje možete pregledavati i preuzimati datoteke povezane s vašim projektima.
 
-    approve: {
-        title: "Kako odobriti dizajn?",
+Za slanje nove datoteke kliknite „Učitaj dokumente”, odaberite projekt, kategoriju i datoteke te potvrdite slanje. Možete dodati do 5 datoteka, svaku do 10 MB.`
+  },
 
-        answer:
-`Za odobrenje dizajna otvori svoj projekt i pronađi opciju za pregled dizajna.
+  status: {
+    title: "Kako pratiti projekt?",
+    answer: `U kartici Projekti odaberite projekt koji vas zanima. Prikazat će se njegov status, napredak, aktivnosti i rok, ako su podaci dostupni.
 
-1. Otvori karticu Projekti.
-2. Odaberi željeni projekt.
-3. Otvori pregled dostavljenog dizajna.
-4. Pažljivo pregledaj izgled i sadržaj.
-5. Ako si zadovoljan, klikni "Odobri dizajn".
+Asistent ne može potvrditi stvarni rok ili status iz baze. Za dodatno pojašnjenje pišite PTech Digital timu.`
+  },
 
-Prije odobrenja preporučujemo da provjeriš tekstove, fotografije, boje, raspored i sve ostale elemente.
+  billing: {
+    title: "Što se dodatno naplaćuje?",
+    answer: `Dodatno se mogu naplatiti nove funkcionalnosti, veće naknadne izmjene, integracije i zahtjevi izvan dogovorenog paketa.
 
-Ako želiš nešto promijeniti, prije odobrenja odaberi "Zatraži izmjenu".
+Prije početka dodatnog rada trebate dobiti potvrdu opsega i cijene. Samo slanje upita nije narudžba dodatnog rada. Za račune pogledajte Dokumente ili pitajte podršku.`
+  },
 
-Nakon potvrde PTech Digital tim može nastaviti s idućom fazom projekta.`
-    },
+  support: {
+    title: "Kako kontaktirati PTech Digital tim?",
+    answer: `Na stranici Poruke kliknite „Otvori razgovor”. U popisu razgovora lijevo odaberite „PTech tim”. Napišite pitanje i pošaljite poruku.
 
-    revision: {
-        title: "Kako zatražiti izmjenu?",
+Odgovor će biti vidljiv u razgovoru čim ga tim pošalje. Ne dijelite lozinke ni osjetljive pristupne podatke.`
+  }
 
-        answer:
-`Izmjenu dizajna možeš zatražiti kroz pregled dizajna svojeg projekta.
-
-1. Otvori karticu Projekti.
-2. Odaberi svoj projekt.
-3. Otvori pregled dizajna.
-4. Klikni "Zatraži izmjenu".
-5. Detaljno opiši što želiš promijeniti.
-
-Dobar zahtjev treba objasniti:
-
-• Koji element želiš promijeniti.
-• Na kojoj se stranici nalazi.
-• Kako treba izgledati nakon izmjene.
-• Imaš li primjer ili dodatne upute.
-
-Primjer:
-"Želim da naslov na početnoj stranici bude veći, a gumb za kontakt narančaste boje."
-
-Dodatni rad izvan dogovorenog opsega može se dodatno naplatiti.`
-    },
-
-    documents: {
-        title: "Gdje su moji dokumenti?",
-
-        answer:
-`Svoje dokumente možeš pronaći u kartici Dokumenti.
-
-1. Klikni "Dokumenti" u donjoj navigaciji.
-2. Pregledaj dokumente povezane sa svojim projektima.
-3. Otvori željeni dokument.
-4. Preuzmi ga ako je preuzimanje dostupno.
-
-Dokumenti mogu uključivati ugovore, ponude, briefove i druge projektne datoteke.
-
-Ako neki dokument nedostaje, kontaktiraj fizičku podršku.`
-    },
-
-    status: {
-        title: "Kako pratiti projekt?",
-
-        answer:
-`Napredak projekta možeš pratiti kroz PTech Digital Client Portal.
-
-1. Otvori karticu Projekti.
-2. Odaberi projekt.
-3. Provjeri trenutni status.
-4. Pregledaj prikazani napredak i rok.
-
-Na početnoj stranici također možeš vidjeti osnovne informacije o projektima.
-
-Ako želiš detaljnije pojašnjenje određenog statusa, obrati se fizičkoj podršci.
-
-Asistent nema izravan pristup stvarnom statusu projekta i ne može potvrditi promjene rokova.`
-    },
-
-    billing: {
-        title: "Što se dodatno naplaćuje?",
-
-        answer:
-`Dodatna naplata ovisi o dogovorenom opsegu projekta.
-
-Dodatno se mogu naplatiti:
-
-• Nove funkcionalnosti.
-• Veće naknadne izmjene.
-• Dodatne verzije dizajna izvan dogovora.
-• Integracije koje nisu uključene u projekt.
-• Ostali dodatni zahtjevi.
-
-Prije početka dodatnog rada trebaš dobiti potvrdu opsega i cijene.
-
-Samo slanje pitanja ili zahtjeva ne predstavlja automatsku narudžbu dodatnog rada.
-
-Za točan iznos obrati se PTech Digital timu.`
-    },
-
-    support: {
-        title: "Kako kontaktirati podršku?",
-
-        answer:
-`Za razgovor s PTech Digital timom koristi fizičku podršku.
-
-1. Otvori narančastu ikonu razgovora.
-2. Klikni "Razgovaraj s osobom" ili karticu "Fizička podrška".
-3. Napiši svoje pitanje.
-4. Pošalji poruku.
-
-Poruka će biti spremljena u razgovor s podrškom.
-
-Odgovor će se prikazati kada ga tim pošalje.
-
-Nemoj slati lozinke ili druge osjetljive podatke.`
-    }
 };
 
-/* =========================================
-   FAQ KARTICE
-========================================= */
+/* ==========================================
+   KLJUČNE RIJEČI AI ASISTENTA
+========================================== */
 
-document.querySelectorAll("[data-help]").forEach(
-    (button) => {
-        button.addEventListener("click", () => {
-            const key = button.dataset.help;
-            const item = helpContent[key];
+const topics = {
 
-            if (!item) return;
+  approve: [
+    "odobrenje",
+    "odobriti",
+    "odobravanje",
+    "potvrda dizajna",
+    "konacni dizajn",
+    "finalna verzija",
+    "prihvatiti dizajn"
+  ],
 
-            currentHelpKey = key;
+  revision: [
+    "izmjena",
+    "izmjene",
+    "izmijeniti",
+    "dorada",
+    "revizija",
+    "promjena boje",
+    "promjena teksta",
+    "zamjena slike",
+    "ispraviti",
+    "promijeniti dizajn"
+  ],
 
-            helpAnswerTitle.textContent = item.title;
-            helpAnswerText.textContent = item.answer;
+  documents: [
+    "dokument",
+    "dokumenti",
+    "ugovor",
+    "ponuda",
+    "pdf",
+    "preuzeti",
+    "materijali",
+    "datoteke"
+  ],
 
-            helpAnswer.hidden = false;
+  status: [
+    "status",
+    "projekt",
+    "napredak",
+    "faza",
+    "rok",
+    "rok zavrsetka",
+    "kada ce",
+    "kasnjenje",
+    "zavrsetak",
+    "datum zavrsetka"
+  ],
 
-            helpAnswer.scrollIntoView({
-                behavior: "smooth",
-                block: "nearest"
-            });
-        });
-    }
-);
+  billing: [
+    "racun",
+    "racuni",
+    "naplata",
+    "placanje",
+    "uplate",
+    "uplata",
+    "cijena",
+    "doplata",
+    "pdv",
+    "koliko kosta",
+    "dodatni trosak"
+  ],
 
-$("closeHelpAnswer")?.addEventListener(
-    "click",
-    () => {
-        helpAnswer.hidden = true;
-    }
-);
+  support: [
+    "podrska",
+    "pomoc",
+    "kontakt",
+    "agent",
+    "operater",
+    "osoba",
+    "ptech tim",
+    "fizicka podrska",
+    "kontakt s timom"
+  ],
 
-$("askAiAboutThis")?.addEventListener(
-    "click",
-    () => {
-        if (!currentHelpKey) return;
+  upload: [
+    "ucitavanje",
+    "ucitati",
+    "upload",
+    "uploadati",
+    "poslati datoteku",
+    "priloziti dokument",
+    "poslati materijale"
+  ],
 
-        openChat();
-        switchChatMode("ai");
+  password: [
+    "lozinka",
+    "password",
+    "promjena lozinke",
+    "zaboravljena lozinka",
+    "prijava",
+    "login",
+    "ne mogu se prijaviti"
+  ],
 
-        sendAiQuestion(
-            helpContent[currentHelpKey].title
-        );
-    }
-);
+  notifications: [
+    "obavijest",
+    "obavijesti",
+    "notifikacija",
+    "push",
+    "mobilne obavijesti",
+    "neprocitano"
+  ],
 
-/* =========================================
-   POMOCNE FUNKCIJE
-========================================= */
+  bug: [
+    "ne radi",
+    "greska",
+    "error",
+    "bug",
+    "prazna stranica",
+    "ne mogu otvoriti",
+    "tehnicki problem",
+    "ne mogu poslati"
+  ],
 
-function normalizeText(value) {
-    return String(value || "")
-        .toLocaleLowerCase("hr-HR")
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/đ/g, "d")
-        .replace(/[^a-z0-9\s]/g, " ")
-        .replace(/\s+/g, " ")
-        .trim();
+  functionality: [
+    "nova funkcionalnost",
+    "nova funkcija",
+    "integracija",
+    "dodatna opcija",
+    "nova mogucnost",
+    "web shop",
+    "rezervacija"
+  ]
+
+};
+
+/* ==========================================
+   DODATNI ODGOVORI
+========================================== */
+
+const specialAnswers = {
+
+  upload: faq.documents.answer,
+
+  password:
+    "Ako ste već prijavljeni, otvorite Profil → Sigurnost računa → Promijeni lozinku. Ako se ne možete prijaviti, koristite oporavak lozinke na stranici za prijavu ili kontaktirajte podršku. Nikad ne šaljite lozinku u razgovoru.",
+
+  notifications:
+    "Broj nepročitanih poruka prikazuje se uz Poruke. Odgovore tima čitate u razgovoru „PTech tim”. Postavke mobilnih obavijesti nalaze se u Profilu, ali slanje PWA push obavijesti još nije aktivirano.",
+
+  bug:
+    "Ako nešto ne radi, pokušajte osvježiti stranicu i provjeriti internetsku vezu. Ako se problem nastavi, pošaljite PTech Digital timu naziv stranice, opis problema i eventualnu poruku o grešci. Nemojte slati lozinke.",
+
+  functionality:
+    "Za novu funkcionalnost opišite što treba raditi, tko će je koristiti, kako treba izgledati i imate li željeni rok. Pošaljite upit PTech Digital timu. Cijenu i opseg potrebno je posebno dogovoriti."
+
+};
+
+/* ==========================================
+   PREPOZNAVANJE PITANJA
+========================================== */
+
+function normalized(text) {
+  return String(text ?? "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
-function formatTime(value = new Date()) {
-    const date = new Date(value);
+function aiAnswer(question) {
 
-    if (Number.isNaN(date.getTime())) {
-        return "";
+  const q = normalized(question);
+
+  if (!q) {
+    return "Napišite pitanje pa ću pokušati pomoći.";
+  }
+
+  if (/^(bok|hej|pozdrav|hello|hi|dobar dan|dobro jutro)$/.test(q)) {
+    return "Bok! 👋 Mogu pomoći oko dizajna, izmjena, projekata, dokumenata, rokova, računa, lozinke i tehničkih problema. Što vas zanima?";
+  }
+
+  if (q.startsWith("hvala") || q === "super") {
+    return "Nema na čemu! 😊 Ako trebate konkretnu informaciju od našeg tima, otvorite razgovor „PTech tim”.";
+  }
+
+  if ([
+    "tko si",
+    "sto si",
+    "jesi li ai",
+    "jesi li bot"
+  ].includes(q)) {
+    return "Ja sam PTech Digital virtualni asistent s pripremljenim odgovorima. Nemam pristup vašim privatnim podacima ni stvarnom statusu projekta.";
+  }
+
+  let best = null;
+  let score = 0;
+
+  for (const [topic, words] of Object.entries(topics)) {
+
+    let total = 0;
+
+    for (const word of words) {
+
+      const w = normalized(word);
+
+      if (
+        q === w ||
+        q.includes(` ${w} `) ||
+        q.startsWith(`${w} `) ||
+        q.endsWith(` ${w}`)
+      ) {
+        total += w.includes(" ") ? 5 : 3;
+      }
+
+      else if (
+        w.length > 4 &&
+        q.split(" ").some(part => part.startsWith(w))
+      ) {
+        total += 1;
+      }
     }
 
-    return date.toLocaleTimeString("hr-HR", {
-        hour: "2-digit",
-        minute: "2-digit"
+    if (total > score) {
+      best = topic;
+      score = total;
+    }
+  }
+
+  if (
+    !best &&
+    lastTopic &&
+    /^(kako|zasto|detaljnije|objasni|daj primjer|a kako)/.test(q)
+  ) {
+    best = lastTopic;
+  }
+
+  if (!best) {
+    return "Nisam siguran da sam razumio pitanje. Mogu pomoći oko projekata, dizajna, dokumenata, rokova i naplate. Za konkretne dogovore odaberite „PTech tim”.";
+  }
+
+  lastTopic = best;
+
+  return (
+    faq[best]?.answer ||
+    specialAnswers[best] ||
+    "Za ovaj upit javite se PTech Digital timu."
+  );
+}
+
+/* ==========================================
+   POMOĆNE FUNKCIJE ZA PORUKE
+========================================== */
+
+function dateTime(value) {
+
+  const d = new Date(value || Date.now());
+
+  if (Number.isNaN(d.getTime())) {
+    return "";
+  }
+
+  return d.toLocaleTimeString("hr-HR", {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
+
+function appendMessage(root, text, own, date = new Date()) {
+
+  const row = document.createElement("div");
+
+  row.className = `chat-message ${own ? "user" : "bot"}`;
+
+  if (!own) {
+
+    const avatar = document.createElement("span");
+    avatar.className = "message-avatar";
+    avatar.textContent = "P";
+
+    row.append(avatar);
+  }
+
+  const content = document.createElement("div");
+  content.className = "message-content";
+
+  const bubble = document.createElement("div");
+  bubble.className = "message-bubble";
+  bubble.textContent = String(text ?? "");
+
+  const time = document.createElement("div");
+  time.className = "message-time";
+  time.textContent = dateTime(date);
+
+  content.append(bubble, time);
+  row.append(content);
+  root.append(row);
+
+  requestAnimationFrame(() => {
+    root.scrollTop = root.scrollHeight;
+  });
+}
+
+function setNotice(text, error = false) {
+
+  $("supportMessage").textContent = text;
+  $("supportMessage").hidden = !text;
+
+  $("supportMessage").classList.toggle(
+    "error",
+    error
+  );
+}
+
+/* ==========================================
+   NEPROČITANE PORUKE
+========================================== */
+
+function updateBadges(number) {
+
+  for (const id of [
+    "messagesUnreadBadge",
+    "desktopUnreadBadge",
+    "humanTabUnread"
+  ]) {
+
+    const badge = $(id);
+
+    if (!badge) continue;
+
+    badge.hidden = !number;
+
+    badge.textContent =
+      number > 99 ? "99+" : String(number);
+  }
+}
+
+async function refreshUnread() {
+
+  if (!session) return;
+
+  const { count, error } = await db
+    .from("support_messages")
+    .select("id", {
+      count: "exact",
+      head: true
+    })
+    .eq("user_id", session.user.id)
+    .eq("sender_role", "admin")
+    .is("client_read_at", null);
+
+  if (error) {
+    console.warn("Unread:", error);
+    return;
+  }
+
+  updateBadges(count || 0);
+}
+
+/* ==========================================
+   OZNAČAVANJE PROČITANIH PORUKA
+========================================== */
+
+async function markRead() {
+
+  if (
+    !session ||
+    !chatOpened ||
+    activeChat !== "human" ||
+    document.hidden ||
+    markingRead
+  ) {
+    return;
+  }
+
+  markingRead = true;
+
+  try {
+
+    const { error } = await db
+      .from("support_messages")
+      .update({
+        client_read_at: new Date().toISOString()
+      })
+      .eq("user_id", session.user.id)
+      .eq("sender_role", "admin")
+      .is("client_read_at", null);
+
+    if (error) {
+      console.warn("Read status:", error);
+    }
+
+  } finally {
+
+    markingRead = false;
+
+    await refreshUnread();
+  }
+}
+
+/* ==========================================
+   UČITAVANJE PORUKA PODRŠKE
+========================================== */
+
+async function loadSupport() {
+
+  if (!session) return;
+
+  const token = ++supportLoadToken;
+
+  const { data, error } = await db
+    .from("support_messages")
+    .select(
+      "id,created_at,user_id,sender_role,message,client_read_at"
+    )
+    .eq("user_id", session.user.id)
+    .order("created_at", {
+      ascending: true
     });
-}
 
-function scrollChatToBottom(container) {
-    if (!container) return;
+  if (token !== supportLoadToken) {
+    return;
+  }
 
-    requestAnimationFrame(() => {
-        container.scrollTop = container.scrollHeight;
-    });
-}
+  const root = $("supportMessages");
+  root.replaceChildren();
 
-function showNotice(text, isError = false) {
-    if (!supportMessage) return;
+  if (error) {
 
-    supportMessage.textContent = text;
-    supportMessage.classList.toggle(
-        "error",
-        isError
+    console.error(error);
+
+    root.innerHTML =
+      '<div class="chat-empty">Razgovor se trenutačno ne može učitati.</div>';
+
+    return;
+  }
+
+  if (!data?.length) {
+
+    root.innerHTML =
+      '<div class="chat-empty">Još nema poruka. Napišite pitanje i pošaljite ga našem timu.</div>';
+
+    return;
+  }
+
+  for (const item of data) {
+
+    appendMessage(
+      root,
+      item.message,
+      item.sender_role === "client",
+      item.created_at
     );
-    supportMessage.hidden = false;
+  }
 }
 
-function hideNotice() {
-    if (!supportMessage) return;
+/* ==========================================
+   ODABIR RAZGOVORA
+========================================== */
 
-    supportMessage.hidden = true;
-    supportMessage.textContent = "";
+function switchChat(mode) {
+
+  activeChat = mode === "human" ? "human" : "ai";
+
+  const human = activeChat === "human";
+
+  $("aiTab").classList.toggle("active", !human);
+  $("humanTab").classList.toggle("active", human);
+
+  $("aiTab").setAttribute(
+    "aria-pressed",
+    String(!human)
+  );
+
+  $("humanTab").setAttribute(
+    "aria-pressed",
+    String(human)
+  );
+
+  $("aiMessages").hidden = human;
+  $("supportMessages").hidden = !human;
+  $("aiSuggestions").hidden = human;
+
+  $("chatInput").placeholder = human
+    ? "Napiši poruku PTech timu..."
+    : "Pitaj PTech asistenta...";
+
+  $("chatTitle").textContent = human
+    ? "PTech Digital tim"
+    : "PTech Digital asistent";
+
+  $("chatHeaderStatus").textContent = human
+    ? "Izravna poruka podršci"
+    : "Automatska pomoć • Dostupan 24/7";
+
+  $("chatFooterText").textContent = human
+    ? "Poruke se šalju PTech Digital timu"
+    : "PTech asistent • Informativni odgovori";
+
+  setNotice("");
+
+  if (human && session) {
+    loadSupport()
+      .then(markRead)
+      .catch(console.error);
+  }
 }
 
-function createMessageElement(
-    text,
-    sender,
-    date = new Date()
-) {
-    const wrapper = document.createElement("div");
+/* ==========================================
+   OTVARANJE I ZATVARANJE CHATA
+========================================== */
 
-    wrapper.className =
-        "chat-message " +
-        (sender === "user" ? "user" : "bot");
+function openChat(mode = activeChat) {
 
-    if (sender !== "user") {
-        const avatar = document.createElement("div");
+  chatOpened = true;
 
-        avatar.className = "message-avatar";
-        avatar.textContent = "P";
+  $("supportView").hidden = true;
+  $("chatView").hidden = false;
 
-        wrapper.appendChild(avatar);
-    }
+  document.body.classList.add("chat-open");
 
-    const content = document.createElement("div");
-    content.className = "message-content";
+  switchChat(mode);
 
-    const bubble = document.createElement("div");
-    bubble.className = "message-bubble";
-    bubble.textContent = String(text || "");
+  window.scrollTo(0, 0);
 
-    const time = document.createElement("div");
-    time.className = "message-time";
-    time.textContent = formatTime(date);
-
-    content.appendChild(bubble);
-    content.appendChild(time);
-
-    wrapper.appendChild(content);
-
-    return wrapper;
-}
-
-function appendMessage(
-    container,
-    text,
-    sender,
-    date
-) {
-    const element = createMessageElement(
-        text,
-        sender,
-        date
-    );
-
-    container.appendChild(element);
-
-    scrollChatToBottom(container);
-
-    return element;
-}
-
-/* =========================================
-   OTVARANJE CHATA
-========================================= */
-
-function openChat() {
-    chatOpen = true;
-
-    chatPanel.hidden = false;
-
-    chatLauncher.setAttribute(
-        "aria-expanded",
-        "true"
-    );
-
-    if (chatMode === "human") {
-        loadSupportMessages().then(() => {
-            markClientMessagesAsRead();
-        });
-    }
-
-    setTimeout(() => {
-        chatInput.focus();
-    }, 100);
+  $("chatInput").focus();
 }
 
 function closeChat() {
-    chatOpen = false;
 
-    chatPanel.hidden = true;
+  chatOpened = false;
 
-    chatLauncher.setAttribute(
-        "aria-expanded",
-        "false"
+  $("chatView").hidden = true;
+  $("supportView").hidden = false;
+
+  document.body.classList.remove("chat-open");
+
+  setNotice("");
+
+  window.scrollTo(0, 0);
+
+  refreshUnread();
+}
+
+/* ==========================================
+   AI PORUKE
+========================================== */
+
+function sendAi(text) {
+
+  appendMessage(
+    $("aiMessages"),
+    text,
+    true
+  );
+
+  appendMessage(
+    $("aiMessages"),
+    aiAnswer(text),
+    false
+  );
+}
+
+/* ==========================================
+   SLANJE PORUKE
+========================================== */
+
+async function sendCurrent() {
+
+  const input = $("chatInput");
+  const text = input.value.trim();
+
+  if (!text || sending) return;
+
+  if (text.length < 2) {
+
+    setNotice(
+      "Napišite malo dužu poruku.",
+      true
     );
 
-    loadClientUnreadCount();
-}
+    return;
+  }
 
-chatLauncher?.addEventListener("click", () => {
-    if (chatOpen) {
-        closeChat();
-    } else {
-        openChat();
-    }
-});
+  if (activeChat === "ai") {
 
-$("openChatFromPage")?.addEventListener(
-    "click",
-    openChat
-);
+    input.value = "";
 
-closeChatButton?.addEventListener(
-    "click",
-    closeChat
-);
+    sendAi(text);
 
-minimizeChatButton?.addEventListener(
-    "click",
-    closeChat
-);
+    input.style.height = "42px";
+    input.focus();
 
-document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && chatOpen) {
-        closeChat();
-    }
-});
+    return;
+  }
 
-/* =========================================
-   PROMJENA AI / FIZICKA PODRSKA
-========================================= */
+  if (!session) {
 
-function switchChatMode(mode) {
-    chatMode = mode === "human"
-        ? "human"
-        : "ai";
-
-    const isHuman = chatMode === "human";
-
-    aiTab.classList.toggle(
-        "active",
-        !isHuman
+    setNotice(
+      "Prijavite se kako biste poslali poruku.",
+      true
     );
 
-    humanTab.classList.toggle(
-        "active",
-        isHuman
-    );
+    return;
+  }
 
-    aiMessages.hidden = isHuman;
-    supportMessages.hidden = !isHuman;
+  sending = true;
 
-    aiSuggestions.hidden = isHuman;
-    humanSupportAction.hidden = isHuman;
+  $("sendChatMessage").disabled = true;
 
-    chatInput.placeholder = isHuman
-        ? "Napiši poruku podršci..."
-        : "Pitaj PTech asistenta...";
+  setNotice("");
 
-    chatHeaderStatus.innerHTML = isHuman
-        ? '<i class="online-dot"></i> Fizička podrška • PTech tim'
-        : '<i class="online-dot"></i> PTech asistent • Dostupan 24/7';
+  try {
 
-    chatFooterText.textContent = isHuman
-        ? "Poruke se šalju PTech Digital timu"
-        : "PTech asistent • Automatski odgovori";
-
-    hideNotice();
-
-    if (isHuman && currentSession) {
-        loadSupportMessages().then(() => {
-            if (chatOpen) {
-                markClientMessagesAsRead();
-            }
-        });
-    }
-
-    scrollChatToBottom(
-        isHuman ? supportMessages : aiMessages
-    );
-}
-
-aiTab?.addEventListener("click", () => {
-    switchChatMode("ai");
-});
-
-humanTab?.addEventListener("click", () => {
-    switchChatMode("human");
-});
-
-$("switchToHuman")?.addEventListener(
-    "click",
-    () => {
-        switchChatMode("human");
-    }
-);
-
-/* =========================================
-   BESPLATNI PAMETNI ASISTENT
-========================================= */
-
-/*
-   Asistent ne koristi vanjski AI API.
-
-   Razumije:
-   - vise tema u jednom pitanju
-   - sinonime i cestu hrvatsku terminologiju
-   - kratka dodatna pitanja
-   - prethodnu temu razgovora
-
-   Ne zna stvarne podatke o projektu.
-*/
-
-/* =========================================
-   BAZA ZNANJA
-========================================= */
-
-const aiKnowledge = {
-
-    approve: {
-        title: "Odobrenje dizajna",
-
-        keywords: [
-            "odobri",
-            "odobriti",
-            "odobrenje",
-            "odobren",
-            "potvrditi dizajn",
-            "potvrda dizajna",
-            "prihvatiti dizajn",
-            "prihvacam dizajn",
-            "dizajn je dobar",
-            "finalni dizajn"
-        ],
-
-        answer: helpContent.approve.answer
-    },
-
-    revision: {
-        title: "Izmjene dizajna",
-
-        keywords: [
-            "izmjena",
-            "izmjene",
-            "izmijeniti",
-            "promjena",
-            "promijeniti",
-            "promijenim",
-            "dorada",
-            "doraditi",
-            "popraviti",
-            "ispraviti",
-            "revizija",
-            "drugacije",
-            "boja",
-            "font",
-            "naslovnica",
-            "raspored",
-            "tekst na stranici",
-            "gumb",
-            "slika na stranici"
-        ],
-
-        answer: helpContent.revision.answer
-    },
-
-    documents: {
-        title: "Dokumenti",
-
-        keywords: [
-            "dokument",
-            "dokumenti",
-            "ugovor",
-            "ponuda",
-            "faktura",
-            "pdf",
-            "datoteka",
-            "datoteke",
-            "preuzeti",
-            "skinuti",
-            "download",
-            "brief",
-            "prilog"
-        ],
-
-        answer: helpContent.documents.answer
-    },
-
-    status: {
-        title: "Status projekta",
-
-        keywords: [
-            "status",
-            "projekt",
-            "projekta",
-            "projekti",
-            "napredak",
-            "napreduje",
-            "faza",
-            "fazi",
-            "rok",
-            "rokovi",
-            "gotovo",
-            "gotov",
-            "zavrsen",
-            "zavrsiti",
-            "kasni",
-            "kasnjenje",
-            "isporuka",
-            "koliko jos",
-            "kada ce",
-            "kad ce",
-            "koliko traje"
-        ],
-
-        answer: helpContent.status.answer
-    },
-
-    billing: {
-        title: "Cijene i naplata",
-
-        keywords: [
-            "cijena",
-            "cijene",
-            "cijenu",
-            "koliko kosta",
-            "koliko dode",
-            "naplata",
-            "naplatiti",
-            "placanje",
-            "platiti",
-            "placam",
-            "doplata",
-            "dodatno naplacuje",
-            "dodatni trosak",
-            "troskovi",
-            "besplatno",
-            "budzet",
-            "iznos",
-            "paket"
-        ],
-
-        answer: helpContent.billing.answer
-    },
-
-    support: {
-        title: "Fizička podrška",
-
-        keywords: [
-            "podrska",
-            "podrsku",
-            "kontakt",
-            "kontaktirati",
-            "agent",
-            "operater",
-            "osoba",
-            "covjek",
-            "ziva osoba",
-            "fizicka podrska",
-            "administrator",
-            "admin",
-            "razgovarati s nekim",
-            "trebam pomoc",
-            "pomozite"
-        ],
-
-        answer: helpContent.support.answer
-    },
-
-    functionality: {
-        title: "Nove funkcionalnosti",
-
-        keywords: [
-            "funkcionalnost",
-            "funkcionalnosti",
-            "nova opcija",
-            "nova mogucnost",
-            "dodati opciju",
-            "dodati funkciju",
-            "rezervacije",
-            "online rezervacije",
-            "placanje karticom",
-            "web shop",
-            "webshop",
-            "kosarica",
-            "kontakt forma",
-            "registracija korisnika",
-            "integracija",
-            "api povezivanje"
-        ],
-
-        answer:
-`Ako želiš dodati novu funkcionalnost na web stranicu ili u postojeći projekt, najbolje je pripremiti precizan opis zahtjeva.
-
-Preporučujem da navedeš:
-
-1. Što nova funkcionalnost treba raditi.
-2. Tko će je koristiti.
-3. Kako zamišljaš njezin izgled.
-4. Treba li se povezati s drugom uslugom.
-5. Imaš li željeni rok.
-
-Primjer:
-"Želim dodati online rezervacije. Posjetitelj treba odabrati datum, vrijeme i broj osoba te poslati rezervaciju."
-
-Nova funkcionalnost može biti izvan dogovorenog opsega i dodatno se naplatiti.
-
-Za točan opseg, cijenu i rok kontaktiraj PTech Digital tim.`
-    },
-
-    website: {
-        title: "Web stranice",
-
-        keywords: [
-            "web stranica",
-            "web stranice",
-            "website",
-            "izrada weba",
-            "izrada stranice",
-            "landing page",
-            "poslovna stranica",
-            "stranica za firmu"
-        ],
-
-        answer:
-`Ako je tvoje pitanje vezano uz web stranicu, najprije provjeri odnosi li se zahtjev na postojeći projekt ili na novu funkcionalnost.
-
-Ako već imaš aktivan projekt:
-
-1. Otvori karticu Projekti.
-2. Odaberi projekt web stranice.
-3. Provjeri njegov status.
-4. Za izmjene postojećeg dizajna koristi zahtjev za izmjenu.
-5. Za nove funkcionalnosti pošalji detaljan opis podršci.
-
-Ne mogu potvrditi cijenu ili rok bez dogovora s PTech Digital timom.`
-    },
-
-    login: {
-        title: "Prijava i korisnički račun",
-
-        keywords: [
-            "prijava",
-            "prijaviti se",
-            "login",
-            "logiranje",
-            "lozinka",
-            "password",
-            "zaboravio lozinku",
-            "korisnicki racun",
-            "profil",
-            "odjava",
-            "logout",
-            "ne mogu uci"
-        ],
-
-        answer:
-`Ako imaš problem s korisničkim računom, provjeri koristiš li ispravnu e-mail adresu.
-
-Ako se ne možeš prijaviti:
-
-1. Provjeri internetsku vezu.
-2. Provjeri e-mail adresu.
-3. Ako postoji mogućnost obnove lozinke, koristi je.
-4. Ako problem ostane, kontaktiraj fizičku podršku.
-
-Podatke svojeg profila možeš pregledati u kartici Profil.
-
-Nikada nemoj slati lozinku kroz chat.`
-    },
-
-    notifications: {
-        title: "Poruke i obavijesti",
-
-        keywords: [
-            "obavijest",
-            "obavijesti",
-            "notifikacija",
-            "notifikacije",
-            "poruka",
-            "poruke",
-            "odgovor na poruku",
-            "neprocitano",
-            "crvena oznaka",
-            "badge"
-        ],
-
-        answer:
-`Poruke fizičke podrške možeš pronaći u ovom chatu.
-
-1. Otvori narančastu ikonu razgovora.
-2. Odaberi karticu Fizička podrška.
-3. Pregledaj prethodne poruke.
-4. Pošalji novu poruku ako je potrebno.
-
-Ako imaš nepročitane poruke podrške, prikazuje se oznaka s njihovim brojem.
-
-Kada otvoriš razgovor fizičke podrške, poruke se označavaju kao pročitane.`
-    },
-
-    bug: {
-        title: "Tehnički problem",
-
-        keywords: [
-            "ne radi",
-            "greska",
-            "error",
-            "bug",
-            "problem s portalom",
-            "ne ucitava",
-            "ne otvara",
-            "bijeli ekran",
-            "crni ekran",
-            "stranica ne radi",
-            "ne mogu poslati",
-            "ne mogu otvoriti"
-        ],
-
-        answer:
-`Ako nešto na portalu ne radi, možeš pokušati sljedeće:
-
-1. Osvježi stranicu.
-2. Provjeri internetsku vezu.
-3. Odjavi se i ponovno prijavi ako je moguće.
-4. Provjeri javlja li se problem i nakon ponovnog otvaranja stranice.
-
-Ako problem ostane, pošalji poruku fizičkoj podršci.
-
-U poruci napiši:
-
-• Na kojoj stranici se problem pojavljuje.
-• Što si pokušao napraviti.
-• Što se dogodilo.
-• Prikazuje li se poruka o pogrešci.
-
-Nemoj slati lozinke ili tajne pristupne podatke.`
-    }
-};
-
-/* =========================================
-   POSEBNE RIJECI
-========================================= */
-
-const aiGreetings = [
-    "bok",
-    "hej",
-    "pozdrav",
-    "hello",
-    "hi",
-    "dobar dan",
-    "dobro jutro",
-    "dobra vecer"
-];
-
-const aiThanks = [
-    "hvala",
-    "hvala ti",
-    "puno hvala",
-    "zahvaljujem",
-    "super hvala",
-    "okej hvala"
-];
-
-const aiFollowUps = [
-    "kako",
-    "zasto",
-    "objasni",
-    "detaljnije",
-    "vise",
-    "mozes pojasniti",
-    "sto dalje",
-    "a kako",
-    "a zasto",
-    "moze detaljnije",
-    "daj primjer",
-    "primjer"
-];
-
-/* =========================================
-   PREPOZNAVANJE TEMA
-========================================= */
-
-function getMatchingTopics(question) {
-    const text = normalizeText(question);
-    const matches = [];
-
-    for (const [key, topic] of Object.entries(aiKnowledge)) {
-        let score = 0;
-
-        for (const keyword of topic.keywords) {
-            const normalizedKeyword = normalizeText(keyword);
-
-            if (!normalizedKeyword) continue;
-
-            const escapedKeyword = normalizedKeyword.replace(
-                /[.*+?^${}()|[\]\\]/g,
-                "\\$&"
-            );
-
-            const pattern = new RegExp(
-                "(^|\\s)" + escapedKeyword + "(?=\\s|$)"
-            );
-
-            if (pattern.test(text)) {
-                score += normalizedKeyword.includes(" ")
-                    ? 4
-                    : 2;
-            } else if (
-                normalizedKeyword.length >= 5 &&
-                text.split(" ").some(
-                    (word) =>
-                        word.startsWith(normalizedKeyword)
-                )
-            ) {
-                score += 1;
-            }
-        }
-
-        if (score > 0) {
-            matches.push({
-                key,
-                score
-            });
-        }
-    }
-
-    matches.sort((a, b) => b.score - a.score);
-
-    return matches;
-}
-
-/* =========================================
-   ODGOVORI PREMA TEMAMA
-========================================= */
-
-function getTopicAnswer(key) {
-    return aiKnowledge[key]?.answer || "";
-}
-
-function isFollowUpQuestion(text) {
-    if (!lastAiTopic) return false;
-
-    const normalized = normalizeText(text);
-
-    if (normalized.length > 65) {
-        return false;
-    }
-
-    return aiFollowUps.some((phrase) => {
-        const normalizedPhrase = normalizeText(phrase);
-
-        return (
-            normalized === normalizedPhrase ||
-            normalized.startsWith(
-                normalizedPhrase + " "
-            )
-        );
-    });
-}
-
-/* =========================================
-   KONTEKST RAZGOVORA
-========================================= */
-
-function rememberAiTopics(keys) {
-    if (!keys.length) return;
-
-    lastAiTopics = keys.slice(0, 3);
-    lastAiTopic = keys[0];
-}
-
-function getFollowUpResponse(question) {
-    if (!lastAiTopic) return null;
-
-    const text = normalizeText(question);
-
-    const topic = aiKnowledge[lastAiTopic];
-
-    if (!topic) return null;
-
-    if (
-        text.includes("primjer") ||
-        text.includes("kako napisati")
-    ) {
-        if (lastAiTopic === "revision") {
-            return `Naravno! Evo primjera dobro napisanog zahtjeva za izmjenu:
-
-"Pozdrav, želio bih promijeniti naslov na početnoj stranici. Trenutačni naslov je prevelik na mobitelu. Molim da bude malo manji i centriran. Također bih želio da glavni gumb bude narančaste boje."
-
-Takav opis jasno govori što treba promijeniti i gdje.`;
-        }
-
-        if (lastAiTopic === "functionality") {
-            return `Evo primjera zahtjeva za novu funkcionalnost:
-
-"Pozdrav, želim dodati sustav online rezervacija na svoju web stranicu. Korisnik treba moći odabrati datum, vrijeme i broj osoba. Nakon slanja rezervacije želim dobiti obavijest e-mailom. Molim procjenu cijene i roka."
-
-Takav zahtjev možeš poslati fizičkoj podršci.`;
-        }
-
-        if (lastAiTopic === "support") {
-            return `Primjer poruke fizičkoj podršci:
-
-"Pozdrav, trebam pomoć oko svojeg projekta. Želio bih provjeriti jednu informaciju i dobiti dodatno pojašnjenje. Možete li mi pomoći?"
-
-Za konkretnije pitanje dodaj naziv projekta i opis problema.`;
-        }
-    }
-
-    return `Naravno! Evo detaljnijeg objašnjenja teme "${topic.title}":
-
-${topic.answer}
-
-Ako se pitanje odnosi na konkretan dogovor, cijenu, rok ili odluku tima, preporučujem razgovor s fizičkom podrškom.`;
-}
-
-/* =========================================
-   GENERIRANJE BESPLATNOG ODGOVORA
-========================================= */
-
-function getAiResponse(question) {
-    const text = normalizeText(question);
-
-    if (!text) {
-        return "Napiši pitanje i pokušat ću ti pomoći.";
-    }
-
-    if (aiGreetings.includes(text)) {
-        return `Bok! 👋
-
-Dobrodošao u PTech Digital podršku.
-
-Mogu ti pomoći oko:
-
-• Projekata i njihovog statusa
-• Odobrenja dizajna
-• Izmjena i dorada
-• Dokumenata
-• Cijena i dodatne naplate
-• Novih funkcionalnosti
-• Problema s portalom
-
-Što te zanima?`;
-    }
-
-    if (
-        aiThanks.includes(text) ||
-        text.startsWith("hvala ")
-    ) {
-        return `Nema na čemu! 😊
-
-Ako imaš još pitanja, slobodno pitaj.
-
-Ako ti treba pomoć PTech Digital tima, klikni "Razgovaraj s osobom".`;
-    }
-
-    if (
-        text === "tko si" ||
-        text === "sto si" ||
-        text === "jesi li ai" ||
-        text === "jesi li bot"
-    ) {
-        return `Ja sam PTech Digital virtualni asistent. ✦
-
-Pomažem klijentima pronaći informacije o portalu, projektima, dokumentima i podršci.
-
-Koristim pripremljenu bazu znanja i prepoznavanje pitanja. Nisam generativni AI i nemam pristup privatnim podacima tvojeg projekta.
-
-Za pitanja koja zahtijevaju provjeru možeš razgovarati s PTech Digital timom.`;
-    }
-
-    const matches = getMatchingTopics(question);
-
-    if (
-        isFollowUpQuestion(question) &&
-        matches.length === 0
-    ) {
-        return getFollowUpResponse(question);
-    }
-
-    if (matches.length > 0) {
-        const bestScore = matches[0].score;
-
-        const selected = matches
-            .filter((item, index) => {
-                return (
-                    index === 0 ||
-                    item.score >= Math.max(
-                        2,
-                        bestScore * 0.45
-                    )
-                );
-            })
-            .slice(0, 3);
-
-        const keys = selected.map((item) => item.key);
-
-        rememberAiTopics(keys);
-
-        if (keys.length === 1) {
-            return getTopicAnswer(keys[0]);
-        }
-
-        const sections = keys.map((key, index) => {
-            const topic = aiKnowledge[key];
-
-            return `${index + 1}. ${topic.title.toUpperCase()}
-
-${topic.answer}`;
-        });
-
-        return `Tvoje pitanje obuhvaća nekoliko tema. Evo odgovora za svaku od njih:
-
-${sections.join("\n\n──────────────\n\n")}
-
-Ako želiš konkretnu procjenu cijene, roka ili opsega rada, možeš se javiti fizičkoj podršci.`;
-    }
-
-    if (isFollowUpQuestion(question)) {
-        return getFollowUpResponse(question);
-    }
-
-    return `Razumijem da trebaš pomoć, ali nemam dovoljno informacija da ti dam pouzdan odgovor na to pitanje.
-
-Mogu ti pomoći s ovim temama:
-
-• Odobrenje dizajna
-• Izmjene i dorade
-• Status projekta
-• Dokumenti
-• Cijene i dodatna naplata
-• Nove funkcionalnosti
-• Tehnički problemi
-
-Možeš li malo detaljnije opisati što želiš napraviti?
-
-Ako je riječ o konkretnom projektu ili posebnom dogovoru, klikni "Razgovaraj s osobom".`;
-}
-
-/* =========================================
-   AI RAZGOVOR
-========================================= */
-
-function sendAiQuestion(question) {
-    const text = String(question || "").trim();
-
-    if (!text) return;
-
-    hideNotice();
-
-    appendMessage(
-        aiMessages,
-        text,
-        "user"
-    );
-
-    aiConversation.push({
-        role: "user",
-        content: text
-    });
-
-    const answer = getAiResponse(text);
-
-    aiConversation.push({
-        role: "assistant",
-        content: answer
-    });
-
-    // Zadrzi samo zadnjih 20 poruka u memoriji.
-    aiConversation = aiConversation.slice(-20);
-
-    const responseElement = appendMessage(
-        aiMessages,
-        answer,
-        "bot"
-    );
-
-    responseElement.style.opacity = "0";
-
-    requestAnimationFrame(() => {
-        responseElement.style.transition =
-            "opacity .25s ease";
-
-        responseElement.style.opacity = "1";
-    });
-}
-
-/* =========================================
-   PREDLOZENA AI PITANJA
-========================================= */
-
-document.querySelectorAll(
-    "[data-ai-question]"
-).forEach((button) => {
-    button.addEventListener("click", () => {
-        sendAiQuestion(
-            button.dataset.aiQuestion
-        );
-    });
-});
-
-/* =========================================
-   KORISNICKI PROFIL
-========================================= */
-
-async function loadProfile() {
-    if (!currentSession) return;
-
-    const { data, error } = await supabaseClient
-        .from("profiles")
-        .select("display_name")
-        .eq("id", currentSession.user.id)
-        .maybeSingle();
+    const { error } = await db
+      .from("support_messages")
+      .insert({
+        user_id: session.user.id,
+        sender_role: "client",
+        message: text
+      });
 
     if (error) {
-        console.error(
-            "Profile error:",
-            error
-        );
+      throw error;
     }
 
-    clientName.textContent =
-        data?.display_name ||
-        currentSession.user.email?.split("@")[0] ||
-        "Klijent";
+    input.value = "";
+    input.style.height = "42px";
+
+    await loadSupport();
+    await refreshUnread();
+
+  } catch (error) {
+
+    console.error("Send message:", error);
+
+    setNotice(
+      "Poruka nije poslana. Pokušajte ponovno.",
+      true
+    );
+
+  } finally {
+
+    sending = false;
+
+    $("sendChatMessage").disabled = false;
+
+    input.focus();
+  }
 }
 
-/* =========================================
-   UCITAVANJE FIZICKE PODRSKE
-========================================= */
+/* ==========================================
+   FAQ KARTICE
+========================================== */
 
-async function loadSupportMessages() {
-    if (!currentSession) return;
+function setupFaq() {
 
-    const sequence = ++supportLoadSequence;
+  document
+    .querySelectorAll("[data-help]")
+    .forEach(button => {
 
-    const { data, error } = await supabaseClient
-        .from("support_messages")
-        .select(`
-            id,
-            created_at,
-            user_id,
-            sender_role,
-            message,
-            client_read_at
-        `)
-        .eq(
-            "user_id",
-            currentSession.user.id
-        )
-        .order("created_at", {
-            ascending: true
+      button.addEventListener("click", () => {
+
+        const item = faq[button.dataset.help];
+
+        if (!item) return;
+
+        $("helpAnswerTitle").textContent = item.title;
+        $("helpAnswerText").textContent = item.answer;
+
+        $("helpAnswer").hidden = false;
+
+        $("helpAnswer").scrollIntoView({
+          behavior: "smooth",
+          block: "nearest"
         });
+      });
+    });
 
-    // Sprijeci da stariji zahtjev prepise noviji.
-    if (sequence !== supportLoadSequence) {
-        return;
-    }
+  $("closeHelpAnswer").addEventListener("click", () => {
 
-    supportMessages.innerHTML = "";
+    $("helpAnswer").hidden = true;
+  });
 
-    if (error) {
-        console.error(
-            "Load support error:",
-            error
-        );
+  $("askAiAboutThis").addEventListener("click", () => {
 
-        const empty = document.createElement("div");
+    const question = $("helpAnswerTitle").textContent;
 
-        empty.className = "chat-empty";
-        empty.textContent =
-            "Razgovor trenutno nije moguće učitati.";
-
-        supportMessages.appendChild(empty);
-
-        return;
-    }
-
-    if (!data || data.length === 0) {
-        const empty = document.createElement("div");
-
-        empty.className = "chat-empty";
-        empty.textContent =
-            "Još nema poruka. Napiši pitanje i pošalji ga našem timu.";
-
-        supportMessages.appendChild(empty);
-
-        return;
-    }
-
-    for (const item of data) {
-        appendMessage(
-            supportMessages,
-            item.message || "",
-            item.sender_role === "client"
-                ? "user"
-                : "bot",
-            item.created_at
-        );
-    }
-
-    scrollChatToBottom(supportMessages);
+    openChat("ai");
+    sendAi(question);
+  });
 }
 
-/* =========================================
-   OZNACAVANJE PROCITANIH PORUKA
-========================================= */
+/* ==========================================
+   PARTICLES
+========================================== */
 
-async function markClientMessagesAsRead() {
-    if (
-        !currentSession ||
-        !chatOpen ||
-        chatMode !== "human" ||
-        document.visibilityState === "hidden" ||
-        markingRead
-    ) {
-        return;
-    }
+function setupParticles() {
 
-    markingRead = true;
+  if (
+    window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches
+  ) {
+    return;
+  }
+
+  const positions = [
+    8, 19, 31, 43, 55, 67, 79, 91
+  ];
+
+  positions.forEach((top, i) => {
+
+    const part = document.createElement("span");
+
+    part.className = "particle";
+
+    part.style.setProperty(
+      "--top",
+      `${top}%`
+    );
+
+    part.style.setProperty(
+      "--width",
+      `${78 + (i * 17) % 66}px`
+    );
+
+    part.style.setProperty(
+      "--duration",
+      `${18 + (i * 3) % 8}s`
+    );
+
+    part.style.setProperty(
+      "--delay",
+      `${-i * 3}s`
+    );
+
+    $("messagesParticles").append(part);
+  });
+}
+
+/* ==========================================
+   LIGHT / DARK MODE
+========================================== */
+
+function setupTheme() {
+
+  let theme = "dark";
+
+  try {
+
+    theme = localStorage.getItem("theme") === "light"
+      ? "light"
+      : "dark";
+
+  } catch (_) {}
+
+  function apply(next) {
+
+    const light = next === "light";
+
+    document.body.classList.toggle(
+      "light-mode",
+      light
+    );
+
+    document.documentElement.dataset.theme = next;
+
+    document.documentElement.classList.remove(
+      "initial-light"
+    );
+
+    $("themeToggle").checked = light;
+
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute(
+        "content",
+        light ? "#fffaf5" : "#1b2232"
+      );
 
     try {
-        const { error } = await supabaseClient
-            .from("support_messages")
-            .update({
-                client_read_at:
-                    new Date().toISOString()
-            })
-            .eq(
-                "user_id",
-                currentSession.user.id
-            )
-            .eq("sender_role", "admin")
-            .is("client_read_at", null);
 
-        if (error) {
-            console.error(
-                "Mark read error:",
-                error
-            );
-        }
-    } finally {
-        markingRead = false;
-        await loadClientUnreadCount();
-    }
-}
+      localStorage.setItem(
+        "theme",
+        next
+      );
 
-/* =========================================
-   NEPROCITANE PORUKE
-========================================= */
+    } catch (_) {}
+  }
 
-function updateBadge(element, count) {
-    if (!element) return;
+  apply(theme);
 
-    element.hidden = count <= 0;
+  $("themeToggle").addEventListener("change", event => {
 
-    element.textContent =
-        count > 99
-            ? "99+"
-            : String(count);
-}
-
-async function loadClientUnreadCount() {
-    if (!currentSession) return;
-
-    const { count, error } = await supabaseClient
-        .from("support_messages")
-        .select("id", {
-            count: "exact",
-            head: true
-        })
-        .eq(
-            "user_id",
-            currentSession.user.id
-        )
-        .eq("sender_role", "admin")
-        .is("client_read_at", null);
-
-    if (error) {
-        console.error(
-            "Unread error:",
-            error
-        );
-        return;
-    }
-
-    unreadCount = count || 0;
-
-    updateBadge(
-        messagesUnreadBadge,
-        unreadCount
+    apply(
+      event.target.checked ? "light" : "dark"
     );
-
-    updateBadge(
-        chatUnreadBadge,
-        unreadCount
-    );
-
-    updateBadge(
-        humanTabUnread,
-        unreadCount
-    );
+  });
 }
 
-/* =========================================
-   SLANJE PORUKE FIZICKOJ PODRSCI
-========================================= */
+/* ==========================================
+   POKRETANJE STRANICE
+========================================== */
 
-async function sendHumanMessage(message) {
-    if (!currentSession || sendingMessage) {
-        return;
-    }
+async function start() {
 
-    sendingMessage = true;
-    sendChatMessage.disabled = true;
+  setupTheme();
+  setupParticles();
+  setupFaq();
 
-    hideNotice();
+  /* OTVORI RAZGOVOR */
 
-    try {
-        const { error } = await supabaseClient
-            .from("support_messages")
-            .insert({
-                user_id: currentSession.user.id,
-                sender_role: "client",
-                message
-            });
-
-        if (error) {
-            console.error(
-                "Send message error:",
-                error
-            );
-
-            showNotice(
-                "Poruka nije poslana. Pokušaj ponovno.",
-                true
-            );
-
-            return;
-        }
-
-        chatInput.value = "";
-
-        await loadSupportMessages();
-
-    } finally {
-        sendingMessage = false;
-        sendChatMessage.disabled = false;
-    }
-}
-
-/* =========================================
-   SLANJE IZ INPUTA
-========================================= */
-
-async function sendCurrentMessage() {
-    if (sendingMessage) return;
-
-    const message = chatInput.value.trim();
-
-    if (!message) return;
-
-    if (message.length < 2) {
-        showNotice(
-            "Napiši malo dužu poruku.",
-            true
-        );
-
-        return;
-    }
-
-    hideNotice();
-
-    if (chatMode === "ai") {
-        chatInput.value = "";
-
-        sendAiQuestion(message);
-    } else {
-        await sendHumanMessage(message);
-    }
-
-    chatInput.style.height = "42px";
-    chatInput.focus();
-}
-
-sendChatMessage?.addEventListener(
+  $("openChatFromPage").addEventListener(
     "click",
-    sendCurrentMessage
-);
+    () => openChat("ai")
+  );
 
-chatInput?.addEventListener("keydown", (event) => {
+  /* NATRAG NA POMOĆ */
+
+  $("closeChat").addEventListener(
+    "click",
+    closeChat
+  );
+
+  /* PREBACIVANJE AI / PTECH TIM */
+
+  $("aiTab").addEventListener(
+    "click",
+    () => switchChat("ai")
+  );
+
+  $("humanTab").addEventListener(
+    "click",
+    () => switchChat("human")
+  );
+
+  /* SLANJE PORUKE */
+
+  $("sendChatMessage").addEventListener(
+    "click",
+    sendCurrent
+  );
+
+  /* ENTER - SLANJE, SHIFT+ENTER - NOVI RED */
+
+  $("chatInput").addEventListener("keydown", event => {
+
     if (
-        event.key === "Enter" &&
-        !event.shiftKey &&
-        !event.isComposing
+      event.key === "Enter" &&
+      !event.shiftKey &&
+      !event.isComposing
     ) {
-        event.preventDefault();
 
-        sendCurrentMessage();
+      event.preventDefault();
+
+      sendCurrent();
     }
-});
+  });
 
-chatInput?.addEventListener("input", () => {
-    chatInput.style.height = "42px";
+  /* AUTOMATSKA VISINA POLJA */
 
-    chatInput.style.height =
-        Math.min(
-            chatInput.scrollHeight,
-            110
-        ) + "px";
-});
+  $("chatInput").addEventListener("input", event => {
 
-/* =========================================
-   SUPABASE REALTIME
-========================================= */
+    const input = event.target;
 
-function subscribeToSupportRealtime() {
-    if (!currentSession || realtimeChannel) {
-        return;
+    input.style.height = "42px";
+
+    input.style.height =
+      Math.min(input.scrollHeight, 115) + "px";
+  });
+
+  /* BRZA PITANJA */
+
+  document
+    .querySelectorAll("[data-ai-question]")
+    .forEach(button => {
+
+      button.addEventListener("click", () => {
+
+        sendAi(button.dataset.aiQuestion);
+      });
+    });
+
+  /* ESC - POVRATAK NA FAQ */
+
+  document.addEventListener("keydown", event => {
+
+    if (
+      event.key === "Escape" &&
+      chatOpened
+    ) {
+
+      closeChat();
     }
+  });
 
-    realtimeChannel = supabaseClient
-        .channel(
-            "client-support-" +
-            currentSession.user.id
-        )
-        .on(
-            "postgres_changes",
-            {
-                event: "*",
-                schema: "public",
-                table: "support_messages",
-                filter:
-                    "user_id=eq." +
-                    currentSession.user.id
-            },
-            async () => {
-                await loadClientUnreadCount();
+  /* POVRATAK NA TAB */
 
-                if (
-                    chatOpen &&
-                    chatMode === "human"
-                ) {
-                    await loadSupportMessages();
-                    await markClientMessagesAsRead();
-                }
-            }
-        )
-        .subscribe((status) => {
-            console.log(
-                "Support realtime:",
-                status
-            );
-        });
-}
-
-/* =========================================
-   OSVJEZAVANJE KAD SE VRATIS NA TAB
-========================================= */
-
-document.addEventListener(
+  document.addEventListener(
     "visibilitychange",
-    async () => {
-        if (
-            document.visibilityState !== "visible" ||
-            !currentSession
-        ) {
-            return;
-        }
+    () => {
 
-        await loadClientUnreadCount();
+      if (!document.hidden) {
+
+        refreshUnread();
 
         if (
-            chatOpen &&
-            chatMode === "human"
+          chatOpened &&
+          activeChat === "human"
         ) {
-            await loadSupportMessages();
-            await markClientMessagesAsRead();
+
+          loadSupport().then(markRead);
         }
+      }
     }
-);
+  );
 
-/* =========================================
-   ODJAVA
-========================================= */
+  /* SUPABASE PROVJERA */
 
-logoutButton?.addEventListener(
+  if (!db) {
+
+    setNotice(
+      "Supabase biblioteka nije učitana.",
+      true
+    );
+
+    return;
+  }
+
+  /* AUTENTIFIKACIJA */
+
+  const {
+    data: { session: authSession },
+    error
+  } = await db.auth.getSession();
+
+  if (error || !authSession) {
+
+    location.href = "login.html";
+
+    return;
+  }
+
+  session = authSession;
+
+  /* IME KLIJENTA */
+
+  const profile = await db
+    .from("profiles")
+    .select("display_name")
+    .eq("id", session.user.id)
+    .maybeSingle();
+
+  $("clientName").textContent =
+    profile.data?.display_name ||
+    session.user.email?.split("@")[0] ||
+    "Klijent";
+
+  /* NEPROČITANE PORUKE */
+
+  await refreshUnread();
+
+  /* SUPABASE REALTIME */
+
+  realtimeChannel = db
+    .channel(`client-support-${session.user.id}`)
+    .on(
+      "postgres_changes",
+      {
+        event: "*",
+        schema: "public",
+        table: "support_messages",
+        filter: `user_id=eq.${session.user.id}`
+      },
+      async () => {
+
+        await refreshUnread();
+
+        if (
+          chatOpened &&
+          activeChat === "human"
+        ) {
+
+          await loadSupport();
+
+          await markRead();
+        }
+      }
+    )
+    .subscribe();
+
+  /* ODJAVA */
+
+  $("logoutButton").addEventListener(
     "click",
     async () => {
-        if (realtimeChannel) {
-            await supabaseClient.removeChannel(
-                realtimeChannel
-            );
 
-            realtimeChannel = null;
-        }
+      if (realtimeChannel) {
 
-        await supabaseClient.auth.signOut();
+        await db.removeChannel(
+          realtimeChannel
+        );
+      }
 
-        window.location.href = "login.html";
-    }
-);
+      const {
+        error: logoutError
+      } = await db.auth.signOut();
 
-/* =========================================
-   START
-========================================= */
+      if (logoutError) {
 
-async function startMessages() {
-    const {
-        data: { session },
-        error
-    } = await supabaseClient.auth.getSession();
+        alert(
+          "Odjava nije uspjela. Pokušajte ponovno."
+        );
 
-    if (error || !session) {
-        window.location.href = "login.html";
         return;
+      }
+
+      location.href = "login.html";
     }
-
-    currentSession = session;
-
-    await loadProfile();
-    await loadClientUnreadCount();
-
-    subscribeToSupportRealtime();
-
-    switchChatMode("ai");
+  );
 }
 
-startMessages();
+/* ==========================================
+   START
+========================================== */
+
+start().catch(error => {
+
+  console.error(
+    "Messages initialization:",
+    error
+  );
+});
