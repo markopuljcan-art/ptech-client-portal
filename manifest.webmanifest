@@ -3,7 +3,7 @@
   "id": "./",
   "name": "PTech Digital Client Portal",
   "short_name": "PTech Portal",
-  "description": "Siguran pristup projektima, dokumentima i porukama PTech Digital klijenata.",
+  "description": "Korisnički portal PTech Digital",
   "lang": "hr",
   "start_url": "./form.html",
   "scope": "./",
@@ -12,16 +12,9 @@
   "theme_color": "#243149",
   "icons": [
     {
-      "src": "./assets/ptech-pwa-192.png",
-      "sizes": "192x192",
+      "src": "./assets/ptech-icon.png",
       "type": "image/png",
       "purpose": "any"
-    },
-    {
-      "src": "./assets/ptech-pwa-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
     }
   ]
 }
