@@ -12,9 +12,13 @@
             document.documentElement.setAttribute("data-theme", theme);
         })();
     </script>
-    <link rel="stylesheet" href="./profile.css?v=2">
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="apple-touch-icon" href="./assets/ptech-icon.png">
+    <meta name="apple-mobile-web-app-title" content="PTech Portal">
+    <link rel="stylesheet" href="./profile.css?v=3">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="./profile.js?v=2" defer></script>
+    <script src="./pwa-init.js?v=1" defer></script>
+    <script src="./profile.js?v=3" defer></script>
 </head>
 <body>
 <main class="dashboard desktop-layout">
@@ -110,7 +114,15 @@
 
                 <section class="profile-section notifications-section">
                     <div class="section-header"><span class="section-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg></span><div><h2>Mobilne obavijesti</h2><p>Odaberite koje ćete push obavijesti željeti primati.</p></div></div>
-                    <div class="pwa-notice"><span class="notice-dot"></span><div><strong>PWA obavijesti su u pripremi</strong><p>Postavke možete spremiti, ali obavijesti se još ne šalju dok ne povežemo PWA i push servis.</p></div></div>
+                    <div class="pwa-notice"><span class="notice-dot"></span><div><strong>Uključivanje mobilnih obavijesti</strong><p>Prvo povežite ovaj uređaj. Automatsko slanje obavijesti bit će uključeno u sljedećoj fazi.</p></div></div>
+                    <div class="push-device-card" aria-label="Push obavijesti na ovom uređaju">
+                        <div class="push-device-title"><span class="push-device-icon" aria-hidden="true">🔔</span><div><strong>Obavijesti na ovom uređaju</strong><p id="pushDeviceState" aria-live="polite">Provjera dostupnosti...</p></div></div>
+                        <div class="push-device-actions">
+                            <button id="enablePushButton" type="button" class="bronze-button">Omogući obavijesti</button>
+                            <button id="disablePushButton" type="button" class="outline-button" hidden>Isključi na uređaju</button>
+                        </div>
+                        <p id="pushDeviceStatus" class="form-status" role="status" aria-live="polite"></p>
+                    </div>
                     <div class="notification-options">
                         <label class="notification-option"><span><strong>Nove poruke</strong><small>Kad vam PTech Digital tim pošalje poruku.</small></span><input id="notifyMessages" type="checkbox" aria-label="Obavijesti o porukama"><span class="toggle-track" aria-hidden="true"></span></label>
                         <label class="notification-option"><span><strong>Ažuriranja projekata</strong><small>Kad se promijeni status vašeg projekta.</small></span><input id="notifyProjects" type="checkbox" aria-label="Obavijesti o projektima"><span class="toggle-track" aria-hidden="true"></span></label>
