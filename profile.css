@@ -377,6 +377,18 @@ a.stat-card:hover { border-color:var(--bronze); transform:translateY(-1px); tran
 .notice-dot { width:9px; height:9px; flex-shrink:0; margin-top:4px; border-radius:50%; background:var(--bronze); }
 .pwa-notice strong { display:block; margin-bottom:5px; color:var(--text); font-size:12px; }
 .pwa-notice p { margin:0; color:var(--muted); font-size:11px; line-height:1.6; }
+/* PROFILE V3 - DEVICE PUSH REGISTRATION */
+.push-device-card { padding:14px; margin:0 0 10px; border:1px solid var(--profile-inner-border); border-radius:14px; background:var(--profile-inner-bg); }
+.push-device-title { display:flex; align-items:center; gap:11px; }
+.push-device-icon { display:grid; place-items:center; width:37px; height:37px; flex:0 0 37px; border-radius:11px; background:var(--icon-bg); font-size:17px; }
+.push-device-title strong { display:block; color:var(--text); font-size:12px; margin-bottom:4px; }
+.push-device-title p { margin:0; color:var(--muted); font-size:11px; line-height:1.5; }
+.push-device-actions { display:flex; flex-wrap:wrap; gap:10px; margin:13px 0 8px; }
+.push-device-actions button { min-width:165px; max-width:100%; }
+.push-device-card .form-status { margin-top:3px; }
+.push-device-card button[hidden] { display:none !important; }
+@media (max-width:390px) { .push-device-actions button { width:100%; } }
+
 .notification-options { display:flex; flex-direction:column; }
 .notification-option { display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:61px; padding:12px 3px; border-bottom:1px solid var(--profile-inner-border); cursor:pointer; }
 .notification-option > span:first-child { display:block; min-width:0; }
