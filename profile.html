@@ -19,6 +19,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="./pwa-init.js?v=1" defer></script>
     <script src="./profile.js?v=3" defer></script>
+    <script
+    src="./ptech-push-test.js?v=1"
+    defer
+></script>
 </head>
 <body>
 <main class="dashboard desktop-layout">
@@ -122,6 +126,24 @@
                             <button id="disablePushButton" type="button" class="outline-button" hidden>Isključi na uređaju</button>
                         </div>
                         <p id="pushDeviceStatus" class="form-status" role="status" aria-live="polite"></p>
+                        
+<div class="push-device-actions">
+    <button
+        id="testPushButton"
+        type="button"
+        class="outline-button"
+    >
+        Pošalji testnu obavijest
+    </button>
+</div>
+
+<p
+    id="pushTestStatus"
+    class="form-status"
+    role="status"
+    aria-live="polite"
+></p>
+
                     </div>
                     <div class="notification-options">
                         <label class="notification-option"><span><strong>Nove poruke</strong><small>Kad vam PTech Digital tim pošalje poruku.</small></span><input id="notifyMessages" type="checkbox" aria-label="Obavijesti o porukama"><span class="toggle-track" aria-hidden="true"></span></label>
