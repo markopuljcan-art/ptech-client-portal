@@ -1,13 +1,14 @@
-
 "use strict";
 
-/* PTech Digital | Profil V2
+/* PTech Digital | Profil V3
    Existing Supabase auth, projects, documents and support flows preserved.
-   Push notification preferences are saved, but push delivery is NOT active yet.
+   Push subscriptions are saved with RLS; server-side delivery is NOT active yet.
 */
 const SUPABASE_URL = "https://agivwsbczzvvuzszcvxz.supabase.co";
 const SUPABASE_KEY = "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// Enter ONLY the public VAPID key generated with web-push. Never put the private key here.
+const PTECH_VAPID_PUBLIC_KEY = "BCHPYHoWaiLMmcqnDV3TpqrBqHNVmGUrPOvovVvkXoUY4s22q93AXvCdSPPZe2dF8LCKQStdpbCuFB_Hs24MqqQ";
 const el = id => document.getElementById(id);
 let currentSession = null;
 let currentDisplayName = "Klijent";
@@ -83,6 +84,10 @@ function setupParticles() {
     });
 }
 async function logout() {
+    try { await disablePushOnDevice(true); } catch (error) {
+        console.warn("Push uređaj nije odjavljen:", error);
+        // Do not prevent the user from signing out if push cleanup fails.
+    }
     if (supportRealtimeChannel) {
         try { await supabaseClient.removeChannel(supportRealtimeChannel); } catch (error) { console.warn(error); }
         supportRealtimeChannel = null;
@@ -230,12 +235,242 @@ async function saveNotificationPreferences() {
         });
         if (error) throw error;
         if (data?.user) currentSession.user = data.user;
-        setStatus("notificationsStatus", "Postavke su spremljene. Push obavijesti još nisu aktivirane.", "success");
+        setStatus("notificationsStatus", "Postavke su spremljene. Automatsko slanje obavijesti još nije aktivirano.", "success");
     } catch (error) {
         console.error("Notification preferences:", error);
         setStatus("notificationsStatus", "Spremanje nije uspjelo. Pokušajte ponovno.", "error");
     } finally { setLoading(button, false); }
 }
+/* ================================================
+   PTECH DIGITAL | PROFILE V3: PUSH DEVICE SUBSCRIPTION
+   NOTE: Delivery requires a separate trusted server
+   using the matching PRIVATE VAPID key.
+================================================ */
+
+let pushRegistrationPromise = null;
+
+function hasPushSupport() {
+    return window.isSecureContext && "serviceWorker" in navigator &&
+        "PushManager" in window && "Notification" in window;
+}
+
+function publicVapidBytes() {
+    const key = PTECH_VAPID_PUBLIC_KEY.trim();
+    if (!key || key.includes("OVDJE_ZALIJEPI")) {
+        throw new Error("Najprije upišite javni VAPID ključ u profile.js.");
+    }
+    const padding = "=".repeat((4 - (key.length % 4)) % 4);
+    const base64 = (key + padding).replace(/-/g, "+").replace(/_/g, "/");
+    let bytes;
+    try {
+        bytes = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+    } catch (_) {
+        throw new Error("Javni VAPID ključ nije ispravan Base64URL zapis.");
+    }
+    if (bytes.length !== 65 || bytes[0] !== 4) {
+        throw new Error("Javni VAPID ključ nije ispravne duljine.");
+    }
+    return bytes;
+}
+
+function equalPushKeys(a, b) {
+    if (!a || !b || a.length !== b.length) return false;
+    return a.every((value, index) => value === b[index]);
+}
+
+function deviceRegistration() {
+    if (!pushRegistrationPromise) {
+        pushRegistrationPromise = navigator.serviceWorker.register("./sw.js", {
+            scope: "./", updateViaCache: "none"
+        }).catch(error => {
+            pushRegistrationPromise = null;
+            throw error;
+        });
+    }
+    return pushRegistrationPromise;
+}
+
+function showPushDeviceState(message, registered = false) {
+    setText("pushDeviceState", message);
+    const enable = el("enablePushButton");
+    const disable = el("disablePushButton");
+    if (enable) enable.hidden = registered;
+    if (disable) disable.hidden = !registered;
+}
+
+async function ownSubscriptionRow(subscription) {
+    if (!subscription || !currentSession?.user?.id) return null;
+    const { data, error } = await supabaseClient
+        .from("ptech_push_subscriptions")
+        .select("id")
+        .eq("user_id", currentSession.user.id)
+        .eq("endpoint", subscription.endpoint)
+        .maybeSingle();
+    if (error) throw error;
+    return data;
+}
+
+async function refreshPushDeviceState() {
+    const enable = el("enablePushButton");
+    if (!hasPushSupport()) {
+        showPushDeviceState("Push nije dostupan u ovom pregledniku.");
+        if (enable) enable.disabled = true;
+        return;
+    }
+    if (Notification.permission === "denied") {
+        showPushDeviceState("Obavijesti su blokirane u postavkama uređaja.");
+        if (enable) enable.disabled = true;
+        return;
+    }
+    if (!PTECH_VAPID_PUBLIC_KEY || PTECH_VAPID_PUBLIC_KEY.includes("OVDJE_ZALIJEPI")) {
+        showPushDeviceState("Potrebno je postaviti javni VAPID ključ.");
+        if (enable) enable.disabled = true;
+        return;
+    }
+    try {
+        const reg = await deviceRegistration();
+        const subscription = await reg.pushManager.getSubscription();
+        const ownRow = await ownSubscriptionRow(subscription);
+        if (ownRow) {
+            showPushDeviceState("Uređaj je uspješno povezan.", true);
+        } else {
+            showPushDeviceState("Obavijesti nisu omogućene na ovom uređaju.");
+        }
+        if (enable) enable.disabled = false;
+    } catch (error) {
+        console.error("Push state:", error);
+        showPushDeviceState("Provjera uređaja nije uspjela.");
+        setStatus("pushDeviceStatus", "Provjerite internetsku vezu i učitajte stranicu ponovno.", "error");
+    }
+}
+
+async function enablePushOnDevice() {
+    if (!currentSession) return;
+    if (!hasPushSupport()) {
+        setStatus("pushDeviceStatus", "Ovaj preglednik ne podržava push obavijesti.", "error");
+        return;
+    }
+
+    let vapidKey;
+    try {
+        vapidKey = publicVapidBytes();
+    } catch (error) {
+        setStatus("pushDeviceStatus", error.message, "error");
+        return;
+    }
+
+    const button = el("enablePushButton");
+    setLoading(button, true);
+    setStatus("pushDeviceStatus", "Tražimo dopuštenje za obavijesti...");
+
+    try {
+        // Important on iPhone: request permission directly within the click flow.
+        const permission = Notification.permission === "granted"
+            ? "granted" : await Notification.requestPermission();
+        if (permission !== "granted") {
+            throw new Error("Dopuštenje nije odobreno. Provjerite postavke obavijesti.");
+        }
+
+        const reg = await deviceRegistration();
+        let subscription = await reg.pushManager.getSubscription();
+        if (subscription) {
+            const oldKey = subscription.options?.applicationServerKey;
+            const oldBytes = oldKey ? new Uint8Array(oldKey) : null;
+            // A browser subscription with a different VAPID key must be replaced.
+            if (!equalPushKeys(oldBytes, vapidKey)) {
+                const unsubscribed = await subscription.unsubscribe();
+                if (!unsubscribed) {
+                    throw new Error("Stara pretplata se nije mogla ukloniti.");
+                }
+                subscription = null;
+            }
+        }
+        if (!subscription) {
+            subscription = await reg.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: vapidKey
+            });
+        }
+
+        const json = subscription.toJSON();
+        if (!json.endpoint || !json.keys?.p256dh || !json.keys?.auth) {
+            throw new Error("Preglednik nije vratio ispravne push ključeve.");
+        }
+
+        // Re-check account to ensure the subscription is not attached to a stale session.
+        const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+        if (userError || !user || user.id !== currentSession.user.id) {
+            throw new Error("Prijava je istekla. Prijavite se ponovno.");
+        }
+
+        const { error } = await supabaseClient
+            .from("ptech_push_subscriptions")
+            .upsert({
+                user_id: user.id,
+                endpoint: json.endpoint,
+                p256dh: json.keys.p256dh,
+                auth_key: json.keys.auth,
+                updated_at: new Date().toISOString()
+            }, { onConflict: "endpoint" });
+
+        if (error) {
+            if (error.code === "23505" || error.code === "42501") {
+                throw new Error("Ovaj uređaj može biti povezan s drugim računom. Isključite obavijesti na starom računu i pokušajte ponovno.");
+            }
+            throw error;
+        }
+
+        showPushDeviceState("Uređaj je uspješno povezan.", true);
+        setStatus("pushDeviceStatus",
+            "Uređaj je registriran. Obavijesti će početi stizati nakon uključivanja slanja na poslužitelju.",
+            "success");
+    } catch (error) {
+        console.error("Push registration:", error);
+        setStatus("pushDeviceStatus", error.message ||
+            "Registracija nije uspjela. Pokušajte ponovno.", "error");
+    } finally {
+        setLoading(button, false);
+        if (Notification.permission === "denied") {
+            showPushDeviceState("Obavijesti su blokirane u postavkama uređaja.");
+            if (button) button.disabled = true;
+        }
+    }
+}
+
+async function disablePushOnDevice(silent = false) {
+    if (!hasPushSupport() || !currentSession) return;
+    const button = el("disablePushButton");
+    if (!silent) {
+        setLoading(button, true);
+        setStatus("pushDeviceStatus", "Odjavljujemo ovaj uređaj...");
+    }
+    try {
+        const reg = await navigator.serviceWorker.getRegistration("./");
+        const subscription = await reg?.pushManager.getSubscription();
+        const ownRow = await ownSubscriptionRow(subscription);
+        if (ownRow) {
+            const { error } = await supabaseClient
+                .from("ptech_push_subscriptions")
+                .delete()
+                .eq("id", ownRow.id)
+                .eq("user_id", currentSession.user.id);
+            if (error) throw error;
+            await subscription.unsubscribe();
+        }
+        if (!silent) {
+            showPushDeviceState("Obavijesti su isključene na ovom uređaju.");
+            setStatus("pushDeviceStatus", "Ovaj uređaj je odjavljen iz push obavijesti.", "success");
+        }
+    } catch (error) {
+        console.error("Push unsubscription:", error);
+        if (!silent) setStatus("pushDeviceStatus",
+            "Isključivanje nije uspjelo. Pokušajte ponovno.", "error");
+        throw error;
+    } finally {
+        if (!silent) setLoading(button, false);
+    }
+}
+
 function openModal(id, focusId) {
     const modal = el(id);
     if (!modal) return;
@@ -278,7 +513,7 @@ function setupModals() {
         try {
             const { error } = await supabaseClient.auth.updateUser({ password });
             if (error) throw error;
-            el("passwordForm")?.reset();
+            event.currentTarget.reset();
             setStatus("passwordStatus", "Lozinka je uspješno promijenjena.", "success");
         } catch (error) {
             console.error("Change password:", error);
@@ -312,6 +547,7 @@ async function startProfile() {
     if (error || !session) { window.location.href = "login.html"; return; }
     currentSession = session;
     loadNotificationPreferences();
+    refreshPushDeviceState().catch(error => console.error("Push initialization:", error));
     await loadProfile();
     await loadProjects();
     await Promise.all([loadDocumentsAndActivity(), loadUnreadMessages()]);
@@ -322,6 +558,8 @@ setupParticles();
 setupModals();
 el("logoutButton")?.addEventListener("click", logout);
 el("saveNotificationsButton")?.addEventListener("click", saveNotificationPreferences);
+el("enablePushButton")?.addEventListener("click", enablePushOnDevice);
+el("disablePushButton")?.addEventListener("click", () => disablePushOnDevice().catch(() => {}));
 document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible" && currentSession) loadUnreadMessages();
 });
