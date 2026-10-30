@@ -1,8 +1,8 @@
 "use strict";
 
-/* PTech Digital | Profil V3
+/* PTech Digital | Profil V4
    Existing Supabase auth, projects, documents and support flows preserved.
-   Push subscriptions are saved with RLS; server-side delivery is NOT active yet.
+   Push subscriptions and preferences are active; delivery runs through Supabase Edge Functions.
 */
 const SUPABASE_URL = "https://agivwsbczzvvuzszcvxz.supabase.co";
 const SUPABASE_KEY = "sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE";
@@ -235,16 +235,16 @@ async function saveNotificationPreferences() {
         });
         if (error) throw error;
         if (data?.user) currentSession.user = data.user;
-        setStatus("notificationsStatus", "Postavke su spremljene. Automatsko slanje obavijesti još nije aktivirano.", "success");
+        setStatus("notificationsStatus", "Postavke obavijesti uspješno su spremljene.", "success");
     } catch (error) {
         console.error("Notification preferences:", error);
         setStatus("notificationsStatus", "Spremanje nije uspjelo. Pokušajte ponovno.", "error");
     } finally { setLoading(button, false); }
 }
 /* ================================================
-   PTECH DIGITAL | PROFILE V3: PUSH DEVICE SUBSCRIPTION
-   NOTE: Delivery requires a separate trusted server
-   using the matching PRIVATE VAPID key.
+   PTECH DIGITAL | PROFILE V4: PUSH DEVICE SUBSCRIPTION
+   Server delivery is handled by the deployed Edge Functions.
+   Never place the PRIVATE VAPID key here.
 ================================================ */
 
 let pushRegistrationPromise = null;
@@ -313,7 +313,7 @@ async function ownSubscriptionRow(subscription) {
 async function refreshPushDeviceState() {
     const enable = el("enablePushButton");
     if (!hasPushSupport()) {
-        showPushDeviceState("Push nije dostupan u ovom pregledniku.");
+        showPushDeviceState("Push obavijesti nisu dostupne u ovom pregledniku. Na iPhoneu otvorite aplikaciju dodanu na početni zaslon.");
         if (enable) enable.disabled = true;
         return;
     }
@@ -331,10 +331,12 @@ async function refreshPushDeviceState() {
         const reg = await deviceRegistration();
         const subscription = await reg.pushManager.getSubscription();
         const ownRow = await ownSubscriptionRow(subscription);
-        if (ownRow) {
-            showPushDeviceState("Uređaj je uspješno povezan.", true);
+        if (ownRow && Notification.permission === "granted") {
+            showPushDeviceState("Obavijesti su uključene na ovom uređaju.", true);
+        } else if (subscription && !ownRow) {
+            showPushDeviceState("Ovaj uređaj nije povezan s vašim računom. Za uključivanje pritisnite gumb.");
         } else {
-            showPushDeviceState("Obavijesti nisu omogućene na ovom uređaju.");
+            showPushDeviceState("Obavijesti nisu uključene na ovom uređaju.");
         }
         if (enable) enable.disabled = false;
     } catch (error) {
@@ -420,9 +422,9 @@ async function enablePushOnDevice() {
             throw error;
         }
 
-        showPushDeviceState("Uređaj je uspješno povezan.", true);
+        showPushDeviceState("Obavijesti su uključene na ovom uređaju.", true);
         setStatus("pushDeviceStatus",
-            "Uređaj je registriran. Obavijesti će početi stizati nakon uključivanja slanja na poslužitelju.",
+            "Obavijesti su uključene na ovom uređaju.",
             "success");
     } catch (error) {
         console.error("Push registration:", error);
@@ -455,11 +457,16 @@ async function disablePushOnDevice(silent = false) {
                 .eq("id", ownRow.id)
                 .eq("user_id", currentSession.user.id);
             if (error) throw error;
-            await subscription.unsubscribe();
+        }
+        if (subscription) {
+            const unsubscribed = await subscription.unsubscribe();
+            if (!unsubscribed) {
+                throw new Error("Preglednik nije uspio isključiti pretplatu. Provjerite postavke uređaja.");
+            }
         }
         if (!silent) {
             showPushDeviceState("Obavijesti su isključene na ovom uređaju.");
-            setStatus("pushDeviceStatus", "Ovaj uređaj je odjavljen iz push obavijesti.", "success");
+            setStatus("pushDeviceStatus", "Obavijesti su isključene na ovom uređaju.", "success");
         }
     } catch (error) {
         console.error("Push unsubscription:", error);
@@ -561,6 +568,9 @@ el("saveNotificationsButton")?.addEventListener("click", saveNotificationPrefere
 el("enablePushButton")?.addEventListener("click", enablePushOnDevice);
 el("disablePushButton")?.addEventListener("click", () => disablePushOnDevice().catch(() => {}));
 document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible" && currentSession) loadUnreadMessages();
+    if (document.visibilityState === "visible" && currentSession) {
+        loadUnreadMessages();
+        refreshPushDeviceState().catch(error => console.warn("Push refresh:", error));
+    }
 });
 startProfile().catch(error => console.error("Profile initialization:", error));
