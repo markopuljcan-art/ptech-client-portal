@@ -492,3 +492,6 @@ body.modal-open { overflow:hidden; }
     .profile-particles { display:none; }
     *,*::before,*::after { animation-duration:0s !important; transition-duration:0s !important; }
 }
+
+/* PTech Profile V4 - device-specific push notice */
+.push-device-note { margin: 8px 0 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
