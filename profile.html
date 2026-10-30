@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#fffaf5">
     <title>PTech Digital | Moj profil</title>
-    <script>
+<script>
         (function () {
             let theme = "dark";
             try { theme = (localStorage.getItem("theme") || localStorage.getItem("ptech-theme")) === "light" ? "light" : "dark"; } catch (_) {}
@@ -15,14 +15,10 @@
     <link rel="manifest" href="./manifest.webmanifest">
     <link rel="apple-touch-icon" href="./assets/ptech-icon.png">
     <meta name="apple-mobile-web-app-title" content="PTech Portal">
-    <link rel="stylesheet" href="./profile.css?v=3">
+    <link rel="stylesheet" href="./profile.css?v=4">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="./pwa-init.js?v=1" defer></script>
-    <script src="./profile.js?v=3" defer></script>
-    <script
-    src="./ptech-push-test.js?v=1"
-    defer
-></script>
+    <script src="./profile.js?v=4" defer></script>
 </head>
 <body>
 <main class="dashboard desktop-layout">
@@ -117,8 +113,8 @@
                 </section>
 
                 <section class="profile-section notifications-section">
-                    <div class="section-header"><span class="section-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg></span><div><h2>Mobilne obavijesti</h2><p>Odaberite koje ćete push obavijesti željeti primati.</p></div></div>
-                    <div class="pwa-notice"><span class="notice-dot"></span><div><strong>Uključivanje mobilnih obavijesti</strong><p>Prvo povežite ovaj uređaj. Automatsko slanje obavijesti bit će uključeno u sljedećoj fazi.</p></div></div>
+                    <div class="section-header"><span class="section-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg></span><div><h2>Mobilne obavijesti</h2><p>Odaberite koje push obavijesti želite primati.</p></div></div>
+                    <div class="pwa-notice"><span class="notice-dot"></span><div><strong>Uključivanje mobilnih obavijesti</strong><p>Obavijesti za poruke, projekte i dokumente su dostupne. Omogućite ih na ovom uređaju i odaberite što želite primati.</p></div></div>
                     <div class="push-device-card" aria-label="Push obavijesti na ovom uređaju">
                         <div class="push-device-title"><span class="push-device-icon" aria-hidden="true">🔔</span><div><strong>Obavijesti na ovom uređaju</strong><p id="pushDeviceState" aria-live="polite">Provjera dostupnosti...</p></div></div>
                         <div class="push-device-actions">
@@ -126,28 +122,11 @@
                             <button id="disablePushButton" type="button" class="outline-button" hidden>Isključi na uređaju</button>
                         </div>
                         <p id="pushDeviceStatus" class="form-status" role="status" aria-live="polite"></p>
-                        
-<div class="push-device-actions">
-    <button
-        id="testPushButton"
-        type="button"
-        class="outline-button"
-    >
-        Pošalji testnu obavijest
-    </button>
+                        <p class="push-device-note">Upravljanje vrijedi samo za ovaj uređaj. Postavke vrsta obavijesti vrijede za vaš račun na svim povezanim uređajima.</p>
 </div>
-
-<p
-    id="pushTestStatus"
-    class="form-status"
-    role="status"
-    aria-live="polite"
-></p>
-
-                    </div>
                     <div class="notification-options">
                         <label class="notification-option"><span><strong>Nove poruke</strong><small>Kad vam PTech Digital tim pošalje poruku.</small></span><input id="notifyMessages" type="checkbox" aria-label="Obavijesti o porukama"><span class="toggle-track" aria-hidden="true"></span></label>
-                        <label class="notification-option"><span><strong>Ažuriranja projekata</strong><small>Kad se promijeni status vašeg projekta.</small></span><input id="notifyProjects" type="checkbox" aria-label="Obavijesti o projektima"><span class="toggle-track" aria-hidden="true"></span></label>
+                        <label class="notification-option"><span><strong>Ažuriranja projekata</strong><small>Kad vam dodijelimo projekt ili promijenimo njegov status.</small></span><input id="notifyProjects" type="checkbox" aria-label="Obavijesti o projektima"><span class="toggle-track" aria-hidden="true"></span></label>
                         <label class="notification-option"><span><strong>Novi dokumenti</strong><small>Kad vam tim doda novi dokument.</small></span><input id="notifyDocuments" type="checkbox" aria-label="Obavijesti o dokumentima"><span class="toggle-track" aria-hidden="true"></span></label>
                     </div>
                     <div class="notification-footer"><button id="saveNotificationsButton" type="button" class="bronze-button">Spremi postavke</button><p id="notificationsStatus" class="form-status" role="status" aria-live="polite"></p></div>
