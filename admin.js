@@ -985,6 +985,7 @@ startAdmin();
   const routes = [
     ['admin.html','home','Početna'],
     ['admin-projects.html','briefcase','Projekti'],
+    ['admin-clients.html','people','Klijenti'],
     ['admin-revisions.html','arrows','Zahtjevi'],
     ['admin-approvals.html','check','Odobrenja'],
     ['admin-documents.html','file','Dokumenti'],
@@ -1057,7 +1058,7 @@ startAdmin();
     document.addEventListener('keydown',e=>{if(e.key==='Escape')menu(false)});
     const mobile = document.createElement('nav');
     mobile.className='v3-mobile-nav';mobile.setAttribute('aria-label','Mobilna administratorska navigacija');
-    const nav = [routes[0],routes[1],routes[5],routes[4]];
+    const nav = ['admin.html','admin-projects.html','admin-support.html','admin-documents.html'].map(url=>routes.find(r=>r[0]===url));
     for (const [url,icon,label] of nav) {
       const a=document.createElement('a');a.href=url;
       if(current===url){a.classList.add('active');a.setAttribute('aria-current','page')}

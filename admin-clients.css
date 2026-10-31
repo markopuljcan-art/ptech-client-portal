@@ -1,0 +1,39 @@
+/* PTech Digital Admin Console V3.2 - Klijenti */
+.v32-clients-hero{display:flex;align-items:center;justify-content:space-between;gap:25px;padding:26px;
+    background:linear-gradient(120deg,var(--v3-card),var(--v3-card-soft));border:1px solid var(--v3-border);
+    border-radius:20px;box-shadow:var(--v3-shadow);margin-bottom:18px}
+.v32-clients-hero h3{font-size:27px;font-weight:800;color:var(--v3-text);margin:8px 0}
+.v32-clients-hero p{font-size:13px;color:var(--v3-muted);margin:0;line-height:1.6}
+.v32-clients-number{flex-shrink:0;min-width:120px;padding:13px 18px;text-align:center;background:var(--v3-bg);
+    border:1px solid var(--v3-border);border-radius:13px}
+.v32-clients-number small{display:block;font-size:11px;color:var(--v3-muted)}
+.v32-clients-number strong{display:block;font-size:29px;color:var(--v3-accent)}
+.v32-client-toolbar{display:flex;gap:12px;align-items:end;margin:20px 0}
+.v32-client-search{min-width:0;flex:1;display:flex;flex-direction:column;gap:7px;font-size:12px;font-weight:700;color:var(--v3-text)}
+.v32-client-search input{width:100%;min-height:45px;padding:10px 14px;border:1px solid var(--v3-border);border-radius:11px;
+    color:var(--v3-text);background:var(--v3-card);font:inherit;font-size:14px}
+.v32-client-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.v32-client-card{min-width:0;padding:21px;border:1px solid var(--v3-border);border-radius:18px;
+    background:var(--v3-card);box-shadow:var(--v3-shadow);display:flex;flex-direction:column;gap:16px}
+.v32-client-head{display:flex;align-items:center;gap:12px;min-width:0}
+.v32-client-avatar{height:48px;width:48px;display:grid;place-items:center;flex-shrink:0;border-radius:15px;
+    font-size:15px;font-weight:900;color:var(--v3-accent);background:var(--v3-tint);border:1px solid var(--v3-border)}
+.v32-client-name{min-width:0}.v32-client-name h4{font-size:16px;margin:0 0 5px;color:var(--v3-text);overflow-wrap:anywhere}
+.v32-client-name p{margin:0;font-size:11px;color:var(--v3-muted)}
+.v32-client-meta{display:flex;flex-wrap:wrap;gap:8px}
+.v32-client-meta span{padding:8px 10px;border:1px solid var(--v3-border);border-radius:10px;background:var(--v3-bg);
+    color:var(--v3-muted);font-size:11px;font-weight:600}
+.v32-client-meta b{color:var(--v3-text)}
+.v32-client-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:auto}
+.v32-client-actions a{display:grid;place-items:center;min-height:42px;flex:1;text-align:center;
+    padding:9px 13px;text-decoration:none;border-radius:11px;font-size:12px;font-weight:750;
+    border:1px solid var(--v3-border);color:var(--v3-text);background:var(--v3-bg)}
+.v32-client-actions a:first-child{color:white;border-color:transparent;background:linear-gradient(110deg,#a66d4c,#c48c67)}
+.v32-clients-hint{margin:19px 0;padding:19px 22px;border-radius:15px;border:1px dashed var(--v3-border);background:var(--v3-card-soft)}
+.v32-clients-hint h4{font-size:14px;margin:0 0 7px;color:var(--v3-text)}
+.v32-clients-hint p{font-size:12px;margin:0;line-height:1.6;color:var(--v3-muted)}
+.v32-client-notice{font-size:12px;color:var(--v3-text);background:var(--v3-card);border:1px solid var(--v3-border);border-radius:10px;padding:12px}
+@media(max-width:980px){.v32-client-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.v32-clients-hero{flex-direction:column;align-items:stretch;padding:19px}
+  .v32-client-toolbar{align-items:stretch}.v32-clients-number{text-align:left}
+  .v32-client-card{padding:17px}.v32-client-actions{flex-direction:column}}

@@ -307,7 +307,10 @@ async function loadProjects() {
                 type,
                 status,
                 created_at,
-                user_id
+                user_id,
+                progress,
+                deadline,
+                package
             `)
             .order(
                 "created_at",
@@ -717,6 +720,8 @@ function renderProjects(projects) {
 
 
                             <div class="project-admin-actions">
+                                <button type="button" class="project-action-secondary v32-edit-action"
+                                  data-edit-admin-project="${project.id}">Uredi projekt</button>
 
                                 ${
                                     design
@@ -780,9 +785,12 @@ function applyFilters() {
         "";
 
 
-    const requestedProject = new URLSearchParams(window.location.search).get("project");
+    const params = new URLSearchParams(window.location.search);
+    const requestedProject = params.get("project");
+    const requestedClient = params.get("client");
     const filterSpecificProject = requestedProject && /^\d+$/.test(requestedProject) &&
         search === requestedProject.toLowerCase();
+    const filterSpecificClient = requestedClient && /^[0-9a-f-]{36}$/i.test(requestedClient);
 
     const filtered =
         allProjects.filter(
@@ -829,6 +837,7 @@ function applyFilters() {
 
                 return (
                     matchesSearch &&
+                    (!filterSpecificClient || project.user_id === requestedClient) &&
                     matchesProjectId &&
                     matchesProjectStatus &&
                     matchesDesignStatus
@@ -930,6 +939,8 @@ async function startProjects() {
 
 
     await loadProjects();
+    await loadAdminClientsForEditor();
+    openRequestedProjectEditor();
 }
 
 
@@ -938,3 +949,167 @@ async function startProjects() {
 ========================= */
 
 startProjects();
+
+
+/* =====================================================
+   ADMIN CONSOLE V3.2: UPRAVLJANJE PROJEKTIMA
+   Spremanje ide isključivo kroz admin RPC. Bez javnog
+   INSERT/UPDATE granta klijentima.
+===================================================== */
+
+const v32 = id => document.getElementById(id);
+const editorOverlay = v32("projectEditorOverlay");
+let availableProjectClients = [];
+let editingProjectBusy = false;
+let projectEditorReturnFocus = null;
+
+function v32ShowError(message) {
+    const el = v32("projectEditorMessage");
+    if (!el) return;
+    el.textContent = message;
+    el.hidden = false;
+}
+function v32ClearError() {
+    const el = v32("projectEditorMessage");
+    if (el) { el.textContent = ""; el.hidden = true; }
+}
+
+async function loadAdminClientsForEditor() {
+    const { data, error } = await supabaseClient.from("profiles")
+        .select("id,display_name,role")
+        .eq("role", "client")
+        .order("display_name", { ascending: true });
+    if (error) {
+        console.error("PTech V3.2 - lista klijenata:", error);
+        availableProjectClients = [];
+    } else {
+        availableProjectClients = data || [];
+    }
+    const select = v32("editProjectClient");
+    if (!select) return;
+    select.replaceChildren(new Option("Odaberi klijenta", ""));
+    for (const user of availableProjectClients) {
+        const label = user.display_name || `Klijent (${user.id.slice(0,8)}...)`;
+        select.add(new Option(label, user.id));
+    }
+}
+
+function openAdminProjectEditor(project = null, chosenClient = "") {
+    if (!editorOverlay) return;
+    projectEditorReturnFocus = document.activeElement;
+    v32("projectManageForm").reset();
+    v32ClearError();
+    v32("editProjectId").value = project?.id == null ? "" : String(project.id);
+    v32("projectEditorHeading").textContent = project ? "Uredi projekt" : "Novi projekt";
+    v32("saveProjectButton").textContent = project ? "Spremi promjene" : "Dodaj projekt";
+    v32("editProjectName").value = project?.name || "";
+    v32("editProjectType").value = project?.type || "";
+    v32("editProjectStatus").value = project?.status || "U tijeku";
+    v32("editProjectProgress").value = String(project?.progress ?? 0);
+    v32("editProjectDeadline").value = project?.deadline || "";
+    v32("editProjectPackage").value = project?.package || "";
+    const targetUser = project?.user_id || chosenClient;
+    const clientSelect = v32("editProjectClient");
+    if (targetUser && !Array.from(clientSelect.options).some(opt => opt.value === targetUser)) {
+        clientSelect.add(new Option("Trenutačno dodijeljeni klijent", targetUser));
+    }
+    clientSelect.value = targetUser || "";
+    editorOverlay.hidden = false;
+    document.body.classList.add("v32-dialog-open");
+    v32("editProjectName").focus();
+}
+function closeAdminProjectEditor() {
+    if (editingProjectBusy || !editorOverlay) return;
+    editorOverlay.hidden = true;
+    document.body.classList.remove("v32-dialog-open");
+    projectEditorReturnFocus?.focus?.();
+}
+function openRequestedProjectEditor() {
+    const params = new URLSearchParams(location.search);
+    const id = params.get("edit");
+    const userId = params.get("newClient");
+    if (id && /^\d+$/.test(id)) {
+        const project = allProjects.find(p => String(p.id) === id);
+        if (project) openAdminProjectEditor(project);
+    } else if (userId && /^[0-9a-f-]{36}$/i.test(userId)) {
+        openAdminProjectEditor(null, userId);
+    }
+}
+
+v32("newAdminProject")?.addEventListener("click", () => openAdminProjectEditor());
+v32("closeProjectEditor")?.addEventListener("click", closeAdminProjectEditor);
+v32("cancelProjectEditor")?.addEventListener("click", closeAdminProjectEditor);
+editorOverlay?.addEventListener("click", event => {
+    if (event.target === editorOverlay) closeAdminProjectEditor();
+});
+document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && editorOverlay && !editorOverlay.hidden) closeAdminProjectEditor();
+});
+projectsList?.addEventListener("click", event => {
+    const edit = event.target.closest("[data-edit-admin-project]");
+    if (!edit) return;
+    const project = allProjects.find(p => String(p.id) === edit.dataset.editAdminProject);
+    if (project) openAdminProjectEditor(project);
+});
+
+v32("projectManageForm")?.addEventListener("submit", async event => {
+    event.preventDefault();
+    if (editingProjectBusy) return;
+    v32ClearError();
+    const projectName = v32("editProjectName").value.trim();
+    const clientId = v32("editProjectClient").value;
+    const status = v32("editProjectStatus").value.trim();
+    const progressText = v32("editProjectProgress").value.trim();
+    const progress = Number(progressText);
+    if (!projectName || !clientId || !status || !progressText || !Number.isInteger(progress) || progress < 0 || progress > 100) {
+        v32ShowError("Provjeri naziv, klijenta, status i napredak (0–100).");
+        return;
+    }
+    const save = v32("saveProjectButton");
+    editingProjectBusy = true;
+    save.disabled = true;
+    save.textContent = "Spremanje...";
+    const rawId = v32("editProjectId").value;
+    const payload = {
+        p_id: rawId ? Number(rawId) : null,
+        p_user_id: clientId,
+        p_name: projectName,
+        p_type: v32("editProjectType").value.trim() || null,
+        p_status: status,
+        p_progress: progress,
+        p_deadline: v32("editProjectDeadline").value || null,
+        p_package: v32("editProjectPackage").value.trim() || null
+    };
+    try {
+        const { data, error } = await supabaseClient.rpc("ptech_admin_project_upsert", payload);
+        if (error) throw error;
+        editorOverlay.hidden = true;
+        document.body.classList.remove("v32-dialog-open");
+        await loadProjects();
+        // Nemoj ostaviti stari ID filter nakon spremanja.
+        const params = new URLSearchParams(location.search);
+        if (params.has("edit") || params.has("newClient")) {
+            params.delete("edit"); params.delete("newClient");
+            history.replaceState(null, "", location.pathname + (params.toString() ? "?"+params : ""));
+        }
+        projectSearch.value = "";
+        applyFilters();
+        const notice = v32("projectsMessage");
+        if (notice) {
+            notice.textContent = `Projekt #${data} uspješno je spremljen.`;
+            notice.hidden = false;
+        }
+        projectEditorReturnFocus?.focus?.();
+    } catch (error) {
+        console.error("Spremanje projekta:", error);
+        if (/function|schema cache|does not exist|404/i.test(error.message || "")) {
+            v32ShowError("Nedostaje administratorska SQL funkcija. Pokreni SQL iz mape supabase/ i pokušaj ponovno.");
+        } else {
+            v32ShowError(error.message || "Projekt nije spremljen. Pokušaj ponovno.");
+        }
+    } finally {
+        editingProjectBusy = false;
+        save.disabled = false;
+        save.textContent = rawId ? "Spremi promjene" : "Dodaj projekt";
+    }
+});

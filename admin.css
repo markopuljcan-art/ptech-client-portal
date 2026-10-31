@@ -1247,3 +1247,49 @@ html[data-admin-theme="light"] .document-row small{color:var(--v3-muted)!importa
 @media(max-width:390px){.admin-stats{gap:9px!important}.admin-stat-card{min-height:133px!important;padding:12px!important}
  .admin-stat-top{gap:4px!important}.admin-stat-top>span{font-size:9px!important}.v3-quick-link small{display:none}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ========================================
+   PTECH V3.2 - ZAJEDNICKE TIPKE I MODALI
+======================================== */
+.v32-primary-button,.v32-secondary-button{
+    appearance:none;border-radius:12px;min-height:44px;padding:11px 18px;
+    font:inherit;font-weight:750;font-size:13px;cursor:pointer;
+    transition:transform .18s ease,box-shadow .18s ease,background .18s ease;
+}
+.v32-primary-button{border:1px solid transparent;color:white;background:linear-gradient(110deg,#a66d4c,#c48c67);box-shadow:0 6px 17px rgba(132,84,53,.16)}
+.v32-secondary-button{border:1px solid var(--v3-border);background:var(--v3-card);color:var(--v3-text)}
+.v32-primary-button:hover:not(:disabled),.v32-secondary-button:hover:not(:disabled){transform:translateY(-1px)}
+.v32-primary-button:disabled,.v32-secondary-button:disabled{opacity:.55;cursor:wait}
+.v32-project-header-tools{display:flex;align-items:center;gap:15px;flex-wrap:wrap}
+.v32-dialog-open{overflow:hidden}
+.v32-modal-overlay{position:fixed;inset:0;z-index:110;display:flex;align-items:center;justify-content:center;
+    padding:24px;overflow-y:auto;background:rgba(10,18,30,.6);backdrop-filter:blur(9px)}
+.v32-modal-overlay[hidden]{display:none!important}
+.v32-modal-card{width:min(670px,100%);max-height:min(90dvh,950px);overflow-y:auto;border:1px solid var(--v3-border);
+    border-radius:23px;background:var(--v3-card);color:var(--v3-text);box-shadow:0 30px 100px rgba(0,0,0,.25);
+    padding:clamp(18px,3vw,31px)}
+.v32-modal-header{display:flex;gap:16px;align-items:flex-start;justify-content:space-between;margin-bottom:23px}
+.v32-modal-header h2{font-size:23px;line-height:1.3;margin:6px 0 6px;color:var(--v3-text)}
+.v32-modal-header p{color:var(--v3-muted);font-size:12px;line-height:1.6;margin:0;max-width:470px}
+.v32-modal-close{flex:0 0 38px;border-radius:12px;border:1px solid var(--v3-border);height:38px;
+    color:var(--v3-text);background:var(--v3-bg);font-size:25px;cursor:pointer}
+.v32-editor-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.v32-span-2{grid-column:1/-1}
+.v32-form-field{min-width:0;display:flex;flex-direction:column;gap:8px}
+.v32-form-field label{font-size:12px;font-weight:700;color:var(--v3-text)}
+.v32-form-field input,.v32-form-field select{height:45px;width:100%;min-width:0;padding:10px 13px;
+    font:inherit;font-size:14px;color:var(--v3-text);border:1px solid var(--v3-border);border-radius:11px;
+    background:var(--v3-bg);color-scheme:normal}
+:root[data-admin-theme="dark"] .v32-form-field input,:root[data-admin-theme="dark"] .v32-form-field select{color-scheme:dark}
+.v32-form-field input:focus,.v32-form-field select:focus{border-color:var(--v3-accent)}
+.v32-modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:5px}
+.v32-editor-message{margin:0;border:1px solid #dc9e92;border-radius:10px;color:#a54c39;
+    background:rgba(185,73,42,.08);padding:12px;font-size:12px}
+:root[data-admin-theme="dark"] .v32-editor-message{color:#ffc1ae}
+@media(max-width:580px){.v32-modal-overlay{align-items:flex-end;padding:0}
+    .v32-modal-card{width:100%;max-height:94dvh;border-radius:23px 23px 0 0;
+      padding-bottom:calc(24px + env(safe-area-inset-bottom))}
+    .v32-editor-grid{grid-template-columns:1fr}.v32-span-2{grid-column:auto}
+    .v32-modal-actions{display:grid;grid-template-columns:1fr 1fr}
+    .v32-project-header-tools{width:100%;justify-content:space-between}}
+@media(prefers-reduced-motion:reduce){.v32-primary-button,.v32-secondary-button{transition:none}}

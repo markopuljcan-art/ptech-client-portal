@@ -19,11 +19,11 @@
 
     <link
         rel="stylesheet"
-        href="./admin-projects.css?v=1"
+        href="./admin-projects.css?v=32"
     >
 
     <!-- Admin V3.1: stari CSS + novi dizajn u jednoj datoteci -->
-    <link rel="stylesheet" href="./admin.css?v=31">
+    <link rel="stylesheet" href="./admin.css?v=32">
 
 
     <script
@@ -31,7 +31,7 @@
     ></script>
 
     <script
-        src="./admin-projects.js?v=1"
+        src="./admin-projects.js?v=32"
         defer
     ></script>
 
@@ -44,7 +44,7 @@
     defer
 ></script>
     <!-- Zajednicka administracija i V3 izgled; Dashboard radi samo na admin.html -->
-    <script defer src="./admin.js?v=31"></script>
+    <script defer src="./admin.js?v=32"></script>
 </head>
 
 
@@ -94,6 +94,10 @@
                 >
                     <span class="admin-nav-icon">▣</span>
                     <span>Projekti</span>
+                </a>
+                <a href="admin-clients.html" class="admin-nav-item">
+                    <span class="admin-nav-icon">♧</span>
+                    <span>Klijenti</span>
                 </a>
 
                 <a
@@ -234,7 +238,9 @@
                     </div>
 
 
-                    <div class="projects-count-wrap">
+                    <div class="v32-project-header-tools">
+                        <button type="button" id="newAdminProject" class="v32-primary-button">+ Novi projekt</button>
+                        <div class="projects-count-wrap">
 
                         <span>
                             Ukupno
@@ -244,6 +250,7 @@
                             0
                         </strong>
 
+                        </div>
                     </div>
 
                 </section>
@@ -322,6 +329,45 @@
         </main>
 
     </div>
+
+
+    <!-- Projektni editor: spremanje preko administratorskog RPC-a -->
+    <section id="projectEditorOverlay" class="v32-modal-overlay" role="dialog" aria-modal="true"
+        aria-labelledby="projectEditorHeading" hidden>
+        <div class="v32-modal-card">
+            <header class="v32-modal-header">
+                <div><span class="admin-page-label">UPRAVLJANJE PROJEKTOM</span>
+                    <h2 id="projectEditorHeading">Novi projekt</h2>
+                    <p>Novi projekti i promjene statusa mogu poslati push obavijest klijentu.</p>
+                </div>
+                <button type="button" id="closeProjectEditor" class="v32-modal-close" aria-label="Zatvori">×</button>
+            </header>
+            <form id="projectManageForm" class="v32-editor-grid" novalidate>
+                <input type="hidden" id="editProjectId">
+                <div class="v32-form-field v32-span-2"><label for="editProjectName">Naziv projekta *</label>
+                    <input id="editProjectName" required maxlength="160" placeholder="Npr. Web stranica za tvrtku"></div>
+                <div class="v32-form-field"><label for="editProjectClient">Klijent *</label>
+                    <select id="editProjectClient" required><option value="">Odaberi klijenta</option></select></div>
+                <div class="v32-form-field"><label for="editProjectType">Vrsta projekta</label>
+                    <input id="editProjectType" maxlength="120" placeholder="Izrada web stranice"></div>
+                <div class="v32-form-field"><label for="editProjectStatus">Status projekta *</label>
+                    <input id="editProjectStatus" required maxlength="70" list="adminStatusSuggestions" placeholder="U tijeku">
+                    <datalist id="adminStatusSuggestions"><option value="U tijeku"><option value="Na čekanju"><option value="Završeno"></datalist>
+                </div>
+                <div class="v32-form-field"><label for="editProjectProgress">Napredak (%) *</label>
+                    <input id="editProjectProgress" type="number" inputmode="numeric" required min="0" max="100" step="1" value="0"></div>
+                <div class="v32-form-field"><label for="editProjectDeadline">Rok (neobavezno)</label>
+                    <input id="editProjectDeadline" type="date"></div>
+                <div class="v32-form-field"><label for="editProjectPackage">Paket (neobavezno)</label>
+                    <input id="editProjectPackage" maxlength="120" placeholder="Npr. Standard"></div>
+                <p id="projectEditorMessage" class="v32-editor-message v32-span-2" role="status" aria-live="polite" hidden></p>
+                <div class="v32-modal-actions v32-span-2">
+                    <button type="button" id="cancelProjectEditor" class="v32-secondary-button">Odustani</button>
+                    <button type="submit" id="saveProjectButton" class="v32-primary-button">Spremi projekt</button>
+                </div>
+            </form>
+        </div>
+    </section>
 
 </body>
 

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="theme-color" content="#fcf8f4">
+    <script>
+      (function(){try{document.documentElement.dataset.adminTheme =
+        localStorage.getItem('ptech-admin-theme') === 'dark' ? 'dark' : 'light';}
+        catch(e){document.documentElement.dataset.adminTheme = 'light';}})();
+    </script>
+
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./admin-clients.css?v=1"
+    >
+
+    <!-- Admin V3.1: stari CSS + novi dizajn u jednoj datoteci -->
+    <link rel="stylesheet" href="./admin.css?v=32">
+
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+    <script
+        src="./admin-clients.js?v=1"
+        defer
+    ></script>
+
+    <title>
+        PTech Digital | Klijenti
+    </title>
+    
+    <script
+    src="./admin-notifications.js?v=1"
+    defer
+></script>
+    <!-- Zajednicka administracija i V3 izgled; Dashboard radi samo na admin.html -->
+    <script defer src="./admin.js?v=32"></script>
+</head>
+
+
+<body data-admin-page="admin-clients.html">
+
+    <div class="admin-shell">
+
+
+        <!-- SIDEBAR -->
+
+        <aside class="admin-sidebar">
+
+            <div class="admin-brand">
+
+                <div class="admin-brand-logo">
+                    P
+                </div>
+
+                <div>
+
+                    <h1>
+                        PTech Digital
+                    </h1>
+
+                    <span>
+                        Admin Panel
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <nav class="admin-nav">
+
+                <a
+                    href="admin.html"
+                    class="admin-nav-item"
+                >
+                    <span class="admin-nav-icon">◫</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a
+                    href="admin-projects.html"
+                    class="admin-nav-item"
+                >
+                    <span class="admin-nav-icon">▣</span>
+                    <span>Projekti</span>
+                </a>
+                <a href="admin-clients.html" class="admin-nav-item active">
+                    <span class="admin-nav-icon">♧</span>
+                    <span>Klijenti</span>
+                </a>
+
+                <a
+                    href="admin-revisions.html"
+                    class="admin-nav-item"
+                >
+                    <span class="admin-nav-icon">↔</span>
+                    <span>Zahtjevi</span>
+                </a>
+
+                <a
+                    href="admin-approvals.html"
+                    class="admin-nav-item"
+                >
+                    <span class="admin-nav-icon">✓</span>
+                    <span>Odobrenja</span>
+                </a>
+
+                <a
+                    href="admin-documents.html"
+                    class="admin-nav-item"
+                >
+                    <span class="admin-nav-icon">□</span>
+                    <span>Dokumenti</span>
+                </a>
+
+                <a
+                    href="admin-support.html"
+                    class="admin-nav-item"
+                >
+                
+                    <span class="admin-nav-icon">
+                        ◌
+                    </span>
+                
+                    <span>
+                        Podrška
+                    </span>
+                
+                    <span
+                        id="supportUnreadBadge"
+                        class="admin-nav-badge"
+                        hidden
+                    >
+                        0
+                    </span>
+                
+                </a>
+            </nav>
+
+
+            <div class="admin-sidebar-footer">
+
+                <div class="admin-user">
+
+                    <div class="admin-avatar">
+                        A
+                    </div>
+
+                    <div>
+                        <strong id="adminUserName">
+                            Admin
+                        </strong>
+
+                        <span>
+                            Administrator
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="adminLogoutButton"
+                    class="admin-logout"
+                >
+                    Odjava
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN -->
+
+        <main class="admin-main">
+
+
+            <header class="admin-topbar">
+
+                <div>
+
+                    <span class="admin-page-label">
+                        Administracija
+                    </span>
+
+                    <h2>
+                        Klijenti
+                    </h2>
+
+                </div>
+
+
+                <div class="admin-topbar-actions">
+
+                    <span class="admin-role-badge">
+                        Admin
+                    </span>
+
+                </div>
+
+            </header>
+
+
+            <div class="admin-content">
+                <section class="v32-clients-hero">
+                    <div><span class="admin-page-label">KORISNIČKI RAČUNI</span>
+                        <h3>Vaši klijenti</h3>
+                        <p>Pronađi klijenta, pregledaj njegove projekte i kreiraj novi projekt.</p></div>
+                    <div class="v32-clients-number"><small>Ukupno klijenata</small><strong id="clientCount">—</strong></div>
+                </section>
+                <section class="v32-client-toolbar">
+                    <label class="v32-client-search"><span>Pretraži klijente</span>
+                        <input type="search" id="clientSearch" placeholder="Ime klijenta..." autocomplete="off"></label>
+                    <button type="button" class="v32-secondary-button" id="refreshClients">Osvježi</button>
+                </section>
+                <p id="clientsNotice" class="v32-client-notice" role="status" aria-live="polite" hidden></p>
+                <section id="clientsList" class="v32-client-grid" aria-label="Popis klijenata">
+                    <div class="admin-empty">Učitavanje klijenata...</div>
+                </section>
+                <section class="v32-clients-hint"><h4>Pozivnice i registracije</h4>
+                    <p>Ova verzija pregledava postojeće klijente. Sigurno slanje novih pozivnica i odobravanje zahtjeva
+                       za registraciju dodat ćemo u sljedećoj fazi, putem zaštićene Edge Function.</p>
+                </section>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

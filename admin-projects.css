@@ -522,3 +522,10 @@
         flex-direction: column;
     }
 }
+
+/* PTECH V3.2 - Gumb za uređivanje unutar kartice projekta */
+.v32-edit-action{font:inherit;cursor:pointer;border:1px solid var(--v3-border)!important;
+  background:var(--v3-card-soft)!important;color:var(--v3-text)!important;
+  white-space:nowrap;text-align:center}
+.v32-edit-action:hover{border-color:var(--v3-accent)!important;color:var(--v3-accent)!important}
+@media(max-width:700px){.v32-edit-action{flex:1}}
