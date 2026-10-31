@@ -19,11 +19,11 @@
 
     <link
         rel="stylesheet"
-        href="./admin-clients.css?v=1"
+        href="./admin-clients.css?v=33"
     >
 
     <!-- Admin V3.1: stari CSS + novi dizajn u jednoj datoteci -->
-    <link rel="stylesheet" href="./admin.css?v=32">
+    <link rel="stylesheet" href="./admin.css?v=33">
 
 
     <script
@@ -31,7 +31,7 @@
     ></script>
 
     <script
-        src="./admin-clients.js?v=1"
+        src="./admin-clients.js?v=33"
         defer
     ></script>
 
@@ -44,7 +44,7 @@
     defer
 ></script>
     <!-- Zajednicka administracija i V3 izgled; Dashboard radi samo na admin.html -->
-    <script defer src="./admin.js?v=32"></script>
+    <script defer src="./admin.js?v=33"></script>
 </head>
 
 
@@ -216,24 +216,64 @@
 
             <div class="admin-content">
                 <section class="v32-clients-hero">
-                    <div><span class="admin-page-label">KORISNIČKI RAČUNI</span>
-                        <h3>Vaši klijenti</h3>
-                        <p>Pronađi klijenta, pregledaj njegove projekte i kreiraj novi projekt.</p></div>
-                    <div class="v32-clients-number"><small>Ukupno klijenata</small><strong id="clientCount">—</strong></div>
+                  <div><span class="admin-page-label">KLIJENTI I REGISTRACIJE</span>
+                    <h3>Upravljanje klijentima</h3>
+                    <p>Pregled računa, povezani projekti, pozivnice i zahtjevi za pristup — na jednom mjestu.</p>
+                  </div>
+                  <div class="v32-clients-number"><small>Klijenti</small><strong id="clientCount">—</strong></div>
                 </section>
-                <section class="v32-client-toolbar">
-                    <label class="v32-client-search"><span>Pretraži klijente</span>
-                        <input type="search" id="clientSearch" placeholder="Ime klijenta..." autocomplete="off"></label>
-                    <button type="button" class="v32-secondary-button" id="refreshClients">Osvježi</button>
-                </section>
+
+                <nav class="v33-tabs" aria-label="Upravljanje klijentima">
+                  <button type="button" id="tabClients" class="v33-tab active" aria-selected="true">Klijenti</button>
+                  <button type="button" id="tabRequests" class="v33-tab" aria-selected="false">Zahtjevi <span id="pendingRequestsBadge" class="v33-count" hidden>0</span></button>
+                  <button type="button" id="tabInvite" class="v33-tab" aria-selected="false">Pošalji pozivnicu</button>
+                </nav>
                 <p id="clientsNotice" class="v32-client-notice" role="status" aria-live="polite" hidden></p>
-                <section id="clientsList" class="v32-client-grid" aria-label="Popis klijenata">
-                    <div class="admin-empty">Učitavanje klijenata...</div>
+                <p class="v33-status-line" id="v33StatusLine" aria-live="polite"></p>
+
+                <section id="panelClients" class="v33-panel" aria-label="Popis klijenata">
+                  <div class="v32-client-toolbar">
+                    <label class="v32-client-search"><span>Pretraži ime ili e-mail</span>
+                      <input type="search" id="clientSearch" placeholder="Klijent ili e-mail…" autocomplete="off"></label>
+                    <button type="button" class="v32-secondary-button" id="refreshClients">Osvježi</button>
+                  </div>
+                  <section id="clientsList" class="v32-client-grid" aria-label="Klijentski računi">
+                    <div class="admin-empty">Učitavanje klijenata…</div>
+                  </section>
                 </section>
-                <section class="v32-clients-hint"><h4>Pozivnice i registracije</h4>
-                    <p>Ova verzija pregledava postojeće klijente. Sigurno slanje novih pozivnica i odobravanje zahtjeva
-                       za registraciju dodat ćemo u sljedećoj fazi, putem zaštićene Edge Function.</p>
+
+                <section id="panelRequests" class="v33-panel" aria-label="Zahtjevi za registraciju" hidden>
+                  <div class="v33-section-head"><div><h3>Zahtjevi za pristup</h3>
+                    <p>Odobri zahtjev i pošalji pozivnicu ili ga odbij. Račun se ne stvara samostalno.</p></div>
+                    <button type="button" class="v32-secondary-button" id="refreshRequests">Osvježi</button>
+                  </div>
+                  <div id="registrationRequests" class="v33-request-list"><p class="admin-empty">Učitavanje zahtjeva…</p></div>
                 </section>
+
+                <section id="panelInvite" class="v33-panel" aria-label="Slanje pozivnice" hidden>
+                  <article class="v33-invite-card"><div class="v33-section-head"><div>
+                    <span class="admin-page-label">SAMO ZA ADMINISTRATORE</span>
+                    <h3>Pozovi novog klijenta</h3>
+                    <p>Klijent će dobiti poveznicu za postavljanje vlastite lozinke.</p>
+                  </div></div>
+                  <form id="inviteClientForm" class="v33-invite-form">
+                    <label for="inviteClientEmail">E-mail adresa klijenta</label>
+                    <input id="inviteClientEmail" type="email" autocomplete="off" maxlength="254" required placeholder="ime@tvrtka.hr">
+                    <label for="inviteClientName">Ime ili naziv klijenta (neobavezno)</label>
+                    <input id="inviteClientName" type="text" maxlength="100" placeholder="Ime klijenta">
+                    <button type="submit" class="v33-primary-btn" id="sendInviteBtn">Pošalji pozivnicu</button>
+                    <p class="v33-small-note">Pozivnica se šalje preko Supabase Authentication sustava. Nemoj slati test na stvarnu adresu bez pristanka.</p>
+                  </form></article>
+                </section>
+
+                <div id="clientDetailOverlay" class="v33-overlay" hidden>
+                  <div class="v33-detail" role="dialog" aria-modal="true" aria-labelledby="clientDetailTitle">
+                    <div class="v33-detail-head"><div><span class="admin-page-label">PREGLED KLIJENTA</span>
+                    <h3 id="clientDetailTitle">Klijent</h3></div>
+                    <button type="button" id="closeClientDetail" aria-label="Zatvori" class="v33-close">✕</button></div>
+                    <div id="clientDetailContent"></div>
+                  </div>
+                </div>
             </div>
         </main>
     </div>

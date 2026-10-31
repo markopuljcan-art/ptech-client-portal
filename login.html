@@ -59,11 +59,12 @@
 
     <link
         rel="stylesheet"
-        href="style_login.css?v=22"
+        href="style_login.css?v=33"
     >
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="login.js?v=10" defer></script>
+    <script src="login.js?v=33" defer></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
 </head>
 
 <body>
@@ -288,6 +289,10 @@
 
             </form>
 
+            <div class="v33-login-request">
+              <span>Nemate korisnički račun?</span>
+              <button id="openAccessRequest" type="button">Zatražite pristup portalu</button>
+            </div>
             <footer class="login-footer">
                 © PTech Digital 2026. • Sva prava zadržana.
             </footer>
@@ -452,5 +457,22 @@
     })();
 </script>
 
+<div id="accessRequestOverlay" class="v33-access-overlay" hidden>
+  <div class="v33-access-dialog" role="dialog" aria-modal="true" aria-labelledby="accessRequestHeading">
+    <button type="button" id="closeAccessRequest" class="v33-access-close" aria-label="Zatvori zahtjev">✕</button>
+    <div class="v33-access-symbol" aria-hidden="true">✉</div>
+    <span class="v33-access-eyebrow">PTECH DIGITAL / KLIJENTSKI PORTAL</span>
+    <h2 id="accessRequestHeading">Zatražite pristup</h2>
+    <p>Unesite svoju e-mail adresu. PTech tim će pregledati zahtjev i, ako ga odobri, poslati vam pozivnicu.</p>
+    <form id="accessRequestForm">
+      <label for="accessRequestEmail">Vaša e-mail adresa</label>
+      <input id="accessRequestEmail" type="email" autocomplete="email" required maxlength="254" placeholder="ime@tvrtka.hr">
+      <div id="accessTurnstileWidget" class="v33-turnstile" aria-label="Sigurnosna provjera"></div>
+      <p id="accessRequestMessage" class="v33-access-message" role="status" aria-live="polite"></p>
+      <button type="submit" id="submitAccessRequest" class="v33-access-submit">Pošalji zahtjev</button>
+    </form>
+    <small>Slanje zahtjeva ne otvara račun automatski. Pristup odobrava administrator.</small>
+  </div>
+</div>
 </body>
 </html>

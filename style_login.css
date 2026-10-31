@@ -1893,3 +1893,32 @@ html[data-login-theme="dark"] .login-theme-switch .login-theme-sun {
 /* ==================================================
    KRAJ style_login.css
 ================================================== */
+
+
+/* PTech Digital Login V3.3 - zahtjev za pristup */
+.v33-login-request{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;margin:19px 0 9px;color:var(--muted,#88756a);font-size:12px}
+.v33-login-request button{cursor:pointer;min-height:42px;padding:10px 12px;border:1px solid #d7bca6;border-radius:12px;background:rgba(185,124,80,.07);color:#a06745;font:inherit;font-weight:800}
+html[data-login-theme=dark] .v33-login-request button{color:#e8b48f;border-color:#7a5e50;background:#38303a}
+.v33-access-overlay[hidden]{display:none!important}
+.v33-access-overlay{position:fixed;inset:0;z-index:9999;background:rgba(13,20,33,.74);backdrop-filter:blur(9px);display:grid;place-items:center;padding:16px;overscroll-behavior:contain}
+.v33-access-dialog{position:relative;width:min(450px,100%);max-height:92dvh;overflow:auto;background:#fffaf5;color:#242936;border-radius:24px;box-shadow:0 28px 90px rgba(0,0,0,.26);padding:29px;border:1px solid #f0ddcb}
+.v33-access-close{position:absolute;right:16px;top:15px;width:38px;height:38px;border-radius:10px;border:1px solid #e9d8ca;background:#fff7ef;color:#533e35;cursor:pointer}
+.v33-access-symbol{width:52px;height:52px;display:grid;place-items:center;background:#efe0d2;color:#9a6343;border-radius:15px;font-size:25px;margin-bottom:18px}
+.v33-access-eyebrow{display:block;color:#a66d4c;font-weight:800;font-size:10px;letter-spacing:1.2px}
+.v33-access-dialog h2{font-size:29px;letter-spacing:-1px;line-height:1.25;margin:9px 0;color:#252535}
+.v33-access-dialog p{font-size:13px;line-height:1.65;color:#756860;margin:0 0 20px}
+.v33-access-dialog form{display:grid;gap:10px}
+.v33-access-dialog label{font-size:12px;font-weight:800;color:#3d3431}
+.v33-access-dialog input{width:100%;min-height:49px;padding:12px 14px;border:1px solid #e1cbb9;border-radius:11px;background:white;color:#242936;font:inherit;font-size:16px}
+.v33-access-dialog input:focus{outline:2px solid #b5825f;outline-offset:1px}
+.v33-access-dialog .v33-access-message{color:#926246;margin:0;font-size:12px;line-height:1.55}
+.v33-access-dialog .v33-access-message[data-error=true]{color:#a43e35}
+.v33-access-submit{min-height:50px;background:linear-gradient(110deg,#a66b47,#c08b68);color:white;border:0;border-radius:11px;font-weight:800;cursor:pointer}
+.v33-access-submit:disabled{opacity:.55;cursor:wait}
+.v33-access-dialog small{display:block;color:#8d7c70;margin-top:17px;font-size:11px;line-height:1.5}
+.v33-turnstile{margin:9px 0;min-height:64px}
+html[data-login-theme=dark] .v33-access-dialog{background:#243149;border-color:#415068;color:#f4f4f7}
+html[data-login-theme=dark] .v33-access-dialog h2,html[data-login-theme=dark] .v33-access-dialog label{color:#f4f4f7}
+html[data-login-theme=dark] .v33-access-dialog input{background:#182539;border-color:#45546e;color:white}
+html[data-login-theme=dark] .v33-access-dialog p,html[data-login-theme=dark] .v33-access-dialog small{color:#c6c9d2}
+@media(max-width:480px){.v33-access-dialog{padding:20px;border-radius:20px}.v33-access-dialog h2{font-size:25px}}

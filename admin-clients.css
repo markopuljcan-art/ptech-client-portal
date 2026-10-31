@@ -37,3 +37,49 @@
 @media(max-width:600px){.v32-clients-hero{flex-direction:column;align-items:stretch;padding:19px}
   .v32-client-toolbar{align-items:stretch}.v32-clients-number{text-align:left}
   .v32-client-card{padding:17px}.v32-client-actions{flex-direction:column}}
+
+
+/* PTech Digital Admin Console V3.3 — Klijenti, pozivnice i zahtjevi */
+.v33-tabs{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 17px;padding:7px;background:var(--v3-card);border:1px solid var(--v3-border);border-radius:15px}
+.v33-tab{background:transparent;border:1px solid transparent;border-radius:11px;padding:12px 18px;font:inherit;font-weight:750;font-size:13px;color:var(--v3-muted);cursor:pointer;min-height:45px}
+.v33-tab.active{background:var(--v3-tint);border-color:var(--v3-border);color:var(--v3-accent);box-shadow:0 3px 11px rgba(40,24,15,.05)}
+.v33-count{padding:3px 7px;border-radius:99px;background:var(--v3-accent);color:white;font-size:11px;margin-left:5px}
+.v33-panel[hidden], .v33-overlay[hidden]{display:none!important}
+.v33-status-line{font-size:12px;color:var(--v3-muted);margin:0 0 14px}
+.v33-section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:6px 0 17px}
+.v33-section-head h3{font-size:20px;line-height:1.25;color:var(--v3-text);margin:0 0 7px}
+.v33-section-head p{font-size:13px;color:var(--v3-muted);margin:0;line-height:1.6}
+.v32-client-notice.v33-error{color:#b13a32;background:#fff1ed;border-color:#e9b5ad}
+html[data-admin-theme=dark] .v32-client-notice.v33-error{color:#ffb1a2;background:#382729;border-color:#6a3a35}
+.v32-client-actions button{display:grid;place-items:center;min-height:42px;flex:1;cursor:pointer;text-align:center;padding:9px 13px;border-radius:11px;font:inherit;font-size:12px;font-weight:750;border:1px solid var(--v3-border);color:var(--v3-text);background:var(--v3-bg)}
+.v32-client-actions button:hover,.v32-client-actions a:hover{border-color:var(--v3-accent);transform:translateY(-1px)}
+.v32-client-actions a:first-of-type{color:var(--v3-text);background:var(--v3-bg);border-color:var(--v3-border)}
+.v33-request-list{display:grid;gap:12px}
+.v33-request-card,.v33-invite-card{background:var(--v3-card);border:1px solid var(--v3-border);box-shadow:var(--v3-shadow);border-radius:18px;padding:22px}
+.v33-request-main{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.v33-request-main strong{display:block;color:var(--v3-text);font-size:14px;overflow-wrap:anywhere}
+.v33-request-main p{color:var(--v3-muted);font-size:12px;margin:7px 0}
+.v33-status{padding:7px 10px;border-radius:99px;border:1px solid var(--v3-border);color:var(--v3-muted);font-size:11px;font-weight:700}
+.v33-status-pending{color:var(--v3-accent);background:var(--v3-tint)}
+.v33-request-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:17px}
+.v33-primary-btn,.v33-danger-btn,.v32-secondary-button{cursor:pointer;min-height:44px;padding:10px 16px;border-radius:11px;font-weight:800;font-size:12px}
+.v33-primary-btn{background:linear-gradient(105deg,#a76c48,#c58e69);color:white;border:1px solid transparent}
+.v33-danger-btn{background:var(--v3-bg);color:var(--v3-text);border:1px solid var(--v3-border)}
+.v33-primary-btn:disabled,.v33-danger-btn:disabled{opacity:.55;cursor:wait}
+.v33-invite-card{max-width:640px}
+.v33-invite-form{display:grid;gap:10px}
+.v33-invite-form label{font-size:12px;font-weight:800;color:var(--v3-text)}
+.v33-invite-form input{min-width:0;width:100%;min-height:48px;padding:10px 13px;border:1px solid var(--v3-border);border-radius:11px;background:var(--v3-bg);color:var(--v3-text);font:inherit;font-size:15px;margin-bottom:8px}
+.v33-invite-form .v33-primary-btn{justify-self:start;margin-top:7px}
+.v33-small-note{font-size:11px;color:var(--v3-muted);line-height:1.7}
+.v33-overlay{position:fixed;inset:0;z-index:3000;display:grid;place-items:center;background:rgba(13,20,30,.55);padding:18px;overscroll-behavior:contain}
+.v33-detail{width:min(600px,100%);max-height:min(82dvh,830px);overflow:auto;overscroll-behavior:contain;background:var(--v3-card);border:1px solid var(--v3-border);border-radius:24px;padding:24px;box-shadow:0 24px 100px rgba(5,15,30,.24);color:var(--v3-text)}
+.v33-detail-head{display:flex;align-items:start;justify-content:space-between;gap:12px}
+.v33-detail-head h3{font-size:24px;margin:8px 0 15px}
+.v33-close{display:grid;place-items:center;width:42px;height:42px;border-radius:11px;border:1px solid var(--v3-border);color:var(--v3-text);background:var(--v3-bg);cursor:pointer}
+.v33-detail-list{margin:0 0 20px}.v33-detail-list div{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--v3-border);overflow-wrap:anywhere}.v33-detail-list dt{font-size:12px;color:var(--v3-muted)}.v33-detail-list dd{font-size:12px;margin:0;text-align:right;font-weight:700}
+.v33-detail-projects{display:grid;gap:8px}.v33-detail-projects a{display:flex;align-items:center;justify-content:space-between;gap:14px;text-decoration:none;padding:11px 13px;border-radius:11px;border:1px solid var(--v3-border);background:var(--v3-bg);color:var(--v3-text);font-size:12px}.v33-detail-projects a span{color:var(--v3-muted)}
+.v33-detail-links{display:flex;flex-wrap:wrap;gap:9px;margin-top:19px}.v33-detail-links a{font-size:12px;font-weight:800;padding:10px;border-radius:10px;border:1px solid var(--v3-border);color:var(--v3-accent);text-decoration:none}
+.v33-dialog-open{overflow:hidden}
+.v33-tab:focus-visible,.v33-primary-btn:focus-visible,.v33-danger-btn:focus-visible,.v33-close:focus-visible,.v33-invite-form input:focus-visible{outline:2px solid var(--v3-accent);outline-offset:3px}
+@media(max-width:600px){.v33-tabs{flex-wrap:nowrap;overflow:auto;scrollbar-width:none}.v33-tab{white-space:nowrap;flex:1;min-width:max-content;padding:12px}.v33-request-card,.v33-invite-card{padding:16px}.v33-detail{padding:17px}.v33-detail-projects a{flex-direction:column;align-items:flex-start}.v33-request-actions>*{flex:1}}

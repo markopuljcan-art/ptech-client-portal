@@ -1221,3 +1221,68 @@ renderSupportQuestions();
 /* ==========================================
    END — PTECH DIGITAL LOGIN V14
 ========================================== */
+
+
+/* ==========================================
+   REQUEST ACCESS - PTECH V3.3
+   Public form; never sends invites or admin keys.
+   Before deploying: paste your PUBLIC Turnstile SITE key below.
+========================================== */
+(() => {
+  "use strict";
+  const SITE_KEY = "PASTE_YOUR_TURNSTILE_SITE_KEY"; // PUBLIC, not SECRET
+  const ENDPOINT = "https://agivwsbczzvvuzszcvxz.supabase.co/functions/v1/ptech-registration-request";
+  const $ = id => document.getElementById(id);
+  const open = $("openAccessRequest"), overlay = $("accessRequestOverlay");
+  const close = $("closeAccessRequest"), form = $("accessRequestForm");
+  const email = $("accessRequestEmail"), message = $("accessRequestMessage");
+  const submit = $("submitAccessRequest");
+  if (!open || !overlay || !form || !email || !close) return;
+  let busy=false, widgetId=null, previousFocus=null, approved=false;
+  function say(text,error=false){ message.textContent=text;message.dataset.error=String(error); }
+  function openModal(){
+    previousFocus=document.activeElement;
+    overlay.hidden=false;document.body.classList.add('v33-access-open');
+    email.value=$("email")?.value?.trim()||"";say("");approved=false;
+    submit.disabled=false;submit.textContent="Pošalji zahtjev";email.focus();
+    if (SITE_KEY.startsWith('PASTE_')) {
+      say('Obrazac još nije aktiviran. Administrator mora postaviti Turnstile ključ.',true);submit.disabled=true;
+      return;
+    }
+    if (window.turnstile && widgetId===null) {
+      widgetId=window.turnstile.render('#accessTurnstileWidget',{sitekey:SITE_KEY,action:'request-access',theme:'auto'});
+    }
+    if (window.turnstile && widgetId!==null) window.turnstile.reset(widgetId);
+  }
+  function closeModal(){if(busy)return;overlay.hidden=true;document.body.classList.remove('v33-access-open');previousFocus?.focus?.();}
+  open.addEventListener('click',openModal);
+  close.addEventListener('click',closeModal);
+  overlay.addEventListener('click',e=>{if(e.target===overlay)closeModal();});
+  overlay.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){e.preventDefault();closeModal();return;}
+    if(e.key!=='Tab')return;
+    const focusables=[...overlay.querySelectorAll('button:not([disabled]),input:not([disabled]),[tabindex="0"]')]
+      .filter(el=>el.getClientRects().length);
+    const first=focusables[0],last=focusables.at(-1);
+    if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}
+    else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}
+  });
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();if(busy||approved||!form.reportValidity())return;
+    const token=window.turnstile&&widgetId!==null ? window.turnstile.getResponse(widgetId) : '';
+    if(!token){say('Potvrdite sigurnosnu provjeru.',true);return;}
+    busy=true;submit.disabled=true;submit.textContent='Slanje…';say('');
+    try{
+      const res=await fetch(ENDPOINT,{
+        method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY},
+        body:JSON.stringify({email:email.value.trim(),turnstileToken:token})
+      });
+      if(!res.ok)throw new Error('Delivery failed');
+      approved=true;say('Zahtjev je zaprimljen. Ako ga odobrimo, pozivnica će stići na vašu e-mail adresu.');
+      submit.textContent='Zahtjev je zaprimljen';
+    }catch(err){say('Zahtjev nije poslan. Provjerite vezu ili pokušajte kasnije.',true);
+      submit.disabled=false;submit.textContent='Pošalji zahtjev';
+      if(window.turnstile&&widgetId!==null)window.turnstile.reset(widgetId);
+    }finally{busy=false;}
+  });
+})();
