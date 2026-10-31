@@ -106,7 +106,8 @@
         </a>`).join(''):'<p>Nema projekata.</p>'}</div>
       <div class="v33-detail-links"><a href="admin-projects.html?newClient=${encodeURIComponent(id)}">+ Novi projekt</a>
         <a href="admin-support.html">Otvori podršku</a><a href="admin-documents.html">Dokumenti</a></div>
-      <p class="v33-small-note">Pristup i lozinke mijenjaju se samo administratorskim postupkom. Ova stranica ne deaktivira korisničke račune.</p>`;
+      <div class="v34-danger-area"><div><strong>Upravljanje računom</strong><p>Brisanje je trajno. Prije brisanja provjerit ćemo projekte i datoteke.</p></div>
+        <button type="button" class="v34-open-delete" data-delete-client="${escapeHtml(id)}">Obriši korisnika</button></div>`;
     $("clientDetailOverlay").hidden = false;
     document.body.classList.add("v33-dialog-open");
     $("closeClientDetail").focus();
@@ -119,6 +120,99 @@
     const btn=ev.target.closest("[data-client-detail]");
     if (btn) openDetail(btn.dataset.clientDetail);
   });
+  // ADMIN V3.4 — provjera i eksplicitna potvrda trajnog brisanja.
+  let deletionPreview=null;
+  let deleteBusy=false;
+  let previewSerial=0;
+  function closeDeleteDialog() {
+    previewSerial++;
+    deletionPreview=null;
+    $("deleteClientOverlay").hidden=true;
+    $("deleteClientConfirm").value="";
+    $("deleteClientAgree").checked=false;
+    $("deleteClientError").textContent="";
+    $("deleteClientButton").disabled=true;
+    document.body.classList.remove("v33-dialog-open");
+  }
+  function syncDeleteButton() {
+    const p=deletionPreview;
+    $("deleteClientButton").disabled=deleteBusy || !p?.canDelete ||
+      !$("deleteClientAgree").checked ||
+      $("deleteClientConfirm").value.trim().toLowerCase() !== String(p?.email||"").toLowerCase();
+  }
+  async function openDeleteDialog(id) {
+    const client=allClients.find(c=>c.id===id);
+    if(!client || deleteBusy) return;
+    closeDetail();
+    const serial=++previewSerial;
+    $("deleteClientOverlay").hidden=false;
+    document.body.classList.add("v33-dialog-open");
+    $("deleteClientName").textContent=client.name;
+    $("deleteClientEmail").textContent=client.email||"E-mail nije dostupan";
+    $("deleteClientSummary").hidden=true;
+    $("deleteClientStatus").textContent="Provjeravam projekte, datoteke i povezane zapise…";
+    $("deleteClientButton").disabled=true;
+    $("deleteClientClose").focus();
+    try {
+      const result=await invoke("delete-preview",{userId:id});
+      if(previewSerial!==serial)return;
+      const p=result.preview;
+      deletionPreview=p;
+      $("deleteClientProjects").textContent=String(p.projects||0);
+      $("deleteClientFiles").textContent=String(p.storageObjects||0);
+      $("deleteClientMessages").textContent=String(p.messages||0);
+      $("deleteClientUploads").textContent=String(p.uploads||0);
+      $("deleteClientPush").textContent=String(p.pushSubscriptions||0);
+      $("deleteClientName").textContent=p.name||client.name;
+      $("deleteClientEmail").textContent=p.email||client.email||"";
+      $("deleteClientSummary").hidden=false;
+      $("deleteClientBlocker").hidden=Boolean(p.canDelete);
+      $("deleteClientConfirmPanel").hidden=!p.canDelete;
+      $("deleteClientStatus").textContent=p.canDelete
+        ? "Račun se može obrisati. Potvrdite e-mail i posljedice brisanja."
+        : "Brisanje je blokirano radi zaštite projekata ili zapisa o dokumentima.";
+      syncDeleteButton();
+    } catch(err) {
+      if(previewSerial!==serial)return;
+      $("deleteClientStatus").textContent="Provjera nije uspjela.";
+      $("deleteClientError").textContent=err.message;
+    }
+  }
+  $("clientDetailContent").addEventListener("click",e=>{
+    const button=e.target.closest("[data-delete-client]");
+    if(button)openDeleteDialog(button.dataset.deleteClient);
+  });
+  $("deleteClientClose").addEventListener("click",()=>{if(!deleteBusy)closeDeleteDialog();});
+  $("deleteClientCancel").addEventListener("click",()=>{if(!deleteBusy)closeDeleteDialog();});
+  $("deleteClientOverlay").addEventListener("click",e=>{
+    if(e.target===$("deleteClientOverlay")&&!deleteBusy)closeDeleteDialog();
+  });
+  document.addEventListener("keydown",e=>{
+    if(e.key==="Escape"&&!$("deleteClientOverlay").hidden&&!deleteBusy){
+      e.stopImmediatePropagation();closeDeleteDialog();
+    }
+  },true);
+  $("deleteClientConfirm").addEventListener("input",syncDeleteButton);
+  $("deleteClientAgree").addEventListener("change",syncDeleteButton);
+  $("deleteClientButton").addEventListener("click",async()=>{
+    const p=deletionPreview;
+    syncDeleteButton();
+    if(!p||!p.canDelete||$("deleteClientButton").disabled)return;
+    deleteBusy=true;syncDeleteButton();
+    $("deleteClientError").textContent="";
+    $("deleteClientStatus").textContent="Brišem klijentski račun…";
+    try {
+      const result=await invoke("delete",{userId:p.userId,confirmEmail:$("deleteClientConfirm").value.trim()});
+      closeDeleteDialog();
+      await load();
+      showTab("Clients");
+      message(result.message||"Korisnik je obrisan.");
+    } catch(err) {
+      $("deleteClientStatus").textContent="Brisanje nije izvršeno.";
+      $("deleteClientError").textContent=err.message;
+    } finally {deleteBusy=false;syncDeleteButton();}
+  });
+
   $("clientSearch").addEventListener("input",renderClients);
   $("refreshClients").addEventListener("click",load);
   $("refreshRequests").addEventListener("click",load);

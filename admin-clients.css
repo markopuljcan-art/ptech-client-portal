@@ -83,3 +83,37 @@ html[data-admin-theme=dark] .v32-client-notice.v33-error{color:#ffb1a2;backgroun
 .v33-dialog-open{overflow:hidden}
 .v33-tab:focus-visible,.v33-primary-btn:focus-visible,.v33-danger-btn:focus-visible,.v33-close:focus-visible,.v33-invite-form input:focus-visible{outline:2px solid var(--v3-accent);outline-offset:3px}
 @media(max-width:600px){.v33-tabs{flex-wrap:nowrap;overflow:auto;scrollbar-width:none}.v33-tab{white-space:nowrap;flex:1;min-width:max-content;padding:12px}.v33-request-card,.v33-invite-card{padding:16px}.v33-detail{padding:17px}.v33-detail-projects a{flex-direction:column;align-items:flex-start}.v33-request-actions>*{flex:1}}
+
+
+/* ADMIN V3.4 - sigurno brisanje klijenta */
+.v34-danger-area{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:24px;padding:17px;border:1px solid var(--v3-border);border-radius:14px;background:var(--v3-bg)}
+.v34-danger-area strong{font-size:13px;color:var(--v3-text)}
+.v34-danger-area p{margin:6px 0 0;color:var(--v3-muted);font-size:12px;line-height:1.6}
+.v34-open-delete,.v34-delete-submit{border:1px solid #b94b43;border-radius:11px;color:white;background:#ae433b;padding:12px 15px;min-height:44px;font:inherit;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap}
+.v34-open-delete{background:transparent;color:#b94b43}
+html[data-admin-theme="dark"] .v34-open-delete{color:#ffaeaa}
+.v34-delete-overlay[hidden]{display:none!important}
+.v34-delete-overlay{position:fixed;inset:0;z-index:4000;display:grid;place-items:center;padding:16px;overscroll-behavior:contain;background:rgba(9,17,27,.64)}
+.v34-delete-dialog{background:var(--v3-card);color:var(--v3-text);border:1px solid var(--v3-border);border-radius:23px;box-shadow:0 30px 100px rgba(0,0,0,.25);width:min(590px,100%);max-height:90dvh;overflow:auto;padding:25px}
+.v34-delete-dialog h3{font-size:23px;margin:8px 0 16px;color:var(--v3-text)}
+.v34-delete-identity{display:flex;flex-direction:column;gap:4px;border-radius:12px;background:var(--v3-bg);padding:15px;margin:0 0 16px;overflow-wrap:anywhere}
+.v34-delete-identity strong{font-size:15px}.v34-delete-identity span{color:var(--v3-muted);font-size:13px}
+.v34-delete-status{color:var(--v3-muted);font-size:13px;line-height:1.65}
+.v34-delete-stats{display:grid;gap:0;border-radius:12px;border:1px solid var(--v3-border);overflow:hidden}
+.v34-delete-stats>div{display:flex;justify-content:space-between;gap:12px;padding:11px 14px;border-bottom:1px solid var(--v3-border);font-size:12px}
+.v34-delete-stats>div:last-child{border:0}
+.v34-delete-stats span{color:var(--v3-muted)}.v34-delete-stats b{color:var(--v3-text)}
+.v34-delete-blocker{margin:16px 0;padding:14px;border:1px solid #dba48d;border-radius:12px;color:#9a3b2b;background:#fff0e7;font-size:13px;line-height:1.7}
+html[data-admin-theme="dark"] .v34-delete-blocker{background:#352827;color:#ffc4af;border-color:#755042}
+.v34-delete-confirm[hidden]{display:none!important}
+.v34-delete-confirm{display:grid;gap:11px;margin-top:17px}
+.v34-delete-confirm p{font-size:12px;line-height:1.7;color:var(--v3-muted);margin:0}
+.v34-delete-confirm>label:not(.v34-delete-agree){font-size:12px;font-weight:750;color:var(--v3-text)}
+.v34-delete-confirm input[type="email"]{width:100%;min-height:46px;padding:10px 13px;border:1px solid var(--v3-border);background:var(--v3-bg);color:var(--v3-text);border-radius:10px;font-size:15px}
+.v34-delete-agree{display:flex;align-items:flex-start;gap:9px;font-size:12px;line-height:1.5;color:var(--v3-text)}
+.v34-delete-agree input{width:19px;height:19px;flex:0 0 auto;accent-color:#a44b41}
+.v34-delete-error{font-size:12px;line-height:1.6;color:#d64c43;min-height:0}
+.v34-delete-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:12px}
+.v34-delete-submit:disabled{opacity:.45;cursor:not-allowed}
+.v34-open-delete:focus-visible,.v34-delete-submit:focus-visible,.v34-delete-confirm input:focus-visible{outline:3px solid var(--v3-accent);outline-offset:2px}
+@media(max-width:600px){.v34-delete-dialog{padding:18px}.v34-danger-area{flex-direction:column;align-items:stretch}.v34-delete-actions{flex-direction:column-reverse}.v34-delete-actions>*{width:100%}}

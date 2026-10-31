@@ -19,7 +19,7 @@
 
     <link
         rel="stylesheet"
-        href="./admin-clients.css?v=33"
+        href="./admin-clients.css?v=34"
     >
 
     <!-- Admin V3.1: stari CSS + novi dizajn u jednoj datoteci -->
@@ -31,7 +31,7 @@
     ></script>
 
     <script
-        src="./admin-clients.js?v=33"
+        src="./admin-clients.js?v=34"
         defer
     ></script>
 
@@ -272,6 +272,40 @@
                     <h3 id="clientDetailTitle">Klijent</h3></div>
                     <button type="button" id="closeClientDetail" aria-label="Zatvori" class="v33-close">✕</button></div>
                     <div id="clientDetailContent"></div>
+                  </div>
+                </div>
+                <div id="deleteClientOverlay" class="v34-delete-overlay" hidden>
+                  <div class="v34-delete-dialog" role="dialog" aria-modal="true" aria-labelledby="deleteClientTitle" aria-describedby="deleteClientStatus">
+                    <div class="v33-detail-head"><div>
+                      <span class="admin-page-label">SIGURNO BRISANJE KLIJENTA</span>
+                      <h3 id="deleteClientTitle">Trajno obriši korisnika</h3>
+                    </div><button type="button" id="deleteClientClose" class="v33-close" aria-label="Zatvori">✕</button></div>
+                    <p class="v34-delete-identity"><strong id="deleteClientName"></strong><span id="deleteClientEmail"></span></p>
+                    <p id="deleteClientStatus" class="v34-delete-status" aria-live="polite"></p>
+                    <div id="deleteClientSummary" hidden>
+                      <div class="v34-delete-stats">
+                        <div><span>Projekti (blokada)</span><b id="deleteClientProjects">—</b></div>
+                        <div><span>Datoteke u Storageu (blokada)</span><b id="deleteClientFiles">—</b></div>
+                        <div><span>Poruke (brišu se)</span><b id="deleteClientMessages">—</b></div>
+                        <div><span>Zapisi učitavanja (brišu se)</span><b id="deleteClientUploads">—</b></div>
+                        <div><span>Push pretplate (brišu se)</span><b id="deleteClientPush">—</b></div>
+                      </div>
+                      <p id="deleteClientBlocker" class="v34-delete-blocker" hidden>
+                        Korisnik ima projekte, datoteke ili zapise o učitanim dokumentima. Prije brisanja prenesi vlasništvo nad projektima u Admin → Projekti.
+                        Datoteke u Supabase Storageu i zapise učitavanja moraš zasebno pregledati, prenijeti ili ukloniti. Ništa od toga ne brišemo automatski.
+                      </p>
+                      <div id="deleteClientConfirmPanel" class="v34-delete-confirm" hidden>
+                        <p>Brisanjem računa uklanjaju se Auth račun, profil, poruke, zapisi o učitanim dokumentima i push pretplate. Ova radnja je nepovratna.</p>
+                        <label for="deleteClientConfirm">Za potvrdu upiši točnu e-mail adresu korisnika:</label>
+                        <input id="deleteClientConfirm" type="email" autocomplete="off" spellcheck="false" placeholder="E-mail korisnika" />
+                        <label class="v34-delete-agree"><input id="deleteClientAgree" type="checkbox" /> Razumijem da se račun trajno briše.</label>
+                      </div>
+                    </div>
+                    <p id="deleteClientError" class="v34-delete-error" role="alert"></p>
+                    <div class="v34-delete-actions">
+                      <button type="button" id="deleteClientCancel" class="v32-secondary-button">Odustani</button>
+                      <button type="button" id="deleteClientButton" class="v34-delete-submit" disabled>Trajno obriši korisnika</button>
+                    </div>
                   </div>
                 </div>
             </div>
