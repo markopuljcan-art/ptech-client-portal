@@ -737,10 +737,10 @@ function renderProjects(projects) {
 
 
                                 <a
-                                    href="project.html?id=${project.id}"
+                                    href="admin-projects.html?project=${encodeURIComponent(project.id)}"
                                     class="project-action-primary"
                                 >
-                                    Otvori projekt
+                                    Prikaži karticu
                                 </a>
 
                             </div>
@@ -780,12 +780,17 @@ function applyFilters() {
         "";
 
 
+    const requestedProject = new URLSearchParams(window.location.search).get("project");
+    const filterSpecificProject = requestedProject && /^\d+$/.test(requestedProject) &&
+        search === requestedProject.toLowerCase();
+
     const filtered =
         allProjects.filter(
             project => {
 
                 const haystack =
                     `
+                        ${project.id || ""}
                         ${project.name || ""}
                         ${project.type || ""}
                         ${project.client_name || ""}
@@ -799,6 +804,10 @@ function applyFilters() {
                         search
                     );
 
+
+                // Query link from the dashboard focuses the exact project.
+                const matchesProjectId = !filterSpecificProject ||
+                    String(project.id) === requestedProject;
 
                 const matchesProjectStatus =
                     !projectStatus ||
@@ -820,6 +829,7 @@ function applyFilters() {
 
                 return (
                     matchesSearch &&
+                    matchesProjectId &&
                     matchesProjectStatus &&
                     matchesDesignStatus
                 );
@@ -843,6 +853,12 @@ if (projectSearch) {
         "input",
         applyFilters
     );
+
+    // Admin dashboard links to a specific project card.
+    const requestedProjectId = new URLSearchParams(window.location.search).get("project");
+    if (requestedProjectId && /^\d+$/.test(requestedProjectId)) {
+        projectSearch.value = requestedProjectId;
+    }
 }
 
 

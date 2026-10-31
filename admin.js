@@ -1,3 +1,12 @@
+/* ==============================================
+   PTECH DIGITAL ADMIN CONSOLE V3.1
+   Postojeci dashboard kod izvrsava se samo na admin.html.
+   Zajednicki dizajn i navigacija rade na SVIM admin stranicama.
+   Nema dodatnih admin-v3.js datoteka.
+============================================== */
+
+if (document.body?.dataset.adminPage === "admin.html") {
+
 const SUPABASE_URL =
     "https://agivwsbczzvvuzszcvxz.supabase.co";
 
@@ -755,7 +764,7 @@ async function loadRecentProjects() {
                     return `
 
                         <a
-                            href="project.html?id=${project.id}"
+                            href="admin-projects.html?project=${encodeURIComponent(project.id)}"
                             class="admin-list-item"
                         >
 
@@ -944,3 +953,121 @@ async function startAdmin() {
 ========================= */
 
 startAdmin();
+
+} // Kraj postojece logike Dashboarda.
+
+/* ==============================================
+   UGRADENI V3 DODACI - TEMA / MOBILNA NAVIGACIJA
+============================================== */
+
+/* PTech Digital Admin Console V3 — shared presentation only.
+   Does not create extra Supabase clients or change authentication. */
+(() => {
+  'use strict';
+  const icons = {
+    home:'<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 13l4-4 4 4M9 12v5h6v-5"/>',
+    briefcase:'<rect x="3" y="7" width="18" height="14" rx="3"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/>',
+    arrows:'<path d="M4 7h16m-4-4 4 4-4 4M20 17H4m4-4-4 4 4 4"/>',
+    check:'<rect x="3" y="3" width="18" height="18" rx="4"/><path d="m7 12 3 3 7-7"/>',
+    file:'<path d="M5 3h9l5 5v13H5zM14 3v6h5M8 13h8M8 17h6"/>',
+    chat:'<path d="M4 5h16v12H8l-4 4zM8 10h8M8 13h6"/>',
+    sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/>',
+    moon:'<path d="M20 15.6A8.5 8.5 0 0 1 8.4 4 8.5 8.5 0 1 0 20 15.6Z"/>',
+    menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',
+    close:'<path d="M5 5l14 14M19 5 5 19"/>',
+    arrow:'<path d="M5 12h14m-6-6 6 6-6 6"/>',
+    people:'<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M8.5 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM23 21v-2a4 4 0 0 0-3-3.87M17 3.13a4 4 0 0 1 0 7.75"/>',
+    bell:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4"/>',
+    more:'<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>',
+    refresh:'<path d="M20 11a8 8 0 1 0-3 6M20 4v7h-7"/>'
+  };
+  const svg = key => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">${icons[key] || icons.home}</svg>`;
+  const routes = [
+    ['admin.html','home','Početna'],
+    ['admin-projects.html','briefcase','Projekti'],
+    ['admin-revisions.html','arrows','Zahtjevi'],
+    ['admin-approvals.html','check','Odobrenja'],
+    ['admin-documents.html','file','Dokumenti'],
+    ['admin-support.html','chat','Poruke']
+  ];
+  const current = document.body?.dataset.adminPage || location.pathname.split('/').pop() || 'admin.html';
+  const html = document.documentElement;
+  let theme = 'light';
+  try { theme = localStorage.getItem('ptech-admin-theme') === 'dark' ? 'dark' : 'light'; } catch (_) {}
+  const applyTheme = (mode, save = false) => {
+    html.dataset.adminTheme = mode;
+    const button = document.querySelector('.v3-theme-toggle');
+    if (button) {
+      button.innerHTML = svg(mode === 'dark' ? 'sun' : 'moon');
+      button.setAttribute('aria-label', mode === 'dark' ? 'Uključi svijetli način' : 'Uključi tamni način');
+      button.title = button.getAttribute('aria-label');
+    }
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.content = mode === 'dark' ? '#101e31' : '#fcf8f4';
+    if (save) try { localStorage.setItem('ptech-admin-theme', mode); } catch (_) {}
+  };
+  applyTheme(theme);
+  const init = () => {
+    const brand = document.querySelector('.admin-brand-logo');
+    if (brand) brand.innerHTML = '<img src="./assets/ptech-icon.png" alt="" loading="eager">';
+    document.querySelectorAll('.admin-nav-item').forEach(anchor => {
+      const href = anchor.getAttribute('href')?.split('?')[0];
+      const route = routes.find(([path]) => path === href);
+      if (!route) return;
+      anchor.classList.toggle('active', href === current);
+      if (href === current) anchor.setAttribute('aria-current','page');
+      else anchor.removeAttribute('aria-current');
+      const icon = anchor.querySelector('.admin-nav-icon');
+      if (icon) icon.innerHTML = svg(route[1]);
+      if (href === 'admin.html') {
+        const label = [...anchor.querySelectorAll('span')].find(el => !el.classList.contains('admin-nav-icon') && !el.classList.contains('admin-nav-badge'));
+        if (label) label.textContent = 'Nadzorna ploča';
+      }
+      if (href === 'admin-support.html') {
+        const label = [...anchor.querySelectorAll('span')].find(el => !el.classList.contains('admin-nav-icon') && !el.classList.contains('admin-nav-badge'));
+        if (label) label.textContent = 'Poruke';
+      }
+    });
+    document.querySelectorAll('[data-v3-icon]').forEach(element => { element.innerHTML = svg(element.dataset.v3Icon); });
+    document.querySelectorAll('.admin-stat-icon').forEach((element, index) => {
+      const items = ['briefcase','arrows','check','people','bell','refresh'];
+      element.innerHTML = svg(items[index]);
+    });
+    const toolbar = document.querySelector('.admin-topbar-actions');
+    const backdrop = document.createElement('div');
+    backdrop.className = 'v3-drawer-backdrop'; backdrop.hidden = true;
+    document.body.appendChild(backdrop);
+    const menu = (open) => {
+      document.body.classList.toggle('v3-menu-open',open);
+      backdrop.hidden = !open;
+      document.querySelectorAll('.v3-menu-toggle').forEach(btn => btn.setAttribute('aria-expanded',String(open)));
+    };
+    if (toolbar) {
+      const themeButton = document.createElement('button');
+      themeButton.type='button'; themeButton.className='v3-icon-btn v3-theme-toggle';
+      themeButton.addEventListener('click', () => applyTheme(html.dataset.adminTheme === 'dark'?'light':'dark',true));
+      toolbar.prepend(themeButton); applyTheme(html.dataset.adminTheme);
+      const menuButton = document.createElement('button');
+      menuButton.type='button'; menuButton.className='v3-icon-btn v3-menu-toggle';
+      menuButton.innerHTML=svg('menu');menuButton.setAttribute('aria-label','Otvori izbornik');menuButton.setAttribute('aria-expanded','false');
+      menuButton.addEventListener('click', () => menu(!document.body.classList.contains('v3-menu-open')));
+      toolbar.prepend(menuButton);
+    }
+    backdrop.addEventListener('click',()=>menu(false));
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')menu(false)});
+    const mobile = document.createElement('nav');
+    mobile.className='v3-mobile-nav';mobile.setAttribute('aria-label','Mobilna administratorska navigacija');
+    const nav = [routes[0],routes[1],routes[5],routes[4]];
+    for (const [url,icon,label] of nav) {
+      const a=document.createElement('a');a.href=url;
+      if(current===url){a.classList.add('active');a.setAttribute('aria-current','page')}
+      a.innerHTML=svg(icon)+`<span>${label}</span>`;mobile.appendChild(a);
+    }
+    const more=document.createElement('button');more.type='button';more.innerHTML=svg('menu')+'<span>Više</span>';
+    if (!nav.some(([url])=>url===current)) more.classList.add('active');
+    more.addEventListener('click',()=>menu(true));mobile.appendChild(more);
+    document.body.appendChild(mobile);
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',init,{once:true});
+  else init();
+})();

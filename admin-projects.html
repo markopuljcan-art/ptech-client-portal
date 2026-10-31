@@ -4,6 +4,13 @@
 <head>
 
     <meta charset="UTF-8">
+    <meta name="theme-color" content="#fcf8f4">
+    <script>
+      (function(){try{document.documentElement.dataset.adminTheme =
+        localStorage.getItem('ptech-admin-theme') === 'dark' ? 'dark' : 'light';}
+        catch(e){document.documentElement.dataset.adminTheme = 'light';}})();
+    </script>
+
 
     <meta
         name="viewport"
@@ -12,13 +19,12 @@
 
     <link
         rel="stylesheet"
-        href="./admin.css?v=4"
-    >
-
-    <link
-        rel="stylesheet"
         href="./admin-projects.css?v=1"
     >
+
+    <!-- Admin V3.1: stari CSS + novi dizajn u jednoj datoteci -->
+    <link rel="stylesheet" href="./admin.css?v=31">
+
 
     <script
         src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
@@ -37,10 +43,12 @@
     src="./admin-notifications.js?v=1"
     defer
 ></script>
+    <!-- Zajednicka administracija i V3 izgled; Dashboard radi samo na admin.html -->
+    <script defer src="./admin.js?v=31"></script>
 </head>
 
 
-<body>
+<body data-admin-page="admin-projects.html">
 
     <div class="admin-shell">
 

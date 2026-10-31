@@ -4,6 +4,13 @@
 <head>
 
     <meta charset="UTF-8">
+    <meta name="theme-color" content="#fcf8f4">
+    <script>
+      (function(){try{document.documentElement.dataset.adminTheme =
+        localStorage.getItem('ptech-admin-theme') === 'dark' ? 'dark' : 'light';}
+        catch(e){document.documentElement.dataset.adminTheme = 'light';}})();
+    </script>
+
 
     <meta
         name="viewport"
@@ -12,14 +19,13 @@
 
     <!-- GLAVNI ADMIN CSS -->
 
-    <link
-        rel="stylesheet"
-        href="./admin.css?v=4"
-    >
-
     <!-- SUPABASE -->
 
-    <script
+    
+
+    <!-- Admin V3.1: stari CSS + novi dizajn u jednoj datoteci -->
+    <link rel="stylesheet" href="./admin.css?v=31">
+<script
         src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
     ></script>
 
@@ -28,7 +34,7 @@
     </title>
     
     <script
-        src="./admin.js?v=14"
+        src="./admin.js?v=31"
         defer
     ></script>
     
@@ -39,7 +45,7 @@
 </head>
 
 
-<body>
+<body data-admin-page="admin.html">
 
     <div class="admin-shell">
 
@@ -259,7 +265,7 @@
                     </span>
 
                     <h2>
-                        Dashboard
+                        Nadzorna ploča
                     </h2>
 
                 </div>
@@ -303,11 +309,17 @@
                             Ovdje možeš pratiti projekte,
                             zahtjeve klijenata i odobrenja dizajna.
                         </p>
+                        <div class="v3-hero-actions">
+                            <a class="v3-action primary" href="admin-support.html">Otvori poruke <span aria-hidden="true">→</span></a>
+                            <a class="v3-action" href="admin-projects.html">Svi projekti <span aria-hidden="true">→</span></a>
+                        </div>
 
                     </div>
 
                 </section>
 
+
+                <div class="v3-section-title"><h3>Pregled poslovanja</h3><span>Aktualno stanje projekata i zahtjeva</span></div>
 
                 <!-- =========================
                      STATISTIKA
@@ -492,6 +504,15 @@
 
                 </section>
 
+
+                <div class="v3-section-title"><h3>Brze akcije</h3><span>Najčešći administratorski zadaci</span></div>
+                <section class="v3-quick-grid" aria-label="Brze akcije">
+                    <a class="v3-quick-link" href="admin-projects.html"><i data-v3-icon="briefcase"></i><span><b>Pregled projekata</b><small>Statusi, klijenti i dizajni</small></span></a>
+                    <a class="v3-quick-link" href="admin-support.html"><i data-v3-icon="chat"></i><span><b>Odgovori klijentima</b><small>Poruke i podrška</small></span></a>
+                    <a class="v3-quick-link" href="admin-documents.html"><i data-v3-icon="file"></i><span><b>Dokumentacija</b><small>Učitaj ili pregledaj</small></span></a>
+                    <a class="v3-quick-link" href="admin-revisions.html"><i data-v3-icon="arrows"></i><span><b>Zahtjevi za izmjene</b><small>Otvoreni razgovori</small></span></a>
+                </section>
+                <div class="v3-section-title"><h3>Posljednje aktivnosti</h3><span>Zahtjevi i noviji projekti</span></div>
 
                 <!-- =========================
                      DASHBOARD GRID
