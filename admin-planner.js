@@ -14,6 +14,7 @@
   const shifted = (str, days) => {const d=dateObj(str);if(!d)return '';d.setDate(d.getDate()+days);return localISO(d);};
   const state = {user:null,tasks:[],projects:[],reminders:[],feed:[],settings:null,inboxAvailable:true,notifFilter:'all',unreadOnly:false,tab:'tasks',month:new Date(),selectedDate:today(),filter:'all',projectFilter:'all',search:''};
   let busy=false;
+  let settingsDirty=false;
   let deepLinkHandled='';
   function notice(text,kind='info') { const el=$('plNotice');el.textContent=text;el.dataset.kind=kind; }
   function pathForProject(id) { return `admin-project-detail.html?id=${encodeURIComponent(String(id))}`; }
@@ -73,7 +74,16 @@
       deepLinkHandled=hash;tab(hash,false);
     }
   }
+  function settingsMessage(message, kind='info') {
+    const info = $('plSettingsInfo');
+    info.textContent = message;
+    info.dataset.status = kind;
+    info.setAttribute('role', 'status');
+    info.setAttribute('aria-live', 'polite');
+  }
   function renderSettings(){
+    // Don't erase unsaved choices during the automatic 60-second refresh.
+    if(settingsDirty)return;
     const s=state.settings||settingDefaults;
     $('plNotifyTime').value=String(s.notify_time_local||'09:00').slice(0,5);
     $('plOverdueEnabled').checked=s.overdue_enabled!==false;
@@ -81,18 +91,41 @@
     $('plPushEnabled').checked=s.push_enabled!==false;
   }
   async function saveSettings(){
+    const button=$('plSettingsSave');
     const time=$('plNotifyTime').value;
+    if(!state.user){
+      settingsMessage('Prijava administratora nije učitana. Osvježi stranicu i prijavi se.', 'error');
+      return;
+    }
     const valid=/^([01]\d|2[0-3]):[0-5]\d$/.test(time) && Number(time.slice(3))%5===0;
-    if(!valid)return notice('Odaberi vrijeme u koracima od 5 minuta, npr. 09:00 ili 18:30.','error');
+    if(!valid){
+      settingsMessage('Odaberi vrijeme u koracima od 5 minuta, npr. 09:00 ili 18:30.', 'error');
+      return;
+    }
     const values={admin_id:state.user.id,notify_time_local:time+':00',overdue_enabled:$('plOverdueEnabled').checked,overdue_every_days:Number($('plOverdueEvery').value),push_enabled:$('plPushEnabled').checked,updated_at:new Date().toISOString()};
-    if(![1,3,7].includes(values.overdue_every_days))return notice('Neispravna učestalost podsjetnika.','error');
-    $('plSettingsSave').disabled=true;
+    if(![1,3,7].includes(values.overdue_every_days)){
+      settingsMessage('Neispravna učestalost podsjetnika.', 'error');
+      return;
+    }
+    button.disabled=true;
+    button.textContent='Spremam...';
+    settingsMessage('Spremanje postavki u Supabase...', 'info');
     try{
       const r=await db.from('ptech_admin_reminder_settings').upsert(values,{onConflict:'admin_id'}).select('*').single();
       if(r.error)throw r.error;
-      state.settings=r.data;notice('Postavke obavijesti spremljene.','success');
-    }catch(e){notice(`Postavke: ${e.message||'Spremanje nije uspjelo'}`,'error');}
-    finally{$('plSettingsSave').disabled=false;}
+      if(!r.data)throw Error('Supabase nije vratio spremljene postavke.');
+      state.settings=r.data;
+      settingsDirty=false;
+      button.textContent='Spremljeno ✓';
+      settingsMessage(`Postavke uspješno spremljene. Podsjetnici su postavljeni na ${time} (Europe/Zagreb).`, 'success');
+      notice('Postavke obavijesti spremljene.','success');
+    }catch(e){
+      settingsMessage(`Spremanje nije uspjelo: ${e.message||'Nepoznata greška'}`, 'error');
+      button.textContent='Pokušaj ponovno';
+      notice(`Postavke: ${e.message||'Spremanje nije uspjelo'}`,'error');
+    }finally{
+      button.disabled=false;
+    }
   }
   async function readAll(){
     if(busy) return;
@@ -267,6 +300,18 @@
       }catch(error){notice(error.message||'Obavijest nije obrađena.','error');}
     });
     $('plSettingsSave').addEventListener('click',saveSettings);
+    for(const id of ['plNotifyTime','plOverdueEvery','plOverdueEnabled','plPushEnabled']){
+      $(id).addEventListener('change',()=>{
+        settingsDirty=true;
+        settingsMessage('Postavke su promijenjene. Klikni Spremi postavke.', 'info');
+        $('plSettingsSave').textContent='Spremi postavke';
+      });
+      $(id).addEventListener('input',()=>{
+        settingsDirty=true;
+        settingsMessage('Postavke su promijenjene. Klikni Spremi postavke.', 'info');
+        $('plSettingsSave').textContent='Spremi postavke';
+      });
+    }
     $('plNotifFilter').addEventListener('change',e=>{state.notifFilter=e.target.value;renderReminders();});
     $('plUnreadOnly').addEventListener('change',e=>{state.unreadOnly=e.target.checked;renderReminders();});
     window.addEventListener('hashchange',()=>{if(state.user)activateDeepLink();});

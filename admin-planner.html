@@ -5,9 +5,9 @@
 <meta name="theme-color" content="#f4eee8">
 <title>PTech Digital | Zadaci, kalendar i obavijesti</title>
 <script>try{document.documentElement.dataset.adminTheme=localStorage.getItem('ptech-admin-theme')==='dark'?'dark':'light'}catch(e){}</script>
-<link rel="stylesheet" href="./admin.css?v=90"><link rel="stylesheet" href="./admin-planner.css?v=121">
+<link rel="stylesheet" href="./admin.css?v=90"><link rel="stylesheet" href="./admin-planner.css?v=1212">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./admin-planner.js?v=121" defer></script>
+<script src="./admin-planner.js?v=1212" defer></script>
 <script src="./admin-notifications.js?v=80" defer></script>
 <script src="./admin-push.js?v=80" defer></script>
 <script src="./admin.js?v=33" defer></script>
@@ -67,7 +67,7 @@
         <label class="pl-toggle"><input type="checkbox" id="plOverdueEnabled" checked><span>Upozori kada je rok prošao</span></label>
         <label class="pl-toggle"><input type="checkbox" id="plPushEnabled" checked><span>Šalji push na moje uređaje</span></label>
       </div>
-      <div class="pl-settings-footer"><p id="plSettingsInfo">Automatska provjera svakih 5 min; dostava pusha ovisi o prijavljenom uređaju i njegovim postavkama.</p><button type="button" class="pl-btn primary" id="plSettingsSave">Spremi postavke</button></div>
+      <div class="pl-settings-footer"><p id="plSettingsInfo" role="status" aria-live="polite">Automatska provjera svakih 5 min; dostava pusha ovisi o prijavljenom uređaju i njegovim postavkama.</p><button type="button" class="pl-btn primary" id="plSettingsSave">Spremi postavke</button></div>
     </section>
     <div class="pl-notifications-tools"><label>Vrsta obavijesti<select id="plNotifFilter"><option value="all">Sve obavijesti</option><option value="reminder">Rokovi i podsjetnici</option><option value="message">Poruke klijenata</option><option value="upload">Dokumenti</option><option value="request">Zahtjevi</option></select></label><label class="pl-toggle"><input type="checkbox" id="plUnreadOnly"><span>Samo nepročitane</span></label><span class="pl-muted" id="plInboxStatus" role="status"></span></div>
     <div id="plReminders" class="pl-reminder-list"><div class="pl-empty">Učitavanje obavijesti…</div></div>
