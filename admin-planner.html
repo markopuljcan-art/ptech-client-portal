@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f4eee8">
-<title>PTech Digital | Zadaci i kalendar</title>
+<title>PTech Digital | Zadaci, kalendar i obavijesti</title>
 <script>try{document.documentElement.dataset.adminTheme=localStorage.getItem('ptech-admin-theme')==='dark'?'dark':'light'}catch(e){}</script>
-<link rel="stylesheet" href="./admin.css?v=90"><link rel="stylesheet" href="./admin-planner.css?v=120">
+<link rel="stylesheet" href="./admin.css?v=90"><link rel="stylesheet" href="./admin-planner.css?v=121">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./admin-planner.js?v=120" defer></script>
+<script src="./admin-planner.js?v=121" defer></script>
 <script src="./admin-notifications.js?v=80" defer></script>
 <script src="./admin-push.js?v=80" defer></script>
 <script src="./admin.js?v=33" defer></script>
@@ -35,18 +35,18 @@
 <main class="admin-main">
 <header class="admin-topbar"><div><span class="admin-page-label">ADMINISTRACIJA / PLANIRANJE</span><h2>Zadaci i kalendar</h2></div><div class="admin-topbar-actions"><span class="admin-role-badge">Admin</span></div></header>
 <div class="admin-content pl-content">
-  <section class="pl-hero"><div><span class="pl-eyebrow">PTECH DIGITAL · ORGANIZACIJA POSLOVANJA</span><h3>Jasan plan. Svi rokovi.</h3><p>Prati interne zadatke, kalendar projekata i podsjetnike na jednom mjestu. Klijenti ne vide interne zadatke.</p><div class="pl-hero-actions"><button type="button" class="pl-btn primary" id="plNewTop">+ Novi zadatak</button><a href="admin-projects.html" class="pl-btn outline">Svi projekti ↗</a><button type="button" class="pl-btn outline" id="plRefresh">⟳ Osvježi</button></div></div><div aria-hidden="true" class="pl-hero-decoration">◷</div></section>
+  <section class="pl-hero"><div><span class="pl-eyebrow">PTECH DIGITAL · ORGANIZACIJA POSLOVANJA</span><h3>Jasan plan. Pametne obavijesti.</h3><p>Prati zadatke, rokove i sve administratorske obavijesti na jednom mjestu. Klijenti ne vide interne zadatke.</p><div class="pl-hero-actions"><button type="button" class="pl-btn primary" id="plNewTop">+ Novi zadatak</button><a href="admin-projects.html" class="pl-btn outline">Svi projekti ↗</a><button type="button" class="pl-btn outline" id="plRefresh">⟳ Osvježi</button></div></div><div aria-hidden="true" class="pl-hero-decoration">◷</div></section>
   <div id="plNotice" class="pl-notice" role="status" aria-live="polite">Provjera administratorskog računa…</div>
   <section class="pl-stats" aria-label="Statistika zadataka">
     <div class="pl-stat"><small>Aktivni zadaci</small><strong id="plTotal">—</strong><span>Nisu završeni</span></div>
     <div class="pl-stat"><small>U sljedećih 7 dana</small><strong id="plUpcoming">—</strong><span>Predstojeći rokovi zadataka</span></div>
     <div class="pl-stat"><small>Rok prekoračen</small><strong id="plOverdue">—</strong><span>Zadaci kojima je rok prošao</span></div>
-    <div class="pl-stat"><small>Novi podsjetnici</small><strong id="plReminderCount">—</strong><span>Automatska upozorenja</span></div>
+    <div class="pl-stat"><small>Nove obavijesti</small><strong id="plReminderCount">—</strong><span>Automatska upozorenja</span></div>
   </section>
   <nav class="pl-tabs" aria-label="Odjeljci planera">
     <button type="button" class="active" data-tab="tasks" aria-selected="true">☑ Zadaci</button>
     <button type="button" data-tab="calendar" aria-selected="false">▦ Kalendar</button>
-    <button type="button" data-tab="reminders" aria-selected="false">♧ Podsjetnici <span class="pl-count" id="plUnreadBadge" hidden>0</span></button>
+    <button type="button" data-tab="reminders" aria-selected="false">♧ Obavijesti <span class="pl-count" id="plUnreadBadge" hidden>0</span></button>
   </nav>
   <section class="pl-section" id="plTab-tasks" aria-label="Zadaci">
     <div class="pl-section-title"><div><span class="pl-eyebrow">INTERNA ORGANIZACIJA</span><h3>Zadaci po projektima</h3><p>Kreiraj, uređuj i završavaj zadatke. Svaki zadatak povezan je s jednim projektom.</p></div><button type="button" class="pl-btn primary" id="plNew">+ Novi zadatak</button></div>
@@ -57,10 +57,22 @@
     <div class="pl-section-title"><div><span class="pl-eyebrow">PLANIRANJE ROKOVA</span><h3>Kalendar projekata i zadataka</h3><p>Brončana točka označava projektni rok, plava točka rok internog zadatka.</p></div></div>
     <div class="pl-calendar-layout"><div class="pl-calendar-card"><div class="pl-calendar-top"><button type="button" id="plMonthPrev" aria-label="Prethodni mjesec">‹</button><h4 id="plMonthTitle">Mjesec</h4><button type="button" id="plMonthNext" aria-label="Sljedeći mjesec">›</button></div><div class="pl-weekdays"><span>Pon</span><span>Uto</span><span>Sri</span><span>Čet</span><span>Pet</span><span>Sub</span><span>Ned</span></div><div id="plCalendarDays" class="pl-calendar-days"></div><div class="pl-key"><span><i class="project-dot"></i> Rok projekta</span><span><i class="task-dot"></i> Zadatak</span></div></div><aside class="pl-calendar-side"><h4>Odabrani datum</h4><p id="plSelectedDate">—</p><div id="plDayEvents"></div><hr><h4>Sljedećih 30 dana</h4><div id="plUpcomingEvents"></div></aside></div>
   </section>
-  <section class="pl-section" id="plTab-reminders" aria-label="Automatski podsjetnici" hidden>
-    <div class="pl-section-title"><div><span class="pl-eyebrow">ROKOVI I OBAVIJESTI</span><h3>Automatski podsjetnici</h3><p>Supabase svakodnevno provjerava rokove i stvara obavijesti za administratore. Jedna obavijest po događaju — bez duplikata.</p></div></div><div class="pl-info"><strong>Kako ovo radi?</strong><p>Za zadatke je moguće odabrati upozorenje 1, 3 ili 7 dana ranije, a projektni rokovi šalju upozorenje tri dana ranije i na dan isteka. Automatske obavijesti nastaju u bazi kada je aktivan Cron posao. Za sada se prikazuju u ovom centru, ne kao sustavni push kada je preglednik zatvoren.</p></div><div id="plReminders" class="pl-reminder-list"><div class="pl-empty">Učitavanje podsjetnika…</div></div>
+  <section class="pl-section" id="plTab-reminders" aria-label="Centar obavijesti" hidden>
+    <div class="pl-section-title"><div><span class="pl-eyebrow">PTECH DIGITAL / V12.1</span><h3>Centar obavijesti</h3><p>Na jednom mjestu: rokovi zadataka i projekata, poruke klijenata, učitani dokumenti i zahtjevi za pristup.</p></div><a class="pl-btn outline" href="admin-system.html#inbox">Upravljanje sustavom ↗</a></div>
+    <section class="pl-settings" aria-label="Postavke pametnih podsjetnika">
+      <div class="pl-settings-heading"><div><span class="pl-eyebrow">PAMETNI PODSJETNICI</span><h4>Vrijeme i način slanja</h4><p>Postavke vrijede samo za tvoj administratorski račun. Vremenska zona: Europe/Zagreb (automatski ljetno/zimsko vrijeme).</p></div><span class="pl-settings-icon" aria-hidden="true">◷</span></div>
+      <div class="pl-settings-grid">
+        <label>Vrijeme obavještavanja <input id="plNotifyTime" type="time" step="300" value="09:00" required></label>
+        <label>Ponavljanje nakon isteka <select id="plOverdueEvery"><option value="1">Svaki dan</option><option value="3" selected>Svaka 3 dana</option><option value="7">Svakih 7 dana</option></select></label>
+        <label class="pl-toggle"><input type="checkbox" id="plOverdueEnabled" checked><span>Upozori kada je rok prošao</span></label>
+        <label class="pl-toggle"><input type="checkbox" id="plPushEnabled" checked><span>Šalji push na moje uređaje</span></label>
+      </div>
+      <div class="pl-settings-footer"><p id="plSettingsInfo">Automatska provjera svakih 5 min; dostava pusha ovisi o prijavljenom uređaju i njegovim postavkama.</p><button type="button" class="pl-btn primary" id="plSettingsSave">Spremi postavke</button></div>
+    </section>
+    <div class="pl-notifications-tools"><label>Vrsta obavijesti<select id="plNotifFilter"><option value="all">Sve obavijesti</option><option value="reminder">Rokovi i podsjetnici</option><option value="message">Poruke klijenata</option><option value="upload">Dokumenti</option><option value="request">Zahtjevi</option></select></label><label class="pl-toggle"><input type="checkbox" id="plUnreadOnly"><span>Samo nepročitane</span></label><span class="pl-muted" id="plInboxStatus" role="status"></span></div>
+    <div id="plReminders" class="pl-reminder-list"><div class="pl-empty">Učitavanje obavijesti…</div></div>
   </section>
-  <div class="pl-footer">PTech Digital · V12 · Interni zadaci vidljivi su samo administratorima · <a href="admin-system.html">Upravljanje sustavom</a></div>
+  <div class="pl-footer">PTech Digital · V12.1 · Interni zadaci vidljivi su samo administratorima · <a href="admin-system.html">Upravljanje sustavom</a></div>
 </div>
 <dialog class="pl-dialog" id="plDialog" aria-labelledby="plDialogTitle"><form id="plTaskForm"><div class="pl-dialog-head"><div><span class="pl-eyebrow">UPRAVLJANJE ZADACIMA</span><h3 id="plDialogTitle">Novi zadatak</h3></div><button type="button" class="pl-icon-close" id="plDialogCancel" aria-label="Zatvori">×</button></div><input type="hidden" id="plTaskId"><div class="pl-form-grid"><label class="wide">Naziv zadatka *<input id="plTitle" required minlength="2" maxlength="160" placeholder="Npr. Pripremiti početni dizajn"></label><label>Projekt *<select id="plProject" required><option value="">Odaberi projekt</option></select></label><label>Status<select id="plStatus"><option value="todo">Za napraviti</option><option value="doing">U tijeku</option><option value="done">Dovršeno</option></select></label><label>Prioritet<select id="plPriority"><option value="normal">Normalan</option><option value="high">Visok</option><option value="low">Nizak</option></select></label><label>Rok zadatka<input id="plDue" type="date"></label><label>Podsjeti me prije roka<select id="plLead"><option value="0">Samo na dan roka</option><option value="1" selected>1 dan prije</option><option value="3">3 dana prije</option><option value="7">7 dana prije</option></select></label><label class="wide">Opis / interne bilješke<textarea id="plDescription" maxlength="2000" rows="4" placeholder="Što treba napraviti? Ovdje napiši upute…"></textarea></label></div><div class="pl-dialog-actions"><button class="pl-btn danger" type="button" id="plDelete" hidden>Obriši zadatak</button><button type="button" class="pl-btn outline" onclick="document.getElementById('plDialog').close()">Odustani</button><button type="submit" class="pl-btn primary" id="plSave">Dodaj zadatak</button></div></form></dialog>
 </main></div></body></html>

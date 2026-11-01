@@ -12,8 +12,9 @@
   const dateObj = str => str ? new Date(`${str.slice(0,10)}T12:00:00`) : null;
   const niceDate = str => { const d=dateObj(str);return d&&!isNaN(d)?d.toLocaleDateString('hr-HR',{day:'2-digit',month:'short',year:'numeric'}):'Bez roka'; };
   const shifted = (str, days) => {const d=dateObj(str);if(!d)return '';d.setDate(d.getDate()+days);return localISO(d);};
-  const state = {user:null,tasks:[],projects:[],reminders:[],tab:'tasks',month:new Date(),selectedDate:today(),filter:'all',projectFilter:'all',search:''};
+  const state = {user:null,tasks:[],projects:[],reminders:[],feed:[],settings:null,inboxAvailable:true,notifFilter:'all',unreadOnly:false,tab:'tasks',month:new Date(),selectedDate:today(),filter:'all',projectFilter:'all',search:''};
   let busy=false;
+  let deepLinkHandled='';
   function notice(text,kind='info') { const el=$('plNotice');el.textContent=text;el.dataset.kind=kind; }
   function pathForProject(id) { return `admin-project-detail.html?id=${encodeURIComponent(String(id))}`; }
   function projectName(id) {return state.projects.find(x=>String(x.id)===String(id))?.name || 'Nepoznati projekt';}
@@ -33,18 +34,84 @@
     if(admin.error||admin.data!==true)throw Error('Samo administrator može otvoriti planiranje.');
     state.user=data.user;
   }
+  const settingDefaults = {notify_time_local:'09:00:00',overdue_enabled:true,overdue_every_days:3,push_enabled:true};
+  async function systemCall(action, extra={}){
+    const {data,error}=await db.auth.getSession();
+    if(error || !data.session?.access_token) throw Error('Administratorska prijava nije dostupna.');
+    const response=await fetch(`${URL}/functions/v1/ptech-admin-system`,{
+      method:'POST',
+      headers:{'Authorization':`Bearer ${data.session.access_token}`,'apikey':KEY,'Content-Type':'application/json'},
+      body:JSON.stringify({action,...extra})
+    });
+    const json=await response.json();
+    if(!response.ok || !json.ok)throw Error(json.error || 'Admin System nije dostupan.');
+    return json.data;
+  }
+  function safeAdminHref(raw){
+    const href=String(raw||'');
+    return /^admin-(?:support|documents|clients|system|projects|project-detail)\.html(?:[?#][a-zA-Z0-9?&#=_%.-]*)?$/.test(href)?href:'admin-system.html';
+  }
+  function niceTimestamp(value){const d=new Date(value||0);return isNaN(d)?'':d.toLocaleString('hr-HR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});}
+  function reminderLink(r){return r.kind==='task'&&r.task_id ? `#task=${encodeURIComponent(String(r.task_id))}` : pathForProject(r.project_id);}
+  async function markInboxRead(key){
+    await systemCall('inbox_read',{key});
+    const event=state.feed.find(x=>x.key===key);
+    if(event)event.read=true;
+    renderStats();renderReminders();
+  }
+  async function activateDeepLink(){
+    const hash=decodeURIComponent(location.hash.slice(1));
+    if(hash===deepLinkHandled)return;
+    if(hash.startsWith('task=')){
+      const id=hash.slice(5);
+      if(!/^[0-9a-f-]{36}$/i.test(id))return;
+      const task=state.tasks.find(t=>String(t.id)===id);
+      tab('tasks',false);
+      if(task){deepLinkHandled=hash;openTask(task);}
+      else notice('Taj zadatak ne postoji ili je obrisan.','error');
+    }else if(['tasks','calendar','reminders'].includes(hash)){
+      deepLinkHandled=hash;tab(hash,false);
+    }
+  }
+  function renderSettings(){
+    const s=state.settings||settingDefaults;
+    $('plNotifyTime').value=String(s.notify_time_local||'09:00').slice(0,5);
+    $('plOverdueEnabled').checked=s.overdue_enabled!==false;
+    $('plOverdueEvery').value=String(s.overdue_every_days||3);
+    $('plPushEnabled').checked=s.push_enabled!==false;
+  }
+  async function saveSettings(){
+    const time=$('plNotifyTime').value;
+    const valid=/^([01]\d|2[0-3]):[0-5]\d$/.test(time) && Number(time.slice(3))%5===0;
+    if(!valid)return notice('Odaberi vrijeme u koracima od 5 minuta, npr. 09:00 ili 18:30.','error');
+    const values={admin_id:state.user.id,notify_time_local:time+':00',overdue_enabled:$('plOverdueEnabled').checked,overdue_every_days:Number($('plOverdueEvery').value),push_enabled:$('plPushEnabled').checked,updated_at:new Date().toISOString()};
+    if(![1,3,7].includes(values.overdue_every_days))return notice('Neispravna učestalost podsjetnika.','error');
+    $('plSettingsSave').disabled=true;
+    try{
+      const r=await db.from('ptech_admin_reminder_settings').upsert(values,{onConflict:'admin_id'}).select('*').single();
+      if(r.error)throw r.error;
+      state.settings=r.data;notice('Postavke obavijesti spremljene.','success');
+    }catch(e){notice(`Postavke: ${e.message||'Spremanje nije uspjelo'}`,'error');}
+    finally{$('plSettingsSave').disabled=false;}
+  }
   async function readAll(){
     if(busy) return;
     busy=true; $('plRefresh').disabled=true;
     try {
-      const [a,b,c]=await Promise.all([
+      const [a,b,c,s,inbox]=await Promise.all([
         db.from('ptech_admin_tasks').select('*').order('due_date',{ascending:true,nullsFirst:false}).limit(1000),
         db.from('projects').select('id,name,type,status,deadline,user_id').order('name').limit(1000),
-        db.from('ptech_admin_task_reminders').select('*').eq('admin_id',state.user.id).order('created_at',{ascending:false}).limit(300)
+        db.from('ptech_admin_task_reminders').select('*').eq('admin_id',state.user.id).order('created_at',{ascending:false}).limit(300),
+        db.from('ptech_admin_reminder_settings').select('*').eq('admin_id',state.user.id).maybeSingle(),
+        systemCall('inbox').then(data=>({data})).catch(e=>({error:e}))
       ]);
-      for(const [label,r] of [['Zadaci',a],['Projekti',b],['Podsjetnici',c]]) if(r.error)throw Error(`${label}: ${r.error.message}`);
+      for(const [label,r] of [['Zadaci',a],['Projekti',b],['Podsjetnici',c],['Postavke',s]]) if(r.error)throw Error(`${label}: ${r.error.message}`);
       state.tasks=a.data||[];state.projects=b.data||[];state.reminders=c.data||[];
-      renderAll();notice('Podaci su ažurirani.','success');
+      state.settings=s.data||settingDefaults;
+      state.inboxAvailable=!inbox.error;
+      state.feed=Array.isArray(inbox.data)?inbox.data:[];
+      $('plInboxStatus').textContent=inbox.error?'Događaji klijenata nisu dostupni; podsjetnici i dalje rade.':'';
+      renderAll();await activateDeepLink();notice('Podaci su ažurirani.','success');
     } catch(e){console.error('[V12 planner]',e);notice(e.message||'Učitavanje nije uspjelo.','error');}
     finally{busy=false;$('plRefresh').disabled=false;}
   }
@@ -53,9 +120,9 @@
     $('plTotal').textContent=String(state.tasks.filter(t=>t.status!=='done').length);
     $('plUpcoming').textContent=String(state.tasks.filter(t=>t.status!=='done'&&t.due_date&&t.due_date>=todayDate&&t.due_date<=shifted(todayDate,7)).length);
     $('plOverdue').textContent=String(state.tasks.filter(t=>t.status!=='done'&&t.due_date&&t.due_date<todayDate).length);
-    $('plReminderCount').textContent=String(state.reminders.filter(r=>!r.read_at).length);
-    $('plUnreadBadge').textContent=String(state.reminders.filter(r=>!r.read_at).length);
-    $('plUnreadBadge').hidden=!state.reminders.some(r=>!r.read_at);
+    $('plReminderCount').textContent=String(state.reminders.filter(r=>!r.read_at).length+state.feed.filter(x=>!x.read).length);
+    $('plUnreadBadge').textContent=String(state.reminders.filter(r=>!r.read_at).length+state.feed.filter(x=>!x.read).length);
+    $('plUnreadBadge').hidden=!(state.reminders.some(r=>!r.read_at)||state.feed.some(x=>!x.read));
   }
   function renderSelects(){
     const choices=state.projects.map(p=>`<option value="${escape(p.id)}">${escape(p.name)}</option>`).join('');
@@ -110,14 +177,40 @@
     return all.length?all.slice(0,12).map(x=>`<a class="pl-upcoming" href="${pathForProject(x.id)}"><span>${escape(niceDate(x.date))}</span><strong>${escape(x.text)}</strong><small>${x.type}</small></a>`).join(''):'<p class="pl-muted">Nema rokova u idućih 30 dana.</p>';
   }
   function renderReminders(){
-    const items=state.reminders;
-    $('plReminders').innerHTML=items.length?items.map(r=>`<article class="pl-reminder ${r.read_at?'seen':'new'}"><span class="pl-reminder-icon">${r.kind==='task'?'✓':'▤'}</span><div class="pl-reminder-content"><div class="pl-reminder-head"><h4>${escape(r.title)}</h4>${r.read_at?'<span class="pl-tag muted">Pregledano</span>':'<span class="pl-tag warn">Novo</span>'}</div><p>${escape(r.body)}</p><small>Rok: ${niceDate(r.target_date)} · ${escape(projectName(r.project_id))}</small></div><div class="pl-reminder-actions"><a class="pl-small-button" href="${pathForProject(r.project_id)}">Otvori projekt</a>${!r.read_at?`<button type="button" class="pl-small-button" data-read="${escape(r.id)}">Označi pregledanim</button>`:''}</div></article>`).join(''):'<div class="pl-empty">Trenutačno nema podsjetnika. Automatski će se pojaviti prema rokovima nakon uključivanja Cron zadatka.</div>';
+    let items=[
+      ...state.reminders.map(r=>({...r,source:'reminder',type:'reminder',at:r.created_at,read:!!r.read_at})),
+      ...state.feed.map(x=>({...x,source:'inbox',at:x.created_at,read:!!x.read}))
+    ].sort((a,b)=>Date.parse(b.at||0)-Date.parse(a.at||0));
+    if(state.notifFilter!=='all')items=items.filter(x=>x.type===state.notifFilter);
+    if(state.unreadOnly)items=items.filter(x=>!x.read);
+    $('plReminders').innerHTML=items.length ? items.map(x=>{
+      if(x.source==='reminder'){
+        const url=reminderLink(x);
+        const open=x.kind==='task'&&x.task_id
+          ? `<button type="button" class="pl-small-button" data-open-task="${escape(x.task_id)}">Otvori zadatak</button>`
+          : `<a class="pl-small-button" href="${escape(url)}">Otvori projekt</a>`;
+        return `<article class="pl-reminder ${x.read?'seen':'new'}" data-reminder-id="${escape(x.id)}">
+          <span class="pl-notif-icon" aria-hidden="true">${x.title.includes('prošao')?'!':x.kind==='task'?'✓':'▤'}</span>
+          <div class="pl-reminder-content"><span class="pl-notif-type">Rok ${x.kind==='task'?'zadatka':'projekta'}</span><div class="pl-reminder-head"><h4>${escape(x.title)}</h4>${x.read?'<span class="pl-tag muted">Pregledano</span>':'<span class="pl-tag warn">Novo</span>'}</div>
+          <p>${escape(x.body)}</p><small>Rok: ${escape(niceDate(x.target_date))} · ${escape(projectName(x.project_id))}</small><span class="pl-notif-time">${escape(niceTimestamp(x.created_at))}</span></div>
+          <div class="pl-reminder-actions">${open}${x.read?'':`<button type="button" class="pl-small-button" data-read="${escape(x.id)}">Označi pregledanim</button>`}</div>
+        </article>`;
+      }
+      const label=({message:'Poruke',upload:'Dokumenti',request:'Zahtjevi'})[x.type]||'Aktivnost';
+      const ico=({message:'✉',upload:'▧',request:'♧'})[x.type]||'•';
+      return `<article class="pl-reminder ${x.read?'seen':'new'}">
+        <span class="pl-notif-icon" aria-hidden="true">${ico}</span>
+        <div class="pl-reminder-content"><span class="pl-notif-type">${label}</span><div class="pl-reminder-head"><h4>${escape(x.title)}</h4>${x.read?'<span class="pl-tag muted">Pregledano</span>':'<span class="pl-tag warn">Novo</span>'}</div>
+          <p>${escape(x.subtitle||'')}</p><span class="pl-notif-time">${escape(niceTimestamp(x.created_at))}</span></div>
+        <div class="pl-reminder-actions"><button type="button" class="pl-small-button" data-inbox-open="${escape(x.key)}">Otvori</button>${x.read?'':`<button type="button" class="pl-small-button" data-inbox-read="${escape(x.key)}">Označi pregledanim</button>`}</div>
+      </article>`;
+    }).join('') : '<div class="pl-empty">Nema obavijesti za odabrane filtre.</div>';
   }
-  function renderAll(){renderStats();renderSelects();renderTasks();renderCalendar();renderReminders();}
-  function tab(name){if(!['tasks','calendar','reminders'].includes(name))name='tasks';state.tab=name;
+  function renderAll(){renderStats();renderSelects();renderTasks();renderCalendar();renderSettings();renderReminders();}
+  function tab(name,updateHash=true){if(!['tasks','calendar','reminders'].includes(name))name='tasks';state.tab=name;
     document.querySelectorAll('[data-tab]').forEach(b=>{const active=b.dataset.tab===name;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active));});
     ['tasks','calendar','reminders'].forEach(x=>{$(`plTab-${x}`).hidden=x!==name;});
-    history.replaceState(null,'',`#${name}`);
+    if(updateHash){history.replaceState(null,'',`#${name}`);deepLinkHandled=name;}
   }
   function openTask(t){
     $('plTaskForm').reset();$('plTaskId').value=t?.id||'';
@@ -156,13 +249,33 @@
     $('plStatusFilter').addEventListener('change',e=>{state.filter=e.target.value;renderTasks();});
     $('plProjectFilter').addEventListener('change',e=>{state.projectFilter=e.target.value;renderTasks();});
     $('plTasks').addEventListener('click',e=>{const edit=e.target.closest('[data-edit]'),done=e.target.closest('[data-done]');if(edit)openTask(state.tasks.find(t=>t.id===edit.dataset.edit));if(done)markDone(done.dataset.done);});
-    $('plReminders').addEventListener('click',e=>{const b=e.target.closest('[data-read]');if(b)markRead(b.dataset.read);});
+    $('plReminders').addEventListener('click',async e=>{
+      const read=e.target.closest('[data-read]'),openTaskButton=e.target.closest('[data-open-task]'),
+        inboxRead=e.target.closest('[data-inbox-read]'),inboxOpen=e.target.closest('[data-inbox-open]');
+      try{
+        if(read)await markRead(read.dataset.read);
+        if(openTaskButton){
+          const id=openTaskButton.dataset.openTask, t=state.tasks.find(x=>String(x.id)===id);
+          if(t){history.replaceState(null,'',`#task=${id}`);deepLinkHandled=`task=${id}`;tab('tasks',false);openTask(t);}
+          else notice('Zadatak je uklonjen ili nije dostupan.','error');
+        }
+        if(inboxRead)await markInboxRead(inboxRead.dataset.inboxRead);
+        if(inboxOpen){
+          const item=state.feed.find(x=>x.key===inboxOpen.dataset.inboxOpen);
+          if(item){if(!item.read)await markInboxRead(item.key);location.assign(safeAdminHref(item.href));}
+        }
+      }catch(error){notice(error.message||'Obavijest nije obrađena.','error');}
+    });
+    $('plSettingsSave').addEventListener('click',saveSettings);
+    $('plNotifFilter').addEventListener('change',e=>{state.notifFilter=e.target.value;renderReminders();});
+    $('plUnreadOnly').addEventListener('change',e=>{state.unreadOnly=e.target.checked;renderReminders();});
+    window.addEventListener('hashchange',()=>{if(state.user)activateDeepLink();});
     $('plMonthPrev').addEventListener('click',()=>{state.month=new Date(state.month.getFullYear(),state.month.getMonth()-1,1);renderCalendar();});
     $('plMonthNext').addEventListener('click',()=>{state.month=new Date(state.month.getFullYear(),state.month.getMonth()+1,1);renderCalendar();});
     $('plCalendarDays').addEventListener('click',e=>{const b=e.target.closest('[data-day]');if(!b)return;state.selectedDate=b.dataset.day;const d=dateObj(b.dataset.day);state.month=new Date(d.getFullYear(),d.getMonth(),1);renderCalendar();});
     document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>tab(b.dataset.tab)));
     document.addEventListener('visibilitychange',()=>{if(!document.hidden&&state.user)readAll();});
   }
-  async function init(){attach();try{await authorized();tab(location.hash.slice(1)||'tasks');await readAll();setInterval(()=>{if(!document.hidden&&state.user)readAll();},60000);}catch(e){notice(e.message||'Prijava nije uspjela.','error');document.querySelectorAll('#plNew,#plNewTop').forEach(b=>b.disabled=true);}}
+  async function init(){attach();try{await authorized();tab(location.hash.startsWith('#task=')?'tasks':location.hash.slice(1)||'tasks',false);await readAll();setInterval(()=>{if(!document.hidden&&state.user)readAll();},60000);}catch(e){notice(e.message||'Prijava nije uspjela.','error');document.querySelectorAll('#plNew,#plNewTop').forEach(b=>b.disabled=true);}}
   init();
 })();
