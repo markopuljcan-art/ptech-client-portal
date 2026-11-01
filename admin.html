@@ -24,7 +24,7 @@
     
 
     <!-- Admin V3.1: stari CSS + novi dizajn u jednoj datoteci -->
-    <link rel="stylesheet" href="./admin.css?v=33">
+    <link rel="stylesheet" href="./admin.css?v=60">
 <script
         src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
     ></script>
@@ -38,14 +38,11 @@
         defer
     ></script>
     
-    
-<script src="./admin-notifications.js?v=1" defer></script>
-
-<!-- ADMIN PUSH NOTIFICATIONS -->
-<script src="./admin-push.js?v=1" defer></script>
-
-</head>
-
+    <script
+        src="./admin-notifications.js?v=60"
+        defer
+    ></script>
+<script src="./admin-push.js?v=60" defer></script>
 </head>
 
 
@@ -219,41 +216,13 @@
             <div class="admin-sidebar-footer">
 
             
-
-<!-- ADMIN PUSH NOTIFICATIONS -->
-<div class="admin-push-settings">
-
-    <div class="admin-push-heading">
-
-        <span class="admin-push-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
-                <path d="M10 21h4"/>
-            </svg>
-        </span>
-
-        <div class="admin-push-heading-text">
-            <strong>Obavijesti</strong>
-            <small>Poruke klijenata</small>
-        </div>
-
-    </div>
-
-    <p id="adminPushStatus" class="admin-push-status" role="status">
-        Provjera obavijesti...
-    </p>
-
-    <button type="button" id="adminEnablePush">
-        Uključi obavijesti
-    </button>
-
-    <button type="button" id="adminDisablePush" hidden>
-        Isključi obavijesti
-    </button>
-
-</div>
-
-                <div class="admin-user">
+<section class="admin-push-settings" aria-label="Push obavijesti">
+ <div class="admin-push-heading"><span class="admin-push-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg></span><div class="admin-push-heading-text"><strong>Obavijesti</strong><small>Poruke klijenata</small></div></div>
+ <p id="adminPushStatus" class="admin-push-status" role="status">Provjeravam uređaj…</p>
+ <button type="button" id="adminEnablePush">Uključi obavijesti</button>
+ <button type="button" id="adminDisablePush" hidden>Isključi obavijesti</button>
+</section>
+<div class="admin-user">
 
                     <div class="admin-avatar">
                         A
