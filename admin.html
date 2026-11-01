@@ -219,10 +219,27 @@
             <div class="admin-sidebar-footer">
 
             
-<div class="admin-push-settings">
-    <strong>🔔 Push obavijesti</strong>
 
-    <p id="adminPushStatus" role="status">
+<!-- ADMIN PUSH NOTIFICATIONS -->
+<div class="admin-push-settings">
+
+    <div class="admin-push-heading">
+
+        <span class="admin-push-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+                <path d="M10 21h4"/>
+            </svg>
+        </span>
+
+        <div class="admin-push-heading-text">
+            <strong>Obavijesti</strong>
+            <small>Poruke klijenata</small>
+        </div>
+
+    </div>
+
+    <p id="adminPushStatus" class="admin-push-status" role="status">
         Provjera obavijesti...
     </p>
 
@@ -233,6 +250,7 @@
     <button type="button" id="adminDisablePush" hidden>
         Isključi obavijesti
     </button>
+
 </div>
 
                 <div class="admin-user">
