@@ -38,10 +38,14 @@
         defer
     ></script>
     
-    <script
-        src="./admin-notifications.js?v=1"
-        defer
-    ></script>
+    
+<script src="./admin-notifications.js?v=1" defer></script>
+
+<!-- ADMIN PUSH NOTIFICATIONS -->
+<script src="./admin-push.js?v=1" defer></script>
+
+</head>
+
 </head>
 
 
@@ -214,6 +218,22 @@
 
             <div class="admin-sidebar-footer">
 
+            
+<div class="admin-push-settings">
+    <strong>🔔 Push obavijesti</strong>
+
+    <p id="adminPushStatus" role="status">
+        Provjera obavijesti...
+    </p>
+
+    <button type="button" id="adminEnablePush">
+        Uključi obavijesti
+    </button>
+
+    <button type="button" id="adminDisablePush" hidden>
+        Isključi obavijesti
+    </button>
+</div>
 
                 <div class="admin-user">
 
@@ -234,7 +254,7 @@
                     </div>
 
                 </div>
-
+    
 
                 <button
                     type="button"
