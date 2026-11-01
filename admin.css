@@ -1293,3 +1293,203 @@ html[data-admin-theme="light"] .document-row small{color:var(--v3-muted)!importa
     .v32-modal-actions{display:grid;grid-template-columns:1fr 1fr}
     .v32-project-header-tools{width:100%;justify-content:space-between}}
 @media(prefers-reduced-motion:reduce){.v32-primary-button,.v32-secondary-button{transition:none}}
+
+/* ==========================================
+   PTECH DIGITAL - ADMIN PUSH CARD V2
+   COMPACT / LIGHT / DARK / RESPONSIVE
+========================================== */
+
+.admin-sidebar-footer .admin-push-settings {
+    width: 100%;
+    min-width: 0;
+    margin: 0 0 16px;
+    padding: 13px;
+
+    border: 1px solid var(--v3-border);
+    border-radius: 16px;
+
+    background: linear-gradient(
+        145deg,
+        var(--v3-card),
+        var(--v3-card-soft)
+    );
+
+    box-shadow: 0 5px 18px rgba(0, 0, 0, .045);
+}
+
+/* HEADER */
+
+.admin-push-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.admin-push-icon {
+    width: 35px;
+    height: 35px;
+    flex: 0 0 35px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: var(--v3-tint);
+    color: var(--v3-accent);
+}
+
+.admin-push-icon svg {
+    width: 19px;
+    height: 19px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.admin-push-heading-text {
+    min-width: 0;
+}
+
+.admin-push-heading-text strong {
+    display: block;
+    color: var(--v3-text);
+
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: -.02em;
+}
+
+.admin-push-heading-text small {
+    display: block;
+    margin-top: 3px;
+
+    color: var(--v3-muted);
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+/* STATUS */
+
+.admin-push-settings #adminPushStatus {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+
+    margin: 12px 0;
+    color: var(--v3-muted);
+
+    font-size: 10.5px;
+    font-weight: 500;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.admin-push-settings #adminPushStatus::before {
+    content: "";
+    display: block;
+
+    width: 7px;
+    height: 7px;
+    flex: 0 0 7px;
+
+    margin-top: 4px;
+    border-radius: 50%;
+
+    background: var(--v3-accent);
+}
+
+.admin-push-settings:has(
+    #adminDisablePush:not([hidden])
+) #adminPushStatus::before {
+    background: var(--green);
+}
+
+/* BUTTONS */
+
+.admin-push-settings button {
+    width: 100%;
+    min-height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 9px 12px;
+    border-radius: 10px;
+
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 750;
+
+    cursor: pointer;
+
+    transition:
+        background .2s ease,
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+.admin-push-settings button[hidden] {
+    display: none !important;
+}
+
+/* ENABLE PUSH */
+
+#adminEnablePush {
+    border: 1px solid var(--v3-accent);
+    background: var(--v3-accent);
+    color: #fff;
+}
+
+html[data-admin-theme="dark"] #adminEnablePush {
+    color: #182638;
+}
+
+#adminEnablePush:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 14px rgba(100, 65, 43, .15);
+}
+
+/* DISABLE PUSH */
+
+#adminDisablePush {
+    border: 1px solid var(--v3-border);
+    background: var(--v3-card-soft);
+    color: var(--v3-text);
+}
+
+#adminDisablePush:hover:not(:disabled) {
+    background: var(--v3-tint);
+    color: var(--v3-accent);
+}
+
+.admin-push-settings button:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+/* SMALLER SIDEBARS */
+
+@media (max-width: 1020px) {
+    .admin-sidebar-footer .admin-push-settings {
+        padding: 11px;
+        border-radius: 13px;
+    }
+
+    .admin-push-heading {
+        gap: 8px;
+    }
+
+    .admin-push-icon {
+        width: 32px;
+        height: 32px;
+        flex-basis: 32px;
+    }
+}
+
