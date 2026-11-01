@@ -81,7 +81,7 @@
         <div class="sys-record-head"><h4>${esc(u.display_name)}</h4>
         <span class="sys-pill ${banned?'bad':u.confirmed_at?'ok':'warn'}">${banned?'Blokiran':u.confirmed_at?'E-mail potvrđen':'Čeka aktivaciju'}</span></div>
         <p>${esc(u.email)} · Registriran: ${esc(date(u.created_at))} · Zadnja prijava: ${esc(date(u.last_sign_in_at))}</p></div>
-        <div class="sys-record-actions"><button type="button" class="sys-button secondary" data-rename="${esc(u.id)}">Uredi naziv</button>
+        <div class="sys-record-actions"><a class="sys-button ghost" href="admin-client-profile.html?id=${encodeURIComponent(u.id)}">Puni profil →</a><button type="button" class="sys-button secondary" data-rename="${esc(u.id)}">Uredi naziv</button>
         <button type="button" class="sys-button secondary" data-recovery="${esc(u.id)}">Oporavak lozinke</button>
         <button type="button" class="sys-button ${banned?'ghost':'danger'}" data-ban="${esc(u.id)}">${banned?'Odblokiraj':'Blokiraj'}</button></div></article>`;
     }).join(''):empty('Nema klijenata za zadanu pretragu.');

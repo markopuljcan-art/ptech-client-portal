@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html data-admin-theme="light" lang="hr">
+<head>
+<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<meta content="#f4eee8" name="theme-color"/>
+<title>PTech Digital | Profil klijenta</title>
+<script>try{document.documentElement.dataset.adminTheme=localStorage.getItem('ptech-admin-theme')==='dark'?'dark':'light'}catch(e){}</script>
+<link href="./admin.css?v=90" rel="stylesheet"/><link href="./admin-client-profile.css?v=110" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script defer="" src="./admin-client-profile.js?v=110"></script>
+<script defer="" src="./admin-notifications.js?v=80"></script>
+<script defer="" src="./admin-push.js?v=80"></script>
+<script defer="" src="./admin.js?v=33"></script>
+</head>
+<body data-admin-page="admin-client-profile.html">
+<div class="admin-shell">
+<aside class="admin-sidebar">
+<div class="admin-brand"><div class="admin-brand-logo"><img alt="" src="./assets/ptech-icon.png"/></div><div><h1>PTech Digital</h1><span>ADMIN PANEL</span></div></div>
+<nav aria-label="Administratorska navigacija" class="admin-nav">
+<a class="admin-nav-item" href="admin.html"><span class="admin-nav-icon">▦</span><span>Nadzorna ploča</span></a>
+<a class="admin-nav-item" href="admin-projects.html"><span class="admin-nav-icon">▤</span><span>Projekti</span></a>
+<a aria-current="page" class="admin-nav-item active" href="admin-clients.html"><span class="admin-nav-icon">♧</span><span>Klijenti</span></a>
+<a class="admin-nav-item" href="admin-revisions.html"><span class="admin-nav-icon">⇄</span><span>Zahtjevi</span></a>
+<a class="admin-nav-item" href="admin-approvals.html"><span class="admin-nav-icon">✓</span><span>Odobrenja</span></a>
+<a class="admin-nav-item" href="admin-documents.html"><span class="admin-nav-icon">▧</span><span>Dokumenti</span></a>
+<a class="admin-nav-item" href="admin-support.html"><span class="admin-nav-icon">▢</span><span>Poruke</span><span class="admin-nav-badge" hidden="" id="supportUnreadBadge">0</span></a>
+<a class="admin-nav-item" href="admin-system.html"><span class="admin-nav-icon">⚙</span><span>Upravljanje sustavom</span></a>
+</nav>
+<div class="admin-sidebar-footer">
+<section aria-label="Push obavijesti" class="admin-push-settings"><div class="admin-push-heading"><span aria-hidden="true" class="admin-push-icon">♧</span><div class="admin-push-heading-text"><strong>Obavijesti</strong><small>Poruke klijenata</small></div></div><p class="admin-push-status" id="adminPushStatus" role="status">Provjera uređaja…</p><button id="adminEnablePush" type="button">Uključi obavijesti</button><button hidden="" id="adminDisablePush" type="button">Isključi obavijesti</button></section>
+<div class="admin-user"><span class="admin-avatar">A</span><div><strong id="adminUserName">Admin</strong><span>Administrator</span></div></div><button class="admin-logout" id="adminLogoutButton" type="button">Odjava</button>
+</div>
+</aside>
+<main class="admin-main">
+<header class="admin-topbar"><div><span class="admin-page-label">ADMINISTRACIJA / KLIJENTI</span><h2>Profil klijenta</h2></div><div class="admin-topbar-actions"><span class="admin-role-badge">Admin</span></div></header>
+<div class="admin-content cp-content">
+<nav aria-label="Putanja" class="cp-breadcrumb"><a href="admin-system.html#accounts">Upravljanje sustavom</a><span aria-hidden="true">/</span><span>Profil klijenta</span></nav>
+<div aria-live="polite" class="cp-notice" id="cpNotice" role="status">Učitavanje profila klijenta…</div>
+<section aria-labelledby="cpName" class="cp-hero">
+<div class="cp-hero-row">
+<div aria-hidden="true" class="cp-avatar" id="cpAvatar">K</div>
+<div class="cp-identity"><div class="cp-eyebrow">KLIJENT · JEDINSTVENI PROFIL</div><h3 id="cpName">Učitavanje…</h3><p id="cpEmail">—</p><div class="cp-pills"><span class="cp-pill" id="cpEmailStatus">Provjera pristupa</span><span class="cp-pill" id="cpAccountStatus">—</span></div></div>
+<button class="cp-button cp-outline cp-refresh" id="cpRefresh" type="button">⟳ Osvježi</button>
+</div>
+<div class="cp-hero-actions">
+<a class="cp-button cp-primary" href="admin-support.html" id="cpOpenChat">Poruke klijenta <span aria-hidden="true">↗</span></a>
+<a class="cp-button cp-outline" href="admin-projects.html" id="cpNewProject">+ Novi projekt</a>
+<a class="cp-button cp-outline" href="#cpDocsSection">Dokumenti</a>
+<a class="cp-button cp-quiet" href="admin-system.html#accounts">← Svi računi</a>
+</div>
+</section>
+<section aria-label="Sažetak suradnje" class="cp-kpis">
+<div class="cp-kpi"><small>Projekti</small><strong id="cpProjectCount">—</strong><span>Dodijeljeni projekti</span></div>
+<div class="cp-kpi"><small>Dokumenti</small><strong id="cpDocumentCount">—</strong><span>Klijentovi i projektni</span></div>
+<div class="cp-kpi"><small>Poruke</small><strong id="cpMessageCount">—</strong><span>Razgovori s podrškom</span></div>
+<div class="cp-kpi"><small>Zadnja prijava</small><strong class="cp-kpi-date" id="cpLastLogin">—</strong><span>Supabase Auth</span></div>
+</section>
+<nav aria-label="Odjeljci profila" class="cp-jump">
+<a href="#cpOverviewSection">Pregled</a><a href="#cpProjectsSection">Projekti</a><a href="#cpDocsSection">Dokumenti</a><a href="#cpMessagesSection">Poruke</a><a href="#cpNotesSection">Bilješke</a><a href="#cpAccountSection">Račun</a>
+</nav>
+<div class="cp-grid">
+<div class="cp-primary-column">
+<section class="cp-card" id="cpOverviewSection"><div class="cp-section-top"><div><span class="cp-eyebrow">BRZI PREGLED</span><h3>Osnovni podaci</h3><p>Najvažnije informacije o ovom klijentu.</p></div></div>
+<div class="cp-details"><div><span>Prikazno ime</span><strong id="cpDetailName">—</strong></div><div><span>E-mail</span><strong id="cpDetailEmail">—</strong></div><div><span>Datum registracije</span><strong id="cpRegistered">—</strong></div><div><span>Potvrda e-maila</span><strong id="cpConfirmed">—</strong></div></div>
+</section>
+<section class="cp-card" id="cpProjectsSection"><div class="cp-section-top"><div><span class="cp-eyebrow">SURADNJA</span><h3>Projekti klijenta</h3><p>Klikni na projekt za punu karticu i verzije dizajna.</p></div><a class="cp-minor-link" href="admin-projects.html">Svi projekti ↗</a></div><div class="cp-stack" id="cpProjects"><p class="cp-empty">Učitavanje…</p></div></section>
+<section class="cp-card" id="cpDocsSection"><div class="cp-section-top"><div><span class="cp-eyebrow">DATOTEKE</span><h3>Dokumenti</h3><p>Klijentove datoteke i dokumenti njegovih projekata.</p></div><a class="cp-minor-link" href="admin-documents.html">Svi dokumenti ↗</a></div><div class="cp-stack" id="cpDocs"><p class="cp-empty">Učitavanje…</p></div><p class="cp-help">Datoteke se otvaraju putem kratkotrajne privatne poveznice, bez otkrivanja Storage ključeva.</p></section>
+<section class="cp-card" id="cpMessagesSection"><div class="cp-section-top"><div><span class="cp-eyebrow">KOMUNIKACIJA</span><h3>Zadnje poruke</h3><p>Pregled posljednjih poruka između klijenta i podrške.</p></div><a class="cp-minor-link" href="admin-support.html" id="cpChatLink">Otvori razgovor ↗</a></div><div class="cp-message-stream" id="cpMessages"><p class="cp-empty">Učitavanje…</p></div></section>
+</div>
+<div class="cp-side-column">
+<section class="cp-card" id="cpAccountSection"><div class="cp-section-top"><div><span class="cp-eyebrow">AUTENTIKACIJA</span><h3>Pristup računu</h3><p>Upravljaj prijavom, nazivom i oporavkom pristupa.</p></div></div>
+<div class="cp-account-stats"><div><span>Stanje računa</span><strong id="cpAccessState">—</strong></div><div><span>Zadnja prijava</span><strong id="cpLastSignInFull">—</strong></div></div>
+<div class="cp-action-list"><button class="cp-button cp-outline" id="cpRename" type="button">Uredi ime / naziv</button><button class="cp-button cp-outline" id="cpRecovery" type="button">Pošalji oporavak lozinke</button><button class="cp-button cp-danger" id="cpBan" type="button">Blokiraj pristup</button></div>
+<p class="cp-help">Blokiranje sprečava nove prijave. Postojeće aktivne sesije ne moraju se odmah prekinuti. Sve promjene prolaze serversku provjeru admin uloge.</p>
+</section>
+<section class="cp-card" id="cpNotesSection"><div class="cp-section-top"><div><span class="cp-eyebrow">ZA ADMINISTRATORA</span><h3>Interne bilješke</h3><p>Bilješke nisu vidljive klijentu.</p></div></div>
+<div class="cp-stack" id="cpNotes"><p class="cp-empty">Učitavanje…</p></div>
+<form class="cp-note-form" id="cpNoteForm"><label for="cpNoteProject">Projekt</label><select id="cpNoteProject" required=""><option value="">Odaberi projekt</option></select><label for="cpNoteText">Nova bilješka</label><textarea id="cpNoteText" maxlength="2000" placeholder="Dogovoreni koraci, rokovi ili interni podsjetnik…" required="" rows="4"></textarea><button class="cp-button cp-primary" type="submit">Spremi internu bilješku</button></form>
+</section>
+<section class="cp-tip"><strong>Kako koristiti ovaj profil?</strong><p>Odaberi projekt za detalje, pregledaj dokumente ili otvori WhatsApp-stil razgovora. Promjene prijave i naziva su u odjeljku „Pristup računu”.</p></section>
+</div>
+</div>
+</div>
+<div class="cp-overlay" hidden="" id="cpDialog"><div aria-labelledby="cpDialogTitle" aria-modal="true" class="cp-dialog" role="dialog"><div class="cp-dialog-head"><h3 id="cpDialogTitle">Potvrda</h3><button aria-label="Zatvori" class="cp-icon-btn" id="cpDialogX" type="button">×</button></div><div id="cpDialogBody"></div><div class="cp-dialog-actions"><button class="cp-button cp-outline" id="cpDialogCancel" type="button">Odustani</button><button class="cp-button cp-primary" id="cpDialogConfirm" type="button">Potvrdi</button></div></div></div>
+</main>
+</div>
+<div class="sys-overlay" hidden="" id="sysDialog"><div aria-labelledby="sysDialogTitle" aria-modal="true" class="sys-dialog" role="dialog"><div class="sys-dialog-header"><h3 id="sysDialogTitle">Potvrda</h3><button aria-label="Zatvori" class="sys-close" id="sysDialogClose" type="button">×</button></div><div id="sysDialogBody"></div><div class="sys-dialog-actions"><button class="sys-button secondary" id="sysDialogCancel" type="button">Odustani</button><button class="sys-button primary" id="sysDialogConfirm" type="button">Potvrdi</button></div></div></div>
+</body></html>
