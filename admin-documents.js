@@ -1358,15 +1358,12 @@ async function resolveDocumentUrl(
         data,
         error
     } =
-        await supabaseClient
-            .storage
-            .from(
-                "project-documents"
-            )
-            .createSignedUrl(
-                value,
-                3600
-            );
+        
+await supabaseClient
+    .storage
+    .from(documentData.bucket || "project-documents")
+    .createSignedUrl(value, 3600);
+
 
 
     if (error) {
