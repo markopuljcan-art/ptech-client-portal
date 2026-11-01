@@ -85,3 +85,19 @@ input::placeholder,textarea::placeholder{color:var(--v3-muted);opacity:.85}texta
 }
 @media(max-width:560px){.admin-content{padding:15px 11px calc(106px + env(safe-area-inset-bottom,0px))}.admin-topbar h2{font-size:21px}.admin-role-badge{display:none}.admin-welcome{padding:21px;min-height:175px}.admin-welcome h3{font-size:26px}.admin-welcome::after{opacity:.26}.admin-stats{gap:9px}.admin-stat-card{padding:13px;min-height:130px}.admin-stat-card>strong{font-size:29px}.admin-stat-icon{width:31px;height:31px;flex-basis:31px}.admin-stat-icon svg{width:17px;height:17px}.admin-stat-top{min-height:33px}.v3-quick-grid{grid-template-columns:1fr 1fr;gap:9px}.v3-quick-link{min-height:78px;padding:10px;gap:8px}.v3-quick-link i{width:32px;height:32px;flex-basis:32px}.v3-quick-link b{font-size:10px}.v3-quick-link small{font-size:9px}.v3-section-title{align-items:flex-start;flex-direction:column;gap:3px}.v32-modal-actions{flex-wrap:wrap}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+
+/* PTech V8 — redizajn prema odabranim prikazima */
+
+/* V8 shared refinements: accessible consistent type and button treatments */
+:root,html[data-admin-theme="light"]{--v8-soft:#faf6f1;--v8-chat-bg:#f8f3ed;--v8-inbound:#ffffff;--v8-outbound:#e9f5de;--v8-danger:#a8303c}
+html[data-admin-theme="dark"]{--v8-soft:#25374b;--v8-chat-bg:#17263b;--v8-inbound:#31445c;--v8-outbound:#33534c;--v8-danger:#ffaaaa}
+.admin-content{width:100%}
+.admin-page-label{font-size:11px;line-height:1.5}
+.admin-nav-item{font-size:13px}
+.admin-stat-icon{color:var(--v3-accent);border:1px solid var(--v3-border);background:var(--v3-tint)}
+.admin-stat-icon svg{height:20px;width:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+:is(button,select,input,textarea):focus-visible{outline:2px solid var(--v3-accent)!important;outline-offset:2px}
+:is(.v32-modal-overlay,.v33-overlay,.v34-delete-overlay)[hidden]{display:none!important}
+@media(max-width:800px){.admin-content{min-width:0}.admin-topbar{z-index:22}}
+

@@ -1,0 +1,36 @@
+<!doctype html><html lang="hr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f5f1ec">
+<script>(function(){try{document.documentElement.dataset.adminTheme=localStorage.getItem('ptech-admin-theme')==='dark'?'dark':'light'}catch(e){document.documentElement.dataset.adminTheme='light'}})();</script>
+<link rel="stylesheet" href="./admin.css?v=80"><link rel="stylesheet" href="./admin-project-detail.css?v=80">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./admin-project-detail.js?v=80" defer></script>
+<script src="./admin-notifications.js?v=80" defer></script><script src="./admin-push.js?v=80" defer></script>
+<script src="./admin.js?v=33" defer></script><title>PTech Digital | Projekt</title></head>
+<body data-admin-page="admin-projects.html"><div class="admin-shell"><aside class="admin-sidebar"><div class="admin-brand"><div class="admin-brand-logo"><img src="./assets/ptech-icon.png" alt=""></div><div><h1>PTech Digital</h1><span>Admin Panel</span></div></div>
+<nav class="admin-nav" aria-label="Administratorska navigacija"><a href="admin.html" class="admin-nav-item" ><span class="admin-nav-icon" aria-hidden="true">▦</span><span>Nadzorna ploča</span></a>
+<a href="admin-projects.html" class="admin-nav-item active" aria-current="page"><span class="admin-nav-icon" aria-hidden="true">▤</span><span>Projekti</span></a>
+<a href="admin-clients.html" class="admin-nav-item" ><span class="admin-nav-icon" aria-hidden="true">♧</span><span>Klijenti</span></a>
+<a href="admin-revisions.html" class="admin-nav-item" ><span class="admin-nav-icon" aria-hidden="true">⇄</span><span>Zahtjevi</span></a>
+<a href="admin-approvals.html" class="admin-nav-item" ><span class="admin-nav-icon" aria-hidden="true">✓</span><span>Odobrenja</span></a>
+<a href="admin-documents.html" class="admin-nav-item" ><span class="admin-nav-icon" aria-hidden="true">▧</span><span>Dokumenti</span></a>
+<a href="admin-support.html" class="admin-nav-item" ><span class="admin-nav-icon" aria-hidden="true">▢</span><span>Poruke</span><span id="supportUnreadBadge" class="admin-nav-badge" hidden>0</span></a></nav>
+<div class="admin-sidebar-footer"><section class="admin-push-settings" aria-label="Push obavijesti">
+ <div class="admin-push-heading"><span class="admin-push-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg></span><div class="admin-push-heading-text"><strong>Obavijesti</strong><small>Poruke klijenata</small></div></div>
+ <p id="adminPushStatus" class="admin-push-status" role="status">Provjeravam uređaj…</p>
+ <button type="button" id="adminEnablePush">Uključi obavijesti</button>
+ <button type="button" id="adminDisablePush" hidden>Isključi obavijesti</button>
+</section><div class="admin-user"><span class="admin-avatar">A</span><div><strong id="adminUserName">Admin</strong><span>Administrator</span></div></div><button type="button" id="adminLogoutButton" class="admin-logout">Odjava</button></div></aside>
+<main class="admin-main"><header class="admin-topbar"><div><span class="admin-page-label">ADMINISTRACIJA</span><h2>Detalji projekta</h2></div><div class="admin-topbar-actions"><span class="admin-role-badge">Admin</span></div></header>
+<div class="admin-content v8-project-page"><a class="v8-back-link" href="admin-projects.html">← Svi projekti</a>
+<div id="v8ProjectNotice" class="v8-alert" role="status">Učitavanje projekta…</div>
+<div id="v8ProjectView" hidden>
+<section class="v8-project-hero"><div class="v8-project-identity"><span class="v8-icon-tile" aria-hidden="true">▣</span><div><span class="admin-page-label">PROJEKT</span><h3 id="v8ProjectTitle">Projekt</h3><p id="v8ProjectSubtitle">—</p></div></div>
+<div class="v8-project-facts"><div><small>Klijent</small><strong id="v8ClientName">—</strong></div><div><small>Datum kreiranja</small><strong id="v8ProjectDate">—</strong></div><div><small>Status projekta</small><strong id="v8ProjectStatus">—</strong></div><div><small>Zadnja verzija</small><strong id="v8LatestVersion">—</strong></div></div>
+<div class="v8-project-actions"><a id="v8EditProject" class="v8-primary" href="admin-projects.html">✎ Uredi projekt</a><a id="v8SupportLink" href="admin-support.html">◌ Otvori poruke</a><a href="admin-documents.html">▧ Dokumenti</a><a href="admin-revisions.html">⇄ Zahtjevi za izmjene</a></div></section>
+<nav class="v8-detail-tabs" aria-label="Pregled projekta"><a href="#v8Summary">Pregled</a><a href="#v8Designs">Verzije dizajna</a><a href="#v8Documents">Dokumenti</a><a href="#v8ProjectActivity">Povijest</a></nav>
+<div class="v8-detail-grid"><div class="v8-detail-left">
+<section id="v8Summary" class="v8-detail-card"><div class="v8-card-head"><h3>Sažetak projekta</h3><p>Trenutačni podaci iz Supabasea.</p></div><div class="v8-metrics"><div><span>Napredak</span><strong id="v8ProgressNumber">—</strong></div><div><span>Status dizajna</span><strong id="v8DesignStatus">—</strong></div><div><span>Broj verzija</span><strong id="v8DesignCount">0</strong></div><div><span>Dokumenti</span><strong id="v8DocsCount">0</strong></div></div></section>
+<section class="v8-detail-card"><div class="v8-card-head"><h3>Napredak projekta</h3><p>Postotak napretka određen u postavkama projekta.</p></div><div class="v8-progress"><div class="v8-progress-fill" id="v8ProgressFill"></div></div><div class="v8-progress-footer"><span>0 %</span><strong id="v8ProgressLabel">—</strong><span>100 %</span></div></section>
+<section id="v8Designs" class="v8-detail-card"><div class="v8-card-head"><h3>Verzije dizajna</h3><p>Objavljene verzije povezane s ovim projektom.</p></div><div id="v8DesignList" class="v8-item-list"><p class="v8-muted">Učitavanje…</p></div></section>
+<section id="v8Documents" class="v8-detail-card"><div class="v8-card-head"><h3>Dokumenti</h3><p>Administratorski i klijentski dokumenti projekta.</p></div><div id="v8DocumentList" class="v8-item-list"><p class="v8-muted">Učitavanje…</p></div><a class="v8-secondary-wide" href="admin-documents.html">Otvori upravljanje dokumentima</a></section>
+</div><aside class="v8-detail-right"><section id="v8ProjectActivity" class="v8-detail-card"><div class="v8-card-head"><h3>Nedavna aktivnost</h3><p>Stvarni događaji vezani uz dokumente i dizajne ovog projekta.</p></div><div id="v8ActivityList" class="v8-activity-list"><p class="v8-muted">Učitavanje…</p></div></section>
+<section class="v8-detail-card"><div class="v8-card-head"><h3>Detalji projekta</h3><p>Dodatne informacije</p></div><dl class="v8-property-list"><div><dt>Vrsta</dt><dd id="v8Type">—</dd></div><div><dt>Paket</dt><dd id="v8Package">—</dd></div><div><dt>Rok</dt><dd id="v8Deadline">—</dd></div><div><dt>ID projekta</dt><dd id="v8ProjectId">—</dd></div></dl></section></aside></div></div></div></main></div></body></html>
