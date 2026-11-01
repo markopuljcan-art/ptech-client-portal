@@ -1230,7 +1230,7 @@ renderSupportQuestions();
 ========================================== */
 (() => {
   "use strict";
-  const SITE_KEY = "PASTE_YOUR_TURNSTILE_SITE_KEY"; // PUBLIC, not SECRET
+  const SITE_KEY = "0x4AAAAAAFvB4KXJ2OhpfkCw"; // PUBLIC, not SECRET
   const ENDPOINT = "https://agivwsbczzvvuzszcvxz.supabase.co/functions/v1/ptech-registration-request";
   const $ = id => document.getElementById(id);
   const open = $("openAccessRequest"), overlay = $("accessRequestOverlay");
