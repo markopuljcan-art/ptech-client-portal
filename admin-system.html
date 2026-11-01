@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="hr" data-admin-theme="light">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f4eee8">
+<title>PTech Digital | Upravljanje sustavom</title>
+<script>try{document.documentElement.dataset.adminTheme=localStorage.getItem('ptech-admin-theme')==='dark'?'dark':'light'}catch(e){}</script>
+<link rel="stylesheet" href="./admin.css?v=90"><link rel="stylesheet" href="./admin-system.css?v=100">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./admin-system.js?v=100" defer></script>
+<script src="./admin-notifications.js?v=80" defer></script>
+<script src="./admin-push.js?v=80" defer></script>
+<script src="./admin.js?v=33" defer></script>
+</head>
+<body data-admin-page="admin-system.html">
+<div class="admin-shell">
+<aside class="admin-sidebar">
+ <div class="admin-brand"><div class="admin-brand-logo"><img src="./assets/ptech-icon.png" alt=""></div><div><h1>PTech Digital</h1><span>ADMIN PANEL</span></div></div>
+ <nav class="admin-nav" aria-label="Administratorska navigacija">
+  <a class="admin-nav-item" href="admin.html"><span class="admin-nav-icon">▦</span><span>Nadzorna ploča</span></a>
+  <a class="admin-nav-item" href="admin-projects.html"><span class="admin-nav-icon">▤</span><span>Projekti</span></a>
+  <a class="admin-nav-item" href="admin-clients.html"><span class="admin-nav-icon">♧</span><span>Klijenti</span></a>
+  <a class="admin-nav-item" href="admin-revisions.html"><span class="admin-nav-icon">⇄</span><span>Zahtjevi</span></a>
+  <a class="admin-nav-item" href="admin-approvals.html"><span class="admin-nav-icon">✓</span><span>Odobrenja</span></a>
+  <a class="admin-nav-item" href="admin-documents.html"><span class="admin-nav-icon">▧</span><span>Dokumenti</span></a>
+  <a class="admin-nav-item" href="admin-support.html"><span class="admin-nav-icon">▢</span><span>Poruke</span><span id="supportUnreadBadge" class="admin-nav-badge" hidden>0</span></a>
+  <a class="admin-nav-item active" href="admin-system.html" aria-current="page"><span class="admin-nav-icon">⚙</span><span>Upravljanje sustavom</span></a>
+ </nav>
+ <div class="admin-sidebar-footer">
+  <section class="admin-push-settings" aria-label="Push obavijesti"><div class="admin-push-heading"><span class="admin-push-icon" aria-hidden="true">♧</span><div class="admin-push-heading-text"><strong>Obavijesti</strong><small>Poruke klijenata</small></div></div><p id="adminPushStatus" class="admin-push-status" role="status">Provjera uređaja…</p><button type="button" id="adminEnablePush">Uključi obavijesti</button><button type="button" id="adminDisablePush" hidden>Isključi obavijesti</button></section>
+  <div class="admin-user"><span class="admin-avatar">A</span><div><strong id="adminUserName">Admin</strong><span>Administrator</span></div></div><button class="admin-logout" id="adminLogoutButton" type="button">Odjava</button>
+ </div>
+</aside>
+<main class="admin-main">
+ <header class="admin-topbar"><div><span class="admin-page-label">ADMINISTRACIJA / POSTAVKE</span><h2>Upravljanje sustavom</h2></div><div class="admin-topbar-actions"><span class="admin-role-badge">Admin</span></div></header>
+ <div class="admin-content system-content">
+  <section class="sys-hero"><div><span class="admin-page-label">PTECH DIGITAL · UPRAVLJAČKI CENTAR</span><h3>Sve važno. Na jednom mjestu.</h3><p>Korisnici, pristup, dokumenti, obavijesti i nadzor sustava — bez svakodnevnog otvaranja Supabase Dashboarda.</p><div class="sys-hero-cta"><button id="sysRefresh" type="button" class="sys-button primary">⟳ Osvježi podatke</button><span id="sysTime" class="sys-small"></span></div></div><div class="sys-hero-sign" aria-hidden="true">⚙</div></section>
+  <div id="sysStatus" class="sys-status" role="status" aria-live="polite">Provjera administratorskog pristupa…</div>
+  <section id="sysSummary" class="sys-summary" aria-label="Sažetak" hidden>
+   <div class="sys-metric"><span>Klijenti</span><strong id="sysClients">—</strong><small>Korisnički profili</small></div>
+   <div class="sys-metric"><span>Projekti</span><strong id="sysProjects">—</strong><small>Aktivna evidencija</small></div>
+   <div class="sys-metric"><span>Za pregled</span><strong id="sysUnread">—</strong><small>Novi događaji u centru</small></div>
+  </section>
+  <nav class="sys-tabs" aria-label="Odjeljci sustava" id="sysTabs">
+    <button type="button" class="active" data-tab="accounts" aria-selected="true"><span>♧</span> Računi</button>
+    <button type="button" data-tab="inbox" aria-selected="false"><span>♧</span> Obavijesti</button>
+    <button type="button" data-tab="docs" aria-selected="false"><span>▤</span> Dokumenti</button>
+    <button type="button" data-tab="projects" aria-selected="false"><span>▦</span> Projekti</button>
+    <button type="button" data-tab="audit" aria-selected="false"><span>↺</span> Dnevnik aktivnosti</button>
+    <button type="button" data-tab="health" aria-selected="false"><span>⚙</span> Sigurnost i stanje</button>
+  </nav>
+
+  <section id="tab-accounts" class="sys-panel" aria-label="Upravljanje računima">
+    <div class="sys-section-head"><div><span class="admin-page-label">AUTENTIKACIJA</span><h3>Korisnički računi</h3><p>Pregled aktivacije, blokiranje i vraćanje pristupa klijentima.</p></div><a class="sys-button ghost" href="admin-clients.html#pozivnica">+ Pošalji pozivnicu</a></div>
+    <div class="sys-toolbar"><label for="sysSearchUsers">Pretraga klijenata<input id="sysSearchUsers" type="search" placeholder="Ime ili e-mail…"></label><button type="button" id="sysLoadUsers" class="sys-button secondary">Osvježi popis</button></div>
+    <div id="sysUsers" class="sys-list"><p class="sys-empty">Učitavanje korisnika…</p></div>
+    <div class="sys-info">Sigurnosna pravila: administratorske račune nije moguće blokirati iz ovog centra. Blokiranje ograničava buduće prijave; aktivne sesije mogu zahtijevati dodatnu revokaciju.</div>
+  </section>
+
+  <section id="tab-inbox" class="sys-panel" aria-label="Centar obavijesti" hidden>
+    <div class="sys-section-head"><div><span class="admin-page-label">NOVE AKTIVNOSTI</span><h3>Centar obavijesti</h3><p>Nove poruke, učitani dokumenti i zahtjevi za pristup iz stvarne baze.</p></div><button type="button" id="sysLoadInbox" class="sys-button secondary">Osvježi</button></div>
+    <div class="sys-filter" role="group" aria-label="Vrsta obavijesti"><button class="active" data-inbox-filter="all">Sve</button><button data-inbox-filter="message">Poruke</button><button data-inbox-filter="upload">Dokumenti</button><button data-inbox-filter="request">Zahtjevi</button><button data-inbox-filter="unread">Nepregledano</button></div>
+    <div id="sysInbox" class="sys-list"><p class="sys-empty">Učitavanje obavijesti…</p></div>
+    <p class="sys-info">Oznaka „pregledano” odnosi se na ovaj centar i ne mijenja oznaku pročitanosti poruka u razgovoru. Push obavijesti ostaju zasebno podešene po uređaju.</p>
+  </section>
+
+  <section id="tab-docs" class="sys-panel" aria-label="Upravljanje dokumentima" hidden>
+    <div class="sys-section-head"><div><span class="admin-page-label">POHRANA</span><h3>Dokumenti klijenata i projekata</h3><p>Pretraživanje, privremena poveznica, interne oznake i arhiviranje.</p></div><a class="sys-button ghost" href="admin-documents.html">Otvori dokumente</a></div>
+    <div class="sys-toolbar"><label for="sysSearchDocs">Pronađi dokument<input id="sysSearchDocs" type="search" placeholder="Naziv, klijent, kategorija…"></label><label for="sysDocsArchived">Prikaz<select id="sysDocsArchived"><option value="active">Aktivni</option><option value="archived">Arhivirani</option><option value="all">Svi</option></select></label><button id="sysLoadDocs" class="sys-button secondary" type="button">Osvježi</button></div>
+    <div id="sysDocs" class="sys-list"><p class="sys-empty">Učitavanje dokumenata…</p></div>
+    <p class="sys-info">Preimenovanje, kategorija i arhiviranje ovdje su <strong>administratorske oznake</strong>. Ne mijenjaju originalno ime datoteke niti klijentski portal. Za pregled koristimo privatnu poveznicu koja traje 2 minute.</p>
+  </section>
+
+  <section id="tab-projects" class="sys-panel" aria-label="Administratorske bilješke" hidden>
+    <div class="sys-section-head"><div><span class="admin-page-label">ORGANIZACIJA POSLA</span><h3>Projekti i interne bilješke</h3><p>Pregled projekata i bilješke koje su vidljive samo administratorima.</p></div><a class="sys-button ghost" href="admin-projects.html">Upravljaj projektima</a></div>
+    <form id="sysNoteForm" class="sys-note-form"><label for="sysNoteProject">ID projekta<input id="sysNoteProject" list="sysProjectSuggestions" placeholder="Odaberi projekt…" required maxlength="60"><datalist id="sysProjectSuggestions"></datalist></label><label for="sysNoteText">Interna bilješka<textarea id="sysNoteText" placeholder="Zapiši dogovor, sljedeći korak ili podsjetnik…" required maxlength="2000" rows="3"></textarea></label><button type="submit" class="sys-button primary">Spremi bilješku</button></form>
+    <div id="sysNotes" class="sys-list"><p class="sys-empty">Upiši ID projekta kako bi vidio njegove bilješke.</p></div>
+    <div class="sys-info">Za statuse, rokove, vlasnika i dizajne koristi postojeći Admin → Projekti. Bilješke ne mijenjaju projektne zapise niti su vidljive klijentima.</div>
+  </section>
+
+  <section id="tab-audit" class="sys-panel" aria-label="Dnevnik radnji" hidden>
+    <div class="sys-section-head"><div><span class="admin-page-label">TRAG PROMJENA</span><h3>Dnevnik administratorskih radnji</h3><p>Bilježimo promjene izvršene kroz novi upravljački centar.</p></div><button type="button" id="sysLoadAudit" class="sys-button secondary">Osvježi</button></div>
+    <div id="sysAudit" class="sys-list"><p class="sys-empty">Učitavanje dnevnika…</p></div>
+    <p class="sys-info">Stare promjene i radnje obavljene izvan ovog centra neće se retroaktivno pojaviti u dnevniku.</p>
+  </section>
+
+  <section id="tab-health" class="sys-panel" aria-label="Sigurnost i stanje sustava" hidden>
+    <div class="sys-section-head"><div><span class="admin-page-label">DIJAGNOSTIKA</span><h3>Sigurnost i stanje sustava</h3><p>Provjera dostupnosti tablica, push sustava i pohrane.</p></div><button type="button" id="sysLoadHealth" class="sys-button secondary">Pokreni provjeru</button></div>
+    <div class="sys-security-info"><span class="sys-dot"></span><div><strong>Pristup je zaštićen na serveru</strong><p>Edge Function provjerava Auth token i administratorsku ulogu prije čitanja podataka i izvršavanja radnji. Tajni ključ nikada nije u pregledniku.</p></div></div>
+    <div id="sysHealth" class="sys-health-grid"><p class="sys-empty">Pokreni provjeru stanja.</p></div>
+    <div class="sys-info">Za pregled potrošnje, detaljne pogreške, RLS pravila, SQL migracije i tajne ključeve i dalje koristi Supabase Dashboard.</div>
+  </section>
+ </div>
+</main>
+</div>
+<div class="sys-overlay" id="sysDialog" hidden><div class="sys-dialog" role="dialog" aria-modal="true" aria-labelledby="sysDialogTitle"><div class="sys-dialog-header"><h3 id="sysDialogTitle">Potvrda</h3><button type="button" id="sysDialogClose" class="sys-close" aria-label="Zatvori">×</button></div><div id="sysDialogBody"></div><div class="sys-dialog-actions"><button type="button" class="sys-button secondary" id="sysDialogCancel">Odustani</button><button type="button" class="sys-button primary" id="sysDialogConfirm">Potvrdi</button></div></div></div>
+</body></html>
