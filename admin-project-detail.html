@@ -1,10 +1,10 @@
 <!doctype html><html lang="hr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f5f1ec">
 <script>(function(){try{document.documentElement.dataset.adminTheme=localStorage.getItem('ptech-admin-theme')==='dark'?'dark':'light'}catch(e){document.documentElement.dataset.adminTheme='light'}})();</script>
-<link rel="stylesheet" href="./admin.css?v=80"><link rel="stylesheet" href="./admin-project-detail.css?v=80">
+<link rel="stylesheet" href="./admin.css?v=80"><link rel="stylesheet" href="./admin-project-detail.css?v=90">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./admin-project-detail.js?v=80" defer></script>
+<script src="./admin-project-detail.js?v=90" defer></script>
 <script src="./admin-notifications.js?v=80" defer></script><script src="./admin-push.js?v=80" defer></script>
-<script src="./admin.js?v=33" defer></script><title>PTech Digital | Projekt</title></head>
+<script src="./admin.js?v=33" defer></script><title>PTech Digital | Pregled projekta</title></head>
 <body data-admin-page="admin-projects.html"><div class="admin-shell"><aside class="admin-sidebar"><div class="admin-brand"><div class="admin-brand-logo"><img src="./assets/ptech-icon.png" alt=""></div><div><h1>PTech Digital</h1><span>Admin Panel</span></div></div>
 <nav class="admin-nav" aria-label="Administratorska navigacija"><a href="admin.html" class="admin-nav-item" ><span class="admin-nav-icon" aria-hidden="true">▦</span><span>Nadzorna ploča</span></a>
 <a href="admin-projects.html" class="admin-nav-item active" aria-current="page"><span class="admin-nav-icon" aria-hidden="true">▤</span><span>Projekti</span></a>
@@ -19,18 +19,110 @@
  <button type="button" id="adminEnablePush">Uključi obavijesti</button>
  <button type="button" id="adminDisablePush" hidden>Isključi obavijesti</button>
 </section><div class="admin-user"><span class="admin-avatar">A</span><div><strong id="adminUserName">Admin</strong><span>Administrator</span></div></div><button type="button" id="adminLogoutButton" class="admin-logout">Odjava</button></div></aside>
-<main class="admin-main"><header class="admin-topbar"><div><span class="admin-page-label">ADMINISTRACIJA</span><h2>Detalji projekta</h2></div><div class="admin-topbar-actions"><span class="admin-role-badge">Admin</span></div></header>
-<div class="admin-content v8-project-page"><a class="v8-back-link" href="admin-projects.html">← Svi projekti</a>
-<div id="v8ProjectNotice" class="v8-alert" role="status">Učitavanje projekta…</div>
-<div id="v8ProjectView" hidden>
-<section class="v8-project-hero"><div class="v8-project-identity"><span class="v8-icon-tile" aria-hidden="true">▣</span><div><span class="admin-page-label">PROJEKT</span><h3 id="v8ProjectTitle">Projekt</h3><p id="v8ProjectSubtitle">—</p></div></div>
-<div class="v8-project-facts"><div><small>Klijent</small><strong id="v8ClientName">—</strong></div><div><small>Datum kreiranja</small><strong id="v8ProjectDate">—</strong></div><div><small>Status projekta</small><strong id="v8ProjectStatus">—</strong></div><div><small>Zadnja verzija</small><strong id="v8LatestVersion">—</strong></div></div>
-<div class="v8-project-actions"><a id="v8EditProject" class="v8-primary" href="admin-projects.html">✎ Uredi projekt</a><a id="v8SupportLink" href="admin-support.html">◌ Otvori poruke</a><a href="admin-documents.html">▧ Dokumenti</a><a href="admin-revisions.html">⇄ Zahtjevi za izmjene</a></div></section>
-<nav class="v8-detail-tabs" aria-label="Pregled projekta"><a href="#v8Summary">Pregled</a><a href="#v8Designs">Verzije dizajna</a><a href="#v8Documents">Dokumenti</a><a href="#v8ProjectActivity">Povijest</a></nav>
-<div class="v8-detail-grid"><div class="v8-detail-left">
-<section id="v8Summary" class="v8-detail-card"><div class="v8-card-head"><h3>Sažetak projekta</h3><p>Trenutačni podaci iz Supabasea.</p></div><div class="v8-metrics"><div><span>Napredak</span><strong id="v8ProgressNumber">—</strong></div><div><span>Status dizajna</span><strong id="v8DesignStatus">—</strong></div><div><span>Broj verzija</span><strong id="v8DesignCount">0</strong></div><div><span>Dokumenti</span><strong id="v8DocsCount">0</strong></div></div></section>
-<section class="v8-detail-card"><div class="v8-card-head"><h3>Napredak projekta</h3><p>Postotak napretka određen u postavkama projekta.</p></div><div class="v8-progress"><div class="v8-progress-fill" id="v8ProgressFill"></div></div><div class="v8-progress-footer"><span>0 %</span><strong id="v8ProgressLabel">—</strong><span>100 %</span></div></section>
-<section id="v8Designs" class="v8-detail-card"><div class="v8-card-head"><h3>Verzije dizajna</h3><p>Objavljene verzije povezane s ovim projektom.</p></div><div id="v8DesignList" class="v8-item-list"><p class="v8-muted">Učitavanje…</p></div></section>
-<section id="v8Documents" class="v8-detail-card"><div class="v8-card-head"><h3>Dokumenti</h3><p>Administratorski i klijentski dokumenti projekta.</p></div><div id="v8DocumentList" class="v8-item-list"><p class="v8-muted">Učitavanje…</p></div><a class="v8-secondary-wide" href="admin-documents.html">Otvori upravljanje dokumentima</a></section>
-</div><aside class="v8-detail-right"><section id="v8ProjectActivity" class="v8-detail-card"><div class="v8-card-head"><h3>Nedavna aktivnost</h3><p>Stvarni događaji vezani uz dokumente i dizajne ovog projekta.</p></div><div id="v8ActivityList" class="v8-activity-list"><p class="v8-muted">Učitavanje…</p></div></section>
-<section class="v8-detail-card"><div class="v8-card-head"><h3>Detalji projekta</h3><p>Dodatne informacije</p></div><dl class="v8-property-list"><div><dt>Vrsta</dt><dd id="v8Type">—</dd></div><div><dt>Paket</dt><dd id="v8Package">—</dd></div><div><dt>Rok</dt><dd id="v8Deadline">—</dd></div><div><dt>ID projekta</dt><dd id="v8ProjectId">—</dd></div></dl></section></aside></div></div></div></main></div></body></html>
+<main class="admin-main"><header class="admin-topbar"><div><span class="admin-page-label">ADMINISTRACIJA</span><h2>Pregled projekta</h2></div><div class="admin-topbar-actions"><span class="admin-role-badge">Admin</span></div></header>
+<div class="admin-content v9-workspace">
+  <div class="v9-breadcrumb"><a href="admin-projects.html" class="v9-back">← Svi projekti</a><span aria-hidden="true">/</span><span>Pregled odabranog projekta</span></div>
+  <div id="v9Notice" class="v9-notice" role="status">Učitavanje podataka o projektu…</div>
+  <div id="v9Page" hidden>
+
+    <section class="v9-hero" aria-labelledby="v9Name">
+      <div class="v9-hero-main">
+        <span class="v9-hero-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 22h8M12 18v4"/></svg></span>
+        <div class="v9-hero-title">
+          <span class="v9-overline">PROJEKT · <span id="v9Id">—</span></span>
+          <h3 id="v9Name">Projekt</h3>
+          <p id="v9Subtitle">—</p>
+        </div>
+        <div class="v9-status-bubble"><span class="v9-status-dot" aria-hidden="true"></span><strong id="v9ProjectStatus">—</strong><small>Trenutačni status</small></div>
+      </div>
+      <div class="v9-hero-facts">
+        <div><span>Klijent</span><strong id="v9Client">—</strong></div>
+        <div><span>Kreiran</span><strong id="v9DateCreated">—</strong></div>
+        <div><span>Rok</span><strong id="v9Deadline">—</strong></div>
+        <div><span>Zadnja verzija</span><strong id="v9LatestDesign">—</strong></div>
+      </div>
+      <div class="v9-hero-actions">
+        <a id="v9EditLink" href="admin-projects.html" class="v9-btn v9-btn-primary"><svg viewBox="0 0 24 24"><path d="m4 16 11-11 4 4L8 20H4v-4ZM13 7l4 4"/></svg>Uredi projekt</a>
+        <a id="v9MessageLink" href="admin-support.html" class="v9-btn"><svg viewBox="0 0 24 24"><path d="M21 11a8.5 8.5 0 0 1-8.5 8.5H7l-4 2v-6A8.5 8.5 0 1 1 21 11Z"/></svg>Poruke klijenta</a>
+        <a id="v9DocsLink" href="admin-documents.html" class="v9-btn"><svg viewBox="0 0 24 24"><path d="M8 2h7l5 5v15H4V2h4ZM15 2v5h5"/></svg>Upravljanje dokumentima</a>
+        <a id="v9RequestsLink" href="admin-revisions.html" class="v9-btn"><svg viewBox="0 0 24 24"><path d="M4 7h15m-4-4 4 4-4 4M20 17H5m4-4-4 4 4 4"/></svg>Zahtjevi za izmjene</a>
+      </div>
+    </section>
+
+    <section class="v9-next-step" aria-label="Preporučeni sljedeći korak">
+      <span class="v9-next-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m13 2-3 8h7l-6 12 1-9H6l7-11Z"/></svg></span>
+      <div><span class="v9-overline">ŠTO JE SLJEDEĆE?</span><p id="v9NextStepText">Pregledaj projektne podatke.</p></div>
+      <a id="v9NextStepButton" class="v9-next-action" href="admin-projects.html">Otvori projekt <span aria-hidden="true">→</span></a>
+    </section>
+
+    <nav class="v9-section-nav" aria-label="Navigacija kroz projekt">
+      <a class="is-active" href="#v9Overview"><span>01</span> Pregled</a>
+      <a href="#v9Designs"><span>02</span> Verzije dizajna</a>
+      <a href="#v9Documents"><span>03</span> Dokumenti</a>
+      <a href="#v9Revisions"><span>04</span> Izmjene</a>
+      <a href="#v9History"><span>05</span> Povijest</a>
+    </nav>
+
+    <div class="v9-content-grid">
+      <div class="v9-content-main">
+        <section id="v9Overview" class="v9-panel" data-v9-section>
+          <header class="v9-panel-head"><div><span class="v9-overline">NAJVAŽNIJI PODACI</span><h3>Pregled projekta</h3><p>Trenutačno stanje projekta na jednom mjestu.</p></div><span class="v9-panel-symbol" aria-hidden="true">▦</span></header>
+          <div class="v9-stat-grid">
+            <div class="v9-stat"><span>Napredak</span><strong id="v9Progress">—</strong><small>Postavljeno u projektu</small></div>
+            <div class="v9-stat"><span>Dizajn</span><strong id="v9DesignStatus">—</strong><small>Status zadnje verzije</small></div>
+            <div class="v9-stat"><span>Verzija</span><strong id="v9VersionCount">—</strong><small>Ukupno verzija</small></div>
+            <div class="v9-stat"><span>Dokumenti</span><strong id="v9DocumentCount">—</strong><small>Klijent i admin</small></div>
+          </div>
+          <div class="v9-progress-panel"><div class="v9-progress-label"><strong>Napredak projekta</strong><span id="v9ProgressText">—</span></div>
+            <div id="v9ProgressMeter" class="v9-progress-meter" role="progressbar" aria-label="Napredak projekta" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="v9ProgressBar"></span></div>
+            <p>Ovaj postotak određuje administrator. Nije automatski izračunat iz dokumenata ili poruka.</p>
+          </div>
+        </section>
+
+        <section id="v9Designs" class="v9-panel" data-v9-section>
+          <header class="v9-panel-head"><div><span class="v9-overline">DIZAJN I ODOBRAVANJA</span><h3>Verzije dizajna</h3><p>Kronološki popis verzija i njihov trenutačni status.</p></div><span class="v9-panel-symbol" aria-hidden="true">▤</span></header>
+          <div id="v9DesignList" class="v9-list-stack"><p class="v9-empty">Učitavanje…</p></div>
+          <p class="v9-fine-print">Za slanje ili pregled zahtjeva za izmjene otvori <a href="admin-revisions.html">Zahtjeve za izmjene</a>.</p>
+        </section>
+
+        <section id="v9Documents" class="v9-panel" data-v9-section>
+          <header class="v9-panel-head"><div><span class="v9-overline">DATOTEKE</span><h3>Dokumenti projekta</h3><p>Dokumenti klijenata i administratora prikazani zajedno.</p></div><span class="v9-panel-symbol" aria-hidden="true">▧</span></header>
+          <div id="v9DocumentList" class="v9-list-stack"><p class="v9-empty">Učitavanje…</p></div>
+          <a class="v9-panel-link" href="admin-documents.html">Otvori sve dokumente <span aria-hidden="true">→</span></a>
+        </section>
+
+        <section id="v9Revisions" class="v9-panel" data-v9-section>
+          <header class="v9-panel-head"><div><span class="v9-overline">POVRATNE INFORMACIJE</span><h3>Poruke o izmjenama <span id="v9RevisionCount" class="v9-count">0</span></h3><p>Samo poruke iz zahtjeva za izmjene koje imaju ID ovog projekta.</p></div><span class="v9-panel-symbol" aria-hidden="true">▢</span></header>
+          <div id="v9RevisionList" class="v9-list-stack"><p class="v9-empty">Učitavanje…</p></div>
+          <p class="v9-fine-print">Opći razgovori s klijentom nisu nužno vezani uz jedan projekt. Njih pogledaj na stranici <a href="admin-support.html">Poruke</a>.</p>
+        </section>
+      </div>
+
+      <aside class="v9-content-aside">
+        <section id="v9History" class="v9-panel v9-timeline-panel" data-v9-section>
+          <header class="v9-panel-head"><div><span class="v9-overline">VREMENSKA CRTA</span><h3>Povijest događaja <span id="v9AllCount" class="v9-count">0</span></h3><p>Što se stvarno dogodilo na projektu i kada.</p></div><span class="v9-panel-symbol" aria-hidden="true">↺</span></header>
+          <div class="v9-timeline-filter" role="group" aria-label="Filtriraj događaje">
+            <button type="button" data-event-filter="all" class="is-active" aria-pressed="true">Sve</button>
+            <button type="button" data-event-filter="document" aria-pressed="false">Dokumenti <span id="v9DocEvents">0</span></button>
+            <button type="button" data-event-filter="design" aria-pressed="false">Dizajn <span id="v9DesignEvents">0</span></button>
+            <button type="button" data-event-filter="message" aria-pressed="false">Izmjene <span id="v9MessageEvents">0</span></button>
+            <button type="button" data-event-filter="status" aria-pressed="false">Status <span id="v9StatusEvents">0</span></button>
+          </div>
+          <p id="v9TimelineHelp" class="v9-timeline-help" aria-live="polite">Učitavanje događaja…</p>
+          <div id="v9ActivityList" class="v9-timeline-list"><p class="v9-empty">Učitavanje…</p></div>
+          <button id="v9ShowAll" type="button" class="v9-show-all" hidden>Prikaži sve</button>
+          <div id="v9StatusNotice" class="v9-honest-note">Povijest promjena statusa nije automatski dostupna bez evidencije promjena.</div>
+        </section>
+        <section class="v9-panel v9-details-panel" aria-labelledby="v9DetailsTitle">
+          <header class="v9-panel-head"><div><span class="v9-overline">OSNOVNE POSTAVKE</span><h3 id="v9DetailsTitle">Detalji projekta</h3><p>Ostale važne informacije.</p></div></header>
+          <dl class="v9-definition-list">
+            <div><dt>Vrsta projekta</dt><dd id="v9Type">—</dd></div>
+            <div><dt>Paket</dt><dd id="v9Package">—</dd></div>
+            <div><dt>Rok</dt><dd id="v9DeadlineDetails">—</dd></div>
+            <div><dt>ID projekta</dt><dd><code id="v9ProjectIdDetails">—</code></dd></div>
+          </dl>
+        </section>
+      </aside>
+    </div>
+  </div>
+</div></main></div></body></html>
