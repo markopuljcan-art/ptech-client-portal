@@ -29,3 +29,12 @@
 .v34-delete-error,.v34-delete-blocker{color:#bd354d;font-size:12px;line-height:1.5}
 @media(max-width:930px){.v32-client-grid{grid-template-columns:1fr}}
 @media(max-width:560px){.v32-clients-hero{flex-wrap:wrap}.v33-tabs{gap:3px}.v33-tab{padding:11px}.v32-client-toolbar{align-items:stretch;flex-direction:column}.v34-delete-stats{grid-template-columns:1fr}.v33-detail,.v34-delete-dialog{padding:17px}.v34-delete-actions button{flex:1}}
+
+/* V7 polish */
+.v32-clients-hero{padding:22px 24px;border:1px solid var(--v3-border);border-radius:17px;background:var(--v3-card);box-shadow:var(--v3-shadow)}
+.v32-client-card,.v33-request-card,.v33-invite-card{box-shadow:var(--v3-shadow)}.v32-client-card:hover,.v33-request-card:hover{border-color:var(--v3-accent-2)}
+.v32-client-meta>span{border:1px solid var(--v3-border);background:var(--v3-card-soft);color:var(--v3-muted)}
+.v32-client-actions :is(a,button):hover{background:var(--v3-tint);border-color:var(--v3-accent-2)}
+.v33-section-head h3{color:var(--v3-text)}.v33-tab.active{border-color:var(--v3-border)}
+@media(max-width:900px){.v32-client-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.v32-clients-hero{padding:18px;flex-wrap:wrap}.v32-client-toolbar{flex-wrap:wrap}.v32-client-actions>*{flex:1}.v33-tabs{scrollbar-width:thin}.v33-detail,.v34-delete-dialog{padding:17px}}

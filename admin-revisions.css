@@ -11,3 +11,9 @@
 .admin-revisions-list button:not(.admin-thread-toggle){padding:10px 16px;border-radius:11px;border:1px solid var(--v3-border);font-weight:750}
 .admin-message{margin-top:14px;padding:13px;border-radius:12px;background:var(--v3-tint);color:var(--v3-text)}
 @media(max-width:560px){.admin-revisions-heading{flex-wrap:wrap}.admin-revision-card,.admin-thread-card{padding:15px}.admin-thread-summary{align-items:flex-start;flex-direction:column}}
+
+/* V7 polish */
+.admin-revisions-heading{padding:22px 24px;border:1px solid var(--v3-border);border-radius:17px;background:var(--v3-card);box-shadow:var(--v3-shadow)}
+.admin-revision-card,.admin-thread-card{box-shadow:var(--v3-shadow)}.admin-thread-details{background:var(--v3-card-soft)}
+.admin-thread-summary-main h3{font-size:16px}.admin-thread-toggle:hover{color:var(--v3-accent)}
+@media(max-width:560px){.admin-revisions-heading{padding:18px}}

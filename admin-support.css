@@ -37,3 +37,13 @@
 @media(max-width:1000px){.admin-support-layout{grid-template-columns:minmax(215px,35%) minmax(0,1fr)}}
 @media(max-width:800px){.admin-support-layout{height:auto;min-height:0;grid-template-columns:1fr}.admin-support-sidebar{min-height:220px;max-height:340px}.admin-support-chat{min-height:460px;height:min(66dvh,690px)}.admin-support-messages{padding:14px}}
 @media(max-width:460px){.admin-support-chat{height:calc(100dvh - 305px);min-height:405px}.admin-support-message{max-width:89%}.admin-support-compose{padding:10px}.admin-support-compose-bottom small{display:none}}
+
+/* V7 polish — real two-panel inbox */
+.support-admin-hero{padding:22px 24px;border:1px solid var(--v3-border);border-radius:17px;background:var(--v3-card);box-shadow:var(--v3-shadow)}
+.admin-support-sidebar,.admin-support-chat{background:var(--v3-card);border:1px solid var(--v3-border);border-radius:18px;box-shadow:var(--v3-shadow)}
+.admin-support-layout{gap:13px;height:clamp(490px,68dvh,730px)}.admin-support-conversation{color:var(--v3-text)}.admin-support-conversation:hover{background:var(--v3-card-soft)}
+.admin-support-conversation.active{border-color:var(--v3-accent-2);background:var(--v3-tint)}.admin-support-chat-empty{gap:11px}.admin-support-messages{background:var(--v3-card-soft)}
+.admin-support-chat-header{background:var(--v3-card)}.admin-support-compose{background:var(--v3-card);border-top:1px solid var(--v3-border)}
+.admin-support-compose textarea{background:var(--v3-input);color:var(--v3-text);border:1px solid var(--v3-border);border-radius:12px}
+@media(max-width:850px){.admin-support-layout{grid-template-columns:1fr;height:auto}.admin-support-sidebar{min-height:240px;max-height:340px}.admin-support-chat{min-height:480px}}
+@media(max-width:560px){.support-admin-hero{padding:18px;flex-wrap:wrap}.admin-support-chat{min-height:440px}.admin-support-messages{padding:12px}.admin-support-chat-header{padding:12px}.admin-support-compose{padding:12px}}

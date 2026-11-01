@@ -8,3 +8,8 @@
 .approval-preview{border-radius:13px;background:var(--v3-card-soft);overflow:hidden;border:1px solid var(--v3-border)}.approval-preview img{max-width:100%;display:block}.approval-preview-empty{padding:18px;color:var(--v3-muted);text-align:center}
 .approvals-message{padding:13px;border-radius:12px;background:var(--v3-tint);color:var(--v3-text);margin-top:14px}
 @media(max-width:1000px){.approvals-list{grid-template-columns:1fr}}@media(max-width:560px){.approval-card{padding:15px}.approvals-heading{flex-wrap:wrap}}
+
+/* V7 polish */
+.approvals-heading{padding:22px 24px;border:1px solid var(--v3-border);border-radius:17px;background:var(--v3-card);box-shadow:var(--v3-shadow)}
+.approval-card{box-shadow:var(--v3-shadow);padding:21px}.approval-details{grid-template-columns:repeat(2,minmax(0,1fr))}.approval-preview{min-height:100px}.approval-card button,.approval-card a{border-radius:10px}
+@media(max-width:600px){.approvals-heading{padding:18px}.approval-details{grid-template-columns:1fr}.approval-card{padding:16px}}
