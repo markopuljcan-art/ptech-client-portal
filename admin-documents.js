@@ -700,16 +700,16 @@ function buildFilters() {
 }
 
 
-/* =========================
-   DOCUMENTS
-========================= */
+
+/* =========================================
+   PTECH DIGITAL - ADMIN DOCUMENTS V2
+   Projektni + klijentski dokumenti
+========================================= */
 
 async function loadDocuments() {
+    if (!documentsList) return;
 
-    if (!documentsList) {
-        return;
-    }
-
+    hideMessage();
 
     documentsList.innerHTML = `
         <div class="admin-empty">
@@ -717,15 +717,10 @@ async function loadDocuments() {
         </div>
     `;
 
-
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
-            .from(
-                "project_documents"
-            )
+    // Ucitavamo obje vrste dokumenata.
+    const [projectResult, clientResult] = await Promise.all([
+        supabaseClient
+            .from("project_documents")
             .select(`
                 id,
                 created_at,
@@ -736,87 +731,122 @@ async function loadDocuments() {
                 file_size,
                 uploaded_by
             `)
-            .order(
-                "created_at",
-                {
-                    ascending: false
-                }
-            );
+            .order("created_at", { ascending: false }),
 
+        supabaseClient
+            .from("client_uploads")
+            .select(`
+                id,
+                created_at,
+                user_id,
+                project_id,
+                title,
+                category,
+                note,
+                original_file_name,
+                file_path,
+                file_size
+            `)
+            .order("created_at", { ascending: false })
+    ]);
 
-    if (error) {
-
+    if (projectResult.error) {
         console.error(
-            "Documents error:",
-            error
+            "Project documents:",
+            projectResult.error
         );
+    }
 
+    if (clientResult.error) {
+        console.error(
+            "Client uploads:",
+            clientResult.error
+        );
+    }
 
+    if (projectResult.error || clientResult.error) {
+        showMessage(
+            "Dio dokumenata nije moguće učitati. " +
+            "Provjeri RLS pravila i konzolu.",
+            "error"
+        );
+    }
+
+    if (projectResult.error && clientResult.error) {
         documentsList.innerHTML = `
             <div class="admin-empty">
                 Dokumente nije moguće učitati.
             </div>
         `;
-
-
-        showMessage(
-            "Greška kod učitavanja dokumenata.",
-            "error"
-        );
-
-
         return;
     }
 
+    // Dokumenti koje je postavio administrator.
+    const projectDocuments = (projectResult.data || [])
+        .map(item => ({
+            ...item,
+            bucket: "project-documents",
+            source: "admin"
+        }));
 
-    const projectMap =
-        Object.fromEntries(
-            allProjects.map(
-                project => [
-                    String(
-                        project.id
-                    ),
-                    project
-                ]
-            )
-        );
+    // Dokumenti koje su poslali klijenti.
+    const clientDocuments = (clientResult.data || [])
+        .map(item => ({
+            id: `client:${item.id}`,
+            created_at: item.created_at,
+            project_id: item.project_id,
+            name:
+                item.original_file_name ||
+                item.title ||
+                "Dokument",
+            title: item.title,
+            file_url: item.file_path,
+            document_type: item.category || "Ostalo",
+            file_size: item.file_size || 0,
+            uploaded_by: item.user_id,
+            client_id: item.user_id,
+            note: item.note,
+            bucket: "client-uploads",
+            source: "client"
+        }));
 
+    // Povezivanje dokumenata s projektima.
+    const projectMap = new Map(
+        allProjects.map(project => [
+            String(project.id),
+            project
+        ])
+    );
 
-    allDocuments =
-        (data || [])
-            .map(
-                documentData => {
-
-                    const project =
-                        projectMap[
-                            String(
-                                documentData.project_id
-                            )
-                        ];
-
-
-                    return {
-
-                        ...documentData,
-
-                        project,
-
-                        client_id:
-                            project?.user_id ||
-                            null,
-
-                        client_name:
-                            profileMap[
-                                project?.user_id
-                            ] ||
-                            "Klijent"
-                    };
-                }
+    // Jedinstvena lista svih dokumenata.
+    allDocuments = [
+        ...projectDocuments,
+        ...clientDocuments
+    ]
+        .map(item => {
+            const project = projectMap.get(
+                String(item.project_id)
             );
 
+            const clientId =
+                item.client_id ||
+                project?.user_id ||
+                null;
+
+            return {
+                ...item,
+                project,
+                client_id: clientId,
+                client_name:
+                    profileMap[clientId] || "Klijent"
+            };
+        })
+        .sort((a, b) =>
+            new Date(b.created_at || 0) -
+            new Date(a.created_at || 0)
+        );
 
     updateStats();
-
     applyFilters();
 }
 
