@@ -1,0 +1,356 @@
+/* ==============================================================
+   PTECH DIGITAL CLIENT PORTAL - V13 MOBILE EXPERIENCE
+   Add after existing page stylesheet. Mobile only (<= 1100px).
+   Does not modify Supabase, auth, storage, push, or desktop layout.
+   ============================================================== */
+@media (max-width: 1100px) {
+  html body.ptech-v13 {
+    --v13-bg: #171e2b;
+    --v13-ink: #f8f1eb;
+    --v13-muted: #aeb9ca;
+    --v13-surface: rgba(42, 54, 76, .94);
+    --v13-border: rgba(227, 185, 148, .17);
+    --v13-nav: rgba(30, 40, 60, .97);
+    --v13-tab: #aeb8c8;
+    --v13-icon-bg: rgba(245, 237, 227, .06);
+    --v13-glow: rgba(225, 166, 125, .17);
+    --v13-active-ink: #36281e;
+    --v13-active-start: #f0cfb3;
+    --v13-active-end: #c48761;
+    --v13-shadow: 0 16px 40px rgba(7, 13, 28, .28);
+    --v13-card-shadow: 0 12px 28px rgba(5, 10, 25, .18);
+    --v13-bottom-gap: calc(108px + env(safe-area-inset-bottom, 0px));
+    background-color: var(--v13-bg);
+    color: var(--v13-ink);
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior-x: none;
+  }
+  html[data-theme="light"] body.ptech-v13,
+  html body.ptech-v13.light-mode {
+    --v13-bg: #fbf6f0;
+    --v13-ink: #302822;
+    --v13-muted: #816e61;
+    --v13-surface: rgba(255, 251, 247, .98);
+    --v13-border: rgba(159, 100, 63, .17);
+    --v13-nav: rgba(255, 250, 246, .98);
+    --v13-tab: #86786f;
+    --v13-icon-bg: rgba(175, 119, 80, .075);
+    --v13-glow: rgba(203, 135, 90, .11);
+    --v13-active-ink: #fff9f4;
+    --v13-active-start: #a86d49;
+    --v13-active-end: #704329;
+    --v13-shadow: 0 16px 32px rgba(80, 48, 29, .13);
+    --v13-card-shadow: 0 10px 28px rgba(107, 67, 42, .085);
+  }
+
+  html body.ptech-v13 .dashboard.desktop-layout {
+    width: 100%; min-width: 0; max-width: 100%;
+    overflow-x: clip;
+  }
+  html body.ptech-v13 .desktop-sidebar { display: none !important; }
+  html body.ptech-v13 .desktop-main {
+    width: 100%; min-width: 0; max-width: 100%;
+    padding-bottom: var(--v13-bottom-gap) !important;
+    overflow: visible;
+  }
+  html body.ptech-v13 .dashboard-content {
+    min-width: 0; max-width: 100%;
+    padding-bottom: 22px;
+  }
+  html body.ptech-v13 .dashboard-header {
+    position: sticky !important; top: 0;
+    z-index: 900 !important;
+    min-height: 64px;
+    border-bottom: 1px solid var(--v13-border) !important;
+    box-shadow: 0 8px 28px rgba(12, 18, 34, .09);
+    -webkit-backdrop-filter: blur(24px) saturate(1.12);
+    backdrop-filter: blur(24px) saturate(1.12);
+  }
+  html body.ptech-v13 .header-actions,
+  html body.ptech-v13 .dashboard-header .header-actions { min-width: 0; }
+  html body.ptech-v13 .dashboard-mobile-brand strong,
+  html body.ptech-v13 .header-page-title strong {
+    font-weight: 800; letter-spacing: -.035em;
+  }
+
+  /* Floating dock: existing five links and existing unread badges. */
+  html body.ptech-v13 .bottom-nav {
+    position: fixed !important;
+    left: max(12px, env(safe-area-inset-left, 0px)) !important;
+    right: max(12px, env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+    top: auto !important;
+    width: auto !important;
+    min-height: 82px !important;
+    max-width: 620px;
+    margin: 0 auto !important;
+    padding: 10px 9px !important;
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    align-items: stretch;
+    gap: 3px;
+    z-index: 1400 !important;
+    background: var(--v13-nav) !important;
+    border: 1px solid var(--v13-border) !important;
+    border-radius: 30px !important;
+    color: var(--v13-ink) !important;
+    box-shadow: var(--v13-shadow), inset 0 1px rgba(255,255,255,.12) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(1.2) !important;
+    backdrop-filter: blur(24px) saturate(1.2) !important;
+    isolation: isolate;
+  }
+  html body.ptech-v13 .bottom-nav::before {
+    content: ""; position: absolute; z-index: -1;
+    inset: 5px; border-radius: 25px;
+    background: linear-gradient(135deg, rgba(255,255,255,.05), transparent 65%);
+    pointer-events: none;
+  }
+  html body.ptech-v13 .bottom-nav-item,
+  html body.ptech-v13:not(.light-mode) .bottom-nav-item {
+    position: relative; display: flex !important;
+    flex-direction: column !important;
+    align-items: center; justify-content: center;
+    gap: 5px !important; min-width: 0;
+    min-height: 61px !important;
+    padding: 6px 2px !important;
+    border-radius: 22px !important;
+    color: var(--v13-tab) !important;
+    font-size: 10px !important;
+    line-height: 1.1 !important;
+    font-weight: 650 !important;
+    text-decoration: none !important;
+    transition: transform .22s ease, color .22s ease, background .22s ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  html body.ptech-v13 .bottom-nav-item::before,
+  html body.ptech-v13 .bottom-nav-item::after {
+    display: none !important; content: none !important;
+  }
+  html body.ptech-v13 .v13-tab-visual {
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    width: 42px; height: 37px; border-radius: 15px;
+    background: var(--v13-icon-bg);
+    border: 1px solid transparent;
+    transition: transform .24s cubic-bezier(.2,1.4,.4,1), box-shadow .24s ease, background .24s ease;
+  }
+  html body.ptech-v13 .v13-tab-visual > svg,
+  html body.ptech-v13 .v13-tab-visual > .bottom-nav-icon-wrap > svg {
+    display: block;
+    width: 21px !important; height: 21px !important;
+    fill: none; stroke: currentColor; stroke-width: 1.9px;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  html body.ptech-v13 .v13-tab-visual .bottom-nav-icon-wrap {
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  html body.ptech-v13 .bottom-nav-item > span:last-child:not(.v13-tab-visual) {
+    overflow: hidden; max-width: 100%; white-space: nowrap;
+    text-overflow: ellipsis; letter-spacing: -.015em;
+  }
+  html body.ptech-v13 .bottom-nav-item.active,
+  html body.ptech-v13 .bottom-nav-item[aria-current="page"] {
+    color: var(--v13-ink) !important;
+    background: var(--v13-icon-bg);
+  }
+  html body.ptech-v13 .bottom-nav-item.active .v13-tab-visual,
+  html body.ptech-v13 .bottom-nav-item[aria-current="page"] .v13-tab-visual {
+    background: linear-gradient(150deg, var(--v13-active-start), var(--v13-active-end));
+    color: var(--v13-active-ink) !important;
+    transform: translateY(-5px) scale(1.07);
+    border-color: rgba(255,255,255,.20);
+    box-shadow: 0 7px 15px var(--v13-glow), inset 0 1px 0 rgba(255,255,255,.20);
+  }
+  html body.ptech-v13 .bottom-nav-item.v13-pressed .v13-tab-visual { transform: scale(.94); }
+  html body.ptech-v13 .bottom-nav-item:focus-visible {
+    outline: 2px solid var(--v13-active-start); outline-offset: 2px;
+  }
+  html body.ptech-v13 .bottom-nav-item .nav-notification,
+  html body.ptech-v13 .bottom-nav-item [id="messagesUnreadBadge"] {
+    position: absolute; right: -7px; top: -8px;
+    min-width: 17px; height: 17px;
+    padding: 0 4px; border-radius: 999px;
+    font-size: 10px; line-height: 17px;
+    color: #fff !important; background: #c06b56 !important;
+    border: 2px solid var(--v13-nav) !important;
+  }
+  html body.ptech-v13 .bottom-nav-item .nav-notification[hidden] { display: none !important; }
+
+  /* Shared panels, typography, and touch controls. */
+  html body.ptech-v13 :is(.dashboard-content,.messages-page,.projects-page,.documents-page,.profile-page) h1,
+  html body.ptech-v13 :is(.dashboard-content,.messages-page,.projects-page,.documents-page,.profile-page) h2 {
+    letter-spacing: -.035em;
+    text-wrap: balance;
+  }
+  html body.ptech-v13 :is(.project-card, .document-card, .profile-section, .profile-hero, .support-hero, .help-card, .dashboard-section, .action-card, .overview-card, .project-detail-card) {
+    border-radius: 23px;
+    box-shadow: var(--v13-card-shadow);
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+  html body.ptech-v13 :is(button, select, input, textarea) {
+    touch-action: manipulation;
+  }
+  html body.ptech-v13 :is(button, a, input, select, textarea):focus-visible {
+    outline: 2px solid var(--v13-active-start);
+    outline-offset: 3px;
+  }
+  html body.ptech-v13 :is(input, textarea, select) { max-width: 100%; }
+  html body.ptech-v13 :is(.projects-slider, .actions-grid, .dashboard-overview, .documents-panel, .profile-bottom-grid) {
+    min-width: 0; max-width: 100%;
+  }
+  html body.ptech-v13 :is(.projects-page-header,.documents-page-header,.profile-page-header,.page-heading) {
+    padding-top: 4px;
+  }
+  html body.ptech-v13 :is(.project-card,.document-card) {
+    transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+  }
+  html body.ptech-v13 :is(.project-card,.document-card):active { transform: scale(.99); }
+
+  /* Keep full-screen dialogs above the dock; hide dock only while dialog visible. */
+  html body.ptech-v13 :is(.upload-overlay,.modal-backdrop,.revision-modal,.project-modal):not([hidden]) {
+    z-index: 1800;
+  }
+  html body.ptech-v13.v13-modal-open .bottom-nav { visibility: hidden !important; pointer-events: none !important; }
+}
+
+@media (max-width: 650px) {
+  html body.ptech-v13 .dashboard-content,
+  html body.ptech-v13 .messages-page.dashboard-content {
+    padding-left: 16px !important; padding-right: 16px !important;
+  }
+  html body.ptech-v13 .dashboard-header {
+    padding: 11px 16px !important;
+    min-height: 65px;
+  }
+  html body.ptech-v13 :is(.user-avatar, .user-box .user-avatar) {
+    width: 37px !important; height: 37px !important;
+    border-radius: 14px;
+  }
+  html body.ptech-v13 :is(.projects-page-header,.documents-page-header,.profile-page-header,.page-heading) h1 {
+    font-size: clamp(25px, 7vw, 34px);
+    line-height: 1.12;
+  }
+  html body.ptech-v13 .bottom-nav { min-height: 81px !important; }
+  html body.ptech-v13 .bottom-nav-item { font-size: 9.5px !important; }
+  html body.ptech-v13 .bottom-nav-item .v13-tab-visual { width: 39px; height: 36px; }
+
+  /* Home: give shortcuts enough room to breathe. */
+  html body.ptech-v13 .actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  html body.ptech-v13 .welcome { max-width: 100%; }
+  html body.ptech-v13 .dashboard-overview { gap: 12px; }
+
+  /* Projects: cards in a full-width, readable column. */
+  html body.ptech-v13 .projects-grid {
+    display: grid; grid-template-columns: 1fr; gap: 14px;
+  }
+  html body.ptech-v13 .project-card {
+    min-height: 0; padding: 19px !important;
+    border-radius: 24px !important;
+  }
+  html body.ptech-v13 .project-card-top,
+  html body.ptech-v13 .project-card-footer { flex-wrap: wrap; gap: 10px; }
+  html body.ptech-v13 .project-progress-bar { border-radius: 99px; }
+
+  /* Documents: search and filters stay functional and scroll on small screens. */
+  html body.ptech-v13 .documents-toolbar { gap: 10px; }
+  html body.ptech-v13 .document-card { padding: 15px; border-radius: 20px !important; }
+  html body.ptech-v13 .documents-panel { min-width: 0; }
+  html body.ptech-v13 .documents-search-wrap { min-width: 0; }
+  html body.ptech-v13 .upload-screen {
+    max-width: 100vw; max-height: 100dvh;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  html body.ptech-v13 :is(.upload-section,.upload-screen,.upload-screen-body) { min-width: 0; }
+
+  /* Messages: readable bubbles, input area stays accessible. */
+  html body.ptech-v13 .messages-page.dashboard-content { padding-bottom: 24px !important; }
+  html body.ptech-v13 .chat-workspace:not([hidden]) {
+    width: calc(100% - 24px);
+    max-width: 720px;
+    height: min(730px, calc(var(--v13-viewport-height, 100dvh) - 178px - env(safe-area-inset-bottom, 0px)));
+    min-height: 310px;
+    margin: 12px auto 24px;
+    border-radius: 25px;
+    box-shadow: var(--v13-card-shadow);
+    overflow: hidden;
+  }
+  html body.ptech-v13 .conversation-rail {
+    flex: 0 0 auto;
+    padding: 10px 12px;
+  }
+  html body.ptech-v13 .conversation-option {
+    min-height: 43px;
+    border-radius: 14px;
+  }
+  html body.ptech-v13 .chat-panel { min-height: 0; }
+  html body.ptech-v13 .chat-body {
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding: 15px 13px;
+  }
+  html body.ptech-v13 .message-content { max-width: 88%; }
+  html body.ptech-v13 .message-bubble {
+    font-size: 13px; line-height: 1.52;
+    padding: 10px 12px;
+    border-radius: 16px;
+    overflow-wrap: anywhere;
+  }
+  html body.ptech-v13 .chat-compose {
+    gap: 8px;
+    padding: 10px 12px;
+    flex-shrink: 0;
+  }
+  html body.ptech-v13 .chat-compose textarea {
+    font-size: 16px !important; /* iOS: prevents automatic zoom */
+    min-height: 44px;
+    border-radius: 16px;
+  }
+  html body.ptech-v13 .chat-compose button {
+    min-width: 44px; min-height: 44px;
+    border-radius: 15px;
+  }
+  html body.ptech-v13 .chat-footer { padding: 5px 12px 9px; }
+  html body.ptech-v13.v13-keyboard-open .bottom-nav { opacity: 0; pointer-events: none; transform: translateY(110%); }
+  html body.ptech-v13.v13-keyboard-open .chat-workspace:not([hidden]) {
+    height: calc(var(--v13-viewport-height, 100dvh) - 87px);
+    min-height: 180px;
+  }
+  html body.ptech-v13.v13-keyboard-open .chat-compose { padding-bottom: 9px; }
+
+  /* Profile: keep notification toggles, account security, and modals accessible. */
+  html body.ptech-v13 .profile-bottom-grid { grid-template-columns: minmax(0, 1fr); }
+  html body.ptech-v13 .profile-section { padding: 18px; }
+  html body.ptech-v13 .notification-option {
+    gap: 10px;
+    min-height: 64px;
+  }
+  html body.ptech-v13 :is(.push-device-actions button,.notification-footer button,.bronze-button,.outline-button) {
+    min-height: 44px;
+  }
+  html body.ptech-v13 .modal-dialog { max-width: calc(100vw - 24px); }
+}
+@media (max-width: 370px) {
+  html body.ptech-v13 .bottom-nav {
+    left: 7px !important; right: 7px !important;
+    padding: 9px 4px !important; border-radius: 25px !important;
+  }
+  html body.ptech-v13 .bottom-nav-item { font-size: 8.5px !important; }
+  html body.ptech-v13 .v13-tab-visual { width: 34px !important; height: 33px !important; }
+  html body.ptech-v13 .actions-grid { gap: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html body.ptech-v13 *,html body.ptech-v13 *::before,html body.ptech-v13 *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
