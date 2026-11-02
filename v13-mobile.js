@@ -1,4 +1,4 @@
-/* PTECH DIGITAL V13.3 - unified mobile layer and native-like dock.
+/* PTECH DIGITAL V13.4 - unified mobile layer and native-like dock.
    No changes to Supabase or existing page scripts.
    V13 base initialises first; V13.1 drag gesture follows on DOMContentLoaded.
 */

@@ -1,4 +1,4 @@
-/* PTECH DIGITAL V13.3 - brown Liquid Glass mobile dock and redesigned login.
+/* PTECH DIGITAL V13.4 - brown Liquid Glass mobile dock and redesigned login.
    Supabase/Auth, SW, and business logic are unchanged.
    Use this one file on the 6 client pages AND login.html.
 */
@@ -591,7 +591,7 @@ html[data-login-theme="dark"] .login-page {background:linear-gradient(155deg,#20
 
 
 /* ===============================================================
-   V13.3 | BROWN LIQUID GLASS
+   V13.4 | BROWN LIQUID GLASS
    Dock uses the same cream/navy family as portal cards instead of
    an opaque separate slab. Blur and translucent highlights are
    decorative; navigation, drag gesture and links remain unchanged.
@@ -701,7 +701,7 @@ html[data-login-theme="dark"] .login-page {background:linear-gradient(155deg,#20
 }
 
 /* ===============================================================
-   V13.3 | ACTUAL MOBILE LOGIN - no changes to Auth / Turnstile.
+   V13.4 | ACTUAL MOBILE LOGIN - no changes to Auth / Turnstile.
    Affects only the login page in the mobile breakpoint.
    =============================================================== */
 @media (max-width: 760px) {
@@ -823,4 +823,75 @@ html[data-login-theme="dark"] .login-page {background:linear-gradient(155deg,#20
   html body.ptech-v13:not(.light-mode) .bottom-nav { background:rgba(39,51,69,.92) !important; }
   html body.ptech-v13.light-mode .bottom-nav { background:rgba(255,250,245,.96) !important; }
   .login-card { -webkit-backdrop-filter:none !important;backdrop-filter:none !important; }
+}
+
+
+/* =============================================================
+   PTECH DIGITAL V13.4 | iPHONE + PWA STABILITY PATCH
+   Preserve manual pinch-to-zoom. Prevent Safari's focus auto-zoom
+   by ensuring the COMPUTED input font size is at least 16px.
+   This block must stay at the END of v13-mobile.css.
+   ============================================================= */
+@media screen and (max-width: 820px) {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  /* Login, access-request modal and client portal form controls. */
+  body input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="hidden"]),
+  body textarea,
+  body select {
+    font-size: 16px !important;
+  }
+
+  /* Override older style_login.css: it used font-size:12px. */
+  html .login-card .input-wrapper input,
+  html .login-page #email,
+  html .login-page #password {
+    font-size: 16px !important;
+    line-height: normal !important;
+    -webkit-appearance: none;
+    appearance: none;
+    min-height: 52px;
+    transform: none !important;
+  }
+
+  html .login-page .input-wrapper {
+    min-height: 54px;
+  }
+
+  /* Maintain comfortable thumb targets inside the installed app. */
+  html .login-page #loginButton {
+    min-height: 52px;
+  }
+
+  /* Avoid horizontal offset on real device widths and safe-area phones. */
+  html body.ptech-v13 .bottom-nav {
+    box-sizing: border-box;
+    max-width: min(620px, calc(100vw - 24px));
+  }
+  html .login-page,
+  html .login-right,
+  html .login-left,
+  html .login-card {
+    box-sizing: border-box;
+    max-width: 100%;
+  }
+}
+
+/* More pronounced glass on iPhone WebKit, matched to card palettes. */
+@media screen and (max-width: 1100px) {
+  html body.ptech-v13 .bottom-nav {
+    -webkit-backdrop-filter: blur(30px) saturate(1.7) !important;
+    backdrop-filter: blur(30px) saturate(1.7) !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble {
+    -webkit-backdrop-filter: blur(18px) saturate(1.45) !important;
+    backdrop-filter: blur(18px) saturate(1.45) !important;
+  }
+  html .login-card {
+    -webkit-backdrop-filter: blur(28px) saturate(1.35);
+    backdrop-filter: blur(28px) saturate(1.35);
+  }
 }
