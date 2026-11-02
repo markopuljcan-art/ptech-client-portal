@@ -67,6 +67,23 @@
 <script src="login.js?v=34" defer></script>
 <link rel="stylesheet" href="./v13-mobile.css?v=13.4">
 
+<script id="ptech-v137-bootstrap">
+  (function () {
+    try {
+      if (
+        matchMedia('(max-width:760px)').matches &&
+        !matchMedia('(prefers-reduced-motion: reduce)').matches &&
+        !sessionStorage.getItem('ptech-v137-intro-shown')
+      ) {
+        document.documentElement.classList.add('v137-intro-pending');
+      }
+    } catch (e) {}
+  })();
+</script>
+
+<link rel="stylesheet" href="./v13-mobile.css?v=13.7">
+<script src="./v13-mobile.js?v=13.7" defer></script>
+
 </head>
 
 <body>
