@@ -1,4 +1,4 @@
-/* PTECH DIGITAL V13.2 - unified mobile design, drag dock and login.
+/* PTECH DIGITAL V13.3 - brown Liquid Glass mobile dock and redesigned login.
    Supabase/Auth, SW, and business logic are unchanged.
    Use this one file on the 6 client pages AND login.html.
 */
@@ -15,7 +15,7 @@
     --v13-muted: #aeb9ca;
     --v13-surface: rgba(42, 54, 76, .94);
     --v13-border: rgba(227, 185, 148, .17);
-    --v13-nav: rgba(30, 40, 60, .97);
+    --v13-nav: rgba(42, 54, 76, .46);
     --v13-tab: #aeb8c8;
     --v13-icon-bg: rgba(245, 237, 227, .06);
     --v13-glow: rgba(225, 166, 125, .17);
@@ -37,7 +37,7 @@
     --v13-muted: #816e61;
     --v13-surface: rgba(255, 251, 247, .98);
     --v13-border: rgba(159, 100, 63, .17);
-    --v13-nav: rgba(255, 250, 246, .98);
+    --v13-nav: rgba(255, 251, 247, .55);
     --v13-tab: #86786f;
     --v13-icon-bg: rgba(175, 119, 80, .075);
     --v13-glow: rgba(203, 135, 90, .11);
@@ -587,4 +587,240 @@ html[data-login-theme="dark"] .login-page {background:linear-gradient(155deg,#20
 }
 @media (prefers-reduced-motion:reduce) {
  .login-card,.login-page,.login-hero {animation:none!important;transition:none!important;}
+}
+
+
+/* ===============================================================
+   V13.3 | BROWN LIQUID GLASS
+   Dock uses the same cream/navy family as portal cards instead of
+   an opaque separate slab. Blur and translucent highlights are
+   decorative; navigation, drag gesture and links remain unchanged.
+   =============================================================== */
+@media (max-width: 1100px) {
+  html body.ptech-v13 {
+    --v133-glass: rgba(40, 52, 70, .52);
+    --v133-glass-border: rgba(242, 207, 177, .30);
+    --v133-glass-highlight: rgba(255, 242, 226, .22);
+    --v133-glass-shadow: 0 14px 34px rgba(7, 13, 27, .28);
+    --v133-glass-accent: rgba(174, 121, 86, .17);
+    --v133-bubble-top: rgba(235, 190, 151, .73);
+    --v133-bubble-bottom: rgba(153, 99, 66, .71);
+    --v133-bubble-border: rgba(255, 236, 212, .48);
+    --v133-bubble-shadow: rgba(190, 124, 86, .26);
+    --v13-tab: #d8c6b7;
+    --v13-active-ink: #32251f;
+  }
+  html[data-theme="light"] body.ptech-v13,
+  html body.ptech-v13.light-mode {
+    --v133-glass: rgba(255, 250, 245, .60);
+    --v133-glass-border: rgba(255, 255, 255, .84);
+    --v133-glass-highlight: rgba(255, 255, 255, .72);
+    --v133-glass-shadow: 0 13px 35px rgba(102, 63, 36, .17);
+    --v133-glass-accent: rgba(186, 128, 84, .14);
+    --v133-bubble-top: rgba(170, 113, 78, .84);
+    --v133-bubble-bottom: rgba(116, 67, 43, .88);
+    --v133-bubble-border: rgba(255, 240, 224, .42);
+    --v133-bubble-shadow: rgba(138, 85, 51, .22);
+    --v13-tab: #796352;
+    --v13-active-ink: #fffaf7;
+  }
+  html body.ptech-v13 .bottom-nav {
+    background:
+      radial-gradient(ellipse at 15% 0%, var(--v133-glass-accent), transparent 64%),
+      var(--v133-glass) !important;
+    border: 1px solid var(--v133-glass-border) !important;
+    border-radius: 33px !important;
+    box-shadow:
+      var(--v133-glass-shadow),
+      0 1px 1px rgba(255,255,255,.15) inset,
+      0 -1px 1px rgba(94,59,43,.10) inset !important;
+    -webkit-backdrop-filter: blur(34px) saturate(1.68) !important;
+    backdrop-filter: blur(34px) saturate(1.68) !important;
+    transform: translateZ(0);
+    overflow: visible;
+  }
+  html body.ptech-v13 .bottom-nav::before {
+    z-index: -1;
+    inset: 1px;
+    border-radius: 31px;
+    background: linear-gradient(160deg,
+      var(--v133-glass-highlight) 0%,
+      transparent 26%,
+      rgba(162, 113, 82, .065) 77%,
+      transparent 100%);
+    opacity: .8;
+  }
+  html body.ptech-v13 .bottom-nav::after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    top: 2px;
+    left: 9%;
+    width: 82%;
+    height: 1px;
+    border-radius: 100%;
+    background: linear-gradient(90deg, transparent, var(--v133-glass-highlight), transparent);
+    opacity: .82;
+    pointer-events: none;
+  }
+  html body.ptech-v13 .bottom-nav-item {
+    z-index: 1;
+    color: var(--v13-tab) !important;
+    -webkit-tap-highlight-color: transparent;
+  }
+  html body.ptech-v13 .v13-tab-visual {
+    background: rgba(150, 108, 77, .075);
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble {
+    background:
+      linear-gradient(155deg,
+        var(--v133-bubble-top),
+        var(--v133-bubble-bottom)) !important;
+    border: 1px solid var(--v133-bubble-border) !important;
+    box-shadow:
+      0 8px 22px var(--v133-bubble-shadow),
+      inset 0 1px 1px rgba(255,255,255,.43),
+      inset 0 -2px 4px rgba(82,44,26,.12) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(1.3);
+    backdrop-filter: blur(16px) saturate(1.3);
+    border-radius: 17px;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled.v131-dragging .v131-dock-bubble {
+    box-shadow:
+      0 12px 28px var(--v133-bubble-shadow),
+      0 0 0 5px rgba(203, 146, 108, .13),
+      inset 0 1px 1px rgba(255,255,255,.43) !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.v131-preview .v13-tab-visual {
+    color: var(--v13-active-ink) !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.v131-preview > span:last-child {
+    font-weight: 750 !important;
+    color: var(--v13-ink) !important;
+  }
+}
+
+/* ===============================================================
+   V13.3 | ACTUAL MOBILE LOGIN - no changes to Auth / Turnstile.
+   Affects only the login page in the mobile breakpoint.
+   =============================================================== */
+@media (max-width: 760px) {
+  html[data-login-theme="light"] .login-page,
+  html:not([data-login-theme="dark"]) .login-page {
+    background:
+      radial-gradient(circle at 5% 2%, rgba(182, 119, 74, .22), transparent 45%),
+      linear-gradient(164deg, #e7c3a8 0%, #f5e9de 43%, #fbf7f2 100%) !important;
+  }
+  .login-page::before {
+    border-radius: 0 0 42px 42px !important;
+    opacity: .91;
+  }
+  .login-brand .brand {
+    background: rgba(255,250,245,.72) !important;
+    border: 1px solid rgba(255,255,255,.62);
+    -webkit-backdrop-filter: blur(22px) saturate(1.3);
+    backdrop-filter: blur(22px) saturate(1.3);
+  }
+  .login-card {
+    position: relative;
+    isolation: isolate;
+    background: rgba(255, 250, 245, .70) !important;
+    border: 1px solid rgba(255,255,255,.82) !important;
+    box-shadow:
+      0 18px 48px rgba(91,57,37,.16),
+      0 1px 0 rgba(255,255,255,.75) inset !important;
+    -webkit-backdrop-filter: blur(30px) saturate(1.4) !important;
+    backdrop-filter: blur(30px) saturate(1.4) !important;
+    overflow: hidden;
+  }
+  .login-card::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 1px;
+    border-radius: inherit;
+    background: linear-gradient(153deg, rgba(255,255,255,.36),transparent 37%, rgba(166,111,74,.05));
+    pointer-events: none;
+  }
+  .login-card-top {
+    color: #966343;
+  }
+  .login-card h2 { color: #30251e; }
+  .login-card .login-subtitle { color: #7b6759; }
+  .login-card .form-group label { color: #564234; }
+  .login-card .input-wrapper {
+    background: rgba(255,255,255,.65) !important;
+    border: 1px solid rgba(158, 105, 71, .22) !important;
+    box-shadow: 0 1px rgba(255,255,255,.73) inset;
+    transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+  }
+  .login-card .input-wrapper:focus-within {
+    border-color: rgba(157,96,57,.65) !important;
+    box-shadow: 0 0 0 3px rgba(179,119,81,.13), inset 0 1px rgba(255,255,255,.9);
+  }
+  .login-card .input-wrapper input {
+    background: transparent !important;
+    color: #332821 !important;
+  }
+  .login-card .input-wrapper input::placeholder { color: #938075; opacity:1; }
+  .login-card #loginButton {
+    border: 1px solid rgba(255,242,222,.3);
+    background: linear-gradient(145deg,#b47b54,#895236) !important;
+    color: #fffaf5 !important;
+    box-shadow: 0 10px 23px rgba(131,77,45,.23), inset 0 1px 0 rgba(255,255,255,.22) !important;
+  }
+  .login-card .v33-login-request {
+    margin-top: 17px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(158,105,71,.15);
+    text-align: center;
+  }
+  .login-card .v33-login-request button {
+    min-height: 44px;
+    color: #8e5839;
+    font-weight: 750;
+  }
+  .login-card .login-footer { color: #8a7666; }
+  html[data-login-theme="dark"] .login-page {
+    background:
+      radial-gradient(circle at 100% 0%, rgba(164,113,80,.19), transparent 52%),
+      linear-gradient(160deg, #1d2b40 0%, #192438 52%, #121b2b 100%) !important;
+  }
+  html[data-login-theme="dark"] .login-card {
+    background: rgba(37, 50, 68, .66) !important;
+    border-color: rgba(230,190,158,.27) !important;
+    box-shadow: 0 20px 54px rgba(4,9,20,.38), inset 0 1px rgba(255,255,255,.085) !important;
+  }
+  html[data-login-theme="dark"] .login-card::before {
+    background: linear-gradient(160deg,rgba(241,191,150,.095),transparent 43%,rgba(13,22,37,.14));
+  }
+  html[data-login-theme="dark"] .login-card-top { color: #efbb96; }
+  html[data-login-theme="dark"] .login-card h2 { color: #fff4eb; }
+  html[data-login-theme="dark"] .login-card .login-subtitle { color: #b9c4d2; }
+  html[data-login-theme="dark"] .login-card .form-group label { color: #f0d4c0; }
+  html[data-login-theme="dark"] .login-card .input-wrapper {
+    background: rgba(13,23,39,.38) !important;
+    border-color: rgba(224,169,126,.24) !important;
+    box-shadow: inset 0 1px rgba(255,255,255,.06);
+  }
+  html[data-login-theme="dark"] .login-card .input-wrapper:focus-within {
+    border-color: rgba(237,181,137,.72) !important;
+    box-shadow: 0 0 0 3px rgba(218,153,113,.15);
+  }
+  html[data-login-theme="dark"] .login-card .input-wrapper input { color: #fff7f0 !important; }
+  html[data-login-theme="dark"] .login-card .input-wrapper input::placeholder { color: #9eabbc; }
+  html[data-login-theme="dark"] .login-card .v33-login-request {
+    border-top-color: rgba(218,169,130,.18);
+  }
+  html[data-login-theme="dark"] .login-card .v33-login-request button { color: #f1c4a3; }
+  html[data-login-theme="dark"] .login-card .login-footer { color: #a8b4c3; }
+  html[data-login-theme="dark"] .login-card #loginButton {
+    background: linear-gradient(140deg,#b77d55,#925b40) !important;
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  html body.ptech-v13 .bottom-nav { -webkit-backdrop-filter:none !important;backdrop-filter:none !important; }
+  html body.ptech-v13:not(.light-mode) .bottom-nav { background:rgba(39,51,69,.92) !important; }
+  html body.ptech-v13.light-mode .bottom-nav { background:rgba(255,250,245,.96) !important; }
+  .login-card { -webkit-backdrop-filter:none !important;backdrop-filter:none !important; }
 }
