@@ -336,3 +336,141 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, {once:true});
   else init();
 })();
+
+
+
+/* PTech Digital V13.5 - login-only responsive safety fallback.
+   Does NOT change Supabase Auth, Turnstile or form submission. */
+(() => {
+  'use strict';
+  if (!/(?:\/(?:login|index)\.html|\/)$/i.test(location.pathname)) return;
+  const init = () => {
+    const page = document.querySelector('.login-page');
+    const left = page?.querySelector('.login-left');
+    const card = page?.querySelector('.login-card');
+    if (!page || !left || !card) return;
+    const recompute = () => {
+      if (innerWidth > 760) {
+        document.documentElement.classList.remove('v135-login-scroll');
+        document.body.classList.remove('v135-login-scroll');
+        return;
+      }
+      // Never clip the form if viewport, translations or validation grow.
+      const available = window.visualViewport?.height || window.innerHeight;
+      const required = left.getBoundingClientRect().height + card.getBoundingClientRect().height + 25;
+      const keyboardInput = !!document.activeElement?.matches('.login-card input, .login-card textarea');
+      const mustScroll = available < 720 || required > available - 4 || keyboardInput;
+      document.documentElement.classList.toggle('v135-login-scroll', mustScroll);
+      document.body.classList.toggle('v135-login-scroll', mustScroll);
+    };
+    const observe = new ResizeObserver(recompute);
+    observe.observe(left);
+    observe.observe(card);
+    window.addEventListener('resize', recompute, { passive: true });
+    window.visualViewport?.addEventListener('resize', recompute, { passive: true });
+    document.addEventListener('focusin', recompute);
+    document.addEventListener('focusout', () => requestAnimationFrame(recompute));
+    recompute();
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, {once:true});
+  else init();
+})();
+
+/* PTECH DIGITAL V13.7 - opening logo + split wave animation (mobile login only).
+   No authentication logic, network calls, or Service Worker changes. */
+(() => {
+  'use strict';
+  const pathname = location.pathname.toLowerCase();
+  const isLogin = pathname.endsWith('/index.html') || pathname.endsWith('/login.html') || pathname.endsWith('/');
+  if (!isLogin) return;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const mobile = matchMedia('(max-width: 760px)');
+  const KEY = 'ptech-v137-intro-shown';
+  function init() {
+    const root = document.documentElement;
+    const page = document.querySelector('.login-page');
+    const card = page?.querySelector('.login-card');
+    const left = page?.querySelector('.login-left');
+    if (!page || !card || !left) { root.classList.remove('v137-intro-pending'); return; }
+
+    // Align the actual final background seam with the existing CSS wave.
+    function alignSeam() {
+      if (!mobile.matches) return;
+      const rect = card.getBoundingClientRect();
+      const pageRect = page.getBoundingClientRect();
+      const seamPx = Math.max(0, rect.top - pageRect.top + 5);
+      page.style.setProperty('--v137-seam', `${Math.round(seamPx)}px`);
+    }
+    let raf = 0;
+    const scheduleAlign = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(alignSeam);
+    };
+    scheduleAlign();
+    window.addEventListener('resize', scheduleAlign, {passive:true});
+    if ('ResizeObserver' in window) new ResizeObserver(scheduleAlign).observe(card);
+    if ('MutationObserver' in window) new MutationObserver(scheduleAlign).observe(root,{attributes:true,attributeFilter:['data-login-theme']});
+
+    let already = false;
+    try { already = sessionStorage.getItem(KEY) === '1'; } catch { /* private browsing */ }
+    if (!mobile.matches || reduced.matches || already) {
+      root.classList.remove('v137-intro-pending');
+      return;
+    }
+
+    // Show only once per browser tab: not during repeated page navigation.
+    try { sessionStorage.setItem(KEY,'1'); } catch { /* no storage required */ }
+    const splash = document.createElement('div');
+    splash.className = 'v137-intro';
+    splash.setAttribute('role','status');
+    splash.setAttribute('aria-label','Učitavanje PTech Digital portala');
+    splash.innerHTML = `
+      <div class="v137-intro__top" aria-hidden="true"></div>
+      <div class="v137-intro__bottom" aria-hidden="true"></div>
+      <div class="v137-intro__wave" aria-hidden="true">
+        <svg viewBox="0 0 1000 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="v137-wave-line" x1="0" x2="1">
+              <stop stop-color="#c78353" stop-opacity=".35"/>
+              <stop offset=".23" stop-color="#fff0d8"/>
+              <stop offset=".6" stop-color="#edb486"/>
+              <stop offset=".85" stop-color="#fff0d7"/>
+              <stop offset="1" stop-color="#bf7b50" stop-opacity=".4"/>
+            </linearGradient>
+          </defs>
+          <path d="M-20 52 C130 -5 205 70 365 65 S620 15 770 49 S910 69 1020 35" fill="none" stroke="#dd9a6a" stroke-width="16" opacity=".3"/>
+          <path d="M-20 52 C130 -5 205 70 365 65 S620 15 770 49 S910 69 1020 35" fill="none" stroke="url(#v137-wave-line)" stroke-width="4.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="v137-intro__center">
+        <div class="v137-intro__logo"><img alt="" src="./assets/ptech-logo.png"></div>
+        <span class="v137-intro__label">PTech Digital</span>
+        <div class="v137-intro__progress" aria-hidden="true"></div>
+      </div>`;
+    document.body.appendChild(splash);
+    root.classList.remove('v137-intro-pending');
+
+    let completed = false;
+    let timer = 0;
+    const finish = () => {
+      if (completed) return;
+      completed = true;
+      clearTimeout(timer);
+      splash.classList.add('v137-opening');
+      // CSS transitions finish in 860ms, never leave blocking overlay behind.
+      window.setTimeout(() => {splash.remove(); scheduleAlign();}, 960);
+    };
+    const img = splash.querySelector('img');
+    const startTime = performance.now();
+    const afterLogo = () => {
+      const remaining = Math.max(0, 1000 - (performance.now() - startTime));
+      timer = window.setTimeout(finish, remaining);
+    };
+    if (img?.decode) img.decode().catch(() => {}).then(afterLogo);
+    else afterLogo();
+    window.setTimeout(finish, 2100); // failsafe for slow/blocked image loads
+    window.addEventListener('pagehide', () => splash.remove(), {once:true});
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',init,{once:true});
+  else init();
+})();
