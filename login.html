@@ -72,17 +72,17 @@
     try {
       if (
         matchMedia('(max-width:760px)').matches &&
-        !matchMedia('(prefers-reduced-motion: reduce)').matches &&
-        !sessionStorage.getItem('ptech-v137-intro-shown')
+        !matchMedia('(prefers-reduced-motion: reduce)').matches
       ) {
         document.documentElement.classList.add('v137-intro-pending');
+        setTimeout(() => document.documentElement.classList.remove('v137-intro-pending'), 3800);
       }
     } catch (e) {}
   })();
 </script>
 
-<link rel="stylesheet" href="./v13-mobile.css?v=13.7">
-<script src="./v13-mobile.js?v=13.7" defer></script>
+<link rel="stylesheet" href="./v13-mobile.css?v=13.10">
+<script src="./v13-mobile.js?v=13.10" defer></script>
 
 </head>
 

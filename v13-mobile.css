@@ -1273,3 +1273,102 @@ html[data-login-theme="dark"] .login-page {background:linear-gradient(155deg,#20
   .v137-intro { display:none !important; }
   html.v137-intro-pending .login-page {visibility:visible !important;}
 }
+
+
+/* ================================================================
+   PTECH V13.9 | MOBILE LOGIN WAVE SPACING FIX
+   V13.5 bottom-anchoring pushed the wave down on tall iPhones.
+   Keep the dark hero and bright form in normal vertical flow;
+   retain the V13.7 organic wave, particles, splash and V13.8 loader.
+   No auth, storage, push or service-worker logic changes.
+   ================================================================ */
+@media screen and (max-width: 760px) {
+  html .login-page {
+    justify-content: flex-start !important;
+    align-items: stretch !important;
+  }
+  html .login-page .login-left {
+    flex: 0 0 auto !important;
+    margin-bottom: 0 !important;
+  }
+  html .login-page .login-right {
+    /* Crucial: undo the old bottom anchor. */
+    flex: 0 0 auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin-top: clamp(48px, 6.3svh, 66px) !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    padding-top: 0 !important;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  html .login-page .login-right .login-card {
+    flex: 0 0 auto !important;
+    margin: 0 auto !important;
+    /* The glowing wave is attached to this panel, just above its content. */
+    padding-top: clamp(34px, 4.5svh, 44px) !important;
+  }
+  /* Preserve the wave; keep it in front of the two-tone seam. */
+  html .login-page .login-right .login-card::before {
+    z-index: 2 !important;
+  }
+  html .login-page .login-right .login-card > * {
+    position: relative;
+    z-index: 3;
+  }
+  /* Prevent mobile form from growing taller due to default card spacing. */
+  html .login-page .login-card .login-subtitle {
+    margin-bottom: 16px !important;
+  }
+  html .login-page .login-card .login-footer {
+    margin-top: 14px !important;
+  }
+  /* When the keyboard is open or screen is short, the form stays reachable. */
+  html .login-page:focus-within .login-right,
+  html.v135-login-scroll .login-page .login-right {
+    flex: 0 0 auto !important;
+    margin-top: clamp(48px, 6.3svh, 66px) !important;
+    align-items: flex-start !important;
+  }
+}
+@media screen and (max-width: 760px) and (max-height: 760px) {
+  html .login-page .login-right {
+    margin-top: 42px !important;
+  }
+  html .login-page .login-right .login-card {
+    padding-top: 33px !important;
+  }
+  html .login-page .login-card .login-subtitle {
+    margin-bottom: 12px !important;
+  }
+  html .login-page .login-card .form-group {
+    margin-bottom: 14px !important;
+  }
+}
+
+/* Extra-short viewports and keyboard: real document scroll instead of a
+   clipped form. Normal phone height remains fixed with no empty scrolling. */
+@media screen and (max-width: 760px) {
+  html.v135-login-scroll .login-page,
+  html .login-page:focus-within {
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+@media screen and (max-width: 760px) and (max-height: 720px) {
+  html .login-page {
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  html:has(.login-page),
+  body:has(.login-page) {
+    overflow-y: auto !important;
+  }
+}
+
+/* V13.10: intro replay fixed in v13-mobile.js; wave layout unchanged. */
