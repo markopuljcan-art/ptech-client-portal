@@ -6,47 +6,114 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <title>PTech Digital | Odobrenje dizajna</title>
   <link rel="icon" href="./assets/ptech-icon.png" type="image/png">
-  <link rel="stylesheet" href="./approve.css?v=14.2">
+  <link rel="stylesheet" href="./style.css?v=22">
+  <link rel="stylesheet" href="./approve.css?v=14.4">
   <link rel="stylesheet" href="./ptech-loading.css?v=13.8">
   <link rel="stylesheet" href="./ptech-privacy-ui.css?v=14.0">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="./approve.js?v=14.2" defer></script>
+  <script src="./approve.js?v=14.3" defer></script>
   <script src="./ptech-loading.js?v=13.8" defer></script>
   <script src="./ptech-privacy-ui.js?v=14.0" defer></script>
 </head>
-<body class="light-mode">
+<body class="portal-desktop light-mode">
   <a class="skip-link" href="#main-content">Preskoči na sadržaj</a>
-  <div class="approve-app">
-    <aside class="portal-sidebar" aria-label="Glavna navigacija">
-      <a class="sidebar-brand" href="form.html" aria-label="PTech Digital - Početna">
-        <img src="./assets/ptech-logo.png" alt="" width="42" height="42">
-        <span><strong>PTech Digital</strong><small>CLIENT PORTAL</small></span>
-      </a>
-      <nav class="sidebar-navigation" aria-label="Stranice portala">
-        <a href="form.html" class="side-link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 9-8 9 8M5 10v10h14V10M9 20v-7h6v7"/></svg><span>Početna</span></a>
-        <a href="my-projects.html" class="side-link active" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4" width="17" height="16" rx="2"/><path d="M3.5 9h17M8 3v3M16 3v3"/></svg><span>Projekti</span></a>
-        <a href="documents.html" class="side-link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h7l2.5 2.5H21v12H3z"/></svg><span>Dokumenti</span></a>
-        <a href="messages.html" class="side-link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v12H9l-5 4z"/></svg><span>Poruke</span></a>
-        <a href="profile.html" class="side-link"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 21c0-4.5 3-7 7-7s7 2.5 7 7"/></svg><span>Profil</span></a>
-      </nav>
-      <div class="sidebar-footer">
-        <a href="messages.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 0 1 5 0c0 2-2.5 2-2.5 4M12 17h.01"/></svg>Pomoć i podrška</a>
-        <p>© PTech Digital 2026.<br>Sva prava zadržana.</p>
-      </div>
-    </aside>
+  <div class="dashboard desktop-layout">
+    <aside aria-label="Glavna navigacija" class="desktop-sidebar">
+<a class="sidebar-brand" href="form.html">
+<span class="brand-logo">P</span>
+<span class="sidebar-brand-text">
+<strong>PTech Digital</strong>
+<small>CLIENT PORTAL</small>
+</span>
+</a>
+<nav aria-label="Stranice portala" class="sidebar-nav">
+<a class="sidebar-link" href="form.html">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<path d="M3 11.5L12 4l9 7.5"></path>
+<path d="M5 10.5V20h14v-9.5"></path>
+<path d="M9 20v-6h6v6"></path>
+</svg>
+<span>Početna</span>
+</a>
+<a aria-current="page" class="sidebar-link active" href="my-projects.html">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<rect height="15" rx="2" width="16" x="4" y="5"></rect>
+<path d="M8 5V3"></path>
+<path d="M16 5V3"></path>
+<path d="M4 9h16"></path>
+</svg>
+<span>Projekti</span>
+</a>
+<a class="sidebar-link" href="documents.html">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<path d="M4 4h6l2 2h8v14H4z"></path>
+</svg>
+<span>Dokumenti</span>
+</a>
+<a class="sidebar-link" href="messages.html">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<path d="M4 5h16v11H8l-4 4z"></path>
+</svg>
+<span>Poruke</span>
+<span aria-hidden="true" class="sidebar-message-indicator" hidden=""></span>
+</a>
+<a class="sidebar-link" href="profile.html">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<circle cx="12" cy="8" r="3"></circle>
+<path d="M5 20c0-4 3-7 7-7s7 3 7 7"></path>
+</svg>
+<span>Profil</span>
+</a>
+</nav>
+<div class="sidebar-bottom">
+<a href="messages.html">
+                    ⓘ   Pomoć i podrška
+                </a>
+<p>
+                    © PTech Digital 2026.
+                    Sva prava zadržana.
+                </p>
+</div>
+</aside>
 
-    <div class="app-body">
-      <header class="portal-header">
-        <div class="header-location"><small>PTECH DIGITAL</small><strong>Odobrenje dizajna</strong></div>
-        <div class="header-controls">
-          <span class="header-context">Klijentski portal</span><span class="header-divider" aria-hidden="true"></span>
-          <label class="theme-switch" title="Promijeni temu">
-            <input type="checkbox" id="themeToggle" aria-label="Svijetli način rada">
-            <span class="theme-slider" aria-hidden="true"><span class="moon-icon">☾</span><span class="sun-icon">☀</span></span>
-          </label>
-          <a class="header-home" href="form.html">Na početnu <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6M9 12h12"/></svg></a>
-        </div>
-      </header>
+    <div class="desktop-main">
+      <header class="dashboard-header">
+<!-- NASLOV ZA UZI PROZOR -->
+<div class="dashboard-mobile-brand">
+<span>PTECH DIGITAL</span>
+<strong>Odobrenje dizajna</strong>
+</div>
+<div class="header-actions">
+<!-- KORISNIK -->
+<div class="user-box">
+<div class="user-avatar">
+<svg viewbox="0 0 24 24">
+<circle cx="12" cy="8" r="3"></circle>
+<path d="M5 20c0-4 3-7 7-7s7 3 7 7"></path>
+</svg>
+</div>
+<strong id="userTop">
+                            Klijent
+                        </strong>
+</div>
+<span class="header-separator"></span>
+<!-- ODJAVA -->
+<button class="logout-button" id="logoutButton" type="button">
+<svg viewbox="0 0 24 24">
+<path d="M10 5H5v14h5"></path>
+<path d="M14 8l4 4-4 4"></path>
+<path d="M8 12h10"></path>
+</svg>
+<span>Odjava</span>
+</button>
+<span class="header-separator"></span>
+<!-- LIGHT / DARK MODE -->
+<label class="theme-switch">
+<input aria-label="Promijeni temu" id="themeToggle" type="checkbox"/>
+<span class="theme-slider"></span>
+</label>
+</div>
+</header>
 
       <main class="approve-content" id="main-content">
         <nav class="breadcrumbs" aria-label="Putanja">
