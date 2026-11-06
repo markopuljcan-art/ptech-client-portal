@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="hr"><head>
+<script defer="" src="./assets/js/admin/ptech-admin-nav-v14.js?v=14.1"></script>
+<link href="./assets/css/shared/ptech-loading.css?v=13.8" rel="stylesheet"/>
+<script defer="" src="./assets/js/shared/ptech-loading.js?v=13.8"></script><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<meta content="#f5f1ec" name="theme-color"/>
+<script>(function(){try{document.documentElement.dataset.adminTheme=localStorage.getItem('ptech-admin-theme')==='dark'?'dark':'light'}catch(e){document.documentElement.dataset.adminTheme='light'}})();</script>
+<link href="./assets/css/admin/admin.css?v=80" rel="stylesheet"/>
+<link href="./assets/css/admin/ptech-admin-tasks.css?v=14.1" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script defer="" src="./assets/js/admin/ptech-admin-tasks.js?v=14.1"></script>
+<script defer="" src="./assets/js/admin/admin-notifications.js?v=80"></script>
+<script defer="" src="./assets/js/admin/admin-push.js?v=80"></script>
+<script defer="" src="./assets/js/admin/admin.js?v=33"></script>
+
+<title>PTech Digital | Zadaci klijenata</title></head><body data-admin-page="admin-tasks.html"><div class="admin-shell"><aside class="admin-sidebar"><div class="admin-brand"><div class="admin-brand-logo"><img alt="" src="./assets/ptech-icon.png"/></div><div><h1>PTech Digital</h1><span>Admin Panel</span></div></div>
+<nav class="admin-nav" aria-label="Administratorska navigacija"></nav>
+<div class="admin-sidebar-footer"><section aria-label="Push obavijesti" class="admin-push-settings">
+<div class="admin-push-heading"><span aria-hidden="true" class="admin-push-icon"><svg viewbox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"></path></svg></span><div class="admin-push-heading-text"><strong>Obavijesti</strong><small>Poruke klijenata</small></div></div>
+<p class="admin-push-status" id="adminPushStatus" role="status">Provjeravam uređaj…</p>
+<button id="adminEnablePush" type="button">Uključi obavijesti</button>
+<button hidden="" id="adminDisablePush" type="button">Isključi obavijesti</button>
+</section><div class="admin-user"><span class="admin-avatar">A</span><div><strong id="adminUserName">Admin</strong><span>Administrator</span></div></div><button class="admin-logout" id="adminLogoutButton" type="button">Odjava</button></div></aside>
+<main class="admin-main"><header class="admin-topbar"><div><span class="admin-page-label">ADMINISTRACIJA</span><h2>Zadaci klijenata</h2></div><div class="admin-topbar-actions"><span class="admin-role-badge">Admin</span></div></header>
+<div class="admin-content">
+<section class="at-head"><div><span class="admin-page-label">CENTAR ZADATAKA / V14.1</span><h3>Obveze i zahtjevi klijenata</h3><p>Dodijeli zadatak klijentu kroz projekt. Interni planer ostaje odvojen.</p></div><button class="at-button at-primary" id="atNew" type="button">+ Novi zadatak</button></section>
+<div aria-live="polite" class="at-stats"><div><span>Ukupno zadataka</span><strong id="atTotal">-</strong></div><div><span>Za odraditi</span><strong id="atOpen">-</strong></div><div><span>Dovršeno</span><strong id="atDone">-</strong></div></div>
+<div aria-live="polite" class="at-notice" id="atNotice" role="status">Provjeravam pristup...</div>
+<section aria-label="Filteri zadataka" class="at-filters"><label>Projekt<select id="atProjectFilter"><option value="">Svi projekti</option></select></label><label>Status<select id="atStatusFilter"><option value="">Svi statusi</option><option value="todo">Za napraviti</option><option value="doing">U tijeku</option><option value="done">Dovršeno</option></select></label><label>Pretraga<input id="atSearch" placeholder="Naziv, klijent, opis..." type="search"/></label><button class="at-button" id="atRefresh" type="button">Osvježi</button></section>
+<section aria-live="polite" class="at-list" id="atList"><div class="at-empty">Učitavanje zadataka...</div></section>
+</div></main></div>
+<div class="at-modal-overlay" hidden="" id="atOverlay"><div aria-labelledby="atDialogTitle" aria-modal="true" class="at-modal" role="dialog"><header><div><span class="admin-page-label">ZADATAK ZA KLIJENTA</span><h2 id="atDialogTitle">Novi zadatak</h2><p>Zadatak će se prikazati klijentu vlasniku odabranog projekta.</p></div><button aria-label="Zatvori" class="at-close" id="atClose" type="button">×</button></header>
+<form id="atForm"><input id="atId" type="hidden"/>
+<label class="at-wide">Naziv zadatka *<input id="atTitle" maxlength="160" placeholder="Npr. Dostaviti logo u visokoj rezoluciji" required="" type="text"/></label>
+<label class="at-wide">Projekt / klijent *<select id="atProject" required=""><option value="">Odaberi projekt</option></select></label>
+<label>Status<select id="atStatus"><option value="todo">Za napraviti</option><option value="doing">U tijeku</option><option value="done">Dovršeno</option></select></label>
+<label>Rok<input id="atDue" type="date"/></label>
+<label class="at-wide">Opis i upute<textarea id="atDescription" maxlength="2000" placeholder="Što klijent treba napraviti?" rows="4"></textarea></label>
+<label class="at-wide at-check"><input checked="" id="atClientAction" type="checkbox"/><span>Klijent smije označiti zadatak izvršenim</span></label>
+<label class="at-wide">Brza radnja<select id="atAction"><option value="none">Bez dodatne poveznice</option><option value="documents">Otvori dokumente</option><option value="messages">Otvori poruke</option><option value="project">Otvori projekt</option><option value="approval">Otvori odobrenja dizajna</option></select></label>
+<p class="at-notice at-wide" hidden="" id="atFormNotice" role="status"></p>
+<div class="at-actions at-wide"><button class="at-button at-danger" hidden="" id="atDelete" type="button">Obriši zadatak</button><span class="at-grow"></span><button class="at-button" id="atCancel" type="button">Odustani</button><button class="at-button at-primary" id="atSave" type="submit">Spremi zadatak</button></div>
+</form></div></div>
+</body></html>

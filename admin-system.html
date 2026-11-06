@@ -2,33 +2,25 @@
 
 <html data-admin-theme="light" lang="hr">
 <head>
-    <link rel="stylesheet" href="./ptech-loading.css?v=13.8">
-    <script src="./ptech-loading.js?v=13.8" defer></script>
+<script src="./assets/js/admin/ptech-admin-nav-v14.js?v=14.1" defer></script>
+    <link rel="stylesheet" href="./assets/css/shared/ptech-loading.css?v=13.8">
+    <script src="./assets/js/shared/ptech-loading.js?v=13.8" defer></script>
 <meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
 <meta content="#f4eee8" name="theme-color"/>
 <title>PTech Digital | Upravljanje sustavom</title>
 <script>try{document.documentElement.dataset.adminTheme=localStorage.getItem('ptech-admin-theme')==='dark'?'dark':'light'}catch(e){}</script>
-<link href="./admin.css?v=90" rel="stylesheet"/><link href="./admin-system.css?v=100" rel="stylesheet"/>
+<link href="./assets/css/admin/admin.css?v=90" rel="stylesheet"/><link href="./assets/css/admin/admin-system.css?v=100" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script defer="" src="./admin-system.js?v=110"></script>
-<script defer="" src="./admin-notifications.js?v=80"></script>
-<script defer="" src="./admin-push.js?v=80"></script>
-<script defer="" src="./admin.js?v=33"></script>
+<script defer="" src="./assets/js/admin/admin-system.js?v=110"></script>
+<script defer="" src="./assets/js/admin/admin-notifications.js?v=80"></script>
+<script defer="" src="./assets/js/admin/admin-push.js?v=80"></script>
+<script defer="" src="./assets/js/admin/admin.js?v=33"></script>
 </head>
 <body data-admin-page="admin-system.html">
 <div class="admin-shell">
 <aside class="admin-sidebar">
 <div class="admin-brand"><div class="admin-brand-logo"><img alt="" src="./assets/ptech-icon.png"/></div><div><h1>PTech Digital</h1><span>ADMIN PANEL</span></div></div>
-<nav aria-label="Administratorska navigacija" class="admin-nav">
-<a class="admin-nav-item" href="admin.html"><span class="admin-nav-icon">▦</span><span>Nadzorna ploča</span></a>
-<a class="admin-nav-item" href="admin-projects.html"><span class="admin-nav-icon">▤</span><span>Projekti</span></a>
-<a class="admin-nav-item" href="admin-clients.html"><span class="admin-nav-icon">♧</span><span>Klijenti</span></a>
-<a class="admin-nav-item" href="admin-revisions.html"><span class="admin-nav-icon">⇄</span><span>Zahtjevi</span></a>
-<a class="admin-nav-item" href="admin-approvals.html"><span class="admin-nav-icon">✓</span><span>Odobrenja</span></a>
-<a class="admin-nav-item" href="admin-documents.html"><span class="admin-nav-icon">▧</span><span>Dokumenti</span></a>
-<a class="admin-nav-item" href="admin-support.html"><span class="admin-nav-icon">▢</span><span>Poruke</span><span class="admin-nav-badge" hidden="" id="supportUnreadBadge">0</span></a>
-<a class="admin-nav-item" href="admin-planner.html"><span class="admin-nav-icon">▦</span><span>Zadaci i kalendar</span></a><a aria-current="page" class="admin-nav-item active" href="admin-system.html"><span class="admin-nav-icon">⚙</span><span>Upravljanje sustavom</span></a>
-</nav>
+<nav class="admin-nav" aria-label="Administratorska navigacija"></nav>
 <div class="admin-sidebar-footer">
 <section aria-label="Push obavijesti" class="admin-push-settings"><div class="admin-push-heading"><span aria-hidden="true" class="admin-push-icon">♧</span><div class="admin-push-heading-text"><strong>Obavijesti</strong><small>Poruke klijenata</small></div></div><p class="admin-push-status" id="adminPushStatus" role="status">Provjera uređaja…</p><button id="adminEnablePush" type="button">Uključi obavijesti</button><button hidden="" id="adminDisablePush" type="button">Isključi obavijesti</button></section>
 <div class="admin-user"><span class="admin-avatar">A</span><div><strong id="adminUserName">Admin</strong><span>Administrator</span></div></div><button class="admin-logout" id="adminLogoutButton" type="button">Odjava</button>

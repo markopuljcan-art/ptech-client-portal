@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+
+<html lang="hr">
+<head>
+<link href="./assets/css/client/ptech-client-nav-v14.css?v=14.1" rel="stylesheet"/>
+<script defer="" src="./assets/js/client/ptech-client-nav-v14.js?v=14.1"></script>
+<link href="./assets/css/shared/ptech-loading.css?v=13.8" rel="stylesheet"/>
+<script defer="" src="./assets/js/shared/ptech-loading.js?v=13.8"></script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#fffaf5" name="theme-color"/>
+<title>PTech Digital | Moji zadaci</title>
+<!-- Ucitavanje teme prije prikaza stranice -->
+<script>
+        (function () {
+            let theme = "dark";
+
+            try {
+                theme = localStorage.getItem("theme") === "light"
+                    ? "light"
+                    : "dark";
+            } catch (error) {
+                // Koristi zadanu temu.
+            }
+
+            document.documentElement.setAttribute(
+                "data-theme",
+                theme
+            );
+        })();
+    </script>
+<link href="./assets/css/client/my-projects.css?v=6" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script defer="" src="./assets/js/client/ptech-client-tasks.js?v=14.1"></script>
+<link href="./assets/css/client/v13-mobile.css?v=13.10" rel="stylesheet"/>
+<script defer="" src="./assets/js/client/v13-mobile.js?v=13.10"></script>
+<link href="./assets/css/client/ptech-tasks.css?v=14.1" rel="stylesheet"/></head>
+<body class="v14-client-tasks">
+<main class="dashboard desktop-layout">
+<!-- ==========================================
+         DESKTOP SIDEBAR
+    ========================================== -->
+<aside class="desktop-sidebar">
+<!-- BRAND -->
+<a class="sidebar-brand" href="form.html">
+<span class="sidebar-brand-logo">
+<img alt="" src="./assets/ptech-icon.png"/>
+</span>
+<span class="sidebar-brand-text">
+<strong>PTech Digital</strong>
+<small>CLIENT PORTAL</small>
+</span>
+</a>
+<!-- SIDEBAR NAVIGATION -->
+<nav aria-label="Glavna navigacija" class="sidebar-nav">
+<!-- POCETNA -->
+<a class="sidebar-link" href="form.html">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<path d="M3 11.5L12 4l9 7.5"></path>
+<path d="M5 10.5V20h14v-9.5"></path>
+<path d="M9 20v-6h6v6"></path>
+</svg>
+<span>Početna</span>
+</a>
+<!-- PROJEKTI -->
+<a aria-current="page" class="sidebar-link active" href="my-projects.html">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<rect height="15" rx="2" width="16" x="4" y="5"></rect>
+<path d="M8 5V3"></path>
+<path d="M16 5V3"></path>
+<path d="M4 9h16"></path>
+</svg>
+<span>Projekti</span>
+</a>
+<!-- DOKUMENTI -->
+<a class="sidebar-link" href="documents.html">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<path d="M4 4h6l2 2h8v14H4z"></path>
+</svg>
+<span>Dokumenti</span>
+</a>
+<!-- PORUKE -->
+<a class="sidebar-link" href="messages.html">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<path d="M4 5h16v11H8l-4 4z"></path>
+</svg>
+<span>Poruke</span>
+</a>
+<!-- PROFIL -->
+<a class="sidebar-link" href="profile.html">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<circle cx="12" cy="8" r="3"></circle>
+<path d="M5 20c0-4 3-7 7-7s7 3 7 7"></path>
+</svg>
+<span>Profil</span>
+</a>
+</nav>
+<!-- SIDEBAR BOTTOM -->
+<div class="sidebar-bottom">
+<a class="sidebar-help" href="messages.html">
+                Pomoć i podrška
+            </a>
+<p>© PTech Digital 2026.</p>
+</div>
+</aside>
+<!-- ==========================================
+         MAIN
+    ========================================== -->
+<div class="desktop-main">
+<!-- ======================================
+             STICKY HEADER
+        ====================================== -->
+<header class="dashboard-header">
+<!-- PAGE TITLE -->
+<div class="header-page-title">
+<span class="header-eyebrow">
+                    PTECH DIGITAL
+                </span>
+<strong>Moji zadaci</strong>
+</div>
+<!-- HEADER ACTIONS -->
+<div class="header-actions">
+<!-- USER -->
+<div class="user-box">
+<div class="user-avatar">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<circle cx="12" cy="8" r="3"></circle>
+<path d="M5 20c0-4 3-7 7-7s7 3 7 7"></path>
+</svg>
+</div>
+<strong id="clientName">
+                        Klijent
+                    </strong>
+</div>
+<span aria-hidden="true" class="header-separator"></span>
+<!-- LOGOUT -->
+<button class="logout-button" id="logoutButton" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<path d="M10 5H5v14h5"></path>
+<path d="M14 8l4 4-4 4"></path>
+<path d="M8 12h10"></path>
+</svg>
+<span>Odjava</span>
+</button>
+<span aria-hidden="true" class="header-separator"></span>
+<!-- THEME SWITCH -->
+<label class="theme-switch" title="Promijeni temu">
+<input aria-label="Promijeni temu" id="themeToggle" type="checkbox"/>
+<span class="theme-slider"></span>
+</label>
+</div>
+</header>
+<!-- ======================================
+             ANIMATED PARTICLES
+        ====================================== -->
+<div aria-hidden="true" class="projects-particles" id="projectsParticles"></div>
+<!-- ======================================
+             MAIN CONTENT
+        ====================================== -->
+<div class="dashboard-content">
+<section class="task-intro">
+<div><span class="task-eyebrow">PTECH DIGITAL / OBVEZE KLIJENTA</span><h1>Moji zadaci</h1>
+<p>Sve obveze za tvoje projekte na jednom mjestu. Ovdje vidiš što treba dostaviti, potvrditi ili provjeriti.</p></div>
+<div aria-live="polite" class="task-summary"><span>Otvoreni zadaci</span><strong id="clientOpenCount">-</strong></div>
+</section>
+<div aria-live="polite" class="task-notice" id="clientTasksNotice" role="status">Učitavanje zadataka...</div>
+<section aria-label="Filtriranje zadataka" class="task-filters">
+<label for="clientTaskProject">Projekt<select id="clientTaskProject"><option value="">Svi projekti</option></select></label>
+<label for="clientTaskStatus">Status<select id="clientTaskStatus"><option value="open">Otvoreni zadaci</option><option value="all">Svi zadaci</option><option value="done">Dovršeni</option></select></label>
+<button class="task-button task-button-secondary" id="clientTaskRefresh" type="button">Osvježi</button>
+</section>
+<section aria-label="Zadaci klijenta" aria-live="polite" class="task-list" id="clientTaskList"><div class="task-empty">Učitavanje...</div></section>
+<footer class="footer">© PTech Digital 2026. Sva prava zadržana.</footer>
+</div>
+<!-- ======================================
+             BOTTOM NAVIGATION
+        ====================================== -->
+<nav aria-label="Mobilna navigacija" class="bottom-nav">
+<!-- POCETNA -->
+<a class="bottom-nav-item" href="form.html">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<path d="M3 11.5L12 4l9 7.5"></path>
+<path d="M5 10.5V20h14v-9.5"></path>
+<path d="M9 20v-6h6v6"></path>
+</svg>
+<span>Početna</span>
+</a>
+<!-- PORUKE -->
+<a class="bottom-nav-item" href="messages.html">
+<span class="bottom-nav-icon-wrap">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<path d="M4 5h16v11H8l-4 4z"></path>
+</svg>
+<span class="nav-notification" hidden="" id="messagesUnreadBadge">0</span>
+</span>
+<span>Poruke</span>
+</a>
+<!-- PROJEKTI -->
+<a aria-current="page" class="bottom-nav-item active" href="my-projects.html">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<rect height="15" rx="2" width="16" x="4" y="5"></rect>
+<path d="M8 5V3"></path>
+<path d="M16 5V3"></path>
+<path d="M4 9h16"></path>
+</svg>
+<span>Projekti</span>
+</a>
+<!-- DOKUMENTI -->
+<a class="bottom-nav-item" href="documents.html">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<path d="M4 4h6l2 2h8v14H4z"></path>
+</svg>
+<span>Dokumenti</span>
+</a>
+<!-- PROFIL -->
+<a class="bottom-nav-item" href="profile.html">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<circle cx="12" cy="8" r="3"></circle>
+<path d="M5 20c0-4 3-7 7-7s7 3 7 7"></path>
+</svg>
+<span>Profil</span>
+</a>
+</nav>
+</div>
+</main>
+</body>
+</html>

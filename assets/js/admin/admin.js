@@ -989,7 +989,10 @@ startAdmin();
     ['admin-revisions.html','arrows','Zahtjevi'],
     ['admin-approvals.html','check','Odobrenja'],
     ['admin-documents.html','file','Dokumenti'],
-    ['admin-support.html','chat','Poruke']
+    ['admin-support.html','chat','Poruke'],
+    ['admin-tasks.html','check','Zadaci klijenata'],
+    ['admin-planner.html','briefcase','Interni planer'],
+    ['admin-system.html','refresh','Upravljanje sustavom']
   ];
   const current = document.body?.dataset.adminPage || location.pathname.split('/').pop() || 'admin.html';
   const html = document.documentElement;

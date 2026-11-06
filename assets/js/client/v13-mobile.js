@@ -10,7 +10,7 @@
   'use strict';
   const PAGES = new Set([
     'form.html','my-projects.html','documents.html',
-    'messages.html','profile.html','project.html'
+    'messages.html','profile.html','project.html','tasks.html'
   ]);
   const page = decodeURIComponent(location.pathname.split('/').pop() || '');
   if (!PAGES.has(page)) return;
@@ -22,7 +22,7 @@
     document.body.classList.add('ptech-v13');
     nav.setAttribute('aria-label', 'Glavna navigacija PTech Client Portala');
 
-    const activeHref = page === 'project.html' ? 'my-projects.html' : page;
+    const activeHref = (page === 'project.html' || page === 'tasks.html') ? 'my-projects.html' : page;
     for (const link of nav.querySelectorAll('a.bottom-nav-item')) {
       const target = (link.getAttribute('href') || '').split(/[?#]/)[0].replace(/^\.\//,'');
       const active = target === activeHref;
@@ -101,7 +101,7 @@
 */
 (() => {
   'use strict';
-  const PAGES = new Set(['form.html','my-projects.html','documents.html','messages.html','profile.html','project.html']);
+  const PAGES = new Set(['form.html','my-projects.html','documents.html','messages.html','profile.html','project.html','tasks.html']);
   const current = decodeURIComponent(location.pathname.split('/').pop() || '');
   if (!PAGES.has(current)) return;
   const mobile = window.matchMedia('(max-width: 1100px)');
