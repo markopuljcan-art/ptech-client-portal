@@ -1,0 +1,15 @@
+/* PTech Admin V6 / Odobrenja */
+.approvals-heading{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:17px}
+.approvals-heading h3{margin:5px 0}.approvals-heading p{margin:0}
+.approvals-count-wrap{text-align:center}.approvals-count-wrap span{display:block;font-size:10px;text-transform:uppercase;color:var(--v3-muted)}.approvals-count-wrap strong{display:block;color:var(--v3-accent);font-size:30px}
+.approvals-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.approval-card{padding:19px;min-width:0;border-radius:16px;border:1px solid var(--v3-border);background:var(--v3-card);box-shadow:var(--v3-shadow)}
+.approval-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.approval-top h3{color:var(--v3-text);margin:0}.approval-status{display:inline-flex;padding:7px 10px;border-radius:99px;background:var(--v3-tint);color:var(--v3-accent);border:1px solid var(--v3-border);font-size:10px;font-weight:800}
+.approval-details{display:grid;gap:10px;margin:14px 0}.approval-details>div{padding:11px;background:var(--v3-card-soft);border-radius:10px;border:1px solid var(--v3-border)}.approval-label{display:block;color:var(--v3-muted);font-size:10px;margin-bottom:5px}.approval-details strong{color:var(--v3-text);font-size:12px}
+.approval-preview{border-radius:13px;background:var(--v3-card-soft);overflow:hidden;border:1px solid var(--v3-border)}.approval-preview img{max-width:100%;display:block}.approval-preview-empty{padding:18px;color:var(--v3-muted);text-align:center}
+.approvals-message{padding:13px;border-radius:12px;background:var(--v3-tint);color:var(--v3-text);margin-top:14px}
+@media(max-width:1000px){.approvals-list{grid-template-columns:1fr}}@media(max-width:560px){.approval-card{padding:15px}.approvals-heading{flex-wrap:wrap}}
+
+/* V7 polish */
+.approvals-heading{padding:22px 24px;border:1px solid var(--v3-border);border-radius:17px;background:var(--v3-card);box-shadow:var(--v3-shadow)}
+.approval-card{box-shadow:var(--v3-shadow);padding:21px}.approval-details{grid-template-columns:repeat(2,minmax(0,1fr))}.approval-preview{min-height:100px}.approval-card button,.approval-card a{border-radius:10px}
+@media(max-width:600px){.approvals-heading{padding:18px}.approval-details{grid-template-columns:1fr}.approval-card{padding:16px}}

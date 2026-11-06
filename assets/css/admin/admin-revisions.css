@@ -1,0 +1,71 @@
+/* PTech Admin V6 / Zahtjevi izmjena */
+.admin-revisions-heading{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:17px}
+.admin-revisions-heading h3{margin:5px 0}.admin-revisions-heading p{margin:0}
+.revision-count{display:grid;place-items:center;min-width:47px;min-height:47px;padding:10px 15px;border-radius:13px;background:var(--v3-tint);border:1px solid var(--v3-border);color:var(--v3-accent);font-size:22px;font-weight:900}
+.admin-revisions-list{display:grid;gap:13px}.admin-revision-card,.admin-thread-card{padding:21px;border-radius:17px;border:1px solid var(--v3-border);background:var(--v3-card);color:var(--v3-text);box-shadow:var(--v3-shadow)}
+.admin-thread-summary,.admin-thread-toggle{display:flex;align-items:center;justify-content:space-between;gap:15px}.admin-thread-toggle{width:100%;border:0;background:transparent;text-align:left;color:var(--v3-text);padding:0}
+.admin-thread-summary-main h3,.admin-thread-content h3{color:var(--v3-text);margin:0 0 8px}.admin-thread-preview{color:var(--v3-muted);font-size:12px;line-height:1.5}
+.admin-revision-status,.admin-thread-project-label{display:inline-flex;border:1px solid var(--v3-border);padding:7px 10px;border-radius:99px;background:var(--v3-tint);color:var(--v3-accent);font-size:10px;font-weight:800}
+.admin-thread-details{margin-top:15px;padding:15px;background:var(--v3-card-soft);border:1px solid var(--v3-border);border-radius:12px}.admin-thread-meta{font-size:11px;color:var(--v3-muted)}
+.admin-revisions-list :is(textarea,input,select){border:1px solid var(--v3-border);border-radius:11px;background:var(--v3-card-soft);color:var(--v3-text);padding:11px;max-width:100%}
+.admin-revisions-list button:not(.admin-thread-toggle){padding:10px 16px;border-radius:11px;border:1px solid var(--v3-border);font-weight:750}
+.admin-message{margin-top:14px;padding:13px;border-radius:12px;background:var(--v3-tint);color:var(--v3-text)}
+@media(max-width:560px){.admin-revisions-heading{flex-wrap:wrap}.admin-revision-card,.admin-thread-card{padding:15px}.admin-thread-summary{align-items:flex-start;flex-direction:column}}
+
+/* V7 polish */
+.admin-revisions-heading{padding:22px 24px;border:1px solid var(--v3-border);border-radius:17px;background:var(--v3-card);box-shadow:var(--v3-shadow)}
+.admin-revision-card,.admin-thread-card{box-shadow:var(--v3-shadow)}.admin-thread-details{background:var(--v3-card-soft)}
+.admin-thread-summary-main h3{font-size:16px}.admin-thread-toggle:hover{color:var(--v3-accent)}
+@media(max-width:560px){.admin-revisions-heading{padding:18px}}
+
+
+/* PTech V8 — redizajn prema odabranim prikazima */
+
+/* Clear request timeline, reply and upload areas. Original forms stay active. */
+.admin-revisions-heading{padding:24px 28px;border-radius:20px}.admin-revisions-heading h3{font-size:24px;letter-spacing:-.035em}
+.admin-revision-card,.admin-thread-card{background:var(--v3-card);border-radius:20px;padding:0!important;overflow:hidden;box-shadow:var(--v3-shadow)}
+.admin-thread-toggle{display:block;width:100%;padding:22px 26px!important;text-align:left;border:0;border-radius:0!important;background:var(--v3-card)!important}
+.admin-thread-toggle:hover{background:var(--v8-soft)!important}.admin-thread-summary{display:flex;gap:18px;align-items:center;justify-content:space-between}
+.admin-thread-summary-main{min-width:0}.admin-thread-summary-main h3{font-size:21px;letter-spacing:-.03em;line-height:1.3}
+.admin-thread-project-label{letter-spacing:.09em;font-size:10px;color:var(--v3-accent);background:var(--v3-tint);padding:6px 10px;border-radius:8px}
+.admin-thread-preview{color:var(--v3-muted);font-size:12px;line-height:1.65}.admin-thread-preview span{color:var(--v3-text)}
+.admin-revision-status{background:var(--v3-tint);color:var(--v3-accent);font-size:11px;padding:8px 12px;border-radius:99px}
+.admin-thread-details,.admin-thread-content{background:var(--v3-card);padding:22px 26px!important;border-top:1px solid var(--v3-border);border-radius:0!important}
+.admin-thread-meta{display:flex;flex-wrap:wrap;gap:12px;color:var(--v3-muted);font-size:12px}
+/* Real JS renders varied classes for the historical messages: style both safely. */
+.admin-thread-details :is(.admin-thread-message,.admin-revision-message,.thread-message,.revision-message),
+.admin-thread-content :is(.admin-thread-message,.admin-revision-message,.thread-message,.revision-message){padding:13px 16px;margin:10px 0;border:1px solid var(--v3-border);border-radius:14px;background:var(--v8-soft);color:var(--v3-text);line-height:1.6}
+.admin-revisions-list :is(textarea,input:not([type="file"]),select){border:1px solid var(--v3-border);background:var(--v8-soft);color:var(--v3-text);border-radius:13px;padding:12px 15px;min-height:46px;font-size:13px}
+.admin-revisions-list textarea{min-height:110px;max-width:100%;width:100%;resize:vertical}
+.admin-revisions-list input[type="file"]{padding:13px;min-height:48px;width:100%;background:var(--v8-soft);border:1px dashed var(--v3-border);border-radius:13px;font-size:12px}
+.admin-revisions-list button:not(.admin-thread-toggle){min-height:42px;border:1px solid var(--v3-border);border-radius:11px;padding:10px 16px;background:var(--v3-card);color:var(--v3-text);font-weight:800}
+.admin-revisions-list button[type="submit"],.admin-revisions-list button[class*="send"],.admin-revisions-list button[class*="upload"]{background:var(--v3-accent);color:var(--ptech-on-accent);border-color:var(--v3-accent)}
+.admin-revisions-list label,.admin-revisions-list h4{color:var(--v3-text);font-weight:800}
+.admin-message{background:var(--v3-tint)}
+@media(max-width:600px){.admin-thread-toggle{padding:17px!important}.admin-thread-details,.admin-thread-content{padding:18px!important}.admin-thread-summary{align-items:flex-start;flex-direction:column}}
+
+
+/* Real markup from admin-revisions.js: timeline + reply + upload grid */
+.admin-thread-content:not([hidden]){
+ display:grid;grid-template-columns:minmax(0,1.18fr) minmax(280px,.82fr);
+ gap:14px;padding:20px!important;background:var(--v8-chat-bg);
+}
+.admin-thread{grid-row:span 2;min-width:0;display:flex;flex-direction:column;gap:13px;
+ padding:20px;border:1px solid var(--v3-border);border-radius:16px;background:var(--v3-card)}
+.admin-thread-message{max-width:94%;padding:13px 15px!important;margin:0!important;border-radius:13px!important;background:var(--v8-soft)!important}
+.admin-thread-message.admin-thread-client{align-self:flex-start;border-bottom-left-radius:5px!important}
+.admin-thread-message.admin-thread-admin{align-self:flex-end;border-bottom-right-radius:5px!important;background:var(--v3-tint)!important}
+.admin-thread-message-top{display:flex;justify-content:space-between;align-items:center;gap:14px;color:var(--v3-muted);font-size:11px}
+.admin-thread-message-top strong{color:var(--v3-accent);font-size:12px}
+.admin-thread-message p{color:var(--v3-text);font-size:13px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere;margin:9px 0 0}
+.admin-reply-area,.admin-design-upload{min-width:0;padding:20px;border:1px solid var(--v3-border);border-radius:16px;background:var(--v3-card)}
+.admin-reply-area label{display:block;font-size:16px;font-weight:850;margin-bottom:13px;color:var(--v3-text)}
+.admin-reply-area textarea{width:100%;min-height:125px!important;background:var(--v8-soft)}
+.admin-reply-actions{display:flex;margin-top:10px}.admin-reply-button{width:100%;background:var(--v3-accent)!important;color:var(--ptech-on-accent)!important;border-color:var(--v3-accent)!important}
+.admin-design-upload-header span{font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:var(--v3-accent)}
+.admin-design-upload-header h4{font-size:17px;margin:7px 0 6px}.admin-design-upload-header p{color:var(--v3-muted);font-size:12px;line-height:1.6;margin:0 0 13px}
+.admin-design-upload-controls{display:flex;flex-direction:column;gap:11px}
+.admin-design-file-input{width:100%;min-height:58px;padding:15px!important;border:1px dashed var(--v3-accent-2)!important;background:var(--v8-soft)!important}
+.admin-upload-design-button{align-self:stretch;background:var(--v3-accent)!important;color:var(--ptech-on-accent)!important;border-color:var(--v3-accent)!important}
+@media(max-width:1090px){.admin-thread-content:not([hidden]){grid-template-columns:1fr}.admin-thread{grid-row:auto}}
+@media(max-width:550px){.admin-thread-content:not([hidden]){padding:10px!important}.admin-thread,.admin-reply-area,.admin-design-upload{padding:14px}}

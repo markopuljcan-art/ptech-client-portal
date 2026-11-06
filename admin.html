@@ -2,8 +2,9 @@
 <html lang="hr">
 
 <head>
-    <link rel="stylesheet" href="./ptech-loading.css?v=13.8">
-    <script src="./ptech-loading.js?v=13.8" defer></script>
+<script src="./assets/js/admin/ptech-admin-nav-v14.js?v=14.1" defer></script>
+    <link rel="stylesheet" href="./assets/css/shared/ptech-loading.css?v=13.8">
+    <script src="./assets/js/shared/ptech-loading.js?v=13.8" defer></script>
 
     <meta charset="UTF-8">
     <meta name="theme-color" content="#fcf8f4">
@@ -26,7 +27,7 @@
     
 
     <!-- Admin V3.1: stari CSS + novi dizajn u jednoj datoteci -->
-    <link rel="stylesheet" href="./admin.css?v=80">
+    <link rel="stylesheet" href="./assets/css/admin/admin.css?v=80">
 <script
         src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
     ></script>
@@ -36,15 +37,15 @@
     </title>
     
     <script
-        src="./admin.js?v=33"
+        src="./assets/js/admin/admin.js?v=33"
         defer
     ></script>
     
     <script
-        src="./admin-notifications.js?v=80"
+        src="./assets/js/admin/admin-notifications.js?v=80"
         defer
     ></script>
-<script src="./admin-push.js?v=80" defer></script>
+<script src="./assets/js/admin/admin-push.js?v=80" defer></script>
 </head>
 
 
@@ -85,133 +86,7 @@
 
             <!-- NAVIGATION -->
 
-            <nav class="admin-nav">
-
-
-                <!-- DASHBOARD -->
-
-                <a
-                    href="admin.html"
-                    class="admin-nav-item active"
-                >
-
-                    <span class="admin-nav-icon">
-                        ◫
-                    </span>
-
-                    <span>
-                        Dashboard
-                    </span>
-
-                </a>
-
-
-                <!-- PROJEKTI -->
-
-                <a
-                    href="admin-projects.html"
-                    class="admin-nav-item"
-                >
-
-                    <span class="admin-nav-icon">
-                        ▣
-                    </span>
-
-                    <span>
-                        Projekti
-                    </span>
-
-                </a>
-                <a href="admin-clients.html" class="admin-nav-item">
-                    <span class="admin-nav-icon">♧</span>
-                    <span>Klijenti</span>
-                </a>
-
-
-                <!-- ZAHTJEVI -->
-
-                <a
-                    href="admin-revisions.html"
-                    class="admin-nav-item"
-                >
-
-                    <span class="admin-nav-icon">
-                        ↔
-                    </span>
-
-                    <span>
-                        Zahtjevi
-                    </span>
-
-                </a>
-
-
-                <!-- ODOBRENJA -->
-
-                <a
-                    href="admin-approvals.html"
-                    class="admin-nav-item"
-                >
-
-                    <span class="admin-nav-icon">
-                        ✓
-                    </span>
-
-                    <span>
-                        Odobrenja
-                    </span>
-
-                </a>
-
-
-                <!-- DOKUMENTI -->
-
-                <a
-                    href="admin-documents.html"
-                    class="admin-nav-item"
-                >
-
-                    <span class="admin-nav-icon">
-                        □
-                    </span>
-
-                    <span>
-                        Dokumenti
-                    </span>
-
-                </a>
-
-
-                <!-- PODRŠKA -->
-
-                <a
-                    href="admin-support.html"
-                    class="admin-nav-item"
-                >
-
-                    <span class="admin-nav-icon">
-                        ◌
-                    </span>
-
-                    <span>
-                        Podrška
-                    </span>
-
-                    <span
-                        id="supportUnreadBadge"
-                        class="admin-nav-badge"
-                        hidden
-                    >
-                        0
-                    </span>
-
-                </a>
-
-<a href="admin-system.html" class="admin-nav-item">
-    <span class="admin-nav-icon">⚙</span>
-    <span>Upravljanje sustavom</span>
-</a>
-            </nav>
+            <nav class="admin-nav" aria-label="Administratorska navigacija"></nav>
 
 
             <!-- =========================

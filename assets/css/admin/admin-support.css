@@ -1,0 +1,85 @@
+/* PTech Admin V6 / Poruke */
+.support-admin-hero{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:15px}
+.support-admin-hero>div:first-child>span{display:block;color:var(--v3-accent);font-size:10px;font-weight:850;text-transform:uppercase;letter-spacing:.1em}
+.support-admin-hero h3{margin:6px 0 7px}.support-admin-hero p{margin:0}
+.support-admin-stat{text-align:center}.support-admin-stat span{display:block;color:var(--v3-muted);font-size:10px}.support-admin-stat strong{display:block;color:var(--v3-accent);font-size:30px}
+.admin-support-layout{display:grid;grid-template-columns:minmax(260px,350px) minmax(0,1fr);gap:14px;min-height:550px;height:min(72dvh,760px)}
+.admin-support-sidebar{display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.admin-support-sidebar-header{padding:21px 20px 11px}.admin-support-sidebar-header span{font-size:10px;color:var(--v3-accent);text-transform:uppercase;letter-spacing:.08em;font-weight:800}.admin-support-sidebar-header h3{font-size:18px;margin:5px 0}
+.admin-support-search{padding:8px 12px 14px;border-bottom:1px solid var(--v3-border)}.admin-support-search input{width:100%;min-height:45px;padding:12px;border:1px solid var(--v3-border);border-radius:12px;background:var(--v3-card-soft);color:var(--v3-text);font-size:13px}
+.admin-support-conversations{flex:1;overflow:auto;min-height:0;padding:8px;scrollbar-width:thin}
+.admin-support-conversation{width:100%;display:flex;align-items:center;gap:12px;text-align:left;border:1px solid transparent;border-radius:12px;min-height:73px;background:transparent;padding:12px;color:var(--v3-text)}
+.admin-support-conversation.active,.admin-support-conversation[aria-selected="true"]{border-color:var(--v3-border)!important;background:var(--v3-tint)!important}
+.admin-support-conversation-avatar{height:40px;width:40px;flex:0 0 40px;display:grid;place-items:center;border-radius:50%;background:var(--v3-tint);color:var(--v3-accent);font-size:13px;font-weight:800}
+.admin-support-conversation-top{display:flex;align-items:center;justify-content:space-between;gap:6px}.admin-support-conversation-top strong{font-size:12px;color:var(--v3-text)}
+.admin-support-conversation p{font-size:11px;color:var(--v3-muted);margin:5px 0 0;overflow:hidden;text-overflow:ellipsis}
+.admin-support-unread-count{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 5px;border-radius:99px;background:var(--v3-accent);color:var(--ptech-on-accent);font-size:10px;font-weight:800}
+.admin-support-chat{display:flex;flex-direction:column;min-width:0;overflow:hidden}
+.admin-support-chat-empty{flex:1;display:grid;place-content:center;text-align:center;padding:25px;gap:10px;color:var(--v3-muted)}
+.admin-support-chat-empty-icon{display:grid;place-items:center;margin:0 auto 2px;width:58px;height:58px;border-radius:50%;background:var(--v3-tint);color:var(--v3-accent);font-size:25px}
+.admin-support-chat-empty strong{color:var(--v3-text);font-size:18px}.admin-support-chat-empty p{font-size:12px;line-height:1.6;max-width:280px}
+.admin-support-chat-content{display:flex;flex-direction:column;height:100%;min-height:0}
+.admin-support-chat-header{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:78px;padding:15px 19px;border-bottom:1px solid var(--v3-border);background:var(--v3-card)}
+.admin-support-client{display:flex;align-items:center;gap:12px}.admin-support-client-avatar{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:var(--v3-tint);color:var(--v3-accent);font-weight:800}
+.admin-support-client strong{display:block;color:var(--v3-text);font-size:13px}.admin-support-client span{display:block;color:var(--v3-muted);font-size:10px;margin-top:5px}
+.admin-support-status{padding:7px 10px;border-radius:10px;border:1px solid var(--v3-border);background:var(--v3-card-soft);color:var(--v3-muted);font-size:10px}
+.admin-support-messages{flex:1;overflow:auto;display:flex;flex-direction:column;gap:11px;padding:22px;min-height:0;scrollbar-width:thin}
+.admin-support-message{max-width:min(75%,510px);padding:12px 15px;border-radius:16px;border:1px solid var(--v3-border);background:var(--ptech-bubble-client);color:var(--v3-text);overflow-wrap:anywhere;font-size:13px;line-height:1.55}
+.admin-support-message.admin{align-self:flex-end;background:var(--ptech-bubble-admin);border-bottom-right-radius:5px}
+.admin-support-message.client{align-self:flex-start;border-bottom-left-radius:5px}
+.admin-support-message p{margin:6px 0}.admin-support-message-top{display:flex;justify-content:space-between;gap:15px;font-size:10px;color:var(--v3-muted)}
+.admin-support-compose{padding:15px 18px;border-top:1px solid var(--v3-border);background:var(--v3-card)}
+.admin-support-compose textarea{width:100%;min-height:68px;max-height:135px;resize:vertical;padding:12px 13px;color:var(--v3-text);font:inherit;font-size:13px}
+.admin-support-compose-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px}
+.admin-support-compose-bottom small{font-size:10px;line-height:1.4;color:var(--v3-muted)}
+#adminSupportSend{min-height:42px;padding:10px 17px;white-space:nowrap}
+.admin-support-notice{padding:13px;margin-top:12px;border-radius:11px;border:1px solid var(--v3-border);background:var(--v3-tint);color:var(--v3-text)}
+@media(max-width:1000px){.admin-support-layout{grid-template-columns:minmax(215px,35%) minmax(0,1fr)}}
+@media(max-width:800px){.admin-support-layout{height:auto;min-height:0;grid-template-columns:1fr}.admin-support-sidebar{min-height:220px;max-height:340px}.admin-support-chat{min-height:460px;height:min(66dvh,690px)}.admin-support-messages{padding:14px}}
+@media(max-width:460px){.admin-support-chat{height:calc(100dvh - 305px);min-height:405px}.admin-support-message{max-width:89%}.admin-support-compose{padding:10px}.admin-support-compose-bottom small{display:none}}
+
+/* V7 polish — real two-panel inbox */
+.support-admin-hero{padding:22px 24px;border:1px solid var(--v3-border);border-radius:17px;background:var(--v3-card);box-shadow:var(--v3-shadow)}
+.admin-support-sidebar,.admin-support-chat{background:var(--v3-card);border:1px solid var(--v3-border);border-radius:18px;box-shadow:var(--v3-shadow)}
+.admin-support-layout{gap:13px;height:clamp(490px,68dvh,730px)}.admin-support-conversation{color:var(--v3-text)}.admin-support-conversation:hover{background:var(--v3-card-soft)}
+.admin-support-conversation.active{border-color:var(--v3-accent-2);background:var(--v3-tint)}.admin-support-chat-empty{gap:11px}.admin-support-messages{background:var(--v3-card-soft)}
+.admin-support-chat-header{background:var(--v3-card)}.admin-support-compose{background:var(--v3-card);border-top:1px solid var(--v3-border)}
+.admin-support-compose textarea{background:var(--v3-input);color:var(--v3-text);border:1px solid var(--v3-border);border-radius:12px}
+@media(max-width:850px){.admin-support-layout{grid-template-columns:1fr;height:auto}.admin-support-sidebar{min-height:240px;max-height:340px}.admin-support-chat{min-height:480px}}
+@media(max-width:560px){.support-admin-hero{padding:18px;flex-wrap:wrap}.admin-support-chat{min-height:440px}.admin-support-messages{padding:12px}.admin-support-chat-header{padding:12px}.admin-support-compose{padding:12px}}
+
+
+/* PTech V8 — redizajn prema odabranim prikazima */
+
+/* WhatsApp-inspired layout, using the original realtime Supabase elements. */
+.support-admin-hero{display:none!important} /* Primary chat header carries the context; reclaim vertical space. */
+.admin-support-layout{grid-template-columns:minmax(300px,360px) minmax(0,1fr);gap:12px;height:calc(100dvh - 166px);min-height:525px;max-height:1000px}
+.admin-support-sidebar,.admin-support-chat{background:var(--v3-card);border:1px solid var(--v3-border);border-radius:20px;box-shadow:var(--v3-shadow)}
+.admin-support-sidebar-header{padding:20px 20px 10px}.admin-support-sidebar-header h3{font-size:22px;letter-spacing:-.04em}
+.admin-support-search{padding:10px 12px 14px}.admin-support-search input{min-height:44px;padding:11px 14px 11px 17px;border:1px solid var(--v3-border);background:var(--v8-soft);border-radius:13px;font-size:13px}
+.admin-support-conversations{padding:5px 9px 14px}.admin-support-conversation{display:flex;gap:11px;padding:14px 12px;min-height:78px;border:0;border-bottom:1px solid var(--v3-border);border-radius:12px;transition:background .16s}
+.admin-support-conversation:hover{background:var(--v8-soft)}.admin-support-conversation.active{background:var(--v3-tint)!important;border-color:var(--v3-border)!important}
+.admin-support-conversation-avatar{height:44px;width:44px;flex-basis:44px;font-size:15px;background:var(--v3-tint)}
+.admin-support-conversation-main{min-width:0;flex:1}.admin-support-conversation-top strong{font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.admin-support-conversation-top>span{font-size:10px;color:var(--v3-muted);white-space:nowrap}
+.admin-support-conversation-preview{display:flex;align-items:center;justify-content:space-between;gap:7px}.admin-support-conversation-preview p{color:var(--v3-muted);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin:5px 0 0}
+.admin-support-unread-count{flex:0 0 auto;background:var(--v3-accent);color:var(--ptech-on-accent)}
+.admin-support-chat{overflow:hidden}.admin-support-chat-header{padding:12px 19px;min-height:73px;background:var(--v3-card)}.admin-support-client-avatar{height:45px;width:45px;font-size:16px}
+.admin-support-client strong{font-size:15px}.admin-support-client span{font-size:11px}
+.admin-support-status{font-size:11px}.v8-back-chat{display:none;width:36px;height:36px;border:1px solid var(--v3-border);border-radius:11px;background:var(--v8-soft);color:var(--v3-text);font-size:20px}
+.admin-support-messages{gap:10px;padding:22px 28px;background-color:var(--v8-chat-bg);background-image:radial-gradient(var(--v3-border) .55px,transparent .55px);background-size:25px 25px}
+.admin-support-message{position:relative;max-width:min(78%,650px);border:1px solid var(--v3-border);background:var(--v8-inbound);padding:10px 14px;border-radius:16px 16px 16px 5px;box-shadow:0 2px 4px rgba(0,0,0,.045);font-size:14px;line-height:1.53;color:var(--v3-text)}
+.admin-support-message.client{background:var(--v8-inbound);align-self:flex-start;border-radius:15px 15px 15px 5px}
+.admin-support-message.admin{background:var(--v8-outbound);align-self:flex-end;border-radius:15px 15px 5px 15px}
+.admin-support-message p{white-space:pre-wrap;overflow-wrap:anywhere;margin:5px 0 0}
+.admin-support-message-top{display:flex;justify-content:space-between;gap:15px;align-items:center;font-size:10px;color:var(--v3-muted)}
+.admin-support-message-top strong{font-weight:800;color:var(--v3-accent)}.admin-support-message-top span{white-space:nowrap}
+.admin-support-compose{padding:12px 15px;background:var(--v3-card);border-top:1px solid var(--v3-border);display:flex;align-items:end;gap:11px}
+.admin-support-compose textarea{flex:1;min-height:47px;max-height:130px;margin:0;resize:vertical;border-radius:16px;background:var(--v8-soft);padding:13px 15px;font-size:13px}
+.admin-support-compose-bottom{margin:0;display:flex;align-items:center;flex:0 0 auto}.admin-support-compose-bottom small{display:none}
+#adminSupportSend{min-width:50px;min-height:47px;border-radius:14px;border:1px solid var(--v3-accent);background:var(--v3-accent);color:var(--ptech-on-accent);padding:11px 16px;font-weight:800}
+.admin-support-chat-empty{background:var(--v8-chat-bg)}.v8-blank-thread{margin:auto;max-width:340px;text-align:center;padding:25px;color:var(--v3-muted);line-height:1.6}
+.v8-blank-thread strong{display:block;margin-bottom:7px;color:var(--v3-text);font-size:16px}
+@media(max-width:1000px){.admin-support-layout{grid-template-columns:minmax(240px,36%) minmax(0,1fr)}}
+@media(max-width:800px){.admin-support-layout{display:block;height:calc(100dvh - 200px);min-height:430px;max-height:none;position:relative}.admin-support-sidebar{min-height:0;max-height:none;height:100%;border-radius:17px}.admin-support-chat{display:none;height:100%;min-height:0;border-radius:17px}.admin-support-layout.v8-chat-open .admin-support-sidebar{display:none}.admin-support-layout.v8-chat-open .admin-support-chat{display:flex}.v8-back-chat{display:grid;place-items:center}.admin-support-messages{padding:16px}.admin-support-message{max-width:90%}}
+@media(max-width:480px){.admin-support-layout{height:calc(100dvh - 160px)}.admin-support-compose{padding:9px}.admin-support-compose textarea{font-size:12px}.admin-support-message{font-size:13px}.admin-support-status{display:none}#adminSupportSend{min-width:44px;padding:10px 12px;font-size:12px}}
+
