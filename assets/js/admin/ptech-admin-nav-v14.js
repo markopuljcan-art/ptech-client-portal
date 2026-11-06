@@ -50,6 +50,49 @@
     nav.replaceChildren(fragment);
     nav.setAttribute('aria-label','Administratorska navigacija');
   }
+  // V15.1: one logout handler for all admin pages, including pages that
+  // previously had no logout binding. Capture phase prevents duplicate
+  // page-specific handlers from signing out twice.
+  function initSharedLogout() {
+    if (window.__ptechAdminLogoutInstalled) return;
+    window.__ptechAdminLogoutInstalled = true;
+
+    document.addEventListener('click', async (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const button = target.closest('#adminLogoutButton');
+      if (!button) return;
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      event.stopPropagation();
+      if (button.disabled) return;
+
+      const previousLabel = button.textContent;
+      button.disabled = true;
+      button.textContent = 'Odjavljivanje...';
+      try {
+        if (!window.supabase?.createClient) {
+          throw new Error('Supabase biblioteka nije dostupna.');
+        }
+        // Publishable key is the same public client key used throughout V15.
+        const client = window.supabase.createClient(
+          'https://agivwsbczzvvuzszcvxz.supabase.co',
+          'sb_publishable_MzG913KSwZpDph7KUGqiUA_Dk7LY3wE'
+        );
+        const { error } = await client.auth.signOut();
+        if (error) throw error;
+        window.location.replace('login.html');
+      } catch (error) {
+        console.error('[PTech Admin] Odjava nije uspjela:', error);
+        button.disabled = false;
+        button.textContent = previousLabel;
+        window.alert('Odjava nije uspjela. Provjeri vezu i pokušaj ponovno.');
+      }
+    }, true);
+  }
+
+  initSharedLogout();
   if (document.querySelector('.admin-sidebar .admin-nav')) init();
   else if (document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});
   else init();
