@@ -1,4 +1,4 @@
-/* PTech Digital Client Portal V16.2 - Control Center grid and personal widgets.
+/* PTech Digital Client Portal V16.5 - live grid, adaptive tiles and fullscreen/compact tile actions.
  * Safe: project-related operations stay in original script.js; Supabase tasks
  * are read only through existing RLS. Layout and personal notes are local to
  * the signed-in user's browser and are never stored in Supabase.
@@ -7,7 +7,7 @@
   'use strict';
   const grid = document.getElementById('ptechDashboardGrid');
   if (!grid) return;
-  document.body.classList.add('ptech-dashboard-v16', 'ptech-dashboard-v162');
+  document.body.classList.add('ptech-dashboard-v16', 'ptech-dashboard-v162', 'ptech-dashboard-v164', 'ptech-dashboard-v165');
   const button = document.getElementById('ptechLayoutEdit');
   const resetButton = document.getElementById('ptechLayoutReset');
   const showButton = document.getElementById('ptechLayoutShow');
@@ -67,7 +67,9 @@
   };
   let currentUserId=null,api=null,editing=false,state=null;
   let tasks=[],taskError=false,taskLoading=false;
-  let drag=null,resize=null;
+  let drag=null,resize=null,zoom=null;
+  let densityFrame=0;
+  const tileObserver=typeof ResizeObserver==='function'?new ResizeObserver(()=>scheduleDensities()):null;
   let pickerOpen=false,picker,taskForm,widgetList,taskFormToggle;
   const MIN_ROWS=3,MAX_ROWS=11;
   const usablePageLinks={
@@ -118,7 +120,7 @@
     return out;
   }
   function save(){try{if(storageKey())localStorage.setItem(storageKey(),JSON.stringify(state));}
-    catch(e){console.warn('[PTech V16.2] Raspored nije spremljen',e);}}
+    catch(e){console.warn('[PTech V16.3] Raspored nije spremljen',e);}}
   function load(){try{const raw=storageKey() && localStorage.getItem(storageKey());return normalize(raw?JSON.parse(raw):null);}
     catch(_){return cloneDefaults();}}
   function text(tag,cls,content){const el=document.createElement(tag);if(cls)el.className=cls;el.textContent=content;return el;}
@@ -144,14 +146,75 @@
     const counter=widget.querySelector('.ptech-widget-dimensions');
     if(counter)counter.textContent=`${d.w} × ${d.h}`;
   }
+  // Responsive previews: the *same* widget progressively reveals more information.
+  // Compact tiles show a title/name; medium tiles add context; large tiles add a summary.
+  const hubHints={
+    'hub-messages':'Razgovori i odgovori podrške na jednom mjestu.',
+    'hub-documents':'Pregled dokumenata, datoteka i materijala za projekte.',
+    'hub-tasks':'Dodijeljene obveze, statusi i rokovi za tvoje projekte.',
+    'hub-projects':'Detalji projekata, status izrade i sljedeći koraci.',
+    'hub-profile':'Tvoj korisnički račun i postavke profila.',
+    'hub-approval':'Otvori projekt kako bi pregledao i odobrio dizajn.',
+    'hub-revisions':'Pošalji prijedloge izmjena odabranog projekta.',
+    'hub-support':'Otvorene poruke i način kako kontaktirati podršku.'
+  };
+  function currentDisplayName(){
+    const label=document.getElementById('userTop')?.textContent?.trim();
+    return label&&label!=='Klijent'?label:'Klijent';
+  }
   function hubNode(id,meta){
     const node=document.createElement('section');node.className='ptech-widget ptech-hub-widget';
     node.dataset.widgetId=id;node.setAttribute('aria-label',meta.title);
     const content=document.createElement('div');content.className='ptech-hub-body';
     const icon=text('span','ptech-hub-icon',meta.icon);icon.setAttribute('aria-hidden','true');
-    content.append(icon,text('h2','',meta.title),text('p','',meta.detail));
+    const title=text('h2','ptech-hub-title',meta.title);
+    content.append(icon,title);
+    if(id==='hub-profile')content.append(text('h2','ptech-hub-title-compact',currentDisplayName()));
+    content.append(text('p','ptech-hub-description',meta.detail));
+    const extra=document.createElement('div');extra.className='ptech-hub-extra';
+    extra.append(text('strong','ptech-hub-summary-title',meta.title),
+      text('p','ptech-hub-summary-text',hubHints[id]||meta.detail));
+    if(id==='hub-profile')extra.append(text('p','ptech-hub-summary-email',''));
+    content.append(extra);
     const link=text('a','ptech-hub-link','Otvori →');link.href=meta.href;
     content.append(link);node.append(content);return node;
+  }
+  function updateHubSummaries(){
+    const profile=widgets.get('hub-profile');
+    if(profile){
+      const name=currentDisplayName();
+      const compact=profile.querySelector('.ptech-hub-title-compact');
+      if(compact)compact.textContent=name;
+      const strong=profile.querySelector('.ptech-hub-summary-title');
+      if(strong)strong.textContent=name;
+      const email=profile.querySelector('.ptech-hub-summary-email');
+      const address=typeof currentSession!=='undefined'?currentSession?.user?.email:'';
+      if(email){email.textContent=address||'';email.hidden=!address;}
+    }
+    const projects=widgets.get('hub-projects');
+    const total=document.getElementById('totalProjects')?.textContent?.trim();
+    const pSummary=projects?.querySelector('.ptech-hub-summary-title');
+    if(pSummary)pSummary.textContent=total&&/^\d+$/.test(total)?`${total} projekata`:'Moji projekti';
+    const tasksHub=widgets.get('hub-tasks');
+    const tSummary=tasksHub?.querySelector('.ptech-hub-summary-title');
+    const count=taskCount?.textContent?.trim();
+    if(tSummary)tSummary.textContent=count&&/^\d+$/.test(count)?`${count} otvorenih zadataka`:'Dodijeljeni zadaci';
+  }
+  function applyDensity(widget){
+    if(!widget || widget.hidden || !widget.isConnected)return;
+    const rect=widget.getBoundingClientRect();
+    if(rect.width<10||rect.height<10)return;
+    const width=rect.width,height=rect.height;
+    const mode=zoom?.widget===widget?'expanded':width<285||height<218?'compact':width>=425&&height>=325?'expanded':'standard';
+    if(widget.dataset.widgetDensity!==mode)widget.dataset.widgetDensity=mode;
+  }
+  function scheduleDensities(){
+    if(densityFrame)return;
+    densityFrame=requestAnimationFrame(()=>{
+      densityFrame=0;
+      for(const widget of widgets.values())applyDensity(widget);
+      updateHubSummaries();
+    });
   }
   function personalNode(task){
     const node=document.createElement('section');node.className='ptech-widget ptech-personal-widget';
@@ -334,6 +397,7 @@
   function equipWidget(id,widget){
     if(widget.dataset.ptechEquipped)return;
     widget.dataset.ptechEquipped='true';
+    tileObserver?.observe(widget);
     const content=document.createElement('div');content.className='ptech-tile-inner';
     while(widget.firstChild)content.append(widget.firstChild);
     widget.append(content);
@@ -352,6 +416,13 @@
     prev.addEventListener('click',()=>moveOne(id,-1));
     const next=makeButton('→',`Pomakni ${name} kasnije`);
     next.addEventListener('click',()=>moveOne(id,1));
+    const compact=makeButton('▣',`Smanji ${name} na malu kockicu`,'ptech-widget-compact');
+    compact.addEventListener('click',()=>{
+      if(!editing || drag || resize || zoom)return;
+      const old=state.dims[id]||{w:6,h:4};
+      state.dims[id]={...old,w:minColumn(id),h:MIN_ROWS,m:(id==='projects'||id==='actions')?2:1};
+      render(true);save();
+    });
     const hide=makeButton('×',`Ukloni ${name} s dashboarda`,'ptech-widget-hide');
     hide.addEventListener('click',()=>{
       if(!editing)return;
@@ -362,11 +433,11 @@
         state.order=state.order.filter(x=>x!==id);
         state.hidden=state.hidden.filter(x=>x!==id);
         delete state.dims[id];
-        widgets.delete(id);widget.remove();
+        tileObserver?.unobserve(widget);widgets.delete(id);widget.remove();
       }else if(!state.hidden.includes(id))state.hidden.push(id);
       render();save();
     });
-    controls.append(handle,label,prev,next,hide);
+    controls.append(handle,label,compact,prev,next,hide);
     const grip=makeButton('','Povuci kut za promjenu širine i visine '+name,'ptech-widget-resize');
     grip.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 20l11-11M15 20l5-5M19 20h1v-1"/></svg>';
     grip.setAttribute('aria-keyshortcuts','ArrowLeft ArrowRight ArrowUp ArrowDown');
@@ -382,7 +453,79 @@
       d.h=clamp(d.h+delta[1],MIN_ROWS,MAX_ROWS);state.dims[id]=d;
       render();save();
     });
-    widget.append(controls,grip);
+    // Fullscreen doesn't duplicate existing DOM, event handlers or Supabase state.
+    const expand=makeButton('⛶',`Proširi ${name} na veliki zaslon`,'ptech-widget-expand');
+    expand.addEventListener('click',event=>{
+      event.preventDefault();event.stopPropagation();openZoom(id,expand);
+    });
+    widget.append(controls,grip,expand);
+  }
+
+  // Maximize/restore: move the REAL widget to an accessible fullscreen dialog.
+  // A footprint placeholder retains its exact grid position and dimensions.
+  // Restoring does not modify saved order or tile dimensions.
+  function openZoom(id,trigger){
+    if(zoom || drag || resize || !widgets.has(id) || widgets.get(id).hidden)return;
+    if(editing)setEdit(false); // prevent hidden editor controls/native actions being activated
+    const widget=widgets.get(id);
+    const rect=widget.getBoundingClientRect();
+    const placeholder=document.createElement('div');
+    placeholder.className='ptech-zoom-footprint';
+    placeholder.style.order=widget.style.order;
+    placeholder.style.gridColumn=`span ${viewDims(id).w}`;
+    placeholder.style.gridRow=`span ${viewDims(id).h}`;
+    placeholder.setAttribute('aria-hidden','true');
+    const overlay=document.createElement('div');
+    overlay.className='ptech-zoom-overlay';
+    overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');
+    const title=titles[id]||state.customTasks.find(t=>customId(t)===id)?.title||'Kockica';
+    overlay.setAttribute('aria-label',`Prošireni prikaz: ${title}`);
+    const dialog=document.createElement('div');dialog.className='ptech-zoom-dialog';
+    const header=document.createElement('div');header.className='ptech-zoom-header';
+    const heading=text('strong','ptech-zoom-heading',title);
+    const restore=makeButton('↙ Vrati',`Vrati ${title} na dashboard`,'ptech-zoom-restore');
+    header.append(heading,restore);
+    const stage=document.createElement('div');stage.className='ptech-dashboard-grid ptech-zoom-grid';
+    widget.replaceWith(placeholder);
+    stage.append(widget);
+    dialog.append(header,stage);overlay.append(dialog);document.body.append(overlay);
+    const oldOverflow=document.documentElement.style.overflow;
+    document.documentElement.style.overflow='hidden';
+    const onKey=e=>{
+      if(e.key==='Escape'){e.preventDefault();closeZoom();}
+      if(e.key==='Tab'){
+        const elements=[...overlay.querySelectorAll('a[href],button:not([disabled]),input,select,textarea,[tabindex]:not([tabindex="-1"])')]
+          .filter(el=>el.getClientRects().length && getComputedStyle(el).visibility!=='hidden');
+        if(!elements.length){e.preventDefault();restore.focus();return;}
+        const first=elements[0],last=elements[elements.length-1];
+        if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+        else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+      }
+    };
+    const onBackdrop=e=>{if(e.target===overlay)closeZoom();};
+    zoom={id,widget,trigger,placeholder,overlay,restore,onKey,onBackdrop,oldOverflow,rect};
+    restore.addEventListener('click',closeZoom);
+    overlay.addEventListener('pointerdown',onBackdrop);
+    document.addEventListener('keydown',onKey,true);
+    document.body.classList.add('ptech-widget-zoom-open');
+    widget.dataset.widgetDensity='expanded';
+    taskPreviewRender();
+    scheduleDensities();
+    restore.focus({preventScroll:true});
+  }
+  function closeZoom(){
+    if(!zoom)return;
+    const z=zoom;zoom=null;
+    document.removeEventListener('keydown',z.onKey,true);
+    z.overlay.removeEventListener('pointerdown',z.onBackdrop);
+    z.placeholder.replaceWith(z.widget);
+    z.overlay.remove();
+    document.documentElement.style.overflow=z.oldOverflow;
+    document.body.classList.remove('ptech-widget-zoom-open');
+    taskPreviewRender();
+    render();
+    // Restore focus to the button, not to the start of the page.
+    if(z.trigger.isConnected)z.trigger.focus({preventScroll:true});
   }
 
   // Catalog: all supported portal sections plus unlimited user-defined local tasks
@@ -457,7 +600,7 @@
 
   for(const [id,widget] of widgets)equipWidget(id,widget);
   function loadPersonalWidgets(){
-    for(const [id,node] of [...widgets])if(id.startsWith('personal-')){node.remove();widgets.delete(id);delete titles[id];}
+    for(const [id,node] of [...widgets])if(id.startsWith('personal-')){tileObserver?.unobserve(node);node.remove();widgets.delete(id);delete titles[id];}
     for(const task of state.customTasks){
       const id=customId(task);titles[id]=task.title;
       const widget=personalNode(task);grid.append(widget);widgets.set(id,widget);
@@ -512,10 +655,12 @@
     resetButton.hidden=!editing;hint.hidden=!editing;
     renderCatalog();renderQuickActions();taskPreviewRender();
     animateReflow(before);
+    scheduleDensities();
   }
   function setEdit(value){
+    if(zoom)closeZoom();
     editing=Boolean(value)&&Boolean(currentUserId);
-    if(!editing){endDrag();endResize();pickerOpen=false;actionPickerOpen=false;taskForm.hidden=true;}
+    if(!editing){cancelDrag();endResize();pickerOpen=false;actionPickerOpen=false;taskForm.hidden=true;}
     document.body.classList.toggle('ptech-layout-editing',editing);
     button.setAttribute('aria-pressed',String(editing));
     button.textContent=editing?'✓ Gotovo':'✦ Uredi dashboard';
@@ -530,85 +675,306 @@
     if(!window.confirm('Želiš vratiti zadani raspored? Osobni zadaci i njihove oznake bit će uklonjeni iz ovog preglednika.'))return;
     state=cloneDefaults();loadPersonalWidgets();pickerOpen=false;render(true);save();
   });
-  window.addEventListener('resize',()=>{if(state)for(const [id,widget]of widgets)renderSizes(id,widget);},{passive:true});
+  window.addEventListener('resize',()=>{if(state){for(const [id,widget]of widgets)renderSizes(id,widget);scheduleDensities();}},{passive:true});
+  const nameLabel=document.getElementById('userTop');
+  if(nameLabel && typeof MutationObserver==='function')new MutationObserver(updateHubSummaries).observe(nameLabel,{characterData:true,childList:true,subtree:true});
 
+  // V16.4: Real live rearrangement, like the reference video's snapping tile grid.
+  // The real widget follows the pointer. Its previous grid footprint becomes a
+  // highlighted placeholder; neighbors reflow BEFORE pointer release.
+  // No cloned DOM/IDs and no duplicated Supabase listeners.
+  function dragOrder(){
+    return state.order.filter(id=>widgets.has(id)&&!state.hidden.includes(id));
+  }
   function startDrag(event,id){
-    if(!editing||!currentUserId||event.button!==0||drag||resize)return;
-    event.preventDefault();
-    const handle=event.currentTarget;
-    drag={id,handle,pointerId:event.pointerId,x:event.clientX,y:event.clientY,target:null,started:false,ghost:null};
-    handle.setPointerCapture?.(event.pointerId);
-    handle.addEventListener('pointermove',dragMove);
-    handle.addEventListener('pointerup',dragEnd);
-    handle.addEventListener('pointercancel',dragEnd);
+    if(!editing||!currentUserId||drag||resize||(event.pointerType==='mouse'&&event.button!==0))return;
+    const node=widgets.get(id);
+    if(!node||node.hidden)return;
+    event.preventDefault();event.stopPropagation();
+    drag={id,node,handle:event.currentTarget,pointerId:event.pointerId,
+      x:event.clientX,y:event.clientY,started:false,placeholder:null,previewIndex:-1,
+      pointerX:event.clientX,pointerY:event.clientY,pointerType:event.pointerType,autoScrollFrame:0,originalOrder:dragOrder(),
+      originalStyle:{position:node.style.position,left:node.style.left,top:node.style.top,
+        width:node.style.width,height:node.style.height,zIndex:node.style.zIndex,
+        transform:node.style.transform,pointerEvents:node.style.pointerEvents,
+        transition:node.style.transition}};
+    try{event.currentTarget.setPointerCapture(event.pointerId);}catch(_){}
+    window.addEventListener('pointermove',dragMove,true);
+    window.addEventListener('pointerup',dragEnd,true);
+    window.addEventListener('pointercancel',dragCancel,true);
+    window.addEventListener('blur',dragCancel);
+    document.addEventListener('keydown',dragKeydown,true);
+  }
+  function beginDrag(){
+    const d=drag;if(!d||d.started)return;
+    d.started=true;
+    const rect=d.node.getBoundingClientRect();
+    d.rect=rect;
+    d.offsetX=d.x-rect.left;
+    d.offsetY=d.y-rect.top;
+    const placeholder=document.createElement('div');
+    placeholder.className='ptech-drop-placeholder';
+    placeholder.dataset.ptechDropTarget='true';
+    placeholder.setAttribute('aria-hidden','true');
+    placeholder.style.setProperty('--ptech-span-cols',String(viewDims(d.id).w));
+    placeholder.style.setProperty('--ptech-span-rows',String(viewDims(d.id).h));
+    placeholder.append(text('span','ptech-drop-placeholder-icon','▦'),
+      text('strong','',`Pusti ovdje`),text('small','','Novo mjesto kartice'));
+    grid.append(placeholder);
+    d.placeholder=placeholder;
+    d.node.classList.add('ptech-widget-floating');
+    document.body.classList.add('ptech-drag-active');
+    // Fixed positioning removes it from CSS grid while retaining the actual DOM.
+    d.node.style.setProperty('position','fixed','important');
+    d.node.style.setProperty('left',rect.left+'px','important');
+    d.node.style.setProperty('top',rect.top+'px','important');
+    d.node.style.setProperty('width',rect.width+'px','important');
+    d.node.style.setProperty('height',rect.height+'px','important');
+    d.node.style.setProperty('z-index','9998','important');
+    d.node.style.setProperty('pointer-events','none','important');
+    d.node.style.setProperty('transition','none','important');
+    d.node.style.setProperty('transform','translate3d(0,0,0)','important');
+    const initial=Math.max(0,d.originalOrder.indexOf(d.id));
+    const note=document.createElement('div');note.className='ptech-drop-live-status';
+    note.setAttribute('role','status');note.setAttribute('aria-live','polite');
+    grid.after(note);d.note=note;
+    previewDrop(initial);
+    d.handle.setAttribute('aria-grabbed','true');
+    if(d.pointerType==='touch')d.autoScrollFrame=requestAnimationFrame(touchAutoScroll);
+    scheduleDensities();
+  }
+  function previewDrop(index){
+    if(!drag||!drag.started)return;
+    const d=drag;
+    const others=d.originalOrder.filter(id=>id!==d.id);
+    const next=clamp(index,0,others.length);
+    if(d.previewIndex===next)return;
+    const before=new Map(others.map(id=>[id,widgets.get(id)?.getBoundingClientRect()]));
+    const preview=[...others];preview.splice(next,0,d.id);
+    for(let i=0;i<preview.length;i++){
+      const id=preview[i];
+      if(id===d.id)d.placeholder.style.order=String(i);
+      else widgets.get(id).style.order=String(i);
+    }
+    d.previewIndex=next;
+    if(d.note)d.note.textContent=`${titles[d.id]||'Kartica'} — pozicija ${next+1} od ${preview.length}`;
+    if(prefersReducedMotion())return;
+    requestAnimationFrame(()=>{
+      if(!drag||drag!==d)return;
+      for(const [id,from] of before){
+        const node=widgets.get(id);if(!node||!from)continue;
+        const to=node.getBoundingClientRect();
+        const dx=from.left-to.left,dy=from.top-to.top;
+        if((Math.abs(dx)+Math.abs(dy))<3||Math.abs(dy)>1800)continue;
+        if(node._ptechLiveFlip)node._ptechLiveFlip.cancel();
+        const a=node.animate([{transform:`translate3d(${dx}px,${dy}px,0)`},{transform:'translate3d(0,0,0)'}],
+          {duration:230,easing:'cubic-bezier(.17,.85,.22,1)'});
+        node._ptechLiveFlip=a;
+        a.addEventListener('finish',()=>{if(node._ptechLiveFlip===a)node._ptechLiveFlip=null;},{once:true});
+      }
+    });
+  }
+  function bestDropIndex(x,y){
+    const d=drag;if(!d)return 0;
+    const others=d.originalOrder.filter(id=>id!==d.id);
+    if(!others.length)return 0;
+    const candidates=others.map((id,index)=>({id,index,node:widgets.get(id)}))
+      .filter(item=>item.node&&!item.node.hidden);
+    let target=null;
+    const el=document.elementFromPoint(x,y)?.closest('[data-widget-id]');
+    if(el && el.dataset.widgetId!==d.id){target=candidates.find(item=>item.id===el.dataset.widgetId);}
+    if(!target){
+      let best=Infinity;
+      for(const item of candidates){
+        const r=item.node.getBoundingClientRect();
+        const dx=Math.max(r.left-x,0,x-r.right),dy=Math.max(r.top-y,0,y-r.bottom);
+        // Weighted proximity prevents a very wide card attracting drops from rows below.
+        const dist=dx*dx+dy*dy*1.25;
+        if(dist<best){best=dist;target=item;}
+      }
+    }
+    if(!target)return others.length;
+    const r=target.node.getBoundingClientRect();
+    // Large/full-width tiles split along their height. For smaller tiles use
+    // horizontal halves, matching the grid's natural left-to-right packing.
+    const vertical=r.width>grid.clientWidth*.78 || (r.height>r.width*1.8 && x>r.left+r.width*.15 && x<r.right-r.width*.15);
+    const after=vertical?y>r.top+r.height*.5:x>r.left+r.width*.5;
+    return target.index+(after?1:0);
   }
   function dragMove(e){
     if(!drag||e.pointerId!==drag.pointerId)return;
-    if(!drag.started&&Math.hypot(e.clientX-drag.x,e.clientY-drag.y)<6)return;
-    if(!drag.started){
-      drag.started=true;
-      widgets.get(drag.id)?.classList.add('ptech-widget-dragging');
-      const ghost=text('div','ptech-drag-ghost',titles[drag.id]);document.body.append(ghost);drag.ghost=ghost;
+    if(!drag.started&&Math.hypot(e.clientX-drag.x,e.clientY-drag.y)<7)return;
+    if(!drag.started)beginDrag();
+    if(!drag)return;
+    e.preventDefault();e.stopPropagation();
+    const d=drag;
+    d.pointerX=e.clientX;d.pointerY=e.clientY;
+    // Keep the tile under the finger; this does not trigger grid reflow.
+    d.node.style.setProperty('transform',`translate3d(${e.clientX-d.x}px,${e.clientY-d.y}px,0)`,'important');
+    const target=bestDropIndex(e.clientX,e.clientY);
+    previewDrop(target);
+    // Mobile auto-scroll runs every frame while the finger rests near an edge.
+    // Unlike one-shot scrolling, the user can drag through long dashboards.
+
+  }
+  function touchAutoScroll(){
+    if(!drag||!drag.started||drag.pointerType!=='touch')return;
+    const d=drag;
+    const upper=95,lower=window.innerHeight-110;
+    const dy=d.pointerY<upper?-clamp((upper-d.pointerY)*.23,4,18):
+      d.pointerY>lower?clamp((d.pointerY-lower)*.23,4,18):0;
+    if(dy){
+      const before=window.scrollY;window.scrollBy(0,dy);
+      if(window.scrollY!==before)previewDrop(bestDropIndex(d.pointerX,d.pointerY));
     }
-    e.preventDefault();
-    drag.ghost.style.left=`${e.clientX+13}px`;drag.ghost.style.top=`${e.clientY+13}px`;
-    for(const node of widgets.values())node.classList.remove('ptech-widget-target');
-    const el=document.elementFromPoint(e.clientX,e.clientY)?.closest('[data-widget-id]');
-    const target=el?.dataset.widgetId;
-    drag.target=target&&target!==drag.id&&!state.hidden.includes(target)?target:null;
-    if(drag.target)el.classList.add('ptech-widget-target');
+    d.autoScrollFrame=requestAnimationFrame(touchAutoScroll);
   }
   function dragEnd(e){
-    if(!drag||(e&&e.pointerId!==drag.pointerId))return;
-    const {id,target}=drag;endDrag();
-    if(!target)return;
-    const order=state.order.filter(x=>x!==id);order.splice(order.indexOf(target),0,id);
-    state.order=order;render(true);save();
-  }
-  function endDrag(){
-    if(!drag)return;const {handle,pointerId,ghost}=drag;
-    try{if(handle.hasPointerCapture?.(pointerId))handle.releasePointerCapture(pointerId);}catch(_){}
-    handle.removeEventListener('pointermove',dragMove);handle.removeEventListener('pointerup',dragEnd);
-    handle.removeEventListener('pointercancel',dragEnd);
-    ghost?.remove();for(const node of widgets.values())node.classList.remove('ptech-widget-dragging','ptech-widget-target');
-    drag=null;
-  }
-  function startResize(e,id){
-    if(!editing||!currentUserId||e.button!==0||resize||drag)return;
+    if(!drag||e.pointerId!==drag.pointerId)return;
     e.preventDefault();e.stopPropagation();
-    const handle=e.currentTarget,el=widgets.get(id),d=viewDims(id);
-    const rect=grid.getBoundingClientRect(),gap=parseFloat(getComputedStyle(grid).columnGap)||14;
-    const cols=breakpointColumns(),colWidth=(rect.width-gap*(cols-1))/cols+gap;
-    const rowHeight=parseFloat(getComputedStyle(grid).gridAutoRows)||68;
-    const rowStep=rowHeight+(parseFloat(getComputedStyle(grid).rowGap)||gap);
-    resize={id,handle,pointerId:e.pointerId,x:e.clientX,y:e.clientY,w:d.w,h:d.h,cols,colWidth,rowStep,changed:false};
-    el.classList.add('ptech-widget-resizing');
-    handle.setPointerCapture?.(e.pointerId);
-    handle.addEventListener('pointermove',resizeMove);handle.addEventListener('pointerup',resizeEnd);
-    handle.addEventListener('pointercancel',resizeEnd);
+    if(!drag.started){clearDrag();return;}
+    const d=drag;
+    const others=d.originalOrder.filter(id=>id!==d.id);
+    const next=[...others];next.splice(clamp(d.previewIndex,0,others.length),0,d.id);
+    const hidden=state.order.filter(id=>!next.includes(id));
+    // Restore before final render to avoid a ghost tile remaining on screen.
+    clearDrag();
+    state.order=[...next,...hidden];
+    render(true);save();
+  }
+  function dragCancel(){cancelDrag();}
+  function dragKeydown(e){if(e.key==='Escape'&&drag){e.preventDefault();e.stopPropagation();cancelDrag();}}
+  function cancelDrag(){
+    if(!drag)return;
+    clearDrag();
+    render(true);
+  }
+  function clearDrag(){
+    if(!drag)return;
+    const d=drag;
+    drag=null;
+    window.removeEventListener('pointermove',dragMove,true);
+    window.removeEventListener('pointerup',dragEnd,true);
+    window.removeEventListener('pointercancel',dragCancel,true);
+    window.removeEventListener('blur',dragCancel);
+    document.removeEventListener('keydown',dragKeydown,true);
+    try{if(d.handle.hasPointerCapture?.(d.pointerId))d.handle.releasePointerCapture(d.pointerId);}catch(_){}
+    if(d.autoScrollFrame)cancelAnimationFrame(d.autoScrollFrame);
+    if(d.started){
+      const n=d.node,s=d.originalStyle;
+      // Remove overriding inline styles and restore any previously set values.
+      for(const [k,v] of Object.entries(s))n.style[k]=v;
+      n.classList.remove('ptech-widget-floating');
+      d.placeholder?.remove();d.note?.remove();
+      document.body.classList.remove('ptech-drag-active');
+      d.handle.removeAttribute('aria-grabbed');
+      for(const widget of widgets.values()){
+        if(widget._ptechLiveFlip){widget._ptechLiveFlip.cancel();widget._ptechLiveFlip=null;}
+      }
+    }
+    scheduleDensities();
+  }
+  // Resize is intentionally continuous while the corner is held, not only a +/- step.
+  // Keep the grid footprint stable during the gesture so the tile never jumps away
+  // from the finger. On release it snaps to grid cells and rearranges neighbors.
+  function startResize(e,id){
+    if(!editing||!currentUserId||resize||drag || (e.pointerType==='mouse'&&e.button!==0))return;
+    const widget=widgets.get(id);
+    if(!widget||widget.hidden)return;
+    e.preventDefault();
+    e.stopPropagation();
+    const handle=e.currentTarget;
+    const rect=widget.getBoundingClientRect();
+    const style=getComputedStyle(grid);
+    const colGap=parseFloat(style.columnGap)||0;
+    const rowGap=parseFloat(style.rowGap)||0;
+    const cols=breakpointColumns();
+    const colStep=(grid.clientWidth-colGap*(cols-1))/cols+colGap;
+    const rowStep=(parseFloat(style.gridAutoRows)||68)+rowGap;
+    const minCols=cols===12?minColumn(id):cols===6?
+      (id==='projects'||id==='actions'?4:2):(id==='projects'||id==='actions'?2:1);
+    const dims=viewDims(id);
+    resize={
+      id,widget,handle,pointerId:e.pointerId,
+      x:e.clientX,y:e.clientY,width:rect.width,height:rect.height,
+      cols,colStep,rowStep,colGap,rowGap,minCols,
+      nextCols:dims.w,nextRows:dims.h,changed:false,
+      oldWidth:widget.style.width,oldHeight:widget.style.height
+    };
+    widget.classList.add('ptech-widget-resizing');
+    handle.setAttribute('aria-grabbed','true');
+    document.body.classList.add('ptech-resize-active');
+    try{handle.setPointerCapture(e.pointerId);}catch(_){}
+    // Window capture still works when the pointer moves beyond the handle/tile,
+    // and is also the fallback when Pointer Capture is not supported.
+    window.addEventListener('pointermove',resizeMove,true);
+    window.addEventListener('pointerup',resizeEnd,true);
+    window.addEventListener('pointercancel',resizeCancel,true);
+    window.addEventListener('blur',resizeCancel);
+    document.addEventListener('keydown',resizeKeydown,true);
   }
   function resizeMove(e){
     if(!resize||resize.pointerId!==e.pointerId)return;
-    e.preventDefault();
-    const r=resize,cols=r.cols;
-    const min=cols===12?minColumn(r.id):cols===6?(r.id==='projects'||r.id==='actions'?4:2):(r.id==='projects'||r.id==='actions'?2:1);
-    const nextCol=clamp(r.w+Math.round((e.clientX-r.x)/r.colWidth),min,cols);
-    const nextRow=clamp(r.h+Math.round((e.clientY-r.y)/r.rowStep),MIN_ROWS,MAX_ROWS);
-    if(nextCol===r.w&&nextRow===r.h&&!r.changed)return;
-    const d=state.dims[r.id]||{w:6,h:4};
-    if(cols===2)d.m=nextCol;
-    else d.w=cols===12?nextCol:clamp(nextCol*2,minColumn(r.id),12);
-    d.h=nextRow;state.dims[r.id]=d;
-    renderSizes(r.id,widgets.get(r.id));
-    r.changed=true;
+    e.preventDefault();e.stopPropagation();
+    const r=resize;
+    const minWidth=r.minCols*r.colStep-r.colGap;
+    const maxWidth=r.cols*r.colStep-r.colGap;
+    const minHeight=MIN_ROWS*r.rowStep-r.rowGap;
+    const maxHeight=MAX_ROWS*r.rowStep-r.rowGap;
+    const width=clamp(r.width+e.clientX-r.x,minWidth,maxWidth);
+    const height=clamp(r.height+e.clientY-r.y,minHeight,maxHeight);
+    // Move in pixels as the user drags (rather than jumping one grid cell at a time).
+    r.widget.style.width=`${width}px`;
+    r.widget.style.height=`${height}px`;
+    r.nextCols=clamp(Math.round((width+r.colGap)/r.colStep),r.minCols,r.cols);
+    r.nextRows=clamp(Math.round((height+r.rowGap)/r.rowStep),MIN_ROWS,MAX_ROWS);
+    const counter=r.widget.querySelector('.ptech-widget-dimensions');
+    if(counter)counter.textContent=`${r.nextCols} × ${r.nextRows}`;
+    r.changed=r.changed||Math.abs(e.clientX-r.x)>2||Math.abs(e.clientY-r.y)>2;
   }
-  function resizeEnd(e){if(!resize||(e&&e.pointerId!==resize.pointerId))return;endResize();render();save();}
+  function resizeEnd(e){
+    if(!resize||resize.pointerId!==e.pointerId)return;
+    e.preventDefault();e.stopPropagation();
+    const r=resize;
+    endResize();
+    if(!r.changed)return;
+    const d=state.dims[r.id]||{w:6,h:4};
+    if(r.cols===2){
+      d.m=r.nextCols;
+    }else{
+      d.w=r.cols===12?r.nextCols:clamp(r.nextCols*2,minColumn(r.id),12);
+    }
+    d.h=r.nextRows;
+    state.dims[r.id]=d;
+    render(true);
+    save();
+  }
+  function resizeCancel(){
+    if(!resize)return;
+    endResize();
+    // Cancelling the gesture (e.g. touch interrupted) does not save a half-finished size.
+    render();
+  }
+  function resizeKeydown(e){
+    if(e.key!=='Escape'||!resize)return;
+    e.preventDefault();e.stopPropagation();
+    resizeCancel();
+  }
   function endResize(){
-    if(!resize)return;const {id,handle,pointerId}=resize;
-    try{if(handle.hasPointerCapture?.(pointerId))handle.releasePointerCapture(pointerId);}catch(_){}
-    handle.removeEventListener('pointermove',resizeMove);handle.removeEventListener('pointerup',resizeEnd);
-    handle.removeEventListener('pointercancel',resizeEnd);
-    widgets.get(id)?.classList.remove('ptech-widget-resizing');resize=null;
+    if(!resize)return;
+    const r=resize;
+    resize=null;
+    window.removeEventListener('pointermove',resizeMove,true);
+    window.removeEventListener('pointerup',resizeEnd,true);
+    window.removeEventListener('pointercancel',resizeCancel,true);
+    window.removeEventListener('blur',resizeCancel);
+    document.removeEventListener('keydown',resizeKeydown,true);
+    r.widget.style.width=r.oldWidth;
+    r.widget.style.height=r.oldHeight;
+    r.widget.classList.remove('ptech-widget-resizing');
+    r.handle.removeAttribute('aria-grabbed');
+    document.body.classList.remove('ptech-resize-active');
+    try{if(r.handle.hasPointerCapture?.(r.pointerId))r.handle.releasePointerCapture(r.pointerId);}catch(_){}
   }
   function taskPreviewRender() {
     if(!taskList||!taskCount)return;
@@ -625,7 +991,8 @@
       return;
     }
     const dims=state.dims.tasks || {w:6,h:5};
-    const limit=Math.max(1,Math.min(9,Math.floor((dims.h-1)*1.5)));
+    const limit=zoom?.id==='tasks'?Math.min(60,Math.max(20,tasks.length)):
+      Math.max(1,Math.min(9,Math.floor((dims.h-1)*1.5)));
     const selected=[...tasks].sort((a,b)=>
       (a.status==='done')-(b.status==='done') ||
       String(a.due_date||'9999').localeCompare(String(b.due_date||'9999'))
@@ -643,6 +1010,7 @@
       taskList.appendChild(row);
     }
     if(tasks.length>limit) taskList.append(text('p','ptech-tasks-more',`Još ${tasks.length-limit} zadataka na stranici Moji zadaci.`));
+    scheduleDensities();
   }
   async function refreshTasks() {
     if(!api || !currentUserId || taskLoading)return;
@@ -669,6 +1037,7 @@
     setUser(userId,client){
       if(typeof userId!=='string'||!userId||!client)return;
       if(currentUserId!==userId){
+        if(zoom)closeZoom();
         currentUserId=userId;api=client;state=load();loadPersonalWidgets();
         button.disabled=false;setEdit(false);
       }
