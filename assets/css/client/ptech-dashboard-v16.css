@@ -727,3 +727,160 @@ body.ptech-dashboard-v166.ptech-layout-editing .ptech-widget[data-widget-size="s
     display:inline-flex!important;
   }
 }
+
+
+/* ================================================================
+   V16.7 - Adjustable Control Center grid and three-layer previews.
+   Actual cell dimensions and columns are controlled by grid JS.
+   On narrow screens we keep two usable tile columns.
+   ================================================================ */
+body.ptech-dashboard-v167 .ptech-dashboard-grid:not(.ptech-zoom-grid){
+  grid-template-columns:repeat(var(--ptech-grid-columns,12),minmax(0,1fr))!important;
+  grid-auto-rows:var(--ptech-grid-row-height,68px)!important;
+  gap:var(--ptech-grid-gap,14px)!important;
+}
+body.ptech-dashboard-v167.ptech-layout-editing .ptech-dashboard-grid:not(.ptech-zoom-grid){
+  background-size:
+    calc((100% + var(--ptech-grid-gap,14px)) / var(--ptech-grid-columns,12))
+    calc(var(--ptech-grid-row-height,68px) + var(--ptech-grid-gap,14px))!important;
+  background-position:0 0;
+}
+body.ptech-dashboard-v167 .ptech-grid-density-control{
+  display:flex;align-items:center;gap:5px;padding:4px;
+  border:1px solid var(--ui-border);border-radius:14px;
+  background:var(--ui-card-inset);box-shadow:inset 0 1px 3px rgba(0,0,0,.04);
+}
+body.ptech-dashboard-v167 .ptech-grid-density-control[hidden]{display:none!important}
+body.ptech-dashboard-v167 .ptech-grid-density-label{
+  padding:0 7px;color:var(--ui-muted);font-size:12px;font-weight:800;white-space:nowrap;
+}
+body.ptech-dashboard-v167 .ptech-grid-density-control button{
+  cursor:pointer;appearance:none;border:1px solid transparent;min-height:33px;
+  padding:6px 10px;border-radius:10px;background:transparent;color:var(--ui-muted);
+  font-size:12px;font-weight:850;white-space:nowrap;transition:background .16s ease,color .16s ease,box-shadow .16s ease;
+}
+body.ptech-dashboard-v167 .ptech-grid-density-control button.is-selected{
+  background:var(--ui-copper);color:var(--ui-bg);box-shadow:0 2px 8px rgba(0,0,0,.12);
+}
+body.ptech-dashboard-v167 .ptech-grid-density-control button:focus-visible{
+  outline:2px solid var(--ui-copper);outline-offset:2px;
+}
+/* Visual cue for active responsive content, replacing clipped native pieces. */
+body.ptech-dashboard-v167 .ptech-dashboard-grid .ptech-widget .ptech-smart-preview{
+  display:flex;flex-direction:column;align-items:stretch;gap:6px;
+  min-width:0;width:100%;padding:13px 14px;border-radius:17px;
+  border:1px solid var(--ui-border);background:var(--ui-card-inset);
+  margin:0 0 13px;color:var(--ui-text);
+}
+body.ptech-dashboard-v167 .ptech-smart-head{
+  display:flex;align-items:center;gap:8px;min-width:0;
+}
+body.ptech-dashboard-v167 .ptech-smart-icon{
+  display:grid;place-items:center;flex:none;width:32px;height:32px;border-radius:11px;
+  background:var(--ui-copper-soft);color:var(--ui-copper);font-size:19px;font-weight:850;
+}
+body.ptech-dashboard-v167 .ptech-smart-label{
+  color:var(--ui-muted);font-size:11px;font-weight:850;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;letter-spacing:.025em;
+}
+body.ptech-dashboard-v167 .ptech-smart-metric{
+  font-size:clamp(23px,3cqw,33px);line-height:1.05;letter-spacing:-.045em;
+  color:var(--ui-text);font-weight:900;font-variant-numeric:tabular-nums;
+}
+body.ptech-dashboard-v167 .ptech-smart-main{
+  font-size:13px;font-weight:800;line-height:1.35;color:var(--ui-text);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;
+}
+body.ptech-dashboard-v167 .ptech-smart-footer{
+  display:flex;align-items:center;gap:10px;justify-content:space-between;min-width:0;
+}
+body.ptech-dashboard-v167 .ptech-smart-detail{
+  color:var(--ui-muted);font-size:11px;line-height:1.4;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;
+}
+body.ptech-dashboard-v167 .ptech-smart-link{
+  flex:none;font-size:11px;font-weight:850;color:var(--ui-copper);text-decoration:none;
+}
+body.ptech-dashboard-v167 .ptech-smart-link[hidden],
+body.ptech-dashboard-v167 .ptech-smart-progress[hidden]{display:none!important}
+body.ptech-dashboard-v167 .ptech-smart-progress{
+  width:100%;height:5px;border-radius:999px;background:var(--ui-border);
+  overflow:hidden;margin-top:3px;
+}
+body.ptech-dashboard-v167 .ptech-smart-progress span{
+  display:block;width:0%;height:100%;background:var(--ui-copper);border-radius:inherit;
+  transition:width .22s ease;
+}
+/* Small tiles: only title / name and one meaningful real-data indicator. */
+body.ptech-dashboard-v167 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget.ptech-core-widget[data-widget-density="compact"] .ptech-tile-inner > :not(.ptech-smart-preview){display:none!important}
+body.ptech-dashboard-v167 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget[data-widget-density="compact"] .ptech-smart-preview{
+  min-height:100%;margin:0;justify-content:center;align-items:center;text-align:center;
+  padding:9px 7px;gap:8px;background:transparent;border:0;
+}
+body.ptech-dashboard-v167 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget[data-widget-density="compact"] .ptech-smart-head{
+  flex-direction:column;gap:5px;max-width:100%;
+}
+body.ptech-dashboard-v167 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget[data-widget-density="compact"] .ptech-smart-label{
+  text-align:center;font-size:clamp(10px,2.2cqw,13px);max-width:100%;
+}
+body.ptech-dashboard-v167 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget[data-widget-density="compact"] .ptech-smart-metric{
+  font-size:clamp(23px,7cqw,38px);
+}
+body.ptech-dashboard-v167 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget[data-widget-density="compact"] .ptech-smart-footer,
+body.ptech-dashboard-v167 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget[data-widget-density="compact"] .ptech-smart-progress{display:none!important}
+body.ptech-dashboard-v167 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget[data-widget-density="compact"] .ptech-smart-main{
+  max-width:100%;font-size:11px;line-height:1.25;overflow:hidden;
+  text-overflow:ellipsis;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;
+  white-space:normal;overflow-wrap:anywhere;
+}
+/* Standard tiles display concise info and retain the original working controls. */
+body.ptech-dashboard-v167 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget[data-widget-density="standard"] .ptech-smart-preview{
+  padding:10px 12px;gap:5px;
+}
+body.ptech-dashboard-v167 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget[data-widget-density="standard"] .ptech-smart-metric{font-size:23px}
+body.ptech-dashboard-v167 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget[data-widget-density="standard"] .ptech-smart-footer{display:none}
+/* Expanded tiles show a richer summary and full original portal functionality. */
+body.ptech-dashboard-v167 .ptech-dashboard-grid .ptech-widget[data-widget-density="expanded"] .ptech-smart-preview{
+  display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:16px;row-gap:5px;
+}
+body.ptech-dashboard-v167 .ptech-dashboard-grid .ptech-widget[data-widget-density="expanded"] .ptech-smart-head,
+body.ptech-dashboard-v167 .ptech-dashboard-grid .ptech-widget[data-widget-density="expanded"] .ptech-smart-main,
+body.ptech-dashboard-v167 .ptech-dashboard-grid .ptech-widget[data-widget-density="expanded"] .ptech-smart-progress,
+body.ptech-dashboard-v167 .ptech-dashboard-grid .ptech-widget[data-widget-density="expanded"] .ptech-smart-footer{grid-column:1}
+body.ptech-dashboard-v167 .ptech-dashboard-grid .ptech-widget[data-widget-density="expanded"] .ptech-smart-metric{
+  grid-column:2;grid-row:1/4;font-size:39px;text-align:right;
+}
+/* Make the original hub tiles attractive and readable at all three densities. */
+body.ptech-dashboard-v167 .ptech-hub-metric{
+  border:1px solid var(--ui-border);border-radius:9px;
+  padding:5px 9px;max-width:100%;font-size:12px;font-weight:850;
+  color:var(--ui-copper);background:var(--ui-copper-soft);
+}
+body.ptech-dashboard-v167 .ptech-hub-widget[data-widget-density="compact"] .ptech-hub-metric{font-size:10px;padding:3px 7px}
+body.ptech-dashboard-v167 .ptech-hub-widget[data-widget-density="standard"] .ptech-hub-metric{font-size:11px}
+body.ptech-dashboard-v167 .ptech-personal-symbol{
+  display:grid;place-items:center;width:36px;height:36px;border-radius:12px;
+  background:var(--ui-copper-soft);color:var(--ui-copper);font-weight:900;font-size:22px;
+}
+body.ptech-dashboard-v167 .ptech-personal-widget[data-widget-density="compact"] .ptech-personal-symbol{width:31px;height:31px;font-size:18px}
+body.ptech-dashboard-v167 .ptech-personal-widget[data-widget-density="compact"] .ptech-personal-actions{
+  display:none!important;
+}
+/* Prevent navigation while editing, including the summary links. */
+body.ptech-dashboard-v167.ptech-layout-editing .ptech-smart-link{pointer-events:none;opacity:.7}
+@media(max-width:720px){
+  body.ptech-dashboard-v167 .ptech-grid-density-control{max-width:100%;flex-wrap:wrap}
+  body.ptech-dashboard-v167 .ptech-layout-bar-actions{gap:7px}
+  body.ptech-dashboard-v167 .ptech-grid-density-label{padding:0 4px}
+  body.ptech-dashboard-v167 .ptech-grid-density-control button{padding:6px 8px}
+}
+@media(prefers-reduced-motion:reduce){
+  body.ptech-dashboard-v167 .ptech-grid-density-control button,
+  body.ptech-dashboard-v167 .ptech-smart-progress span{transition:none!important}
+}
+
+/* Medium tiles: let the summary provide the title; keep original working lists. */
+body.ptech-dashboard-v167 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-core-widget[data-widget-density="standard"][data-widget-id="tasks"] .ptech-tasks-head,
+body.ptech-dashboard-v167 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-core-widget[data-widget-density="standard"][data-widget-id="actions"] .actions-header,
+body.ptech-dashboard-v167 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-core-widget[data-widget-density="standard"] .overview-panel-header{display:none!important}
+body.ptech-dashboard-v167 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-core-widget[data-widget-density="standard"][data-widget-id="projects"] .section-header .section-title{display:none!important}

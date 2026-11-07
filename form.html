@@ -47,9 +47,9 @@
     ></script>
     
 <link rel="stylesheet" href="./assets/css/client/v13-mobile.css?v=13.10">
-<link rel="stylesheet" href="./assets/css/client/ptech-dashboard-v16.css?v=16.6">
+<link rel="stylesheet" href="./assets/css/client/ptech-dashboard-v16.css?v=16.7">
 <script src="./assets/js/client/v13-mobile.js?v=13.10" defer></script>
-<script src="./assets/js/client/ptech-dashboard-v16.js?v=16.6" defer></script>
+<script src="./assets/js/client/ptech-dashboard-v16.js?v=16.7" defer></script>
 
 </head>
 
@@ -221,12 +221,18 @@
                         <span>Prilagodi kartice svojem načinu rada.</span>
                     </div>
                     <div class="ptech-layout-bar-actions">
+                        <div class="ptech-grid-density-control" id="ptechGridDensityControl" hidden role="group" aria-label="Gustoća mreže dashboarda">
+                            <span class="ptech-grid-density-label">Mreža</span>
+                            <button type="button" data-grid-preset="10" aria-pressed="false" title="Veće kockice mreže: 10 × 10">10×10</button>
+                            <button type="button" data-grid-preset="12" aria-pressed="true" title="Standardna mreža: 12 × 12">12×12</button>
+                            <button type="button" data-grid-preset="15" aria-pressed="false" title="Sitnija mreža: 15 × 15">15×15</button>
+                        </div>
                         <button type="button" class="ptech-layout-button ptech-layout-button-secondary" id="ptechLayoutReset" hidden>Vrati zadano</button>
                         <button type="button" class="ptech-layout-button ptech-layout-button-secondary" id="ptechLayoutShow" hidden>Dodaj karticu</button>
                         <button type="button" class="ptech-layout-button" id="ptechLayoutEdit" aria-pressed="false" disabled>✦ Uredi raspored</button>
                     </div>
                 </div>
-                <p id="ptechLayoutHint" class="ptech-layout-hint" hidden>Drži ručku ⠿ i povuci karticu: druge se odmah razmiču, a označena kockica pokazuje gdje će pasti. U alatima kartice ▣ je smanji, ⤢ je poveća u mreži, a ⛶ otvara pregled preko cijelog zaslona. Donji desni kut služi za ručno mijenjanje veličine. Klikni „Dodaj kockicu” za Poruke, Dokumente, druge kartice ili vlastiti zadatak. Strelice na ručkama rade i preko tipkovnice.</p>
+                <p id="ptechLayoutHint" class="ptech-layout-hint" hidden>Drži ručku ⠿ i povuci karticu: druge se odmah razmiču, a označena kockica pokazuje gdje će pasti. Odaberi gustoću mreže 10×10, 12×12 ili 15×15; na mobitelu su radi čitljivosti uvijek dva stupca. U alatima kartice ▣ je smanji, ⤢ je poveća u mreži, a ⛶ otvara pregled preko cijelog zaslona. Donji desni kut služi za ručno mijenjanje veličine. Klikni „Dodaj kockicu” za Poruke, Dokumente, druge kartice ili vlastiti zadatak. Strelice na ručkama rade i preko tipkovnice.</p>
                 <div id="ptechHiddenWidgets" class="ptech-hidden-widgets" hidden aria-label="Skrivene kartice"></div>
                 <div id="ptechDashboardGrid" class="ptech-dashboard-grid">
                 <!-- AKTIVNI PROJEKTI -->

@@ -1,4 +1,4 @@
-/* PTech Digital Client Portal V16.6 - editor-only tile controls + live grid and adaptive tiles.
+/* PTech Digital Client Portal V16.7 - adaptive smart previews and configurable layout grid.
  * Safe: project-related operations stay in original script.js; Supabase tasks
  * are read only through existing RLS. Layout and personal notes are local to
  * the signed-in user's browser and are never stored in Supabase.
@@ -7,12 +7,14 @@
   'use strict';
   const grid = document.getElementById('ptechDashboardGrid');
   if (!grid) return;
-  document.body.classList.add('ptech-dashboard-v16', 'ptech-dashboard-v162', 'ptech-dashboard-v164', 'ptech-dashboard-v165', 'ptech-dashboard-v166');
+  document.body.classList.add('ptech-dashboard-v16', 'ptech-dashboard-v162', 'ptech-dashboard-v164', 'ptech-dashboard-v165', 'ptech-dashboard-v166', 'ptech-dashboard-v167');
   const button = document.getElementById('ptechLayoutEdit');
   const resetButton = document.getElementById('ptechLayoutReset');
   const showButton = document.getElementById('ptechLayoutShow');
   const hint = document.getElementById('ptechLayoutHint');
   const hiddenTray = document.getElementById('ptechHiddenWidgets');
+  const densityControl=document.getElementById('ptechGridDensityControl');
+  const densityButtons=[...document.querySelectorAll('[data-grid-preset]')];
   const taskList = document.getElementById('ptechDashboardTasksList');
   const taskCount = document.getElementById('ptechDashboardTasksCount');
   const taskRefresh = document.getElementById('ptechDashboardTasksRefresh');
@@ -63,7 +65,7 @@
     hidden:[...hubIds],
     dims:{...defaultDims},
     actionOrder:[...actionIds],hiddenActions:['projects','tasks','documents','profile'],
-    customTasks:[]
+    customTasks:[],gridPreset:12
   };
   let currentUserId=null,api=null,editing=false,state=null;
   let tasks=[],taskError=false,taskLoading=false;
@@ -89,11 +91,12 @@
   const escapeSelector=val=>CSS.escape?CSS.escape(val):val.replace(/[^a-zA-Z0-9-]/g,'');
   function cloneDefaults(){return {
     order:[...defaults.order],hidden:[...defaults.hidden],dims:cloneDims(),
-    actionOrder:[...defaults.actionOrder],hiddenActions:[...defaults.hiddenActions],customTasks:[]
+    actionOrder:[...defaults.actionOrder],hiddenActions:[...defaults.hiddenActions],customTasks:[],gridPreset:12
   };}
   function normalize(raw){
     if(!raw||typeof raw!=='object')return cloneDefaults();
     const out=cloneDefaults();
+    out.gridPreset=[10,12,15].includes(Number(raw.gridPreset))?Number(raw.gridPreset):12;
     out.customTasks=Array.isArray(raw.customTasks)?raw.customTasks.filter(validCustomTask).slice(0,40).map(t=>({
       id:t.id,title:t.title.trim().slice(0,100),description:String(t.description||'').slice(0,400),
       href:Object.values(usablePageLinks).includes(t.href)?t.href:'',done:Boolean(t.done)
@@ -129,14 +132,47 @@
     el.setAttribute('aria-label',action);el.title=action;return el;
   }
   function minColumn(id){return id==='projects'||id==='actions'?5:3;}
-  function breakpointColumns(){return window.matchMedia('(max-width:720px)').matches?2:
-    window.matchMedia('(max-width:1120px)').matches?6:12;}
+  // Saved dimensions keep the V16.6 twelve-column coordinate system. Changing
+  // density scales them visually; no permanent rounding or layout loss.
+  function isMobile(){return window.matchMedia('(max-width:720px)').matches;}
+  function actualGridColumns(){
+    if(isMobile())return 2; // Keep tiles readable on iPhone.
+    const preset=state?.gridPreset||12;
+    return window.matchMedia('(max-width:1120px)').matches?Math.round(preset/2):preset;
+  }
+  function breakpointColumns(){return actualGridColumns();}
+  function rowScale(){return isMobile()?1:(state?.gridPreset||12)/12;}
+  function gridMinCols(id,columns){
+    return isMobile()?(id==='projects'||id==='actions'?2:1):
+      clamp(Math.ceil(minColumn(id)*columns/12),1,columns);
+  }
+  function logicalToGrid(value,columns){return Math.round(value*columns/12);}
   function viewDims(id){
-    const d=state.dims[id]||{w:6,h:4},bp=breakpointColumns();
-    if(bp===12)return {w:clamp(d.w,minColumn(id),12),h:d.h};
-    if(bp===6)return {w:clamp(Math.ceil(d.w/2),id==='projects'||id==='actions'?4:2,6),h:d.h};
-    const mobileDefault=(id==='projects'||id==='actions'||id==='tasks'||d.w>=10)?2:1;
-    return {w:clamp(d.m||mobileDefault,id==='projects'||id==='actions'?2:1,2),h:d.h};
+    const d=state.dims[id]||{w:6,h:4};
+    const cols=actualGridColumns();
+    if(isMobile()){
+      const preferred=(id==='projects'||id==='actions'||id==='tasks'||d.w>=10)?2:1;
+      return {w:clamp(d.m||preferred,gridMinCols(id,cols),cols),h:d.h};
+    }
+    const minH=Math.max(2,Math.round(MIN_ROWS*rowScale()));
+    const maxH=Math.max(minH,Math.round(MAX_ROWS*rowScale()));
+    return {w:clamp(logicalToGrid(d.w,cols),gridMinCols(id,cols),cols),
+      h:clamp(Math.round(d.h*rowScale()),minH,maxH)};
+  }
+  function applyGridPreset(){
+    if(!state)return;
+    const cols=actualGridColumns();
+    const gap=isMobile()?12:14;
+    const row=isMobile()?66:Math.round(68*12/state.gridPreset);
+    grid.style.setProperty('--ptech-grid-columns',String(cols));
+    grid.style.setProperty('--ptech-grid-row-height',`${row}px`);
+    grid.style.setProperty('--ptech-grid-gap',`${gap}px`);
+    if(densityControl)densityControl.hidden=!editing;
+    for(const btn of densityButtons){
+      const active=Number(btn.dataset.gridPreset)===state.gridPreset;
+      btn.setAttribute('aria-pressed',String(active));
+      btn.classList.toggle('is-selected',active);
+    }
   }
   function renderSizes(id,widget){
     const d=viewDims(id),raw=state.dims[id]||{w:6,h:4};
@@ -169,7 +205,7 @@
     const content=document.createElement('div');content.className='ptech-hub-body';
     const icon=text('span','ptech-hub-icon',meta.icon);icon.setAttribute('aria-hidden','true');
     const title=text('h2','ptech-hub-title',meta.title);
-    content.append(icon,title);
+    content.append(icon,title,text('span','ptech-hub-metric',id==='hub-profile'?'Moj račun':'Otvori'));
     if(id==='hub-profile')content.append(text('h2','ptech-hub-title-compact',currentDisplayName()));
     content.append(text('p','ptech-hub-description',meta.detail));
     const extra=document.createElement('div');extra.className='ptech-hub-extra';
@@ -201,12 +237,113 @@
     const count=taskCount?.textContent?.trim();
     if(tSummary)tSummary.textContent=count&&/^\d+$/.test(count)?`${count} otvorenih zadataka`:'Dodijeljeni zadaci';
   }
+  // Smart summaries for the five existing dashboard tiles. Data is read
+  // from existing rendered DOM and Supabase task result, never hard-coded.
+  const corePreviewMeta={
+    projects:{icon:'▣',label:'Projekti',link:'my-projects.html'},
+    tasks:{icon:'✓',label:'Zadaci',link:'tasks.html'},
+    actions:{icon:'✦',label:'Brze akcije',link:null},
+    messages:{icon:'✉',label:'Poruke',link:'messages.html'},
+    documents:{icon:'▤',label:'Dokumenti',link:'documents.html'}
+  };
+  const corePreviews=new Map();
+  function createCorePreview(id,widget){
+    const meta=corePreviewMeta[id];if(!meta)return;
+    widget.classList.add('ptech-core-widget');
+    const inner=widget.querySelector('.ptech-tile-inner');if(!inner)return;
+    const holder=document.createElement('div');holder.className='ptech-smart-preview';
+    holder.setAttribute('aria-label',`Sažetak: ${meta.label}`);
+    const head=text('div','ptech-smart-head','');
+    head.append(text('span','ptech-smart-icon',meta.icon),text('span','ptech-smart-label',meta.label));
+    const metric=text('strong','ptech-smart-metric','–');
+    const main=text('span','ptech-smart-main','Učitavanje podataka...');
+    const detail=text('span','ptech-smart-detail','');
+    const progress=document.createElement('div');progress.className='ptech-smart-progress';
+    const bar=document.createElement('span');progress.append(bar);
+    const footer=document.createElement('div');footer.className='ptech-smart-footer';
+    const link=meta.link?text('a','ptech-smart-link','Otvori →'):text('span','ptech-smart-link','');
+    if(meta.link)link.href=meta.link;
+    footer.append(detail,link);
+    holder.append(head,metric,main,progress,footer);
+    inner.prepend(holder);
+    corePreviews.set(id,{holder,metric,main,detail,progress,bar,link});
+  }
+  function updateCorePreviews(){
+    for(const [id,p] of corePreviews){
+      let metric='–',main='',detail='',progress=null;
+      if(id==='projects'){
+        const count=document.getElementById('totalProjects')?.textContent?.trim()||'0';
+        const selected=Math.max(0,(Number(document.getElementById('currentProject')?.textContent)||1)-1);
+        const slide=grid.querySelectorAll('.projects-slider .project-slide')[selected];
+        const title=slide?.querySelector('.project-title-wrap h3')?.textContent?.trim();
+        const name=slide?.querySelector('.project-title-wrap p')?.textContent?.trim();
+        const status=slide?.querySelector('.status-badge')?.textContent?.trim();
+        const candidate=slide?.querySelector('.progress-row strong,.progress-row b,.progress-percent')?.textContent?.trim();
+        metric=count; main=title||'Moji projekti';
+        detail=name||status||'Praćenje izrade i rokova';
+        const n=Number((candidate||'').replace(/[^0-9.]/g,''));
+        if(candidate && Number.isFinite(n))progress=clamp(n,0,100);
+      }else if(id==='tasks'){
+        const open=tasks.filter(t=>t.status!=='done');
+        metric=taskError?'!':String(open.length);
+        const upcoming=[...open].sort((a,b)=>String(a.due_date||'9999').localeCompare(String(b.due_date||'9999')))[0];
+        main=taskError?'Nije moguće učitati':upcoming?.title||'Nema otvorenih zadataka';
+        detail=upcoming?.due_date?`Rok: ${new Date(upcoming.due_date+'T12:00:00').toLocaleDateString('hr-HR')}`:'Prati svoje obveze';
+      }else if(id==='actions'){
+        const visible=state.actionOrder.filter(key=>!state.hiddenActions.includes(key)&&actionSlots.has(key));
+        metric=String(visible.length);main='Prečaci za tvoj projekt';
+        detail=visible.slice(0,3).map(key=>actionCatalog[key].title).join(' · ')||'Dodaj željenu akciju';
+      }else{
+        const list=grid.querySelector(id==='messages'?'#recentMessagesList':'#recentDocumentsList');
+        const rows=[...list?.querySelectorAll('.overview-row')||[]];
+        metric=String(rows.length);
+        const first=rows[0];
+        main=first?.querySelector('.overview-row-main strong')?.textContent?.trim()||
+          (id==='messages'?'Nema novih poruka':'Nema novih dokumenata');
+        detail=first?.querySelector('.overview-row-main small')?.textContent?.trim()||
+          (id==='messages'?'Poruke i podrška na jednom mjestu':'Datoteke tvojih projekata');
+      }
+      if(p.metric.textContent!==metric)p.metric.textContent=metric;
+      if(p.main.textContent!==main)p.main.textContent=main;
+      if(p.detail.textContent!==detail)p.detail.textContent=detail;
+      p.progress.hidden=progress===null;
+      if(progress!==null)p.bar.style.width=`${progress}%`;
+      if(!p.link.getAttribute('href'))p.link.hidden=true;
+    }
+    updateHubMetrics();
+  }
+  function updateHubMetrics(){
+    const map={
+      'hub-messages':corePreviews.get('messages')?.metric.textContent,
+      'hub-documents':corePreviews.get('documents')?.metric.textContent,
+      'hub-tasks':corePreviews.get('tasks')?.metric.textContent,
+      'hub-projects':corePreviews.get('projects')?.metric.textContent
+    };
+    for(const [id,value] of Object.entries(map)){
+      const node=widgets.get(id)?.querySelector('.ptech-hub-metric');
+      if(node&&value!==undefined)node.textContent=value;
+    }
+    const profile=widgets.get('hub-profile')?.querySelector('.ptech-hub-metric');
+    if(profile)profile.textContent='Moj račun';
+  }
+  function observeOriginalContent(){
+    const selectors=['#projectsSlider','#currentProject','#recentMessagesList','#recentDocumentsList'];
+    if(typeof MutationObserver!=='function')return;
+    for(const sel of selectors){
+      const el=document.querySelector(sel);if(!el)continue;
+      const observer=new MutationObserver(()=>scheduleDensities());
+      observer.observe(el,{childList:true,subtree:true,characterData:true});
+    }
+  }
   function applyDensity(widget){
     if(!widget || widget.hidden || !widget.isConnected)return;
     const rect=widget.getBoundingClientRect();
     if(rect.width<10||rect.height<10)return;
     const width=rect.width,height=rect.height;
-    const mode=zoom?.widget===widget?'expanded':width<285||height<218?'compact':width>=425&&height>=325?'expanded':'standard';
+    const id=widget.dataset.widgetId;
+    const logical=state?.dims[id];
+    const tiny=logical && logical.w<=minColumn(id) && logical.h<=MIN_ROWS;
+    const mode=zoom?.widget===widget?'expanded':tiny||width<285||height<250?'compact':width>=425&&height>=325?'expanded':'standard';
     if(widget.dataset.widgetDensity!==mode)widget.dataset.widgetDensity=mode;
   }
   function scheduleDensities(){
@@ -215,12 +352,14 @@
       densityFrame=0;
       for(const widget of widgets.values())applyDensity(widget);
       updateHubSummaries();
+      updateCorePreviews();
     });
   }
   function personalNode(task){
     const node=document.createElement('section');node.className='ptech-widget ptech-personal-widget';
     node.dataset.widgetId=customId(task);node.setAttribute('aria-label',task.title);
     const content=document.createElement('div');content.className='ptech-personal-body';
+    content.append(text('span','ptech-personal-symbol',task.done?'✓':'○'));
     const eyebrow=text('span','ptech-personal-eyebrow','MOJ OSOBNI ZADATAK');
     const name=text('h2','',task.title),description=text('p','',task.description || 'Tvoj osobni podsjetnik');
     const actions=document.createElement('div');actions.className='ptech-personal-actions';
@@ -238,6 +377,7 @@
   }
   function renderPersonal(node,task){
     node.classList.toggle('ptech-personal-done',Boolean(task.done));
+    const symbol=node.querySelector('.ptech-personal-symbol');if(symbol)symbol.textContent=task.done?'✓':'○';
     const check=node.querySelector('.ptech-personal-check');
     if(check){check.textContent=task.done?'✓ Dovršeno':'○ Označi dovršenim';check.setAttribute('aria-pressed',String(task.done));}
   }
@@ -402,6 +542,7 @@
     const content=document.createElement('div');content.className='ptech-tile-inner';
     while(widget.firstChild)content.append(widget.firstChild);
     widget.append(content);
+    createCorePreview(id,widget);
     const controls=document.createElement('div');controls.className='ptech-widget-controls';
     controls.setAttribute('aria-label',`Uređivanje kartice ${titles[id]||'Moj zadatak'}`);
     const name=titles[id]||state.customTasks.find(t=>customId(t)===id)?.title||'Moj zadatak';
@@ -611,6 +752,7 @@
   }
 
   for(const [id,widget] of widgets)equipWidget(id,widget);
+  observeOriginalContent();
   function loadPersonalWidgets(){
     for(const [id,node] of [...widgets])if(id.startsWith('personal-')){tileObserver?.unobserve(node);node.remove();widgets.delete(id);delete titles[id];}
     for(const task of state.customTasks){
@@ -665,6 +807,7 @@
     }
     hiddenTray.hidden=true; // V16.2: the catalog replaces redundant inline hidden-widget buttons.
     resetButton.hidden=!editing;hint.hidden=!editing;
+    applyGridPreset();
     renderCatalog();renderQuickActions();taskPreviewRender();
     animateReflow(before);
     scheduleDensities();
@@ -679,6 +822,12 @@
     render();
   }
   button.addEventListener('click',()=>setEdit(!editing));
+  densityButtons.forEach(btn=>btn.addEventListener('click',()=>{
+    if(!editing||!currentUserId||drag||resize||zoom)return;
+    const preset=Number(btn.dataset.gridPreset);
+    if(![10,12,15].includes(preset)||state.gridPreset===preset)return;
+    state.gridPreset=preset;render(true);save();
+  }));
   showButton.addEventListener('click',()=>{
     if(!editing)return;pickerOpen=!pickerOpen;renderCatalog();
     if(pickerOpen)picker.scrollIntoView({behavior:prefersReducedMotion()?'auto':'smooth',block:'nearest'});
@@ -687,7 +836,7 @@
     if(!window.confirm('Želiš vratiti zadani raspored? Osobni zadaci i njihove oznake bit će uklonjeni iz ovog preglednika.'))return;
     state=cloneDefaults();loadPersonalWidgets();pickerOpen=false;render(true);save();
   });
-  window.addEventListener('resize',()=>{if(state){for(const [id,widget]of widgets)renderSizes(id,widget);scheduleDensities();}},{passive:true});
+  window.addEventListener('resize',()=>{if(state){applyGridPreset();for(const [id,widget]of widgets)renderSizes(id,widget);scheduleDensities();}},{passive:true});
   const nameLabel=document.getElementById('userTop');
   if(nameLabel && typeof MutationObserver==='function')new MutationObserver(updateHubSummaries).observe(nameLabel,{characterData:true,childList:true,subtree:true});
 
@@ -903,13 +1052,13 @@
     const cols=breakpointColumns();
     const colStep=(grid.clientWidth-colGap*(cols-1))/cols+colGap;
     const rowStep=(parseFloat(style.gridAutoRows)||68)+rowGap;
-    const minCols=cols===12?minColumn(id):cols===6?
-      (id==='projects'||id==='actions'?4:2):(id==='projects'||id==='actions'?2:1);
+    const minCols=gridMinCols(id,cols);
+    const physicalScale=rowScale();
     const dims=viewDims(id);
     resize={
       id,widget,handle,pointerId:e.pointerId,
       x:e.clientX,y:e.clientY,width:rect.width,height:rect.height,
-      cols,colStep,rowStep,colGap,rowGap,minCols,
+      cols,colStep,rowStep,colGap,rowGap,minCols,physicalScale,
       nextCols:dims.w,nextRows:dims.h,changed:false,
       oldWidth:widget.style.width,oldHeight:widget.style.height
     };
@@ -931,15 +1080,15 @@
     const r=resize;
     const minWidth=r.minCols*r.colStep-r.colGap;
     const maxWidth=r.cols*r.colStep-r.colGap;
-    const minHeight=MIN_ROWS*r.rowStep-r.rowGap;
-    const maxHeight=MAX_ROWS*r.rowStep-r.rowGap;
+    const minHeight=Math.max(2,Math.round(MIN_ROWS*r.physicalScale))*r.rowStep-r.rowGap;
+    const maxHeight=Math.round(MAX_ROWS*r.physicalScale)*r.rowStep-r.rowGap;
     const width=clamp(r.width+e.clientX-r.x,minWidth,maxWidth);
     const height=clamp(r.height+e.clientY-r.y,minHeight,maxHeight);
     // Move in pixels as the user drags (rather than jumping one grid cell at a time).
     r.widget.style.width=`${width}px`;
     r.widget.style.height=`${height}px`;
     r.nextCols=clamp(Math.round((width+r.colGap)/r.colStep),r.minCols,r.cols);
-    r.nextRows=clamp(Math.round((height+r.rowGap)/r.rowStep),MIN_ROWS,MAX_ROWS);
+    r.nextRows=clamp(Math.round((height+r.rowGap)/r.rowStep),Math.max(2,Math.round(MIN_ROWS*r.physicalScale)),Math.round(MAX_ROWS*r.physicalScale));
     const counter=r.widget.querySelector('.ptech-widget-dimensions');
     if(counter)counter.textContent=`${r.nextCols} × ${r.nextRows}`;
     r.changed=r.changed||Math.abs(e.clientX-r.x)>2||Math.abs(e.clientY-r.y)>2;
@@ -954,9 +1103,9 @@
     if(r.cols===2){
       d.m=r.nextCols;
     }else{
-      d.w=r.cols===12?r.nextCols:clamp(r.nextCols*2,minColumn(r.id),12);
+      d.w=clamp(Math.round(r.nextCols*12/r.cols),minColumn(r.id),12);
     }
-    d.h=r.nextRows;
+    d.h=clamp(Math.round(r.nextRows/r.physicalScale),MIN_ROWS,MAX_ROWS);
     state.dims[r.id]=d;
     render(true);
     save();
