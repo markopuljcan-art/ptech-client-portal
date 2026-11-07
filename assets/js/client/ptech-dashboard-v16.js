@@ -1,4 +1,4 @@
-/* PTech Digital Client Portal V16.7 - adaptive smart previews and configurable layout grid.
+/* PTech Digital Client Portal V16.8 - jump to new tiles and high-density custom grids.
  * Safe: project-related operations stay in original script.js; Supabase tasks
  * are read only through existing RLS. Layout and personal notes are local to
  * the signed-in user's browser and are never stored in Supabase.
@@ -7,7 +7,7 @@
   'use strict';
   const grid = document.getElementById('ptechDashboardGrid');
   if (!grid) return;
-  document.body.classList.add('ptech-dashboard-v16', 'ptech-dashboard-v162', 'ptech-dashboard-v164', 'ptech-dashboard-v165', 'ptech-dashboard-v166', 'ptech-dashboard-v167');
+  document.body.classList.add('ptech-dashboard-v16', 'ptech-dashboard-v162', 'ptech-dashboard-v164', 'ptech-dashboard-v165', 'ptech-dashboard-v166', 'ptech-dashboard-v167', 'ptech-dashboard-v168');
   const button = document.getElementById('ptechLayoutEdit');
   const resetButton = document.getElementById('ptechLayoutReset');
   const showButton = document.getElementById('ptechLayoutShow');
@@ -15,6 +15,10 @@
   const hiddenTray = document.getElementById('ptechHiddenWidgets');
   const densityControl=document.getElementById('ptechGridDensityControl');
   const densityButtons=[...document.querySelectorAll('[data-grid-preset]')];
+  const customColumns=document.getElementById('ptechGridCustomColumns');
+  const customRows=document.getElementById('ptechGridCustomRows');
+  const applyCustomGrid=document.getElementById('ptechGridApply');
+  const gridStatus=document.getElementById('ptechGridStatus');
   const taskList = document.getElementById('ptechDashboardTasksList');
   const taskCount = document.getElementById('ptechDashboardTasksCount');
   const taskRefresh = document.getElementById('ptechDashboardTasksRefresh');
@@ -65,7 +69,7 @@
     hidden:[...hubIds],
     dims:{...defaultDims},
     actionOrder:[...actionIds],hiddenActions:['projects','tasks','documents','profile'],
-    customTasks:[],gridPreset:12
+    customTasks:[],gridPreset:12,gridRows:12
   };
   let currentUserId=null,api=null,editing=false,state=null;
   let tasks=[],taskError=false,taskLoading=false;
@@ -73,7 +77,7 @@
   let densityFrame=0;
   const tileObserver=typeof ResizeObserver==='function'?new ResizeObserver(()=>scheduleDensities()):null;
   let pickerOpen=false,picker,taskForm,widgetList,taskFormToggle;
-  const MIN_ROWS=3,MAX_ROWS=11;
+  const MIN_ROWS=1,MAX_ROWS=11;
   const usablePageLinks={
     none:'',messages:'messages.html',documents:'documents.html',tasks:'tasks.html',
     projects:'my-projects.html',profile:'profile.html',approve:'my-projects.html',
@@ -91,12 +95,16 @@
   const escapeSelector=val=>CSS.escape?CSS.escape(val):val.replace(/[^a-zA-Z0-9-]/g,'');
   function cloneDefaults(){return {
     order:[...defaults.order],hidden:[...defaults.hidden],dims:cloneDims(),
-    actionOrder:[...defaults.actionOrder],hiddenActions:[...defaults.hiddenActions],customTasks:[],gridPreset:12
+    actionOrder:[...defaults.actionOrder],hiddenActions:[...defaults.hiddenActions],customTasks:[],gridPreset:12,gridRows:12
   };}
   function normalize(raw){
     if(!raw||typeof raw!=='object')return cloneDefaults();
     const out=cloneDefaults();
-    out.gridPreset=[10,12,15].includes(Number(raw.gridPreset))?Number(raw.gridPreset):12;
+    // Existing V16.7 layouts are automatically migrated (gridRows = gridPreset).
+    const readGrid=(v,fallback)=>Number.isFinite(Number(v))&&String(v).trim()!==''?
+      clamp(Math.round(Number(v)),6,60):fallback;
+    out.gridPreset=readGrid(raw.gridPreset,12);
+    out.gridRows=readGrid(raw.gridRows,out.gridPreset);
     out.customTasks=Array.isArray(raw.customTasks)?raw.customTasks.filter(validCustomTask).slice(0,40).map(t=>({
       id:t.id,title:t.title.trim().slice(0,100),description:String(t.description||'').slice(0,400),
       href:Object.values(usablePageLinks).includes(t.href)?t.href:'',done:Boolean(t.done)
@@ -113,8 +121,8 @@
       const oldWidth=raw.sizes?.[id]==='small'?4:raw.sizes?.[id]==='large'?12:6;
       const d=raw.dims?.[id];
       const fallback=out.dims[id]||{w:6,h:4};
-      out.dims[id]={w:clamp(Number.isFinite(d?.w)?Math.round(d.w):(raw.sizes?.[id]?oldWidth:fallback.w),3,12),
-        h:clamp(Number.isFinite(d?.h)?Math.round(d.h):fallback.h,MIN_ROWS,MAX_ROWS),
+      out.dims[id]={w:clamp(Number.isFinite(d?.w)?Math.round(d.w*1000)/1000:(raw.sizes?.[id]?oldWidth:fallback.w),0.15,12),
+        h:clamp(Number.isFinite(d?.h)?Math.round(d.h*1000)/1000:fallback.h,0.15,MAX_ROWS),
         ...(d?.m===1||d?.m===2?{m:d.m}:{})};
     }
     out.actionOrder=Array.isArray(raw.actionOrder)?[...new Set(raw.actionOrder.filter(id=>Object.hasOwn(actionCatalog,id)))]:[...actionIds];
@@ -131,20 +139,40 @@
     const el=text('button',`ptech-widget-tool ${cls}`,label);el.type='button';
     el.setAttribute('aria-label',action);el.title=action;return el;
   }
-  function minColumn(id){return id==='projects'||id==='actions'?5:3;}
-  // Saved dimensions keep the V16.6 twelve-column coordinate system. Changing
-  // density scales them visually; no permanent rounding or layout loss.
+  // The saved sizes use proportional 12x12 design units. High-density grids
+  // offer smaller snap steps without enlarging/shrinking existing tiles on selection.
+  const GRID_MIN=6,GRID_MAX=60;
   function isMobile(){return window.matchMedia('(max-width:720px)').matches;}
   function actualGridColumns(){
-    if(isMobile())return 2; // Keep tiles readable on iPhone.
-    const preset=state?.gridPreset||12;
-    return window.matchMedia('(max-width:1120px)').matches?Math.round(preset/2):preset;
+    if(isMobile())return 2; // Keep legible cards on narrow phones.
+    const columns=state?.gridPreset||12;
+    return window.matchMedia('(max-width:1120px)').matches?Math.max(3,Math.round(columns/2)):columns;
   }
   function breakpointColumns(){return actualGridColumns();}
-  function rowScale(){return isMobile()?1:(state?.gridPreset||12)/12;}
-  function gridMinCols(id,columns){
-    return isMobile()?(id==='projects'||id==='actions'?2:1):
-      clamp(Math.ceil(minColumn(id)*columns/12),1,columns);
+  function rowScale(){return isMobile()?1:(state?.gridRows||12)/12;}
+  function cellGap(){
+    if(isMobile())return 12;
+    return clamp(Math.round(14*12/Math.max(actualGridColumns(),state?.gridRows||12)),3,14);
+  }
+  function cellHeight(){return isMobile()?66:Math.max(12,Math.round(68*12/(state?.gridRows||12)));}
+  function columnStep(cols=actualGridColumns()){
+    const gap=cellGap();
+    return (Math.max(grid.clientWidth,320)-gap*(cols-1))/cols+gap;
+  }
+  function gridMinCols(id,cols){
+    if(isMobile())return id==='projects'||id==='actions'?2:1;
+    const minWidth=id==='projects'?168:id==='actions'?158:96;
+    return clamp(Math.ceil((minWidth+cellGap())/Math.max(columnStep(cols),1)),1,cols);
+  }
+  function gridMinRows(){
+    if(isMobile())return 2;
+    const step=cellHeight()+cellGap();
+    return Math.max(1,Math.ceil((128+cellGap())/step));
+  }
+  function gridMaxRows(){return Math.max(gridMinRows(),Math.round(MAX_ROWS*rowScale()));}
+  function minColumn(id){
+    if(isMobile())return id==='projects'||id==='actions'?12:6;
+    return Math.ceil(gridMinCols(id,actualGridColumns())*12/actualGridColumns()*1000)/1000;
   }
   function logicalToGrid(value,columns){return Math.round(value*columns/12);}
   function viewDims(id){
@@ -152,27 +180,27 @@
     const cols=actualGridColumns();
     if(isMobile()){
       const preferred=(id==='projects'||id==='actions'||id==='tasks'||d.w>=10)?2:1;
-      return {w:clamp(d.m||preferred,gridMinCols(id,cols),cols),h:d.h};
+      return {w:clamp(d.m||preferred,gridMinCols(id,cols),cols),
+        h:clamp(Math.round(d.h),gridMinRows(),MAX_ROWS)};
     }
-    const minH=Math.max(2,Math.round(MIN_ROWS*rowScale()));
-    const maxH=Math.max(minH,Math.round(MAX_ROWS*rowScale()));
     return {w:clamp(logicalToGrid(d.w,cols),gridMinCols(id,cols),cols),
-      h:clamp(Math.round(d.h*rowScale()),minH,maxH)};
+      h:clamp(Math.round(d.h*rowScale()),gridMinRows(),gridMaxRows())};
   }
   function applyGridPreset(){
     if(!state)return;
-    const cols=actualGridColumns();
-    const gap=isMobile()?12:14;
-    const row=isMobile()?66:Math.round(68*12/state.gridPreset);
-    grid.style.setProperty('--ptech-grid-columns',String(cols));
-    grid.style.setProperty('--ptech-grid-row-height',`${row}px`);
-    grid.style.setProperty('--ptech-grid-gap',`${gap}px`);
+    grid.style.setProperty('--ptech-grid-columns',String(actualGridColumns()));
+    grid.style.setProperty('--ptech-grid-row-height',`${cellHeight()}px`);
+    grid.style.setProperty('--ptech-grid-gap',`${cellGap()}px`);
     if(densityControl)densityControl.hidden=!editing;
     for(const btn of densityButtons){
-      const active=Number(btn.dataset.gridPreset)===state.gridPreset;
+      const preset=Number(btn.dataset.gridPreset);
+      const active=preset===state.gridPreset&&preset===state.gridRows;
       btn.setAttribute('aria-pressed',String(active));
       btn.classList.toggle('is-selected',active);
     }
+    if(customColumns&&document.activeElement!==customColumns)customColumns.value=String(state.gridPreset);
+    if(customRows&&document.activeElement!==customRows)customRows.value=String(state.gridRows);
+    if(gridStatus)gridStatus.textContent=`Aktivna mreža: ${state.gridPreset} × ${state.gridRows}`;
   }
   function renderSizes(id,widget){
     const d=viewDims(id),raw=state.dims[id]||{w:6,h:4};
@@ -345,6 +373,10 @@
     const tiny=logical && logical.w<=minColumn(id) && logical.h<=MIN_ROWS;
     const mode=zoom?.widget===widget?'expanded':tiny||width<285||height<250?'compact':width>=425&&height>=325?'expanded':'standard';
     if(widget.dataset.widgetDensity!==mode)widget.dataset.widgetDensity=mode;
+    // A native project slide is taller than the smart summary. Avoid creating a
+    // second scroll region: only show full cards when there is enough space.
+    if(id==='projects')widget.dataset.projectContent=(zoom?.widget===widget ||
+      (width>=510 && height>=525))?'full':'summary';
   }
   function scheduleDensities(){
     if(densityFrame)return;
@@ -534,7 +566,8 @@
 
 
   // Wrap content without cloning elements, keeping native event handlers and IDs.
-  // Scroll occurs inside the tile; the resize handle stays pinned to its corner.
+  // In ordinary dashboard mode the entire page scrolls, not individual tiles.
+  // The resize handle stays pinned to its corner.
   function equipWidget(id,widget){
     if(widget.dataset.ptechEquipped)return;
     widget.dataset.ptechEquipped='true';
@@ -562,7 +595,8 @@
     compact.addEventListener('click',()=>{
       if(!editing || drag || resize || zoom)return;
       const old=state.dims[id]||{w:6,h:4};
-      state.dims[id]={...old,w:minColumn(id),h:MIN_ROWS,m:(id==='projects'||id==='actions')?2:1};
+      state.dims[id]={...old,w:minColumn(id),h:Math.round((gridMinRows()/rowScale())*1000)/1000,
+        m:(id==='projects'||id==='actions')?2:1};
       render(true);save();
     });
     // V16.6: Expand a tile IN THE DASHBOARD GRID (without leaving edit mode).
@@ -600,8 +634,8 @@
       const d=state.dims[id]||{w:6,h:4};
       if(breakpointColumns()===2){
         d.m=clamp((d.m||viewDims(id).w)+delta[0],id==='projects'||id==='actions'?2:1,2);
-      }else{d.w=clamp(d.w+delta[0]*(breakpointColumns()===6?2:1),minColumn(id),12);}
-      d.h=clamp(d.h+delta[1],MIN_ROWS,MAX_ROWS);state.dims[id]=d;
+      }else{d.w=clamp(Math.round((d.w+delta[0]*12/breakpointColumns())*1000)/1000,minColumn(id),12);}
+      d.h=clamp(Math.round((d.h+delta[1]/rowScale())*1000)/1000,0.15,MAX_ROWS);state.dims[id]=d;
       render();save();
     });
     // Fullscreen preview is available ONLY in Uredi dashboard (never in normal view).
@@ -681,6 +715,22 @@
     if(z.trigger.isConnected)z.trigger.focus({preventScroll:true});
   }
 
+  // Scroll to newly placed tile only after the picker has closed and the
+  // browser calculated its final grid position. The short glow helps orientation.
+  let newTileTimeout=0;
+  function revealAddedWidget(id){
+    const widget=widgets.get(id);
+    if(!widget)return;
+    window.clearTimeout(newTileTimeout);
+    for(const node of widgets.values())node.classList.remove('ptech-widget-just-added');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      if(!widget.isConnected||widget.hidden)return;
+      widget.classList.add('ptech-widget-just-added');
+      widget.scrollIntoView({behavior:prefersReducedMotion()?'instant':'smooth',block:'center',inline:'nearest'});
+      newTileTimeout=window.setTimeout(()=>widget.classList.remove('ptech-widget-just-added'),2900);
+    }));
+  }
+
   // Catalog: all supported portal sections plus unlimited user-defined local tasks
   // up to a conservative limit. Never accept arbitrary hrefs into dashboard DOM.
   picker=document.createElement('section');picker.className='ptech-widget-picker';
@@ -727,7 +777,7 @@
     state.order.push(id);state.dims[id]={w:6,h:4};
     equipWidget(id,widget);save();taskForm.reset();taskForm.hidden=true;
     taskFormToggle.setAttribute('aria-expanded','false');
-    pickerOpen=false;render();widget.scrollIntoView({behavior:prefersReducedMotion()?'auto':'smooth',block:'nearest'});
+    pickerOpen=false;render();revealAddedWidget(id);
   });
   picker.append(pickerHead,text('p','ptech-picker-desc','Odaberi koje dijelove portala želiš imati kao kockice.'),widgetList,taskFormToggle,taskForm);
   hiddenTray.after(picker);
@@ -745,7 +795,9 @@
       const add=text('button','ptech-catalog-tile','');add.type='button';
       add.append(text('span','ptech-catalog-icon',meta?.icon||'▦'),text('strong','',titles[id]),text('small','',meta?.detail||'Dodaj postojeću karticu'));
       add.addEventListener('click',()=>{
-        state.hidden=state.hidden.filter(item=>item!==id);pickerOpen=false;render();save();
+        state.hidden=state.hidden.filter(item=>item!==id);
+        state.order=state.order.filter(item=>item!==id);state.order.push(id);
+        pickerOpen=false;render();save();revealAddedWidget(id);
       });widgetList.append(add);
     }
     if(!available.length)widgetList.append(text('p','ptech-tasks-empty','Sve gotove kockice već su na dashboardu. Možeš napraviti vlastiti zadatak.'));
@@ -802,7 +854,8 @@
     for(const id of state.hidden.filter(x=>widgets.has(x))){
       const reveal=text('button','ptech-layout-reveal','＋ '+titles[id]);reveal.type='button';
       reveal.addEventListener('click',()=>{
-        state.hidden=state.hidden.filter(x=>x!==id);render(true);save();
+        state.hidden=state.hidden.filter(x=>x!==id);state.order=state.order.filter(x=>x!==id);
+        state.order.push(id);render(true);save();revealAddedWidget(id);
       });hiddenTray.append(reveal);
     }
     hiddenTray.hidden=true; // V16.2: the catalog replaces redundant inline hidden-widget buttons.
@@ -825,9 +878,25 @@
   densityButtons.forEach(btn=>btn.addEventListener('click',()=>{
     if(!editing||!currentUserId||drag||resize||zoom)return;
     const preset=Number(btn.dataset.gridPreset);
-    if(![10,12,15].includes(preset)||state.gridPreset===preset)return;
-    state.gridPreset=preset;render(true);save();
+    if(preset<GRID_MIN||preset>GRID_MAX||state.gridPreset===preset&&state.gridRows===preset)return;
+    state.gridPreset=preset;state.gridRows=preset;render(true);save();
   }));
+  function setCustomGrid(){
+    if(!editing||!currentUserId||drag||resize||zoom)return;
+    const cols=Number(customColumns?.value),rows=Number(customRows?.value);
+    if(!Number.isInteger(cols)||!Number.isInteger(rows)||
+       cols<GRID_MIN||cols>GRID_MAX||rows<GRID_MIN||rows>GRID_MAX){
+      if(gridStatus)gridStatus.textContent='Upiši cijele brojeve između 6 i 60.';
+      (Number.isInteger(cols)&&cols>=GRID_MIN&&cols<=GRID_MAX?customRows:customColumns)?.focus();
+      return;
+    }
+    state.gridPreset=cols;state.gridRows=rows;
+    render(true);save();
+  }
+  applyCustomGrid?.addEventListener('click',setCustomGrid);
+  for(const el of [customColumns,customRows])el?.addEventListener('keydown',e=>{
+    if(e.key==='Enter'){e.preventDefault();setCustomGrid();}
+  });
   showButton.addEventListener('click',()=>{
     if(!editing)return;pickerOpen=!pickerOpen;renderCatalog();
     if(pickerOpen)picker.scrollIntoView({behavior:prefersReducedMotion()?'auto':'smooth',block:'nearest'});
@@ -1080,15 +1149,15 @@
     const r=resize;
     const minWidth=r.minCols*r.colStep-r.colGap;
     const maxWidth=r.cols*r.colStep-r.colGap;
-    const minHeight=Math.max(2,Math.round(MIN_ROWS*r.physicalScale))*r.rowStep-r.rowGap;
-    const maxHeight=Math.round(MAX_ROWS*r.physicalScale)*r.rowStep-r.rowGap;
+    const minHeight=gridMinRows()*r.rowStep-r.rowGap;
+    const maxHeight=gridMaxRows()*r.rowStep-r.rowGap;
     const width=clamp(r.width+e.clientX-r.x,minWidth,maxWidth);
     const height=clamp(r.height+e.clientY-r.y,minHeight,maxHeight);
     // Move in pixels as the user drags (rather than jumping one grid cell at a time).
     r.widget.style.width=`${width}px`;
     r.widget.style.height=`${height}px`;
     r.nextCols=clamp(Math.round((width+r.colGap)/r.colStep),r.minCols,r.cols);
-    r.nextRows=clamp(Math.round((height+r.rowGap)/r.rowStep),Math.max(2,Math.round(MIN_ROWS*r.physicalScale)),Math.round(MAX_ROWS*r.physicalScale));
+    r.nextRows=clamp(Math.round((height+r.rowGap)/r.rowStep),gridMinRows(),gridMaxRows());
     const counter=r.widget.querySelector('.ptech-widget-dimensions');
     if(counter)counter.textContent=`${r.nextCols} × ${r.nextRows}`;
     r.changed=r.changed||Math.abs(e.clientX-r.x)>2||Math.abs(e.clientY-r.y)>2;
@@ -1103,9 +1172,9 @@
     if(r.cols===2){
       d.m=r.nextCols;
     }else{
-      d.w=clamp(Math.round(r.nextCols*12/r.cols),minColumn(r.id),12);
+      d.w=clamp(Math.round(r.nextCols*12/r.cols*1000)/1000,minColumn(r.id),12);
     }
-    d.h=clamp(Math.round(r.nextRows/r.physicalScale),MIN_ROWS,MAX_ROWS);
+    d.h=clamp(Math.round(r.nextRows/r.physicalScale*1000)/1000,0.15,MAX_ROWS);
     state.dims[r.id]=d;
     render(true);
     save();

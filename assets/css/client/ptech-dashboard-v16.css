@@ -884,3 +884,96 @@ body.ptech-dashboard-v167 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-cor
 body.ptech-dashboard-v167 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-core-widget[data-widget-density="standard"][data-widget-id="actions"] .actions-header,
 body.ptech-dashboard-v167 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-core-widget[data-widget-density="standard"] .overview-panel-header{display:none!important}
 body.ptech-dashboard-v167 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-core-widget[data-widget-density="standard"][data-widget-id="projects"] .section-header .section-title{display:none!important}
+
+/* ================================================================
+   V16.8 - Fine grids up to 60x60, custom columns x rows, and a
+   clear landing animation after adding a new dashboard widget.
+   ================================================================ */
+body.ptech-dashboard-v168 .ptech-grid-density-control{
+  min-width:0;max-width:100%;flex-wrap:wrap;gap:8px;padding:9px 10px;
+  align-items:center;background:var(--ui-card-inset);
+}
+body.ptech-dashboard-v168 .ptech-layout-bar-actions{flex-wrap:wrap;gap:8px}
+body.ptech-dashboard-v168 .ptech-grid-presets{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+body.ptech-dashboard-v168 .ptech-grid-custom{display:flex;flex-wrap:wrap;align-items:center;gap:7px;
+  border-left:1px solid var(--ui-border);padding-left:10px}
+body.ptech-dashboard-v168 .ptech-grid-custom label{display:flex;gap:5px;align-items:center;
+  color:var(--ui-muted);font-size:11px;font-weight:750;white-space:nowrap}
+body.ptech-dashboard-v168 .ptech-grid-custom input{appearance:textfield;width:53px;min-height:33px;
+  box-sizing:border-box;background:var(--ui-card);border:1px solid var(--ui-border);
+  color:var(--ui-text);border-radius:9px;text-align:center;font:700 12px inherit;
+  padding:4px 5px}
+body.ptech-dashboard-v168 .ptech-grid-custom input::-webkit-inner-spin-button,
+body.ptech-dashboard-v168 .ptech-grid-custom input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+body.ptech-dashboard-v168 .ptech-grid-density-control .ptech-grid-apply{
+  background:var(--ui-copper);color:var(--ui-bg);border-color:transparent;padding:6px 11px;
+}
+body.ptech-dashboard-v168 .ptech-grid-status{font-size:11px;color:var(--ui-muted);
+  font-weight:650;white-space:nowrap}
+body.ptech-dashboard-v168 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget-just-added{
+  outline:3px solid var(--ui-copper)!important;outline-offset:3px;
+  box-shadow:0 0 0 8px var(--ui-copper-soft),var(--ui-shadow)!important;
+  animation:ptechTileAdded 1.3s ease-in-out 2;
+}
+@keyframes ptechTileAdded{
+  0%,100%{filter:brightness(1)}
+  40%{filter:brightness(1.09)}
+}
+@media(max-width:1250px){
+ body.ptech-dashboard-v168 .ptech-layout-bar-actions{justify-content:flex-end}
+ body.ptech-dashboard-v168 .ptech-grid-density-control{order:3;width:100%;justify-content:center}
+}
+@media(max-width:720px){
+ body.ptech-dashboard-v168 .ptech-grid-density-control{justify-content:flex-start}
+ body.ptech-dashboard-v168 .ptech-grid-custom{padding-left:0;border-left:0;border-top:1px solid var(--ui-border);
+   padding-top:7px;width:100%;justify-content:space-between}
+ body.ptech-dashboard-v168 .ptech-grid-status{width:100%}
+ body.ptech-dashboard-v168 .ptech-grid-presets button{padding:5px 7px;font-size:11px}
+}
+@media(prefers-reduced-motion:reduce){
+ body.ptech-dashboard-v168 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget-just-added{animation:none!important}
+}
+
+/* V16.8 — Dashboard has ONE vertical scroll area (the page).
+   Inner tiles never steal a wheel gesture or display internal scrollbars. */
+body.ptech-dashboard-v168 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget .ptech-tile-inner {
+  overflow:clip!important;
+  overscroll-behavior:auto!important;
+  scrollbar-width:none!important;
+}
+body.ptech-dashboard-v168 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget .ptech-tile-inner::-webkit-scrollbar {display:none!important}
+/* Keep programmatic horizontal slide changes via existing arrows, but disable
+   both independent wheel scrolling and touch panning within the carousel. */
+body.ptech-dashboard-v168 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"] .projects-slider {
+  overflow-x:hidden!important;
+  overflow-y:hidden!important;
+  overscroll-behavior:auto!important;
+  touch-action:pan-y!important;
+  scrollbar-width:none!important;
+}
+body.ptech-dashboard-v168 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"] .projects-slider::-webkit-scrollbar {display:none!important}
+/* When there is insufficient space for project details, show only the real,
+   up-to-date summary (title, count, status or description, progress and link). */
+body.ptech-dashboard-v168 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"][data-project-content="summary"] .section-header,
+body.ptech-dashboard-v168 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"][data-project-content="summary"] .projects-slider,
+body.ptech-dashboard-v168 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"][data-project-content="summary"] .slider-dots {display:none!important}
+body.ptech-dashboard-v168 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"][data-project-content="summary"] .ptech-smart-preview {
+  margin:0!important;
+  min-height:100%;
+  justify-content:center;
+}
+/* Reduce verbosity in medium cards. The full view remains in the original
+   portal sections and in the optional fullscreen preview. */
+body.ptech-dashboard-v168 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget[data-widget-density="standard"] .ptech-task-preview-row:nth-of-type(n+3),
+body.ptech-dashboard-v168 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget[data-widget-density="standard"] .overview-row:nth-of-type(n+3) {display:none!important}
+body.ptech-dashboard-v168 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget .ptech-tasks-preview,
+body.ptech-dashboard-v168 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget .overview-list {
+  overflow:clip!important;
+  overscroll-behavior:auto!important;
+  max-height:none;
+}
+/* The intentionally opened fullscreen reading dialog can scroll if needed. */
+body.ptech-dashboard-v168 .ptech-zoom-grid .ptech-widget .ptech-tile-inner {
+  overflow:auto!important;
+  overscroll-behavior:contain;
+}

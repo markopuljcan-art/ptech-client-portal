@@ -47,9 +47,9 @@
     ></script>
     
 <link rel="stylesheet" href="./assets/css/client/v13-mobile.css?v=13.10">
-<link rel="stylesheet" href="./assets/css/client/ptech-dashboard-v16.css?v=16.7">
+<link rel="stylesheet" href="./assets/css/client/ptech-dashboard-v16.css?v=16.8">
 <script src="./assets/js/client/v13-mobile.js?v=13.10" defer></script>
-<script src="./assets/js/client/ptech-dashboard-v16.js?v=16.7" defer></script>
+<script src="./assets/js/client/ptech-dashboard-v16.js?v=16.8" defer></script>
 
 </head>
 
@@ -221,18 +221,31 @@
                         <span>Prilagodi kartice svojem načinu rada.</span>
                     </div>
                     <div class="ptech-layout-bar-actions">
-                        <div class="ptech-grid-density-control" id="ptechGridDensityControl" hidden role="group" aria-label="Gustoća mreže dashboarda">
-                            <span class="ptech-grid-density-label">Mreža</span>
-                            <button type="button" data-grid-preset="10" aria-pressed="false" title="Veće kockice mreže: 10 × 10">10×10</button>
-                            <button type="button" data-grid-preset="12" aria-pressed="true" title="Standardna mreža: 12 × 12">12×12</button>
-                            <button type="button" data-grid-preset="15" aria-pressed="false" title="Sitnija mreža: 15 × 15">15×15</button>
+                        <div class="ptech-grid-density-control" id="ptechGridDensityControl" hidden role="group" aria-label="Podesi mrežu dashboarda">
+                            <span class="ptech-grid-density-label">▦ Mreža</span>
+                            <div class="ptech-grid-presets" aria-label="Gotove mreže">
+                                <button type="button" data-grid-preset="10" aria-pressed="false">10×10</button>
+                                <button type="button" data-grid-preset="12" aria-pressed="true">12×12</button>
+                                <button type="button" data-grid-preset="15" aria-pressed="false">15×15</button>
+                                <button type="button" data-grid-preset="20" aria-pressed="false">20×20</button>
+                                <button type="button" data-grid-preset="30" aria-pressed="false">30×30</button>
+                                <button type="button" data-grid-preset="40" aria-pressed="false">40×40</button>
+                                <button type="button" data-grid-preset="60" aria-pressed="false" title="Vrlo sitna mreža">60×60</button>
+                            </div>
+                            <div class="ptech-grid-custom" aria-label="Vlastiti raspored mreže">
+                                <label for="ptechGridCustomColumns">Stupci <input type="number" id="ptechGridCustomColumns" min="6" max="60" step="1" inputmode="numeric" value="12"></label>
+                                <span aria-hidden="true">×</span>
+                                <label for="ptechGridCustomRows">Redovi <input type="number" id="ptechGridCustomRows" min="6" max="60" step="1" inputmode="numeric" value="12"></label>
+                                <button type="button" id="ptechGridApply" class="ptech-grid-apply">Primijeni</button>
+                            </div>
+                            <span class="ptech-grid-status" id="ptechGridStatus" role="status" aria-live="polite">Aktivna mreža: 12 × 12</span>
                         </div>
                         <button type="button" class="ptech-layout-button ptech-layout-button-secondary" id="ptechLayoutReset" hidden>Vrati zadano</button>
                         <button type="button" class="ptech-layout-button ptech-layout-button-secondary" id="ptechLayoutShow" hidden>Dodaj karticu</button>
                         <button type="button" class="ptech-layout-button" id="ptechLayoutEdit" aria-pressed="false" disabled>✦ Uredi raspored</button>
                     </div>
                 </div>
-                <p id="ptechLayoutHint" class="ptech-layout-hint" hidden>Drži ručku ⠿ i povuci karticu: druge se odmah razmiču, a označena kockica pokazuje gdje će pasti. Odaberi gustoću mreže 10×10, 12×12 ili 15×15; na mobitelu su radi čitljivosti uvijek dva stupca. U alatima kartice ▣ je smanji, ⤢ je poveća u mreži, a ⛶ otvara pregled preko cijelog zaslona. Donji desni kut služi za ručno mijenjanje veličine. Klikni „Dodaj kockicu” za Poruke, Dokumente, druge kartice ili vlastiti zadatak. Strelice na ručkama rade i preko tipkovnice.</p>
+                <p id="ptechLayoutHint" class="ptech-layout-hint" hidden>Drži ručku ⠿ i povuci karticu: druge se odmah razmiču, a označena kockica pokazuje gdje će pasti. Odaberi mrežu od 10×10 do 60×60 ili unesi vlastiti broj stupaca i redaka (6–60). Sitnija mreža omogućuje preciznije slaganje. Na mobitelu ostaju dva čitljiva stupca. U alatima kartice ▣ je smanji, ⤢ je poveća u mreži, a ⛶ otvara pregled preko cijelog zaslona. Donji desni kut služi za ručno mijenjanje veličine. Klikni „Dodaj kockicu” za Poruke, Dokumente, druge kartice ili vlastiti zadatak. Strelice na ručkama rade i preko tipkovnice.</p>
                 <div id="ptechHiddenWidgets" class="ptech-hidden-widgets" hidden aria-label="Skrivene kartice"></div>
                 <div id="ptechDashboardGrid" class="ptech-dashboard-grid">
                 <!-- AKTIVNI PROJEKTI -->
