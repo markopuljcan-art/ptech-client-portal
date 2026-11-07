@@ -1230,3 +1230,19 @@ body.ptech-dashboard-v1610 .ptech-dashboard-grid [data-widget-id="messages"] .ov
 @media(prefers-reduced-motion:reduce){
   body.ptech-dashboard-v1610 .ptech-dashboard-grid [data-widget-id="messages"] .overview-row{transition:none}
 }
+
+/* V16.11 - precise cell placement: allow intentional empty holes in the grid.
+   Coordinates are applied by JS only when a saved placement exists. */
+body.ptech-dashboard-v1611 .ptech-dashboard-grid:not(.ptech-zoom-grid) > .ptech-widget {
+  /* Inline grid-row/grid-column from the placement engine overrides old spans. */
+  min-width:0;
+}
+body.ptech-dashboard-v1611.ptech-layout-editing .ptech-drop-placeholder {
+  z-index:4;
+  outline:2px solid var(--ui-copper);
+  outline-offset:-4px;
+  background-color:color-mix(in srgb,var(--ui-copper) 12%,transparent);
+}
+body.ptech-dashboard-v1611.ptech-layout-editing .ptech-drop-placeholder.ptech-drop-displaces{
+  background-color:color-mix(in srgb,var(--ui-copper) 20%,transparent);
+}

@@ -1,4 +1,4 @@
-/* PTech Digital Client Portal V16.10 - clean projects, actions and messages.
+/* PTech Digital Client Portal V16.11 - precise placement into empty grid cells.
  * Safe: project-related operations stay in original script.js; Supabase tasks
  * are read only through existing RLS. Layout and personal notes are local to
  * the signed-in user's browser and are never stored in Supabase.
@@ -7,7 +7,7 @@
   'use strict';
   const grid = document.getElementById('ptechDashboardGrid');
   if (!grid) return;
-  document.body.classList.add('ptech-dashboard-v16', 'ptech-dashboard-v162', 'ptech-dashboard-v164', 'ptech-dashboard-v165', 'ptech-dashboard-v166', 'ptech-dashboard-v167', 'ptech-dashboard-v168', 'ptech-dashboard-v169', 'ptech-dashboard-v1610');
+  document.body.classList.add('ptech-dashboard-v16', 'ptech-dashboard-v162', 'ptech-dashboard-v164', 'ptech-dashboard-v165', 'ptech-dashboard-v166', 'ptech-dashboard-v167', 'ptech-dashboard-v168', 'ptech-dashboard-v169', 'ptech-dashboard-v1610', 'ptech-dashboard-v1611');
   const button = document.getElementById('ptechLayoutEdit');
   const resetButton = document.getElementById('ptechLayoutReset');
   const showButton = document.getElementById('ptechLayoutShow');
@@ -69,7 +69,7 @@
     hidden:[...hubIds],
     dims:{...defaultDims},
     actionOrder:[...actionIds],hiddenActions:['projects','tasks','documents','profile'],
-    customTasks:[],gridPreset:12,gridRows:12
+    customTasks:[],gridPreset:12,gridRows:12,placements:{}
   };
   let currentUserId=null,api=null,editing=false,state=null;
   let tasks=[],taskError=false,taskLoading=false;
@@ -95,7 +95,7 @@
   const escapeSelector=val=>CSS.escape?CSS.escape(val):val.replace(/[^a-zA-Z0-9-]/g,'');
   function cloneDefaults(){return {
     order:[...defaults.order],hidden:[...defaults.hidden],dims:cloneDims(),
-    actionOrder:[...defaults.actionOrder],hiddenActions:[...defaults.hiddenActions],customTasks:[],gridPreset:12,gridRows:12
+    actionOrder:[...defaults.actionOrder],hiddenActions:[...defaults.hiddenActions],customTasks:[],gridPreset:12,gridRows:12,placements:{}
   };}
   function normalize(raw){
     if(!raw||typeof raw!=='object')return cloneDefaults();
@@ -128,10 +128,26 @@
     out.actionOrder=Array.isArray(raw.actionOrder)?[...new Set(raw.actionOrder.filter(id=>Object.hasOwn(actionCatalog,id)))]:[...actionIds];
     for(const id of actionIds)if(!out.actionOrder.includes(id))out.actionOrder.push(id);
     out.hiddenActions=Array.isArray(raw.hiddenActions)?[...new Set(raw.hiddenActions.filter(id=>Object.hasOwn(actionCatalog,id)))]:[...defaults.hiddenActions];
+    // V16.11: preserve explicit positions separately on phone, tablet and desktop.
+    // Previous V16.10 saved layouts have no placements and are safely migrated on first edit.
+    const positions=raw.placements;
+    if(positions && typeof positions==='object')for(const mode of ['desktop','tablet','mobile']){
+      const saved=positions[mode];
+      if(!saved || typeof saved!=='object' || !saved.items || typeof saved.items!=='object')continue;
+      const items={};
+      for(const [id,pos] of Object.entries(saved.items)){
+        if(!goodId(id) || !pos || typeof pos!=='object')continue;
+        const c=Number(pos.col),r=Number(pos.row);
+        if(Number.isInteger(c)&&c>=1&&c<=120 && Number.isInteger(r)&&r>=1&&r<=3000)
+          items[id]={col:c,row:r};
+      }
+      out.placements[mode]={cols:clamp(Math.round(Number(saved.cols)||12),2,60),
+        rowDensity:clamp(Math.round(Number(saved.rowDensity)||12),6,60),items};
+    }
     return out;
   }
   function save(){try{if(storageKey())localStorage.setItem(storageKey(),JSON.stringify(state));}
-    catch(e){console.warn('[PTech V16.3] Raspored nije spremljen',e);}}
+    catch(e){console.warn('[PTech V16.11] Raspored nije spremljen',e);}}
   function load(){try{const raw=storageKey() && localStorage.getItem(storageKey());return normalize(raw?JSON.parse(raw):null);}
     catch(_){return cloneDefaults();}}
   function text(tag,cls,content){const el=document.createElement(tag);if(cls)el.className=cls;el.textContent=content;return el;}
@@ -174,7 +190,11 @@
     if(isMobile())return id==='projects'||id==='actions'?12:6;
     return Math.ceil(gridMinCols(id,actualGridColumns())*12/actualGridColumns()*1000)/1000;
   }
-  function logicalToGrid(value,columns){return Math.round(value*columns/12);}
+  function logicalToGrid(value,columns){
+    // Two half-width cards must still fit beside one another on odd-density
+    // grids (e.g. 15 columns: 7+7, not 8+8 which forces a new row).
+    return Math.max(1,Math.floor(value*columns/12+1e-7));
+  }
   function viewDims(id){
     const d=state.dims[id]||{w:6,h:4};
     const cols=actualGridColumns();
@@ -211,6 +231,126 @@
     const counter=widget.querySelector('.ptech-widget-dimensions');
     if(counter)counter.textContent=`${d.w} × ${d.h}`;
   }
+  /* V16.11: explicit coordinates allow genuine empty holes in the dashboard.
+   * CSS grid auto-flow and DOM order alone cannot express a tile dropped into a gap.
+   * Keep each breakpoint independent so mobile placement never destroys desktop layout.
+   */
+  const placementMode=()=>isMobile()?'mobile':window.matchMedia('(max-width:1120px)').matches?'tablet':'desktop';
+  const densityRows=()=>isMobile()?12:(state?.gridRows||12);
+  const currentPlacement=()=>state?.placements?.[placementMode()]||null;
+  const visibleTiles=()=>state.order.filter(id=>widgets.has(id)&&!state.hidden.includes(id));
+  const gridRowStep=()=>{
+    const style=getComputedStyle(grid);
+    return (parseFloat(style.gridAutoRows)||cellHeight())+(parseFloat(style.rowGap)||cellGap());
+  };
+  function gridPosition(node){
+    const outer=grid.getBoundingClientRect(),rect=node.getBoundingClientRect();
+    const cw=columnStep(),rh=gridRowStep();
+    const d=viewDims(node.dataset.widgetId);
+    return {col:clamp(Math.round((rect.left-outer.left)/cw)+1,1,actualGridColumns()-d.w+1),
+      row:Math.max(1,Math.round((rect.top-outer.top)/rh)+1)};
+  }
+  function captureInitialPositions(){
+    if(currentPlacement())return;
+    const items={};
+    for(const id of visibleTiles())items[id]=gridPosition(widgets.get(id));
+    state.placements[placementMode()]={cols:actualGridColumns(),rowDensity:densityRows(),items};
+  }
+  function requestedPositions(){
+    const entry=currentPlacement();if(!entry)return null;
+    const cols=actualGridColumns(),factor=densityRows()/entry.rowDensity;
+    const requested={};
+    for(const [id,pos] of Object.entries(entry.items)){
+      if(!widgets.has(id))continue;
+      const size=viewDims(id);
+      requested[id]={col:clamp(Math.round((pos.col-1)*cols/entry.cols)+1,1,cols-size.w+1),
+        row:clamp(Math.round((pos.row-1)*factor)+1,1,3000)};
+    }
+    return requested;
+  }
+  function planPositions(requested={},priorityId=null){
+    const cols=actualGridColumns(),used=new Set(),result={};
+    const fits=(c,r,w,h)=>{
+      if(c<1||c+w-1>cols||r<1)return false;
+      for(let y=r;y<r+h;y++)for(let x=c;x<c+w;x++)if(used.has(`${x}:${y}`))return false;
+      return true;
+    };
+    const occupy=(id,c,r)=>{
+      const {w,h}=viewDims(id);
+      for(let y=r;y<r+h;y++)for(let x=c;x<c+w;x++)used.add(`${x}:${y}`);
+      result[id]={col:c,row:r};
+    };
+    const ids=visibleTiles();
+    const sequence=priorityId&&ids.includes(priorityId)?[priorityId,...ids.filter(id=>id!==priorityId)]:ids;
+    // Priority tile is reserved first. Other tiles keep their original coordinates
+    // whenever possible. Only overlaps are moved to the next free slot.
+    for(const id of sequence){
+      const {w,h}=viewDims(id),pos=requested[id];
+      const c=clamp(pos?.col||1,1,cols-w+1),r=clamp(pos?.row||1,1,3000);
+      if(pos&&fits(c,r,w,h)){occupy(id,c,r);continue;}
+      let found=false;
+      // For an overlap, search forward from its original row. For newly added
+      // tiles without a position, start at the beginning of the grid.
+      const start=pos?r:1;
+      for(let y=start;y<Math.max(start+500,700)&&!found;y++){
+        for(let x=1;x<=cols-w+1;x++)if(fits(x,y,w,h)){
+          occupy(id,x,y);found=true;break;
+        }
+      }
+      if(!found)occupy(id,1,Math.min(start+700,2900));
+    }
+    return result;
+  }
+  function setGridCell(node,id,pos){
+    const d=viewDims(id);
+    node.style.setProperty('grid-column',`${pos.col} / span ${d.w}`,'important');
+    node.style.setProperty('grid-row',`${pos.row} / span ${d.h}`,'important');
+  }
+  function putPositions(positions){
+    for(const [id,node] of widgets){
+      if(node.hidden)continue;
+      if(positions[id])setGridCell(node,id,positions[id]);
+    }
+  }
+  function rememberPositions(positions){
+    const items={};
+    for(const [id,pos] of Object.entries(positions))if(widgets.has(id))items[id]={...pos};
+    state.placements[placementMode()]={cols:actualGridColumns(),rowDensity:densityRows(),items};
+    // Keep keyboard traversal and accessibility order consistent with the grid.
+    const sorted=visibleTiles().sort((a,b)=>(items[a]?.row||0)-(items[b]?.row||0)||
+      (items[a]?.col||0)-(items[b]?.col||0));
+    state.order=[...sorted,...state.order.filter(id=>!sorted.includes(id))];
+  }
+  function updateExplicitPositions(){
+    const requested=requestedPositions();
+    if(!requested){
+      for(const node of widgets.values()){
+        node.style.removeProperty('grid-column');node.style.removeProperty('grid-row');
+      }
+      return;
+    }
+    putPositions(planPositions(requested));
+  }
+  function placeAddedAtBottom(id){
+    const layout=currentPlacement();if(!layout)return;
+    const existing=planPositions(requestedPositions()||{});
+    const bottom=Math.max(0,...Object.entries(existing).filter(([key])=>key!==id)
+      .map(([key,pos])=>pos.row+viewDims(key).h-1));
+    // A new widget is shown below the others, where auto-scroll can reveal it.
+    const desired={...existing,[id]:{col:1,row:bottom+1}};
+    rememberPositions(planPositions(desired,id));
+  }
+  function shiftPinnedTile(id,dx,dy){
+    const original=planPositions(requestedPositions()||{}),pos=original[id];
+    if(!pos)return false;
+    const w=viewDims(id).w;
+    const updated={...original,[id]:{col:clamp(pos.col+dx,1,actualGridColumns()-w+1),
+      row:Math.max(1,pos.row+dy)}};
+    const next=planPositions(updated,id);
+    if(next[id].col===pos.col&&next[id].row===pos.row)return false;
+    rememberPositions(next);return true;
+  }
+
   // Responsive previews: the *same* widget progressively reveals more information.
   // Compact tiles show a title/name; medium tiles add context; large tiles add a summary.
   const hubHints={
@@ -750,7 +890,14 @@
     const restore=makeButton('↙ Vrati',`Vrati ${title} na dashboard`,'ptech-zoom-restore');
     header.append(heading,restore);
     const stage=document.createElement('div');stage.className='ptech-dashboard-grid ptech-zoom-grid';
+    // Keep the saved footprint in the dashboard while the real tile is inside
+    // the fullscreen dialog. Do not carry pinned grid coordinates into the dialog.
+    const savedCellColumn=widget.style.getPropertyValue('grid-column');
+    const savedCellRow=widget.style.getPropertyValue('grid-row');
+    if(savedCellColumn)placeholder.style.setProperty('grid-column',savedCellColumn,'important');
+    if(savedCellRow)placeholder.style.setProperty('grid-row',savedCellRow,'important');
     widget.replaceWith(placeholder);
+    widget.style.removeProperty('grid-column');widget.style.removeProperty('grid-row');
     stage.append(widget);
     dialog.append(header,stage);overlay.append(dialog);document.body.append(overlay);
     const oldOverflow=document.documentElement.style.overflow;
@@ -852,7 +999,7 @@
     const id=customId(task);titles[id]=task.title;
     const widget=personalNode(task);grid.append(widget);widgets.set(id,widget);
     state.order.push(id);state.dims[id]={w:6,h:4};
-    equipWidget(id,widget);save();taskForm.reset();taskForm.hidden=true;
+    equipWidget(id,widget);placeAddedAtBottom(id);save();taskForm.reset();taskForm.hidden=true;
     taskFormToggle.setAttribute('aria-expanded','false');
     pickerOpen=false;render();revealAddedWidget(id);
   });
@@ -874,7 +1021,7 @@
       add.addEventListener('click',()=>{
         state.hidden=state.hidden.filter(item=>item!==id);
         state.order=state.order.filter(item=>item!==id);state.order.push(id);
-        pickerOpen=false;render();save();revealAddedWidget(id);
+        placeAddedAtBottom(id);pickerOpen=false;render();save();revealAddedWidget(id);
       });widgetList.append(add);
     }
     if(!available.length)widgetList.append(text('p','ptech-tasks-empty','Sve gotove kockice već su na dashboardu. Možeš napraviti vlastiti zadatak.'));
@@ -913,6 +1060,16 @@
   }
   function moveOne(id,delta){
     if(!editing)return;
+    if(currentPlacement()){
+      const pos=planPositions(requestedPositions()||{})[id];if(!pos)return;
+      // Move to a neighboring free cell; on a column edge continue on the next row.
+      const cols=actualGridColumns(),w=viewDims(id).w;
+      let col=pos.col+delta,row=pos.row;
+      if(col<1){col=Math.max(1,cols-w+1);row=Math.max(1,row-1);}
+      if(col>cols-w+1){col=1;row++;}
+      const updated={...planPositions(requestedPositions()||{}),[id]:{col,row}};
+      rememberPositions(planPositions(updated,id));render(true);save();return;
+    }
     const visible=state.order.filter(x=>widgets.has(x)&&!state.hidden.includes(x));
     const i=visible.indexOf(id),j=i+delta;if(i<0||j<0||j>=visible.length)return;
     const a=state.order.indexOf(id),b=state.order.indexOf(visible[j]);
@@ -932,19 +1089,22 @@
       const reveal=text('button','ptech-layout-reveal','＋ '+titles[id]);reveal.type='button';
       reveal.addEventListener('click',()=>{
         state.hidden=state.hidden.filter(x=>x!==id);state.order=state.order.filter(x=>x!==id);
-        state.order.push(id);render(true);save();revealAddedWidget(id);
+        state.order.push(id);placeAddedAtBottom(id);render(true);save();revealAddedWidget(id);
       });hiddenTray.append(reveal);
     }
     hiddenTray.hidden=true; // V16.2: the catalog replaces redundant inline hidden-widget buttons.
     resetButton.hidden=!editing;hint.hidden=!editing;
     applyGridPreset();
+    updateExplicitPositions();
     renderCatalog();renderQuickActions();taskPreviewRender();
     animateReflow(before);
     scheduleDensities();
   }
   function setEdit(value){
     if(zoom)closeZoom();
-    editing=Boolean(value)&&Boolean(currentUserId);
+    const willEdit=Boolean(value)&&Boolean(currentUserId);
+    if(willEdit&&!editing)captureInitialPositions();
+    editing=willEdit;
     if(!editing){cancelDrag();endResize();pickerOpen=false;actionPickerOpen=false;taskForm.hidden=true;}
     document.body.classList.toggle('ptech-layout-editing',editing);
     button.setAttribute('aria-pressed',String(editing));
@@ -982,30 +1142,26 @@
     if(!window.confirm('Želiš vratiti zadani raspored? Osobni zadaci i njihove oznake bit će uklonjeni iz ovog preglednika.'))return;
     state=cloneDefaults();loadPersonalWidgets();pickerOpen=false;render(true);save();
   });
-  window.addEventListener('resize',()=>{if(state){applyGridPreset();for(const [id,widget]of widgets)renderSizes(id,widget);scheduleDensities();}},{passive:true});
+  window.addEventListener('resize',()=>{if(state){applyGridPreset();for(const [id,widget]of widgets)renderSizes(id,widget);updateExplicitPositions();scheduleDensities();}},{passive:true});
   const nameLabel=document.getElementById('userTop');
   if(nameLabel && typeof MutationObserver==='function')new MutationObserver(updateHubSummaries).observe(nameLabel,{characterData:true,childList:true,subtree:true});
 
-  // V16.4: Real live rearrangement, like the reference video's snapping tile grid.
-  // The real widget follows the pointer. Its previous grid footprint becomes a
-  // highlighted placeholder; neighbors reflow BEFORE pointer release.
-  // No cloned DOM/IDs and no duplicated Supabase listeners.
-  function dragOrder(){
-    return state.order.filter(id=>widgets.has(id)&&!state.hidden.includes(id));
-  }
+  // V16.11: drop into any free cells, not merely before/after another tile.
+  // Only overlapping tiles are displaced; otherwise gaps remain exactly where
+  // the user leaves them. A visible placeholder previews the final position.
   function startDrag(event,id){
-    if(!editing||!currentUserId||drag||resize||(event.pointerType==='mouse'&&event.button!==0))return;
-    const node=widgets.get(id);
-    if(!node||node.hidden)return;
+    if(!editing||!currentUserId||drag||resize||zoom||(event.pointerType==='mouse'&&event.button!==0))return;
+    const node=widgets.get(id);if(!node||node.hidden)return;
     event.preventDefault();event.stopPropagation();
     drag={id,node,handle:event.currentTarget,pointerId:event.pointerId,
-      x:event.clientX,y:event.clientY,started:false,placeholder:null,previewIndex:-1,
-      pointerX:event.clientX,pointerY:event.clientY,pointerType:event.pointerType,autoScrollFrame:0,originalOrder:dragOrder(),
+      x:event.clientX,y:event.clientY,pointerX:event.clientX,pointerY:event.clientY,
+      pointerType:event.pointerType,started:false,placeholder:null,autoScrollFrame:0,
+      originalPositions:planPositions(requestedPositions()||{}),previewPositions:null,
       originalStyle:{position:node.style.position,left:node.style.left,top:node.style.top,
         width:node.style.width,height:node.style.height,zIndex:node.style.zIndex,
         transform:node.style.transform,pointerEvents:node.style.pointerEvents,
         transition:node.style.transition}};
-    try{event.currentTarget.setPointerCapture(event.pointerId);}catch(_){}
+    try{event.currentTarget.setPointerCapture(event.pointerId);}catch(_){ }
     window.addEventListener('pointermove',dragMove,true);
     window.addEventListener('pointerup',dragEnd,true);
     window.addEventListener('pointercancel',dragCancel,true);
@@ -1016,9 +1172,7 @@
     const d=drag;if(!d||d.started)return;
     d.started=true;
     const rect=d.node.getBoundingClientRect();
-    d.rect=rect;
-    d.offsetX=d.x-rect.left;
-    d.offsetY=d.y-rect.top;
+    d.offsetX=d.x-rect.left;d.offsetY=d.y-rect.top;
     const placeholder=document.createElement('div');
     placeholder.className='ptech-drop-placeholder';
     placeholder.dataset.ptechDropTarget='true';
@@ -1026,12 +1180,10 @@
     placeholder.style.setProperty('--ptech-span-cols',String(viewDims(d.id).w));
     placeholder.style.setProperty('--ptech-span-rows',String(viewDims(d.id).h));
     placeholder.append(text('span','ptech-drop-placeholder-icon','▦'),
-      text('strong','',`Pusti ovdje`),text('small','','Novo mjesto kartice'));
-    grid.append(placeholder);
-    d.placeholder=placeholder;
+      text('strong','','Pusti ovdje'),text('small','','Slobodno mjesto u mreži'));
+    grid.append(placeholder);d.placeholder=placeholder;
     d.node.classList.add('ptech-widget-floating');
     document.body.classList.add('ptech-drag-active');
-    // Fixed positioning removes it from CSS grid while retaining the actual DOM.
     d.node.style.setProperty('position','fixed','important');
     d.node.style.setProperty('left',rect.left+'px','important');
     d.node.style.setProperty('top',rect.top+'px','important');
@@ -1041,143 +1193,99 @@
     d.node.style.setProperty('pointer-events','none','important');
     d.node.style.setProperty('transition','none','important');
     d.node.style.setProperty('transform','translate3d(0,0,0)','important');
-    const initial=Math.max(0,d.originalOrder.indexOf(d.id));
     const note=document.createElement('div');note.className='ptech-drop-live-status';
     note.setAttribute('role','status');note.setAttribute('aria-live','polite');
     grid.after(note);d.note=note;
-    previewDrop(initial);
+    previewCell(d.originalPositions[d.id]);
     d.handle.setAttribute('aria-grabbed','true');
     if(d.pointerType==='touch')d.autoScrollFrame=requestAnimationFrame(touchAutoScroll);
     scheduleDensities();
   }
-  function previewDrop(index){
-    if(!drag||!drag.started)return;
+  function pointerCell(x,y){
+    const d=drag,rect=grid.getBoundingClientRect();
+    const stepX=columnStep(),stepY=gridRowStep();
+    const w=viewDims(d.id).w;
+    const bottom=Math.max(1,...Object.entries(d.originalPositions)
+      .map(([id,p])=>p.row+viewDims(id).h));
+    return {col:clamp(Math.round((x-rect.left-d.offsetX)/stepX)+1,1,actualGridColumns()-w+1),
+      row:clamp(Math.round((y-rect.top-d.offsetY)/stepY)+1,1,bottom+5)};
+  }
+  function previewCell(target){
+    if(!drag||!drag.started||!target)return;
     const d=drag;
-    const others=d.originalOrder.filter(id=>id!==d.id);
-    const next=clamp(index,0,others.length);
-    if(d.previewIndex===next)return;
-    const before=new Map(others.map(id=>[id,widgets.get(id)?.getBoundingClientRect()]));
-    const preview=[...others];preview.splice(next,0,d.id);
-    for(let i=0;i<preview.length;i++){
-      const id=preview[i];
-      if(id===d.id)d.placeholder.style.order=String(i);
-      else widgets.get(id).style.order=String(i);
-    }
-    d.previewIndex=next;
-    if(d.note)d.note.textContent=`${titles[d.id]||'Kartica'} — pozicija ${next+1} od ${preview.length}`;
+    if(d.target?.col===target.col&&d.target?.row===target.row)return;
+    const before=new Map(visibleTiles().filter(id=>id!==d.id)
+      .map(id=>[id,widgets.get(id)?.getBoundingClientRect()]));
+    const requested={...d.originalPositions,[d.id]:target};
+    const next=planPositions(requested,d.id);
+    setGridCell(d.placeholder,d.id,next[d.id]);
+    putPositions(next);
+    d.target={...target};d.previewPositions=next;
+    const hasCollision=Object.entries(next).some(([id,pos])=>id!==d.id&&
+      (pos.col!==d.originalPositions[id]?.col||pos.row!==d.originalPositions[id]?.row));
+    d.placeholder.classList.toggle('ptech-drop-displaces',hasCollision);
+    if(d.note)d.note.textContent=`${titles[d.id]||'Kartica'} — stupac ${next[d.id].col}, red ${next[d.id].row}${hasCollision?' · ostale kartice se razmiču':''}`;
     if(prefersReducedMotion())return;
     requestAnimationFrame(()=>{
       if(!drag||drag!==d)return;
-      for(const [id,from] of before){
+      for(const [id,from]of before){
         const node=widgets.get(id);if(!node||!from)continue;
-        const to=node.getBoundingClientRect();
-        const dx=from.left-to.left,dy=from.top-to.top;
-        if((Math.abs(dx)+Math.abs(dy))<3||Math.abs(dy)>1800)continue;
-        if(node._ptechLiveFlip)node._ptechLiveFlip.cancel();
-        const a=node.animate([{transform:`translate3d(${dx}px,${dy}px,0)`},{transform:'translate3d(0,0,0)'}],
-          {duration:230,easing:'cubic-bezier(.17,.85,.22,1)'});
-        node._ptechLiveFlip=a;
-        a.addEventListener('finish',()=>{if(node._ptechLiveFlip===a)node._ptechLiveFlip=null;},{once:true});
+        const to=node.getBoundingClientRect(),dx=from.left-to.left,dy=from.top-to.top;
+        if(Math.abs(dx)+Math.abs(dy)<3||Math.abs(dy)>1800)continue;
+        node._ptechLiveFlip?.cancel();
+        const anim=node.animate([{transform:`translate3d(${dx}px,${dy}px,0)`},{transform:'translate3d(0,0,0)'}],
+          {duration:210,easing:'cubic-bezier(.17,.85,.22,1)'});
+        node._ptechLiveFlip=anim;
+        anim.addEventListener('finish',()=>{if(node._ptechLiveFlip===anim)node._ptechLiveFlip=null;},{once:true});
       }
     });
   }
-  function bestDropIndex(x,y){
-    const d=drag;if(!d)return 0;
-    const others=d.originalOrder.filter(id=>id!==d.id);
-    if(!others.length)return 0;
-    const candidates=others.map((id,index)=>({id,index,node:widgets.get(id)}))
-      .filter(item=>item.node&&!item.node.hidden);
-    let target=null;
-    const el=document.elementFromPoint(x,y)?.closest('[data-widget-id]');
-    if(el && el.dataset.widgetId!==d.id){target=candidates.find(item=>item.id===el.dataset.widgetId);}
-    if(!target){
-      let best=Infinity;
-      for(const item of candidates){
-        const r=item.node.getBoundingClientRect();
-        const dx=Math.max(r.left-x,0,x-r.right),dy=Math.max(r.top-y,0,y-r.bottom);
-        // Weighted proximity prevents a very wide card attracting drops from rows below.
-        const dist=dx*dx+dy*dy*1.25;
-        if(dist<best){best=dist;target=item;}
-      }
-    }
-    if(!target)return others.length;
-    const r=target.node.getBoundingClientRect();
-    // Large/full-width tiles split along their height. For smaller tiles use
-    // horizontal halves, matching the grid's natural left-to-right packing.
-    const vertical=r.width>grid.clientWidth*.78 || (r.height>r.width*1.8 && x>r.left+r.width*.15 && x<r.right-r.width*.15);
-    const after=vertical?y>r.top+r.height*.5:x>r.left+r.width*.5;
-    return target.index+(after?1:0);
-  }
-  function dragMove(e){
-    if(!drag||e.pointerId!==drag.pointerId)return;
-    if(!drag.started&&Math.hypot(e.clientX-drag.x,e.clientY-drag.y)<7)return;
-    if(!drag.started)beginDrag();
-    if(!drag)return;
-    e.preventDefault();e.stopPropagation();
-    const d=drag;
-    d.pointerX=e.clientX;d.pointerY=e.clientY;
-    // Keep the tile under the finger; this does not trigger grid reflow.
-    d.node.style.setProperty('transform',`translate3d(${e.clientX-d.x}px,${e.clientY-d.y}px,0)`,'important');
-    const target=bestDropIndex(e.clientX,e.clientY);
-    previewDrop(target);
-    // Mobile auto-scroll runs every frame while the finger rests near an edge.
-    // Unlike one-shot scrolling, the user can drag through long dashboards.
-
+  function dragMove(event){
+    if(!drag||event.pointerId!==drag.pointerId)return;
+    if(!drag.started&&Math.hypot(event.clientX-drag.x,event.clientY-drag.y)<7)return;
+    if(!drag.started)beginDrag();if(!drag)return;
+    event.preventDefault();event.stopPropagation();
+    const d=drag;d.pointerX=event.clientX;d.pointerY=event.clientY;
+    d.node.style.setProperty('transform',`translate3d(${event.clientX-d.x}px,${event.clientY-d.y}px,0)`,'important');
+    previewCell(pointerCell(event.clientX,event.clientY));
   }
   function touchAutoScroll(){
     if(!drag||!drag.started||drag.pointerType!=='touch')return;
-    const d=drag;
-    const upper=95,lower=window.innerHeight-110;
-    const dy=d.pointerY<upper?-clamp((upper-d.pointerY)*.23,4,18):
-      d.pointerY>lower?clamp((d.pointerY-lower)*.23,4,18):0;
-    if(dy){
-      const before=window.scrollY;window.scrollBy(0,dy);
-      if(window.scrollY!==before)previewDrop(bestDropIndex(d.pointerX,d.pointerY));
-    }
+    const d=drag,top=95,bottom=window.innerHeight-110;
+    const dy=d.pointerY<top?-clamp((top-d.pointerY)*.23,4,18):
+      d.pointerY>bottom?clamp((d.pointerY-bottom)*.23,4,18):0;
+    if(dy){const before=window.scrollY;window.scrollBy(0,dy);
+      if(window.scrollY!==before)previewCell(pointerCell(d.pointerX,d.pointerY));}
     d.autoScrollFrame=requestAnimationFrame(touchAutoScroll);
   }
-  function dragEnd(e){
-    if(!drag||e.pointerId!==drag.pointerId)return;
-    e.preventDefault();e.stopPropagation();
+  function dragEnd(event){
+    if(!drag||event.pointerId!==drag.pointerId)return;
+    event.preventDefault();event.stopPropagation();
     if(!drag.started){clearDrag();return;}
-    const d=drag;
-    const others=d.originalOrder.filter(id=>id!==d.id);
-    const next=[...others];next.splice(clamp(d.previewIndex,0,others.length),0,d.id);
-    const hidden=state.order.filter(id=>!next.includes(id));
-    // Restore before final render to avoid a ghost tile remaining on screen.
+    const positions=drag.previewPositions;
     clearDrag();
-    state.order=[...next,...hidden];
-    render(true);save();
+    if(positions){rememberPositions(positions);render(true);save();}
+    else render();
   }
   function dragCancel(){cancelDrag();}
-  function dragKeydown(e){if(e.key==='Escape'&&drag){e.preventDefault();e.stopPropagation();cancelDrag();}}
-  function cancelDrag(){
-    if(!drag)return;
-    clearDrag();
-    render(true);
-  }
+  function dragKeydown(event){if(event.key==='Escape'&&drag){event.preventDefault();event.stopPropagation();cancelDrag();}}
+  function cancelDrag(){if(!drag)return;clearDrag();render(true);}
   function clearDrag(){
-    if(!drag)return;
-    const d=drag;
-    drag=null;
+    if(!drag)return;const d=drag;drag=null;
     window.removeEventListener('pointermove',dragMove,true);
     window.removeEventListener('pointerup',dragEnd,true);
     window.removeEventListener('pointercancel',dragCancel,true);
     window.removeEventListener('blur',dragCancel);
     document.removeEventListener('keydown',dragKeydown,true);
-    try{if(d.handle.hasPointerCapture?.(d.pointerId))d.handle.releasePointerCapture(d.pointerId);}catch(_){}
+    try{if(d.handle.hasPointerCapture?.(d.pointerId))d.handle.releasePointerCapture(d.pointerId);}catch(_){ }
     if(d.autoScrollFrame)cancelAnimationFrame(d.autoScrollFrame);
     if(d.started){
-      const n=d.node,s=d.originalStyle;
-      // Remove overriding inline styles and restore any previously set values.
-      for(const [k,v] of Object.entries(s))n.style[k]=v;
-      n.classList.remove('ptech-widget-floating');
+      for(const [key,value]of Object.entries(d.originalStyle))d.node.style[key]=value;
+      d.node.classList.remove('ptech-widget-floating');
       d.placeholder?.remove();d.note?.remove();
       document.body.classList.remove('ptech-drag-active');
       d.handle.removeAttribute('aria-grabbed');
-      for(const widget of widgets.values()){
-        if(widget._ptechLiveFlip){widget._ptechLiveFlip.cancel();widget._ptechLiveFlip=null;}
-      }
+      for(const node of widgets.values())if(node._ptechLiveFlip){node._ptechLiveFlip.cancel();node._ptechLiveFlip=null;}
     }
     scheduleDensities();
   }
@@ -1253,6 +1361,7 @@
     }
     d.h=clamp(Math.round(r.nextRows/r.physicalScale*1000)/1000,0.15,MAX_ROWS);
     state.dims[r.id]=d;
+    if(currentPlacement())rememberPositions(planPositions(requestedPositions()||{},r.id));
     render(true);
     save();
   }
