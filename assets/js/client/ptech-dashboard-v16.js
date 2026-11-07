@@ -1,4 +1,4 @@
-/* PTech Digital Client Portal V16.5 - live grid, adaptive tiles and fullscreen/compact tile actions.
+/* PTech Digital Client Portal V16.6 - editor-only tile controls + live grid and adaptive tiles.
  * Safe: project-related operations stay in original script.js; Supabase tasks
  * are read only through existing RLS. Layout and personal notes are local to
  * the signed-in user's browser and are never stored in Supabase.
@@ -7,7 +7,7 @@
   'use strict';
   const grid = document.getElementById('ptechDashboardGrid');
   if (!grid) return;
-  document.body.classList.add('ptech-dashboard-v16', 'ptech-dashboard-v162', 'ptech-dashboard-v164', 'ptech-dashboard-v165');
+  document.body.classList.add('ptech-dashboard-v16', 'ptech-dashboard-v162', 'ptech-dashboard-v164', 'ptech-dashboard-v165', 'ptech-dashboard-v166');
   const button = document.getElementById('ptechLayoutEdit');
   const resetButton = document.getElementById('ptechLayoutReset');
   const showButton = document.getElementById('ptechLayoutShow');
@@ -143,6 +143,7 @@
     widget.style.setProperty('--ptech-span-cols',String(d.w));
     widget.style.setProperty('--ptech-span-rows',String(d.h));
     widget.dataset.widgetSize=raw.w<=4?'small':raw.w>=10?'large':'medium';
+    widget.dataset.widgetColumns=String(d.w);
     const counter=widget.querySelector('.ptech-widget-dimensions');
     if(counter)counter.textContent=`${d.w} × ${d.h}`;
   }
@@ -423,6 +424,15 @@
       state.dims[id]={...old,w:minColumn(id),h:MIN_ROWS,m:(id==='projects'||id==='actions')?2:1};
       render(true);save();
     });
+    // V16.6: Expand a tile IN THE DASHBOARD GRID (without leaving edit mode).
+    // Keep the corner-resize handle for fine tuning of both width and height.
+    const grow=makeButton('⤢',`Povećaj ${name} na veliku kockicu`,'ptech-widget-grow');
+    grow.addEventListener('click',()=>{
+      if(!editing || drag || resize || zoom)return;
+      const old=state.dims[id]||{w:6,h:4};
+      state.dims[id]={...old,w:12,h:Math.max(old.h,7),m:2};
+      render(true);save();
+    });
     const hide=makeButton('×',`Ukloni ${name} s dashboarda`,'ptech-widget-hide');
     hide.addEventListener('click',()=>{
       if(!editing)return;
@@ -437,7 +447,7 @@
       }else if(!state.hidden.includes(id))state.hidden.push(id);
       render();save();
     });
-    controls.append(handle,label,compact,prev,next,hide);
+    controls.append(handle,label,compact,grow,prev,next,hide);
     const grip=makeButton('','Povuci kut za promjenu širine i visine '+name,'ptech-widget-resize');
     grip.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 20l11-11M15 20l5-5M19 20h1v-1"/></svg>';
     grip.setAttribute('aria-keyshortcuts','ArrowLeft ArrowRight ArrowUp ArrowDown');
@@ -453,12 +463,14 @@
       d.h=clamp(d.h+delta[1],MIN_ROWS,MAX_ROWS);state.dims[id]=d;
       render();save();
     });
-    // Fullscreen doesn't duplicate existing DOM, event handlers or Supabase state.
-    const expand=makeButton('⛶',`Proširi ${name} na veliki zaslon`,'ptech-widget-expand');
+    // Fullscreen preview is available ONLY in Uredi dashboard (never in normal view).
+    const expand=makeButton('⛶',`Prikaži ${name} preko cijelog zaslona`,'ptech-widget-expand');
     expand.addEventListener('click',event=>{
-      event.preventDefault();event.stopPropagation();openZoom(id,expand);
+      event.preventDefault();event.stopPropagation();
+      if(editing)openZoom(id,expand);
     });
-    widget.append(controls,grip,expand);
+    controls.append(expand);
+    widget.append(controls,grip);
   }
 
   // Maximize/restore: move the REAL widget to an accessible fullscreen dialog.
@@ -466,7 +478,7 @@
   // Restoring does not modify saved order or tile dimensions.
   function openZoom(id,trigger){
     if(zoom || drag || resize || !widgets.has(id) || widgets.get(id).hidden)return;
-    if(editing)setEdit(false); // prevent hidden editor controls/native actions being activated
+    // Stay in edit mode; the dialog is just a preview, not a saved layout change.
     const widget=widgets.get(id);
     const rect=widget.getBoundingClientRect();
     const placeholder=document.createElement('div');

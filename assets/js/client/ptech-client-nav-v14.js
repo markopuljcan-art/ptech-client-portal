@@ -1,4 +1,4 @@
-/* V14 - shared 'Zadaci' entry. Existing five-item mobile dock is untouched. */
+/* V16.6 - shared 'Zadaci' entry, without the redundant dashboard banner. Existing five-item mobile dock is untouched. */
 (() => {
   'use strict';
   const pages = new Set(['form.html','my-projects.html','project.html','documents.html','messages.html','profile.html','revision.html','approve.html','tasks.html']);
@@ -20,7 +20,7 @@
         if(active) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
       });
     }
-    if ((current === 'form.html' || current === 'my-projects.html') && !document.querySelector('.v14-tasks-shortcut')) {
+    if (current === 'my-projects.html' && !document.querySelector('.v14-tasks-shortcut')) {
       const main=document.querySelector('.dashboard-content');
       if (main) {
         const a=document.createElement('a');a.href='tasks.html';a.className='v14-tasks-shortcut';

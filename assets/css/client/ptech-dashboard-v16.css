@@ -670,3 +670,60 @@ body.ptech-dashboard-v165 .ptech-zoom-grid .ptech-widget[data-widget-density="co
   body.ptech-dashboard-v165 .ptech-zoom-dialog,
   body.ptech-dashboard-v165 .ptech-widget-expand{animation:none!important;transition:none!important}
 }
+
+
+/* ===============================================================
+   V16.6 - Fullscreen/compact/grow ONLY inside the dashboard editor.
+   Normal dashboard has no floating fullscreen buttons. The editor
+   offers small / large grid sizes + optional full-screen preview.
+   =============================================================== */
+body.ptech-dashboard-v166 .ptech-dashboard-grid .ptech-widget .ptech-widget-expand {
+  display:none!important;
+}
+body.ptech-dashboard-v166.ptech-layout-editing .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget-controls .ptech-widget-expand {
+  display:inline-flex!important;
+  position:static!important;inset:auto!important;z-index:auto!important;
+  flex:0 0 auto;width:33px;height:33px;min-width:33px;min-height:33px;
+  padding:0;border-radius:10px;font-size:20px;box-shadow:none;
+  opacity:1;transform:none;
+}
+body.ptech-dashboard-v166.ptech-layout-editing .ptech-widget-controls .ptech-widget-grow {
+  font-size:21px;color:var(--ui-copper);background:var(--ui-copper-soft);
+  border-color:var(--ui-copper-light);
+}
+body.ptech-dashboard-v166.ptech-layout-editing .ptech-widget-controls .ptech-widget-grow:hover,
+body.ptech-dashboard-v166.ptech-layout-editing .ptech-widget-controls .ptech-widget-grow:focus-visible {
+  color:var(--ui-bg);background:var(--ui-copper);
+}
+body.ptech-dashboard-v166.ptech-layout-editing .ptech-widget-controls .ptech-widget-expand:hover {
+  background:var(--ui-copper-soft);color:var(--ui-copper);
+}
+/* Small tiles must not overflow when resized to half width on iPhone. */
+body.ptech-dashboard-v166.ptech-layout-editing .ptech-widget[data-widget-size="small"] .ptech-widget-controls .ptech-widget-dimensions,
+body.ptech-dashboard-v166.ptech-layout-editing .ptech-widget[data-widget-size="small"] .ptech-widget-controls .ptech-widget-expand,
+body.ptech-dashboard-v166.ptech-layout-editing .ptech-widget[data-widget-size="small"] .ptech-widget-controls .ptech-widget-tool:not(.ptech-widget-move):not(.ptech-widget-compact):not(.ptech-widget-grow):not(.ptech-widget-hide) {
+  display:none!important;
+}
+@media(max-width:720px){
+  body.ptech-dashboard-v166.ptech-layout-editing .ptech-widget[data-widget-columns="1"] .ptech-widget-controls .ptech-widget-dimensions,
+  body.ptech-dashboard-v166.ptech-layout-editing .ptech-widget[data-widget-columns="1"] .ptech-widget-controls .ptech-widget-expand,
+  body.ptech-dashboard-v166.ptech-layout-editing .ptech-widget[data-widget-columns="1"] .ptech-widget-controls .ptech-widget-tool:not(.ptech-widget-move):not(.ptech-widget-compact):not(.ptech-widget-grow):not(.ptech-widget-hide) {
+    display:none!important;
+  }
+  body.ptech-dashboard-v166.ptech-layout-editing .ptech-widget[data-widget-columns="1"] .ptech-widget-controls {
+    left:5px;right:5px;gap:3px;
+  }
+  body.ptech-dashboard-v166.ptech-layout-editing .ptech-widget[data-widget-columns="1"] .ptech-widget-controls .ptech-widget-tool {
+    min-width:26px;min-height:30px;width:28px;padding:3px;font-size:16px;
+  }
+  body.ptech-dashboard-v166.ptech-layout-editing .ptech-widget[data-widget-columns="1"] .ptech-widget-controls .ptech-widget-move {
+    min-width:29px;width:29px;
+  }
+}
+@media(max-width:430px){
+  /* V16.2 used to hide all but move/remove on phones. Keep new resize shortcuts visible. */
+  body.ptech-dashboard-v166.ptech-layout-editing .ptech-widget-controls .ptech-widget-compact,
+  body.ptech-dashboard-v166.ptech-layout-editing .ptech-widget-controls .ptech-widget-grow {
+    display:inline-flex!important;
+  }
+}
