@@ -47,7 +47,9 @@
     ></script>
     
 <link rel="stylesheet" href="./assets/css/client/v13-mobile.css?v=13.10">
+<link rel="stylesheet" href="./assets/css/client/ptech-dashboard-v16.css?v=16.1">
 <script src="./assets/js/client/v13-mobile.js?v=13.10" defer></script>
+<script src="./assets/js/client/ptech-dashboard-v16.js?v=16.1" defer></script>
 
 </head>
 
@@ -212,8 +214,23 @@
                     </p>
                 </section>
 
+                <!-- V16: upravljanje dashboardom, dostupno samo prijavljenom klijentu -->
+                <div class="ptech-layout-bar" aria-label="Uređivanje početnog zaslona">
+                    <div class="ptech-layout-bar-copy">
+                        <strong>Moja početna</strong>
+                        <span>Prilagodi kartice svojem načinu rada.</span>
+                    </div>
+                    <div class="ptech-layout-bar-actions">
+                        <button type="button" class="ptech-layout-button ptech-layout-button-secondary" id="ptechLayoutReset" hidden>Vrati zadano</button>
+                        <button type="button" class="ptech-layout-button ptech-layout-button-secondary" id="ptechLayoutShow" hidden>Dodaj karticu</button>
+                        <button type="button" class="ptech-layout-button" id="ptechLayoutEdit" aria-pressed="false" disabled>✦ Uredi raspored</button>
+                    </div>
+                </div>
+                <p id="ptechLayoutHint" class="ptech-layout-hint" hidden>Pomakni kartice povlačenjem za ručku ili strelicama. Koristi − i + za promjenu veličine. U kartici Brze akcije možeš dodavati, uklanjati i pomicati pojedine prečace.</p>
+                <div id="ptechHiddenWidgets" class="ptech-hidden-widgets" hidden aria-label="Skrivene kartice"></div>
+                <div id="ptechDashboardGrid" class="ptech-dashboard-grid">
                 <!-- AKTIVNI PROJEKTI -->
-                <section class="dashboard-section">
+                <section class="dashboard-section ptech-widget" data-widget-id="projects" data-widget-size="large" aria-label="Aktivni projekti">
 
                     
 <div class="section-header">
@@ -276,7 +293,7 @@
                 </section>
 
                 <!-- BRZE AKCIJE -->
-                <section class="actions-section">
+                <section class="actions-section ptech-widget" data-widget-id="actions" data-widget-size="medium" aria-label="Brze akcije">
 
                     <div class="actions-header">
                         <h2>Brze akcije</h2>
@@ -379,10 +396,30 @@
                     </div>
                 </section>
                 
-<!-- NEDAVNE PORUKE I DOKUMENTI -->
-<section class="dashboard-overview">
 
-    <article class="overview-panel">
+                <!-- V16: Zadaci klijenta (pregled, podaci iz Supabase RLS tablice) -->
+                <section class="ptech-widget ptech-dashboard-tasks" data-widget-id="tasks" data-widget-size="medium" aria-label="Moji zadaci">
+                    <div class="ptech-tasks-head">
+                        <div>
+                            <span class="ptech-tasks-eyebrow">OBVEZE KLIJENTA</span>
+                            <h2>Moji zadaci</h2>
+                            <p>Što je sljedeće potrebno za tvoje projekte?</p>
+                        </div>
+                        <span class="ptech-tasks-count" id="ptechDashboardTasksCount" aria-label="Otvoreni zadaci">–</span>
+                    </div>
+                    <div id="ptechDashboardTasksList" class="ptech-tasks-preview" aria-live="polite">
+                        <p class="ptech-tasks-empty">Učitavanje zadataka...</p>
+                    </div>
+                    <div class="ptech-tasks-footer">
+                        <a href="tasks.html">Svi zadaci <span aria-hidden="true">→</span></a>
+                        <button type="button" id="ptechDashboardTasksRefresh" aria-label="Osvježi zadatke" title="Osvježi zadatke">↻</button>
+                    </div>
+                </section>
+
+<!-- NEDAVNE PORUKE I DOKUMENTI -->
+<div class="dashboard-overview">
+
+    <article class="overview-panel ptech-widget" data-widget-id="messages" data-widget-size="medium" aria-label="Nedavne poruke">
         <div class="overview-panel-header">
             <div>
                 <h2>▣ &nbsp; Nedavne poruke</h2>
@@ -405,7 +442,7 @@
         </div>
     </article>
 
-    <article class="overview-panel">
+    <article class="overview-panel ptech-widget" data-widget-id="documents" data-widget-size="medium" aria-label="Korisni dokumenti">
         <div class="overview-panel-header">
             <div>
                 <h2>▤ &nbsp; Korisni dokumenti</h2>
@@ -428,7 +465,8 @@
         </div>
     </article>
 
-</section>
+</div>
+                </div><!-- /ptech-dashboard-grid -->
 
                 <!-- FOOTER -->
                 <footer class="footer">

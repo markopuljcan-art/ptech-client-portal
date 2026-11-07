@@ -1,0 +1,205 @@
+/* PTech Digital Client Portal V16.0 — prilagodljiv dashboard.
+   Dodatni sloj samo za form.html; ne mijenja postojeće CSS datoteke. */
+
+body.ptech-dashboard-v16 .ptech-layout-bar {
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  margin:0 0 12px;padding:14px 18px;border-radius:19px;
+  background:linear-gradient(125deg,var(--ui-card),var(--ui-card-end));
+  border:1px solid var(--ui-border);box-shadow:var(--ui-shadow);
+}
+body.ptech-dashboard-v16 .ptech-layout-bar-copy {display:flex;flex-direction:column;gap:3px;min-width:0}
+body.ptech-dashboard-v16 .ptech-layout-bar-copy strong {font-size:15px;color:var(--ui-text)}
+body.ptech-dashboard-v16 .ptech-layout-bar-copy span {font-size:12px;color:var(--ui-muted)}
+body.ptech-dashboard-v16 .ptech-layout-bar-actions {display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+body.ptech-dashboard-v16 .ptech-layout-button,
+body.ptech-dashboard-v16 .ptech-layout-reveal {
+  appearance:none;border:1px solid var(--ui-border);border-radius:12px;
+  background:var(--ui-copper);color:var(--ui-bg);font-size:13px;font-weight:800;
+  min-height:37px;padding:8px 14px;cursor:pointer;white-space:nowrap;
+}
+body.ptech-dashboard-v16 .ptech-layout-button-secondary,
+body.ptech-dashboard-v16 .ptech-layout-reveal {background:var(--ui-copper-soft);color:var(--ui-text)}
+body.ptech-dashboard-v16 .ptech-layout-button:disabled {opacity:.55;cursor:wait}
+body.ptech-dashboard-v16 .ptech-layout-hint {font-size:13px;color:var(--ui-muted);margin:0 0 13px}
+body.ptech-dashboard-v16 .ptech-hidden-widgets {display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+body.ptech-dashboard-v16 .ptech-layout-reveal {min-height:34px}
+
+/* Desktop = 12 jedinica; male/srednje/velike kartice = 4/6/12. */
+body.ptech-dashboard-v16 .ptech-dashboard-grid {
+  display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:18px;align-items:stretch;min-width:0;width:100%;
+}
+body.ptech-dashboard-v16 .ptech-dashboard-grid .dashboard-overview {display:contents}
+body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-widget {
+  grid-column:span 6;min-width:0;max-width:100%;position:relative;
+  margin:0;isolation:isolate;
+}
+body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-widget[data-widget-size="small"] {grid-column:span 4}
+body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-widget[data-widget-size="medium"] {grid-column:span 6}
+body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-widget[data-widget-size="large"] {grid-column:1/-1}
+body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-widget[hidden] {display:none!important}
+body.ptech-dashboard-v16 .ptech-dashboard-grid .dashboard-section,
+body.ptech-dashboard-v16 .ptech-dashboard-grid .actions-section {align-self:stretch}
+body.ptech-dashboard-v16 .ptech-dashboard-grid .dashboard-section .section-title,
+body.ptech-dashboard-v16 .ptech-dashboard-grid .actions-header h2 {font-size:clamp(19px,2vw,24px)}
+body.ptech-dashboard-v16 .ptech-dashboard-grid .actions-grid {grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+body.ptech-dashboard-v16 .ptech-dashboard-grid [data-widget-id="actions"][data-widget-size="large"] .actions-grid {grid-template-columns:repeat(4,minmax(0,1fr))}
+body.ptech-dashboard-v16 .ptech-dashboard-grid [data-widget-id="actions"][data-widget-size="small"] .actions-grid {grid-template-columns:1fr}
+body.ptech-dashboard-v16 .ptech-dashboard-grid .action-card {min-height:170px;padding:17px}
+body.ptech-dashboard-v16 .ptech-dashboard-grid [data-widget-id="projects"][data-widget-size="small"] .project-stats {grid-template-columns:1fr}
+body.ptech-dashboard-v16 .ptech-dashboard-grid .projects-slider {min-width:0}
+body.ptech-dashboard-v16 .ptech-dashboard-grid .overview-panel {margin:0;align-self:stretch}
+body.ptech-dashboard-v16 .ptech-dashboard-grid .overview-panel-header {flex-wrap:wrap}
+
+/* Uredi: kartice imaju bakrenu isprekidanu konturu i lokalne alate. */
+body.ptech-dashboard-v16 .ptech-widget-controls {display:none}
+body.ptech-dashboard-v16.ptech-layout-editing .ptech-widget {
+  outline:2px dashed var(--ui-copper-light);outline-offset:3px;
+  border-radius:22px;padding-top:52px!important;
+  transition:opacity .13s ease,outline-color .13s ease;
+}
+body.ptech-dashboard-v16.ptech-layout-editing .ptech-widget-controls {
+  display:flex;align-items:center;justify-content:flex-end;gap:5px;
+  position:absolute;top:7px;right:7px;left:7px;min-height:37px;z-index:5;
+}
+body.ptech-dashboard-v16 .ptech-widget-tool {
+  appearance:none;display:inline-flex;align-items:center;justify-content:center;
+  border-radius:10px;min-width:33px;min-height:33px;padding:5px;
+  border:1px solid var(--ui-border);background:var(--ui-card-inset);color:var(--ui-text);
+  cursor:pointer;font-size:18px;font-weight:700;line-height:1;
+}
+body.ptech-dashboard-v16 .ptech-widget-tool:disabled {opacity:.3;cursor:not-allowed}
+body.ptech-dashboard-v16 .ptech-widget-move {
+  margin-right:auto;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;
+  font-size:24px;color:var(--ui-copper);
+}
+body.ptech-dashboard-v16 .ptech-widget-hide {font-size:21px}
+body.ptech-dashboard-v16 .ptech-widget-dragging {opacity:.60;outline-style:solid!important;transform:scale(.99)}
+body.ptech-dashboard-v16 .ptech-widget-target {outline:3px solid var(--ui-copper)!important}
+
+/* Nova kartica Zadaci: isti light/dark tokeni kao ostatak portala. */
+body.ptech-dashboard-v16 .ptech-dashboard-tasks {
+  padding:22px;border-radius:23px;border:1px solid var(--ui-border);
+  background:linear-gradient(145deg,var(--ui-card),var(--ui-card-end));
+  box-shadow:var(--ui-shadow);
+}
+body.ptech-dashboard-v16 .ptech-tasks-head {display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:15px}
+body.ptech-dashboard-v16 .ptech-tasks-head h2 {margin:3px 0 4px;font-size:22px;font-weight:850;color:var(--ui-text)}
+body.ptech-dashboard-v16 .ptech-tasks-head p {margin:0;color:var(--ui-muted);font-size:13px;line-height:1.45}
+body.ptech-dashboard-v16 .ptech-tasks-eyebrow {color:var(--ui-copper);font-size:10px;font-weight:800;letter-spacing:.1em}
+body.ptech-dashboard-v16 .ptech-tasks-count {flex:none;display:grid;place-items:center;min-width:43px;height:43px;border-radius:14px;background:var(--ui-copper-soft);color:var(--ui-copper);font-size:20px;font-weight:900}
+body.ptech-dashboard-v16 .ptech-tasks-preview {display:flex;flex-direction:column;gap:7px;min-width:0}
+body.ptech-dashboard-v16 .ptech-task-preview-row {
+  display:flex;gap:11px;align-items:center;min-width:0;padding:12px 13px;
+  border:1px solid var(--ui-border);border-radius:15px;
+  background:color-mix(in srgb,var(--ui-card) 80%,transparent);text-decoration:none;
+}
+body.ptech-dashboard-v16 .ptech-task-preview-row:hover {border-color:var(--ui-copper-light);background:var(--ui-copper-soft)}
+body.ptech-dashboard-v16 .ptech-task-preview-dot {display:grid;place-items:center;flex:none;width:26px;height:26px;border-radius:50%;background:var(--ui-copper-soft);color:var(--ui-copper);font-weight:800;font-size:12px}
+body.ptech-dashboard-v16 .ptech-task-preview-dot.done {background:rgba(42,156,99,.15);color:#4fae7b}
+body.ptech-dashboard-v16 .ptech-task-preview-copy {display:flex;flex:1;flex-direction:column;gap:3px;min-width:0}
+body.ptech-dashboard-v16 .ptech-task-preview-copy strong {color:var(--ui-text);font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body.ptech-dashboard-v16 .ptech-task-preview-copy small {color:var(--ui-muted);font-size:11px}
+body.ptech-dashboard-v16 .ptech-task-preview-chevron {color:var(--ui-copper);font-size:21px}
+body.ptech-dashboard-v16 .ptech-tasks-empty {margin:3px 0 6px;padding:15px 12px;color:var(--ui-muted);text-align:center;font-size:13px;line-height:1.5}
+body.ptech-dashboard-v16 .ptech-tasks-more {margin:6px 0;color:var(--ui-muted);font-size:12px}
+body.ptech-dashboard-v16 .ptech-tasks-footer {display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px;border-top:1px solid var(--ui-border);padding-top:12px}
+body.ptech-dashboard-v16 .ptech-tasks-footer a {color:var(--ui-copper);font-size:13px;text-decoration:none;font-weight:800}
+body.ptech-dashboard-v16 .ptech-tasks-footer a:hover {text-decoration:underline}
+body.ptech-dashboard-v16 .ptech-tasks-footer button {border:0;background:transparent;color:var(--ui-copper);font-size:20px;cursor:pointer}
+
+@media (max-width:1200px) {
+  body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-widget[data-widget-size="small"] {grid-column:span 6}
+  body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-widget[data-widget-size="large"] {grid-column:1/-1}
+  body.ptech-dashboard-v16 .ptech-dashboard-grid [data-widget-id="actions"][data-widget-size="large"] .actions-grid {grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:750px) {
+  body.ptech-dashboard-v16 .ptech-dashboard-grid {grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+  body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-widget[data-widget-size="small"] {grid-column:span 1}
+  body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-widget[data-widget-size="medium"],
+  body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-widget[data-widget-size="large"] {grid-column:1/-1}
+  body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-widget[data-widget-size="small"] .section-title,
+  body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-widget[data-widget-size="small"] .actions-header h2,
+  body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-widget[data-widget-size="small"] .ptech-tasks-head h2 {font-size:16px}
+  body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-widget[data-widget-size="small"] .actions-grid {grid-template-columns:1fr}
+  body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-widget[data-widget-size="small"] .action-card {min-height:135px;padding:12px}
+  body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-widget[data-widget-size="small"] .overview-panel-header a {font-size:11px}
+  body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-widget[data-widget-size="small"] .ptech-task-preview-row {padding:9px}
+  body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-widget[data-widget-size="small"] .ptech-tasks-head {flex-wrap:wrap}
+  body.ptech-dashboard-v16 .ptech-layout-bar {flex-direction:column;align-items:stretch;gap:12px;padding:13px}
+  body.ptech-dashboard-v16 .ptech-layout-bar-actions {justify-content:flex-start}
+  body.ptech-dashboard-v16 .ptech-dashboard-tasks {padding:17px}
+  body.ptech-dashboard-v16.ptech-layout-editing .ptech-widget {padding-top:51px!important}
+  body.ptech-dashboard-v16 .ptech-widget-tool {min-width:29px;min-height:31px}
+}
+@media (max-width:420px) {
+  /* iPhone Control Center princip: mala kartica zauzima pola reda. */
+  body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-widget[data-widget-size="small"] {grid-column:span 1}
+  /* Kompleksni slider i cetiri akcije ostaju citljivi na vrlo uskom mobitelu. */
+  body.ptech-dashboard-v16 .ptech-dashboard-grid [data-widget-id="projects"][data-widget-size="small"],
+  body.ptech-dashboard-v16 .ptech-dashboard-grid [data-widget-id="actions"][data-widget-size="small"] {grid-column:1/-1}
+  body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-widget[data-widget-id="actions"] .actions-grid {grid-template-columns:repeat(2,minmax(0,1fr))}
+  body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-widget[data-widget-id="actions"][data-widget-size="small"] .actions-grid {grid-template-columns:1fr}
+  body.ptech-dashboard-v16 .ptech-widget-tool {min-width:31px}
+}
+@media (prefers-reduced-motion:reduce) {
+  body.ptech-dashboard-v16 .ptech-widget {transition:none!important}
+}
+
+
+/* V16.1 — individualno uređivanje brzih akcija, bez promjene njihovih izvornih handlera. */
+body.ptech-dashboard-v16 .ptech-action-toolbox {
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  margin:0 0 12px;flex-wrap:wrap;
+}
+body.ptech-dashboard-v16 .ptech-action-toolbox:has(> [hidden] + [hidden]) {display:none}
+body.ptech-dashboard-v16 .ptech-action-toolbox [hidden],
+body.ptech-dashboard-v16 .ptech-action-slot[hidden],
+body.ptech-dashboard-v16 .ptech-action-picker[hidden],
+body.ptech-dashboard-v16 .ptech-action-empty[hidden] {display:none!important}
+body.ptech-dashboard-v16 .ptech-action-add,
+body.ptech-dashboard-v16 .ptech-action-picker-item {
+  appearance:none;border:1px solid var(--ui-border);background:var(--ui-copper-soft);
+  color:var(--ui-text);font:inherit;font-weight:750;font-size:13px;
+  border-radius:12px;padding:9px 13px;min-height:39px;cursor:pointer;
+}
+body.ptech-dashboard-v16 .ptech-action-add:hover,
+body.ptech-dashboard-v16 .ptech-action-picker-item:hover {border-color:var(--ui-copper);}
+body.ptech-dashboard-v16 .ptech-action-add:disabled {opacity:.55;cursor:not-allowed}
+body.ptech-dashboard-v16 .ptech-action-count {font-size:12px;color:var(--ui-muted)}
+body.ptech-dashboard-v16 .ptech-action-picker {
+  padding:13px;margin:0 0 15px;border:1px solid var(--ui-border);
+  border-radius:15px;background:var(--ui-card-inset);
+}
+body.ptech-dashboard-v16 .ptech-action-picker-title {
+  display:block;margin:0 0 10px;font-size:13px;color:var(--ui-text);
+}
+body.ptech-dashboard-v16 .ptech-action-picker-list {display:flex;flex-wrap:wrap;gap:8px}
+body.ptech-dashboard-v16 .ptech-action-picker-item {text-align:left}
+body.ptech-dashboard-v16 .ptech-action-slot {position:relative;min-width:0;display:flex;align-self:stretch}
+body.ptech-dashboard-v16 .ptech-action-slot > .action-card {
+  width:100%;height:100%;flex:1;min-width:0;box-sizing:border-box;
+}
+body.ptech-dashboard-v16 .ptech-action-controls {display:none}
+body.ptech-dashboard-v16.ptech-layout-editing .ptech-action-slot {
+  border-radius:18px;outline:1px dashed var(--ui-copper-light);outline-offset:1px;
+}
+body.ptech-dashboard-v16.ptech-layout-editing .ptech-action-slot > .action-card {
+  padding-top:52px!important;pointer-events:none;user-select:none;
+}
+body.ptech-dashboard-v16.ptech-layout-editing .ptech-action-controls {
+  position:absolute;top:8px;left:8px;right:8px;z-index:6;
+  display:flex;justify-content:flex-end;gap:5px;
+}
+body.ptech-dashboard-v16 .ptech-action-controls .ptech-widget-tool {
+  min-width:31px;min-height:31px;font-size:16px;background:var(--ui-card-inset);
+}
+body.ptech-dashboard-v16 .ptech-action-controls .ptech-action-remove {color:var(--ui-copper)}
+body.ptech-dashboard-v16 .ptech-action-empty {
+  padding:14px;border-radius:15px;background:var(--ui-card-inset);
+  color:var(--ui-muted);font-size:13px;line-height:1.5;text-align:center;
+}
+@media (max-width:480px) {
+  body.ptech-dashboard-v16 .ptech-action-picker-list {flex-direction:column}
+  body.ptech-dashboard-v16 .ptech-action-picker-item {width:100%}
+}
