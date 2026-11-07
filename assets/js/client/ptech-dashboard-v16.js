@@ -1,4 +1,4 @@
-/* PTech Digital Client Portal V16.9 - clean projects and responsive quick actions.
+/* PTech Digital Client Portal V16.10 - clean projects, actions and messages.
  * Safe: project-related operations stay in original script.js; Supabase tasks
  * are read only through existing RLS. Layout and personal notes are local to
  * the signed-in user's browser and are never stored in Supabase.
@@ -7,7 +7,7 @@
   'use strict';
   const grid = document.getElementById('ptechDashboardGrid');
   if (!grid) return;
-  document.body.classList.add('ptech-dashboard-v16', 'ptech-dashboard-v162', 'ptech-dashboard-v164', 'ptech-dashboard-v165', 'ptech-dashboard-v166', 'ptech-dashboard-v167', 'ptech-dashboard-v168', 'ptech-dashboard-v169');
+  document.body.classList.add('ptech-dashboard-v16', 'ptech-dashboard-v162', 'ptech-dashboard-v164', 'ptech-dashboard-v165', 'ptech-dashboard-v166', 'ptech-dashboard-v167', 'ptech-dashboard-v168', 'ptech-dashboard-v169', 'ptech-dashboard-v1610');
   const button = document.getElementById('ptechLayoutEdit');
   const resetButton = document.getElementById('ptechLayoutReset');
   const showButton = document.getElementById('ptechLayoutShow');
@@ -431,6 +431,15 @@
       const full=zoom?.widget===widget ||
         ((width>=700 && height>=335) || (width>=480 && height>=420));
       widget.dataset.projectContent=full?'full':'summary';
+    }
+    if(id==='messages'){
+      // Show the original message list only when there is room. No nested
+      // scroll: cap the visible rows by the actual tile height. A compact
+      // message tile uses the existing live-data summary instead.
+      const headRoom=editing?151:116;
+      const rowHeight=width<440?70:61;
+      const count=clamp(Math.floor((height-headRoom)/rowHeight),1,4);
+      widget.dataset.messageRows=String(count);
     }
     if(id==='actions')fitQuickActions(widget,width,height);
   }

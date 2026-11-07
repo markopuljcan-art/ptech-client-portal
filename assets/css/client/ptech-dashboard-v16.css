@@ -1131,3 +1131,102 @@ body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-wid
 body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget.ptech-core-widget[data-widget-density="compact"][data-widget-id="actions"] .ptech-tile-inner > .actions-grid{display:grid!important}
 body.ptech-dashboard-v169.ptech-layout-editing .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget.ptech-core-widget[data-widget-density="compact"][data-widget-id="actions"] .ptech-tile-inner > .ptech-action-toolbox{display:flex!important}
 body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget[data-widget-id="actions"][data-widget-density="compact"] .actions-header h2{font-size:14px}
+
+
+/* ================================================================
+   V16.10 - One clean message tile at every dashboard size.
+   - Compact: live message count / short status only.
+   - Medium + large: ORIGINAL recent-message list, no summary above it.
+   - Never steal wheel scrolling from the main dashboard.
+   ================================================================ */
+body.ptech-dashboard-v1610 .ptech-dashboard-grid [data-widget-id="messages"] .ptech-smart-preview{
+  display:none!important;
+}
+body.ptech-dashboard-v1610 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="messages"][data-widget-density="compact"] .ptech-smart-preview{
+  display:flex!important;
+  padding:clamp(9px,2cqw,16px)!important;
+  margin:0!important;
+  min-height:100%;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  text-align:center;
+  background:var(--ui-card-inset);
+  border:1px solid var(--ui-border);
+  border-radius:16px;
+}
+body.ptech-dashboard-v1610 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="messages"][data-widget-density="compact"] .ptech-smart-head{
+  flex-direction:row;justify-content:center;flex-wrap:wrap;gap:7px;
+}
+body.ptech-dashboard-v1610 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="messages"][data-widget-density="compact"] .ptech-smart-main{
+  font-size:clamp(11px,1.7cqw,13px);
+  white-space:normal;
+  text-align:center;
+}
+body.ptech-dashboard-v1610 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="messages"][data-widget-density="compact"] .ptech-smart-metric{
+  font-size:clamp(23px,5cqw,36px);
+}
+/* Restore the native message heading; V16.7 previously hid it on medium cards. */
+body.ptech-dashboard-v1610 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="messages"]:not([data-widget-density="compact"]) .overview-panel-header,
+body.ptech-dashboard-v1610 .ptech-zoom-grid [data-widget-id="messages"] .overview-panel-header{
+  display:flex!important;
+}
+body.ptech-dashboard-v1610 .ptech-dashboard-grid [data-widget-id="messages"] .ptech-tile-inner{
+  display:flex;flex-direction:column;min-height:0;
+}
+body.ptech-dashboard-v1610 .ptech-dashboard-grid [data-widget-id="messages"] .overview-panel-header{
+  flex:none;align-items:center;gap:10px;margin:0 0 14px;
+}
+body.ptech-dashboard-v1610 .ptech-dashboard-grid [data-widget-id="messages"] .overview-panel-header h2{
+  display:flex;align-items:center;gap:10px;
+  font-size:clamp(15px,2cqw,19px);line-height:1.2;
+}
+body.ptech-dashboard-v1610 .ptech-message-heading-icon{
+  display:grid;place-items:center;width:31px;height:31px;flex:none;
+  background:var(--ui-copper-soft);color:var(--ui-copper);
+  border-radius:10px;font-size:18px;font-weight:800;
+}
+body.ptech-dashboard-v1610 .ptech-dashboard-grid [data-widget-id="messages"] .overview-panel-header > a{
+  font-size:12px;white-space:nowrap;
+}
+body.ptech-dashboard-v1610 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="messages"][data-widget-density="standard"] .overview-panel-header p{
+  display:none;
+}
+body.ptech-dashboard-v1610 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="messages"] .overview-list{
+  flex:1;min-height:0;max-height:none!important;overflow:clip!important;
+  overscroll-behavior:auto!important;gap:7px;
+}
+body.ptech-dashboard-v1610 .ptech-dashboard-grid [data-widget-id="messages"] .overview-row{
+  min-width:0;box-sizing:border-box;padding:9px 10px;
+  border:1px solid var(--ui-border);border-radius:13px;
+  background:var(--ui-card-inset);transition:background .2s ease,border-color .2s ease;
+}
+body.ptech-dashboard-v1610 .ptech-dashboard-grid [data-widget-id="messages"] .overview-row:hover{
+  background:var(--ui-copper-soft);border-color:var(--ui-copper-light);
+}
+/* Cap the number of rows without hiding messages in their dedicated page. */
+body.ptech-dashboard-v1610 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="messages"][data-message-rows="1"] .overview-row:nth-child(n+2),
+body.ptech-dashboard-v1610 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="messages"][data-message-rows="2"] .overview-row:nth-child(n+3),
+body.ptech-dashboard-v1610 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="messages"][data-message-rows="3"] .overview-row:nth-child(n+4){
+  display:none!important;
+}
+/* Do not leave an empty oversized box when there are no messages yet. */
+body.ptech-dashboard-v1610 .ptech-dashboard-grid [data-widget-id="messages"] .overview-empty{
+  flex:1;min-height:0;margin:auto 0;padding:12px 8px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  font-size:13px;line-height:1.45;color:var(--ui-muted);text-align:center;
+}
+body.ptech-dashboard-v1610 .ptech-dashboard-grid [data-widget-id="messages"] .overview-empty::before{
+  content:'✉';display:grid;place-items:center;
+  width:42px;height:42px;border-radius:14px;
+  background:var(--ui-copper-soft);color:var(--ui-copper);
+  font-size:23px;
+}
+@media(max-width:720px){
+  body.ptech-dashboard-v1610 .ptech-dashboard-grid [data-widget-id="messages"] .overview-panel-header p{display:none}
+  body.ptech-dashboard-v1610 .ptech-dashboard-grid [data-widget-id="messages"] .overview-panel-header{flex-wrap:wrap}
+  body.ptech-dashboard-v1610 .ptech-dashboard-grid [data-widget-id="messages"] .overview-row-date{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){
+  body.ptech-dashboard-v1610 .ptech-dashboard-grid [data-widget-id="messages"] .overview-row{transition:none}
+}
