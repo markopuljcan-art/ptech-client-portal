@@ -22,8 +22,8 @@ const db = window.supabase?.createClient(
 let session = null;
 let realtimeChannel = null;
 
-let activeChat = "ai";
-let chatOpened = false;
+let activeChat = "human";
+let chatOpened = true;
 let sending = false;
 let markingRead = false;
 
@@ -88,7 +88,7 @@ Prije početka dodatnog rada trebate dobiti potvrdu opsega i cijene. Samo slanje
   support: {
     title: "Kako kontaktirati PTech Digital tim?",
 
-    answer: `Na stranici Poruke kliknite „Otvori razgovor”. U popisu razgovora lijevo odaberite „PTech tim”. Napišite pitanje i pošaljite poruku.
+    answer: `Na stranici Poruke razgovor s PTech timom odmah je otvoren. Napišite poruku u polje na dnu kartice i kliknite Pošalji.
 
 Odgovor će biti vidljiv u razgovoru čim ga tim pošalje. Ne dijelite lozinke ni osjetljive pristupne podatke.`
   }
@@ -354,6 +354,10 @@ function appendMessage(
 
   content.className = "message-content";
 
+  const sender = document.createElement("span");
+  sender.className = "message-sender";
+  sender.textContent = own ? "Vi" : (activeChat === "human" ? "PTech tim" : "AI asistent");
+
   const bubble = document.createElement("div");
 
   bubble.className = "message-bubble";
@@ -366,7 +370,7 @@ function appendMessage(
 
   time.textContent = dateTime(date);
 
-  content.append(bubble, time);
+  content.append(sender, bubble, time);
 
   row.append(content);
 
@@ -633,44 +637,25 @@ function switchChat(mode) {
 ========================================== */
 
 function openChat(mode = activeChat) {
-
+  // V16.13: razgovor je trajno prisutan na stranici.
   chatOpened = true;
-
-  $("supportView").hidden = true;
-
-  $("chatView").hidden = false;
-
-  document.body.classList.add("chat-open");
-
   switchChat(mode);
-
-  window.scrollTo(0, 0);
-
-  $("chatInput").focus();
-
+  $("helpPolicy").open = false;
+  $("chatView").scrollIntoView({ behavior: "smooth", block: "start" });
+  $("chatInput").focus({ preventScroll: true });
 }
 
-
 /* ==========================================
-   ZATVARANJE CHATA
+   OTVORI POMOC I PRAVILA
 ========================================== */
 
 function closeChat() {
-
-  chatOpened = false;
-
-  $("chatView").hidden = true;
-
-  $("supportView").hidden = false;
-
-  document.body.classList.remove("chat-open");
-
-  setNotice("");
-
-  window.scrollTo(0, 0);
-
-  refreshUnread();
-
+  // Zadrzi razgovor vidljivim; samo otvori sklopivi centar pomoci.
+  const policy = $("helpPolicy");
+  policy.open = !policy.open;
+  if (policy.open) {
+    policy.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 }
 
 
@@ -1004,14 +989,28 @@ async function start() {
 
   setupFaq();
 
-  /* OTVARANJE RAZGOVORA */
+  /* V16.14: nova poruka otvara postojeci razgovor, ne stvara lazne niti. */
+  $("focusNewMessage").addEventListener("click", () => openChat("human"));
 
-  $("openChatFromPage").addEventListener(
-    "click",
-    () => openChat("ai")
-  );
+  /* Poveznice u animiranom centru pomoci. */
+  document.querySelectorAll("[data-policy-card]").forEach(button => {
+    button.addEventListener("click", () => {
+      const policy = $("helpPolicy");
+      policy.open = true;
+      const target = button.dataset.policyCard;
+      if (target === "how") {
+        const help = document.querySelector('[data-help="support"]');
+        help?.click();
+        $("helpAnswer").scrollIntoView({behavior:"smooth",block:"nearest"});
+      } else if (target === "rules") {
+        $("communicationRules").scrollIntoView({behavior:"smooth",block:"start"});
+      } else {
+        policy.scrollIntoView({behavior:"smooth",block:"start"});
+      }
+    });
+  });
 
-  /* POVRATAK NA POMOĆ */
+  /* OTVORI / ZATVORI POMOC I PRAVILA */
 
   $("closeChat").addEventListener(
     "click",
@@ -1099,23 +1098,13 @@ async function start() {
 
     });
 
-  /* ESC ZA POVRATAK */
+  /* ESC SKLAPA POMOC, NE ZATVARA RAZGOVOR */
 
-  document.addEventListener(
-    "keydown",
-    event => {
-
-      if (
-        event.key === "Escape" &&
-        chatOpened
-      ) {
-
-        closeChat();
-
-      }
-
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && $("helpPolicy").open) {
+      $("helpPolicy").open = false;
     }
-  );
+  });
 
   /* POVRATAK NA TAB */
 
@@ -1189,6 +1178,11 @@ async function start() {
   /* BROJ NEPROČITANIH PORUKA */
 
   await refreshUnread();
+
+  // V16.13: ljudska podrska je pocetni razgovor, bez dodatnog klika.
+  // Izravna poveznica ?chat=ai i dalje otvara AI asistenta.
+  const chatParam = new URLSearchParams(location.search).get("chat");
+  switchChat(chatParam === "ai" ? "ai" : "human");
 
   /* SUPABASE REALTIME */
 
