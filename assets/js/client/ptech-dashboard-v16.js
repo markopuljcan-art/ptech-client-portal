@@ -1,4 +1,4 @@
-/* PTech Digital Client Portal V16.8 - jump to new tiles and high-density custom grids.
+/* PTech Digital Client Portal V16.9 - clean projects and responsive quick actions.
  * Safe: project-related operations stay in original script.js; Supabase tasks
  * are read only through existing RLS. Layout and personal notes are local to
  * the signed-in user's browser and are never stored in Supabase.
@@ -7,7 +7,7 @@
   'use strict';
   const grid = document.getElementById('ptechDashboardGrid');
   if (!grid) return;
-  document.body.classList.add('ptech-dashboard-v16', 'ptech-dashboard-v162', 'ptech-dashboard-v164', 'ptech-dashboard-v165', 'ptech-dashboard-v166', 'ptech-dashboard-v167', 'ptech-dashboard-v168');
+  document.body.classList.add('ptech-dashboard-v16', 'ptech-dashboard-v162', 'ptech-dashboard-v164', 'ptech-dashboard-v165', 'ptech-dashboard-v166', 'ptech-dashboard-v167', 'ptech-dashboard-v168', 'ptech-dashboard-v169');
   const button = document.getElementById('ptechLayoutEdit');
   const resetButton = document.getElementById('ptechLayoutReset');
   const showButton = document.getElementById('ptechLayoutShow');
@@ -38,7 +38,7 @@
   };
   const actionIds=Object.keys(actionCatalog);
   const actionSlots=new Map();
-  let actionPickerOpen=false,actionPicker,actionAddButton,actionCount,emptyActions;
+  let actionPickerOpen=false,actionPicker,actionAddButton,actionCount,emptyActions,actionMore;
 
   const hubCatalog = {
     'hub-messages':  {title:'Poruke',icon:'✉',detail:'Otvori razgovore s podrškom',href:'messages.html'},
@@ -319,7 +319,7 @@
         detail=upcoming?.due_date?`Rok: ${new Date(upcoming.due_date+'T12:00:00').toLocaleDateString('hr-HR')}`:'Prati svoje obveze';
       }else if(id==='actions'){
         const visible=state.actionOrder.filter(key=>!state.hiddenActions.includes(key)&&actionSlots.has(key));
-        metric=String(visible.length);main='Prečaci za tvoj projekt';
+        metric=String(visible.length);main='Odaberi željenu akciju';
         detail=visible.slice(0,3).map(key=>actionCatalog[key].title).join(' · ')||'Dodaj željenu akciju';
       }else{
         const list=grid.querySelector(id==='messages'?'#recentMessagesList':'#recentDocumentsList');
@@ -363,6 +363,58 @@
       observer.observe(el,{childList:true,subtree:true,characterData:true});
     }
   }
+  // V16.9: Native project slide is the preferred presentation, not a duplicated
+  // summary above the slide. Only a genuinely small tile switches to ONE summary.
+  // Quick actions use measured available space so their tiles never get clipped.
+  function fitQuickActions(widget, width, height){
+    if(!actionGrid || !actionSection || !state)return;
+    const visible=state.actionOrder.filter(key=>!state.hiddenActions.includes(key)&&actionSlots.has(key));
+    const n=visible.length;
+    const inZoom=zoom?.widget===widget;
+    const padding=width<400?22:40;
+    const usableWidth=Math.max(75,width-padding);
+    const heading=(!inZoom && editing)?108:(!inZoom?77:85);
+    const usableHeight=Math.max(38,height-heading);
+    // Choose balanced rectangles instead of very tall empty action cards.
+    const maxCols=Math.min(n||1,Math.max(1,Math.floor(usableWidth/100)));
+    let cols=1,bestScore=Infinity;
+    for(let candidate=1;candidate<=maxCols;candidate++){
+      const candidateRows=Math.ceil(n/candidate);
+      const cardW=(usableWidth-8*(candidate-1))/candidate;
+      const cardH=(usableHeight-8*(candidateRows-1))/candidateRows;
+      if(cardH<49)continue;
+      const ratio=cardW/Math.max(1,cardH);
+      const score=Math.abs(Math.log(ratio/1.5)) +
+        (cardW<124?0.45:0) + (cardH<82?0.6:0);
+      if(score<bestScore){bestScore=score;cols=candidate;}
+    }
+    let rows=Math.ceil(n/cols);
+    // Never crop the last row. Extra actions remain available through 'Još akcija'.
+    const minRowHeight=editing?72:61;
+    const fitRows=Math.max(1,Math.floor((usableHeight+8)/(minRowHeight+8)));
+    const shown=inZoom?n:Math.min(n,Math.max(1,cols*fitRows));
+    rows=Math.max(1,Math.ceil(shown/Math.max(1,cols)));
+    const cardHeight=(usableHeight-8*Math.max(0,rows-1))/rows;
+    const availableCardWidth=(usableWidth-8*Math.max(0,cols-1))/cols;
+    const presentation=inZoom || (cardHeight>=149 && availableCardWidth>=175)?'detail':
+      cardHeight>=95 && availableCardWidth>=125?'standard':'compact';
+    widget.dataset.actionsPresentation=presentation;
+    actionGrid.style.setProperty('--ptech-actions-cols',String(cols));
+    actionGrid.style.setProperty('--ptech-actions-rows',String(rows));
+    actionGrid.style.setProperty('--ptech-actions-row-height',`${Math.max(36,Math.round(cardHeight))}px`);
+    for(const [i,key] of visible.entries()){
+      const slot=actionSlots.get(key);
+      if(slot)slot.dataset.ptechOverflow=i>=shown?'true':'false';
+    }
+    // Keep the overflow control outside the action grid; it opens the existing
+    // fullscreen view, without changing the user's saved arrangement.
+    const extra=Math.max(0,n-shown);
+    if(actionMore){
+      actionMore.hidden=extra===0;
+      actionMore.textContent=width<360?`+${extra} · Sve`:`+ ${extra} više · Prikaži sve`;
+      actionMore.setAttribute('aria-label',`Prikaži još ${extra} brzih akcija`);
+    }
+  }
   function applyDensity(widget){
     if(!widget || widget.hidden || !widget.isConnected)return;
     const rect=widget.getBoundingClientRect();
@@ -373,10 +425,14 @@
     const tiny=logical && logical.w<=minColumn(id) && logical.h<=MIN_ROWS;
     const mode=zoom?.widget===widget?'expanded':tiny||width<285||height<250?'compact':width>=425&&height>=325?'expanded':'standard';
     if(widget.dataset.widgetDensity!==mode)widget.dataset.widgetDensity=mode;
-    // A native project slide is taller than the smart summary. Avoid creating a
-    // second scroll region: only show full cards when there is enough space.
-    if(id==='projects')widget.dataset.projectContent=(zoom?.widget===widget ||
-      (width>=510 && height>=525))?'full':'summary';
+    if(id==='projects'){
+      // A 4-column project stats row needs little more than 300px vertically;
+      // narrower cards need extra height for the wrapped project details.
+      const full=zoom?.widget===widget ||
+        ((width>=700 && height>=335) || (width>=480 && height>=420));
+      widget.dataset.projectContent=full?'full':'summary';
+    }
+    if(id==='actions')fitQuickActions(widget,width,height);
   }
   function scheduleDensities(){
     if(densityFrame)return;
@@ -444,6 +500,18 @@
     actionPicker.className='ptech-action-picker';
     actionPicker.hidden=true;
     actionPicker.setAttribute('aria-label','Katalog brzih akcija');
+    // The actions panel always has one clean heading. A hidden overflow control
+    // makes every shortcut reachable even when the panel is very small.
+    const nativeHeader=actionSection.querySelector('.actions-header');
+    if(nativeHeader){
+      actionMore=text('button','ptech-action-more','');
+      actionMore.type='button';actionMore.hidden=true;
+      actionMore.addEventListener('click',event=>{
+        event.preventDefault();event.stopPropagation();
+        openZoom('actions',actionMore);
+      });
+      nativeHeader.append(actionMore);
+    }
     actionSection.insertBefore(toolbox,actionGrid);
     actionSection.insertBefore(actionPicker,actionGrid);
     emptyActions=text('p','ptech-action-empty','Nema prikazanih brzih akcija. Klikni „Uredi raspored” kako bi ih dodao.');
@@ -816,7 +884,7 @@
   // Block navigational/click actions when dashboard editing is enabled.
   grid.addEventListener('click',e=>{
     if(!editing)return;
-    if(e.target.closest('.ptech-widget-controls,.ptech-widget-resize,.ptech-action-controls,.ptech-action-add,.ptech-action-picker,.ptech-action-picker-item'))return;
+    if(e.target.closest('.ptech-widget-controls,.ptech-widget-resize,.ptech-action-controls,.ptech-action-add,.ptech-action-picker,.ptech-action-picker-item,.ptech-action-more'))return;
     const target=e.target.closest('a,button,.action-card');
     if(target){e.preventDefault();e.stopPropagation();}
   },true);

@@ -977,3 +977,157 @@ body.ptech-dashboard-v168 .ptech-zoom-grid .ptech-widget .ptech-tile-inner {
   overflow:auto!important;
   overscroll-behavior:contain;
 }
+
+
+/* ==============================================================
+   V16.9 — One clean project view + quick actions that actually fit.
+   No redundant summary block on top of the native project/actions.
+   =============================================================== */
+/* PROJECTS: native dashboard project card OR one compact summary. Never both. */
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"] .ptech-tile-inner{
+  display:flex;flex-direction:column;min-height:0;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid [data-widget-id="projects"][data-project-content="full"] .ptech-smart-preview{
+  display:none!important;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"][data-project-content="full"] .ptech-tile-inner > .section-header{
+  display:flex!important;flex:none;margin-bottom:14px;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"][data-project-content="full"] .projects-slider{
+  display:flex!important;flex:none;overflow:hidden!important;max-height:calc(100% - 65px);
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"][data-project-content="summary"] .ptech-tile-inner > .section-header{
+  display:flex!important;flex:none;margin-bottom:12px;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"][data-project-content="summary"] .section-title{
+  display:block!important;font-size:clamp(16px,2.1cqw,23px);
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"][data-project-content="summary"] .ptech-smart-preview{
+  display:flex!important;min-height:0!important;flex:1;justify-content:center;
+  padding:12px 15px;margin:0!important;gap:5px;border-radius:16px;
+  background:var(--ui-card-inset);border:1px solid var(--ui-border);
+  text-align:left;align-items:stretch;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"][data-project-content="summary"] .ptech-smart-head,
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"][data-project-content="summary"] .ptech-smart-metric{
+  display:none!important;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"][data-project-content="summary"] .ptech-smart-main{
+  display:block!important;text-align:left;font-size:clamp(14px,2.4cqw,19px);
+  max-width:100%;white-space:nowrap;text-overflow:ellipsis;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"][data-project-content="summary"] .ptech-smart-footer{
+  display:flex!important;gap:12px;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"][data-project-content="summary"] .ptech-smart-progress{
+  display:block!important;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"][data-project-content="summary"] .ptech-smart-detail{
+  font-size:12px;
+}
+@media(max-width:720px){
+  body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"][data-project-content="summary"] .ptech-tile-inner{
+    padding:13px!important;
+  }
+}
+/* ACTIONS: no duplicated introductory panel, in ANY size. */
+body.ptech-dashboard-v169 .ptech-dashboard-grid [data-widget-id="actions"] .ptech-smart-preview{display:none!important}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"] .ptech-tile-inner{
+  display:flex!important;flex-direction:column;gap:9px;min-height:0;min-width:0;
+  padding:clamp(11px,1.4cqw,19px)!important;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"] .actions-header{
+  display:flex!important;flex:none;justify-content:space-between;align-items:center;
+  gap:9px;min-height:30px;margin:0!important;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid [data-widget-id="actions"] .actions-header h2{
+  font-size:clamp(16px,2.3cqw,23px);margin:0;line-height:1.2;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid [data-widget-id="actions"] .actions-header p{display:none!important}
+body.ptech-dashboard-v169 .ptech-dashboard-grid [data-widget-id="actions"] .ptech-action-more{
+  border:1px solid var(--ui-border);border-radius:10px;flex:none;
+  background:var(--ui-copper-soft);color:var(--ui-copper);font:inherit;
+  font-size:11px;font-weight:850;min-height:30px;padding:4px 8px;cursor:pointer;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid [data-widget-id="actions"] .ptech-action-more[hidden]{display:none!important}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"] .actions-grid{
+  display:grid!important;flex:1 1 auto;min-height:0;min-width:0;overflow:clip!important;
+  grid-template-columns:repeat(var(--ptech-actions-cols,2),minmax(0,1fr))!important;
+  grid-template-rows:repeat(var(--ptech-actions-rows,2),minmax(0,1fr))!important;
+  grid-auto-rows:minmax(0,1fr);
+  gap:8px!important;align-content:start;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"] .ptech-action-slot{
+  min-width:0;min-height:0;height:100%;align-self:stretch;overflow:hidden;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"] .ptech-action-slot[data-ptech-overflow="true"]{
+  display:none!important;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"] .ptech-action-slot > .action-card{
+  box-sizing:border-box;min-height:0!important;height:100%!important;width:100%;
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
+  overflow:hidden;padding:9px 11px!important;margin:0;
+  gap:5px;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"] .action-icon{
+  width:32px;height:32px;min-height:32px;flex:none;border-radius:10px;
+  font-size:17px;margin:0!important;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"] .action-card strong{
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;
+  overflow:hidden;max-width:100%;margin:0;font-size:clamp(11px,1.5cqw,15px);
+  line-height:1.2;overflow-wrap:anywhere;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"] .action-card p,
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"] .action-button{
+  display:none!important;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"][data-actions-presentation="detail"] .action-card{
+  justify-content:flex-start;padding:12px!important;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"][data-actions-presentation="detail"] .action-card p{
+  display:-webkit-box!important;-webkit-box-orient:vertical;-webkit-line-clamp:2;
+  overflow:hidden;margin:2px 0 0;font-size:12px;line-height:1.35;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"][data-actions-presentation="detail"] .action-button{
+  display:inline-flex!important;min-height:29px;font-size:11px;padding:5px 9px;
+  margin-top:auto;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"][data-actions-presentation="compact"] .action-card{
+  flex-direction:row;align-items:center;justify-content:flex-start;padding:5px 7px!important;gap:6px;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"][data-actions-presentation="compact"] .action-icon{
+  width:25px;height:25px;min-height:25px;font-size:15px;border-radius:8px;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"][data-actions-presentation="compact"] .action-card strong{
+  font-size:11px;line-height:1.12;
+}
+/* Zoom displays the entire native action catalog, still without the duplicated preview. */
+body.ptech-dashboard-v169 .ptech-zoom-grid [data-widget-id="actions"] .actions-grid{
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,185px),1fr))!important;
+  align-content:start;
+}
+body.ptech-dashboard-v169 .ptech-zoom-grid [data-widget-id="actions"] .ptech-action-slot{
+  display:flex!important;min-height:200px!important;
+}
+body.ptech-dashboard-v169 .ptech-zoom-grid [data-widget-id="actions"] .action-card{
+  min-height:200px!important;
+}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"] .ptech-action-picker{
+  position:absolute;left:14px;right:14px;top:64px;z-index:20;
+  max-height:70%;overflow:auto;box-shadow:var(--ui-shadow);
+}
+@media(max-width:720px){
+  body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"] .ptech-tile-inner{padding:12px!important}
+}
+/* Compact project tiles still need their native "Aktivni projekti" heading.
+   This intentionally overrides the older generic compact-tile rule. */
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget.ptech-core-widget[data-widget-density="compact"][data-widget-id="projects"][data-project-content="summary"] .ptech-tile-inner > .section-header{
+  display:flex!important;
+}
+
+/* Override the older rule that hides all non-preview content on compact tiles. */
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget.ptech-core-widget[data-widget-density="compact"][data-widget-id="actions"] .ptech-tile-inner > .actions-header{display:flex!important}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget.ptech-core-widget[data-widget-density="compact"][data-widget-id="actions"] .ptech-tile-inner > .actions-grid{display:grid!important}
+body.ptech-dashboard-v169.ptech-layout-editing .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget.ptech-core-widget[data-widget-density="compact"][data-widget-id="actions"] .ptech-tile-inner > .ptech-action-toolbox{display:flex!important}
+body.ptech-dashboard-v169 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget[data-widget-id="actions"][data-widget-density="compact"] .actions-header h2{font-size:14px}
