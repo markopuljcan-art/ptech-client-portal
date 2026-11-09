@@ -1,0 +1,289 @@
+/* PTech Digital Client Portal V18.0 — first design, balanced glass skin.
+   Additive, client-facing only. Never touches Supabase logic or dashboard placement.
+   Loaded last by the shared client nav script. */
+html.ptech-glass-v18 body {
+  --p18-page: #182337;
+  --p18-top: #202e45;
+  --p18-bottom: #151f32;
+  --p18-card: rgba(47, 62, 85, .88);
+  --p18-card-bottom: rgba(35, 49, 71, .91);
+  --p18-border: rgba(222, 183, 155, .27);
+  --p18-inner-border: rgba(225, 205, 194, .12);
+  --p18-text: #fff9f4;
+  --p18-muted: #c3ccda;
+  --p18-bronze: #e3ac87;
+  --p18-input: rgba(24, 36, 55, .64);
+  --p18-sidebar: #202c42;
+  --p18-sidebar-bottom: #1a2539;
+  --p18-active: rgba(200, 143, 105, .23);
+  --p18-header: rgba(28, 40, 59, .87);
+  --p18-shadow: 0 14px 34px rgba(7, 14, 27, .19);
+  --page: var(--p18-page); --page-top: var(--p18-top); --page-bottom: var(--p18-bottom);
+  --ui-bg: var(--p18-page); --ui-bg-top: var(--p18-top); --ui-bg-bottom: var(--p18-bottom);
+  --text: var(--p18-text); --ui-text: var(--p18-text);
+  --muted: var(--p18-muted); --ui-muted: var(--p18-muted);
+  --border: var(--p18-border); --ui-border: var(--p18-border);
+  --card-bg: linear-gradient(145deg, var(--p18-card), var(--p18-card-bottom));
+  --project-card-bg: linear-gradient(145deg, var(--p18-card), var(--p18-card-bottom));
+  --card-border: var(--p18-border); --project-card-border: var(--p18-border);
+  --card-text: var(--p18-text); --card-muted: var(--p18-muted);
+  --ui-card: #303e57; --ui-card-end: #26344a; --ui-card-inset: #35445e;
+  --ui-header: var(--p18-header); --header-bg: var(--p18-header);
+  --ui-shadow: var(--p18-shadow); --card-shadow: var(--p18-shadow);
+  --bronze: var(--p18-bronze); --bronze-deep: var(--p18-bronze);
+  color: var(--p18-text);
+  background: var(--p18-page);
+}
+/* Cream + bronze light theme with real contrast, not a brown overlay. */
+html.ptech-glass-v18[data-theme="light"] body,
+html.ptech-glass-v18 body.light-mode {
+  --p18-page: #fbf6f1;
+  --p18-top: #fffbf7;
+  --p18-bottom: #f4e8df;
+  --p18-card: rgba(255, 251, 247, .96);
+  --p18-card-bottom: rgba(246, 234, 223, .92);
+  --p18-border: rgba(166, 111, 78, .27);
+  --p18-inner-border: rgba(168, 114, 77, .13);
+  --p18-text: #253043;
+  --p18-muted: #6e625d;
+  --p18-bronze: #995f40;
+  --p18-input: rgba(255, 252, 248, .94);
+  --p18-sidebar: #ead0ba;
+  --p18-sidebar-bottom: #d3a78a;
+  --p18-active: rgba(255, 251, 246, .90);
+  --p18-header: rgba(255, 251, 247, .90);
+  --p18-shadow: 0 13px 30px rgba(124, 84, 61, .085);
+  --ui-card: #fff9f3; --ui-card-end: #f5e6d8; --ui-card-inset: #f4e3d3;
+  --ui-copper: #995f40; --ui-copper-light: #c18a67;
+  --ui-track: #e4d1c3;
+  --ui-sidebar-text: #473229;
+  --card-text: #253043; --card-muted: #6e625d;
+  --sidebar-text: #473229;
+  --sidebar-muted: #765344;
+  --header-bg: var(--p18-header);
+  --sidebar-bg: linear-gradient(160deg, var(--p18-sidebar), var(--p18-sidebar-bottom));
+  color: var(--p18-text);
+}
+
+/* Desktop frame, shared across all client pages */
+@media (min-width: 1101px) {
+  html.ptech-glass-v18 body .dashboard.desktop-layout {
+    display: grid !important;
+    grid-template-columns: var(--p18-sidebar-width, 244px) minmax(0, 1fr) !important;
+  }
+  html.ptech-glass-v18 body .desktop-sidebar {
+    width: 100%; max-width: none; min-width: 0;
+    background: linear-gradient(160deg, var(--p18-sidebar), var(--p18-sidebar-bottom)) !important;
+    border-right: 1px solid var(--p18-border) !important;
+    box-shadow: 7px 0 28px rgba(8, 17, 31, .09) !important;
+    backdrop-filter: blur(18px) saturate(1.06);
+    -webkit-backdrop-filter: blur(18px) saturate(1.06);
+    padding-left: 13px; padding-right: 13px;
+  }
+  html.ptech-glass-v18 body .desktop-sidebar .sidebar-nav { min-width: 0; }
+  html.ptech-glass-v18 body .sidebar-brand { min-width: 0; }
+  html.ptech-glass-v18 body .sidebar-link {
+    border-radius: 13px; min-width: 0;
+    color: var(--p18-text); transition: background .18s, border-color .18s, transform .18s;
+  }
+  html.ptech-glass-v18 body:not(.light-mode) .sidebar-link { color: #f1ebea; }
+  html.ptech-glass-v18[data-theme="light"] body .sidebar-link,
+  html.ptech-glass-v18 body.light-mode .sidebar-link { color: #473229; }
+  html.ptech-glass-v18 body .sidebar-link.active,
+  html.ptech-glass-v18 body .sidebar-link[aria-current="page"] {
+    background: var(--p18-active) !important;
+    border-color: rgba(214, 160, 123, .25) !important;
+    box-shadow: 0 5px 17px rgba(19, 30, 48, .07) !important;
+  }
+  html.ptech-glass-v18 body .sidebar-link.active::before,
+  html.ptech-glass-v18 body .sidebar-link[aria-current="page"]::before {
+    background: #c88a61 !important;
+    top: 10px; bottom: 10px;
+  }
+  html.ptech-glass-v18 body .sidebar-link:hover { transform: none; background: rgba(198, 141, 101, .13); }
+  /* Continuous resizing: unlike cards, the navigation sidebar itself can change width. */
+  html.ptech-glass-v18 body .p18-sidebar-grip {
+    position: fixed; z-index: 1102; top: 46%;
+    left: calc(var(--p18-sidebar-width, 244px) - 12px);
+    height: 43px; width: 24px; border-radius: 14px;
+    border: 1px solid rgba(222, 176, 144, .62);
+    background: linear-gradient(150deg, #35435b, #253247);
+    box-shadow: 0 4px 14px rgba(8, 16, 32, .26);
+    color: #e7b896; cursor: ew-resize; touch-action: none;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .15s, box-shadow .15s;
+  }
+  html.ptech-glass-v18 body .p18-sidebar-grip::before { content: '⠿'; font-size: 18px; line-height: 1; }
+  html.ptech-glass-v18 body .p18-sidebar-grip:hover,
+  html.ptech-glass-v18 body .p18-sidebar-grip:focus-visible { background: #526079; box-shadow: 0 0 0 4px rgba(193, 143, 103, .15); }
+  html.ptech-glass-v18[data-theme="light"] body .p18-sidebar-grip,
+  html.ptech-glass-v18 body.light-mode .p18-sidebar-grip {
+    background: #faf2eb; color: #965d3e; border-color: #c99b79;
+  }
+  html.ptech-glass-v18.p18-resizing,
+  html.ptech-glass-v18.p18-resizing * { cursor: ew-resize !important; user-select: none !important; }
+  html.ptech-glass-v18.p18-sidebar-collapsed body .sidebar-brand { padding-left: 0; padding-right: 0; justify-content: center; }
+  html.ptech-glass-v18.p18-sidebar-collapsed body .sidebar-brand-text,
+  html.ptech-glass-v18.p18-sidebar-collapsed body .sidebar-nav .sidebar-link > span,
+  html.ptech-glass-v18.p18-sidebar-collapsed body .sidebar-bottom p { display: none !important; }
+  html.ptech-glass-v18.p18-sidebar-collapsed body .sidebar-brand-logo,
+  html.ptech-glass-v18.p18-sidebar-collapsed body .brand-logo { flex-shrink: 0; }
+  html.ptech-glass-v18.p18-sidebar-collapsed body .sidebar-nav { align-items: center; }
+  html.ptech-glass-v18.p18-sidebar-collapsed body .sidebar-nav .sidebar-link {
+    justify-content: center; width: 46px; min-width: 46px; height: 48px; padding: 0;
+  }
+  html.ptech-glass-v18.p18-sidebar-collapsed body .sidebar-link svg { width: 23px; height: 23px; flex-basis: 23px; }
+  html.ptech-glass-v18.p18-sidebar-collapsed body .sidebar-bottom { padding-left: 0; padding-right: 0; }
+  html.ptech-glass-v18.p18-sidebar-collapsed body .sidebar-bottom a {
+    font-size: 0 !important; justify-content: center;
+  }
+  html.ptech-glass-v18.p18-sidebar-collapsed body .sidebar-bottom a::before {
+    content: '?'; font-size: 18px; line-height: 30px; text-align: center; border: 1px solid currentColor;
+    width: 30px; height: 30px; border-radius: 50%;
+  }
+  html.ptech-glass-v18.p18-sidebar-collapsed body .sidebar-bottom { margin-top: auto; }
+}
+
+html.ptech-glass-v18 body .desktop-main {
+  min-width: 0;
+  background:
+    radial-gradient(ellipse 570px 430px at 95% 8%, rgba(195, 128, 87, .13), transparent 77%),
+    radial-gradient(ellipse 600px 420px at 0% 94%, rgba(150, 142, 170, .07), transparent 76%),
+    linear-gradient(155deg, var(--p18-top), var(--p18-page) 61%, var(--p18-bottom)) !important;
+}
+html.ptech-glass-v18[data-theme="light"] body .desktop-main,
+html.ptech-glass-v18 body.light-mode .desktop-main {
+  background: radial-gradient(ellipse 650px 450px at 97% 9%, rgba(197, 151, 116, .13), transparent 76%),
+    linear-gradient(155deg, #fffcf9, #fbf6f1 65%, #f5ebe3) !important;
+}
+html.ptech-glass-v18 body .dashboard-header {
+  background: var(--p18-header) !important;
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border-bottom-color: var(--p18-border) !important;
+}
+html.ptech-glass-v18 body .dashboard-content { width: 100%; max-width: 1600px; }
+html.ptech-glass-v18 body .header-page-title strong { color: var(--p18-text); }
+html.ptech-glass-v18 body .header-eyebrow { color: var(--p18-bronze); }
+html.ptech-glass-v18 body .user-box,
+html.ptech-glass-v18 body .logout-button { color: var(--p18-text); }
+
+/* Medium glass panels: intentionally fewer reflections than the over-glossy mockup. */
+html.ptech-glass-v18 body :is(
+  .project-card, .project-detail-hero, .deadline-card, .package-info-card,
+  .project-actions-card, .activities-detail-card, .activities-card,
+  .dashboard-section, .actions-section, .overview-panel, .ptech-dashboard-tasks,
+  .profile-hero, .profile-section, .stat-card, .documents-panel, .document-card,
+  .task-card, .task-summary, .chat-workspace, .chat-panel,
+  .conversation-rail, .v1614-help-hero
+) {
+  background: linear-gradient(144deg, var(--p18-card), var(--p18-card-bottom)) !important;
+  color: var(--p18-text);
+  border: 1px solid var(--p18-border) !important;
+  border-radius: 20px !important;
+  box-shadow: var(--p18-shadow) !important;
+}
+html.ptech-glass-v18 body :is(
+  .action-card, .project-info, .project-stats .stat-card, .task-filters,
+  .upload-section, .documents-toolbar, .profile-stats .stat-card,
+  .conversation-option, .v1614-help-link, .project-actions-grid > *,
+  .stat-icon, .quick-action, .detail-stat
+) {
+  border-color: var(--p18-inner-border) !important;
+  border-radius: 15px;
+}
+html.ptech-glass-v18 body :is(.action-card, .conversation-option, .v1614-help-link) {
+  background: rgba(144, 161, 185, .085) !important;
+}
+html.ptech-glass-v18[data-theme="light"] body :is(.action-card, .conversation-option, .v1614-help-link),
+html.ptech-glass-v18 body.light-mode :is(.action-card, .conversation-option, .v1614-help-link) {
+  background: rgba(184, 130, 93, .065) !important;
+}
+html.ptech-glass-v18 body :is(.project-card, .action-card, .document-card, .task-card, .stat-card) {
+  transition: border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+html.ptech-glass-v18 body :is(.project-card, .action-card, .document-card, .task-card, .stat-card):hover {
+  border-color: rgba(214, 153, 112, .53) !important;
+}
+html.ptech-glass-v18 body :is(.projects-page-header, .documents-page-header,
+  .profile-page-header, .task-intro, .page-intro, .page-heading) h1 {
+  color: var(--p18-text); letter-spacing: -.035em;
+}
+html.ptech-glass-v18 body :is(.projects-page-header, .documents-page-header,
+  .profile-page-header, .task-intro, .page-intro, .page-heading) p {
+  color: var(--p18-muted); line-height: 1.6;
+}
+html.ptech-glass-v18 body :is(.projects-eyebrow, .documents-eyebrow, .profile-eyebrow,
+  .task-eyebrow, .page-eyebrow, .page-heading small) { color: var(--p18-bronze); }
+html.ptech-glass-v18 body :is(.projects-search input, .documents-search-wrap input,
+  .documents-toolbar select, .projects-toolbar select, .chat-compose textarea,
+  .upload-field input, .upload-field select, .upload-field textarea,
+  .modal-dialog input, .modal-dialog textarea) {
+  background: var(--p18-input) !important; color: var(--p18-text) !important;
+  border: 1px solid var(--p18-border) !important; border-radius: 12px;
+}
+html.ptech-glass-v18 body :is(.project-status, .task-pill, .mini-pill, .profile-status) {
+  border-radius: 999px;
+}
+html.ptech-glass-v18 body :is(.action-card, .project-open, .bronze-button,
+  .upload-launch-button, .task-button-primary) { text-decoration: none; }
+
+/* Dashboard widgets and free-position grid mechanics stay owned by V16.11+. */
+html.ptech-glass-v18 body .ptech-widget {
+  border: 1px solid var(--p18-border) !important;
+  background: linear-gradient(145deg, var(--p18-card), var(--p18-card-bottom)) !important;
+  color: var(--p18-text);
+  border-radius: 21px !important;
+}
+html.ptech-glass-v18 body .ptech-widget .action-card {
+  border: 1px solid var(--p18-inner-border) !important;
+  background: rgba(176, 180, 205, .07) !important;
+}
+html.ptech-glass-v18 body .ptech-widget :is(h2, h3) { color: var(--p18-text); }
+
+/* Conversations: readable chat first, help below, existing animation preserved. */
+html.ptech-glass-v18 body .dashboard-content.messages-page { max-width: 1550px !important; }
+html.ptech-glass-v18 body .chat-workspace.chat-workspace-inline {
+  border-radius: 21px !important; min-height: 440px;
+  overflow: hidden;
+}
+html.ptech-glass-v18 body .chat-workspace .conversation-rail {
+  background: rgba(20, 33, 51, .18) !important;
+  border-radius: 0 !important;
+  border: 0 !important;
+  border-right: 1px solid var(--p18-inner-border) !important;
+  box-shadow: none !important;
+}
+html.ptech-glass-v18 body .chat-workspace .chat-panel {
+  background: transparent !important;
+  border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+}
+html.ptech-glass-v18 body .chat-header { background: rgba(106, 128, 157, .075) !important; }
+html.ptech-glass-v18 body .conversation-option.active { border-color: rgba(218, 161, 123, .50) !important; }
+html.ptech-glass-v18 body .chat-compose { background: rgba(20, 31, 49, .13) !important; }
+html.ptech-glass-v18[data-theme="light"] body .chat-compose,
+html.ptech-glass-v18 body.light-mode .chat-compose { background: rgba(221, 194, 169, .12) !important; }
+html.ptech-glass-v18 body .v1614-help-hero { overflow: hidden; }
+html.ptech-glass-v18 body .v1614-help-link { min-width: 0; }
+
+/* Avoid changing existing native mobile dock, its active states, or modal behavior. */
+@media (max-width: 1100px) {
+  html.ptech-glass-v18 body .p18-sidebar-grip { display: none !important; }
+  html.ptech-glass-v18 body .dashboard.desktop-layout { grid-template-columns: none !important; }
+  html.ptech-glass-v18 body .chat-workspace.chat-workspace-inline { min-height: 0; }
+}
+@media (max-width: 650px) {
+  html.ptech-glass-v18 body :is(.project-card, .profile-section,
+    .documents-panel, .task-card, .ptech-widget, .v1614-help-hero) {
+    border-radius: 17px !important;
+  }
+  html.ptech-glass-v18 body .dashboard-content { max-width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html.ptech-glass-v18 body :is(.project-card, .action-card, .document-card, .task-card, .stat-card) { transition: none !important; }
+}
+
+/* Light chat column: preserve warm, airy contrast rather than a gray slab. */
+html.ptech-glass-v18[data-theme="light"] body .chat-workspace .conversation-rail,
+html.ptech-glass-v18 body.light-mode .chat-workspace .conversation-rail {
+  background: rgba(218, 187, 159, .12) !important;
+}
