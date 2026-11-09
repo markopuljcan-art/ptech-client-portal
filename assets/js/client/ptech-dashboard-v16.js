@@ -60,9 +60,11 @@
   const ids=Object.keys(titles);
   const widgets=new Map(primaryIds.map(id=>[id,grid.querySelector(`[data-widget-id="${id}"]`)]));
   if ([...widgets.values()].some(widget=>!widget)) return;
+  // V18.2: balanced default only for new accounts without a saved V16 layout.
+  // Existing clients keep their per-device sizes and manual placements.
   const defaultDims={
-    projects:{w:12,h:5},tasks:{w:6,h:5},actions:{w:6,h:5},
-    messages:{w:6,h:4},documents:{w:6,h:4}
+    projects:{w:7,h:4},tasks:{w:5,h:4},actions:{w:12,h:2},
+    messages:{w:6,h:3},documents:{w:6,h:3}
   };
   const defaults={
     order:['projects','tasks','actions','messages','documents',...hubIds],
@@ -170,7 +172,7 @@
     if(isMobile())return 12;
     return clamp(Math.round(14*12/Math.max(actualGridColumns(),state?.gridRows||12)),3,14);
   }
-  function cellHeight(){return isMobile()?66:Math.max(12,Math.round(68*12/(state?.gridRows||12)));}
+  function cellHeight(){return isMobile()?66:Math.max(12,Math.round(61*12/(state?.gridRows||12)));}
   function columnStep(cols=actualGridColumns()){
     const gap=cellGap();
     return (Math.max(grid.clientWidth,320)-gap*(cols-1))/cols+gap;
@@ -528,6 +530,8 @@
         (cardW<124?0.45:0) + (cardH<82?0.6:0);
       if(score<bestScore){bestScore=score;cols=candidate;}
     }
+    // Reference-layout compact strip: four genuinely usable shortcuts in one row.
+    if(document.documentElement.classList.contains('ptech-v19') && !editing && !inZoom && width>=690 && height>=122) cols=Math.min(4,n||1);
     let rows=Math.ceil(n/cols);
     // Never crop the last row. Extra actions remain available through 'Još akcija'.
     const minRowHeight=editing?72:61;
@@ -569,7 +573,7 @@
       // A 4-column project stats row needs little more than 300px vertically;
       // narrower cards need extra height for the wrapped project details.
       const full=zoom?.widget===widget ||
-        ((width>=700 && height>=335) || (width>=480 && height>=420));
+        ((width>=520 && height>=250) || (width>=440 && height>=430));
       widget.dataset.projectContent=full?'full':'summary';
     }
     if(id==='messages'){
@@ -1142,6 +1146,18 @@
     if(!window.confirm('Želiš vratiti zadani raspored? Osobni zadaci i njihove oznake bit će uklonjeni iz ovog preglednika.'))return;
     state=cloneDefaults();loadPersonalWidgets();pickerOpen=false;render(true);save();
   });
+  // V18.2: user-initiated design preset; never runs automatically on saved layouts.
+  // Keeps personal tasks, chosen shortcuts, hidden tiles and Supabase state intact.
+  window.PTechApplyFirstGlassLayout = () => {
+    if (!currentUserId || !state || drag || resize || zoom) return false;
+    if (editing) setEdit(false);
+    const coreOrder=['projects','tasks','actions','messages','documents'];
+    state.order=[...coreOrder,...state.order.filter(id=>!coreOrder.includes(id))];
+    for (const id of coreOrder) state.dims[id]={...defaultDims[id]};
+    state.placements={}; // This is explicit user choice, not an automatic migration.
+    render(true);save();
+    return true;
+  };
   window.addEventListener('resize',()=>{if(state){applyGridPreset();for(const [id,widget]of widgets)renderSizes(id,widget);updateExplicitPositions();scheduleDensities();}},{passive:true});
   const nameLabel=document.getElementById('userTop');
   if(nameLabel && typeof MutationObserver==='function')new MutationObserver(updateHubSummaries).observe(nameLabel,{characterData:true,childList:true,subtree:true});

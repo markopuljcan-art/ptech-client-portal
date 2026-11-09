@@ -1,0 +1,421 @@
+/*
+ PTech Digital Client Portal · V18.2 · First Glass design system
+ Loaded explicitly as the LAST client stylesheet on every client page.
+ Scoped to html.ptech-v182; no Supabase/PWA/backend logic changes.
+ Layout editor/resize mechanics remain owned by V16.11.
+*/
+html.ptech-v182 {--g-sidebar-width:256px;scrollbar-color:rgba(170,122,95,.38) transparent}
+html.ptech-v182 body {
+  --g-bg:#172238;
+  --g-bg-top:#202d44;
+  --g-surface:rgba(49,65,89,.83);
+  --g-surface-end:rgba(34,48,71,.91);
+  --g-inset:rgba(95,114,141,.16);
+  --g-border:rgba(224,186,159,.24);
+  --g-border-subtle:rgba(227,202,184,.13);
+  --g-text:#fff9f3;
+  --g-muted:#c7cdda;
+  --g-accent:#e2aa85;
+  --g-accent-strong:#f0b791;
+  --g-accent-soft:rgba(208,146,104,.17);
+  --g-sidebar:#273750;
+  --g-sidebar-end:#1a2941;
+  --g-sidebar-text:#f6f0ef;
+  --g-header:rgba(27,40,60,.88);
+  --g-shadow:0 16px 38px rgba(5,12,25,.20),inset 0 1px 0 rgba(255,255,255,.07);
+  --g-reflection:linear-gradient(160deg,rgba(255,255,255,.085),transparent 38%,transparent 76%,rgba(194,138,98,.06));
+  --sidebar-width:var(--g-sidebar-width);
+  --page:var(--g-bg); --page-top:var(--g-bg-top); --page-bottom:#111c2f;
+  --text:var(--g-text); --muted:var(--g-muted); --bronze:var(--g-accent);
+  --border:var(--g-border); --header-bg:var(--g-header);
+  --sidebar-text:var(--g-sidebar-text); --sidebar-muted:#c9c2c2;
+  --sidebar-bg:linear-gradient(168deg,var(--g-sidebar),var(--g-sidebar-end));
+  --sidebar-border:var(--g-border); --sidebar-active:rgba(194,138,99,.22);
+  --ui-bg:var(--g-bg); --ui-bg-top:var(--g-bg-top); --ui-bg-bottom:#111c2f;
+  --ui-text:var(--g-text); --ui-muted:var(--g-muted);
+  --ui-border:var(--g-border); --ui-header:var(--g-header);
+  --ui-card:rgba(49,65,89,.94); --ui-card-end:rgba(37,51,72,.95);
+  --ui-card-inset:rgba(97,116,142,.25);
+  --ui-copper:var(--g-accent); --ui-copper-light:var(--g-accent-strong);
+  --ui-copper-soft:var(--g-accent-soft); --ui-shadow:var(--g-shadow);
+  --card-bg:linear-gradient(145deg,var(--g-surface),var(--g-surface-end));
+  --project-card-bg:linear-gradient(145deg,var(--g-surface),var(--g-surface-end));
+  --card-border:var(--g-border); --card-text:var(--g-text); --card-muted:var(--g-muted);
+  --card-shadow:var(--g-shadow); --project-card-border:var(--g-border);
+  --tile-bg:linear-gradient(140deg,rgba(85,104,129,.35),rgba(53,68,92,.28));
+  --tile-border:var(--g-border-subtle); --toolbar-bg:rgba(45,60,82,.8);
+  --input-bg:rgba(29,43,65,.78); --input-text:var(--g-text);
+  color:var(--g-text);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--g-bg);
+}
+html.ptech-v182[data-theme="light"] body,
+html.ptech-v182 body.light-mode {
+  --g-bg:#f8f3ee;--g-bg-top:#fffcf9;
+  --g-surface:rgba(255,252,248,.96);--g-surface-end:rgba(248,237,227,.93);
+  --g-inset:rgba(228,203,181,.28);
+  --g-border:rgba(158,107,79,.26);--g-border-subtle:rgba(164,109,78,.16);
+  --g-text:#253047;--g-muted:#6f625d;
+  --g-accent:#a26a4c;--g-accent-strong:#9b5e3d;
+  --g-accent-soft:rgba(178,112,75,.13);
+  --g-sidebar:#f1dfd1;--g-sidebar-end:#ddbea9;
+  --g-sidebar-text:#3d2d31;
+  --g-header:rgba(255,252,248,.94);
+  --g-shadow:0 13px 32px rgba(93,59,41,.095),inset 0 1px 0 rgba(255,255,255,.93);
+  --g-reflection:linear-gradient(165deg,rgba(255,255,255,.72),transparent 44%,rgba(227,189,158,.09));
+  --page-bottom:#f0e5dc;--ui-bg-bottom:#f0e5dc;
+  --sidebar-muted:#746051;--ui-copper-soft:rgba(177,106,72,.13);
+  --ui-card:#fffaf6;--ui-card-end:#f2e4d8;--ui-card-inset:rgba(252,242,234,.91);
+  --toolbar-bg:rgba(255,249,244,.92);--input-bg:rgba(255,252,249,.94);
+  --input-text:#253047;
+  --tile-bg:linear-gradient(140deg,rgba(255,255,255,.83),rgba(239,219,204,.63));
+  color-scheme:light;
+}
+html.ptech-v182 body .dashboard.desktop-layout,
+html.ptech-v182 body .desktop-main {min-width:0}
+html.ptech-v182 body .desktop-main {
+  background:radial-gradient(ellipse 740px 510px at 102% 2%,rgba(196,131,90,.13),transparent 69%),
+             radial-gradient(ellipse 570px 560px at 0 98%,rgba(136,161,205,.08),transparent 72%),
+             linear-gradient(155deg,var(--g-bg-top) 0%,var(--g-bg) 58%,var(--page-bottom) 100%)!important;
+}
+html.ptech-v182 body .desktop-main::before {opacity:.56;pointer-events:none}
+html.ptech-v182 body .desktop-main::after {opacity:.42;pointer-events:none}
+html.ptech-v182 body .dashboard-content {
+  width:100%;max-width:1740px;margin:0 auto;
+  padding:clamp(22px,2.4vw,40px) clamp(18px,2.8vw,46px) 42px;
+  color:var(--g-text);
+}
+html.ptech-v182 body .dashboard-header {
+  position:sticky;top:0;z-index:101;min-height:74px;
+  display:flex;align-items:center;justify-content:space-between;gap:18px;
+  padding:13px clamp(18px,2.8vw,46px);
+  background:var(--g-header)!important;
+  border-bottom:1px solid var(--g-border-subtle)!important;
+  box-shadow:0 5px 17px rgba(9,19,32,.045);
+  backdrop-filter:blur(19px) saturate(1.10);-webkit-backdrop-filter:blur(19px) saturate(1.10);
+}
+html.ptech-v182 body .dashboard-header .dashboard-mobile-brand {
+  display:flex!important;flex-direction:column;gap:2px;margin-right:auto;
+  color:var(--g-text);min-width:0;line-height:1.25;
+}
+html.ptech-v182 body .dashboard-header .dashboard-mobile-brand span {
+  font-size:10px!important;font-weight:850;letter-spacing:.16em!important;color:var(--g-accent)!important;
+}
+html.ptech-v182 body .dashboard-header .dashboard-mobile-brand strong {
+  color:var(--g-text)!important;font-size:17px!important;font-weight:800!important;letter-spacing:-.02em;
+}
+html.ptech-v182 body .dashboard-header .header-actions {width:auto;min-width:0;margin-left:auto;gap:15px}
+html.ptech-v182 body .dashboard-header #userTop,
+html.ptech-v182 body .dashboard-header .logout-button {color:var(--g-text)}
+html.ptech-v182 body .dashboard-header .user-avatar {
+  background:var(--g-accent-soft);border-color:var(--g-border);
+}
+html.ptech-v182 body .dashboard-header .user-avatar svg {stroke:var(--g-accent)}
+html.ptech-v182 body .dashboard-header .theme-switch {filter:drop-shadow(0 3px 7px rgba(10,20,35,.08))}
+html.ptech-v182 body .dashboard-header .theme-slider {border-color:var(--g-border)}
+html.ptech-v182 body .dashboard-header .header-separator {background:var(--g-border-subtle)}
+
+/* Resizable sidebar from reference video (not a tile inside the sidebar). */
+@media(min-width:1101px){
+  html.ptech-v182 body .dashboard.desktop-layout {
+    display:grid!important;grid-template-columns:var(--g-sidebar-width,256px) minmax(0,1fr)!important;
+  }
+  html.ptech-v182 body .desktop-sidebar {
+    position:sticky;top:0;height:100vh;min-width:0;width:100%;max-width:none;
+    padding:24px 13px 22px;overflow:hidden;
+    background:radial-gradient(ellipse at -30% 88%,rgba(190,142,104,.12),transparent 65%),
+               linear-gradient(166deg,var(--g-sidebar),var(--g-sidebar-end))!important;
+    border-right:1px solid var(--g-border)!important;
+    box-shadow:8px 0 26px rgba(10,18,31,.075);
+    color:var(--g-sidebar-text);
+  }
+  html.ptech-v182 body .desktop-sidebar::before,
+  html.ptech-v182 body .desktop-sidebar::after {opacity:.40}
+  html.ptech-v182 body .desktop-sidebar .sidebar-brand {
+    gap:11px;min-width:0;padding:2px 8px 34px;overflow:hidden;
+  }
+  html.ptech-v182 body .desktop-sidebar .sidebar-brand-text strong {
+    color:var(--g-sidebar-text)!important;font-size:17px;font-weight:850;
+  }
+  html.ptech-v182 body .desktop-sidebar .sidebar-brand-text small {
+    color:var(--g-accent)!important;font-weight:800;letter-spacing:.10em;
+  }
+  html.ptech-v182[data-theme="light"] body .desktop-sidebar .sidebar-brand-text small,
+  html.ptech-v182 body.light-mode .desktop-sidebar .sidebar-brand-text small {color:#8b543c!important}
+  html.ptech-v182 body .desktop-sidebar .sidebar-nav {min-width:0;gap:7px}
+  html.ptech-v182 body .desktop-sidebar .sidebar-link {
+    display:flex;align-items:center;min-height:45px;min-width:0;
+    border-radius:13px;padding:10px 13px;gap:13px;
+    color:var(--g-sidebar-text)!important;border:1px solid transparent;
+    transition:background .19s ease,border .19s ease,box-shadow .19s ease;
+  }
+  html.ptech-v182 body .desktop-sidebar .sidebar-link svg {color:currentColor;flex-shrink:0}
+  html.ptech-v182 body .desktop-sidebar .sidebar-link:hover {transform:none;background:var(--g-accent-soft)}
+  html.ptech-v182 body .desktop-sidebar .sidebar-link.active,
+  html.ptech-v182 body .desktop-sidebar .sidebar-link[aria-current="page"] {
+    background:var(--g-accent-soft)!important;
+    border:1px solid var(--g-border-subtle)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.13),0 5px 19px rgba(6,16,29,.09);
+  }
+  html.ptech-v182 body .desktop-sidebar .sidebar-link.active::before {background:var(--g-accent)!important}
+  html.ptech-v182 body .desktop-sidebar .sidebar-bottom {border-color:var(--g-border-subtle)}
+  html.ptech-v182 body .desktop-sidebar .sidebar-bottom a,
+  html.ptech-v182 body .desktop-sidebar .sidebar-bottom p {color:var(--g-sidebar-text)!important}
+  html.ptech-v182 body .ptech-v182-grip {
+    display:flex;align-items:center;justify-content:center;
+    position:fixed;z-index:1200;top:45%;
+    left:calc(var(--g-sidebar-width,256px) - 12px);
+    width:24px;height:50px;border-radius:14px;
+    border:1px solid var(--g-border);background:var(--g-sidebar);
+    color:var(--g-accent);box-shadow:0 6px 17px rgba(3,10,23,.22);
+    cursor:ew-resize;touch-action:none;user-select:none;
+    transition:box-shadow .16s ease,border-color .16s ease;
+  }
+  html.ptech-v182 body .ptech-v182-grip::before {content:'⋮';font-size:24px;line-height:1;font-weight:800}
+  html.ptech-v182 body .ptech-v182-grip:hover,
+  html.ptech-v182 body .ptech-v182-grip:focus-visible {border-color:var(--g-accent);box-shadow:0 0 0 4px var(--g-accent-soft)}
+  html.ptech-v182.v182-dragging,html.ptech-v182.v182-dragging * {cursor:ew-resize!important;user-select:none!important}
+  html.ptech-v182.v182-sidebar-collapsed body .desktop-sidebar {padding-left:10px;padding-right:10px}
+  html.ptech-v182.v182-sidebar-collapsed body .desktop-sidebar .sidebar-brand {justify-content:center;padding:2px 0 35px}
+  html.ptech-v182.v182-sidebar-collapsed body .desktop-sidebar :is(.sidebar-brand-text,.sidebar-link span,.sidebar-bottom p) {display:none!important}
+  html.ptech-v182.v182-sidebar-collapsed body .desktop-sidebar .sidebar-nav .sidebar-link {justify-content:center;padding:11px 0;gap:0}
+  html.ptech-v182.v182-sidebar-collapsed body .desktop-sidebar .sidebar-link svg {width:23px;height:23px}
+  html.ptech-v182.v182-sidebar-collapsed body .desktop-sidebar .sidebar-bottom a {display:flex;justify-content:center;font-size:0}
+  html.ptech-v182.v182-sidebar-collapsed body .desktop-sidebar .sidebar-bottom a::before {content:'?';font-size:20px;font-weight:700}
+}
+html.ptech-v182 body .ptech-v182-grip {display:none}
+@media(min-width:1101px){html.ptech-v182 body .ptech-v182-grip {display:flex}}
+
+/* Common glass language across all client views. */
+html.ptech-v182 body :is(.dashboard-section,.actions-section,.overview-panel,.ptech-dashboard-tasks,
+  .projects-total-box,.projects-toolbar,.projects-panel,.project-list-card,.documents-panel,
+  .documents-toolbar,.task-summary,.task-filters,.task-card,.profile-summary,.profile-section,
+  .stat-card,.chat-workspace,.conversation-rail,.conversation-panel,.chat-panel,.support-guide,
+  .support-resources,.activities-detail-card,.approval-side,.approve-card,.profile-hero,
+  .project-detail-card,.project-details-card) {
+  border:1px solid var(--g-border)!important;
+  background:var(--g-reflection),linear-gradient(145deg,var(--g-surface),var(--g-surface-end))!important;
+  color:var(--g-text);box-shadow:var(--g-shadow)!important;
+  border-radius:20px!important;
+}
+html.ptech-v182 body :is(.dashboard-section,.actions-section,.overview-panel,.ptech-dashboard-tasks,
+  .documents-panel,.projects-panel,.profile-section,.profile-summary,.task-card) {
+  backdrop-filter:blur(14px) saturate(1.04);-webkit-backdrop-filter:blur(14px) saturate(1.04);
+}
+html.ptech-v182 body :is(.project-card,.project-card-link,.action-card,.project-item,.document-row,
+  .conversation-option,.profile-stat,.profile-summary,.details-list>div,.stat-card,
+  .task-item,.task-row,.project-stat,.overview-row,.ptech-task-preview-row) {
+  border-color:var(--g-border-subtle)!important;
+  background:linear-gradient(145deg,rgba(128,146,170,.11),rgba(130,105,99,.07))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+  color:var(--g-text);
+}
+html.ptech-v182[data-theme="light"] body :is(.project-card,.project-card-link,.action-card,.project-item,.document-row,
+  .conversation-option,.stat-card,.details-list>div,.project-stat,.overview-row,.ptech-task-preview-row),
+html.ptech-v182 body.light-mode :is(.project-card,.project-card-link,.action-card,.project-item,.document-row,
+  .conversation-option,.stat-card,.details-list>div,.project-stat,.overview-row,.ptech-task-preview-row) {
+  background:linear-gradient(147deg,rgba(255,255,255,.74),rgba(238,217,202,.24))!important;
+}
+html.ptech-v182 body :is(.projects-eyebrow,.documents-eyebrow,.task-eyebrow,.page-eyebrow,
+  .ptech-tasks-eyebrow,.v1614-page-heading small,.page-heading small) {
+  color:var(--g-accent)!important;font-weight:800;letter-spacing:.16em;
+}
+html.ptech-v182 body :is(.projects-heading h1,.documents-heading h1,.page-intro h1,
+  .task-intro h1,.page-heading h1,.profile-title,.welcome h2) {
+  color:var(--g-text)!important;font-weight:850;letter-spacing:-.045em;
+}
+html.ptech-v182 body :is(.projects-heading p,.documents-heading p,.page-intro p,
+  .task-intro p,.page-heading p) {color:var(--g-muted)!important;line-height:1.6}
+html.ptech-v182 body :is(input,select,textarea):not([type="checkbox"]):not([type="radio"]) {
+  border-color:var(--g-border)!important;
+  background-color:var(--input-bg)!important;
+  color:var(--g-text)!important;
+}
+html.ptech-v182 body :is(input,textarea)::placeholder {color:var(--g-muted);opacity:.8}
+html.ptech-v182 body :is(button,a):focus-visible {outline:2px solid var(--g-accent)!important;outline-offset:3px}
+html.ptech-v182 body :is(.bronze-button,.upload-launch-button,.task-button:not(.task-button-secondary),
+  .ptech-layout-button:not(.ptech-layout-button-secondary)) {
+  background:linear-gradient(130deg,#c8906e,#9e6344)!important;
+  color:#fffaf7!important;border:1px solid rgba(245,199,168,.35)!important;
+  border-radius:11px;box-shadow:0 5px 14px rgba(74,43,32,.12)!important;
+}
+html.ptech-v182 body .footer {color:var(--g-muted);opacity:.83}
+
+/* Dashboard: real cards/data from V16, not concept-only replacements. */
+html.ptech-v182 body.ptech-dashboard-v16 .welcome {margin:0 0 21px;padding:0}
+html.ptech-v182 body.ptech-dashboard-v16 .welcome .ptech-v182-eyebrow {
+  display:block;margin-bottom:9px;color:var(--g-accent);font-size:11px;font-weight:800;letter-spacing:.18em;
+}
+html.ptech-v182 body.ptech-dashboard-v16 .welcome h2 {
+  margin:0 0 8px;font-size:clamp(29px,3.1vw,43px);line-height:1.15;letter-spacing:-.05em;
+}
+html.ptech-v182 body.ptech-dashboard-v16 .welcome h2::after {display:none}
+html.ptech-v182 body.ptech-dashboard-v16 .welcome h2 strong {color:var(--g-text)}
+html.ptech-v182 body.ptech-dashboard-v16 .welcome p {font-size:14px;color:var(--g-muted)!important;line-height:1.6}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-layout-bar {
+  border:1px solid var(--g-border-subtle)!important;
+  background:rgba(109,120,144,.085)!important;
+  border-radius:16px!important;padding:13px 17px!important;margin-bottom:17px!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.045)!important;
+}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-layout-bar-copy strong {color:var(--g-text)!important}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-layout-bar-copy span {color:var(--g-muted)!important}
+html.ptech-v182 body.ptech-dashboard-v16 #ptechFirstGlassPreset {
+  background:var(--g-accent-soft)!important;color:var(--g-accent)!important;
+  border:1px solid var(--g-border)!important;border-radius:11px;white-space:nowrap;
+  padding:10px 13px;font-size:12px;font-weight:800;
+}
+html.ptech-v182 body.ptech-dashboard-v16 #ptechFirstGlassPreset:hover {filter:brightness(1.12)}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) > .ptech-widget {
+  border:1px solid var(--g-border)!important;
+  background:var(--g-reflection),linear-gradient(145deg,var(--g-surface),var(--g-surface-end))!important;
+  box-shadow:var(--g-shadow)!important;border-radius:22px!important;
+  color:var(--g-text);backdrop-filter:blur(14px) saturate(1.08);
+  -webkit-backdrop-filter:blur(14px) saturate(1.08);
+}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-widget .ptech-tile-inner {color:var(--g-text)}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid :is(.section-title,.actions-header h2,.ptech-tasks-head h2,.overview-panel-header h2) {
+  color:var(--g-text)!important;font-size:clamp(18px,1.6vw,23px);font-weight:850;letter-spacing:-.035em;
+}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid :is(.ptech-tasks-head p,.overview-panel-header p,.actions-header p,.ptech-smart-detail) {color:var(--g-muted)!important}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid [data-widget-id="projects"] .project-card {
+  background:linear-gradient(140deg,rgba(118,133,161,.12),rgba(68,77,103,.08))!important;
+  border:1px solid var(--g-border-subtle)!important;border-radius:18px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06)!important;
+}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid [data-widget-id="projects"] :is(.project-stat,.project-info,.project-stats>*) {
+  background:var(--g-inset)!important;border-color:var(--g-border-subtle)!important;
+  border-radius:13px!important;
+}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid [data-widget-id="projects"] .project-icon {
+  background:linear-gradient(140deg,#e2b294,#b57e5d)!important;color:#633821!important;
+}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid [data-widget-id="actions"] .actions-grid {gap:11px}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid [data-widget-id="actions"] .action-card {
+  min-height:0!important;border-radius:15px!important;
+  border:1px solid var(--g-border-subtle)!important;
+  padding:14px!important;box-shadow:none!important;
+  background:linear-gradient(145deg,rgba(111,127,153,.16),rgba(81,88,116,.08))!important;
+}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid [data-widget-id="actions"] .action-icon,
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid :is(.ptech-tasks-count,.ptech-smart-symbol) {
+  background:var(--g-accent-soft)!important;color:var(--g-accent)!important;
+}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid [data-widget-id="actions"] .action-card strong {color:var(--g-text)!important}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid [data-widget-id="actions"] .action-card p {color:var(--g-muted)!important}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-smart-preview {
+  background:var(--g-inset)!important;border-color:var(--g-border-subtle)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.065)!important;border-radius:15px!important;
+}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid :is(.ptech-smart-label,.ptech-smart-main) {color:var(--g-text)!important}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid :is(.ptech-smart-sub,.ptech-smart-detail) {color:var(--g-muted)!important}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid .overview-panel-header a,
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-tasks-footer a {color:var(--g-accent)!important}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-widget-tool {
+  background:var(--g-inset)!important;border-color:var(--g-border)!important;color:var(--g-text)!important;
+}
+html.ptech-v182 body.ptech-dashboard-v16.ptech-layout-editing .ptech-dashboard-grid>.ptech-widget {
+  outline-color:var(--g-accent)!important;
+}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid .ptech-drop-placeholder {
+  border-color:var(--g-accent)!important;background:var(--g-accent-soft)!important;
+}
+
+/* Other client pages: preserve their forms, lists, actions and live data. */
+html.ptech-v182 body :is(.projects-page-header,.documents-page-header,.task-intro,.page-intro) {margin-bottom:22px}
+html.ptech-v182 body :is(.projects-page-header,.documents-page-header) h1 {font-size:clamp(28px,3vw,42px)}
+html.ptech-v182 body :is(.projects-toolbar,.documents-toolbar,.task-filters) {
+  padding:15px 17px!important;gap:12px;box-shadow:var(--g-shadow);
+}
+html.ptech-v182 body :is(.projects-grid,.documents-list,.task-list,.activity-list) {gap:14px}
+html.ptech-v182 body .documents-panel {padding:clamp(16px,2vw,26px)!important}
+html.ptech-v182 body .documents-panel-header h2 {color:var(--g-text)}
+html.ptech-v182 body .documents-panel-header p {color:var(--g-muted)}
+html.ptech-v182 body :is(.task-summary,.projects-total-box) {padding:16px 20px!important}
+html.ptech-v182 body .task-intro h1 {font-size:clamp(28px,3vw,40px)}
+html.ptech-v182 body .messages-page {max-width:1740px!important}
+html.ptech-v182 body .messages-page .chat-workspace-inline {
+  border:1px solid var(--g-border)!important;
+  background:var(--g-reflection),linear-gradient(145deg,var(--g-surface),var(--g-surface-end))!important;
+  box-shadow:var(--g-shadow)!important;border-radius:21px!important;
+}
+html.ptech-v182 body .messages-page :is(.conversation-rail,.chat-main,.chat-thread,.chat-header,.chat-composer) {
+  border-color:var(--g-border-subtle)!important;
+}
+html.ptech-v182 body .messages-page .conversation-option.active {border-color:var(--g-accent)!important;background:var(--g-accent-soft)!important}
+html.ptech-v182 body .messages-page :is(.page-heading h1,.rail-heading h2) {color:var(--g-text)!important}
+html.ptech-v182 body .messages-page :is(.rail-heading p,.page-heading p) {color:var(--g-muted)!important}
+html.ptech-v182 body .messages-page :is(.help-section,.support-bottom,.v1614-help-card) {
+  border-color:var(--g-border)!important;box-shadow:var(--g-shadow)!important;
+}
+html.ptech-v182 body :is(.profile-section,.stat-card) {padding:clamp(15px,2vw,24px)}
+html.ptech-v182 body :is(.profile-section h2,.task-card h2,.documents-panel h2) {color:var(--g-text)}
+
+@media(max-width:1100px){
+  html.ptech-v182 body .dashboard-header .dashboard-mobile-brand {display:flex!important}
+  html.ptech-v182 body .ptech-v182-grip {display:none!important}
+}
+@media(max-width:720px){
+  html.ptech-v182 body .dashboard-content {padding:17px 14px 105px!important}
+  html.ptech-v182 body .dashboard-header {min-height:62px;padding:11px 15px}
+  html.ptech-v182 body .dashboard-header .dashboard-mobile-brand strong {font-size:15px!important}
+  html.ptech-v182 body .dashboard-header .header-actions {gap:9px}
+  html.ptech-v182 body .dashboard-header .header-separator {display:none}
+  html.ptech-v182 body.ptech-dashboard-v16 .welcome h2 {font-size:clamp(27px,7vw,35px)}
+  html.ptech-v182 body.ptech-dashboard-v16 .ptech-layout-bar {padding:12px!important}
+  html.ptech-v182 body.ptech-dashboard-v16 #ptechFirstGlassPreset {font-size:11px;padding:9px 10px}
+  html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)>.ptech-widget {border-radius:17px!important}
+  html.ptech-v182 body .messages-page .chat-workspace-inline {border-radius:17px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  html.ptech-v182 body .desktop-sidebar .sidebar-link {transition:none!important}
+}
+
+/* V18.2 final fit: a side-by-side project tile still shows its native heading
+   and complete project stats rather than a clipped or duplicated preview. */
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+  [data-widget-id="projects"][data-project-content="full"] .ptech-tile-inner > .section-header {
+  display:flex!important;visibility:visible!important;opacity:1!important;
+  justify-content:space-between!important;align-items:center!important;
+  width:100%;flex:none;margin:0 0 11px!important;
+}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+  [data-widget-id="projects"][data-project-content="full"] .section-header .section-title {
+  display:block!important;visibility:visible!important;opacity:1!important;
+  color:var(--g-text)!important;font-size:clamp(17px,1.55vw,23px)!important;
+  line-height:1.2!important;margin:0!important;
+}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+  [data-widget-id="projects"][data-project-content="full"] .project-card {
+  padding:16px 17px!important;overflow:hidden;
+}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+  [data-widget-id="projects"][data-project-content="full"] .project-heading {
+  gap:10px!important;margin-bottom:12px!important;
+}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+  [data-widget-id="projects"][data-project-content="full"] .project-icon {
+  width:52px!important;height:52px!important;flex:0 0 52px!important;border-radius:13px;
+}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+  [data-widget-id="projects"][data-project-content="full"] .project-title-wrap h3 {
+  font-size:clamp(18px,1.7vw,23px)!important;line-height:1.23!important;
+}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+  [data-widget-id="projects"][data-project-content="full"] .project-stats {
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:9px!important;
+}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+  [data-widget-id="projects"][data-project-content="full"] .project-stats .stat-card {
+  min-width:0;min-height:70px!important;padding:10px!important;
+  gap:8px!important;border-radius:12px!important;
+}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+  [data-widget-id="projects"][data-project-content="full"] .project-stats .stat-card .stat-icon svg {
+  width:18px!important;height:18px!important;
+}
+html.ptech-v182 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+  [data-widget-id="projects"][data-project-content="full"] .project-stats .stat-card :is(.stat-label,strong) {
+  overflow-wrap:normal;word-break:normal;
+  font-size:clamp(10px,.9vw,12px)!important;
+}

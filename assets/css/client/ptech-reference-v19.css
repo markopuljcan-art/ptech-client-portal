@@ -1,0 +1,483 @@
+/* PTech Digital Client Portal V19.0 — the approved First Glass design.
+   Source: the user's selected dashboard mockup. This stylesheet is loaded LAST.
+   It skins ORIGINAL interactive V16 widgets, never substitutes static fake data.
+   Supabase, message, document and upload flows are unchanged. */
+
+html.ptech-v182.ptech-v19 body:not(.light-mode) {
+  --g-bg:#0b1931;--g-bg-top:#152640;--g-surface:rgba(43,57,80,.87);--g-surface-end:rgba(31,45,69,.92);
+  --g-inset:rgba(94,111,139,.17);--g-border:rgba(217,182,158,.30);--g-border-subtle:rgba(200,207,223,.16);
+  --g-text:#f9f7f5;--g-muted:#c4cad5;--g-accent:#dfa77e;--g-accent-strong:#e3ad8c;
+  --g-accent-soft:rgba(198,142,105,.20);--g-sidebar:#20314e;--g-sidebar-end:#15253e;
+  --g-header:rgba(15,28,50,.81);--g-sidebar-text:#f7f4f1;
+  --g-shadow:0 17px 35px rgba(3,12,27,.16),inset 0 1px 0 rgba(255,255,255,.10);
+  --g-reflection:linear-gradient(150deg,rgba(255,255,255,.072),transparent 43%,rgba(205,152,118,.065));
+  --ui-card:rgba(43,57,80,.90);--ui-card-end:rgba(31,45,69,.96);--ui-card-inset:rgba(84,103,131,.24);
+  --input-bg:rgba(17,31,53,.76);--tile-bg:linear-gradient(155deg,rgba(98,116,145,.18),rgba(48,65,89,.26));
+  --page-bottom:#0a1730;--ui-bg-bottom:#0a1730;--sidebar-muted:#c6c8cf;
+}
+html.ptech-v182.ptech-v19[data-theme="light"] body,
+html.ptech-v182.ptech-v19 body.light-mode {
+  --g-bg:#faf6f2;--g-bg-top:#fffdfa;--g-surface:rgba(255,252,248,.95);--g-surface-end:rgba(248,237,226,.94);
+  --g-inset:rgba(215,178,151,.14);--g-border:rgba(163,111,77,.25);--g-border-subtle:rgba(173,124,98,.17);
+  --g-text:#222c3e;--g-muted:#76695e;--g-accent:#a96946;--g-accent-strong:#9d6042;
+  --g-accent-soft:rgba(189,122,82,.14);--g-sidebar:#eacbb5;--g-sidebar-end:#cfa788;
+  --g-sidebar-text:#362b2b;--g-header:rgba(255,251,247,.92);
+  --g-shadow:0 13px 31px rgba(119,77,52,.09),inset 0 1px 0 rgba(255,255,255,.9);
+  --g-reflection:linear-gradient(155deg,rgba(255,255,255,.77),transparent 52%,rgba(204,139,100,.055));
+  --ui-card:rgba(255,251,247,.94);--ui-card-end:rgba(244,229,215,.94);
+  --ui-card-inset:rgba(229,204,182,.23);--tile-bg:linear-gradient(145deg,rgba(255,255,255,.86),rgba(243,225,210,.44));
+  --input-bg:rgba(255,250,247,.97);--page-bottom:#f2e8de;--ui-bg-bottom:#f2e8de;
+}
+
+/* Navigation: same proportions, subtle warm edge and real drag handle. */
+@media(min-width:1101px) {
+ html.ptech-v19 body .desktop-sidebar {
+   background:radial-gradient(circle at -16% 92%,rgba(202,147,101,.16),transparent 55%),
+              linear-gradient(175deg,var(--g-sidebar),var(--g-sidebar-end))!important;
+   border-right:1px solid var(--g-border)!important;
+   box-shadow:7px 0 25px rgba(3,13,30,.055)!important;
+ }
+ html.ptech-v19 body .desktop-sidebar .sidebar-nav {gap:8px}
+ html.ptech-v19 body .desktop-sidebar .sidebar-link {border-radius:13px;min-height:49px;font-size:14px;font-weight:600}
+ html.ptech-v19 body .desktop-sidebar .sidebar-link.active,
+ html.ptech-v19 body .desktop-sidebar .sidebar-link[aria-current="page"] {
+   background:linear-gradient(116deg,rgba(176,121,95,.28),rgba(157,116,96,.14))!important;
+   border-color:var(--g-border-subtle)!important;
+ }
+ html.ptech-v19 body .ptech-v182-grip {box-shadow:0 2px 14px rgba(0,0,0,.14),0 0 0 3px rgba(191,137,100,.07)}
+}
+html.ptech-v19 body .desktop-main {
+ background:radial-gradient(ellipse 680px 580px at 102% 2%,rgba(193,131,94,.16),transparent 71%),
+  radial-gradient(ellipse 590px 490px at -12% 100%,rgba(110,141,181,.10),transparent 76%),
+  linear-gradient(145deg,var(--g-bg-top),var(--g-bg) 58%,var(--page-bottom))!important;
+}
+html.ptech-v19 body .desktop-main::before {opacity:.37!important}
+html.ptech-v19 body .desktop-main::after {opacity:.25!important}
+html.ptech-v19 body .dashboard-header {
+ border-bottom:1px solid var(--g-border-subtle)!important;box-shadow:none!important;
+ background:var(--g-header)!important;
+}
+html.ptech-v19 body .dashboard-content {max-width:1770px;padding:24px clamp(19px,2.45vw,42px) 38px!important}
+html.ptech-v19 body :is(.dashboard-section,.actions-section,.overview-panel,.ptech-dashboard-tasks,.projects-panel,
+ .documents-panel,.profile-section,.task-card,.project-details-card,.messages-page .chat-workspace-inline) {
+ background:var(--g-reflection),linear-gradient(148deg,var(--g-surface),var(--g-surface-end))!important;
+ border:1px solid var(--g-border)!important;border-radius:21px!important;
+ box-shadow:var(--g-shadow)!important;
+ backdrop-filter:blur(13px) saturate(1.04);-webkit-backdrop-filter:blur(13px) saturate(1.04);
+}
+html.ptech-v19 body :is(.project-card,.action-card,.overview-row,.project-item,.task-item,.document-row) {
+ border-color:var(--g-border-subtle)!important;color:var(--g-text)!important;
+}
+html.ptech-v19 body :is(.bronze-button,.ptech-layout-button,.action-button,.materials-submit) {
+ background:linear-gradient(135deg,#c89471,#a66d4e)!important;color:#fff9f4!important;
+}
+html.ptech-v19 body .footer {font-size:11px!important;opacity:.64!important}
+
+/* Dashboard hero / action controls: unlike previous versions, the old large
+   toolbar no longer occupies a visible card and displaces the dashboard. */
+html.ptech-v19 body.ptech-dashboard-v16 .welcome {
+ margin:0 0 25px!important;padding:3px 275px 0 0!important;
+ min-height:113px;position:relative;
+}
+html.ptech-v19 body.ptech-dashboard-v16 .welcome .ptech-v182-eyebrow {
+ font-size:11px!important;letter-spacing:.21em!important;color:var(--g-accent)!important;margin:0 0 9px!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 .welcome h2 {
+ font-size:clamp(31px,3vw,44px)!important;line-height:1.08!important;
+ letter-spacing:-.045em!important;margin:0 0 10px!important;font-weight:850!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 .welcome p {color:var(--g-muted)!important;font-size:14px!important;line-height:1.5!important}
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-layout-bar:not(.v19-editor-open) {
+ position:absolute!important;top:130px;right:clamp(19px,2.45vw,42px);z-index:11;
+ margin:0!important;padding:0!important;border:0!important;background:transparent!important;
+ box-shadow:none!important;width:auto!important;max-width:310px;min-height:0!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-layout-bar:not(.v19-editor-open) .ptech-layout-bar-copy,
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-layout-bar:not(.v19-editor-open) .ptech-grid-density-control,
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-layout-bar:not(.v19-editor-open) .ptech-layout-button-secondary,
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-layout-bar:not(.v19-editor-open) #ptechLayoutShow {display:none!important}
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-layout-bar:not(.v19-editor-open) .ptech-layout-bar-actions {
+ flex-wrap:nowrap!important;gap:7px!important;justify-content:flex-end!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 :is(#ptechLayoutEdit,#ptechFirstGlassPreset) {
+ border-radius:11px!important;font-size:11px!important;font-weight:750!important;
+ min-height:35px!important;padding:7px 10px!important;
+ border:1px solid var(--g-border)!important;
+ white-space:nowrap;background:var(--g-accent-soft)!important;color:var(--g-text)!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.055)!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 #ptechFirstGlassPreset {background:transparent!important}
+html.ptech-v19 body.ptech-dashboard-v16.ptech-layout-editing .ptech-layout-bar {
+ position:relative!important;top:auto!important;right:auto!important;width:100%!important;max-width:none!important;
+ margin:4px 0 16px!important;background:var(--g-inset)!important;
+ border:1px solid var(--g-border)!important;padding:15px!important;z-index:2;
+}
+html.ptech-v19 body.ptech-dashboard-v16.ptech-layout-editing .ptech-layout-bar-copy {display:block!important}
+html.ptech-v19 body.ptech-dashboard-v16.ptech-layout-editing .ptech-layout-bar-actions {flex-wrap:wrap!important}
+
+/* All five core tiles use the DOM elements with their ORIGINAL live data. */
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) {
+ --ptech-grid-gap:14px;overflow:visible!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)>.ptech-widget {
+ border:1px solid var(--g-border)!important;border-radius:19px!important;
+ background:var(--g-reflection),linear-gradient(148deg,var(--g-surface),var(--g-surface-end))!important;
+ box-shadow:var(--g-shadow)!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)>.ptech-widget>.ptech-tile-inner {
+ padding:20px 23px!important;overflow:hidden!important;scrollbar-width:none!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)>.ptech-widget:hover {
+ border-color:var(--g-accent)!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) :is(.section-title,.actions-header h2,.ptech-tasks-head h2,.overview-panel-header h2) {
+ text-transform:uppercase!important;letter-spacing:.15em!important;
+ color:var(--g-accent)!important;font-size:12px!important;line-height:1.25!important;font-weight:850!important;
+}
+html.ptech-v19 body .v19-heading-icon {display:inline-flex;width:21px;height:21px;flex:none;align-items:center;color:var(--g-accent)}
+html.ptech-v19 body .v19-heading-icon svg {width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+html.ptech-v19 body.ptech-dashboard-v16 :is(.section-title,.actions-header h2,.ptech-tasks-head h2,.overview-panel-header h2):has(.v19-heading-icon) {
+ display:flex!important;gap:13px;align-items:center;
+}
+
+/* Projects: actual project card remains a single click target; internal cards
+   are reorganized into screenshot-like title / progress / metadata rows. */
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="projects"][data-v19-show="true"] .ptech-smart-preview {display:none!important}
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="projects"][data-v19-show="true"] .ptech-tile-inner > .section-header {
+ display:flex!important;visibility:visible!important;align-items:center!important;
+ flex:none!important;width:100%!important;margin:0 0 10px!important;padding:0 0 14px!important;
+ border-bottom:1px solid var(--g-border-subtle);
+}
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="projects"][data-v19-show="true"] .section-title {display:flex!important;color:var(--g-accent)!important}
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="projects"][data-v19-show="true"] .projects-slider {
+ display:flex!important;visibility:visible!important;flex:1 1 auto!important;
+ overflow:hidden!important;max-height:none!important;min-height:0;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .project-navigation,
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .project-counter {
+ color:var(--g-muted)!important;font-size:12px;
+}
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="projects"][data-v19-show="true"] .project-slide {display:flex;align-items:stretch;width:100%;min-width:100%}
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="projects"][data-v19-show="true"] .project-card {
+ display:flex!important;flex-direction:column!important;justify-content:space-between!important;
+ width:100%!important;min-height:0!important;padding:5px 3px 1px!important;
+ border:none!important;border-radius:0!important;background:transparent!important;
+ box-shadow:none!important;gap:9px!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .project-heading {
+ display:flex!important;align-items:center!important;min-height:65px;gap:12px!important;margin:0!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .project-main {gap:15px!important;min-width:0!important}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .project-icon {
+ width:59px!important;height:59px!important;flex:0 0 59px!important;border-radius:14px!important;
+ background:linear-gradient(135deg,rgba(204,147,105,.45),rgba(161,101,74,.32))!important;
+ color:var(--g-accent)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.19)!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .project-title-wrap h3 {
+ color:var(--g-text)!important;font-size:clamp(21px,1.75vw,28px)!important;
+ letter-spacing:-.035em!important;line-height:1.05!important;margin:0 0 6px!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .project-title-wrap p {
+ color:var(--g-muted)!important;font-size:11px!important;letter-spacing:.18em!important;font-weight:700;
+ text-transform:uppercase!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .project-heading-right {
+ display:flex!important;align-items:center!important;gap:8px!important;flex-wrap:wrap;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .status-badge,
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .v19-package-chip {
+ display:inline-flex;align-items:center;gap:7px;white-space:nowrap;
+ color:var(--g-text)!important;border-radius:24px;padding:7px 11px!important;
+ font-size:11px!important;line-height:1.1!important;font-weight:700!important;
+ background:rgba(100,116,145,.18)!important;border:1px solid var(--g-border-subtle)!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .status-badge.status-progress,
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .status-badge:where(:not(.status-completed)) {
+ background:rgba(40,128,98,.20)!important;border-color:rgba(68,176,126,.25)!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .status-badge::before {
+ content:"";display:inline-block;width:7px;height:7px;border-radius:100%;background:#48ca91;flex:none;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .project-open-arrow {
+ display:grid;place-items:center;width:31px;height:31px;border-radius:9px;
+ color:var(--g-text);background:var(--g-inset);border:1px solid var(--g-border-subtle);
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .project-stats {
+ display:grid!important;grid-template-columns:1fr 1fr!important;grid-template-areas:"progress progress" "deadline updated";
+ gap:5px 13px!important;align-items:center!important;min-width:0;width:100%;margin-top:auto!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .project-stats .stat-card {
+ display:flex!important;min-height:0!important;padding:8px 1px!important;
+ border:0!important;background:transparent!important;box-shadow:none!important;border-radius:0!important;
+ color:var(--g-muted)!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .project-stats .stat-card:nth-child(1) {display:none!important}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .project-stats .stat-card:nth-child(2) {
+ grid-area:progress;display:block!important;padding:7px 0 10px!important;border-bottom:1px solid var(--g-border-subtle)!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .stat-card:nth-child(2) .stat-icon {display:none!important}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .stat-card:nth-child(2) .progress-info {width:100%!important}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .stat-card:nth-child(2) .stat-label {
+ display:block;margin-bottom:7px;color:var(--g-muted)!important;font-size:12px!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .stat-card:nth-child(2) .progress-row {display:flex;align-items:center;gap:12px}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .progress-container {
+ flex:1;height:11px!important;border-radius:14px!important;background:var(--g-inset)!important;border:1px solid var(--g-border-subtle)!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .progress-bar {
+ border-radius:14px!important;background:linear-gradient(90deg,#c78f69,#e8b591)!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .stat-card:nth-child(2) strong {color:var(--g-text)!important;font-size:14px!important}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .project-stats .stat-card:nth-child(3) {grid-area:deadline}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .project-stats .stat-card:nth-child(4) {grid-area:updated}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .stat-card:nth-child(n+3) .stat-icon {
+ width:20px!important;height:20px!important;flex:none!important;color:var(--g-muted)!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .stat-card:nth-child(n+3) > div:last-child {
+ display:flex;gap:5px;align-items:center;flex-wrap:wrap;min-width:0;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .stat-card:nth-child(n+3) .stat-label,
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .stat-card:nth-child(n+3) strong {
+ font-size:11px!important;color:var(--g-muted)!important;white-space:nowrap!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .stat-card:nth-child(n+3) strong {color:var(--g-text)!important;font-weight:750!important}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .slider-dots {margin-top:3px!important}
+
+/* Tasks — centered empty state, live task list remains visible if nonempty. */
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="tasks"][data-v19-show="true"] .ptech-smart-preview {display:none!important}
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="tasks"][data-v19-show="true"] :is(.ptech-tasks-head,.ptech-tasks-preview,.ptech-tasks-footer) {
+ display:flex!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="tasks"] .ptech-tile-inner {
+ display:flex!important;flex-direction:column!important;gap:3px!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="tasks"] .ptech-tasks-head {
+ padding:0 0 13px!important;margin:0!important;border-bottom:1px solid var(--g-border-subtle);
+ align-items:center!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="tasks"] .ptech-tasks-eyebrow,
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="tasks"] .ptech-tasks-head p {display:none!important}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="tasks"] .ptech-tasks-count {
+ width:37px;height:37px;min-width:37px;border-radius:11px!important;
+ color:var(--g-accent)!important;background:var(--g-accent-soft)!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="tasks"] .ptech-tasks-preview {flex:1!important;min-height:0!important;gap:5px!important}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="tasks"] .ptech-tasks-footer {
+ border:0!important;margin:0!important;padding:7px 0 0!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="tasks"][data-v19-empty="true"] .ptech-tasks-head .ptech-tasks-count {display:none!important}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="tasks"][data-v19-empty="true"] .ptech-tasks-preview {display:none!important}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="tasks"][data-v19-empty="true"] .ptech-tasks-footer {
+ justify-content:center!important;padding:0!important;margin:0!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="tasks"][data-v19-empty="true"] .ptech-tasks-footer > button {display:none!important}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="tasks"] .ptech-tasks-footer a {
+ display:inline-flex!important;justify-content:center;align-items:center;
+ background:linear-gradient(120deg,#c78f6b,#a96e4c)!important;color:white!important;
+ border:1px solid rgba(244,205,175,.25)!important;border-radius:10px;padding:8px 15px!important;
+ text-decoration:none!important;font-size:12px!important;font-weight:780!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="tasks"] .v19-task-empty {
+ display:none;flex:1;min-height:0;flex-direction:column;align-items:center;justify-content:center;
+ text-align:center;gap:7px;padding:5px 8px;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="tasks"][data-v19-empty="true"][data-v19-show="true"] .v19-task-empty {display:flex!important}
+html.ptech-v19 body.ptech-dashboard-v16 .v19-check-art {
+ width:62px;height:62px;display:grid;place-items:center;border-radius:18px;
+ background:linear-gradient(140deg,#d4a078,#a76a48);box-shadow:0 10px 22px rgba(10,18,32,.12),inset 0 1px rgba(255,255,255,.32);
+ color:white;font-size:38px;line-height:1;margin-bottom:4px;transform:rotate(-5deg);
+}
+html.ptech-v19 body.ptech-dashboard-v16 .v19-task-empty strong {color:var(--g-text);font-size:17px;line-height:1.2}
+html.ptech-v19 body.ptech-dashboard-v16 .v19-task-empty span {color:var(--g-muted);font-size:11px;line-height:1.4}
+
+/* Quick actions — one horizontal row of real buttons when room permits. */
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="actions"] .ptech-smart-preview {display:none!important}
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="actions"] .ptech-tile-inner {padding:15px 17px!important;gap:9px!important}
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="actions"] .actions-header {display:flex!important;min-height:23px!important;margin:0!important}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="actions"] .actions-header p {display:none!important}
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="actions"] .actions-grid {gap:10px!important}
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="actions"] .ptech-action-slot > .action-card {
+ display:grid!important;grid-template-columns:39px minmax(0,1fr) 12px!important;
+ grid-template-rows:1fr auto!important;align-items:center!important;align-content:center!important;
+ justify-content:stretch!important;gap:3px 10px!important;padding:8px 10px!important;
+ border:1px solid var(--g-border-subtle)!important;border-radius:13px!important;
+ background:linear-gradient(143deg,rgba(118,136,159,.19),rgba(95,93,116,.06))!important;
+ color:var(--g-text)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.055)!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="actions"] .action-icon {
+ display:grid!important;grid-column:1!important;grid-row:1/span 2!important;
+ width:39px!important;height:39px!important;min-height:39px!important;
+ background:var(--g-accent-soft)!important;color:var(--g-accent)!important;
+ border-radius:11px!important;font-size:19px!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="actions"] .action-card strong {
+ grid-column:2!important;grid-row:1!important;align-self:end;
+ display:block!important;font-size:12px!important;line-height:1.2!important;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+ color:var(--g-text)!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="actions"] .action-card p {
+ grid-column:2!important;grid-row:2!important;
+ display:block!important;align-self:start;margin:0!important;
+ font-size:9px!important;line-height:1.3!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+ color:var(--g-muted)!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="actions"] .action-card::after {
+ content:'›';grid-column:3;grid-row:1/span 2;color:var(--g-muted);
+ font-size:22px;line-height:1;align-self:center;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="actions"] .action-button {display:none!important}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="actions"] .action-card[aria-disabled="true"] {opacity:.52}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="actions"] .action-card:disabled {opacity:.52}
+
+/* Messages and documents — no duplicate preview strip in the reference layout. */
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="messages"][data-v19-show="true"] .ptech-smart-preview,
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="documents"][data-v19-show="true"] .ptech-smart-preview {display:none!important}
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="messages"][data-v19-show="true"] .overview-panel-header,
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="documents"][data-v19-show="true"] .overview-panel-header {
+ display:flex!important;flex:none;align-items:center;gap:10px;
+ margin:0 0 12px!important;padding:0 0 12px!important;border-bottom:1px solid var(--g-border-subtle);
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="messages"] .overview-panel-header p,
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="documents"] .overview-panel-header p,
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="messages"] .overview-panel-header>a,
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="documents"] .overview-panel-header>a {display:none!important}
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="messages"][data-v19-show="true"] .overview-list,
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="documents"][data-v19-show="true"] .overview-list {
+ display:block!important;min-height:0;max-height:none!important;overflow:hidden!important;
+ flex:1!important;margin:0!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="messages"] .overview-row,
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="documents"] .overview-row {
+ display:flex!important;min-height:62px;padding:10px 12px!important;
+ border-radius:12px!important;border:1px solid var(--g-border-subtle)!important;
+ background:linear-gradient(145deg,rgba(100,116,144,.19),rgba(79,91,117,.10))!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="messages"] .overview-avatar {
+ background:var(--g-accent-soft)!important;color:var(--g-accent)!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="documents"] .overview-avatar {color:var(--g-accent)!important}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="messages"] .overview-row-main strong,
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="documents"] .overview-row-main strong {color:var(--g-text)!important;font-size:13px!important}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="messages"] .overview-row-main small,
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="documents"] .overview-row-main small {color:var(--g-muted)!important;font-size:11px!important}
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="messages"] .overview-empty,
+html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="documents"] .overview-empty {color:var(--g-muted)!important;font-size:13px}
+html.ptech-v19 body.ptech-dashboard-v16 .v19-footer-link {
+ display:inline-flex;align-items:center;gap:6px;justify-content:flex-start;
+ font-weight:750;color:var(--g-accent);font-size:12px;text-decoration:none;
+ padding-top:11px;margin-top:auto;border-top:1px solid var(--g-border-subtle);
+}
+html.ptech-v19 body.ptech-dashboard-v16 .v19-footer-link:hover {text-decoration:underline}
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="messages"][data-v19-show="true"] .ptech-tile-inner,
+html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="documents"][data-v19-show="true"] .ptech-tile-inner {
+ display:flex!important;flex-direction:column!important;
+}
+
+/* Editing still exposes original V16 drag handles and controls. */
+html.ptech-v19 body.ptech-layout-editing .ptech-dashboard-grid:not(.ptech-zoom-grid)>.ptech-widget {
+ outline-color:var(--g-accent)!important;
+}
+html.ptech-v19 body.ptech-layout-editing .ptech-widget-controls {z-index:8}
+html.ptech-v19 body.ptech-layout-editing .ptech-dashboard-grid:not(.ptech-zoom-grid)>.ptech-widget>.ptech-tile-inner {
+ padding-top:54px!important;
+}
+
+@media(max-width:1250px) {
+ html.ptech-v19 body.ptech-dashboard-v16 .welcome {padding-right:0!important}
+ html.ptech-v19 body.ptech-dashboard-v16 .ptech-layout-bar:not(.v19-editor-open) {
+  position:relative!important;top:auto!important;right:auto!important;max-width:none!important;
+  margin:-9px 0 13px auto!important;width:100%!important;
+ }
+ html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .project-title-wrap h3 {font-size:21px!important}
+ html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="actions"] .action-card p {display:none!important}
+}
+@media(max-width:750px) {
+ html.ptech-v19 body .dashboard-content {padding:18px 14px 106px!important}
+ html.ptech-v19 body.ptech-dashboard-v16 .welcome {min-height:0!important;margin-bottom:12px!important}
+ html.ptech-v19 body.ptech-dashboard-v16 .welcome h2 {font-size:clamp(27px,8vw,36px)!important}
+ html.ptech-v19 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid)>.ptech-widget>.ptech-tile-inner {padding:15px!important}
+ html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="projects"] .project-stats {grid-template-columns:1fr!important;grid-template-areas:"progress" "deadline" "updated"}
+ html.ptech-v19 body.ptech-dashboard-v16 .ptech-layout-bar:not(.v19-editor-open) .ptech-layout-bar-actions {justify-content:flex-start!important}
+ html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="actions"] .action-card p {display:none!important}
+ html.ptech-v19 body.ptech-dashboard-v16 [data-widget-id="actions"] .action-icon {width:32px!important;height:32px!important;min-height:32px!important}
+}
+@media(prefers-reduced-motion:reduce) {
+ html.ptech-v19 body :is(.ptech-widget,.action-card,.sidebar-link) {transition:none!important;animation:none!important}
+}
+
+/* Final specificity fixes over older V16 compact/summary layers. */
+html.ptech-v182.ptech-v19 body.ptech-dashboard-v16 #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="projects"][data-project-content="full"] .section-header .section-title {
+ color:var(--g-accent)!important;font-size:12px!important;font-weight:850!important;
+ letter-spacing:.17em!important;text-transform:uppercase!important;
+}
+html.ptech-v182.ptech-v19 body.ptech-dashboard-v16 #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="projects"] .project-stats {
+ grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+ grid-template-rows:55px 32px!important;align-content:center!important;
+ height:99px!important;min-height:0!important;gap:4px 12px!important;
+}
+html.ptech-v182.ptech-v19 body.ptech-dashboard-v16 #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="projects"] .project-stats .stat-card {
+ min-height:0!important;height:auto!important;width:auto!important;
+ padding:1px!important;align-self:stretch!important;
+}
+html.ptech-v182.ptech-v19 body.ptech-dashboard-v16 #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="projects"] .project-stats .stat-card:nth-child(2) {
+ grid-area:1/1/2/-1!important;grid-column:1/-1!important;
+ height:55px!important;width:100%!important;padding:4px 0 10px!important;
+}
+html.ptech-v182.ptech-v19 body.ptech-dashboard-v16 #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="projects"] .project-stats .stat-card:nth-child(3) {grid-area:2/1/3/2!important;grid-column:1!important}
+html.ptech-v182.ptech-v19 body.ptech-dashboard-v16 #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="projects"] .project-stats .stat-card:nth-child(4) {grid-area:2/2/3/3!important;grid-column:2!important}
+html.ptech-v182.ptech-v19 body.ptech-dashboard-v16 #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid)
+ .ptech-widget.ptech-core-widget[data-widget-density="compact"][data-v19-show="true"] .ptech-tile-inner > .overview-panel-header {
+ display:flex!important;visibility:visible!important;
+}
+html.ptech-v182.ptech-v19 body.ptech-dashboard-v16 #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid)
+ .ptech-widget.ptech-core-widget[data-widget-density="compact"][data-v19-show="true"] .ptech-tile-inner > .overview-list {
+ display:block!important;visibility:visible!important;
+}
+html.ptech-v182.ptech-v19 body.ptech-dashboard-v16 #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid)
+ .ptech-widget.ptech-core-widget[data-widget-density="compact"][data-v19-show="true"] .ptech-tile-inner > .v19-footer-link {
+ display:inline-flex!important;visibility:visible!important;
+}
+html.ptech-v182.ptech-v19 body.ptech-dashboard-v16 #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="tasks"][data-v19-empty="true"][data-v19-show="true"] .ptech-tile-inner > .ptech-tasks-preview {
+ display:none!important;
+}
+html.ptech-v182.ptech-v19 body.ptech-dashboard-v16 #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="actions"] .action-card p {
+ display:block!important;max-height:28px;overflow:hidden;text-overflow:ellipsis;
+ font-size:9px!important;line-height:1.25!important;
+}
+html.ptech-v182.ptech-v19 body.ptech-dashboard-v16 #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid)
+ [data-widget-id="actions"][data-actions-presentation="compact"] .action-card p {
+ display:block!important;grid-column:2!important;grid-row:2!important;
+}
+@media(max-width:800px){
+ html.ptech-v182.ptech-v19 body.ptech-dashboard-v16 #ptechDashboardGrid [data-widget-id="actions"] .action-card p {display:none!important}
+}
