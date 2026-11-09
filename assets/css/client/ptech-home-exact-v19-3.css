@@ -1,0 +1,260 @@
+/* PTech Digital · V19.3 · IMAGE-MATCHED HOME
+   Five independent live-data panels, exact desktop composition, two portal themes.
+   Scoped to form.html. Existing V16 widget/editor CSS remains unchanged. */
+html.ptech-v19 body.ptech-home-exact-v193 {
+  --pe-ink:var(--g-text,#fffaf5);
+  --pe-secondary:var(--g-muted,#c7cedc);
+  --pe-copper:var(--g-accent,#e2aa85);
+  --pe-line:rgba(222,191,169,.24);
+  --pe-card:linear-gradient(143deg,rgba(58,73,97,.93),rgba(34,49,72,.92) 60%,rgba(48,57,75,.93));
+  --pe-card-edge:rgba(220,192,174,.42);
+  --pe-mini:linear-gradient(137deg,rgba(103,119,145,.30),rgba(58,72,98,.32));
+  --pe-mini-edge:rgba(225,218,212,.14);
+  --pe-icon-bg:linear-gradient(140deg,rgba(209,150,112,.42),rgba(142,100,85,.28));
+  --pe-accent-button:linear-gradient(130deg,#cf9670,#b67a57);
+  --pe-panel-shadow:0 16px 25px rgba(7,14,28,.16),inset 0 1px 0 rgba(255,255,255,.105);
+  --pe-mini-shadow:inset 0 1px 0 rgba(255,255,255,.075),0 3px 11px rgba(9,18,35,.06);
+}
+html.ptech-v19 body.ptech-home-exact-v193.light-mode {
+  --pe-line:rgba(142,103,82,.20);
+  --pe-card:linear-gradient(148deg,rgba(255,253,251,.97),rgba(255,247,240,.94) 67%,rgba(245,230,216,.95));
+  --pe-card-edge:rgba(191,140,108,.48);
+  --pe-mini:linear-gradient(135deg,rgba(255,255,255,.92),rgba(251,240,231,.89));
+  --pe-mini-edge:rgba(159,108,82,.19);
+  --pe-icon-bg:linear-gradient(140deg,rgba(250,220,195,.89),rgba(220,171,138,.62));
+  --pe-panel-shadow:0 14px 26px rgba(95,61,42,.105),inset 0 1px 0 rgba(255,255,255,.96);
+  --pe-mini-shadow:0 4px 11px rgba(103,66,44,.07),inset 0 1px 0 #fff;
+}
+/* Keep existing data, handlers and configurable tiles mounted offscreen only
+   while the approved, fixed composition is shown. Never display:none the
+   V16 source: it still hydrates from Supabase in the background. */
+html.ptech-v19 body.ptech-home-exact-v193.pe-show-exact #ptechDashboardGrid {
+  position:absolute!important;left:-240vw!important;top:0!important;width:1100px!important;
+  height:auto!important;visibility:hidden!important;opacity:0!important;
+  pointer-events:none!important;overflow:hidden!important;z-index:-1!important;
+}
+html.ptech-v19 body.ptech-home-exact-v193.pe-show-exact .dashboard-content > :is(.welcome,.ptech-layout-bar,.ptech-layout-hint,.ptech-hidden-widgets,.footer,.v191-layout-notice) {display:none!important}
+html.ptech-v19 body.ptech-home-exact-v193:not(.pe-show-exact) .pe-frame {display:none!important}
+html.ptech-v19 body.ptech-home-exact-v193.pe-show-exact .pe-frame {display:block!important}
+/* The screenshot has a clean 78px bar and no large floating toolbar. */
+html.ptech-v19 body.ptech-home-exact-v193 .dashboard-header {min-height:78px!important;padding-top:14px!important;padding-bottom:14px!important}
+html.ptech-v19 body.ptech-home-exact-v193 .dashboard-content {
+  position:relative!important;max-width:none!important;width:100%!important;
+  padding:23px clamp(22px,2.6vw,43px) 36px!important;margin:0!important;
+}
+html.ptech-v19 body.ptech-home-exact-v193 .desktop-main {
+  background:radial-gradient(ellipse 600px 480px at 99% 2%,rgba(195,130,95,.14),transparent 72%),
+     radial-gradient(ellipse 720px 530px at 14% 93%,rgba(56,83,124,.16),transparent 78%),
+     linear-gradient(151deg,var(--g-bg-top),var(--g-bg) 67%,var(--page-bottom))!important;
+}
+html.ptech-v19 body.ptech-home-exact-v193.light-mode .desktop-main {
+  background:radial-gradient(ellipse 690px 440px at 100% 1%,rgba(236,169,118,.17),transparent 73%),
+     radial-gradient(ellipse 690px 430px at 8% 98%,rgba(242,211,186,.22),transparent 72%),
+     linear-gradient(150deg,var(--g-bg-top),var(--g-bg) 64%,var(--page-bottom))!important;
+}
+/* Brand and sidebar follow existing resizable PTech navigation. */
+@media(min-width:1101px){
+ html.ptech-v19 body.ptech-home-exact-v193 .desktop-sidebar {padding-top:26px!important;padding-left:17px!important;padding-right:17px!important}
+ html.ptech-v19 body.ptech-home-exact-v193 .desktop-sidebar .sidebar-nav {margin-top:37px!important;gap:7px!important}
+ html.ptech-v19 body.ptech-home-exact-v193 .desktop-sidebar .sidebar-link {min-height:48px!important;padding:11px 16px!important;border-radius:12px!important;font-size:15px!important}
+ html.ptech-v19 body.ptech-home-exact-v193 .desktop-sidebar .sidebar-link.active {
+    background:rgba(204,145,108,.22)!important;box-shadow:inset 0 0 18px rgba(210,148,116,.055)!important;
+ }
+ html.ptech-v19 body.ptech-home-exact-v193 .desktop-sidebar .sidebar-link.active::before {height:68%!important;border-radius:12px!important}
+ html.ptech-v19 body.ptech-home-exact-v193.light-mode .desktop-sidebar .sidebar-link.active {background:rgba(239,205,178,.43)!important}
+}
+/* Screen composition matching the approved concept. */
+html.ptech-v19 body.ptech-home-exact-v193 .pe-frame {
+  color:var(--pe-ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  width:100%;max-width:1600px;margin:0 auto;isolation:isolate;
+}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-hero {
+  position:relative;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;
+  min-height:131px;margin:0!important;padding:0!important;
+}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-overline {
+  margin:1px 0 11px!important;color:var(--pe-copper)!important;font-size:12px!important;
+  font-weight:850;letter-spacing:.19em!important;line-height:1.1!important;
+}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-hero h1 {
+  margin:0 0 9px!important;color:var(--pe-ink)!important;font-size:clamp(32px,3vw,45px)!important;
+  letter-spacing:-.045em!important;line-height:1.08!important;font-weight:850!important;
+}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-exclamation {color:var(--pe-copper)!important}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-subheading {margin:0!important;font-size:14px!important;line-height:1.5!important;color:var(--pe-secondary)!important}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-hero-controls {
+  display:flex;gap:10px;align-items:center;white-space:nowrap;opacity:.58;transition:opacity .2s;padding-top:5px;
+}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-hero-controls:hover,
+html.ptech-v19 body.ptech-home-exact-v193 .pe-hero-controls:focus-within {opacity:1}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-text-button {
+  border:1px solid var(--pe-line)!important;background:transparent!important;color:var(--pe-secondary)!important;
+  border-radius:10px!important;font-size:11px!important;min-height:31px!important;padding:5px 10px!important;
+  display:inline-flex;align-items:center;gap:6px;cursor:pointer;box-shadow:none!important;white-space:nowrap;
+}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-text-button svg {width:13px;height:13px}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-panels {
+  display:grid!important;grid-template-columns:minmax(0,1.455fr) minmax(0,1fr)!important;
+  grid-template-rows:286px 141px 190px!important;gap:18px 22px!important;
+  width:100%;align-items:stretch;
+}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-panel {
+  min-width:0;min-height:0;position:relative;display:flex!important;flex-direction:column!important;
+  border:1px solid var(--pe-card-edge)!important;border-radius:20px!important;
+  padding:20px 24px 19px!important;background:var(--pe-card)!important;
+  color:var(--pe-ink)!important;box-shadow:var(--pe-panel-shadow)!important;
+  overflow:hidden!important;backdrop-filter:blur(12px) saturate(1.09);-webkit-backdrop-filter:blur(12px) saturate(1.09);
+}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-panel::before {
+  content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background:linear-gradient(155deg,rgba(255,255,255,.105),transparent 36%,transparent 75%,rgba(212,153,118,.11)),
+     radial-gradient(ellipse 200px 66px at 98% 0%,rgba(237,170,129,.18),transparent 80%);
+  opacity:.72;
+}
+html.ptech-v19 body.ptech-home-exact-v193.light-mode .pe-panel::before {opacity:.55}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-panel > * {position:relative;z-index:1}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-projects {grid-area:1/1/2/2!important;padding:19px 30px 20px!important}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-tasks {grid-area:1/2/2/3!important;padding:19px 29px 18px!important}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-actions {grid-area:2/1/3/3!important;padding:14px 23px 16px!important}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-messages {grid-area:3/1/4/2!important;padding:15px 23px 19px!important}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-documents {grid-area:3/2/4/3!important;padding:15px 23px 19px!important}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-panel-heading {
+  display:flex;align-items:center;gap:13px;min-height:33px;margin:0 0 16px!important;
+  padding-bottom:12px!important;border-bottom:1px solid var(--pe-line);flex:none;
+}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-actions .pe-panel-heading {margin:0 0 9px!important;padding:0!important;border:0;min-height:23px}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-messages .pe-panel-heading,
+html.ptech-v19 body.ptech-home-exact-v193 .pe-documents .pe-panel-heading {margin:0 0 9px!important;padding:0!important;border:0;min-height:28px}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-panel-heading h2 {
+  margin:0!important;color:var(--pe-copper)!important;font-size:13px!important;
+  font-weight:850!important;letter-spacing:.145em!important;line-height:1.15!important;
+}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-heading-icon {display:inline-flex;align-items:center;color:var(--pe-copper);width:24px;height:24px;flex:0 0 24px}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-heading-icon svg {width:22px;height:22px;stroke-width:1.9}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-project-picker {margin-left:auto;display:flex;gap:8px;align-items:center;font-size:12px;color:var(--pe-secondary)}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-project-picker[hidden] {display:none!important}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-project-picker button {padding:1px 8px;border-radius:7px;border:1px solid var(--pe-line);background:transparent;color:var(--pe-ink);cursor:pointer}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-project-body {display:flex;flex:1;flex-direction:column;min-width:0;min-height:0;justify-content:space-between}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-project-body[hidden] {display:none!important}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-project-main {display:flex;align-items:center;gap:14px;min-width:0;padding:0 0 6px}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-project-symbol {
+  display:flex;align-items:center;justify-content:center;flex:0 0 61px;width:61px;height:61px;
+  border-radius:14px;background:var(--pe-icon-bg);color:var(--pe-copper);box-shadow:inset 0 1px 0 rgba(255,255,255,.19);
+}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-project-symbol svg {width:30px;height:30px}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-project-identity {display:flex;flex-direction:column;gap:6px;min-width:0;margin-right:auto}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-project-identity strong {font-size:clamp(19px,1.6vw,26px)!important;line-height:1.08;letter-spacing:-.03em;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;color:var(--pe-ink)}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-project-identity span {font-size:12px;color:var(--pe-secondary);letter-spacing:.22em;font-weight:750;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-pill {display:inline-flex;flex:none;align-items:center;justify-content:center;white-space:nowrap;border-radius:22px;padding:7px 13px;min-height:32px;font-size:12px;font-weight:730;color:var(--pe-ink);background:rgba(116,129,155,.19);border:1px solid var(--pe-line)}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-status-positive {background:rgba(28,146,93,.22);border-color:rgba(64,186,124,.28)}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-status-positive::before {content:"";width:9px;height:9px;background:#45cb8b;border-radius:50%;margin-right:8px;box-shadow:0 0 0 3px rgba(67,199,133,.07)}
+html.ptech-v19 body.ptech-home-exact-v193.light-mode .pe-status-positive {background:rgba(40,196,112,.12);color:#1b6040}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-icon-link {flex:0 0 37px;height:37px;border:1px solid var(--pe-line);background:rgba(140,155,180,.20);border-radius:11px;display:flex;align-items:center;justify-content:center;color:var(--pe-ink)!important;margin-left:4px;text-decoration:none}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-icon-link svg {width:21px;height:21px}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-progress {display:flex;flex-direction:column;gap:9px;margin-top:auto;margin-bottom:13px}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-progress-label {font-size:13px;color:var(--pe-ink);font-weight:450}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-progress-row {display:flex;align-items:center;gap:14px}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-progress-track {background:rgba(145,157,174,.30);border:1px solid var(--pe-line);height:17px;flex:1;border-radius:999px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(4,12,24,.1)}
+html.ptech-v19 body.ptech-home-exact-v193.light-mode .pe-progress-track {background:#e5d9d3}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-progress-track span {height:100%;display:block;background:linear-gradient(90deg,#b77853,#e0ad87);border-radius:inherit;transition:width .25s ease}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-progress-row > strong {font-size:15px;font-weight:850;min-width:35px;text-align:right}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-project-meta {display:flex;align-items:center;border-top:1px solid var(--pe-line);padding-top:14px;gap:22px;font-size:12px;color:var(--pe-secondary);white-space:nowrap}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-project-meta > span {display:inline-flex;align-items:center;min-width:0;gap:9px}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-project-meta > span + span {padding-left:22px;border-left:1px solid var(--pe-line)}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-project-meta svg {width:18px;height:18px;flex:none}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-project-meta strong {color:var(--pe-ink);font-weight:750}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-unavailable {display:flex;align-items:center;justify-content:center;flex:1;text-align:center;font-size:14px;color:var(--pe-secondary)}
+/* Centered tasks empty state with a compact branded check illustration. */
+html.ptech-v19 body.ptech-home-exact-v193 .pe-task-center {display:flex;flex:1;align-items:center;justify-content:center;flex-direction:column;text-align:center;gap:9px;padding:0 0 1px;min-height:0}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-task-art {width:83px;height:73px;display:flex;align-items:center;justify-content:center;position:relative;margin-bottom:2px}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-task-art::before {content:"";position:absolute;width:63px;height:64px;background:rgba(155,118,112,.30);border:1px solid var(--pe-line);border-radius:15px;transform:rotate(-11deg) translate(-8px,3px)}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-task-art svg {position:relative;width:72px;height:72px;padding:17px;background:var(--pe-accent-button);color:#fff;border:1px solid rgba(247,189,152,.48);box-shadow:0 11px 19px rgba(10,17,29,.15),inset 0 1px 0 rgba(255,255,255,.28);border-radius:15px;stroke-width:2.3}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-task-center > strong {font-size:18px;font-weight:850;line-height:1.2;color:var(--pe-ink)}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-task-center > p {font-size:13px;line-height:1.4;color:var(--pe-secondary);margin:0!important;max-width:95%}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-primary-action {margin-top:9px;min-height:42px;display:inline-flex;gap:9px;align-items:center;justify-content:center;padding:9px 22px;border-radius:11px;background:var(--pe-accent-button);color:#fffaf6!important;font-size:13px;font-weight:800;text-decoration:none!important;border:1px solid rgba(225,163,121,.40);box-shadow:0 8px 14px rgba(20,18,22,.12)}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-primary-action svg {width:18px;height:18px}
+/* Quick actions are one equal-width horizontal row in screenshot mode. */
+html.ptech-v19 body.ptech-home-exact-v193 .pe-actions-list {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;min-height:0;flex:1;align-items:stretch}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-action {display:flex;align-items:center;text-align:left;gap:12px;min-width:0;padding:9px 12px;cursor:pointer;border:1px solid var(--pe-mini-edge);background:var(--pe-mini);color:var(--pe-ink);border-radius:13px;text-decoration:none!important;box-shadow:var(--pe-mini-shadow);transition:background .18s,border-color .18s,transform .18s}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-action:not(:disabled):hover {transform:translateY(-2px);border-color:var(--pe-card-edge)}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-action:disabled {opacity:.48;cursor:not-allowed;filter:grayscale(.18)}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-action-symbol {width:51px;height:51px;flex:0 0 51px;display:flex;align-items:center;justify-content:center;border-radius:11px;background:var(--pe-icon-bg);color:var(--pe-copper)}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-action-symbol svg {width:27px;height:27px}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-action-copy {display:flex;flex-direction:column;gap:5px;min-width:0;flex:1}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-action-copy strong {font-size:13px;line-height:1.18;font-weight:850;color:var(--pe-ink)}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-action-copy small {font-size:11px;line-height:1.3;color:var(--pe-secondary);font-weight:450}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-chevron {font-size:23px;color:var(--pe-secondary);line-height:1;flex:none}
+/* Message and document preview each have one real first item + footer link. */
+html.ptech-v19 body.ptech-home-exact-v193 .pe-recent-item {display:flex;align-items:center;min-height:73px;gap:13px;min-width:0;background:var(--pe-mini);border:1px solid var(--pe-mini-edge);border-radius:13px;padding:10px 13px;box-shadow:var(--pe-mini-shadow);color:var(--pe-ink)!important;text-decoration:none!important}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-recent-symbol {width:44px;height:44px;flex:0 0 44px;border-radius:50%;background:var(--pe-icon-bg);color:var(--pe-copper);display:inline-flex;align-items:center;justify-content:center;position:relative}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-recent-symbol svg {width:26px;height:26px}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-recent-copy {min-width:0;flex:1;display:flex;flex-direction:column;gap:4px}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-recent-copy strong {color:var(--pe-ink);font-size:14px;line-height:1.2;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-recent-copy small {font-size:12px;color:var(--pe-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.25}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-recent-item time {font-size:11px;color:var(--pe-secondary);white-space:nowrap;align-self:flex-start;margin-top:6px}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-unread-dot {height:8px;width:8px;flex:none;background:var(--pe-copper);border-radius:50%;margin-left:-5px}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-recent-symbol.pe-file {border-radius:10px;background:linear-gradient(160deg,rgba(208,145,111,.48),rgba(159,96,71,.3));}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-file svg {width:30px;height:33px;opacity:.95}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-file em {position:absolute;bottom:2px;left:8px;background:#ca5f54;color:#fff;font-weight:900;font-style:normal;font-size:8px;padding:1px 3px;border-radius:3px}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-download-symbol {flex:none;border:1px solid var(--pe-line);border-radius:10px;background:rgba(137,156,177,.15);width:42px;height:42px;display:flex;align-items:center;justify-content:center;color:var(--pe-copper)}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-download-symbol svg {width:23px;height:23px}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-panel-footer {border-top:1px solid var(--pe-line);padding:11px 1px 0;margin-top:auto;display:flex;align-items:center;gap:11px;text-decoration:none!important;color:var(--pe-copper)!important;font-size:13px;font-weight:850}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-panel-footer > span {font-size:20px;line-height:1}
+html.ptech-v19 body.ptech-home-exact-v193 .pe-panel :is(button,a):focus-visible,
+html.ptech-v19 body.ptech-home-exact-v193 .pe-text-button:focus-visible {outline:2px solid var(--pe-copper)!important;outline-offset:3px!important}
+/* Better readability on laptops while keeping the reference composition. */
+@media(min-width:1181px) and (max-width:1500px){
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-panels {gap:16px;grid-template-rows:286px 140px 186px!important}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-projects {padding-left:23px!important;padding-right:23px!important}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-project-main {gap:9px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-project-symbol {width:53px;height:53px;flex-basis:53px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-pill {padding:6px 9px;font-size:11px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-project-meta {gap:9px;font-size:11px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-project-meta > span + span {padding-left:10px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-action {padding:8px;gap:8px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-action-symbol {width:43px;height:43px;flex-basis:43px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-action-copy strong {font-size:12px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-action-copy small {font-size:10px}
+}
+@media(max-width:1180px) and (min-width:751px){
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-panels {grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:auto!important;gap:14px!important}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-projects {grid-area:auto!important;grid-column:1/-1!important;min-height:265px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-tasks {grid-area:auto!important;grid-column:1/-1!important;min-height:260px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-actions {grid-area:auto!important;grid-column:1/-1!important;min-height:195px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-actions-list {grid-template-columns:repeat(2,minmax(0,1fr))}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-messages {grid-area:auto!important;grid-column:1!important;min-height:185px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-documents {grid-area:auto!important;grid-column:2!important;min-height:185px}
+}
+@media(max-width:750px){
+ html.ptech-v19 body.ptech-home-exact-v193 .dashboard-content {padding:19px 14px 110px!important}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-hero {min-height:136px;display:block}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-hero h1 {font-size:clamp(27px,7.4vw,37px)!important}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-overline {font-size:10px!important;margin-bottom:8px!important}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-subheading {font-size:12px!important}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-hero-controls {position:absolute;top:auto;bottom:11px;left:0;padding:0;opacity:.85}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-panels {display:flex!important;flex-direction:column;gap:13px!important}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-panel {grid-area:auto!important;width:100%;height:auto;min-height:0;padding:17px 17px 18px!important}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-projects {min-height:279px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-tasks {min-height:256px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-actions {min-height:0}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-messages,.pe-documents {min-height:187px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-project-main {flex-wrap:wrap;gap:9px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-project-symbol {width:47px;height:47px;flex-basis:47px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-project-identity strong {font-size:19px!important}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-pill {min-height:27px;font-size:10px;padding:5px 8px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-icon-link {width:32px;height:32px;flex-basis:32px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-progress {margin-top:13px;margin-bottom:11px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-project-meta {flex-wrap:wrap;gap:8px;font-size:11px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-project-meta > span + span {padding-left:0;border-left:0}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-actions-list {grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-action {flex-direction:column;align-items:flex-start;gap:7px;padding:11px;min-height:127px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-action-symbol {width:39px;height:39px;flex-basis:39px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-action-symbol svg {width:22px;height:22px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-chevron {position:absolute;right:8px;top:13px}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-action-copy small {font-size:10px;line-height:1.3}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-recent-copy small {white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-recent-item time {font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){
+ html.ptech-v19 body.ptech-home-exact-v193 .pe-frame * {transition:none!important;animation:none!important}
+}
