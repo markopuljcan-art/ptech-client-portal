@@ -97,17 +97,17 @@
       if(bar&&!document.getElementById('ptechFirstGlassPreset')) {
         const b=document.createElement('button');
         b.id='ptechFirstGlassPreset';b.type='button';
-        b.textContent='▦ Novi raspored';
-        b.title='Primijeni V18 raspored kockica, bez brisanja osobnih zadataka';
+        b.textContent='▦ Primijeni dizajn sa slike';
+        b.title='Primijeni V19.1 raspored i sačuvaj prethodni raspored za povratak';
         b.addEventListener('click',()=>{
           if(typeof window.PTechApplyFirstGlassLayout!=='function'){
             alert('Uređivanje rasporeda još se učitava.');return;
           }
-          const okay=confirm('Primijeniti novi V18 raspored kockica? Ručni položaji i veličine kartica bit će promijenjeni, ali osobni zadaci i prečaci ostaju.');
+          const okay=confirm('Primijeniti dizajn sa slike? Promijenit će se raspored i veličine kartica, a prethodni raspored bit će spremljen za povratak. Osobni zadaci, prečaci i podaci ostaju.');
           if(!okay)return;
           if(window.PTechApplyFirstGlassLayout()) {
             b.textContent='✓ Raspored primijenjen';
-            setTimeout(()=>{b.textContent='▦ Novi raspored'},2600);
+            setTimeout(()=>{b.textContent='▦ Primijeni dizajn sa slike'},2600);
           } else alert('Prijavi se u portal i pokušaj ponovno kada se Dashboard učita.');
         });
         bar.prepend(b);

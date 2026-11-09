@@ -1,4 +1,6 @@
-/* PTech Digital Client Portal V16.11 - precise placement into empty grid cells.
+/* PTech Digital Client Portal V19.1 - safe reference-layout upgrade on V16.11 grid.
+ * Existing drag/resize/data code remains unchanged.
+ * Precise placement into empty grid cells.
  * Safe: project-related operations stay in original script.js; Supabase tasks
  * are read only through existing RLS. Layout and personal notes are local to
  * the signed-in user's browser and are never stored in Supabase.
@@ -71,7 +73,7 @@
     hidden:[...hubIds],
     dims:{...defaultDims},
     actionOrder:[...actionIds],hiddenActions:['projects','tasks','documents','profile'],
-    customTasks:[],gridPreset:12,gridRows:12,placements:{}
+    customTasks:[],gridPreset:12,gridRows:12,placements:{},referenceApplied:true
   };
   let currentUserId=null,api=null,editing=false,state=null;
   let tasks=[],taskError=false,taskLoading=false;
@@ -94,14 +96,16 @@
     && typeof t.title==='string' && t.title.trim() && t.title.length<=100;
   const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
   const storageKey=()=>currentUserId?`ptech_v16_dashboard_layout_${currentUserId}`:null;
+  const backupKey=()=>currentUserId?`ptech_v191_before_reference_${currentUserId}`:null;
   const escapeSelector=val=>CSS.escape?CSS.escape(val):val.replace(/[^a-zA-Z0-9-]/g,'');
   function cloneDefaults(){return {
     order:[...defaults.order],hidden:[...defaults.hidden],dims:cloneDims(),
-    actionOrder:[...defaults.actionOrder],hiddenActions:[...defaults.hiddenActions],customTasks:[],gridPreset:12,gridRows:12,placements:{}
+    actionOrder:[...defaults.actionOrder],hiddenActions:[...defaults.hiddenActions],customTasks:[],gridPreset:12,gridRows:12,placements:{},referenceApplied:true
   };}
   function normalize(raw){
     if(!raw||typeof raw!=='object')return cloneDefaults();
     const out=cloneDefaults();
+    out.referenceApplied=raw.referenceApplied===true;
     // Existing V16.7 layouts are automatically migrated (gridRows = gridPreset).
     const readGrid=(v,fallback)=>Number.isFinite(Number(v))&&String(v).trim()!==''?
       clamp(Math.round(Number(v)),6,60):fallback;
@@ -531,7 +535,7 @@
       if(score<bestScore){bestScore=score;cols=candidate;}
     }
     // Reference-layout compact strip: four genuinely usable shortcuts in one row.
-    if(document.documentElement.classList.contains('ptech-v19') && !editing && !inZoom && width>=690 && height>=122) cols=Math.min(4,n||1);
+    if(document.documentElement.classList.contains('ptech-v19') && !editing && !inZoom && width>=670 && height>=112) cols=Math.min(4,n||1);
     let rows=Math.ceil(n/cols);
     // Never crop the last row. Extra actions remain available through 'Još akcija'.
     const minRowHeight=editing?72:61;
@@ -1082,6 +1086,7 @@
   }
   function render(animate=false){
     if(!state)return;
+    grid.dataset.referenceApplied=state.referenceApplied?'true':'false';
     const before=animate?new Map([...widgets].filter(([,n])=>!n.hidden).map(([id,n])=>[id,n.getBoundingClientRect()])):null;
     for(const [id,widget] of widgets){
       widget.style.order=String(state.order.indexOf(id));
@@ -1146,17 +1151,48 @@
     if(!window.confirm('Želiš vratiti zadani raspored? Osobni zadaci i njihove oznake bit će uklonjeni iz ovog preglednika.'))return;
     state=cloneDefaults();loadPersonalWidgets();pickerOpen=false;render(true);save();
   });
-  // V18.2: user-initiated design preset; never runs automatically on saved layouts.
-  // Keeps personal tasks, chosen shortcuts, hidden tiles and Supabase state intact.
+  // V19.1: preserve each user's old V16 layout before a voluntary layout upgrade.
+  // Do NOT automatically overwrite custom dashboards when this ships to main.
+  // Notes, shortcuts and Supabase rows are never reset by these operations.
   window.PTechApplyFirstGlassLayout = () => {
     if (!currentUserId || !state || drag || resize || zoom) return false;
     if (editing) setEdit(false);
+    try {
+      if(backupKey() && !localStorage.getItem(backupKey()))
+        localStorage.setItem(backupKey(),JSON.stringify(state));
+    } catch(e) { console.warn('[V19.1] Backup local layout failed',e); return false; }
     const coreOrder=['projects','tasks','actions','messages','documents'];
     state.order=[...coreOrder,...state.order.filter(id=>!coreOrder.includes(id))];
-    for (const id of coreOrder) state.dims[id]={...defaultDims[id]};
-    state.placements={}; // This is explicit user choice, not an automatic migration.
+    state.hidden=state.hidden.filter(id=>!coreOrder.includes(id));
+    for(const id of coreOrder)state.dims[id]={...defaultDims[id]};
+    state.gridPreset=12;state.gridRows=12;
+    state.placements={};
+    state.referenceApplied=true;
     render(true);save();
     return true;
+  };
+  window.PTechRestorePreviousLayout = () => {
+    if(!currentUserId||!state||drag||resize||zoom||!backupKey())return false;
+    let prior;
+    try{prior=JSON.parse(localStorage.getItem(backupKey())||'null');}catch(_){return false;}
+    if(!prior||typeof prior!=='object')return false;
+    if(editing)setEdit(false);
+    const old=normalize(prior);
+    // Restore layout-related fields only, keeping newly created personal tasks
+    // and action settings (which could have changed since the saved backup).
+    state.gridPreset=old.gridPreset;state.gridRows=old.gridRows;
+    state.placements=old.placements;
+    state.dims={...state.dims,...old.dims};
+    state.hidden=old.hidden.filter(id=>widgets.has(id));
+    state.order=[...old.order.filter(id=>widgets.has(id)),
+      ...state.order.filter(id=>!old.order.includes(id))];
+    state.referenceApplied=false;
+    render(true);save();
+    try{localStorage.removeItem(backupKey());}catch(_){}
+    return true;
+  };
+  window.PTechHasPreviousLayout = () => {
+    try{return Boolean(backupKey()&&localStorage.getItem(backupKey()));}catch(_){return false;}
   };
   window.addEventListener('resize',()=>{if(state){applyGridPreset();for(const [id,widget]of widgets)renderSizes(id,widget);updateExplicitPositions();scheduleDensities();}},{passive:true});
   const nameLabel=document.getElementById('userTop');

@@ -85,12 +85,40 @@
     const bar=document.querySelector('.ptech-layout-bar');
     const edit=document.getElementById('ptechLayoutEdit');
     const preset=document.getElementById('ptechFirstGlassPreset');
-    if(preset){preset.textContent='▦ Raspored sa slike';preset.title='Primijeni raspored Projekti + Zadaci / Brze akcije / Poruke + Dokumenti';}
+    if(preset){preset.textContent='▦ Primijeni dizajn sa slike';preset.title='Složiti Projekti + Zadaci / Brze akcije / Poruke + Dokumenti i napraviti sigurnosnu kopiju prethodnog rasporeda';}
     if(edit){edit.textContent='✦ Uredi dashboard';edit.title='Pomakni, dodaj, povećaj ili smanji kockice';}
     if(bar && edit){
       const watcher=new MutationObserver(()=>bar.classList.toggle('v19-editor-open',document.body.classList.contains('ptech-layout-editing')));
       watcher.observe(document.body,{attributes:true,attributeFilter:['class']});
       bar.classList.toggle('v19-editor-open',document.body.classList.contains('ptech-layout-editing'));
+    }
+    // Make the optional change obvious for users with saved V16 layouts.
+    // A new installation uses the reference layout immediately; existing
+    // personalized dashboards remain intact until the user chooses to switch.
+    if(bar && preset && !document.getElementById('v191LayoutNotice')){
+      const note=document.createElement('div');
+      note.id='v191LayoutNotice';note.className='v191-layout-notice';
+      note.setAttribute('role','status');
+      const copy=document.createElement('span');
+      copy.innerHTML='<strong>Novi raspored V19.1</strong><small>Projekti + Zadaci gore, četiri Brze akcije u jednom redu, Poruke + Dokumenti ispod. Tvoj postojeći raspored može se vratiti.</small>';
+      const restore=document.createElement('button');
+      restore.type='button';restore.className='v191-restore-button';
+      restore.textContent='↶ Vrati prethodni raspored';
+      restore.addEventListener('click',()=>{
+        if(typeof window.PTechRestorePreviousLayout==='function' && window.PTechRestorePreviousLayout())updateNotice();
+      });
+      note.append(copy,restore);
+      bar.insertAdjacentElement('afterend',note);
+      const updateNotice=()=>{
+        const on=grid.dataset.referenceApplied==='true';
+        note.classList.toggle('v191-reference-applied',on);
+        copy.hidden=on;
+        restore.hidden=!(window.PTechHasPreviousLayout?.());
+      };
+      const layoutObserver=new MutationObserver(updateNotice);
+      layoutObserver.observe(grid,{attributes:true,attributeFilter:['data-reference-applied']});
+      preset.addEventListener('click',()=>setTimeout(updateNotice,0));
+      updateNotice();
     }
     addOverviewLinks();updateProjectChips();updateTaskEmpty();adjustViews();
     const ro=typeof ResizeObserver==='function'?new ResizeObserver(()=>requestAnimationFrame(adjustViews)):null;
