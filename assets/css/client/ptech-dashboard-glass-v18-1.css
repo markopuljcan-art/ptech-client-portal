@@ -1,0 +1,183 @@
+/* PTech Digital Client Portal V18.1
+   Refined FIRST glass design for V16 dashboard. Additive only.
+   IMPORTANT: V16 owns positions, drag/drop, resizing, visibility and all data. */
+html.ptech-glass-v18 body.ptech-dashboard-v16 {
+  --p181-edge: rgba(224,178,147,.33);
+  --p181-softedge: rgba(224,178,147,.17);
+  --p181-elevation: 0 17px 40px rgba(5,12,25,.22),inset 0 1px 0 rgba(255,255,255,.07);
+  --p181-surface: linear-gradient(142deg,rgba(54,70,94,.93) 0%,rgba(43,57,80,.92) 54%,rgba(34,47,69,.96) 100%);
+  --p181-inset: linear-gradient(144deg,rgba(95,113,139,.21),rgba(82,99,125,.13));
+  --p181-title: #fff8f2;
+  --p181-subtle: #c8d1df;
+  --p181-highlight: #e5b08d;
+  --p181-icon: rgba(216,157,121,.23);
+  --p181-copper: #c48b68;
+  --p181-buttontext: #fffdf9;
+}
+html.ptech-glass-v18[data-theme="light"] body.ptech-dashboard-v16,
+html.ptech-glass-v18 body.ptech-dashboard-v16.light-mode {
+  --p181-edge: rgba(177,118,82,.28);
+  --p181-softedge: rgba(177,118,82,.17);
+  --p181-elevation: 0 14px 30px rgba(116,75,51,.095),inset 0 1px 0 rgba(255,255,255,.88);
+  --p181-surface: linear-gradient(142deg,rgba(255,252,248,.97) 0%,rgba(252,245,238,.97) 57%,rgba(244,232,222,.92) 100%);
+  --p181-inset: linear-gradient(146deg,rgba(255,255,255,.78),rgba(240,224,211,.57));
+  --p181-title: #243046;
+  --p181-subtle: #685e5b;
+  --p181-highlight: #985f40;
+  --p181-icon: rgba(189,125,86,.17);
+  --p181-copper: #945b3f;
+  --p181-buttontext: #fffdf9;
+}
+/* Modern welcome hero, no fake data and no banner that blocks the widgets. */
+html.ptech-glass-v18 body.ptech-dashboard-v16 .dashboard-content {
+  width:100%;max-width:1650px;
+  padding:clamp(23px,2.6vw,39px) clamp(18px,2.5vw,42px) 35px;
+}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .welcome {
+  margin:0 0 26px;
+  padding:0 0 5px;
+}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .p181-eyebrow {
+  display:block;margin:0 0 10px;color:var(--p181-highlight);
+  font-size:11px;font-weight:800;letter-spacing:.20em;line-height:1.5;
+}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .welcome h2 {
+  margin:0 0 9px;
+  font-size:clamp(30px,3.1vw,46px);font-weight:750;
+  line-height:1.18;letter-spacing:-.055em;color:var(--p181-title);
+}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .welcome h2 strong {font-weight:900;color:var(--p181-title)}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .welcome h2::after {content:none}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .welcome p {
+  color:var(--p181-subtle);font-size:clamp(13px,1.04vw,15px);line-height:1.65;
+}
+/* Editor bar works unchanged. It is deliberately visually subdued until editing. */
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-layout-bar {
+  background:var(--p181-inset)!important;
+  border:1px solid var(--p181-softedge)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06)!important;
+  border-radius:16px!important;
+  padding:12px 17px!important;margin-bottom:15px!important;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-layout-bar-copy strong {color:var(--p181-title);font-size:14px;font-weight:800}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-layout-bar-copy span {color:var(--p181-subtle);font-size:12px}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-layout-button:not(.ptech-layout-button-secondary) {
+  color:var(--p181-buttontext)!important;
+  border-color:transparent!important;
+  background:linear-gradient(135deg,#bd8664,#965e41)!important;
+  box-shadow:0 5px 14px rgba(99,50,29,.12);border-radius:11px;
+}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-layout-button-secondary {
+  border:1px solid var(--p181-softedge);background:var(--p181-inset);color:var(--p181-title);
+}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-layout-button:focus-visible,
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-widget-tool:focus-visible {
+  outline:2px solid var(--p181-highlight);outline-offset:3px;
+}
+/* Main V16 tiles: depth, thin bronze edge, muted layered reflection. 
+   Do NOT set display, grid-column, grid-row, height, overflow or content structure. */
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) > .ptech-widget {
+  background:var(--p181-surface)!important;
+  border:1px solid var(--p181-edge)!important;
+  box-shadow:var(--p181-elevation)!important;
+  border-radius:21px!important;
+  color:var(--p181-title);
+  backdrop-filter:blur(13px) saturate(1.08);
+  -webkit-backdrop-filter:blur(13px) saturate(1.08);
+}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-widget .ptech-tile-inner {
+  color:var(--p181-title);
+}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) :is(.section-title,.actions-header h2,.ptech-tasks-head h2,.overview-panel-header h2,.overview-panel-title) {
+  color:var(--p181-title);font-weight:850;letter-spacing:-.035em;
+}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) :is(.ptech-tasks-eyebrow,.overview-panel-eyebrow) {
+  color:var(--p181-highlight);
+}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) :is(.ptech-tasks-head p,.overview-panel-header p,.ptech-smart-footer,.ptech-smart-detail) {
+  color:var(--p181-subtle);
+}
+/* Native project card, keeps the actual Supabase-provided values. */
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"] .project-card {
+  background:var(--p181-inset)!important;
+  border:1px solid var(--p181-softedge)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.06)!important;
+  border-radius:18px!important;
+}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"] .project-icon {
+  background:linear-gradient(140deg,#eac2a5,#bd8865)!important;
+  color:#754329;
+}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"] .project-main h3 {
+  color:var(--p181-title);letter-spacing:-.045em;
+}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"] :is(.project-stat,.project-info,.project-stat-item,.project-stats > *) {
+  background:var(--p181-inset)!important;
+  border-color:var(--p181-softedge)!important;
+  border-radius:14px;
+}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) .project-counter {
+  background:var(--p181-inset)!important;border-color:var(--p181-edge)!important;
+  color:var(--p181-highlight);box-shadow:none;
+}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"][data-project-content="summary"] .ptech-smart-preview {
+  background:var(--p181-inset)!important;border-color:var(--p181-softedge)!important;
+}
+/* Actions: adapt to existing V16.9 fit logic. No fixed heights or forcing 4 columns. */
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"] .ptech-action-slot > .action-card {
+  background:var(--p181-inset)!important;
+  border:1px solid var(--p181-softedge)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.055)!important;
+  border-radius:14px!important;
+}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"] .action-card:not([aria-disabled="true"]):hover {
+  border-color:var(--p181-edge)!important;
+}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"] .action-icon {
+  background:var(--p181-icon)!important;color:var(--p181-highlight)!important;
+}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"] .action-card strong {color:var(--p181-title)}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"] .action-card p {color:var(--p181-subtle)}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="actions"] .action-button {
+  background:linear-gradient(135deg,#c58e6a,#9b6346)!important;
+  color:#fffaf5!important;
+  border-radius:10px!important;
+}
+/* Tasks, messages, docs, profile: stylistically compatible without redefining their data widgets. */
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) :is(.ptech-smart-preview,.overview-row,.ptech-task-preview-row,.ptech-hub-card,.ptech-tasks-count,.ptech-personal-symbol) {
+  border-color:var(--p181-softedge);
+}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-smart-preview {
+  background:var(--p181-inset);border-radius:14px;
+}
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) .ptech-task-preview-row,
+html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) .overview-row {
+  background:var(--p181-inset);border:1px solid var(--p181-softedge);border-radius:13px;
+}
+/* Editor controls must remain above cards; keep drag/drop and resize affordances visible. */
+html.ptech-glass-v18 body.ptech-dashboard-v16.ptech-layout-editing .ptech-widget-controls .ptech-widget-tool {
+  background:var(--p181-inset);border-color:var(--p181-edge);color:var(--p181-title);
+}
+html.ptech-glass-v18 body.ptech-dashboard-v16.ptech-layout-editing .ptech-widget-controls .ptech-widget-move,
+html.ptech-glass-v18 body.ptech-dashboard-v16.ptech-layout-editing .ptech-widget-controls .ptech-widget-grow {color:var(--p181-highlight)}
+html.ptech-glass-v18 body.ptech-dashboard-v16.ptech-layout-editing .ptech-widget-resize {
+  background:linear-gradient(145deg,#b47b59,#87553d);border-color:var(--p181-edge);
+}
+/* Readable light mode: no light-on-light badges and no orange panel wash. */
+html.ptech-glass-v18[data-theme="light"] body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) :is(.ptech-smart-label,.ptech-smart-main,.ptech-tasks-head,.ptech-task-preview-row strong),
+html.ptech-glass-v18 body.ptech-dashboard-v16.light-mode .ptech-dashboard-grid:not(.ptech-zoom-grid) :is(.ptech-smart-label,.ptech-smart-main,.ptech-tasks-head,.ptech-task-preview-row strong) {color:#273044}
+/* Narrow screens: keep V16's two-column mobile grid and original mobile dock. */
+@media(max-width:1100px){
+  html.ptech-glass-v18 body.ptech-dashboard-v16 .dashboard-content {padding:22px 18px 90px}
+}
+@media(max-width:720px){
+  html.ptech-glass-v18 body.ptech-dashboard-v16 .dashboard-content {padding:20px 14px 110px}
+  html.ptech-glass-v18 body.ptech-dashboard-v16 .welcome {margin-bottom:21px}
+  html.ptech-glass-v18 body.ptech-dashboard-v16 .welcome h2 {font-size:clamp(29px,7.2vw,38px)}
+  html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-layout-bar {padding:12px!important}
+  html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-dashboard-grid:not(.ptech-zoom-grid) > .ptech-widget {border-radius:17px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  html.ptech-glass-v18 body.ptech-dashboard-v16 .ptech-layout-button {transition:none!important}
+}

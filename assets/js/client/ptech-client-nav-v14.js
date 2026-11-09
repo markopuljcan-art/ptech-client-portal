@@ -60,6 +60,20 @@
       script.defer = true;
       document.head.appendChild(script);
     }
+    if (file === 'form.html' && !document.querySelector('link[data-p181-dashboard]')) {
+      const update = document.createElement('link');
+      update.rel = 'stylesheet';
+      update.dataset.p181Dashboard = 'true';
+      update.href = './assets/css/client/ptech-dashboard-glass-v18-1.css?v=18.1';
+      document.head.appendChild(update);
+    }
+    if (file === 'form.html' && !document.querySelector('script[data-p181-dashboard]')) {
+      const enhancement = document.createElement('script');
+      enhancement.dataset.p181Dashboard = 'true';
+      enhancement.src = './assets/js/client/ptech-dashboard-glass-v18-1.js?v=18.1';
+      enhancement.async = false;
+      document.head.appendChild(enhancement);
+    }
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', attach, {once: true});
   else attach();
