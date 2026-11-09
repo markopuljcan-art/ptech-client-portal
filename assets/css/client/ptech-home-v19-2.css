@@ -1,0 +1,532 @@
+/* PTech Digital Client Portal - V19.2 HOME - approved dashboard composition.
+   This is a PRESENTATION LAYER ONLY: original V16 controls, Supabase values,
+   user-authored widgets and their event handlers remain in the DOM.
+   All colors come from the portal's existing --g-* light/dark tokens. */
+
+html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192 {
+  --home-gutter:clamp(20px,2.7vw,42px);
+  --home-corner:19px;
+  --home-separator:var(--g-border-subtle);
+  --home-panel:linear-gradient(146deg,var(--g-surface),var(--g-surface-end));
+  --home-tile:linear-gradient(140deg,rgba(115,130,157,.17),rgba(84,103,129,.09));
+  --home-accent-panel:linear-gradient(148deg,rgba(197,140,99,.11),rgba(117,92,79,.045));
+}
+html.ptech-v19 body.ptech-home-v192.light-mode,
+html.ptech-v19[data-theme="light"] body.ptech-home-v192 {
+  --home-tile:linear-gradient(142deg,rgba(255,255,255,.83),rgba(224,199,177,.23));
+  --home-accent-panel:linear-gradient(145deg,rgba(249,233,217,.74),rgba(255,252,247,.26));
+}
+html.ptech-v19 body.ptech-home-v192 .dashboard-content {
+  max-width:1840px!important;
+  padding:22px var(--home-gutter) 30px!important;
+}
+/* Welcome is the same hierarchy as approved reference, with real #userGreeting. */
+html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192 .welcome {
+  margin:0 0 24px!important;padding:0!important;min-height:0!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192 .welcome .ptech-v182-eyebrow {
+  display:block;margin:0 0 9px!important;font-size:11px!important;
+  letter-spacing:.21em!important;font-weight:850!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192 .welcome h2 {
+  margin:0 0 7px!important;font-size:clamp(30px,2.9vw,47px)!important;
+  line-height:1.10!important;letter-spacing:-.045em!important;
+  color:var(--g-text)!important;font-weight:850!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192 .welcome h2::first-letter {color:inherit}
+html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192 .welcome p {
+  font-size:14px!important;line-height:1.5!important;color:var(--g-muted)!important;
+}
+
+/* Viewer mode: the screenshot's project+tasks / actions / messages+docs layout.
+   Editing mode and personal mode fall back to V16 actual grid positions. */
+@media(min-width:1361px) {
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid) {
+    display:grid!important;
+    grid-template-columns:minmax(0,1.43fr) minmax(0,1fr)!important;
+    grid-template-rows:286px 142px 190px!important;
+    grid-auto-rows:minmax(165px,auto)!important;
+    grid-auto-flow:row!important;gap:17px!important;
+    align-items:stretch!important;
+    --ptech-grid-gap:17px;
+    width:100%!important;overflow:visible!important;
+  }
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid) > [data-widget-id="projects"] {
+    grid-area:1/1/2/2!important;grid-column:1!important;grid-row:1!important;
+  }
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid) > [data-widget-id="tasks"] {
+    grid-area:1/2/2/3!important;grid-column:2!important;grid-row:1!important;
+  }
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid) > [data-widget-id="actions"] {
+    grid-area:2/1/3/3!important;grid-column:1/-1!important;grid-row:2!important;
+  }
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid) > [data-widget-id="messages"] {
+    grid-area:3/1/4/2!important;grid-column:1!important;grid-row:3!important;
+  }
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid) > [data-widget-id="documents"] {
+    grid-area:3/2/4/3!important;grid-column:2!important;grid-row:3!important;
+  }
+}
+
+/* 1101 - 1360px: responsive, readable layout; never clip original content. */
+@media(min-width:751px) and (max-width:1360px) {
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid) {
+    display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-template-rows:270px 145px 190px!important;
+    grid-auto-rows:minmax(170px,auto)!important;gap:14px!important;
+    grid-auto-flow:row!important;
+  }
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid > [data-widget-id="projects"] {grid-area:1/1/2/2!important}
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid > [data-widget-id="tasks"] {grid-area:1/2/2/3!important}
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid > [data-widget-id="actions"] {grid-area:2/1/3/3!important}
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid > [data-widget-id="messages"] {grid-area:3/1/4/2!important}
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid > [data-widget-id="documents"] {grid-area:3/2/4/3!important}
+}
+@media(min-width:751px) and (max-width:1150px) {
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid) {
+    grid-template-columns:minmax(0,1fr)!important;
+    grid-template-rows:278px 250px 175px 195px 195px!important;
+  }
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid > [data-widget-id="projects"] {grid-area:1/1/2/2!important}
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid > [data-widget-id="tasks"] {grid-area:2/1/3/2!important}
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid > [data-widget-id="actions"] {grid-area:3/1/4/2!important}
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid > [data-widget-id="messages"] {grid-area:4/1/5/2!important}
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid > [data-widget-id="documents"] {grid-area:5/1/6/2!important}
+}
+@media(max-width:750px) {
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid) {
+    display:flex!important;flex-direction:column!important;gap:12px!important;
+    width:100%!important;
+  }
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid) > .ptech-widget {
+    width:100%!important;min-height:175px!important;height:auto!important;
+    flex:none!important;
+  }
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid > [data-widget-id="projects"] {min-height:290px!important}
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid > [data-widget-id="tasks"] {min-height:245px!important}
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid > [data-widget-id="actions"] {min-height:235px!important}
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid > [data-widget-id="messages"],
+  html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+  #ptechDashboardGrid > [data-widget-id="documents"] {min-height:190px!important}
+}
+
+/* All modes: softer polished glass, pulled straight from current theme tokens. */
+html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192 #ptechDashboardGrid:not(.ptech-zoom-grid)>.ptech-widget {
+  background:linear-gradient(151deg,rgba(255,255,255,.037),transparent 50%),var(--home-panel)!important;
+  border:1px solid var(--g-border)!important;border-radius:var(--home-corner)!important;
+  box-shadow:var(--g-shadow)!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.light-mode #ptechDashboardGrid:not(.ptech-zoom-grid)>.ptech-widget,
+html.ptech-v19[data-theme="light"] body.ptech-home-v192 #ptechDashboardGrid:not(.ptech-zoom-grid)>.ptech-widget {
+  background:linear-gradient(151deg,rgba(255,255,255,.48),transparent 70%),var(--home-panel)!important;
+}
+html.ptech-v19 body.ptech-home-v192 #ptechDashboardGrid:not(.ptech-zoom-grid)>.ptech-widget>.ptech-tile-inner {
+  padding:18px 23px!important;overflow:hidden!important;scrollbar-width:none!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192 .v19-heading-icon {width:21px;height:21px}
+html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192 #ptechDashboardGrid:not(.ptech-zoom-grid)
+:is(.section-title,.actions-header h2,.ptech-tasks-head h2,.overview-panel-header h2) {
+  color:var(--g-accent)!important;font-size:12px!important;
+  font-weight:850!important;letter-spacing:.145em!important;line-height:1.3!important;
+}
+
+/* Hide distractions from the reference viewer, but preserve V16 toolbar in editor. */
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing) .v191-layout-notice {display:none!important}
+html.ptech-v19 body.ptech-home-v192 .ptech-layout-bar:not(.v19-editor-open) {
+  top:auto!important;right:var(--home-gutter)!important;bottom:auto!important;
+  position:absolute!important;margin:0!important;z-index:14;
+  transform:translateY(-51px);padding:0!important;background:none!important;border:0!important;
+}
+html.ptech-v19 body.ptech-home-v192 .ptech-layout-bar:not(.v19-editor-open) .ptech-layout-bar-copy {display:none!important}
+html.ptech-v19 body.ptech-home-v192 .ptech-layout-bar:not(.v19-editor-open) #ptechFirstGlassPreset {display:none!important}
+html.ptech-v19 body.ptech-home-v192 .ptech-layout-bar:not(.v19-editor-open) #ptechLayoutEdit {
+  font-size:11px!important;padding:7px 11px!important;min-height:31px!important;
+  background:var(--g-inset)!important;color:var(--g-muted)!important;
+  border:1px solid var(--g-border-subtle)!important;opacity:.83;
+}
+html.ptech-v19 body.ptech-home-v192 .ptech-layout-bar:not(.v19-editor-open) #ptechLayoutEdit:hover {opacity:1}
+html.ptech-v19 body.ptech-home-v192 .ptech-layout-bar:not(.v19-editor-open) #ptechHomeViewSwitch {
+  font:inherit;font-weight:750;font-size:11px;padding:7px 10px;min-height:31px;
+  border-radius:9px;border:1px solid var(--g-border-subtle);
+  background:var(--g-inset);color:var(--g-muted);cursor:pointer;
+}
+html.ptech-v19 body.ptech-home-v192 .ptech-layout-bar:not(.v19-editor-open) #ptechHomeViewSwitch:hover {color:var(--g-text)}
+html.ptech-v19 body.ptech-home-v192.ptech-layout-editing .ptech-layout-bar {transform:none!important}
+
+/* PROJECTS: match mockup without hardcoding data. Keep live slider + metadata. */
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="projects"] .ptech-smart-preview {display:none!important}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="projects"] .section-header {
+  display:flex!important;padding:0 0 12px!important;margin:0 0 10px!important;
+  border-bottom:1px solid var(--home-separator)!important;min-height:35px;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="projects"] .projects-slider {
+  display:flex!important;overflow:hidden!important;flex:1 1 auto!important;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="projects"] .project-card {
+  display:flex!important;flex-direction:column!important;justify-content:space-between!important;
+  min-height:0!important;gap:8px!important;padding:0 3px!important;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="projects"] .project-heading {
+  min-height:72px!important;align-items:center!important;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="projects"] .project-icon {
+  width:61px!important;height:61px!important;flex-basis:61px!important;
+  background:var(--home-accent-panel)!important;border:1px solid var(--g-border-subtle);
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="projects"] .project-title-wrap h3 {
+  font-size:clamp(22px,1.75vw,29px)!important;line-height:1.12!important;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="projects"] .project-heading-right {
+  gap:7px!important;flex-wrap:nowrap!important;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="projects"] .project-stats {
+  display:grid!important;grid-template-columns:1fr 1fr!important;
+  grid-template-rows:61px 31px!important;gap:5px 14px!important;
+  height:102px!important;min-height:102px!important;align-content:stretch!important;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="projects"] .project-stats .stat-card:nth-child(2) {
+  grid-area:1/1/2/-1!important;height:61px!important;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="projects"] .project-stats .stat-card:nth-child(3) {grid-area:2/1/3/2!important}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="projects"] .project-stats .stat-card:nth-child(4) {grid-area:2/2/3/3!important}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="projects"] .project-stats .stat-card:nth-child(n+3) > div:last-child {gap:6px;flex-wrap:nowrap!important}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="projects"] .project-stats .stat-card:nth-child(n+3) .stat-label {
+  font-size:11px!important;white-space:nowrap;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="projects"] .project-stats .stat-card:nth-child(n+3) strong {
+  font-size:12px!important;white-space:nowrap;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="projects"] .slider-dots {margin:0!important;min-height:0!important}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="projects"].v192-single-project .project-navigation,
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="projects"].v192-single-project .slider-dots {display:none!important}
+
+/* TASKS: same large central check, original list if any tasks exist. */
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="tasks"] .ptech-smart-preview {display:none!important}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="tasks"] .ptech-tasks-head {
+  padding:0 0 12px!important;margin:0!important;min-height:35px!important;
+  align-items:center!important;border-bottom:1px solid var(--home-separator)!important;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="tasks"] .ptech-tasks-head .ptech-tasks-eyebrow {display:none!important}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="tasks"] .ptech-tasks-preview {flex:1 1 auto!important;min-height:0!important}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="tasks"][data-v19-empty="true"] .ptech-tasks-preview {display:none!important}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="tasks"] .v19-task-empty {
+  flex:1!important;gap:6px!important;justify-content:center!important;padding-top:6px!important;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="tasks"] .v19-check-art {
+  width:63px;height:63px;border-radius:18px;margin-bottom:5px;
+  box-shadow:0 8px 18px rgba(0,0,0,.13),inset 0 1px 0 rgba(255,255,255,.22);
+  background:linear-gradient(145deg,#d1a07c,#a96f4e);
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="tasks"] .v19-task-empty strong {font-size:17px!important}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="tasks"] .v19-task-empty span {font-size:12px!important}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="tasks"] .ptech-tasks-footer {
+  margin:0!important;padding:0!important;border:0!important;
+  justify-content:center!important;flex:none!important;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="tasks"] .ptech-tasks-footer a {
+  display:inline-flex!important;align-items:center;justify-content:center;
+  min-height:34px;padding:7px 20px!important;border-radius:10px;
+  background:linear-gradient(138deg,#c68f6e,#a76e4e)!important;
+  color:#fff8f4!important;font-weight:800!important;font-size:12px!important;
+  text-decoration:none!important;white-space:nowrap;
+}
+
+/* ACTIONS: four equal horizontal tiles, not 2x2. Original links still work. */
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="actions"] .ptech-smart-preview {display:none!important}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="actions"] .ptech-tile-inner {
+  padding:14px 18px!important;gap:8px!important;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="actions"] .actions-header {
+  min-height:22px!important;margin:0!important;padding:0!important;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="actions"] .actions-grid {
+  display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  grid-template-rows:minmax(0,1fr)!important;grid-auto-rows:minmax(65px,auto)!important;
+  align-items:stretch!important;gap:10px!important;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="actions"] .ptech-action-slot > .action-card {
+  display:grid!important;grid-template-columns:40px minmax(0,1fr) 12px!important;
+  grid-template-rows:min-content min-content!important;
+  column-gap:9px!important;row-gap:4px!important;
+  border:1px solid var(--g-border-subtle)!important;border-radius:11px!important;
+  background:var(--home-tile)!important;padding:10px!important;min-height:0!important;
+  height:100%!important;align-content:center!important;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="actions"] .ptech-action-slot > .action-card > .action-icon {
+  grid-column:1!important;grid-row:1/span 2!important;
+  width:40px!important;height:40px!important;min-height:40px!important;
+  background:var(--g-accent-soft)!important;color:var(--g-accent)!important;
+  border-radius:11px!important;font-size:21px!important;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="actions"] .ptech-action-slot > .action-card > strong {
+  grid-column:2!important;grid-row:1!important;align-self:end!important;
+  font-size:clamp(11px,.86vw,14px)!important;line-height:1.2!important;
+  white-space:nowrap!important;text-overflow:ellipsis!important;overflow:hidden!important;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="actions"] .ptech-action-slot > .action-card > p {
+  grid-column:2!important;grid-row:2!important;align-self:start!important;
+  display:block!important;max-height:none!important;line-height:1.3!important;
+  font-size:clamp(10px,.72vw,12px)!important;
+  white-space:nowrap!important;text-overflow:ellipsis!important;overflow:hidden!important;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="actions"] .ptech-action-slot > .action-card::after {
+  grid-column:3!important;grid-row:1/span 2!important;
+  font-size:21px!important;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid [data-widget-id="actions"] .action-button {display:none!important}
+/* Extra user shortcuts are not removed. They continue onto following grid rows. */
+@media(max-width:1150px) {
+ html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid [data-widget-id="actions"] .actions-grid {
+   grid-template-columns:repeat(2,minmax(0,1fr))!important;
+   grid-template-rows:repeat(2,minmax(69px,1fr))!important;
+ }
+ html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid [data-widget-id="actions"] {min-height:240px!important}
+}
+@media(max-width:450px) {
+ html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid [data-widget-id="actions"] .actions-grid {
+   grid-template-columns:1fr!important;grid-auto-rows:minmax(63px,auto)!important;
+ }
+ html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid [data-widget-id="actions"] {min-height:365px!important}
+}
+
+/* MESSAGES and DOCUMENTS: original list, no duplicate preview. */
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid :is([data-widget-id="messages"],[data-widget-id="documents"]) .ptech-smart-preview {display:none!important}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid :is([data-widget-id="messages"],[data-widget-id="documents"]) .ptech-tile-inner {
+  padding:16px 19px!important;display:flex!important;flex-direction:column!important;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid :is([data-widget-id="messages"],[data-widget-id="documents"]) .overview-panel-header {
+  display:flex!important;align-items:center!important;flex:none!important;
+  padding:0 0 12px!important;margin:0 0 12px!important;
+  border-bottom:1px solid var(--home-separator)!important;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid :is([data-widget-id="messages"],[data-widget-id="documents"]) .overview-list {
+  display:block!important;flex:1 1 auto!important;min-height:0!important;overflow:hidden!important;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid :is([data-widget-id="messages"],[data-widget-id="documents"]) .overview-row {
+  min-height:65px!important;display:flex!important;align-items:center!important;
+  padding:9px 12px!important;background:var(--home-tile)!important;
+  border:1px solid var(--g-border-subtle)!important;
+}
+html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid :is([data-widget-id="messages"],[data-widget-id="documents"]) .v19-footer-link {
+  display:inline-flex!important;flex:none!important;padding-top:10px!important;margin-top:auto!important;
+  color:var(--g-accent)!important;font-size:12px!important;font-weight:800!important;
+}
+
+@media(min-width:1361px) and (max-width:1500px) {
+ html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid [data-widget-id="projects"] .project-heading-right .v19-package-chip {display:none!important}
+}
+@media(max-width:1150px) {
+ html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid [data-widget-id="projects"] .project-title-wrap h3 {font-size:20px!important}
+}
+@media(prefers-reduced-motion:reduce) {
+ html.ptech-v19 body.ptech-home-v192 :is(.ptech-widget,.action-card) {transition:none!important;animation:none!important}
+}
+
+/* Messages/documents are children of .dashboard-overview (display:contents)
+   rather than direct children of #ptechDashboardGrid in the real source. */
+@media(min-width:1361px) {
+ html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid .dashboard-overview > [data-widget-id="messages"] {
+   grid-area:3/1/4/2!important;grid-column:1!important;grid-row:3!important;
+ }
+ html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid .dashboard-overview > [data-widget-id="documents"] {
+   grid-area:3/2/4/3!important;grid-column:2!important;grid-row:3!important;
+ }
+}
+@media(min-width:1151px) and (max-width:1360px) {
+ html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid .dashboard-overview > [data-widget-id="messages"] {grid-area:3/1/4/2!important}
+ html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid .dashboard-overview > [data-widget-id="documents"] {grid-area:3/2/4/3!important}
+}
+@media(min-width:751px) and (max-width:1150px) {
+ html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid .dashboard-overview > [data-widget-id="messages"] {grid-area:4/1/5/2!important}
+ html.ptech-v19 body.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid .dashboard-overview > [data-widget-id="documents"] {grid-area:5/1/6/2!important}
+}
+/* Place unobtrusive edit controls in the top right of the welcome strip.
+   This also prevents the sticky top navigation from intercepting clicks. */
+html.ptech-v19 body.ptech-home-v192 .dashboard-content {position:relative!important}
+html.ptech-v19 body.ptech-home-v192 .ptech-layout-bar:not(.v19-editor-open) {
+ position:absolute!important;top:31px!important;right:var(--home-gutter)!important;
+ bottom:auto!important;transform:none!important;z-index:15!important;
+}
+@media(max-width:750px){
+ html.ptech-v19 body.ptech-home-v192 .ptech-layout-bar:not(.v19-editor-open){
+   position:relative!important;top:auto!important;right:auto!important;
+   margin:0 0 10px!important;transform:none!important;
+ }
+}
+
+/* On smaller laptops a single spacious project card is more readable than
+   squeezing its title, package badge and live deadline into 450px. */
+@media(min-width:751px) and (max-width:1380px) {
+ html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid) {
+   grid-template-columns:minmax(0,1fr)!important;
+   grid-template-rows:278px 246px 175px 190px 190px!important;
+ }
+ html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid > [data-widget-id="projects"] {grid-area:1/1/2/2!important}
+ html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid > [data-widget-id="tasks"] {grid-area:2/1/3/2!important}
+ html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid > [data-widget-id="actions"] {grid-area:3/1/4/2!important}
+ html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid .dashboard-overview > [data-widget-id="messages"] {grid-area:4/1/5/2!important}
+ html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid .dashboard-overview > [data-widget-id="documents"] {grid-area:5/1/6/2!important}
+}
+@media(max-width:750px){
+ html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid > [data-widget-id="projects"] {min-height:338px!important}
+ html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid > [data-widget-id="tasks"] {min-height:310px!important}
+ html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid [data-widget-id="projects"] .ptech-tile-inner > .section-header {
+   display:flex!important;visibility:visible!important;min-height:35px;
+   padding:0 0 12px!important;margin:0 0 10px!important;
+   border-bottom:1px solid var(--home-separator)!important;
+ }
+ html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid [data-widget-id="projects"] .ptech-smart-preview {display:none!important}
+ html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid [data-widget-id="projects"] .projects-slider {display:flex!important;visibility:visible!important;flex:1!important}
+ html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid [data-widget-id="projects"] .project-title-wrap h3 {font-size:19px!important}
+ html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid [data-widget-id="projects"] .project-icon {width:43px!important;height:43px!important;flex-basis:43px!important}
+ html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid [data-widget-id="projects"] .v19-package-chip {display:none!important}
+ html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid [data-widget-id="projects"] .project-stats {
+    grid-template-rows:60px 42px!important;height:114px!important;
+ }
+ html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid [data-widget-id="projects"] .project-stats .stat-card:nth-child(n+3) > div:last-child {
+    flex-wrap:wrap!important;gap:0 5px!important;
+ }
+}
+/* SVG icons are decorative, actions remain the same interactive elements. */
+html.ptech-v19 body.ptech-home-v192 #ptechDashboardGrid [data-widget-id="actions"] .action-icon svg {
+  width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.9;
+  stroke-linecap:round;stroke-linejoin:round;
+}
+
+/* V19's old density calculation could completely hide Tasks and the project
+   heading on small screens. Restore the real task content in reference mode. */
+html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="tasks"] .ptech-tile-inner > .ptech-tasks-head {
+ display:flex!important;visibility:visible!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="tasks"] .ptech-tile-inner > .ptech-tasks-preview {
+ display:flex!important;visibility:visible!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="tasks"] .ptech-tile-inner > .ptech-tasks-footer {
+ display:flex!important;visibility:visible!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="tasks"][data-v19-empty="true"] .ptech-tile-inner > .ptech-tasks-preview {
+ display:none!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="tasks"][data-v19-empty="true"] .v19-task-empty:not([hidden]) {
+ display:flex!important;visibility:visible!important;
+}
+html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+#ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="projects"] .section-header .section-title {
+ display:flex!important;visibility:visible!important;color:var(--g-accent)!important;
+}
+@media(max-width:750px){
+ html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid) > [data-widget-id="projects"] {
+  min-height:326px!important;height:326px!important;flex:0 0 326px!important;
+ }
+ html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid) > [data-widget-id="tasks"] {
+  min-height:298px!important;height:298px!important;flex:0 0 298px!important;
+ }
+ html.ptech-v19 body.ptech-dashboard-v16.ptech-home-v192.v192-reference-view:not(.ptech-layout-editing)
+ #ptechDashboardGrid.ptech-dashboard-grid:not(.ptech-zoom-grid) [data-widget-id="tasks"] .ptech-tile-inner {
+  display:flex!important;flex-direction:column!important;justify-content:space-between!important;
+ }
+}

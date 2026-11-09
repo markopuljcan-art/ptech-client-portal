@@ -57,9 +57,11 @@
 <script src="./assets/js/client/ptech-ui-v18-2.js?v=19.1.0" defer></script>
 <link rel="stylesheet" href="./assets/css/client/ptech-reference-v19.css?v=19.1.0">
 <script src="./assets/js/client/ptech-reference-v19.js?v=19.1.0" defer></script>
+<link rel="stylesheet" href="./assets/css/client/ptech-home-v19-2.css?v=19.2.0">
+<script src="./assets/js/client/ptech-home-v19-2.js?v=19.2.0" defer></script>
 </head>
 
-<body class="portal-desktop">
+<body class="portal-desktop ptech-home-v192 v192-reference-view">
 
     <main class="dashboard desktop-layout">
 
@@ -344,12 +346,12 @@
                             class="action-card"
                             id="approveDesignAction"
                         >
-                            <div class="action-icon">✓</div>
+                            <div class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m15 5 4 4"/><path d="M5 19l4-.8L19 8a2.1 2.1 0 0 0-3-3L5.8 15 5 19z"/></svg></div>
 
                             <strong>Odobri dizajn</strong>
 
                             <p>
-                                Pregledaj dizajn i potvrdi ga.
+                                Pregledaj i odobri predloženi dizajn.
                             </p>
 
                             <span class="action-button">
@@ -364,12 +366,12 @@
                             id="revisionAction"
                             aria-disabled="true"
                         >
-                            <div class="action-icon">↔</div>
+                            <div class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 8h16m-4-4 4 4-4 4M20 16H4m4-4-4 4 4 4"/></svg></div>
 
                             <strong>Zatraži izmjenu</strong>
 
                             <p>
-                                Pošalji prijedlog ili izmjenu dizajna.
+                                Pošalji zahtjev za izmjenom.
                             </p>
 
                             <span
@@ -387,15 +389,14 @@
                             id="materialsAction"
                             disabled
                         >
-                            <div class="action-icon">↑</div>
+                            <div class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 16V3m-5 5 5-5 5 5"/><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg></div>
 
                             <strong>
                                 Dostavi materijale
                             </strong>
 
                             <p>
-                                Pošalji logotip, fotografije i
-                                ostale materijale za odabrani projekt.
+                                Učitaj potrebne datoteke.
                             </p>
 
                             <span
@@ -411,14 +412,14 @@
                             href="messages.html"
                             class="action-card"
                         >
-                            <div class="action-icon">?</div>
+                            <div class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 15v-3a9 9 0 0 1 18 0v3"/><rect x="2" y="13" width="4" height="7" rx="2"/><rect x="18" y="13" width="4" height="7" rx="2"/><path d="M20 20a5 5 0 0 1-5 2h-3"/></svg></div>
 
                             <strong>
                                 Kontaktiraj podršku
                             </strong>
 
                             <p>
-                                Trebaš pomoć? Naš tim je tu za tebe.
+                                Postavi pitanje našem timu.
                             </p>
 
                             <span class="action-button">
