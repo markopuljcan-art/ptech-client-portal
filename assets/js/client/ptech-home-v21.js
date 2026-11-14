@@ -141,9 +141,22 @@
     buttons();
   }
   if(source.user)new MutationObserver(restore).observe(source.user,{childList:true,characterData:true,subtree:true});
-  // V21.1: keep the approved homepage visible while editing. The legacy V16
-  // editor is still available via the explicit Advanced option in the new toolbar.
-  $('v21Edit')?.addEventListener('click',()=>window.dispatchEvent(new Event('ptech:v21-edit')));
+  // V21.2: restore the original, proven V16.11 editor (free grid placement,
+  // smooth drag-and-drop and lower-right corner resize). The V21.1 inline
+  // editor is intentionally not loaded. Neither editor data nor tasks are reset.
+  $('v21Edit')?.addEventListener('click',()=>{
+    if (!editor || editor.disabled) {
+      const trigger=$('v21Edit');
+      if (trigger) trigger.title='Pričekajte da se učita korisnički račun.';
+      return;
+    }
+    if (document.body.classList.contains('ptech-layout-editing')) return;
+    document.body.classList.add('ptech-home-preparing-edit');
+    requestAnimationFrame(()=>{
+      try { editor.click(); }
+      finally { document.body.classList.remove('ptech-home-preparing-edit'); }
+    });
+  });
   editor?.addEventListener('click',()=>{
     if(document.body.classList.contains('ptech-layout-editing')) layoutAtStart=savedGrid();
     else {if(layoutAtStart!==undefined && savedGrid()!==layoutAtStart)setView(true);layoutAtStart=undefined;queue();}
