@@ -1417,7 +1417,7 @@ async function loadDashboard() {
 
     // V16: ucitaj raspored samo za prijavljenog korisnika; Supabase klijent
     // dijelimo s dashboardom kako ne bismo stvarali drugu auth sesiju.
-    window.PTechDashboardV16?.setUser(session.user.id, supabaseClient);
+    window.PTechDashboard?.setUser(session.user.id, supabaseClient);
 
     updateMaterialsAction();
 

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="265" viewBox="0 0 600 265" fill="none" role="img" aria-label="Ilustracija radnog prostora">
+<defs>
+  <linearGradient id="desk" x1="40" x2="580" y1="228" y2="228" gradientUnits="userSpaceOnUse"><stop stop-color="#DFC1A6" stop-opacity="0"/><stop offset=".45" stop-color="#DFB28E" stop-opacity=".35"/><stop offset="1" stop-color="#C89570" stop-opacity=".7"/></linearGradient>
+  <linearGradient id="screen" x1="340" x2="530" y1="40" y2="185" gradientUnits="userSpaceOnUse"><stop stop-color="#E7BD98"/><stop offset=".55" stop-color="#C3875F"/><stop offset="1" stop-color="#9E5C3E"/></linearGradient>
+  <linearGradient id="metal" x1="295" x2="537" y1="180" y2="222" gradientUnits="userSpaceOnUse"><stop stop-color="#E0D1C5"/><stop offset=".5" stop-color="#F5EBE3"/><stop offset="1" stop-color="#BE9B85"/></linearGradient>
+  <linearGradient id="cup" x1="227" x2="270" y1="152" y2="202" gradientUnits="userSpaceOnUse"><stop stop-color="#FFFCF8"/><stop offset="1" stop-color="#D9BAA2"/></linearGradient>
+  <linearGradient id="pot" x1="531" x2="588" y1="170" y2="226" gradientUnits="userSpaceOnUse"><stop stop-color="#F0E3D8"/><stop offset="1" stop-color="#BE8A6F"/></linearGradient>
+  <filter id="shadow" x="-50%" y="-75%" width="200%" height="260%"><feGaussianBlur stdDeviation="9"/></filter>
+</defs>
+<!-- background glow and curved ribbons -->
+<path d="M120 258C230 164 329 255 457 125c71-75 97-71 143-80V265H120Z" fill="#DDAA89" fill-opacity=".16"/>
+<path d="M106 268C232 167 341 263 466 125c60-67 93-65 134-76" stroke="#FFF5EB" stroke-opacity=".65" stroke-width="2"/>
+<ellipse cx="420" cy="235" rx="205" ry="18" fill="#8C664D" fill-opacity=".13" filter="url(#shadow)"/>
+<rect x="160" y="230" width="440" height="3" rx="1.5" fill="url(#desk)"/>
+<!-- laptop body -->
+<path d="M326 50c1-8 7-12 15-12h184c7 0 12 5 12 12v136c0 8-5 12-13 12H333c-7 0-11-5-11-12l4-136Z" fill="#986C54" stroke="#80503C" stroke-width="2"/>
+<path d="M333 50c0-3 2-5 6-5h186c3 0 5 3 5 6v139c0 3-2 5-5 5H329c-2 0-3-1-3-3l7-142Z" fill="#252F3D"/>
+<path d="M337 53h184v133H333l4-133Z" fill="url(#screen)"/>
+<path d="M338 52h184v131H335c62-60 113-81 187-131Z" fill="#FFDFC3" fill-opacity=".20"/>
+<path d="M344 179c58-47 108-36 178-98" stroke="#FFE1C6" stroke-opacity=".85" stroke-width="2.4"/>
+<path d="M313 197h237l35 25c1 2-5 6-16 6H289c-9 0-14-3-12-6l36-25Z" fill="url(#metal)" stroke="#C09A83" stroke-width="1.6"/>
+<path d="M332 201h212l17 14H316l16-14Z" fill="#B8A193" fill-opacity=".65"/>
+<path d="M374 216h112l13 7H359l15-7Z" fill="#FEFAF8" fill-opacity=".82"/>
+<path d="M289 226h280" stroke="#9D7159" stroke-opacity=".5" stroke-width="2"/>
+<!-- mug -->
+<ellipse cx="247" cy="219" rx="40" ry="7" fill="#8B5C48" fill-opacity=".13" filter="url(#shadow)"/>
+<path d="M216 162h51l-4 53c-1 10-42 10-43 0l-4-53Z" fill="url(#cup)" stroke="#C9A78E" stroke-width="1.3"/>
+<ellipse cx="241.5" cy="162" rx="25.5" ry="5.5" fill="#FAF0EA" stroke="#C9A78E" stroke-width="1.4"/>
+<path d="M267 171c26-1 22 28-2 28" stroke="#E8CAB5" stroke-width="8" stroke-linecap="round"/>
+<path d="M269 171c20-1 16 19-2 20" stroke="#AA8067" stroke-opacity=".45" stroke-width="2.5"/>
+<!-- plant leaves -->
+<path d="M553 179c-3-47-12-72-36-100-16-19-13-30-8-33 17-6 47 27 49 65l4 62" fill="#5C7650"/>
+<path d="M550 180c-17-27-29-39-57-49-20-8-23-17-19-23 10-13 46 1 66 25l18 36" fill="#768D60"/>
+<path d="M555 177c-4-40 10-76 34-87 12-6 18-4 18 2-1 16-16 35-31 46l-15 37" fill="#5D7D55"/>
+<path d="M550 182c-7-23-19-37-42-44-18-6-23-12-20-18 15-10 43 7 58 34l10 27" fill="#879A68"/>
+<path d="M557 176c5-35 20-50 36-58 10-5 14-4 16 2 1 10-8 23-17 30l-32 31" fill="#78915F"/>
+<path d="M557 183c-1-34-1-53 7-78" stroke="#668052" stroke-width="3"/>
+<path d="M531 185h61l-8 37c-2 6-7 9-15 9h-15c-8 0-14-4-16-11l-7-35Z" fill="url(#pot)" stroke="#BE8F70" stroke-width="1.2"/>
+<ellipse cx="561.5" cy="185" rx="30" ry="5" fill="#D5AA8E"/>
+</svg>
