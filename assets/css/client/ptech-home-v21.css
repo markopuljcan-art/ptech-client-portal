@@ -1,0 +1,219 @@
+/* PTech Digital Client Portal - V21.0. Professional, client-friendly homepage.
+   Only form.html uses this stylesheet. V16 and Supabase are unchanged. */
+body.ptech-home-v21 {
+  --v21-page: #faf5f0;
+  --v21-ink: #1d2b40;
+  --v21-ink-soft: #5d5856;
+  --v21-bronze: #af6339;
+  --v21-bronze-rich: #97522c;
+  --v21-on-bronze: #fffaf6;
+  --v21-card: linear-gradient(145deg, rgba(255,255,255,.97), rgba(255,249,244,.97));
+  --v21-border: rgba(182,119,81,.24);
+  --v21-edge: rgba(180,110,70,.17);
+  --v21-inset: linear-gradient(140deg,#f9f0e9,#f4e8de);
+  --v21-track: #e6d2c4;
+  --v21-shadow: 0 8px 24px rgba(103,64,42,.085), 0 2px 5px rgba(103,64,42,.035);
+  --v21-image-opacity: 1;
+  --v21-focus: #bb7448;
+}
+body.ptech-home-v21:not(.light-mode) {
+  --v21-page: #15243b;
+  --v21-ink: #fff8f2;
+  --v21-ink-soft: #c6ccd7;
+  --v21-bronze: #efb185;
+  --v21-bronze-rich: #d89567;
+  --v21-on-bronze: #172039;
+  --v21-card: linear-gradient(145deg,rgba(53,67,91,.96),rgba(37,53,78,.97));
+  --v21-border: rgba(228,182,149,.26);
+  --v21-edge: rgba(224,189,173,.16);
+  --v21-inset: linear-gradient(145deg,rgba(99,113,139,.24),rgba(68,84,111,.32));
+  --v21-track: #56647c;
+  --v21-shadow: 0 12px 34px rgba(3,12,29,.22), inset 0 1px 0 rgba(255,255,255,.055);
+  --v21-image-opacity: .82;
+  --v21-focus: #f0bc94;
+}
+/* The V16 dashboard continues running in the DOM to provide real data and the
+   original free-move editor; it is not visible in the default client view. */
+body.ptech-home-v21:not(.ptech-layout-editing):not(.ptech-home-personal) .dashboard-content > :is(.welcome,.ptech-layout-bar,.ptech-layout-hint,.ptech-hidden-widgets,.ptech-dashboard-grid,.footer) {display:none!important}
+body.ptech-home-v21.ptech-layout-editing #v21Home,
+body.ptech-home-v21.ptech-home-preparing-edit #v21Home {display:none!important}
+body.ptech-home-v21.ptech-layout-editing .dashboard-content > .welcome,
+body.ptech-home-v21.ptech-home-preparing-edit .dashboard-content > .welcome {display:none!important}
+body.ptech-home-v21.ptech-layout-editing .dashboard-content > .ptech-layout-bar,
+body.ptech-home-v21.ptech-home-preparing-edit .dashboard-content > .ptech-layout-bar {display:flex!important}
+body.ptech-home-v21.ptech-layout-editing .dashboard-content > .ptech-dashboard-grid,
+body.ptech-home-v21.ptech-home-preparing-edit .dashboard-content > .ptech-dashboard-grid {display:grid!important}
+body.ptech-home-v21.ptech-layout-editing .dashboard-content > .footer {display:block!important}
+body.ptech-home-v21.ptech-home-personal:not(.ptech-layout-editing) #v21Home{display:none!important}
+body.ptech-home-v21.ptech-home-personal:not(.ptech-layout-editing) .dashboard-content > .ptech-layout-bar{display:flex!important}
+body.ptech-home-v21.ptech-home-personal:not(.ptech-layout-editing) .dashboard-content > .ptech-dashboard-grid{display:grid!important}
+body.ptech-home-v21.ptech-home-personal:not(.ptech-layout-editing) .dashboard-content > .footer{display:block!important}
+body.ptech-home-v21 .dashboard-content {width:100%!important;max-width:1740px!important;padding:20px clamp(20px,2.5vw,42px) 54px!important;margin:0 auto!important;min-width:0}
+body.ptech-home-v21 .dashboard-header {min-height:77px!important}
+body.ptech-home-v21 .desktop-main {min-width:0;background-color:var(--v21-page)!important}
+body.ptech-home-v21 .dashboard-mobile-brand {display:flex;flex-direction:column;gap:2px}
+body.ptech-home-v21 .dashboard-mobile-brand span {color:var(--v21-bronze);font-weight:850;letter-spacing:1.8px;font-size:11px}
+body.ptech-home-v21 .dashboard-mobile-brand strong {color:var(--v21-ink);font-weight:800;font-size:20px}
+/* Sidebar retains all V18 drag/resize handlers and state. */
+body.ptech-home-v21 .sidebar-link {transition:background-color .2s ease,transform .2s ease,box-shadow .2s ease,color .2s ease!important}
+html.ptech-glass-v18 body.ptech-home-v21 .sidebar-link:hover:not(.active) {background:rgba(132,70,38,.15)!important;transform:translateX(2px)!important;box-shadow:0 5px 16px rgba(73,40,22,.10)!important}
+html.ptech-glass-v18 body.ptech-home-v21:not(.light-mode) .sidebar-link:hover:not(.active) {background:rgba(227,162,122,.19)!important;box-shadow:0 5px 17px rgba(0,0,0,.14)!important}
+html.ptech-glass-v18 body.ptech-home-v21 .sidebar-link:focus-visible{outline:2px solid var(--v21-focus)!important;outline-offset:2px}
+/* V21 structure */
+body.ptech-home-v21 #v21Home{width:100%;min-width:0;display:flex;flex-direction:column;gap:16px;color:var(--v21-ink);font-family:'Inter',system-ui,-apple-system,sans-serif}
+body.ptech-home-v21 #v21Home *{box-sizing:border-box}
+body.ptech-home-v21 #v21Home [hidden]{display:none!important}
+body.ptech-home-v21 #v21Home :is(button,a){-webkit-tap-highlight-color:transparent}
+body.ptech-home-v21 #v21Home :is(button,a):focus-visible {outline:3px solid var(--v21-focus);outline-offset:3px}
+body.ptech-home-v21 #v21Home svg {width:22px;height:22px;flex-shrink:0}
+body.ptech-home-v21 .v21-surface {min-width:0;border-radius:20px;background:var(--v21-card);border:1px solid var(--v21-border);box-shadow:var(--v21-shadow);color:var(--v21-ink);position:relative}
+/* Header banner */
+body.ptech-home-v21 .v21-welcome {min-height:152px;display:flex;align-items:center;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse 480px 210px at 89% 9%,rgba(222,158,117,.17),transparent 80%),var(--v21-card)}
+body.ptech-home-v21 .v21-welcome::after {content:"";position:absolute;inset:auto -8% -110px auto;width:70%;height:215px;border-top:1px solid rgba(221,145,91,.24);border-radius:50%;transform:rotate(-9deg);pointer-events:none;z-index:-1}
+body.ptech-home-v21 .v21-welcome-copy {position:relative;z-index:1;padding:18px clamp(20px,2.3vw,36px);width:min(70%,820px)}
+body.ptech-home-v21 .v21-overline {font-size:11px;font-weight:800;letter-spacing:1.35px;color:var(--v21-bronze);margin:0 0 3px}
+body.ptech-home-v21 .v21-welcome h1{font-size:clamp(27px,2.4vw,39px);line-height:1.11;font-weight:840;letter-spacing:-1.15px;color:var(--v21-ink);margin:0 0 7px}
+body.ptech-home-v21 .v21-introduction{color:var(--v21-ink-soft);font-size:14px;line-height:1.5;max-width:730px;margin:0}
+body.ptech-home-v21 .v21-welcome-image {position:absolute;right:0;bottom:0;width:min(40%,580px);height:100%;display:flex;align-items:flex-end;justify-content:flex-end;pointer-events:none;opacity:var(--v21-image-opacity)}
+body.ptech-home-v21 .v21-welcome-image img {max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;object-position:right bottom;filter:drop-shadow(0 5px 8px rgba(90,51,36,.08))}
+body.ptech-home-v21 .v21-personal-controls{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:9px}
+body.ptech-home-v21 .v21-text-btn{display:inline-flex;align-items:center;gap:5px;border:0;background:transparent;padding:3px 0;font-size:12px;font-weight:700;color:var(--v21-bronze);cursor:pointer;transition:color .2s,transform .2s}
+body.ptech-home-v21 .v21-text-btn svg{width:15px!important;height:15px!important}
+body.ptech-home-v21 .v21-text-btn:hover{color:var(--v21-ink);transform:translateY(-1px)}
+/* Active projects */
+body.ptech-home-v21 .v21-projects{padding:16px 22px 20px}
+body.ptech-home-v21 .v21-section-header{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:14px;min-width:0}
+body.ptech-home-v21 .v21-section-header h2{display:flex;align-items:center;gap:12px;margin:0;font-size:21px;font-weight:800;letter-spacing:-.55px;line-height:1.2;color:var(--v21-ink)}
+body.ptech-home-v21 .v21-section-header h2 svg{color:var(--v21-bronze);width:25px;height:25px}
+body.ptech-home-v21 .v21-project-header-right{display:flex;align-items:center;gap:10px}
+body.ptech-home-v21 .v21-count-pill{border:1px solid var(--v21-border);border-radius:999px;background:var(--v21-inset);padding:7px 13px;font-size:12px;font-weight:700;color:var(--v21-bronze-rich);white-space:nowrap}
+body.ptech-home-v21 .v21-project-nav{display:flex;gap:4px}
+body.ptech-home-v21 .v21-project-nav button{display:grid;place-items:center;width:30px;height:30px;border:1px solid var(--v21-border);border-radius:9px;background:var(--v21-inset);color:var(--v21-ink);cursor:pointer}
+body.ptech-home-v21 .v21-project-nav button:disabled{opacity:.37;cursor:not-allowed}
+body.ptech-home-v21 .v21-project-nav svg{width:15px!important;height:15px!important}
+body.ptech-home-v21 .v21-project-card{background:linear-gradient(145deg,rgba(255,255,255,.37),transparent),var(--v21-card);border:1px solid var(--v21-edge);border-radius:17px;padding:17px 19px 16px;box-shadow:0 3px 10px rgba(95,68,51,.025)}
+body.ptech-home-v21:not(.light-mode) .v21-project-card{background:linear-gradient(145deg,rgba(133,147,166,.065),transparent),var(--v21-inset)}
+body.ptech-home-v21 .v21-project-top{display:flex;align-items:center;gap:16px;min-width:0}
+body.ptech-home-v21 .v21-project-icon{width:60px;height:60px;flex:0 0 60px;display:grid;place-items:center;color:#9b613e;background:linear-gradient(140deg,#f9e6d8,#e9c8b0);border-radius:15px}
+body.ptech-home-v21 .v21-project-icon svg{width:31px!important;height:31px!important}
+body.ptech-home-v21:not(.light-mode) .v21-project-icon{background:linear-gradient(140deg,#bd906e,#765c60);color:#ffe4d0}
+body.ptech-home-v21 .v21-project-identity{min-width:0;flex:1}
+body.ptech-home-v21 .v21-project-identity h3{margin:0 0 6px;font-size:clamp(19px,1.7vw,27px);font-weight:810;letter-spacing:-.7px;color:var(--v21-ink);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;line-height:1.12}
+body.ptech-home-v21 .v21-subtitle{display:block;color:var(--v21-ink-soft);font-size:13px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body.ptech-home-v21 .v21-status-pill{background:rgba(88,164,107,.12);border:1px solid rgba(71,150,91,.27);color:#2a703f;font-size:12px;font-weight:730;border-radius:999px;padding:9px 12px;white-space:nowrap}
+body.ptech-home-v21 .v21-status-pill::before{content:"";display:inline-block;width:8px;height:8px;background:#42bb71;border-radius:50%;margin-right:7px;vertical-align:middle}
+body.ptech-home-v21 .v21-status-pill.waiting{background:rgba(205,153,69,.17);border-color:rgba(218,164,83,.3);color:#97631e}
+body.ptech-home-v21 .v21-status-pill.waiting::before{background:#d69a41}
+body.ptech-home-v21:not(.light-mode) .v21-status-pill{color:#d7f6e3;background:rgba(46,151,102,.21);border-color:rgba(96,196,140,.3)}
+body.ptech-home-v21:not(.light-mode) .v21-status-pill.waiting{color:#ffe5c3;background:rgba(203,151,72,.23)}
+body.ptech-home-v21 .v21-project-open{display:inline-flex;justify-content:center;align-items:center;gap:10px;white-space:nowrap;text-decoration:none;padding:12px 17px;background:linear-gradient(145deg,#c18860,#95552e);border:1px solid rgba(137,71,36,.27);border-radius:12px;box-shadow:0 6px 12px rgba(130,79,47,.16);color:#fff!important;font-size:13px;font-weight:800;transition:transform .2s,box-shadow .2s,filter .2s}
+body.ptech-home-v21 .v21-project-open:hover{transform:translateY(-2px);box-shadow:0 10px 16px rgba(130,79,47,.23);filter:brightness(1.04)}
+body.ptech-home-v21 .v21-project-open svg{width:17px!important;height:17px!important}
+body.ptech-home-v21 .v21-project-metrics{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.22fr) minmax(0,1fr) minmax(0,1.1fr);gap:12px;margin-top:16px}
+body.ptech-home-v21 .v21-metric{min-width:0;min-height:73px;border-radius:12px;background:var(--v21-inset);padding:12px;display:flex;align-items:center;gap:11px}
+body.ptech-home-v21 .v21-metric-icon{color:var(--v21-bronze);display:grid;place-items:center;flex:0 0 27px}
+body.ptech-home-v21 .v21-metric-icon svg{width:22px;height:22px}
+body.ptech-home-v21 .v21-metric>div{min-width:0}
+body.ptech-home-v21 .v21-metric-label{display:block;color:var(--v21-ink-soft);font-size:12px;line-height:1.35;margin:0 0 3px}
+body.ptech-home-v21 .v21-metric strong{font-size:14px;line-height:1.3;color:var(--v21-ink);font-weight:770;overflow-wrap:anywhere}
+body.ptech-home-v21 .v21-metric-text{flex:1;min-width:0}
+body.ptech-home-v21 .v21-progress-line{display:flex;align-items:center;gap:10px;min-width:0}
+body.ptech-home-v21 .v21-progress-track{flex:1;min-width:24px;height:9px;border-radius:999px;background:var(--v21-track);overflow:hidden}
+body.ptech-home-v21 .v21-progress-track span{display:block;width:0;height:100%;border-radius:999px;background:linear-gradient(90deg,#b56c42,#e6aa7e);transition:width .5s ease}
+body.ptech-home-v21 .v21-project-card.is-empty .v21-project-metrics{display:none!important}
+body.ptech-home-v21 .v21-project-card.is-empty .v21-project-open{font-size:12px}
+/* Three equal status cards */
+body.ptech-home-v21 .v21-summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:stretch}
+body.ptech-home-v21 .v21-summary-card{min-height:187px;padding:15px 17px 13px;display:flex;flex-direction:column;overflow:hidden}
+body.ptech-home-v21 .v21-card-heading h2{display:flex;align-items:center;gap:10px;font-size:16px;color:var(--v21-ink);font-weight:800;margin:0}
+body.ptech-home-v21 .v21-card-heading h2 svg{color:var(--v21-bronze);width:22px;height:22px}
+body.ptech-home-v21 .v21-summary-main{margin-top:12px}
+body.ptech-home-v21 .v21-task-main{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--v21-inset);border-radius:12px;padding:10px 12px}
+body.ptech-home-v21 .v21-count-area{display:flex;flex-direction:column;gap:2px;min-width:0}
+body.ptech-home-v21 .v21-count-area strong{color:var(--v21-ink);font-size:25px;line-height:1;font-weight:850}
+body.ptech-home-v21 .v21-count-area span{font-weight:750;font-size:12px;line-height:1.3;color:var(--v21-ink)}
+body.ptech-home-v21 .v21-summary-decoration{width:42px;height:42px;display:grid;place-items:center;border-radius:14px;color:var(--v21-bronze-rich);background:rgba(207,148,103,.18)}
+body.ptech-home-v21:not(.light-mode) .v21-summary-decoration{color:#e6b58e}
+body.ptech-home-v21 .v21-summary-detail{font-size:12px;color:var(--v21-ink-soft);line-height:1.45;margin:10px 1px 0}
+body.ptech-home-v21 .v21-card-link{border-top:1px solid var(--v21-edge);padding-top:10px;margin-top:auto;display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:800;text-decoration:none;color:var(--v21-bronze-rich);transition:gap .18s,color .18s}
+body.ptech-home-v21 .v21-card-link:hover{gap:12px;color:var(--v21-ink)}
+body.ptech-home-v21 .v21-card-link svg{width:16px!important;height:16px!important}
+body.ptech-home-v21 .v21-summary-preview{flex:1;min-height:84px;display:flex;align-items:center;justify-content:center;min-width:0;padding:9px 0}
+body.ptech-home-v21 .v21-empty-preview{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;color:var(--v21-ink-soft);font-size:13px;line-height:1.45}
+body.ptech-home-v21 .v21-empty-icon{display:grid;place-items:center;color:var(--v21-bronze);width:37px;height:37px;border-radius:12px;background:var(--v21-inset)}
+body.ptech-home-v21 .v21-empty-icon svg{width:23px!important;height:23px!important}
+body.ptech-home-v21 .v21-preview-link{display:flex;align-items:center;gap:10px;padding:12px 9px;border-radius:11px;background:var(--v21-inset);text-decoration:none;color:var(--v21-ink);width:100%;min-width:0;transition:transform .18s,box-shadow .18s}
+body.ptech-home-v21 .v21-preview-link:hover{transform:translateY(-2px);box-shadow:0 5px 13px rgba(113,71,46,.1)}
+body.ptech-home-v21 .v21-preview-icon{width:39px;height:39px;flex:0 0 39px;border-radius:11px;background:rgba(191,126,82,.21);display:grid;place-items:center;font-size:10px;font-weight:800;color:var(--v21-bronze-rich)}
+body.ptech-home-v21 .v21-preview-icon svg{width:21px;height:21px}
+body.ptech-home-v21 .v21-preview-copy{display:flex;flex:1;min-width:0;flex-direction:column;gap:4px}
+body.ptech-home-v21 .v21-preview-copy strong{font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body.ptech-home-v21 .v21-preview-copy small{font-size:12px;color:var(--v21-ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body.ptech-home-v21 .v21-preview-date{flex:0 0 auto;font-size:10px;color:var(--v21-ink-soft)}
+body.ptech-home-v21 .v21-preview-download{color:var(--v21-bronze)}
+body.ptech-home-v21 .v21-preview-download svg{width:20px!important;height:20px!important}
+/* Quick actions */
+body.ptech-home-v21 .v21-actions{padding:15px 16px 17px}
+body.ptech-home-v21 .v21-actions .v21-section-header{margin:0 0 13px 3px}
+body.ptech-home-v21 .v21-actions-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+body.ptech-home-v21 .v21-action{display:flex;align-items:center;gap:12px;min-width:0;border:1px solid var(--v21-border);background:var(--v21-inset);color:var(--v21-ink)!important;text-decoration:none;text-align:left;padding:11px 13px;border-radius:13px;min-height:67px;cursor:pointer;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s}
+body.ptech-home-v21 .v21-action:hover{transform:translateY(-3px);border-color:var(--v21-bronze);box-shadow:0 8px 18px rgba(113,68,44,.12)}
+body.ptech-home-v21 .v21-action-icon{width:43px;height:43px;flex:0 0 43px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(140deg,#f6deca,#edc2a1);color:#a65c33}
+body.ptech-home-v21:not(.light-mode) .v21-action-icon{background:rgba(213,149,105,.25);color:#f1ba91}
+body.ptech-home-v21 .v21-action-text{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}
+body.ptech-home-v21 .v21-action-text strong{font-size:14px;font-weight:800;color:var(--v21-ink)}
+body.ptech-home-v21 .v21-action-text small{font-size:12px;color:var(--v21-ink-soft);line-height:1.35}
+body.ptech-home-v21 .v21-action>svg{width:20px!important;height:20px!important;color:var(--v21-bronze)}
+/* Media */
+@media(max-width:1360px){
+ body.ptech-home-v21 .v21-welcome-copy{width:72%}
+ body.ptech-home-v21 .v21-metric{padding:10px;gap:8px}
+ body.ptech-home-v21 .v21-projects{padding:15px}
+ body.ptech-home-v21 .v21-project-card{padding:15px}
+}
+@media(max-width:1120px){
+ body.ptech-home-v21 .v21-project-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body.ptech-home-v21 .v21-project-top{flex-wrap:wrap}
+ body.ptech-home-v21 .v21-project-identity{flex:1}
+ body.ptech-home-v21 .v21-summary-grid{gap:10px}
+ body.ptech-home-v21 .v21-actions-grid{gap:10px}
+ body.ptech-home-v21 .v21-action{padding:10px;gap:9px}
+}
+@media(max-width:900px){
+ body.ptech-home-v21 #v21Home{gap:14px}
+ body.ptech-home-v21 .v21-welcome-copy{width:85%}
+ body.ptech-home-v21 .v21-welcome-image{width:35%;opacity:.45}
+ body.ptech-home-v21 .v21-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body.ptech-home-v21 .v21-summary-card:last-child{grid-column:1 / -1}
+ body.ptech-home-v21 .v21-actions-grid{grid-template-columns:1fr}
+ body.ptech-home-v21 .v21-action{min-height:60px}
+}
+@media(max-width:660px){
+ body.ptech-home-v21 .dashboard-content{padding:16px 14px 120px!important}
+ body.ptech-home-v21 .v21-welcome{min-height:172px}
+ body.ptech-home-v21 .v21-welcome-copy{width:100%;padding:20px 19px}
+ body.ptech-home-v21 .v21-welcome-image{width:55%;opacity:.16}
+ body.ptech-home-v21 .v21-welcome h1{font-size:31px}
+ body.ptech-home-v21 .v21-introduction{font-size:13px;line-height:1.48}
+ body.ptech-home-v21 .v21-overline{font-size:10px;letter-spacing:.8px}
+ body.ptech-home-v21 .v21-project-top{gap:10px}
+ body.ptech-home-v21 .v21-project-icon{width:48px;height:48px;flex-basis:48px}
+ body.ptech-home-v21 .v21-project-icon svg{width:25px!important;height:25px!important}
+ body.ptech-home-v21 .v21-project-identity h3{font-size:20px}
+ body.ptech-home-v21 .v21-status-pill{font-size:10px;padding:7px}
+ body.ptech-home-v21 .v21-project-open{padding:10px 12px;font-size:12px}
+ body.ptech-home-v21 .v21-project-metrics{gap:9px}
+ body.ptech-home-v21 .v21-metric{min-height:74px;gap:7px;padding:9px}
+ body.ptech-home-v21 .v21-metric-icon{display:none}
+ body.ptech-home-v21 .v21-section-header h2{font-size:18px}
+ body.ptech-home-v21 .v21-summary-grid{grid-template-columns:1fr}
+ body.ptech-home-v21 .v21-summary-card:last-child{grid-column:auto}
+ body.ptech-home-v21 .v21-summary-card{min-height:185px}
+}
+@media(max-width:390px){
+ body.ptech-home-v21 .v21-project-top{gap:8px}
+ body.ptech-home-v21 .v21-project-identity{flex-basis:calc(100% - 60px)}
+ body.ptech-home-v21 .v21-status-pill{margin-left:0}
+ body.ptech-home-v21 .v21-metric strong{font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){body.ptech-home-v21 #v21Home *,body.ptech-home-v21 #v21Home *::before,body.ptech-home-v21 #v21Home *::after{animation:none!important;transition:none!important}}

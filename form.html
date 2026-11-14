@@ -51,11 +51,11 @@
 <script src="./assets/js/client/v13-mobile.js?v=13.10" defer></script>
 <script src="./assets/js/client/ptech-dashboard-v16.js?v=16.11-restore-1" defer></script>
 
-<link rel="stylesheet" href="./assets/css/client/ptech-home-v20.css?v=20.0.1">
-<script src="./assets/js/client/ptech-home-v20.js?v=20.0.1" defer></script>
+<link rel="stylesheet" href="./assets/css/client/ptech-home-v21.css?v=21.0.0">
+<script src="./assets/js/client/ptech-home-v21.js?v=21.0.0" defer></script>
 </head>
 
-<body class="portal-desktop ptech-home-v20">
+<body class="portal-desktop ptech-home-v21">
 
     <main class="dashboard desktop-layout">
 
@@ -207,50 +207,67 @@
                 </div>
             </header>
 
-            <!-- V20: vizualni prikaz prema odobrenoj slici. Originalni V16 grid ostaje ispod za uređivanje. -->
+            <!-- V21: profesionalna početna, originalni V16 editor ostaje ispod -->
             <div class="dashboard-content">
-              <section class="v20-screen" id="v20Home" aria-label="Početna - pregled">
-                <div class="v20-hero">
-                  <span class="v20-eyebrow">DOBRODOŠLI U PTECH DIGITAL</span>
-                  <h1>Dobar dan, <span id="v20FirstName">Klijente</span><span class="v20-exclaim">!</span></h1>
-                  <p>Ovdje pratite svoje projekte, zadatke, komunikaciju i dokumente na jednom mjestu.</p>
-                  <button type="button" id="v20Edit" class="v20-edit-btn">✦ Uredi dashboard</button>
-                </div>
-                <div class="v20-board">
-                  <article class="v20-panel v20-project-panel" aria-label="Aktivni projekti">
-                    <div class="v20-panel-heading"><div class="v20-heading-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h6l2 2h10v12H3z"/></svg><h2>AKTIVNI PROJEKTI</h2></div><span id="v20ProjectIndex" class="v20-project-index" hidden>1/1</span></div>
-                    <div id="v20ProjectContent" class="v20-project-content">
-                      <div class="v20-project-info">
-                        <span class="v20-project-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8m-4-3v3"/></svg></span>
-                        <div class="v20-project-names"><h3 id="v20ProjectTitle">Učitavanje projekata...</h3><small id="v20ProjectName"></small></div>
-                        <div class="v20-project-badges"><span id="v20ProjectStatus" class="v20-status-pill" hidden></span><span id="v20ProjectPackage" class="v20-package-pill" hidden></span></div>
-                        <a id="v20ProjectOpen" class="v20-open-project" href="my-projects.html" aria-label="Otvori projekt" title="Otvori projekt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
-                      </div>
-                      <div class="v20-progress"><div class="v20-progress-label"><span>Napredak projekta</span><strong id="v20ProjectPercent">0%</strong></div><div class="v20-progress-track" role="progressbar" aria-label="Napredak projekta" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="v20ProjectTrack"><span id="v20ProjectBar"></span></div></div>
-                      <div class="v20-project-meta"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18"/></svg><span>Rok isporuke: <strong id="v20ProjectDeadline">–</strong></span></div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></svg><span>Zadnje ažuriranje: <strong id="v20ProjectUpdated">–</strong></span></div></div>
-                      <div class="v20-project-pages" id="v20ProjectPages" hidden><button type="button" id="v20ProjectPrev" aria-label="Prethodni projekt">‹</button><button type="button" id="v20ProjectNext" aria-label="Sljedeći projekt">›</button></div>
+              <section class="v21-home" id="v21Home" aria-label="Početna - pregled">
+                <div class="v21-welcome v21-surface">
+                  <div class="v21-welcome-copy">
+                    <p class="v21-overline">DOBRO DOŠLI U PTECH DIGITAL CLIENT PORTAL</p>
+                    <h1>Pozdrav, <span id="v21FirstName">klijente</span>!</h1>
+                    <p class="v21-introduction">Ovdje možete pratiti napredak svojih projekata, upravljati zadacima, razmjenjivati poruke i pristupiti dokumentima.</p>
+                    <div class="v21-personal-controls">
+                      <button id="v21Edit" type="button" class="v21-text-btn" title="Prilagodi početnu i raspored kockica"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="2" fill="currentColor" stroke="none"/><circle cx="15" cy="17" r="2" fill="currentColor" stroke="none"/></svg><span>Prilagodi početnu</span></button>
+                      <button id="v21Personal" type="button" class="v21-text-btn" title="Prikaži moj spremljeni raspored">Moj raspored <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
                     </div>
+                  </div>
+                  <div class="v21-welcome-image" aria-hidden="true"><img src="./assets/illustrations/ptech-workspace-v21.svg" alt="" decoding="async" loading="eager"></div>
+                </div>
+                <section class="v21-projects v21-surface" aria-labelledby="v21ProjectsHeading">
+                  <div class="v21-section-header">
+                    <h2 id="v21ProjectsHeading"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 17l9 5 9-5"/></svg> Aktivni projekti</h2>
+                    <div class="v21-project-header-right"><span class="v21-count-pill" id="v21ProjectCount">Učitavanje...</span><div class="v21-project-nav" id="v21ProjectPages" hidden><button type="button" id="v21ProjectPrev" aria-label="Prethodni projekt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m14 5-7 7 7 7"/></svg></button><button type="button" id="v21ProjectNext" aria-label="Sljedeći projekt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10 5 7 7-7 7"/></svg></button></div></div>
+                  </div>
+                  <div class="v21-project-card">
+                    <div class="v21-project-top">
+                      <div class="v21-project-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8m-4-3v3"/></svg></div>
+                      <div class="v21-project-identity"><h3 id="v21ProjectTitle">Učitavanje projekata...</h3><span id="v21ProjectName" class="v21-subtitle"></span></div>
+                      <span class="v21-status-pill" id="v21ProjectStatus" hidden></span>
+                      <a id="v21ProjectOpen" class="v21-project-open" href="my-projects.html" aria-label="Otvori projekt">Otvori projekt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
+                    </div>
+                    <div class="v21-project-metrics" id="v21ProjectMetrics">
+                      <div class="v21-metric"><span class="v21-metric-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 9 5v10l-9 5-9-5V7l9-5Z"/><path d="m3 7 9 5 9-5M12 12v10"/></svg></span><div><span class="v21-metric-label">Paket</span><strong id="v21ProjectPackage">–</strong></div></div>
+                      <div class="v21-metric v21-metric-progress"><span class="v21-metric-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V9m5 11V4m5 16v-8m5 8V6"/></svg></span><div class="v21-metric-text"><span class="v21-metric-label">Napredak</span><div class="v21-progress-line"><div class="v21-progress-track" id="v21ProjectTrack" role="progressbar" aria-label="Napredak projekta" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="v21ProjectBar"></span></div><strong id="v21ProjectPercent">0%</strong></div></div></div>
+                      <div class="v21-metric"><span class="v21-metric-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18"/></svg></span><div><span class="v21-metric-label">Rok</span><strong id="v21ProjectDeadline">–</strong></div></div>
+                      <div class="v21-metric"><span class="v21-metric-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.5-6.2"/><path d="M20.5 3.5v5h-5"/></svg></span><div><span class="v21-metric-label">Zadnje ažurirano</span><strong id="v21ProjectUpdated">–</strong></div></div>
+                    </div>
+                  </div>
+                </section>
+                <div class="v21-summary-grid">
+                  <article class="v21-summary-card v21-surface" aria-label="Moji zadaci">
+                    <div class="v21-card-heading"><h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="m7 12 3 3 7-7"/></svg> Moji zadaci</h2></div>
+                    <div class="v21-summary-main v21-task-main"><div class="v21-count-area"><strong id="v21TaskCount">–</strong><span id="v21TaskStatus">Učitavanje zadataka...</span></div><span class="v21-summary-decoration v21-decoration-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="m7 12 3 3 7-7"/></svg></span></div>
+                    <p id="v21TaskDescription" class="v21-summary-detail">Provjeri svoje obveze i rokove.</p>
+                    <a href="tasks.html" class="v21-card-link">Svi zadaci <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
                   </article>
-                  <article class="v20-panel v20-task-panel" aria-label="Moji zadaci">
-                    <div class="v20-panel-heading"><div class="v20-heading-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="m7 12 3 3 6-7"/></svg><h2>MOJI ZADACI</h2></div></div>
-                    <div class="v20-task-body" id="v20TasksContent" aria-live="polite"><span class="v20-task-illustration"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 6"/></svg></span><h3>Učitavanje zadataka...</h3><p>Pregledaj svoje obveze i rokove.</p></div>
-                    <a class="v20-primary-btn" href="tasks.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="m7 12 3 3 6-7"/></svg> <span>Pregledaj zadatke</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
+                  <article class="v21-summary-card v21-surface" aria-label="Nedavne poruke">
+                    <div class="v21-card-heading"><h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg> Nedavne poruke</h2></div>
+                    <div id="v21MessagePreview" class="v21-summary-preview" aria-live="polite"><span class="v21-empty-preview">Učitavanje poruka...</span></div>
+                    <a href="messages.html" class="v21-card-link">Otvori poruke <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
                   </article>
-                  <article class="v20-panel v20-actions-panel" aria-label="Brze akcije">
-                    <div class="v20-panel-heading"><div class="v20-heading-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13 2-9 11h7l-1 9 10-12h-7z"/></svg><h2>BRZE AKCIJE</h2></div></div>
-                    <div class="v20-actions-list" id="v20ActionsList" aria-live="polite"></div>
-                  </article>
-                  <article class="v20-panel v20-overview-panel v20-message-panel" aria-label="Nedavne poruke">
-                    <div class="v20-panel-heading"><div class="v20-heading-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v12H9l-5 4z"/></svg><h2>NEDAVNE PORUKE</h2></div></div>
-                    <div class="v20-overview-content" id="v20MessagePreview" aria-live="polite"><div class="v20-empty">Učitavanje poruka...</div></div>
-                    <a href="messages.html" class="v20-footer-link">Pogledaj sve poruke <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
-                  </article>
-                  <article class="v20-panel v20-overview-panel v20-document-panel" aria-label="Dokumenti">
-                    <div class="v20-panel-heading"><div class="v20-heading-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h6l2 2h10v12H3z"/></svg><h2>DOKUMENTI</h2></div></div>
-                    <div class="v20-overview-content" id="v20DocumentPreview" aria-live="polite"><div class="v20-empty">Učitavanje dokumenata...</div></div>
-                    <a href="documents.html" class="v20-footer-link">Pogledaj sve dokumente <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
+                  <article class="v21-summary-card v21-surface" aria-label="Dokumenti">
+                    <div class="v21-card-heading"><h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h8l5 5v15H6z"/><path d="M14 2v5h5M9 12h7M9 16h7"/></svg> Dokumenti</h2></div>
+                    <div id="v21DocumentPreview" class="v21-summary-preview v21-document-preview" aria-live="polite"><span class="v21-empty-preview">Učitavanje dokumenata...</span></div>
+                    <a href="documents.html" class="v21-card-link">Svi dokumenti <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
                   </article>
                 </div>
+                <section class="v21-actions v21-surface" aria-labelledby="v21ActionsHeading">
+                  <div class="v21-section-header"><h2 id="v21ActionsHeading"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13 2-9 11h7l-1 9 10-12h-7z"/></svg> Brze akcije</h2></div>
+                  <div class="v21-actions-grid">
+                    <a href="messages.html" class="v21-action" id="v21NewMessage"><span class="v21-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="v21-action-text"><strong>Nova poruka</strong><small>Pošaljite poruku našem timu.</small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
+                    <button type="button" class="v21-action" id="v21AddDocument"><span class="v21-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V3m-5 5 5-5 5 5M4 16v5h16v-5"/></svg></span><span class="v21-action-text"><strong>Dodaj dokument</strong><small>Učitajte i podijelite datoteku.</small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+                    <a href="tasks.html" class="v21-action"><span class="v21-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18"/></svg></span><span class="v21-action-text"><strong>Pogledaj zadatke</strong><small>Pregledajte sve svoje zadatke.</small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
+                  </div>
+                </section>
               </section>
                 <!-- POZDRAV -->
                 <section class="welcome">
@@ -294,8 +311,8 @@
                         </div>
                         <button type="button" class="ptech-layout-button ptech-layout-button-secondary" id="ptechLayoutReset" hidden>Vrati zadano</button>
                         <button type="button" class="ptech-layout-button ptech-layout-button-secondary" id="ptechLayoutShow" hidden>Dodaj karticu</button>
-                        <button type="button" class="ptech-layout-button ptech-layout-button-secondary" id="v20PersonalUse" hidden>Prikaži moj raspored</button>
-                        <button type="button" class="ptech-layout-button ptech-layout-button-secondary" id="v20StandardUse" hidden>Standardni prikaz</button>
+                        <button type="button" class="ptech-layout-button ptech-layout-button-secondary" id="v21PersonalUse" hidden>Prikaži moj raspored</button>
+                        <button type="button" class="ptech-layout-button ptech-layout-button-secondary" id="v21StandardUse" hidden>Standardni prikaz</button>
                         <button type="button" class="ptech-layout-button" id="ptechLayoutEdit" aria-pressed="false" disabled>✦ Uredi raspored</button>
                     </div>
                 </div>
