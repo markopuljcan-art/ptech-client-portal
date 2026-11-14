@@ -1535,3 +1535,238 @@ body.ptech-home.portal-unified #portalHome .portal-unified-core .portal-summary-
  body.ptech-home.portal-unified #portalHome .portal-actions-grid{grid-template-columns:1fr;}
  body.ptech-home.portal-unified.ptech-layout-editing #portalHome .portal-unified-core > .ptech-tile-inner > .portal-live-card{padding-top:62px!important;}
 }
+
+
+/* ================================================================
+   Adaptive dashboard content (single unified editor/view).
+   Real rendered card measurements: mini > small > medium > full.
+   No nested scrolling or fake content.  Larger cards reveal REAL data.
+   ================================================================ */
+body.ptech-home.portal-unified #portalHome .portal-unified-core{
+  --adaptive-space:12px;
+}
+body.ptech-home.portal-unified #portalHome .portal-unified-core .portal-live-card{
+  min-width:0;min-height:0;overflow:hidden!important;
+}
+body.ptech-home.portal-unified #portalHome .portal-unified-core .portal-project-card,
+body.ptech-home.portal-unified #portalHome .portal-unified-core .portal-summary-card,
+body.ptech-home.portal-unified #portalHome .portal-unified-core .portal-actions{
+  min-width:0;min-height:0;
+}
+body.ptech-home.portal-unified #portalHome .portal-unified-core .portal-project-identity h3,
+body.ptech-home.portal-unified #portalHome .portal-unified-core .portal-card-heading h2,
+body.ptech-home.portal-unified #portalHome .portal-unified-core .portal-action-text strong{
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+body.ptech-home.portal-unified #portalHome .portal-adaptive-project-brief{
+  display:none;color:var(--portal-ink-soft);font-size:12px;line-height:1.4;
+  margin:4px 1px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+body.ptech-home.portal-unified #portalHome .portal-adaptive-details{
+  display:flex;flex-direction:column;gap:6px;min-width:0;overflow:hidden;margin:8px 0 0;
+}
+body.ptech-home.portal-unified #portalHome .portal-adaptive-details[hidden]{display:none!important}
+body.ptech-home.portal-unified #portalHome .portal-adaptive-list-row{
+  display:flex;align-items:center;gap:10px;justify-content:space-between;min-width:0;
+  color:var(--portal-ink)!important;text-decoration:none;border:1px solid var(--portal-edge);
+  background:var(--portal-inset);border-radius:10px;padding:8px 10px;
+}
+body.ptech-home.portal-unified #portalHome .portal-adaptive-list-row:hover{
+  border-color:var(--portal-bronze);filter:brightness(1.04);
+}
+body.ptech-home.portal-unified #portalHome .portal-adaptive-list-row strong{
+  flex:1;min-width:0;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+body.ptech-home.portal-unified #portalHome .portal-adaptive-list-row small{
+  flex:0 1 45%;min-width:0;max-width:45%;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;font-size:11px;color:var(--portal-ink-soft);
+}
+body.ptech-home.portal-unified #portalHome .portal-adaptive-actions-summary{
+  display:none;align-items:center;justify-content:space-between;gap:10px;
+  min-width:0;margin-top:auto;
+}
+body.ptech-home.portal-unified #portalHome .portal-adaptive-actions-count{
+  color:var(--portal-ink-soft);font-size:11px;font-weight:700;
+}
+body.ptech-home.portal-unified #portalHome .portal-adaptive-actions-view{
+  cursor:pointer;background:var(--portal-inset);border:1px solid var(--portal-border);
+  border-radius:10px;padding:6px 10px;white-space:nowrap;font-weight:750;
+  color:var(--portal-bronze-rich);font-size:11px;
+}
+body.ptech-home.portal-unified #portalHome .portal-adaptive-actions-view:hover{
+  border-color:var(--portal-bronze);background:var(--portal-card);
+}
+/* PROJECTS: the full panel retains all four original Supabase metrics. */
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="medium"] .portal-project-metrics{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="medium"] .portal-project-metrics > :first-child,
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="medium"] .portal-project-metrics > :last-child{display:none!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-project-metrics,
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-project-nav,
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-count-pill{
+  display:none!important;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-adaptive-project-brief{
+  display:block!important;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="small"] .portal-projects,
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="mini"] .portal-projects{padding:11px 13px!important;gap:5px}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-project-card{
+  padding:8px 10px!important;justify-content:center!important;gap:5px;flex:1;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-project-top{gap:9px;flex-wrap:nowrap!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-project-icon{width:36px;height:36px;flex:0 0 36px}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-project-icon svg{width:21px!important;height:21px!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-project-identity h3{font-size:15px!important;margin-bottom:2px}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-project-open{
+  flex:none;padding:7px 8px!important;font-size:0!important;gap:0;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-project-open svg{width:17px!important;height:17px!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="mini"] .portal-subtitle,
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="mini"] .portal-status-pill,
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="mini"] .portal-adaptive-project-brief{
+  display:none!important;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="mini"] .portal-section-header{margin:0!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="mini"] .portal-section-header h2{font-size:12px;gap:5px}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="mini"] .portal-section-header svg{width:15px!important;height:15px!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="mini"] .portal-project-card{padding:5px 7px!important;border:0;box-shadow:none;background:transparent}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="mini"] .portal-project-icon{display:none!important}
+/* SUMMARY CARDS: four levels, no clipped inner lists. */
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-adaptive-details,
+body.ptech-home.portal-unified #portalHome [data-widget-id="tasks"][data-adaptive-level="medium"] .portal-adaptive-details,
+body.ptech-home.portal-unified #portalHome [data-widget-id="messages"][data-adaptive-level="medium"] .portal-adaptive-details,
+body.ptech-home.portal-unified #portalHome [data-widget-id="documents"][data-adaptive-level="medium"] .portal-adaptive-details{
+  display:none!important;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-summary-detail,
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-summary-decoration,
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-preview-copy small,
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-preview-date{display:none!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-summary-card{padding:11px 12px!important;gap:6px;justify-content:space-between}
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-card-heading h2{font-size:13px!important;gap:7px}
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-card-heading svg{width:18px!important;height:18px!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-summary-preview{min-height:0!important;padding:2px 0!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-empty-icon{width:25px;height:25px}
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-empty-icon svg{width:16px!important;height:16px!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-empty-preview{font-size:11px;gap:4px}
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-card-link{padding-top:5px;font-size:11px}
+body.ptech-home.portal-unified #portalHome [data-widget-id="tasks"][data-adaptive-level="mini"] .portal-task-main{padding:0!important;background:transparent!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id="tasks"][data-adaptive-level="mini"] .portal-count-area strong{font-size:23px!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id="tasks"][data-adaptive-level="mini"] .portal-count-area span,
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="mini"]) .portal-card-link,
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="mini"]) .portal-summary-preview .portal-empty-icon{display:none!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="mini"]) .portal-summary-preview .portal-empty-preview{line-height:1.2;font-size:10px}
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="mini"]) .portal-summary-card{justify-content:center!important;gap:4px;padding:8px!important}
+/* FULL summary cards: short real-data lists appear only with enough space. */
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="full"]) .portal-summary-preview{min-height:42px;flex:0 1 auto}
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="full"]) .portal-adaptive-details{flex:1;}
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="full"]) .portal-adaptive-list-row:nth-child(n+4){display:none}
+/* ACTIONS: show genuinely usable shortcuts at every size. */
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-adaptive-level="full"] .portal-actions-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-adaptive-level="medium"] .portal-actions-grid{
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));gap:8px;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-adaptive-level="medium"] .portal-action{
+  min-height:56px;padding:8px 10px;gap:8px;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-adaptive-level="medium"] .portal-action-text strong{font-size:12px}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-adaptive-level="medium"] .portal-action-text small{font-size:10px}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-actions{
+  padding:10px 12px!important;gap:5px;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-section-header{margin:0!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-section-header h2{font-size:13px;gap:7px}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-actions-grid{grid-template-columns:1fr!important;gap:0;}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-action:not(:first-child){display:none!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-action{
+  min-height:38px;padding:4px 7px;gap:6px;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-action-text strong{font-size:11px}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-action small,
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-action > svg{display:none!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-action-icon{width:27px;height:27px;flex:0 0 27px;border-radius:8px}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-action-icon svg{width:16px!important;height:16px!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-adaptive-actions-summary{display:flex!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-adaptive-level="mini"] .portal-actions-grid{display:none!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-adaptive-level="mini"] .portal-adaptive-actions-summary{margin-top:4px}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-adaptive-level="mini"] .portal-section-header h2{font-size:12px}
+/* Additional hub and personal widgets also adapt, instead of retaining huge captions. */
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget:is([data-adaptive-level="mini"],[data-adaptive-level="small"]) .ptech-hub-extra,
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget:is([data-adaptive-level="mini"],[data-adaptive-level="small"]) .ptech-hub-description,
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget:is([data-adaptive-level="mini"],[data-adaptive-level="small"]) .ptech-personal-body > p{display:none!important}
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="mini"] .ptech-hub-body,
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget[data-adaptive-level="mini"] .ptech-personal-body{padding:8px!important;gap:3px}
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="mini"] .ptech-hub-icon{width:25px;height:25px;font-size:14px}
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="mini"] .ptech-hub-link,
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget[data-adaptive-level="mini"] .ptech-personal-actions{display:none!important}
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget[data-adaptive-level="medium"] .ptech-personal-body > p{
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+body.ptech-home.portal-unified #portalHome .ptech-widget[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){
+  body.ptech-home.portal-unified #portalHome .portal-adaptive-list-row,
+  body.ptech-home.portal-unified #portalHome .portal-adaptive-actions-view{transition:none!important}
+}
+/* Larger panels favor readable information rather than an empty card bottom. */
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-adaptive-level="medium"] .portal-actions-grid{
+  flex:1;align-items:stretch;grid-auto-rows:minmax(0,1fr);
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-adaptive-level="medium"] .portal-action{
+  height:100%;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-adaptive-level="medium"] .portal-action-text small{
+  display:block!important;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="medium"] .portal-project-metrics{
+  display:grid!important;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id="tasks"][data-adaptive-level="medium"] .portal-summary-detail{
+  display:block!important;
+}
+/* Compact action panel: fully accessible quick-action selector without leaving
+   the dashboard or silently opening an editor. */
+body.ptech-home .portal-adaptive-dialog-backdrop{
+  position:fixed;inset:0;z-index:11000;display:grid;place-items:center;
+  padding:16px;background:rgba(9,16,30,.62);backdrop-filter:blur(8px);
+}
+body.ptech-home .portal-adaptive-dialog{
+  width:min(470px,100%);max-height:min(680px,calc(100dvh - 32px));overflow-y:auto;
+  border-radius:20px;padding:19px;background:var(--portal-card);
+  border:1px solid var(--portal-border);box-shadow:0 20px 65px rgba(8,18,35,.35);
+  color:var(--portal-ink);
+}
+body.ptech-home .portal-adaptive-dialog-header{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px;
+}
+body.ptech-home .portal-adaptive-dialog-header h2{
+  margin:0;font-size:20px;color:var(--portal-ink);font-weight:800;
+}
+body.ptech-home .portal-adaptive-dialog-close{
+  border:1px solid var(--portal-border);background:var(--portal-inset);
+  border-radius:9px;color:var(--portal-ink);font-size:12px;font-weight:800;
+  padding:9px 10px;cursor:pointer;
+}
+body.ptech-home .portal-adaptive-dialog-list{display:flex;flex-direction:column;gap:10px}
+body.ptech-home .portal-adaptive-dialog-item{
+  width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:5px;
+  border:1px solid var(--portal-border);background:var(--portal-inset);
+  border-radius:12px;padding:14px 15px;cursor:pointer;text-decoration:none;
+  text-align:left;color:var(--portal-ink)!important;
+}
+body.ptech-home .portal-adaptive-dialog-item:hover{
+  border-color:var(--portal-bronze);filter:brightness(1.04)
+}
+body.ptech-home .portal-adaptive-dialog-item:disabled{opacity:.5;cursor:not-allowed}
+body.ptech-home .portal-adaptive-dialog-item strong{font-size:15px;color:var(--portal-ink)}
+body.ptech-home .portal-adaptive-dialog-item small{font-size:12px;color:var(--portal-ink-soft)}
+body.ptech-home .portal-adaptive-dialog :focus-visible{outline:3px solid var(--portal-focus);outline-offset:2px}
+/* The medium project card keeps its title fully legible next to status and CTA. */
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="medium"] .portal-project-top{gap:9px}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="medium"] .portal-project-icon{width:45px;height:45px;flex-basis:45px}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="medium"] .portal-project-identity h3{font-size:20px;letter-spacing:-.4px}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="medium"] .portal-status-pill{font-size:10px;padding:6px 9px}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="medium"] .portal-project-open{font-size:11px;padding:9px 10px;gap:5px}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="mini"] .portal-project-identity{min-width:0;flex:1}
+body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="mini"] .portal-project-identity h3{font-size:13px!important;line-height:1.16;white-space:normal;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2}

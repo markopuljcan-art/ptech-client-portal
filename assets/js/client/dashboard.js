@@ -591,6 +591,23 @@
     const tiny=logical && logical.w<=minColumn(id) && logical.h<=MIN_ROWS;
     const mode=zoom?.widget===widget?'expanded':tiny||width<285||height<250?'compact':width>=425&&height>=325?'expanded':'standard';
     if(widget.dataset.widgetDensity!==mode)widget.dataset.widgetDensity=mode;
+    // One shared dashboard: real viewport dimensions, never hard-coded grid sizes.
+    // Keep these tiers independent from legacy compact/standard/expanded rules.
+    // Editing temporarily reserves room for the toolbar without changing layout.
+    const room=Math.max(0,height-(editing && !zoom ? 28:0));
+    let level;
+    if(zoom?.widget===widget)level='full';
+    else if(id==='projects'){
+      level=width<235||room<155?'mini':width<385||room<215?'small':
+        width<670||room<275?'medium':'full';
+    }else if(id==='actions'){
+      level=width<200||room<125?'mini':width<380||room<190?'small':
+        width<800||room<245?'medium':'full';
+    }else{
+      level=width<200||room<128?'mini':width<310||room<208?'small':
+        width<585||room<345?'medium':'full';
+    }
+    if(widget.dataset.adaptiveLevel!==level)widget.dataset.adaptiveLevel=level;
     if(id==='projects'){
       // A 4-column project stats row needs little more than 300px vertically;
       // narrower cards need extra height for the wrapped project details.
@@ -1532,6 +1549,127 @@
   };
   const create = (tag,cls,content) => {const n = document.createElement(tag);if(cls)n.className=cls;if(content!==undefined)n.textContent=String(content);return n;};
   const text = (id,value) => {const n=$(id);if(n && n.textContent!==String(value))n.textContent=String(value);};
+  // Adaptive detail rows are generated from existing live data only.  We do not
+  // create mock messages, documents or tasks for real client accounts.
+  const extras={};
+  function setupAdaptiveDetails(){
+    const project=home?.querySelector('.portal-project-card');
+    if(project && !project.querySelector('.portal-adaptive-project-brief')){
+      const brief=create('p','portal-adaptive-project-brief');
+      brief.setAttribute('aria-label','Sažetak projekta');
+      project.append(brief);extras.project=brief;
+    }
+    const definitions=[
+      ['tasks','.portal-summary-card[aria-label="Moji zadaci"]','.portal-summary-detail'],
+      ['messages','.portal-summary-card[aria-label="Nedavne poruke"]','.portal-summary-preview'],
+      ['documents','.portal-summary-card[aria-label="Dokumenti"]','.portal-summary-preview']
+    ];
+    for(const [id,cardSelector,afterSelector] of definitions){
+      const card=home?.querySelector(cardSelector),after=card?.querySelector(afterSelector);
+      if(!card||!after)continue;
+      const detail=create('div','portal-adaptive-details');
+      detail.setAttribute('aria-label',id==='tasks'?'Sljedeći zadaci':id==='messages'?'Ostale nedavne poruke':'Ostali nedavni dokumenti');
+      detail.hidden=true;after.after(detail);extras[id]=detail;
+    }
+    const actionCard=home?.querySelector('.portal-actions');
+    if(actionCard){
+      const summary=create('div','portal-adaptive-actions-summary');
+      const n=create('span','portal-adaptive-actions-count','3 brze akcije');
+      const view=create('button','portal-adaptive-actions-view','Prikaži sve');view.type='button';
+      view.setAttribute('aria-label','Prikaži sve brze akcije preko cijelog zaslona');
+      view.addEventListener('click',()=>{
+        if(document.body.classList.contains('ptech-layout-editing')){
+          home?.querySelector('[data-widget-id="actions"] .ptech-widget-expand')?.click();
+          return;
+        }
+        openAdaptiveActionsDialog(view);
+      });
+      summary.append(n,view);actionCard.append(summary);extras.actions=n;
+    }
+  }
+  function openAdaptiveActionsDialog(trigger){
+    const nativeActions=[...home?.querySelectorAll('.portal-actions-grid .portal-action')||[]];
+    if(!nativeActions.length)return;
+    const backdrop=create('div','portal-adaptive-dialog-backdrop');
+    const dialog=create('section','portal-adaptive-dialog');
+    dialog.setAttribute('role','dialog');dialog.setAttribute('aria-modal','true');
+    dialog.setAttribute('aria-label','Sve brze akcije');
+    const title=create('h2','', 'Brze akcije');
+    const header=create('div','portal-adaptive-dialog-header');
+    const close=create('button','portal-adaptive-dialog-close','Zatvori ×');close.type='button';
+    header.append(title,close);
+    const list=create('div','portal-adaptive-dialog-list');
+    const restoreOverflow=document.documentElement.style.overflow;
+    const cleanup=()=>{document.removeEventListener('keydown',onKey,true);backdrop.remove();document.documentElement.style.overflow=restoreOverflow;trigger.focus({preventScroll:true});};
+    const onKey=event=>{
+      if(event.key==='Escape'){event.preventDefault();cleanup();return;}
+      if(event.key!=='Tab')return;
+      const focusables=[...dialog.querySelectorAll('a[href],button:not([disabled])')];
+      if(!focusables.length)return;
+      if(event.shiftKey&&document.activeElement===focusables[0]){event.preventDefault();focusables.at(-1).focus();}
+      else if(!event.shiftKey&&document.activeElement===focusables.at(-1)){event.preventDefault();focusables[0].focus();}
+    };
+    close.addEventListener('click',cleanup);
+    backdrop.addEventListener('pointerdown',event=>{if(event.target===backdrop)cleanup();});
+    for(const original of nativeActions){
+      const label=original.querySelector('.portal-action-text strong')?.textContent?.trim()||'Otvori';
+      const description=original.querySelector('.portal-action-text small')?.textContent?.trim()||'';
+      const isAnchor=original.tagName==='A';
+      const el=create(isAnchor?'a':'button','portal-adaptive-dialog-item');
+      if(isAnchor)el.href=original.href;
+      else{el.type='button';el.disabled=original.disabled;el.addEventListener('click',()=>{cleanup();original.click();});}
+      el.append(create('strong','',label),create('small','',description));
+      list.append(el);
+    }
+    dialog.append(header,list);backdrop.append(dialog);document.body.append(backdrop);
+    document.documentElement.style.overflow='hidden';
+    document.addEventListener('keydown',onKey,true);
+    close.focus({preventScroll:true});
+  }
+  function appendAdaptiveRow(container,href,title,detail){
+    const row=create('a','portal-adaptive-list-row');row.href=href;
+    const titleNode=create('strong','',title),details=create('small','',detail);
+    row.append(titleNode,details);container.append(row);
+  }
+  function refreshAdaptiveDetails(){
+    if(extras.project){
+      const status=$('portalProjectStatus')?.hidden?'':$('portalProjectStatus')?.textContent?.trim();
+      const pct=$('portalProjectPercent')?.textContent?.trim();
+      const due=$('portalProjectDeadline')?.textContent?.trim();
+      extras.project.textContent=[status,pct&&`Napredak ${pct}`,due&&due!=='–'?`Rok ${due}`:''].filter(Boolean).join(' · ');
+    }
+    if(extras.tasks){
+      const rows=[...source.tasks?.querySelectorAll('.ptech-task-preview-row')||[]].slice(0,4);
+      const signature=rows.map(r=>r.textContent).join('|');
+      if(extras.tasks.dataset.signature!==signature){
+        extras.tasks.dataset.signature=signature;extras.tasks.replaceChildren();
+        for(const row of rows){
+          appendAdaptiveRow(extras.tasks,'tasks.html',row.querySelector('strong')?.textContent?.trim()||'Zadatak',
+            row.querySelector('small')?.textContent?.trim()||'');
+        }
+      }
+      extras.tasks.hidden=!rows.length;
+    }
+    for(const [id,list,url] of [['messages',source.messages,'messages.html'],['documents',source.documents,'documents.html']]){
+      const holder=extras[id];if(!holder||!list)continue;
+      const rows=[...list.querySelectorAll('.overview-row')].slice(1,5);
+      const signature=rows.map(r=>r.textContent).join('|');
+      if(holder.dataset.signature!==signature){
+        holder.dataset.signature=signature;holder.replaceChildren();
+        for(const row of rows){
+          const title=row.querySelector('.overview-row-main strong')?.textContent?.trim()||
+            (id==='messages'?'Poruka':'Dokument');
+          const detail=row.querySelector('.overview-row-main small')?.textContent?.trim()||'';
+          appendAdaptiveRow(holder,url,title,detail);
+        }
+      }
+      holder.hidden=!rows.length;
+    }
+    if(extras.actions){
+      const count=home?.querySelectorAll('.portal-actions-grid .portal-action').length||0;
+      extras.actions.textContent=`${count} ${count===1?'brza akcija':'brze akcije'}`;
+    }
+  }
   // The global `projects` lexical binding is readable across defer scripts. Do not
   // redeclare it locally: that would shadow the binding provided by script.js.
   function getProjects(){try{return typeof window.projects !== 'undefined' && Array.isArray(window.projects) ? window.projects : (typeof projects !== 'undefined' && Array.isArray(projects) ? projects : []);}catch(_){return [];}}
@@ -1620,7 +1758,7 @@
     link.append(icon,copy,download);target.replaceChildren(link);
   }
   let queued=false;
-  function update(){queued=false;name();project();tasks();messages();documents();}
+  function update(){queued=false;name();project();tasks();messages();documents();refreshAdaptiveDetails();}
   function queue(){if(queued)return;queued=true;requestAnimationFrame(update);}
   [source.slider,source.count,source.tasks,source.messages,source.documents,source.user].forEach(node=>{if(node)new MutationObserver(queue).observe(node,{subtree:true,childList:true,characterData:true});});
   $('portalProjectPrev')?.addEventListener('click',()=>{try{if(typeof setActiveProject==='function')setActiveProject(Math.max(0,getIndex()-1));}catch(_){}queue();});
@@ -1673,6 +1811,7 @@
     window.dispatchEvent(new Event('resize'));
   }
   mountUnifiedCards();
+  setupAdaptiveDetails();
   function refreshEditControls(){
     const editing=document.body.classList.contains('ptech-layout-editing');
     if(editButton){
