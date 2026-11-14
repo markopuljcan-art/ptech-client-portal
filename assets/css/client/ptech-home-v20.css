@@ -1,0 +1,215 @@
+/* PTech Digital V20 - standalone homepage based on approved dark mockup.
+   Uses V16 original markup *only* in editing mode: no duplicate Supabase queries,
+   no changes to V16 saved layouts, local tasks, or upload behavior. */
+body.ptech-home-v20 {
+  --v20-bg: #15223a;
+  --v20-text: #fff9f4;
+  --v20-muted: #c7cdda;
+  --v20-accent: #e6aa7c;
+  --v20-accent-subtle: rgba(225,165,123,.19);
+  --v20-panel-bg: linear-gradient(135deg,rgba(59,72,96,.82),rgba(34,49,74,.92) 78%);
+  --v20-panel-edge: rgba(239,197,164,.32);
+  --v20-panel-inner: rgba(201,222,252,.10);
+  --v20-tile-bg: linear-gradient(132deg,rgba(88,103,130,.28),rgba(73,88,113,.21));
+  --v20-tile-edge: rgba(218,220,237,.18);
+  --v20-rule: rgba(233,220,218,.17);
+  --v20-shadow: 0 12px 34px rgba(3,11,27,.27),inset 0 1px 0 rgba(255,255,255,.13);
+  --v20-button-text: #fffaf6;
+}
+body.ptech-home-v20.light-mode {
+  --v20-bg: #fcf7f1;
+  --v20-text: #18263e;
+  --v20-muted: #635a55;
+  --v20-accent: #aa6039;
+  --v20-accent-subtle: rgba(207,140,93,.17);
+  --v20-panel-bg: linear-gradient(132deg,rgba(255,251,247,.96),rgba(247,233,220,.93));
+  --v20-panel-edge: rgba(177,110,73,.42);
+  --v20-panel-inner: rgba(255,255,255,.70);
+  --v20-tile-bg: linear-gradient(137deg,rgba(255,255,255,.81),rgba(246,231,219,.81));
+  --v20-tile-edge: rgba(176,122,86,.24);
+  --v20-rule: rgba(166,113,83,.19);
+  --v20-shadow: 0 13px 30px rgba(103,68,43,.11),inset 0 1px 0 rgba(255,255,255,.9);
+  --v20-button-text: #fffaf6;
+}
+/* V16 remains intact, but does not compete for normal dashboard layout. */
+body.ptech-home-v20:not(.ptech-layout-editing) .dashboard-content > :is(.welcome,.ptech-layout-bar,.ptech-layout-hint,.ptech-hidden-widgets,.ptech-dashboard-grid,.footer){display:none!important}
+body.ptech-home-v20.ptech-layout-editing #v20Home{display:none!important}
+body.ptech-home-v20.ptech-layout-editing .dashboard-content > .welcome{display:none!important}
+body.ptech-home-v20.ptech-layout-editing .dashboard-content > .ptech-layout-bar{display:flex!important}
+body.ptech-home-v20.ptech-layout-editing .dashboard-content > .ptech-dashboard-grid{display:grid!important}
+body.ptech-home-v20.ptech-layout-editing .dashboard-content > .footer{display:block!important}
+body.ptech-home-v20 .dashboard-content{max-width: 1630px!important; padding: 23px clamp(22px,2.7vw,46px) 44px!important; width:100%!important; margin:0 auto!important; }
+body.ptech-home-v20 .dashboard-header{min-height:77px!important;padding-top:12px!important;padding-bottom:12px!important}
+body.ptech-home-v20 .dashboard-mobile-brand{display:flex;flex-direction:column;align-items:flex-start;gap:3px}
+body.ptech-home-v20 .dashboard-mobile-brand span{font-size:11px;letter-spacing:2px;color:var(--v20-accent);font-weight:850}
+body.ptech-home-v20 .dashboard-mobile-brand strong{font-size:20px;line-height:1.1;color:var(--v20-text);font-weight:850}
+body.ptech-home-v20 .dashboard-header .header-actions{width:auto;margin-left:auto}
+body.ptech-home-v20 .desktop-main{background-color:var(--v20-bg)!important}
+body.ptech-home-v20 .sidebar-link{transition:background .23s ease,transform .23s ease,box-shadow .23s ease,border-color .23s ease!important}
+html.ptech-glass-v18 body.ptech-home-v20 .sidebar-link:hover:not(.active){background:var(--v20-accent-subtle)!important;transform:translateX(3px)!important;box-shadow:0 6px 17px rgba(9,15,29,.13)}
+html.ptech-glass-v18 body.ptech-home-v20 .sidebar-link.active{background:rgba(177,131,119,.28)!important;box-shadow:inset 2px 0 0 #d7956b,0 6px 16px rgba(4,12,30,.10)!important}
+html.ptech-glass-v18 body.ptech-home-v20.light-mode .sidebar-link.active{background:rgba(255,251,245,.80)!important}
+body.ptech-home-v20 #v20Home {width:100%;min-width:0;color:var(--v20-text);font-family:'Inter',system-ui,-apple-system,sans-serif}
+body.ptech-home-v20 #v20Home *{box-sizing:border-box}
+body.ptech-home-v20 #v20Home svg{width:23px;height:23px;flex:0 0 auto}
+body.ptech-home-v20 .v20-hero{position:relative;padding:1px 0 26px; min-width:0}
+body.ptech-home-v20 .v20-eyebrow{display:block;color:var(--v20-accent);font-weight:850;letter-spacing:3px;font-size:11px;margin-bottom:10px}
+body.ptech-home-v20 .v20-hero h1{color:var(--v20-text);font-size:clamp(27px,2.7vw,43px);font-weight:850;line-height:1.12;letter-spacing:-1.8px;margin:0 0 10px}
+body.ptech-home-v20 .v20-exclaim{color:var(--v20-accent)}
+body.ptech-home-v20 .v20-hero p{color:var(--v20-muted);font-size:14px;line-height:1.55;margin:0;max-width:820px}
+body.ptech-home-v20 .v20-edit-btn{position:absolute;right:0;top:0;border:1px solid var(--v20-panel-edge);border-radius:11px;padding:9px 12px;background:var(--v20-tile-bg);color:var(--v20-text);font-size:12px;cursor:pointer;opacity:.90;transition:opacity .2s,transform .2s,background .2s}
+body.ptech-home-v20 .v20-edit-btn:hover{opacity:1;transform:translateY(-2px)}
+body.ptech-home-v20 .v20-board{width:100%;display:grid;grid-template-columns:minmax(0,1.46fr) minmax(0,1fr);grid-template-areas:'projects tasks' 'actions actions' 'messages documents';gap:18px;align-items:stretch;min-width:0}
+body.ptech-home-v20 .v20-panel{position:relative;display:flex;flex-direction:column;min-width:0;overflow:hidden;border-radius:21px;border:1px solid var(--v20-panel-edge);background:radial-gradient(ellipse 440px 170px at 102% -10%,rgba(203,144,110,.17),transparent 76%),var(--v20-panel-bg);box-shadow:var(--v20-shadow);padding:16px 23px 17px;isolation:isolate;color:var(--v20-text)}
+body.ptech-home-v20 .v20-panel::after{content:'';position:absolute;inset:auto -40px -120px auto;width:270px;height:200px;background:radial-gradient(ellipse at center,rgba(233,159,104,.11),transparent 73%);pointer-events:none;z-index:-1}
+body.ptech-home-v20.light-mode .v20-panel::after{background:radial-gradient(ellipse at center,rgba(233,159,104,.085),transparent 73%)}
+body.ptech-home-v20 .v20-project-panel{grid-area:projects;min-height:284px}
+body.ptech-home-v20 .v20-task-panel{grid-area:tasks;min-height:284px;align-items:center}
+body.ptech-home-v20 .v20-actions-panel{grid-area:actions;min-height:140px;padding:13px 19px 17px}
+body.ptech-home-v20 .v20-message-panel{grid-area:messages;min-height:187px}
+body.ptech-home-v20 .v20-document-panel{grid-area:documents;min-height:187px}
+body.ptech-home-v20 .v20-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;padding:0 8px 10px;border-bottom:1px solid var(--v20-rule);width:100%;}
+body.ptech-home-v20 .v20-heading-title{display:flex;align-items:center;gap:14px;min-width:0;color:var(--v20-accent)}
+body.ptech-home-v20 .v20-heading-title svg{width:24px;height:24px;stroke-width:1.9}
+body.ptech-home-v20 .v20-heading-title h2{font-size:12px;font-weight:850;letter-spacing:1.65px;white-space:nowrap;line-height:1.25;color:var(--v20-accent);margin:0}
+body.ptech-home-v20 .v20-project-index{font-size:11px;color:var(--v20-muted);border:1px solid var(--v20-rule);border-radius:999px;padding:4px 11px}
+body.ptech-home-v20 .v20-project-content{display:flex;flex-direction:column;min-height:209px;flex:1;padding:17px 7px 0}
+body.ptech-home-v20 .v20-project-info{display:flex;gap:18px;align-items:center;min-width:0}
+body.ptech-home-v20 .v20-project-icon{display:flex;align-items:center;justify-content:center;width:72px;height:66px;flex:0 0 72px;border-radius:16px;background:linear-gradient(135deg,#b98b71,#705c5d);color:#ffcea7;border:1px solid rgba(255,224,201,.15)}
+body.ptech-home-v20.light-mode .v20-project-icon{background:linear-gradient(135deg,#f9e3d2,#d7aa88);color:#99562e}
+body.ptech-home-v20 .v20-project-icon svg{width:35px!important;height:35px!important}
+body.ptech-home-v20 .v20-project-names{min-width:0;flex:1}
+body.ptech-home-v20 .v20-project-names h3{font-size:clamp(20px,1.5vw,27px);color:var(--v20-text);font-weight:850;letter-spacing:-.65px;line-height:1.18;margin:0 0 7px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body.ptech-home-v20 .v20-project-names small{display:block;font-size:12px;letter-spacing:2.1px;color:var(--v20-muted);font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body.ptech-home-v20 .v20-project-badges{display:flex;gap:9px;align-items:center;justify-content:flex-end;flex-wrap:wrap;flex:0 1 auto}
+body.ptech-home-v20 .v20-status-pill,body.ptech-home-v20 .v20-package-pill{font-size:11px;font-weight:650;white-space:nowrap;border-radius:999px;padding:8px 12px;border:1px solid var(--v20-tile-edge);color:var(--v20-text);background:var(--v20-tile-bg)}
+body.ptech-home-v20 .v20-status-pill{color:#dcf6e6;background:rgba(34,146,101,.24);border-color:rgba(85,210,144,.34)}
+body.ptech-home-v20 .v20-status-pill::before{content:'';display:inline-block;width:9px;height:9px;border-radius:50%;background:#4dcb87;margin-right:8px;vertical-align:0}
+body.ptech-home-v20 .v20-status-pill.waiting{background:rgba(225,155,62,.23);color:#ffe1ac}
+body.ptech-home-v20 .v20-status-pill.waiting::before{background:#f6bd6b}
+body.ptech-home-v20 .v20-status-pill.done{background:rgba(65,170,128,.18)}
+body.ptech-home-v20.light-mode .v20-status-pill{color:#17603d;background:#dcf5e7}
+body.ptech-home-v20.light-mode .v20-status-pill.waiting{color:#835525;background:#fff0d1}
+body.ptech-home-v20 .v20-open-project{display:flex;align-items:center;justify-content:center;flex:0 0 39px;width:39px;height:39px;border-radius:12px;border:1px solid var(--v20-tile-edge);background:var(--v20-tile-bg);color:var(--v20-text);text-decoration:none;transition:transform .22s ease,background .22s ease,box-shadow .22s ease}
+body.ptech-home-v20 .v20-open-project:hover{transform:translateX(3px);background:var(--v20-accent-subtle);box-shadow:0 5px 16px rgba(0,0,0,.12)}
+body.ptech-home-v20 .v20-open-project svg{width:19px;height:19px}
+body.ptech-home-v20 .v20-progress{margin-top:auto;padding:18px 0 14px}
+body.ptech-home-v20 .v20-progress-label{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px;color:var(--v20-muted);margin-bottom:9px}
+body.ptech-home-v20 .v20-progress-label strong{color:var(--v20-text);font-size:15px}
+body.ptech-home-v20 .v20-progress-track{height:17px;width:100%;border:1px solid var(--v20-tile-edge);background:rgba(138,153,177,.30);border-radius:99px;overflow:hidden}
+body.ptech-home-v20.light-mode .v20-progress-track{background:#e7dbd3}
+body.ptech-home-v20 .v20-progress-track span{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#b06a41,#e7b58f);transition:width .3s}
+body.ptech-home-v20 .v20-project-meta{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.18fr);gap:20px;border-top:1px solid var(--v20-rule);padding-top:13px;min-height:35px}
+body.ptech-home-v20 .v20-project-meta>div{display:flex;align-items:center;gap:11px;min-width:0;font-size:12px;color:var(--v20-muted);white-space:nowrap}
+body.ptech-home-v20 .v20-project-meta>div+div{border-left:1px solid var(--v20-rule);padding-left:20px}
+body.ptech-home-v20 .v20-project-meta svg{width:19px;height:19px}
+body.ptech-home-v20 .v20-project-meta strong{font-size:12px;color:var(--v20-text)}
+body.ptech-home-v20 .v20-project-pages{position:absolute;right:22px;bottom:8px;display:flex;gap:6px}
+body.ptech-home-v20 .v20-project-pages button{border:1px solid var(--v20-tile-edge);border-radius:8px;color:var(--v20-text);background:var(--v20-tile-bg);cursor:pointer;width:25px;height:25px}
+body.ptech-home-v20 .v20-task-panel .v20-panel-heading{align-self:stretch}
+body.ptech-home-v20 .v20-task-body{width:100%;display:flex;align-items:center;justify-content:center;flex:1;flex-direction:column;gap:8px;text-align:center;min-height:157px;padding:11px 8px 1px}
+body.ptech-home-v20 .v20-task-illustration{display:flex;align-items:center;justify-content:center;width:73px;height:69px;border-radius:16px;background:linear-gradient(140deg,#f2b989,#b66f42);color:#fff;border:1px solid rgba(255,238,217,.26);box-shadow:0 8px 18px rgba(128,76,48,.22)}
+body.ptech-home-v20 .v20-task-illustration svg{width:45px!important;height:45px!important;stroke-width:2.3}
+body.ptech-home-v20 .v20-task-body h3{font-size:18px;font-weight:850;line-height:1.24;letter-spacing:-.38px;margin:4px 0 0;color:var(--v20-text)}
+body.ptech-home-v20 .v20-task-body p{font-size:12.5px;line-height:1.45;color:var(--v20-muted);margin:0}
+body.ptech-home-v20 .v20-task-body .v20-task-mini{font-size:12px;color:var(--v20-muted);margin-top:5px}
+body.ptech-home-v20 .v20-primary-btn{display:inline-flex;gap:9px;align-items:center;justify-content:center;flex:0 0 auto;background:linear-gradient(120deg,#bd805d,#d3986e);padding:10px 22px;border:1px solid rgba(250,221,185,.31);color:var(--v20-button-text)!important;text-decoration:none;border-radius:13px;font-size:13px;font-weight:750;transition:transform .22s ease,box-shadow .22s ease}
+body.ptech-home-v20 .v20-primary-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(131,75,47,.30)}
+body.ptech-home-v20 .v20-primary-btn svg{width:17px!important;height:17px!important}
+body.ptech-home-v20 .v20-actions-panel .v20-panel-heading{min-height:34px;padding:0 7px 9px;border:0}
+body.ptech-home-v20 .v20-actions-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;flex:1;min-width:0}
+body.ptech-home-v20 .v20-action-tile{display:flex;align-items:center;gap:13px;min-width:0;text-align:left;border-radius:15px;border:1px solid var(--v20-tile-edge);background:var(--v20-tile-bg);color:var(--v20-text);padding:11px 13px;min-height:72px;text-decoration:none;cursor:pointer;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background .22s ease}
+body.ptech-home-v20 .v20-action-tile:not([disabled]):hover{transform:translateY(-3px);border-color:var(--v20-accent);box-shadow:0 12px 24px rgba(0,0,0,.14);background:var(--v20-accent-subtle)}
+body.ptech-home-v20 .v20-action-tile:disabled{opacity:.48;cursor:not-allowed}
+body.ptech-home-v20 .v20-action-icon{display:flex;align-items:center;justify-content:center;flex:0 0 48px;width:48px;height:48px;border-radius:12px;color:#f0b784;background:rgba(207,149,122,.18)}
+body.ptech-home-v20.light-mode .v20-action-icon{background:#f4dfd0;color:#aa6239}
+body.ptech-home-v20 .v20-action-icon svg{width:25px;height:25px}
+body.ptech-home-v20 .v20-action-copy{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+body.ptech-home-v20 .v20-action-copy strong{font-size:12.5px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.ptech-home-v20 .v20-action-copy small{font-size:11px;line-height:1.35;color:var(--v20-muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+body.ptech-home-v20 .v20-action-arrow{display:flex;flex:0 0 17px;color:var(--v20-muted)}
+body.ptech-home-v20 .v20-action-arrow svg{width:17px!important;height:17px!important}
+body.ptech-home-v20 .v20-overview-panel .v20-panel-heading{padding-bottom:9px;min-height:37px;border:0}
+body.ptech-home-v20 .v20-overview-content{flex:1;min-height:72px;display:flex;align-items:center;justify-content:center;margin-top:4px}
+body.ptech-home-v20 .v20-preview-link{display:flex;align-items:center;width:100%;gap:13px;min-height:69px;border-radius:12px;border:1px solid var(--v20-tile-edge);background:var(--v20-tile-bg);padding:9px 12px;color:var(--v20-text);text-decoration:none;min-width:0;transition:background .2s,border-color .2s}
+body.ptech-home-v20 .v20-preview-link:hover{background:var(--v20-accent-subtle);border-color:var(--v20-accent)}
+body.ptech-home-v20 .v20-preview-icon{width:45px;height:45px;flex:0 0 45px;border-radius:12px;background:rgba(191,141,114,.26);color:var(--v20-accent);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:850}
+body.ptech-home-v20.light-mode .v20-preview-icon{background:#f1ddca;color:#9d512e}
+body.ptech-home-v20 .v20-preview-icon svg{width:23px;height:23px}
+body.ptech-home-v20 .v20-preview-copy{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}
+body.ptech-home-v20 .v20-preview-copy strong{color:var(--v20-text);font-size:13px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+body.ptech-home-v20 .v20-preview-copy small{color:var(--v20-muted);font-size:11px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+body.ptech-home-v20 .v20-preview-date{color:var(--v20-muted);font-size:10.5px;white-space:nowrap;margin-left:4px}
+body.ptech-home-v20 .v20-preview-download{display:flex;align-items:center;justify-content:center;border-radius:9px;background:rgba(182,155,142,.14);border:1px solid var(--v20-tile-edge);color:var(--v20-accent);padding:8px;margin-left:auto}
+body.ptech-home-v20 .v20-preview-download svg{width:19px;height:19px}
+body.ptech-home-v20 .v20-empty{font-size:12px;color:var(--v20-muted);text-align:center;padding:18px 8px}
+body.ptech-home-v20 .v20-footer-link{display:flex;align-items:center;gap:9px;min-height:32px;padding:10px 2px 0;border-top:1px solid var(--v20-rule);font-size:12px;font-weight:750;color:var(--v20-accent);text-decoration:none;transition:gap .18s}
+body.ptech-home-v20 .v20-footer-link:hover{gap:15px;text-decoration:underline}
+body.ptech-home-v20 .v20-footer-link svg{width:17px!important;height:17px!important}
+@media (max-width:1450px){
+  body.ptech-home-v20 .v20-board{gap:15px}
+  body.ptech-home-v20 .v20-panel{padding-left:17px;padding-right:17px}
+  body.ptech-home-v20 .v20-project-info{gap:12px}
+  body.ptech-home-v20 .v20-project-icon{flex-basis:58px;width:58px;height:58px}
+  body.ptech-home-v20 .v20-actions-list{gap:9px}
+  body.ptech-home-v20 .v20-action-tile{gap:9px;padding:9px}
+  body.ptech-home-v20 .v20-action-icon{flex-basis:39px;width:39px;height:42px}
+  body.ptech-home-v20 .v20-action-copy strong{font-size:11.5px}
+}
+@media (max-width:1140px){
+  body.ptech-home-v20 .v20-board{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}
+  body.ptech-home-v20 .v20-action-copy small{font-size:10.5px}
+  body.ptech-home-v20 .v20-project-badges{gap:4px}
+  body.ptech-home-v20 .v20-status-pill,body.ptech-home-v20 .v20-package-pill{padding:6px 9px}
+  body.ptech-home-v20 .v20-project-meta{gap:12px}
+  body.ptech-home-v20 .v20-project-meta>div+div{padding-left:11px}
+  body.ptech-home-v20 .v20-project-meta>div{font-size:10.5px}
+}
+@media (max-width:850px){
+  body.ptech-home-v20 .v20-board{grid-template-columns:1fr;grid-template-areas:'projects' 'tasks' 'actions' 'messages' 'documents'}
+  body.ptech-home-v20 .v20-project-panel,body.ptech-home-v20 .v20-task-panel{min-height:260px}
+  body.ptech-home-v20 .v20-actions-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body.ptech-home-v20 .v20-hero{padding-top:38px}
+  body.ptech-home-v20 .v20-edit-btn{top:0;right:0}
+}
+@media (max-width:550px){
+  body.ptech-home-v20 .dashboard-content{padding:15px 14px 110px!important}
+  body.ptech-home-v20 .v20-hero{padding:36px 1px 22px}
+  body.ptech-home-v20 .v20-hero h1{font-size:29px;letter-spacing:-.8px}
+  body.ptech-home-v20 .v20-hero p{font-size:12.5px}
+  body.ptech-home-v20 .v20-board{gap:12px}
+  body.ptech-home-v20 .v20-panel{padding:12px 13px;min-height:0}
+  body.ptech-home-v20 .v20-project-content{padding:12px 0 0;min-height:0}
+  body.ptech-home-v20 .v20-project-info{display:grid;grid-template-columns:52px minmax(0,1fr) 35px;gap:8px}
+  body.ptech-home-v20 .v20-project-icon{height:52px;width:52px;flex-basis:52px}
+  body.ptech-home-v20 .v20-project-names h3{font-size:18px}
+  body.ptech-home-v20 .v20-project-badges{grid-column:2;grid-row:2;justify-content:flex-start}
+  body.ptech-home-v20 .v20-open-project{grid-column:3;grid-row:1 / span 2;width:35px;height:35px;flex-basis:35px}
+  body.ptech-home-v20 .v20-progress{padding:12px 0}
+  body.ptech-home-v20 .v20-project-meta{grid-template-columns:1fr;gap:7px;padding-top:9px}
+  body.ptech-home-v20 .v20-project-meta>div+div{padding-left:0;border-left:0}
+  body.ptech-home-v20 .v20-task-panel{min-height:255px}
+  body.ptech-home-v20 .v20-actions-list{grid-template-columns:1fr 1fr;gap:8px}
+  body.ptech-home-v20 .v20-action-tile{min-height:94px;align-items:flex-start;flex-direction:column;gap:5px;padding:10px}
+  body.ptech-home-v20 .v20-action-icon{width:35px;height:35px;flex-basis:35px}
+  body.ptech-home-v20 .v20-action-icon svg{width:19px;height:19px}
+  body.ptech-home-v20 .v20-action-arrow{position:absolute;right:8px;top:11px}
+  body.ptech-home-v20 .v20-action-tile{position:relative}
+  body.ptech-home-v20 .v20-action-copy strong{font-size:11px;white-space:normal}
+  body.ptech-home-v20 .v20-action-copy small{font-size:10px}
+  body.ptech-home-v20 .v20-preview-date{display:none}
+  body.ptech-home-v20 .v20-panel-heading{padding-left:0;padding-right:0}
+  body.ptech-home-v20 .v20-heading-title{gap:8px}
+  body.ptech-home-v20 .v20-heading-title h2{font-size:10.7px;letter-spacing:1.25px}
+}
+@media (prefers-reduced-motion: reduce){body.ptech-home-v20 .v20-screen *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Briefly mount the original V16 grid before its position capture. */
+body.ptech-home-v20.ptech-home-preparing-edit #v20Home{display:none!important}
+body.ptech-home-v20.ptech-home-preparing-edit .dashboard-content > .ptech-dashboard-grid{display:grid!important}
+
+/* Opt-in personal V16 arrangement. The approved mockup remains the default. */
+body.ptech-home-v20.ptech-home-personal:not(.ptech-layout-editing) #v20Home{display:none!important}
+body.ptech-home-v20.ptech-home-personal:not(.ptech-layout-editing) .dashboard-content > .ptech-layout-bar{display:flex!important}
+body.ptech-home-v20.ptech-home-personal:not(.ptech-layout-editing) .dashboard-content > .ptech-dashboard-grid{display:grid!important}
+body.ptech-home-v20.ptech-home-personal:not(.ptech-layout-editing) .dashboard-content > .footer{display:block!important}

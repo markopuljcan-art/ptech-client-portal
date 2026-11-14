@@ -1,9 +1,9 @@
 
 <!DOCTYPE html>
-<html lang="hr" class="ptech-v182 ptech-v19">
+<html lang="hr">
 <head>
 <link rel="stylesheet" href="./assets/css/client/ptech-client-nav-v14.css?v=14.1">
-<script src="./assets/js/client/ptech-client-nav-v14.js?v=18.2.0" defer></script>
+<script src="./assets/js/client/ptech-client-nav-v14.js?v=18-restore-1" defer></script>
     <link rel="stylesheet" href="./assets/css/shared/ptech-loading.css?v=13.8">
     <script src="./assets/js/shared/ptech-loading.js?v=13.8" defer></script>
     <meta charset="UTF-8">
@@ -47,23 +47,15 @@
     ></script>
     
 <link rel="stylesheet" href="./assets/css/client/v13-mobile.css?v=13.10">
-<link rel="stylesheet" href="./assets/css/client/ptech-dashboard-v16.css?v=16.11">
+<link rel="stylesheet" href="./assets/css/client/ptech-dashboard-v16.css?v=16.11-restore-1">
 <script src="./assets/js/client/v13-mobile.js?v=13.10" defer></script>
-<script src="./assets/js/client/ptech-dashboard-v16.js?v=19.1.0" defer></script>
+<script src="./assets/js/client/ptech-dashboard-v16.js?v=16.11-restore-1" defer></script>
 
-
-<!-- PTech Digital V18.2: one cohesive design layer loaded after page styles. -->
-<link rel="stylesheet" href="./assets/css/client/ptech-ui-v18-2.css?v=18.2.0">
-<script src="./assets/js/client/ptech-ui-v18-2.js?v=19.1.0" defer></script>
-<link rel="stylesheet" href="./assets/css/client/ptech-reference-v19.css?v=19.1.0">
-<script src="./assets/js/client/ptech-reference-v19.js?v=19.1.0" defer></script>
-<link rel="stylesheet" href="./assets/css/client/ptech-home-v19-2.css?v=19.2.0">
-<script src="./assets/js/client/ptech-home-v19-2.js?v=19.2.0" defer></script>
-<link rel="stylesheet" href="./assets/css/client/ptech-home-exact-v19-3.css?v=19.3.0">
-<script src="./assets/js/client/ptech-home-exact-v19-3.js?v=19.3.0" defer></script>
+<link rel="stylesheet" href="./assets/css/client/ptech-home-v20.css?v=20.0.1">
+<script src="./assets/js/client/ptech-home-v20.js?v=20.0.1" defer></script>
 </head>
 
-<body class="portal-desktop ptech-home-v192 v192-reference-view">
+<body class="portal-desktop ptech-home-v20">
 
     <main class="dashboard desktop-layout">
 
@@ -104,8 +96,8 @@
 
                 <a href="tasks.html" class="sidebar-link">
                     <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <rect x="4" y="4" width="16" height="16" rx="2"></rect>
-                        <path d="m8 12 3 3 5-6"></path>
+                        <rect x="4" y="4" width="16" height="16" rx="3"></rect>
+                        <path d="m8 11 2 2 5-5M8 17h8"></path>
                     </svg>
                     <span>Zadaci</span>
                 </a>
@@ -215,9 +207,51 @@
                 </div>
             </header>
 
-            <!-- GLAVNI SADRZAJ -->
+            <!-- V20: vizualni prikaz prema odobrenoj slici. Originalni V16 grid ostaje ispod za uređivanje. -->
             <div class="dashboard-content">
-
+              <section class="v20-screen" id="v20Home" aria-label="Početna - pregled">
+                <div class="v20-hero">
+                  <span class="v20-eyebrow">DOBRODOŠLI U PTECH DIGITAL</span>
+                  <h1>Dobar dan, <span id="v20FirstName">Klijente</span><span class="v20-exclaim">!</span></h1>
+                  <p>Ovdje pratite svoje projekte, zadatke, komunikaciju i dokumente na jednom mjestu.</p>
+                  <button type="button" id="v20Edit" class="v20-edit-btn">✦ Uredi dashboard</button>
+                </div>
+                <div class="v20-board">
+                  <article class="v20-panel v20-project-panel" aria-label="Aktivni projekti">
+                    <div class="v20-panel-heading"><div class="v20-heading-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h6l2 2h10v12H3z"/></svg><h2>AKTIVNI PROJEKTI</h2></div><span id="v20ProjectIndex" class="v20-project-index" hidden>1/1</span></div>
+                    <div id="v20ProjectContent" class="v20-project-content">
+                      <div class="v20-project-info">
+                        <span class="v20-project-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8m-4-3v3"/></svg></span>
+                        <div class="v20-project-names"><h3 id="v20ProjectTitle">Učitavanje projekata...</h3><small id="v20ProjectName"></small></div>
+                        <div class="v20-project-badges"><span id="v20ProjectStatus" class="v20-status-pill" hidden></span><span id="v20ProjectPackage" class="v20-package-pill" hidden></span></div>
+                        <a id="v20ProjectOpen" class="v20-open-project" href="my-projects.html" aria-label="Otvori projekt" title="Otvori projekt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
+                      </div>
+                      <div class="v20-progress"><div class="v20-progress-label"><span>Napredak projekta</span><strong id="v20ProjectPercent">0%</strong></div><div class="v20-progress-track" role="progressbar" aria-label="Napredak projekta" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="v20ProjectTrack"><span id="v20ProjectBar"></span></div></div>
+                      <div class="v20-project-meta"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18"/></svg><span>Rok isporuke: <strong id="v20ProjectDeadline">–</strong></span></div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></svg><span>Zadnje ažuriranje: <strong id="v20ProjectUpdated">–</strong></span></div></div>
+                      <div class="v20-project-pages" id="v20ProjectPages" hidden><button type="button" id="v20ProjectPrev" aria-label="Prethodni projekt">‹</button><button type="button" id="v20ProjectNext" aria-label="Sljedeći projekt">›</button></div>
+                    </div>
+                  </article>
+                  <article class="v20-panel v20-task-panel" aria-label="Moji zadaci">
+                    <div class="v20-panel-heading"><div class="v20-heading-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="m7 12 3 3 6-7"/></svg><h2>MOJI ZADACI</h2></div></div>
+                    <div class="v20-task-body" id="v20TasksContent" aria-live="polite"><span class="v20-task-illustration"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 6"/></svg></span><h3>Učitavanje zadataka...</h3><p>Pregledaj svoje obveze i rokove.</p></div>
+                    <a class="v20-primary-btn" href="tasks.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="m7 12 3 3 6-7"/></svg> <span>Pregledaj zadatke</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
+                  </article>
+                  <article class="v20-panel v20-actions-panel" aria-label="Brze akcije">
+                    <div class="v20-panel-heading"><div class="v20-heading-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13 2-9 11h7l-1 9 10-12h-7z"/></svg><h2>BRZE AKCIJE</h2></div></div>
+                    <div class="v20-actions-list" id="v20ActionsList" aria-live="polite"></div>
+                  </article>
+                  <article class="v20-panel v20-overview-panel v20-message-panel" aria-label="Nedavne poruke">
+                    <div class="v20-panel-heading"><div class="v20-heading-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v12H9l-5 4z"/></svg><h2>NEDAVNE PORUKE</h2></div></div>
+                    <div class="v20-overview-content" id="v20MessagePreview" aria-live="polite"><div class="v20-empty">Učitavanje poruka...</div></div>
+                    <a href="messages.html" class="v20-footer-link">Pogledaj sve poruke <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
+                  </article>
+                  <article class="v20-panel v20-overview-panel v20-document-panel" aria-label="Dokumenti">
+                    <div class="v20-panel-heading"><div class="v20-heading-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h6l2 2h10v12H3z"/></svg><h2>DOKUMENTI</h2></div></div>
+                    <div class="v20-overview-content" id="v20DocumentPreview" aria-live="polite"><div class="v20-empty">Učitavanje dokumenata...</div></div>
+                    <a href="documents.html" class="v20-footer-link">Pogledaj sve dokumente <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
+                  </article>
+                </div>
+              </section>
                 <!-- POZDRAV -->
                 <section class="welcome">
                     <h2>
@@ -260,6 +294,8 @@
                         </div>
                         <button type="button" class="ptech-layout-button ptech-layout-button-secondary" id="ptechLayoutReset" hidden>Vrati zadano</button>
                         <button type="button" class="ptech-layout-button ptech-layout-button-secondary" id="ptechLayoutShow" hidden>Dodaj karticu</button>
+                        <button type="button" class="ptech-layout-button ptech-layout-button-secondary" id="v20PersonalUse" hidden>Prikaži moj raspored</button>
+                        <button type="button" class="ptech-layout-button ptech-layout-button-secondary" id="v20StandardUse" hidden>Standardni prikaz</button>
                         <button type="button" class="ptech-layout-button" id="ptechLayoutEdit" aria-pressed="false" disabled>✦ Uredi raspored</button>
                     </div>
                 </div>
@@ -348,12 +384,12 @@
                             class="action-card"
                             id="approveDesignAction"
                         >
-                            <div class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m15 5 4 4"/><path d="M5 19l4-.8L19 8a2.1 2.1 0 0 0-3-3L5.8 15 5 19z"/></svg></div>
+                            <div class="action-icon">✓</div>
 
                             <strong>Odobri dizajn</strong>
 
                             <p>
-                                Pregledaj i odobri predloženi dizajn.
+                                Pregledaj dizajn i potvrdi ga.
                             </p>
 
                             <span class="action-button">
@@ -368,12 +404,12 @@
                             id="revisionAction"
                             aria-disabled="true"
                         >
-                            <div class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 8h16m-4-4 4 4-4 4M20 16H4m4-4-4 4 4 4"/></svg></div>
+                            <div class="action-icon">↔</div>
 
                             <strong>Zatraži izmjenu</strong>
 
                             <p>
-                                Pošalji zahtjev za izmjenom.
+                                Pošalji prijedlog ili izmjenu dizajna.
                             </p>
 
                             <span
@@ -391,14 +427,15 @@
                             id="materialsAction"
                             disabled
                         >
-                            <div class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 16V3m-5 5 5-5 5 5"/><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg></div>
+                            <div class="action-icon">↑</div>
 
                             <strong>
                                 Dostavi materijale
                             </strong>
 
                             <p>
-                                Učitaj potrebne datoteke.
+                                Pošalji logotip, fotografije i
+                                ostale materijale za odabrani projekt.
                             </p>
 
                             <span
@@ -414,14 +451,14 @@
                             href="messages.html"
                             class="action-card"
                         >
-                            <div class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 15v-3a9 9 0 0 1 18 0v3"/><rect x="2" y="13" width="4" height="7" rx="2"/><rect x="18" y="13" width="4" height="7" rx="2"/><path d="M20 20a5 5 0 0 1-5 2h-3"/></svg></div>
+                            <div class="action-icon">?</div>
 
                             <strong>
                                 Kontaktiraj podršku
                             </strong>
 
                             <p>
-                                Postavi pitanje našem timu.
+                                Trebaš pomoć? Naš tim je tu za tebe.
                             </p>
 
                             <span class="action-button">
