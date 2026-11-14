@@ -6,6 +6,16 @@
   'use strict';
   const grid = document.getElementById('ptechDashboardGrid');
   if (!grid) return;
+  // The historical 'dashboard-overview' wrapper contained both message/file
+  // tiles.  Flatten it once so they each occupy their own true CSS grid cell;
+  // DOM elements (and existing Supabase handlers) are MOVED, never cloned.
+  const overviewGroup=grid.querySelector(':scope > .dashboard-overview');
+  if(overviewGroup){
+    for(const item of [...overviewGroup.children]){
+      if(item.matches('[data-widget-id]'))grid.insertBefore(item,overviewGroup);
+    }
+    if(!overviewGroup.children.length)overviewGroup.remove();
+  }
   document.body.classList.add('ptech-dashboard');
   const button = document.getElementById('ptechLayoutEdit');
   const resetButton = document.getElementById('ptechLayoutReset');
@@ -405,8 +415,12 @@
       text('p','ptech-hub-summary-text',hubHints[id]||meta.detail));
     if(id==='hub-profile')extra.append(text('p','ptech-hub-summary-email',''));
     content.append(extra);
+    const liveNote=text('p','ptech-hub-live-note','');liveNote.hidden=true;content.append(liveNote);
     const link=text('a','ptech-hub-link','Otvori →');link.href=meta.href;
-    content.append(link);node.append(content);return node;
+    content.append(link);
+    const miniHit=text('a','ptech-hub-mini-hit','');miniHit.href=meta.href;
+    miniHit.setAttribute('aria-label',`Otvori ${meta.title}`);
+    content.append(miniHit);node.append(content);return node;
   }
   function updateHubSummaries(){
     const profile=widgets.get('hub-profile');
@@ -517,6 +531,18 @@
     }
     const profile=widgets.get('hub-profile')?.querySelector('.ptech-hub-metric');
     if(profile)profile.textContent='Moj račun';
+    const sourceFor={
+      'hub-messages':'messages','hub-documents':'documents',
+      'hub-tasks':'tasks','hub-projects':'projects'
+    };
+    for(const [hubId,coreId] of Object.entries(sourceFor)){
+      const note=widgets.get(hubId)?.querySelector('.ptech-hub-live-note');
+      const preview=corePreviews.get(coreId);
+      if(!note||!preview)continue;
+      const value=preview.main.textContent.trim();
+      note.textContent=value && !/^Učitavanje/.test(value)?value:'';
+      note.hidden=!note.textContent;
+    }
   }
   function observeOriginalContent(){
     const selectors=['#projectsSlider','#currentProject','#recentMessagesList','#recentDocumentsList'];
@@ -594,7 +620,7 @@
     // One shared dashboard: real viewport dimensions, never hard-coded grid sizes.
     // Keep these tiers independent from legacy compact/standard/expanded rules.
     // Editing temporarily reserves room for the toolbar without changing layout.
-    const room=Math.max(0,height-(editing && !zoom ? 28:0));
+    const room=Math.max(0,height-(editing && !zoom ? 52:0));
     let level;
     if(zoom?.widget===widget)level='full';
     else if(id==='projects'){
@@ -603,11 +629,26 @@
     }else if(id==='actions'){
       level=width<200||room<125?'mini':width<380||room<190?'small':
         width<800||room<245?'medium':'full';
+    }else if(id==='tasks' || id==='messages' || id==='documents'){
+      level=width<205||room<140?'mini':width<325||room<225?'small':
+        width<540||room<350?'medium':'full';
+    }else if(id.startsWith('personal-')||id.startsWith('hub-')){
+      level=width<175||room<125?'mini':width<300||room<215?'small':
+        width<490||room<305?'medium':'full';
     }else{
-      level=width<200||room<128?'mini':width<310||room<208?'small':
-        width<585||room<345?'medium':'full';
+      level=width<200||room<130?'mini':width<320||room<215?'small':
+        width<560||room<330?'medium':'full';
     }
     if(widget.dataset.adaptiveLevel!==level)widget.dataset.adaptiveLevel=level;
+    if(id==='tasks'||id==='messages'||id==='documents'){
+      const rows=clamp(Math.floor((room-185)/52),1,4);
+      widget.dataset.adaptiveRows=String(rows);
+    }
+    if(id==='actions'){
+      const visibleActions=level==='mini'?0:level==='small'?1:
+        level==='medium'?(width>=600&&room>=220?3:2):3;
+      widget.dataset.quickCount=String(visibleActions);
+    }
     if(id==='projects'){
       // A 4-column project stats row needs little more than 300px vertically;
       // narrower cards need extra height for the wrapped project details.
@@ -642,17 +683,22 @@
     content.append(text('span','ptech-personal-symbol',task.done?'✓':'○'));
     const eyebrow=text('span','ptech-personal-eyebrow','MOJ OSOBNI ZADATAK');
     const name=text('h2','',task.title),description=text('p','',task.description || 'Tvoj osobni podsjetnik');
+    const status=text('span','ptech-personal-status',task.done?'Dovršeno':'Za napraviti');
     const actions=document.createElement('div');actions.className='ptech-personal-actions';
     const check=text('button','ptech-personal-check',task.done?'✓ Dovršeno':'○ Označi dovršenim');check.type='button';
-    check.setAttribute('aria-pressed',String(task.done));
-    check.addEventListener('click',()=>{
+    const miniCheck=text('button','ptech-personal-mini-check',task.done?'✓':'○');miniCheck.type='button';
+    const toggleDone=()=>{
       if(editing)return;
       const item=state.customTasks.find(t=>t.id===task.id);if(!item)return;
       item.done=!item.done;renderPersonal(node,item);save();
-    });
+    };
+    check.addEventListener('click',toggleDone);miniCheck.addEventListener('click',toggleDone);
+    check.setAttribute('aria-pressed',String(task.done));
+    miniCheck.setAttribute('aria-pressed',String(task.done));
+    miniCheck.setAttribute('aria-label',`Promijeni status osobnog zadatka ${task.title}`);
     actions.append(check);
     if(task.href){const link=text('a','ptech-hub-link','Otvori →');link.href=task.href;actions.append(link);}
-    content.append(eyebrow,name,description,actions);node.append(content);
+    content.append(eyebrow,name,status,description,actions,miniCheck);node.append(content);
     renderPersonal(node,task);return node;
   }
   function renderPersonal(node,task){
@@ -660,6 +706,9 @@
     const symbol=node.querySelector('.ptech-personal-symbol');if(symbol)symbol.textContent=task.done?'✓':'○';
     const check=node.querySelector('.ptech-personal-check');
     if(check){check.textContent=task.done?'✓ Dovršeno':'○ Označi dovršenim';check.setAttribute('aria-pressed',String(task.done));}
+    const status=node.querySelector('.ptech-personal-status');if(status)status.textContent=task.done?'Dovršeno':'Za napraviti';
+    const tiny=node.querySelector('.ptech-personal-mini-check');
+    if(tiny){tiny.textContent=task.done?'✓':'○';tiny.setAttribute('aria-pressed',String(task.done));}
   }
   for(const [id,meta] of Object.entries(hubCatalog)){
     const node=hubNode(id,meta);grid.append(node);widgets.set(id,node);
@@ -1570,6 +1619,20 @@
       const detail=create('div','portal-adaptive-details');
       detail.setAttribute('aria-label',id==='tasks'?'Sljedeći zadaci':id==='messages'?'Ostale nedavne poruke':'Ostali nedavni dokumenti');
       detail.hidden=true;after.after(detail);extras[id]=detail;
+      // Distinct short, accurate information on mini and small widgets.
+      const glance=create('div','portal-adaptive-glance');
+      glance.setAttribute('aria-live','polite');
+      const number=create('strong','portal-adaptive-glance-number','–');
+      const description=create('span','portal-adaptive-glance-label','');
+      glance.append(number,description);
+      card.insertBefore(glance,after);
+      extras[`${id}Glance`]={number,description};
+      const next=create('p','portal-adaptive-next');next.hidden=true;
+      after.after(next);extras[`${id}Next`]=next;
+      const miniLink=create('a','portal-adaptive-mini-link','Otvori →');
+      miniLink.href=id==='tasks'?'tasks.html':id==='messages'?'messages.html':'documents.html';
+      miniLink.setAttribute('aria-label',`Otvori ${id==='tasks'?'zadatke':id==='messages'?'poruke':'dokumente'}`);
+      card.append(miniLink);
     }
     const actionCard=home?.querySelector('.portal-actions');
     if(actionCard){
@@ -1639,7 +1702,16 @@
       extras.project.textContent=[status,pct&&`Napredak ${pct}`,due&&due!=='–'?`Rok ${due}`:''].filter(Boolean).join(' · ');
     }
     if(extras.tasks){
-      const rows=[...source.tasks?.querySelectorAll('.ptech-task-preview-row')||[]].slice(0,4);
+      const rows=[...source.tasks?.querySelectorAll('.ptech-task-preview-row')||[]].slice(0,5);
+      const raw=source.count?.textContent?.trim()||'–';
+      const number=raw==='!'?'!':(/^\d+$/.test(raw)?raw:'–');
+      const glance=extras.tasksGlance;
+      glance.number.textContent=number;
+      glance.description.textContent=raw==='!'?'Provjeri zadatke':number==='–'?'Učitavanje':number==='0'?'Nema otvorenih':'Otvorenih zadataka';
+      const first=rows[0];
+      const next=extras.tasksNext;
+      next.textContent=first?.querySelector('strong')?.textContent?.trim()||'';
+      next.hidden=!next.textContent;
       const signature=rows.map(r=>r.textContent).join('|');
       if(extras.tasks.dataset.signature!==signature){
         extras.tasks.dataset.signature=signature;extras.tasks.replaceChildren();
@@ -1652,7 +1724,17 @@
     }
     for(const [id,list,url] of [['messages',source.messages,'messages.html'],['documents',source.documents,'documents.html']]){
       const holder=extras[id];if(!holder||!list)continue;
-      const rows=[...list.querySelectorAll('.overview-row')].slice(1,5);
+      const allRows=[...list.querySelectorAll('.overview-row')];
+      const rows=allRows.slice(1,5);
+      const loading=!allRows.length && /učitavan|dohvaćan/i.test(list.textContent||'');
+      const glance=extras[`${id}Glance`];
+      glance.number.textContent=loading?'–':String(allRows.length);
+      glance.description.textContent=loading?'Učitavanje':id==='messages'?
+        (allRows.length===0?'Nema poruka':allRows.length===1?'Poruka u pregledu':'Poruke u pregledu'):
+        (allRows.length===0?'Nema dokumenata':allRows.length===1?'Dokument u pregledu':'Dokumenti u pregledu');
+      const next=extras[`${id}Next`];
+      next.textContent=allRows[0]?.querySelector('.overview-row-main strong')?.textContent?.trim()||'';
+      next.hidden=!next.textContent;
       const signature=rows.map(r=>r.textContent).join('|');
       if(holder.dataset.signature!==signature){
         holder.dataset.signature=signature;holder.replaceChildren();

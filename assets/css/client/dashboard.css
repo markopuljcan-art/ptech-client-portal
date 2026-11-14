@@ -1770,3 +1770,245 @@ body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adap
 body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="medium"] .portal-project-open{font-size:11px;padding:9px 10px;gap:5px}
 body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="mini"] .portal-project-identity{min-width:0;flex:1}
 body.ptech-home.portal-unified #portalHome [data-widget-id="projects"][data-adaptive-level="mini"] .portal-project-identity h3{font-size:13px!important;line-height:1.16;white-space:normal;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+
+/* ================================================================
+   SMART CONTENT OF ALL DASHBOARD TILES
+   Only the canonical dashboard CSS / JS is used. Four live levels:
+   mini (number + open), small (key fact), medium (main context),
+   full (real items/actions). No scrolling inside the widgets.
+   ================================================================ */
+body.ptech-home.portal-unified #portalHome .portal-adaptive-glance,
+body.ptech-home.portal-unified #portalHome .portal-adaptive-next,
+body.ptech-home.portal-unified #portalHome .portal-adaptive-mini-link{
+  display:none;
+}
+body.ptech-home.portal-unified #portalHome .portal-adaptive-glance{
+  min-width:0;align-items:center;gap:9px;
+  border:1px solid var(--portal-edge);border-radius:12px;
+  background:var(--portal-inset);padding:9px 11px;
+}
+body.ptech-home.portal-unified #portalHome .portal-adaptive-glance-number{
+  font-size:24px;line-height:1;font-weight:850;letter-spacing:-.04em;
+  color:var(--portal-ink);font-variant-numeric:tabular-nums;
+}
+body.ptech-home.portal-unified #portalHome .portal-adaptive-glance-label{
+  font-size:11px;line-height:1.25;font-weight:700;color:var(--portal-ink-soft);
+  min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+body.ptech-home.portal-unified #portalHome .portal-adaptive-next{
+  color:var(--portal-ink);font-size:12px;font-weight:750;
+  line-height:1.4;margin:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+}
+body.ptech-home.portal-unified #portalHome .portal-adaptive-mini-link{
+  align-self:flex-start;font-size:11px;color:var(--portal-bronze-rich);
+  text-decoration:none;font-weight:800;padding:2px 0;white-space:nowrap;
+}
+body.ptech-home.portal-unified #portalHome .portal-adaptive-mini-link:focus-visible,
+body.ptech-home.portal-unified #portalHome .ptech-hub-mini-hit:focus-visible,
+body.ptech-home.portal-unified #portalHome .ptech-personal-mini-check:focus-visible{
+  outline:2px solid var(--portal-bronze);outline-offset:2px;
+}
+/* MINI: useful at the smallest size, even when an empty list is present. */
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="mini"],[data-adaptive-level="small"]) .portal-adaptive-glance{
+  display:flex;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id="tasks"][data-adaptive-level="small"] .portal-adaptive-glance{display:none}
+body.ptech-home.portal-unified #portalHome [data-widget-id="tasks"][data-adaptive-level="mini"] .portal-task-main,
+body.ptech-home.portal-unified #portalHome [data-widget-id="tasks"][data-adaptive-level="mini"] .portal-summary-detail,
+body.ptech-home.portal-unified #portalHome [data-widget-id="messages"][data-adaptive-level="mini"] .portal-summary-preview,
+body.ptech-home.portal-unified #portalHome [data-widget-id="documents"][data-adaptive-level="mini"] .portal-summary-preview{
+  display:none!important;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="mini"]) .portal-adaptive-mini-link{
+  display:inline-flex;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="mini"]) .portal-summary-card{
+  justify-content:flex-start!important;gap:6px!important;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="mini"]) .portal-adaptive-glance{
+  border:0;background:transparent;padding:0 1px;gap:7px;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="mini"]) .portal-adaptive-glance-number{font-size:22px}
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="mini"]) .portal-adaptive-glance-label{font-size:10px}
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="mini"]) .portal-card-heading h2{font-size:12px!important}
+/* SMALL: first important title, count and an actual navigation action. */
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="small"]) .portal-adaptive-next:not([hidden]){display:block}
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="small"]) .portal-summary-card{
+  justify-content:flex-start!important;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="small"]) .portal-card-link{margin-top:auto}
+body.ptech-home.portal-unified #portalHome [data-widget-id="messages"][data-adaptive-level="small"] .portal-summary-preview,
+body.ptech-home.portal-unified #portalHome [data-widget-id="documents"][data-adaptive-level="small"] .portal-summary-preview{
+  display:none!important;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id="tasks"][data-adaptive-level="small"] .portal-task-main{margin-top:3px!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id="tasks"][data-adaptive-level="small"] .portal-count-area strong{font-size:22px}
+/* MEDIUM: show latest live message/file, task deadline and original CTA. */
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="medium"]) .portal-adaptive-glance{display:none!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id]:is([data-adaptive-level="medium"]) .portal-card-heading h2{font-size:16px}
+body.ptech-home.portal-unified #portalHome [data-widget-id="tasks"][data-adaptive-level="medium"] .portal-summary-detail{
+  display:block!important;min-height:0;
+}
+/* FULL: show more real task/message/document rows, within the actual tile height. */
+body.ptech-home.portal-unified #portalHome [data-widget-id][data-adaptive-level="full"] .portal-adaptive-details:not([hidden]){
+  display:flex!important;min-height:0;flex:0 1 auto;gap:6px;margin-top:6px;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id][data-adaptive-level="full"] .portal-adaptive-list-row{
+  padding:7px 10px;min-height:38px;flex:none;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id][data-adaptive-level="full"][data-adaptive-rows="1"] .portal-adaptive-list-row:nth-child(n+2),
+body.ptech-home.portal-unified #portalHome [data-widget-id][data-adaptive-level="full"][data-adaptive-rows="2"] .portal-adaptive-list-row:nth-child(n+3),
+body.ptech-home.portal-unified #portalHome [data-widget-id][data-adaptive-level="full"][data-adaptive-rows="3"] .portal-adaptive-list-row:nth-child(n+4),
+body.ptech-home.portal-unified #portalHome [data-widget-id][data-adaptive-level="full"] .portal-adaptive-list-row:nth-child(n+5){
+  display:none!important;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id][data-adaptive-level="full"] .portal-summary-card{
+  justify-content:flex-start!important;gap:8px;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id][data-adaptive-level="full"] .portal-summary-preview{
+  flex:0 0 auto;min-height:45px!important;padding:4px 0;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id][data-adaptive-level="full"] .portal-card-link{margin-top:auto}
+/* QUICK ACTIONS: every size retains a path to ALL available actions. */
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-quick-count="0"] .portal-actions-grid{display:none!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-quick-count="1"] .portal-action:nth-child(n+2),
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-quick-count="2"] .portal-action:nth-child(n+3){display:none!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-quick-count="2"] .portal-actions-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-quick-count="1"] .portal-actions-grid{grid-template-columns:1fr!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"]:is([data-quick-count="0"],[data-quick-count="1"],[data-quick-count="2"]) .portal-adaptive-actions-summary{
+  display:flex!important;margin-top:auto;gap:8px;min-width:0;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-quick-count="0"] .portal-adaptive-actions-summary{margin-top:2px}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-quick-count="0"] .portal-adaptive-actions-view{
+  font-size:12px;padding:7px 10px;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-quick-count="2"] .portal-action{
+  min-height:53px;padding:8px 10px;
+}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-quick-count="2"] .portal-action-text small{display:none!important}
+/* OPTIONAL PORTAL TILES: real latest item, useful count and clickable mini state. */
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget{position:relative}
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget .ptech-hub-live-note{
+  color:var(--portal-ink-soft);font-size:12px;line-height:1.4;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;
+}
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget .ptech-hub-live-note[hidden]{display:none!important}
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget .ptech-hub-mini-hit{display:none}
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="mini"] .ptech-hub-body,
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="small"] .ptech-hub-body{
+  align-items:flex-start;text-align:left;justify-content:center!important;
+}
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="mini"] .ptech-hub-title,
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="small"] .ptech-hub-title{
+  text-align:left;font-size:13px;max-width:100%;
+}
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="mini"] .ptech-hub-extra,
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="mini"] .ptech-hub-description,
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="mini"] .ptech-hub-live-note,
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="mini"] .ptech-hub-link{display:none!important}
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="mini"] .ptech-hub-mini-hit{
+  display:block;position:absolute;inset:0;z-index:2;border-radius:12px;
+}
+body.ptech-home.portal-unified.ptech-layout-editing #portalHome .ptech-hub-widget .ptech-hub-mini-hit{pointer-events:none}
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="mini"] .ptech-hub-metric{font-size:12px}
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="small"] .ptech-hub-live-note:not([hidden]){
+  display:block!important;font-size:11px;
+}
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="small"] .ptech-hub-extra,
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="small"] .ptech-hub-description{
+  display:none!important;
+}
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="small"] .ptech-hub-link{
+  display:inline-flex!important;padding:5px 8px;font-size:11px;
+}
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="medium"] .ptech-hub-live-note:not([hidden]),
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="full"] .ptech-hub-live-note:not([hidden]){display:block!important}
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="medium"] .ptech-hub-extra{display:none!important}
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="full"] .ptech-hub-extra{
+  display:flex!important;margin-bottom:6px;
+}
+/* PERSONAL TASKS: keep a working complete checkbox even in tiny cards. */
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget{position:relative}
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget .ptech-personal-mini-check{
+  display:none;background:var(--portal-inset);border:1px solid var(--portal-border);
+  color:var(--portal-bronze-rich);border-radius:9px;font-size:17px;font-weight:800;
+  cursor:pointer;padding:0;width:30px;height:30px;flex:none;
+}
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget .ptech-personal-status{
+  font-size:12px;font-weight:750;color:var(--portal-bronze-rich);
+}
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget[data-adaptive-level="mini"] .ptech-personal-body{
+  position:relative;align-items:flex-start;text-align:left!important;justify-content:center;
+  padding:9px 45px 9px 10px!important;gap:4px!important;
+}
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget[data-adaptive-level="mini"] .ptech-personal-body h2{
+  font-size:12px!important;line-height:1.2;display:-webkit-box;
+  -webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;
+}
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget[data-adaptive-level="mini"] .ptech-personal-mini-check{
+  display:grid!important;place-items:center;position:absolute;right:7px;top:50%;transform:translateY(-50%);
+}
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget[data-adaptive-level="mini"] .ptech-personal-status{font-size:10px}
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget[data-adaptive-level="mini"] .ptech-personal-actions,
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget[data-adaptive-level="mini"] .ptech-personal-body > p,
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget[data-adaptive-level="mini"] .ptech-personal-eyebrow{display:none!important}
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget[data-adaptive-level="small"] .ptech-personal-body{
+  align-items:flex-start;text-align:left!important;justify-content:center;gap:6px!important;padding:10px!important;
+}
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget[data-adaptive-level="small"] .ptech-personal-actions{display:flex!important}
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget[data-adaptive-level="small"] .ptech-personal-check{padding:6px 8px;font-size:11px}
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget[data-adaptive-level="small"] .ptech-personal-eyebrow{display:none!important}
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget[data-adaptive-level="medium"] .ptech-personal-body > p{
+  display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget[data-adaptive-level="full"] .ptech-personal-body > p{
+  display:block!important;overflow-wrap:anywhere;
+}
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget[data-adaptive-level="full"] .ptech-personal-eyebrow{display:block!important}
+@media (prefers-reduced-motion:reduce){
+ body.ptech-home.portal-unified #portalHome .portal-adaptive-glance,
+ body.ptech-home.portal-unified #portalHome .ptech-personal-mini-check{transition:none!important}
+}
+/* Tiny optional cards must not inherit the old 19px inner padding. */
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="mini"] .ptech-tile-inner,
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget[data-adaptive-level="mini"] .ptech-tile-inner{
+  padding:5px!important;box-sizing:border-box;min-height:0!important;
+}
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="mini"] .ptech-hub-body,
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget[data-adaptive-level="mini"] .ptech-personal-body{
+  min-height:0!important;height:100%;box-sizing:border-box;overflow:hidden;
+}
+body.ptech-home.portal-unified #portalHome .ptech-hub-widget[data-adaptive-level="mini"] .ptech-hub-icon{
+  min-height:25px!important;height:25px!important;width:25px!important;
+}
+body.ptech-home.portal-unified #portalHome .ptech-personal-widget[data-adaptive-level="mini"] .ptech-personal-symbol{
+  width:23px!important;height:23px!important;min-height:23px!important;font-size:14px;
+}
+/* Fourth real row is available on tall expanded cards; older three-row cap
+   must not suppress it when there is enough space. */
+body.ptech-home.portal-unified #portalHome [data-widget-id][data-adaptive-level="full"][data-adaptive-rows="4"] .portal-adaptive-list-row:nth-child(4){
+  display:flex!important;
+}
+/* Tiny editor still exposes move, full-screen, hide and the resize corner;
+   all other controls are reachable after enlarging the card. */
+body.ptech-home.portal-unified.ptech-layout-editing #portalHome .ptech-widget[data-adaptive-level="mini"] .ptech-widget-controls .ptech-widget-tool:not(.ptech-widget-move):not(.ptech-widget-hide):not(.ptech-widget-expand){
+  display:none!important;
+}
+body.ptech-home.portal-unified.ptech-layout-editing #portalHome .ptech-widget[data-adaptive-level="mini"] .ptech-widget-dimensions,
+body.ptech-home.portal-unified.ptech-layout-editing #portalHome .ptech-widget[data-adaptive-level="mini"] .portal-adaptive-mini-link{
+  display:none!important;
+}
+body.ptech-home.portal-unified.ptech-layout-editing #portalHome .ptech-widget[data-adaptive-level="mini"] .portal-adaptive-glance-number{font-size:17px}
+body.ptech-home.portal-unified.ptech-layout-editing #portalHome .ptech-hub-widget[data-adaptive-level="mini"] .ptech-tile-inner,
+body.ptech-home.portal-unified.ptech-layout-editing #portalHome .ptech-personal-widget[data-adaptive-level="mini"] .ptech-tile-inner{
+  padding:52px 5px 4px!important;
+}
+body.ptech-home.portal-unified.ptech-layout-editing #portalHome .ptech-hub-widget[data-adaptive-level="mini"] .ptech-hub-icon,
+body.ptech-home.portal-unified.ptech-layout-editing #portalHome .ptech-hub-widget[data-adaptive-level="mini"] .ptech-hub-metric,
+body.ptech-home.portal-unified.ptech-layout-editing #portalHome .ptech-personal-widget[data-adaptive-level="mini"] .ptech-personal-symbol,
+body.ptech-home.portal-unified.ptech-layout-editing #portalHome .ptech-personal-widget[data-adaptive-level="mini"] .ptech-personal-status,
+body.ptech-home.portal-unified.ptech-layout-editing #portalHome .ptech-personal-widget[data-adaptive-level="mini"] .ptech-personal-mini-check{
+  display:none!important;
+}
