@@ -34,3 +34,144 @@
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
+
+/* V18.0 additive first-design glass layer: loaded after page-specific CSS and JS.
+   No business logic, Supabase schema, or page HTML is changed. */
+(() => {
+  'use strict';
+  const file = location.pathname.split('/').pop();
+  const clientPages = new Set(['form.html', 'my-projects.html', 'project.html', 'tasks.html',
+    'documents.html', 'messages.html', 'profile.html', 'approve.html']);
+  if (!clientPages.has(file)) return;
+  const root = document.documentElement;
+  root.classList.add('ptech-glass-v18');
+  const attach = () => {
+    if (!document.querySelector('link[data-p18-glass]')) {
+      const style = document.createElement('link');
+      style.rel = 'stylesheet';
+      style.dataset.p18Glass = 'true';
+      style.href = './assets/css/client/ptech-glass-v18.css?v=18.0';
+      document.head.appendChild(style);
+    }
+    if (!document.querySelector('script[data-p18-glass]')) {
+      const script = document.createElement('script');
+      script.dataset.p18Glass = 'true';
+      script.src = './assets/js/client/ptech-glass-v18.js?v=18.0';
+      script.defer = true;
+      document.head.appendChild(script);
+    }
+    // V18.0 only: color palette from approved dark/light references.
+    // No V18.1/V19 dashboard layout scripts or CSS are loaded.
+    if (!document.querySelector('link[data-p18-palette]')) {
+      const palette = document.createElement('link');
+      palette.rel = 'stylesheet';
+      palette.dataset.p18Palette = 'reference';
+      palette.href = './assets/css/client/ptech-palette-reference.css?v=18-restore-1';
+      document.head.appendChild(palette);
+    }
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', attach, {once: true});
+  else attach();
+})();
+
+/* V21.1 - shared, accessible, resizable desktop sidebar.
+   Does not touch authentication, project data, the V16 layout or mobile dock. */
+(() => {
+  'use strict';
+  const MIN = 72, MAX = 430, DEFAULT = 220, COLLAPSED = 104;
+  const KEY = 'ptech-client-sidebar-width-v21';
+  const DESKTOP = window.matchMedia('(min-width: 1101px)');
+  const clamp = value => Math.max(MIN, Math.min(MAX, Math.round(Number(value) || DEFAULT)));
+  const read = () => {try {return Number(localStorage.getItem(KEY));} catch (_) {return 0;}};
+  const store = value => {try {localStorage.setItem(KEY, String(value));} catch (_) {}};
+
+  function init() {
+    const dashboard = document.querySelector('.dashboard.desktop-layout');
+    const sidebar = dashboard?.querySelector(':scope > .desktop-sidebar');
+    if (!sidebar || document.getElementById('ptechSidebarResize')) return;
+    // In repositories that still explicitly load the older V18 resizer, keep just one grip.
+    if (document.querySelector('.p18-sidebar-grip')) return;
+    const root = document.documentElement;
+    const saved = read();
+    let width = saved >= MIN && saved <= MAX ? saved : DEFAULT;
+    let expanded = width > COLLAPSED ? width : DEFAULT;
+    const grip = document.createElement('button');
+    grip.type = 'button';
+    grip.id = 'ptechSidebarResize';
+    grip.className = 'ptech-sidebar-resize';
+    grip.setAttribute('role', 'separator');
+    grip.setAttribute('aria-orientation', 'vertical');
+    grip.setAttribute('aria-label', 'Promjena širine bočnog izbornika');
+    if (!sidebar.id) sidebar.id = 'ptechClientSidebar';
+    grip.setAttribute('aria-controls', sidebar.id);
+    grip.title = 'Povuci za promjenu širine · klikni za skupi ili proširi · strelice za precizno podešavanje';
+    grip.innerHTML = '<span aria-hidden="true"><i></i><i></i><i></i></span>';
+    sidebar.insertAdjacentElement('afterend', grip);
+
+    function apply(next, persist) {
+      width = clamp(next);
+      if (width > COLLAPSED) expanded = width;
+      root.classList.add('ptech-sidebar-resizable');
+      root.classList.toggle('ptech-sidebar-collapsed', width <= COLLAPSED);
+      root.style.setProperty('--ptech-sidebar-width', `${width}px`);
+      grip.setAttribute('aria-valuenow', String(width));
+      grip.setAttribute('aria-valuemin', String(MIN));
+      grip.setAttribute('aria-valuemax', String(MAX));
+      grip.setAttribute('aria-valuetext', width <= COLLAPSED ? 'Skupljeni izbornik' : `Širina ${width} piksela`);
+      if (DESKTOP.matches) dashboard.style.setProperty('grid-template-columns', `${width}px minmax(0, 1fr)`, 'important');
+      else dashboard.style.removeProperty('grid-template-columns');
+      if (persist) store(width);
+      window.dispatchEvent(new CustomEvent('ptech:sidebar-resized', {detail:{width}}));
+    }
+    apply(width, false);
+    DESKTOP.addEventListener?.('change', () => apply(width, false));
+
+    let pointer = null;
+    grip.addEventListener('pointerdown', event => {
+      if (!DESKTOP.matches || event.button !== 0) return;
+      pointer = {id:event.pointerId, start:event.clientX, moved:false};
+      grip.setPointerCapture(event.pointerId);
+      root.classList.add('ptech-sidebar-resizing');
+      event.preventDefault();
+    });
+    grip.addEventListener('pointermove', event => {
+      if (!pointer || event.pointerId !== pointer.id) return;
+      if (Math.abs(event.clientX - pointer.start) > 4) pointer.moved = true;
+      if (pointer.moved) apply(event.clientX, false);
+    });
+    function end(event, cancelled) {
+      if (!pointer || (event?.pointerId !== undefined && event.pointerId !== pointer.id)) return;
+      const moved = pointer.moved;
+      pointer = null;
+      root.classList.remove('ptech-sidebar-resizing');
+      if (!cancelled) {
+        if (!moved) apply(width <= COLLAPSED ? expanded : MIN, true);
+        else apply(width, true);
+      } else apply(width, true);
+    }
+    grip.addEventListener('pointerup', event => end(event, false));
+    grip.addEventListener('pointercancel', event => end(event, true));
+    grip.addEventListener('lostpointercapture', () => {if (pointer) end(null, true);});
+    grip.addEventListener('keydown', event => {
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        event.preventDefault(); apply(width + (event.key === 'ArrowLeft' ? -16 : 16), true);
+      } else if (event.key === 'Home') {
+        event.preventDefault(); apply(MIN, true);
+      } else if (event.key === 'End') {
+        event.preventDefault(); apply(MAX, true);
+      } else if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault(); apply(width <= COLLAPSED ? expanded : MIN, true);
+      }
+    });
+    grip.addEventListener('dblclick', event => {event.preventDefault(); apply(DEFAULT, true);});
+    sidebar.querySelectorAll('.sidebar-nav .sidebar-link').forEach(link => {
+      const label = link.querySelector('span')?.textContent?.trim();
+      if (label) {
+        link.title = label;
+        if (!link.hasAttribute('aria-label')) link.setAttribute('aria-label', label);
+      }
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, {once:true});
+  else init();
+})();

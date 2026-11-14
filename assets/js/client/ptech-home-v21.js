@@ -141,11 +141,9 @@
     buttons();
   }
   if(source.user)new MutationObserver(restore).observe(source.user,{childList:true,characterData:true,subtree:true});
-  $('v21Edit')?.addEventListener('click',()=>{
-    if(!editor || editor.disabled){$('v21Edit').title='Pričekajte da se učita vaš korisnički račun.';return;}
-    document.body.classList.add('ptech-home-preparing-edit');
-    requestAnimationFrame(()=>{editor.click();document.body.classList.remove('ptech-home-preparing-edit');});
-  });
+  // V21.1: keep the approved homepage visible while editing. The legacy V16
+  // editor is still available via the explicit Advanced option in the new toolbar.
+  $('v21Edit')?.addEventListener('click',()=>window.dispatchEvent(new Event('ptech:v21-edit')));
   editor?.addEventListener('click',()=>{
     if(document.body.classList.contains('ptech-layout-editing')) layoutAtStart=savedGrid();
     else {if(layoutAtStart!==undefined && savedGrid()!==layoutAtStart)setView(true);layoutAtStart=undefined;queue();}

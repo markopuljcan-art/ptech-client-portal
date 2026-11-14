@@ -6,3 +6,71 @@
 .v14-tasks-shortcut span{font-size:12px;opacity:.78}
 .v14-tasks-shortcut span:last-child{font-size:20px;margin-left:auto;opacity:1}
 @media(max-width:650px){.v14-tasks-shortcut{flex-wrap:wrap;gap:5px 12px}.v14-tasks-shortcut span:nth-child(2){flex:1 1 55%;line-height:1.45}}
+
+/* V21.1: same adjustable sidebar on every desktop client page. */
+@media (min-width:1101px) {
+  html.ptech-sidebar-resizable body.portal-desktop .dashboard.desktop-layout {
+    grid-template-columns:var(--ptech-sidebar-width,220px) minmax(0,1fr)!important;
+  }
+  html.ptech-sidebar-resizable body.portal-desktop .desktop-sidebar {
+    min-width:0!important; width:100%!important; max-width:none!important;
+  }
+  html.ptech-sidebar-resizable body.portal-desktop .sidebar-brand,
+  html.ptech-sidebar-resizable body.portal-desktop .sidebar-nav,
+  html.ptech-sidebar-resizable body.portal-desktop .sidebar-link {min-width:0}
+  html.ptech-sidebar-resizable .ptech-sidebar-resize {
+    position:fixed; z-index:1200; top:52%;
+    left:calc(var(--ptech-sidebar-width,220px) - 12px);
+    transform:translateY(-50%);
+    height:54px;width:24px;padding:0;
+    display:flex;justify-content:center;align-items:center;
+    border:1px solid rgba(148,90,53,.4);border-radius:15px;
+    background:linear-gradient(160deg,#f8e3d4,#e2b694);color:#8d5536;
+    box-shadow:0 5px 19px rgba(63,34,19,.2);
+    cursor:ew-resize;touch-action:none;user-select:none;
+    transition:box-shadow .18s,background .18s;
+  }
+  html.ptech-sidebar-resizable .ptech-sidebar-resize span{display:flex;flex-direction:column;gap:3px;align-items:center}
+  html.ptech-sidebar-resizable .ptech-sidebar-resize i{height:4px;width:4px;border-radius:50%;background:currentColor;display:block}
+  html.ptech-sidebar-resizable body.portal-desktop:not(.light-mode) .ptech-sidebar-resize {
+    color:#edbd9a;background:linear-gradient(160deg,#3b4b65,#29364e);
+    border-color:rgba(229,184,153,.52);
+  }
+  html.ptech-sidebar-resizable .ptech-sidebar-resize:hover,
+  html.ptech-sidebar-resizable .ptech-sidebar-resize:focus-visible {
+    outline:2px solid rgba(181,106,64,.3);outline-offset:2px;
+    box-shadow:0 0 0 4px rgba(192,130,89,.12),0 8px 20px rgba(47,25,16,.22);
+  }
+  html.ptech-sidebar-resizable.ptech-sidebar-resizing,
+  html.ptech-sidebar-resizable.ptech-sidebar-resizing * {cursor:ew-resize!important;user-select:none!important}
+  html.ptech-sidebar-resizable.ptech-sidebar-collapsed body.portal-desktop .sidebar-brand {
+    gap:0;padding-left:0;padding-right:0;justify-content:center;
+  }
+  html.ptech-sidebar-resizable.ptech-sidebar-collapsed body.portal-desktop .sidebar-brand-text,
+  html.ptech-sidebar-resizable.ptech-sidebar-collapsed body.portal-desktop .sidebar-nav .sidebar-link > span,
+  html.ptech-sidebar-resizable.ptech-sidebar-collapsed body.portal-desktop .sidebar-bottom p {display:none!important}
+  html.ptech-sidebar-resizable.ptech-sidebar-collapsed body.portal-desktop .sidebar-nav {align-items:center}
+  html.ptech-sidebar-resizable.ptech-sidebar-collapsed body.portal-desktop .sidebar-nav .sidebar-link {
+    padding:0!important;height:46px;width:45px;justify-content:center;min-height:46px;
+  }
+  html.ptech-sidebar-resizable.ptech-sidebar-collapsed body.portal-desktop .sidebar-nav .sidebar-link > svg {flex:0 0 22px;width:22px;height:22px}
+  html.ptech-sidebar-resizable.ptech-sidebar-collapsed body.portal-desktop .sidebar-bottom {text-align:center;padding-left:0;padding-right:0}
+  html.ptech-sidebar-resizable.ptech-sidebar-collapsed body.portal-desktop .sidebar-bottom a {
+    font-size:0!important;display:flex;justify-content:center;align-items:center;
+  }
+  html.ptech-sidebar-resizable.ptech-sidebar-collapsed body.portal-desktop .sidebar-bottom a::before {
+    content:'?';font-size:17px;border:1px solid currentColor;border-radius:50%;height:29px;width:29px;line-height:28px;
+  }
+  html.ptech-sidebar-resizable body.portal-desktop .sidebar-link:hover:not(.active) {
+    background:rgba(120,65,35,.17)!important;
+    transform:translateX(2px);box-shadow:0 4px 15px rgba(67,35,19,.11);
+  }
+  html.ptech-sidebar-resizable body.portal-desktop:not(.light-mode) .sidebar-link:hover:not(.active) {
+    background:rgba(226,170,128,.17)!important;
+  }
+}
+.ptech-sidebar-resize {display:none}
+@media (prefers-reduced-motion:reduce) {
+  html.ptech-sidebar-resizable .ptech-sidebar-resize,
+  html.ptech-sidebar-resizable body.portal-desktop .sidebar-link {transition:none!important}
+}

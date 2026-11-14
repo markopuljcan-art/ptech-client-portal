@@ -1,0 +1,123 @@
+/* V21.1 - editing the approved cards in place, without the old V16 grid UI. */
+body.ptech-home-v21 .v21-editor-toolbar[hidden],
+body.ptech-home-v21 .v21-card-picker[hidden],
+body.ptech-home-v21 .v21-drag-ghost[hidden] {display:none!important}
+body.ptech-home-v21 .v21-editor-toolbar {
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+  padding:15px 18px;margin-bottom:16px;position:relative;z-index:8;
+  border:1px solid var(--v21-border);color:var(--v21-ink);
+}
+body.ptech-home-v21 .v21-editor-copy{display:flex;flex-direction:column;gap:4px;min-width:215px;flex:1}
+body.ptech-home-v21 .v21-editor-copy strong{font-size:17px;font-weight:800;letter-spacing:-.3px;color:var(--v21-ink)}
+body.ptech-home-v21 .v21-editor-copy span{font-size:12px;line-height:1.4;color:var(--v21-ink-soft)}
+body.ptech-home-v21 .v21-editor-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+body.ptech-home-v21 .v21-editor-button,
+body.ptech-home-v21 .v21-card-picker button{
+  border:1px solid var(--v21-border);border-radius:10px;background:var(--v21-inset);
+  color:var(--v21-ink);font:700 12px/1.3 inherit;font-family:inherit;
+  font-weight:700;font-size:12px;min-height:36px;padding:8px 11px;cursor:pointer;
+  transition:background .16s,transform .16s,border-color .16s,box-shadow .16s;
+}
+body.ptech-home-v21 .v21-editor-button:hover,
+body.ptech-home-v21 .v21-card-picker button:hover{transform:translateY(-1px);border-color:var(--v21-bronze);box-shadow:0 4px 11px rgba(73,43,27,.12)}
+body.ptech-home-v21 .v21-editor-primary{color:#fff;background:linear-gradient(140deg,#b4774e,#91532f);border-color:#965832;min-width:86px}
+body.ptech-home-v21 .v21-editor-primary:hover{background:linear-gradient(140deg,#c38b5f,#9a5831)}
+body.ptech-home-v21 .v21-card-picker{flex:1 1 100%;padding:12px;display:flex;align-items:center;flex-wrap:wrap;gap:8px;background:var(--v21-inset);border-radius:12px;font-size:12px;color:var(--v21-ink-soft)}
+body.ptech-home-v21 .v21-editor-status{margin:0;flex:1 1 100%;font-size:12px;line-height:1.4;color:var(--v21-ink-soft)}
+
+/* The editor uses the actual V21 cards; no duplicated V16 visuals. */
+body.ptech-home-v21.v21-layout-grid #v21Home {
+  display:grid!important;grid-template-columns:repeat(12,minmax(0,1fr));
+  grid-auto-flow:row dense;grid-auto-rows:57px;
+  gap:16px!important;align-content:start;align-items:stretch;
+}
+body.ptech-home-v21.v21-layout-grid #v21Home > .v21-summary-grid {display:contents!important}
+body.ptech-home-v21.v21-layout-grid #v21Home .v21-edit-card {
+  grid-column:span var(--v21-cols,12);grid-row:span var(--v21-rows,3);
+  min-height:0!important;max-height:none;min-width:0;overflow:hidden;
+}
+body.ptech-home-v21.v21-layout-grid #v21Home .v21-welcome{height:100%;align-self:stretch}
+body.ptech-home-v21.v21-layout-grid #v21Home .v21-projects{display:flex;flex-direction:column}
+body.ptech-home-v21.v21-layout-grid #v21Home .v21-project-card{flex:1;min-height:0}
+body.ptech-home-v21.v21-layout-grid #v21Home .v21-summary-card {min-height:0}
+body.ptech-home-v21.v21-layout-grid #v21Home .v21-actions{height:100%}
+body.ptech-home-v21.v21-layout-grid #v21Home .v21-edit-card[hidden]{display:none!important}
+/* When a widget becomes narrow, its own content adapts, rather than scrolling internally. */
+body.ptech-home-v21.v21-layout-grid #v21Home .v21-project-metrics{gap:9px}
+body.ptech-home-v21.v21-layout-grid #v21Home .v21-project-card{overflow:hidden}
+body.ptech-home-v21.v21-layout-grid #v21Home .v21-project-card:has(.v21-project-identity) {max-width:100%}
+body.ptech-home-v21.v21-layout-grid #v21Home .v21-project-top{flex-wrap:wrap}
+body.ptech-home-v21.v21-layout-grid #v21Home .v21-project-open{padding:9px 11px}
+body.ptech-home-v21.v21-layout-grid #v21Home .v21-metric{min-width:0}
+
+body.ptech-home-v21.v21-layout-editing #v21Home {grid-auto-rows:72px}
+body.ptech-home-v21.v21-layout-editing #v21Home .v21-edit-card {
+  outline:1px dashed rgba(181,112,71,.66);outline-offset:-1px;
+  transition:box-shadow .16s,outline-color .16s;
+}
+body.ptech-home-v21.v21-layout-editing #v21Home .v21-edit-card:hover {outline-color:var(--v21-bronze);box-shadow:0 0 0 3px rgba(192,127,84,.12),var(--v21-shadow)}
+body.ptech-home-v21.v21-layout-editing #v21Home .v21-edit-card.v21-drop-target {outline:3px solid var(--v21-bronze);outline-offset:-3px;background:var(--v21-inset)}
+body.ptech-home-v21.v21-layout-editing #v21Home .v21-welcome{align-items:flex-start}
+body.ptech-home-v21.v21-layout-editing #v21Home .v21-welcome-copy{padding-top:8px}
+body.ptech-home-v21.v21-layout-editing #v21Home .v21-projects{justify-content:flex-start}
+body.ptech-home-v21.v21-layout-editing #v21Home :is(.v21-widget-tools,.v21-resize-corner) {box-sizing:border-box}
+body.ptech-home-v21 #v21Home .v21-widget-tools{display:none}
+body.ptech-home-v21.v21-layout-editing #v21Home .v21-widget-tools {
+  display:flex;gap:5px;align-items:center;flex-wrap:nowrap;max-width:100%;
+  padding:0 0 9px;margin:0 0 7px;position:relative;z-index:7;
+  border-bottom:1px solid var(--v21-border);min-width:0;
+}
+body.ptech-home-v21.v21-layout-editing #v21Home .v21-welcome > .v21-widget-tools{margin:12px 12px 0;max-width:calc(100% - 24px);flex:0 0 auto}
+body.ptech-home-v21.v21-layout-editing #v21Home .v21-welcome .v21-welcome-copy{padding-top:5px}
+body.ptech-home-v21 #v21Home .v21-widget-tools button {
+  flex:0 0 auto;min-width:27px;width:27px;height:27px;min-height:27px;
+  display:grid;place-items:center;background:var(--v21-inset);color:var(--v21-ink);
+  font:700 15px/1 inherit;font-family:inherit;border-radius:8px;
+  border:1px solid var(--v21-border);cursor:pointer;padding:0;
+}
+body.ptech-home-v21 #v21Home .v21-widget-tools button:hover,
+body.ptech-home-v21 #v21Home .v21-widget-tools button:focus-visible{background:rgba(194,124,77,.22);border-color:var(--v21-bronze)}
+body.ptech-home-v21 #v21Home .v21-widget-tools .v21-widget-grip{cursor:grab}
+body.ptech-home-v21 #v21Home .v21-widget-tools .v21-widget-grip:active{cursor:grabbing}
+body.ptech-home-v21 #v21Home .v21-widget-size{margin-right:auto;min-width:48px;font-size:11px;font-weight:750;color:var(--v21-bronze-rich);white-space:nowrap}
+body.ptech-home-v21 #v21Home .v21-resize-corner{display:none}
+body.ptech-home-v21.v21-layout-editing #v21Home .v21-resize-corner {
+  position:absolute;bottom:1px;right:1px;width:35px;height:35px;padding:6px;display:grid;place-items:center;
+  border:0;border-top-left-radius:13px;border-bottom-right-radius:16px;
+  color:var(--v21-bronze-rich);background:var(--v21-inset);z-index:8;touch-action:none;cursor:nwse-resize;
+}
+body.ptech-home-v21 #v21Home .v21-resize-corner svg{width:20px!important;height:20px!important}
+body.ptech-home-v21 #v21Home .v21-resize-corner:hover{filter:brightness(.94)}
+.v21-drag-ghost{position:fixed;z-index:9998;pointer-events:none;border-radius:11px;background:#a76e49;color:#fff;
+  box-shadow:0 12px 30px rgba(30,18,12,.3);padding:9px 14px;font-size:13px;font-weight:800;min-width:160px}
+body.v21-dragging,body.v21-resizing-card{cursor:grabbing;user-select:none}
+body.ptech-home-v21.v21-layout-editing #v21Home .v21-summary-card {justify-content:flex-start}
+@media(max-width:1280px){
+  body.ptech-home-v21.v21-layout-grid #v21Home .v21-project-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body.ptech-home-v21.v21-layout-grid #v21Home .v21-actions-grid{grid-template-columns:1fr}
+  body.ptech-home-v21.v21-layout-grid #v21Home .v21-action{min-height:45px;padding:7px 9px}
+}
+@media(max-width:890px){
+  body.ptech-home-v21.v21-layout-grid #v21Home{display:flex!important;flex-direction:column;gap:14px!important}
+  body.ptech-home-v21.v21-layout-grid #v21Home .v21-edit-card{height:auto!important;min-height:180px!important;overflow:visible}
+  body.ptech-home-v21.v21-layout-grid #v21Home .v21-summary-grid{display:contents!important}
+  body.ptech-home-v21.v21-layout-grid #v21Home .v21-actions-grid{grid-template-columns:1fr}
+  body.ptech-home-v21.v21-layout-grid #v21Home .v21-project-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body.ptech-home-v21 .v21-editor-toolbar{padding:13px}
+  body.ptech-home-v21 .v21-editor-actions{width:100%}
+}
+@media(max-width:500px){
+  body.ptech-home-v21 #v21Home .v21-widget-tools{gap:3px!important}
+  body.ptech-home-v21 #v21Home .v21-widget-tools button{width:24px;min-width:24px;height:27px}
+  body.ptech-home-v21 .v21-editor-button{font-size:11px;padding:7px 8px}
+}
+@media(prefers-reduced-motion:reduce){
+  body.ptech-home-v21 .v21-editor-button,body.ptech-home-v21 .v21-edit-card{transition:none!important}
+}
+/* Keep welcome text in its original place while editing (toolbar is a top row). */
+body.ptech-home-v21.v21-layout-editing #v21Home .v21-welcome {display:block!important}
+body.ptech-home-v21.v21-layout-editing #v21Home .v21-welcome-copy {
+  width:min(77%,850px);padding:7px clamp(20px,2.3vw,36px)!important;
+}
+body.ptech-home-v21.v21-layout-editing #v21Home .v21-personal-controls{display:none!important}
+@media(max-width:660px){body.ptech-home-v21.v21-layout-editing #v21Home .v21-welcome-copy{width:100%}}
