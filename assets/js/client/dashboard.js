@@ -46,6 +46,8 @@
     profile: {title:'Moj profil', icon:'◉', description:'Pregledaj i ažuriraj profil.', href:'profile.html', cta:'Otvori profil'}
   };
   const actionIds=Object.keys(actionCatalog);
+  const homeShortcutIds=['message','upload','tasks','projects','documents','profile','approve','revision','support'];
+  const defaultHomeShortcuts=['message','upload','tasks'];
   const actionSlots=new Map();
   let actionPickerOpen=false,actionPicker,actionAddButton,actionCount,emptyActions,actionMore;
 
@@ -80,6 +82,7 @@
     hidden:[...hubIds],
     dims:{...defaultDims},
     actionOrder:[...actionIds],hiddenActions:['projects','tasks','documents','profile'],
+    homeActions:[...defaultHomeShortcuts],
     customTasks:[],gridPreset:12,gridRows:12,placements:{},referenceApplied:true
   };
   let currentUserId=null,api=null,editing=false,state=null;
@@ -107,7 +110,8 @@
   const escapeSelector=val=>CSS.escape?CSS.escape(val):val.replace(/[^a-zA-Z0-9-]/g,'');
   function cloneDefaults(){return {
     order:[...defaults.order],hidden:[...defaults.hidden],dims:cloneDims(),
-    actionOrder:[...defaults.actionOrder],hiddenActions:[...defaults.hiddenActions],customTasks:[],gridPreset:12,gridRows:12,placements:{},referenceApplied:true
+    actionOrder:[...defaults.actionOrder],hiddenActions:[...defaults.hiddenActions],
+    homeActions:[...defaultHomeShortcuts],customTasks:[],gridPreset:12,gridRows:12,placements:{},referenceApplied:true
   };}
   function normalize(raw){
     if(!raw||typeof raw!=='object')return cloneDefaults();
@@ -141,6 +145,7 @@
     out.actionOrder=Array.isArray(raw.actionOrder)?[...new Set(raw.actionOrder.filter(id=>Object.hasOwn(actionCatalog,id)))]:[...actionIds];
     for(const id of actionIds)if(!out.actionOrder.includes(id))out.actionOrder.push(id);
     out.hiddenActions=Array.isArray(raw.hiddenActions)?[...new Set(raw.hiddenActions.filter(id=>Object.hasOwn(actionCatalog,id)))]:[...defaults.hiddenActions];
+    out.homeActions=Array.isArray(raw.homeActions)?[...new Set(raw.homeActions.filter(id=>homeShortcutIds.includes(id)))]:[...defaultHomeShortcuts];
     // V16.11: preserve explicit positions separately on phone, tablet and desktop.
     // Previous V16.10 saved layouts have no placements and are safely migrated on first edit.
     const positions=raw.placements;
@@ -181,6 +186,7 @@
         ...old.hidden.filter(id=>id.startsWith('personal-'))])];
       next.actionOrder=[...old.actionOrder];
       next.hiddenActions=[...old.hiddenActions];
+      next.homeActions=[...old.homeActions];
       return next;
     }catch(_){return cloneDefaults();}
   }
@@ -557,6 +563,7 @@
   // summary above the slide. Only a genuinely small tile switches to ONE summary.
   // Quick actions use measured available space so their tiles never get clipped.
   function fitQuickActions(widget, width, height){
+    if(document.body.classList.contains('portal-unified'))return;
     if(!actionGrid || !actionSection || !state)return;
     const visible=state.actionOrder.filter(key=>!state.hiddenActions.includes(key)&&actionSlots.has(key));
     const n=visible.length;
@@ -896,27 +903,6 @@
       e.preventDefault();moveOne(id,e.key==='ArrowLeft'||e.key==='ArrowUp'?-1:1);
     });
     const label=text('span','ptech-widget-dimensions','');label.setAttribute('aria-hidden','true');
-    const prev=makeButton('←',`Pomakni ${name} ranije`);
-    prev.addEventListener('click',()=>moveOne(id,-1));
-    const next=makeButton('→',`Pomakni ${name} kasnije`);
-    next.addEventListener('click',()=>moveOne(id,1));
-    const compact=makeButton('▣',`Smanji ${name} na malu kockicu`,'ptech-widget-compact');
-    compact.addEventListener('click',()=>{
-      if(!editing || drag || resize || zoom)return;
-      const old=state.dims[id]||{w:6,h:4};
-      state.dims[id]={...old,w:minColumn(id),h:Math.round((gridMinRows()/rowScale())*1000)/1000,
-        m:(id==='projects'||id==='actions')?2:1};
-      render(true);save();
-    });
-    // V16.6: Expand a tile IN THE DASHBOARD GRID (without leaving edit mode).
-    // Keep the corner-resize handle for fine tuning of both width and height.
-    const grow=makeButton('⤢',`Povećaj ${name} na veliku kockicu`,'ptech-widget-grow');
-    grow.addEventListener('click',()=>{
-      if(!editing || drag || resize || zoom)return;
-      const old=state.dims[id]||{w:6,h:4};
-      state.dims[id]={...old,w:12,h:Math.max(old.h,7),m:2};
-      render(true);save();
-    });
     const hide=makeButton('×',`Ukloni ${name} s dashboarda`,'ptech-widget-hide');
     hide.addEventListener('click',()=>{
       if(!editing)return;
@@ -931,7 +917,7 @@
       }else if(!state.hidden.includes(id))state.hidden.push(id);
       render();save();
     });
-    controls.append(handle,label,compact,grow,prev,next,hide);
+    controls.append(handle,label,hide);
     const grip=makeButton('','Povuci kut za promjenu širine i visine '+name,'ptech-widget-resize');
     grip.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 20l11-11M15 20l5-5M19 20h1v-1"/></svg>';
     grip.setAttribute('aria-keyshortcuts','ArrowLeft ArrowRight ArrowUp ArrowDown');
@@ -953,7 +939,7 @@
       event.preventDefault();event.stopPropagation();
       if(editing)openZoom(id,expand);
     });
-    controls.append(expand);
+    controls.append(expand); // Programmatic overflow preview only; visual size buttons were removed.
     widget.append(controls,grip);
   }
 
@@ -1132,7 +1118,7 @@
   // Block navigational/click actions when dashboard editing is enabled.
   grid.addEventListener('click',e=>{
     if(!editing)return;
-    if(e.target.closest('.ptech-widget-controls,.ptech-widget-resize,.ptech-action-controls,.ptech-action-add,.ptech-action-picker,.ptech-action-picker-item,.ptech-action-more'))return;
+    if(e.target.closest('.ptech-widget-controls,.ptech-widget-resize,.ptech-action-controls,.ptech-action-add,.ptech-action-picker,.ptech-action-picker-item,.ptech-action-more,.portal-action-add-cta,.portal-action-remove'))return;
     const target=e.target.closest('a,button,.action-card');
     if(target){e.preventDefault();e.stopPropagation();}
   },true);
@@ -1236,10 +1222,12 @@
     const savedTasks=state.customTasks.map(task=>({...task}));
     const savedHiddenActions=[...state.hiddenActions];
     const savedActionOrder=[...state.actionOrder];
+    const savedHomeActions=[...state.homeActions];
     state=cloneDefaults();
     state.customTasks=savedTasks;
     state.hiddenActions=savedHiddenActions;
     state.actionOrder=savedActionOrder;
+    state.homeActions=savedHomeActions;
     for(const task of savedTasks){
       const id=customId(task);
       state.order.push(id);
@@ -1555,12 +1543,21 @@
 
 
   window.PTechDashboard={
+    getHomeActions(){return [...(state?.homeActions||defaultHomeShortcuts)];},
+    setHomeActions(next){
+      if(!editing||!currentUserId||!Array.isArray(next))return false;
+      state.homeActions=[...new Set(next.filter(id=>homeShortcutIds.includes(id)))];
+      save();
+      window.dispatchEvent(new Event('ptech-home-actions-changed'));
+      return true;
+    },
     setUser(userId,client){
       if(typeof userId!=='string'||!userId||!client)return;
       if(currentUserId!==userId){
         if(zoom)closeZoom();
         currentUserId=userId;api=client;state=load();loadPersonalWidgets();
         button.disabled=false;setEdit(false);
+        window.dispatchEvent(new Event('ptech-home-actions-changed'));
       }
       refreshTasks();
     }
@@ -1850,6 +1847,235 @@
     if(original && original.isConnected && !original.disabled && original.getAttribute('aria-disabled')!=='true') original.click();
     else location.href='documents.html';
   });
+  // Visible quick actions use the SAME per-user dashboard layout state.
+  // Existing three DOM shortcuts are kept (and their original click handlers survive).
+  function setupVisibleQuickActions(){
+    const panel=$('portalHome')?.querySelector('.portal-actions');
+    const grid=panel?.querySelector('.portal-actions-grid');
+    const header=panel?.querySelector('.portal-section-header');
+    if(!panel||!grid||!header)return ()=>{};
+    const initial=[...grid.querySelectorAll('.portal-action')];
+    const stock=new Map([
+      ['message', initial.find(el=>el.id==='portalNewMessage')],
+      ['upload', initial.find(el=>el.id==='portalAddDocument')],
+      ['tasks', initial.find(el=>el.tagName==='A'&&el.getAttribute('href')==='tasks.html')]
+    ]);
+    const choices={
+      message:  {title:'Nova poruka',description:'Pošalji poruku našem timu.',icon:'mail'},
+      upload:   {title:'Dodaj dokument',description:'Učitaj datoteku za projekt.',icon:'upload'},
+      tasks:    {title:'Pogledaj zadatke',description:'Provjeri svoje obveze i rokove.',icon:'tasks'},
+      projects: {title:'Moji projekti',description:'Otvori popis svojih projekata.',icon:'projects',href:'my-projects.html'},
+      documents:{title:'Svi dokumenti',description:'Pristupi dokumentima i datotekama.',icon:'documents',href:'documents.html'},
+      profile:  {title:'Moj profil',description:'Pregledaj osobne postavke.',icon:'profile',href:'profile.html'},
+      approve:  {title:'Odobri dizajn',description:'Pregledaj dizajn i pošalji odobrenje.',icon:'check',trigger:'approveDesignAction',fallback:'my-projects.html'},
+      revision: {title:'Zatraži izmjenu',description:'Pošalji zahtjev za izmjenom dizajna.',icon:'revision',trigger:'revisionAction',fallback:'my-projects.html'},
+      support:  {title:'Kontaktiraj podršku',description:'Postavi pitanje našem timu.',icon:'support',href:'messages.html'}
+    };
+    const icons={
+      mail:'<rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/>',
+      upload:'<path d="M12 16V3m-5 5 5-5 5 5M4 16v5h16v-5"/>',
+      tasks:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18"/>',
+      projects:'<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M8 2v4m8-4v4M3 10h18"/>',
+      documents:'<path d="M6 2h8l5 5v15H6zM14 2v5h5M9 12h7M9 16h7"/>',
+      profile:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+      check:'<rect x="3" y="3" width="18" height="18" rx="3"/><path d="m7 12 3 3 7-7"/>',
+      revision:'<path d="M4 7h16m-4-4 4 4-4 4M20 17H4m4-4-4 4 4 4"/>',
+      support:'<path d="M3 11a9 9 0 0 1 18 0v6a2 2 0 0 1-2 2h-2v-7h4M3 12h4v7H5a2 2 0 0 1-2-2zm14 9h-5"/>'
+    };
+    const iconSvg=id=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[choices[id].icon]}</svg>`;
+    const add=create('button','portal-action-add-cta');add.type='button';
+    add.setAttribute('aria-label','Dodaj brzu akciju u kockicu');
+    add.title='Dodaj brzu akciju';
+    add.innerHTML='<span class="portal-action-add-plus" aria-hidden="true">＋</span><span>Dodaj akciju</span>';
+    header.append(add);
+    const announcement=create('span','portal-action-announcement');
+    announcement.setAttribute('aria-live','polite');announcement.setAttribute('role','status');
+    panel.append(announcement);
+    const customNodes=new Map();
+    const widget=panel.closest('[data-widget-id="actions"]');
+    let fitFrame=0;
+    function scheduleFit(){if(fitFrame)return;fitFrame=requestAnimationFrame(()=>{fitFrame=0;fitVisibleShortcuts();});}
+    // A wide but short widget can still show four compact shortcuts in one row.
+    // Do not let the old native V16 preview decide how many V21 shortcuts fit.
+    function fitVisibleShortcuts(){
+      const selected=[...grid.querySelectorAll('.portal-action-item')];
+      const width=panel.clientWidth||300;
+      const height=panel.clientHeight||170;
+      const cols=width>=1050?4:width>=780?3:width>=500?2:1;
+      const headerHeight=header.getBoundingClientRect().height||35;
+      const reserve=width<420?60:43;
+      const free=Math.max(0,height-headerHeight-reserve);
+      const rows=free>=129?2:free>=46?1:0;
+      const count=Math.min(selected.length,cols*rows);
+      grid.style.setProperty('grid-template-columns',`repeat(${cols},minmax(0,1fr))`,'important');
+      selected.forEach((item,index)=>item.style.setProperty('display',index<count?'flex':'none','important'));
+      const summary=panel.querySelector('.portal-adaptive-actions-summary');
+      if(summary){
+        if(count<selected.length||!count)summary.style.setProperty('display','flex','important');
+        else summary.style.removeProperty('display');
+      }
+      if(widget){
+        widget.dataset.homeActionsVisible=String(count);
+        widget.dataset.homeActionsOverflow=count<selected.length?'true':'false';
+        widget.dataset.quickCount=String(count);
+      }
+    }
+    const fitObserver=typeof ResizeObserver==='function'?new ResizeObserver(scheduleFit):null;
+    fitObserver?.observe(panel);
+    const stored=()=>window.PTechDashboard?.getHomeActions?.()||['message','upload','tasks'];
+    const editing=()=>document.body.classList.contains('ptech-layout-editing');
+    function getCard(id){
+      if(stock.has(id))return stock.get(id);
+      if(customNodes.has(id))return customNodes.get(id);
+      const d=choices[id];
+      if(!d)return null;
+      const card=create(d.href?'a':'button','portal-action');
+      if(d.href)card.href=d.href;else card.type='button';
+      card.append(create('span','portal-action-icon'),create('span','portal-action-text'));
+      card.querySelector('.portal-action-icon').innerHTML=iconSvg(id);
+      const copy=card.querySelector('.portal-action-text');
+      copy.append(create('strong','',d.title),create('small','',d.description));
+      const arrow=create('span','portal-action-chevron');arrow.setAttribute('aria-hidden','true');
+      arrow.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>';
+      card.append(arrow);
+      if(d.trigger){
+        card.addEventListener('click',()=>{
+          const native=$(d.trigger);
+          if(native && !native.disabled && native.getAttribute('aria-disabled')!=='true')native.click();
+          else location.href=d.fallback;
+        });
+      }
+      customNodes.set(id,card);return card;
+    }
+    function update(){
+      const selected=stored().filter(id=>choices[id]);
+      grid.replaceChildren();
+      for(const id of selected){
+        const card=getCard(id);if(!card)continue;
+        const item=create('div','portal-action-item');item.dataset.shortcutId=id;
+        item.append(card);
+        const remove=create('button','portal-action-remove','×');
+        remove.type='button';remove.setAttribute('aria-label',`Ukloni akciju ${choices[id].title}`);
+        remove.title=`Ukloni ${choices[id].title} iz kockice`;
+        remove.addEventListener('click',event=>{
+          event.stopPropagation();event.preventDefault();
+          if(!editing())return;
+          if(window.PTechDashboard?.setHomeActions?.(stored().filter(x=>x!==id))){
+            announcement.textContent=`Uklonjena akcija ${choices[id].title}`;
+          }
+        });
+        item.append(remove);grid.append(item);
+      }
+      if(!selected.length){
+        const empty=create('p','portal-actions-empty','Ovdje još nema brzih akcija. Dodaj one koje najčešće koristiš.');
+        grid.append(empty);
+      }
+      const remaining=Object.keys(choices).filter(id=>!selected.includes(id)).length;
+      add.disabled=!editing();
+      add.hidden=!editing();
+      add.querySelector('span:last-child').textContent=remaining?`Dodaj akciju (${remaining})`:'Upravljaj akcijama';
+      scheduleFit();
+      // Shortcuts are never accidentally opened while the user rearranges the dashboard.
+      if(typeof queue==='function')queue();
+    }
+    grid.addEventListener('click',event=>{
+      if(editing()&&event.target.closest('.portal-action')){
+        event.preventDefault();event.stopPropagation();
+      }
+    },true);
+    let modal=null;
+    function openPicker(){
+      if(!editing()||!stored()||modal)return;
+      const backdrop=create('div','portal-action-picker-backdrop');
+      const dialog=create('section','portal-action-picker-dialog');
+      dialog.setAttribute('role','dialog');dialog.setAttribute('aria-modal','true');
+      dialog.setAttribute('aria-labelledby','portalQuickActionPickerTitle');
+      const heading=create('div','portal-action-picker-heading');
+      const title=create('h2','','Dodaj brzu akciju');title.id='portalQuickActionPickerTitle';
+      const subtitle=create('p','','Odaberi što želiš imati pri ruci na svojoj početnoj.');
+      const close=create('button','portal-action-picker-close','×');close.type='button';
+      close.setAttribute('aria-label','Zatvori izbor brzih akcija');
+      const lead=create('div','');lead.append(title,subtitle);heading.append(lead,close);
+      const list=create('div','portal-action-picker-choices');
+      const status=create('p','portal-action-picker-status');
+      status.setAttribute('aria-live','polite');
+      const selectedSection=create('section','portal-action-picker-selected');
+      const selectedHeading=create('h3','','Akcije u tvojoj kockici');
+      const selectedList=create('div','portal-action-picker-selected-list');
+      selectedSection.append(selectedHeading,selectedList);
+      dialog.append(heading,list,status,selectedSection);backdrop.append(dialog);document.body.append(backdrop);
+      const priorOverflow=document.documentElement.style.overflow;
+      document.documentElement.style.overflow='hidden';
+      const dismiss=()=>{
+        if(!modal)return;
+        document.removeEventListener('keydown',onKey,true);
+        backdrop.remove();document.documentElement.style.overflow=priorOverflow;
+        modal=null;
+        if(add.isConnected)add.focus({preventScroll:true});
+      };
+      const onKey=event=>{
+        if(event.key==='Escape'){event.preventDefault();dismiss();return;}
+        if(event.key==='Tab'){
+          const focusables=[...dialog.querySelectorAll('button:not([disabled])')];
+          if(!focusables.length)return;
+          const first=focusables[0],last=focusables.at(-1);
+          if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+          else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+        }
+      };
+      const populate=()=>{
+        list.replaceChildren();
+        const available=Object.keys(choices).filter(id=>!stored().includes(id));
+        status.textContent=available.length?`${available.length} dostupnih akcija`:'Sve akcije su dodane. Možeš ukloniti akcije ispod.';
+        for(const id of available){
+          const choice=choices[id];
+          const option=create('button','portal-action-picker-choice');option.type='button';
+          const icon=create('span','portal-action-picker-icon');icon.innerHTML=iconSvg(id);
+          const copy=create('span','portal-action-picker-copy');
+          copy.append(create('strong','',choice.title),create('small','',choice.description));
+          const plus=create('span','portal-action-picker-plus','＋ Dodaj');
+          option.append(icon,copy,plus);
+          option.addEventListener('click',()=>{
+            if(!editing())return dismiss();
+            if(window.PTechDashboard?.setHomeActions?.([...stored(),id])){
+              announcement.textContent=`Dodana akcija ${choice.title}`;
+              populate();
+            }
+          });
+          list.append(option);
+        }
+        selectedList.replaceChildren();
+        for(const id of stored().filter(id=>choices[id])){
+          const row=create('div','portal-action-picker-selected-row');
+          const label=create('span','',choices[id].title);
+          const remove=create('button','','Ukloni');remove.type='button';
+          remove.setAttribute('aria-label',`Ukloni akciju ${choices[id].title}`);
+          remove.addEventListener('click',()=>{
+            if(!editing())return dismiss();
+            if(window.PTechDashboard?.setHomeActions?.(stored().filter(x=>x!==id))){
+              announcement.textContent=`Uklonjena akcija ${choices[id].title}`;
+              populate();
+            }
+          });
+          row.append(label,remove);selectedList.append(row);
+        }
+        selectedSection.hidden=!selectedList.children.length;
+      };
+      modal={dismiss};
+      close.addEventListener('click',dismiss);
+      backdrop.addEventListener('pointerdown',event=>{if(event.target===backdrop)dismiss();});
+      document.addEventListener('keydown',onKey,true);
+      populate();close.focus({preventScroll:true});
+    }
+    add.addEventListener('click',openPicker);
+    window.addEventListener('ptech-home-actions-changed',update);
+    window.addEventListener('resize',scheduleFit,{passive:true});
+    update();
+    return ()=>{
+      if(modal&&!editing())modal.dismiss();
+      update();
+    };
+  }
   // One dashboard: the same exact panels are visible during editing.
   const editor=$('ptechLayoutEdit');
   const editButton=$('portalEdit');
@@ -1885,7 +2111,7 @@
     const picker=document.querySelector('.ptech-widget-picker');
     if(hiddenTray)home.append(hiddenTray);
     if(picker)home.append(picker);
-    if(hint){hint.textContent='Povuci ručkicu kartice na slobodno mjesto. Veličinu mijenjaj donjim desnim kutom, a gustoću podesi u izborniku Mreža. Izmjene se automatski spremaju.';home.append(hint);}
+    if(hint){hint.textContent='Za premještanje povuci ručkicu ⠿, a veličinu prilagodi povlačenjem donjeg desnog kuta. Gustoću mreže možeš promijeniti iznad kartica. Izmjene se automatski spremaju.';home.append(hint);}
     home.append(grid);
     // Old content is kept exclusively as a data source; it never creates a
     // second visible dashboard, and the V16 smooth engine moves live cards.
@@ -1893,15 +2119,20 @@
     window.dispatchEvent(new Event('resize'));
   }
   mountUnifiedCards();
+  const refreshVisibleQuickActions=setupVisibleQuickActions();
   setupAdaptiveDetails();
   function refreshEditControls(){
     const editing=document.body.classList.contains('ptech-layout-editing');
     if(editButton){
       const label=editButton.querySelector('span');
-      if(label)label.textContent=editing?'✓ Gotovo':'Prilagodi početnu';
+      if(label)label.textContent=editing?'Gotovo':'Prilagodi početnu';
+      const icon=editButton.querySelector('svg');
+      if(icon)icon.innerHTML=editing?'<path d="m5 12 4 4 10-10"/>':'<path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="2" fill="currentColor" stroke="none"/><circle cx="15" cy="17" r="2" fill="currentColor" stroke="none"/>';
+      editButton.title=editing?'Završi uređivanje kartica':'Prilagodi početnu i raspored kockica';
       editButton.setAttribute('aria-pressed',String(editing));
       editButton.classList.toggle('is-editing',editing);
     }
+    refreshVisibleQuickActions();
   }
   editButton?.addEventListener('click',()=>{
     if(!editor||editor.disabled){editButton.title='Prijavite se za uređivanje kartica.';return;}

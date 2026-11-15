@@ -2012,3 +2012,136 @@ body.ptech-home.portal-unified.ptech-layout-editing #portalHome .ptech-personal-
 body.ptech-home.portal-unified.ptech-layout-editing #portalHome .ptech-personal-widget[data-adaptive-level="mini"] .ptech-personal-mini-check{
   display:none!important;
 }
+
+
+/* PTech: pregledan editor bez nepotrebnih kontrola za pomicanje i velicine. */
+body.ptech-home.portal-unified.ptech-layout-editing #portalHome .ptech-widget-controls .ptech-widget-expand{display:none!important}
+body.ptech-home.portal-unified.ptech-layout-editing #portalHome .ptech-widget-controls .ptech-widget-tool{transition:background .18s ease,transform .18s ease,border-color .18s ease}
+body.ptech-home.portal-unified.ptech-layout-editing #portalHome .ptech-widget-controls .ptech-widget-tool:hover{background:var(--portal-inset);border-color:var(--portal-bronze);transform:translateY(-1px)}
+body.ptech-home.portal-unified.ptech-layout-editing #portalHome .ptech-widget-controls .ptech-widget-move{width:34px;min-width:34px;min-height:34px}
+
+/* Glavni CTA: prikazuje se jasno i prije i tijekom uredjivanja. */
+body.ptech-home #portalHome #portalEdit.portal-text-btn{
+  appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  border:1px solid rgba(117,60,30,.22);border-radius:12px;
+  background:linear-gradient(135deg,#c78a5b,#a45f38);color:#fffdfb;
+  min-height:43px;padding:10px 17px;font-size:13px;font-weight:800;
+  box-shadow:0 5px 13px rgba(102,55,32,.16),inset 0 1px 0 rgba(255,255,255,.24);
+  text-decoration:none;white-space:nowrap;
+  transition:transform .2s ease,box-shadow .2s ease,background-color .2s ease,border-color .2s ease;
+}
+body.ptech-home #portalHome #portalEdit.portal-text-btn svg{width:18px!important;height:18px!important;color:inherit}
+body.ptech-home #portalHome #portalEdit.portal-text-btn:hover{
+  transform:translateY(-2px);color:white;
+  box-shadow:0 9px 20px rgba(102,55,32,.23),inset 0 1px 0 rgba(255,255,255,.25);
+}
+body.ptech-home #portalHome #portalEdit.portal-text-btn.is-editing{
+  background:linear-gradient(135deg,#317965,#22594d);border-color:rgba(28,94,75,.45);
+  box-shadow:0 6px 16px rgba(17,81,64,.19);
+}
+body.ptech-home #portalHome #portalEdit.portal-text-btn.is-editing:hover{
+  box-shadow:0 9px 22px rgba(17,81,64,.27);
+}
+body.ptech-home #portalHome #portalEdit.portal-text-btn:focus-visible,
+body.ptech-home #portalHome .portal-action-add-cta:focus-visible{
+  outline:3px solid var(--portal-focus);outline-offset:3px;
+}
+
+/* Brze akcije: vizualno isti widget, ali stvarni prečaci s urednickim izborom. */
+body.ptech-home.portal-unified #portalHome .portal-actions .portal-section-header{
+  display:flex;align-items:center;flex-wrap:wrap;gap:9px;
+}
+body.ptech-home.portal-unified #portalHome .portal-actions-grid{
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));
+  align-items:stretch;
+}
+body.ptech-home.portal-unified #portalHome .portal-actions-grid .portal-action-item{
+  display:flex;position:relative;min-width:0;min-height:0;
+}
+body.ptech-home.portal-unified #portalHome .portal-action-item > .portal-action{
+  flex:1;min-width:0;width:100%;height:100%;
+}
+body.ptech-home.portal-unified #portalHome .portal-action-chevron{display:flex;align-items:center;color:var(--portal-bronze);flex-shrink:0}
+body.ptech-home.portal-unified #portalHome .portal-action-chevron svg{width:20px!important;height:20px!important}
+body.ptech-home.portal-unified #portalHome .portal-actions-empty{grid-column:1/-1;margin:4px 0;padding:12px 10px;color:var(--portal-ink-soft);font-size:12px}
+body.ptech-home.portal-unified #portalHome .portal-action-add-cta{
+  display:none;align-items:center;justify-content:center;gap:7px;
+  margin-left:auto;appearance:none;min-height:37px;max-width:100%;border-radius:11px;
+  border:1px solid rgba(166,91,50,.24);background:linear-gradient(130deg,#c58757,#a25c34);color:white;
+  padding:7px 12px;font-size:12px;font-weight:800;cursor:pointer;
+  box-shadow:0 4px 12px rgba(112,61,35,.12);
+  transition:transform .18s ease,box-shadow .18s ease,opacity .18s ease;
+}
+body.ptech-home.portal-unified.ptech-layout-editing #portalHome .portal-action-add-cta:not([hidden]){display:inline-flex!important}
+body.ptech-home.portal-unified #portalHome .portal-action-add-cta:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 16px rgba(112,61,35,.23)}
+body.ptech-home.portal-unified #portalHome .portal-action-add-cta:disabled{opacity:.62;cursor:not-allowed}
+body.ptech-home.portal-unified #portalHome .portal-action-add-plus{font-size:20px;font-weight:500;line-height:1}
+body.ptech-home.portal-unified #portalHome .portal-action-remove{display:none;position:absolute;top:5px;right:5px;z-index:4;
+  appearance:none;width:27px;height:27px;border-radius:9px;border:1px solid var(--portal-border);
+  background:var(--portal-card);color:var(--portal-bronze-rich);font-size:21px;font-weight:600;
+  line-height:1;cursor:pointer;align-items:center;justify-content:center;
+  box-shadow:0 2px 7px rgba(45,25,15,.1);
+}
+body.ptech-home.portal-unified.ptech-layout-editing #portalHome .portal-action-remove{display:inline-flex}
+body.ptech-home.portal-unified.ptech-layout-editing #portalHome .portal-action-item > .portal-action{padding-top:28px!important;pointer-events:none}
+body.ptech-home.portal-unified #portalHome .portal-action-remove:hover{background:var(--portal-inset);border-color:var(--portal-bronze);transform:scale(1.06)}
+body.ptech-home.portal-unified #portalHome .portal-action-announcement{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-adaptive-level="mini"] .portal-action-add-cta span:last-child{display:none}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-adaptive-level="mini"] .portal-action-add-cta{min-width:35px;min-height:35px;padding:5px}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-action-item:not(:first-child){display:none!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-quick-count="1"] .portal-action-item:nth-child(n+2),
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-quick-count="2"] .portal-action-item:nth-child(n+3){display:none!important}
+
+/* Dostupan modal izvan kartice: male kockice nikad ne odrezuju izbornik. */
+.portal-action-picker-backdrop{position:fixed;inset:0;z-index:2147482700;
+  display:flex;align-items:center;justify-content:center;padding:16px;
+  background:rgba(8,18,32,.58);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);
+}
+.portal-action-picker-dialog{width:min(570px,100%);max-height:min(83dvh,720px);display:flex;flex-direction:column;overflow:hidden;
+  padding:22px;background:var(--portal-card,#fff9f3);color:var(--portal-ink,#1d2b40);
+  border:1px solid var(--portal-border,rgba(182,119,81,.24));border-radius:21px;
+  box-shadow:0 28px 90px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.16);
+}
+.portal-action-picker-heading{display:flex;gap:18px;justify-content:space-between;align-items:flex-start;margin-bottom:15px}
+.portal-action-picker-heading h2{font-size:21px;letter-spacing:-.4px;line-height:1.15;margin:0 0 7px}
+.portal-action-picker-heading p{font-size:13px;line-height:1.4;margin:0;color:var(--portal-ink-soft,#75665e)}
+.portal-action-picker-close{width:35px;height:35px;flex-shrink:0;border-radius:10px;
+  border:1px solid var(--portal-border,rgba(182,119,81,.24));background:var(--portal-inset,#f8ede4);
+  color:var(--portal-ink,#1d2b40);font-size:25px;cursor:pointer;
+}
+.portal-action-picker-choices{overflow:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:9px;padding:2px 4px 2px 1px}
+.portal-action-picker-choice{display:flex;align-items:center;gap:12px;text-align:left;min-height:69px;padding:11px 13px;
+  background:var(--portal-inset,#f9efe7);border:1px solid var(--portal-border,rgba(182,119,81,.24));
+  border-radius:14px;color:var(--portal-ink,#1d2b40);cursor:pointer;font:inherit;
+  transition:border-color .18s,transform .18s,box-shadow .18s;
+}
+.portal-action-picker-choice:hover{border-color:var(--portal-bronze,#af6339);transform:translateX(2px);box-shadow:0 5px 13px rgba(97,60,35,.12)}
+.portal-action-picker-choice:focus-visible,.portal-action-picker-close:focus-visible{outline:3px solid var(--portal-focus,#bb7448);outline-offset:2px}
+.portal-action-picker-icon{width:42px;height:42px;flex:0 0 42px;border-radius:12px;display:grid;place-items:center;
+  color:var(--portal-bronze,#af6339);background:color-mix(in srgb,var(--portal-bronze,#af6339) 12%,transparent)}
+.portal-action-picker-icon svg{width:23px;height:23px}
+.portal-action-picker-copy{display:flex;flex-direction:column;flex:1;gap:4px;min-width:0}
+.portal-action-picker-copy strong{font-size:14px;line-height:1.22}
+.portal-action-picker-copy small{font-size:12px;line-height:1.35;color:var(--portal-ink-soft,#75665e)}
+.portal-action-picker-plus{font-size:12px;font-weight:800;color:var(--portal-bronze,#af6339);white-space:nowrap}
+.portal-action-picker-status{font-size:12px;color:var(--portal-ink-soft,#75665e);padding-top:12px;margin:2px 0 0}
+@media(max-width:520px){.portal-action-picker-dialog{padding:15px;border-radius:16px}.portal-action-picker-choice{padding:9px;gap:9px}.portal-action-picker-plus{font-size:11px}}
+@media(prefers-reduced-motion:reduce){body.ptech-home #portalHome #portalEdit.portal-text-btn,
+  body.ptech-home #portalHome .portal-action-add-cta,.portal-action-picker-choice{transition:none!important}}
+
+/* Make the modal a proper full action manager even when the widget is tiny. */
+.portal-action-picker-selected{border-top:1px solid var(--portal-border,rgba(182,119,81,.24));margin-top:14px;padding-top:13px;min-height:0}
+.portal-action-picker-selected[hidden]{display:none!important}
+.portal-action-picker-selected h3{font-size:13px;font-weight:800;margin:0 0 9px;color:var(--portal-ink,#1d2b40)}
+.portal-action-picker-selected-list{display:flex;flex-wrap:wrap;gap:7px;max-height:124px;overflow:auto}
+.portal-action-picker-selected-row{display:inline-flex;align-items:center;gap:9px;padding:5px 6px 5px 10px;
+  border:1px solid var(--portal-border,rgba(182,119,81,.24));border-radius:10px;background:var(--portal-inset,#f9efe7);font-size:12px;color:var(--portal-ink,#1d2b40)}
+.portal-action-picker-selected-row button{border:0;background:color-mix(in srgb,var(--portal-bronze,#af6339) 12%,transparent);border-radius:7px;
+  padding:6px 8px;font:inherit;font-weight:750;cursor:pointer;color:var(--portal-bronze-rich,#97522c)}
+.portal-action-picker-selected-row button:hover{background:color-mix(in srgb,var(--portal-bronze,#af6339) 21%,transparent)}
+.portal-action-picker-dialog{overflow:auto;overscroll-behavior:contain}
+body.ptech-home.portal-unified #portalHome .portal-actions-grid .portal-action-item[style*="display: none"]{display:none!important}
+
+/* Ne pokazuj Prikaži sve kad su sve odabrane akcije već vidljive. */
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-home-actions-overflow="false"] .portal-adaptive-actions-summary{display:none!important}
+body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-home-actions-overflow="true"] .portal-adaptive-actions-summary{display:flex!important}
