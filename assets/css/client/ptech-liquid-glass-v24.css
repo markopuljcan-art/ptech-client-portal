@@ -163,3 +163,154 @@ html body .bottom-nav-item:focus-visible {outline:3px solid #bb842b !important;o
   html.ptech-sidebar-animating body.portal-desktop .dashboard.desktop-layout,
   html.ptech-sidebar-animating body.portal-desktop .ptech-sidebar-resize {transition:none !important;}
 }
+
+
+/* =============================================================
+   V24.2: First approved concept — transparent amber liquid glass
+   No solid gold square; one subtle glass lens follows the finger.
+   ============================================================= */
+@media (max-width: 1100px) {
+  html body.ptech-v13 .bottom-nav {
+    --v24-icon: rgba(255,255,255,.96);
+    --v24-nav-text: #fffdfa;
+    min-height: 84px !important;
+    padding: 9px 9px !important;
+    background: linear-gradient(155deg,
+      rgba(147,123,94,.57) 0%,
+      rgba(132,111,86,.53) 48%,
+      rgba(158,126,83,.55) 100%) !important;
+    border: 1px solid rgba(255,246,226,.68) !important;
+    border-radius: 34px !important;
+    box-shadow:
+      0 16px 34px rgba(82,58,29,.16),
+      0 2px 8px rgba(114,80,30,.08),
+      inset 0 1px 0 rgba(255,255,255,.68),
+      inset 0 -1px 0 rgba(244,198,103,.38),
+      0 0 16px rgba(217,169,80,.08) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(1.35) !important;
+    backdrop-filter: blur(28px) saturate(1.35) !important;
+  }
+  html body.ptech-v13 .bottom-nav::before {
+    content: "" !important;
+    display: block !important;
+    inset: 3px 4px 46% !important;
+    border-radius: 31px 31px 50% 50% !important;
+    background: linear-gradient(180deg,rgba(255,255,255,.36),rgba(255,255,255,0)) !important;
+    box-shadow: none !important;
+  }
+  html body.ptech-v13 .bottom-nav::after {
+    content: "" !important;
+    display: block !important;
+    top: 1px !important;
+    left: 8% !important;
+    width: 84% !important;
+    height: 1.5px !important;
+    background: linear-gradient(90deg,transparent,rgba(255,232,159,.90),rgba(255,255,255,.85),transparent) !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item,
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.active,
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item[aria-current="page"] {
+    color: #fffdfa !important;
+    font-size: 10px !important;
+    font-weight: 650 !important;
+    background: transparent !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item .v13-tab-visual {
+    width: 46px !important;
+    height: 42px !important;
+    background: transparent !important;
+    border: 0 !important;
+    color: #fffdfa !important;
+    box-shadow: none !important;
+    border-radius: 18px !important;
+    transition: transform 300ms cubic-bezier(.22,1,.36,1), color 200ms ease !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item .v13-tab-visual svg,
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item .v13-tab-visual .bottom-nav-icon-wrap svg {
+    color: rgba(255,255,255,.92) !important;
+    stroke: rgba(255,255,255,.92) !important;
+    stroke-width: 2.05px !important;
+    fill: transparent !important;
+    filter: none !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble {
+    position: absolute !important;
+    z-index: 1 !important;
+    width: clamp(54px, calc((100% - 38px)/5), 85px) !important;
+    height: 69px !important;
+    border-radius: 27px !important;
+    background: linear-gradient(150deg,
+      rgba(255,255,255,.25) 0%,
+      rgba(255,251,234,.14) 48%,
+      rgba(236,202,139,.12) 100%) !important;
+    border: 1px solid rgba(255,253,239,.72) !important;
+    box-shadow:
+      0 5px 16px rgba(100,70,30,.10),
+      0 1px 3px rgba(255,255,255,.22),
+      inset 0 1px 1px rgba(255,255,255,.64),
+      inset 0 -1px 0 rgba(232,177,82,.38),
+      0 0 14px rgba(233,186,91,.13) !important;
+    -webkit-backdrop-filter: blur(23px) saturate(1.55) !important;
+    backdrop-filter: blur(23px) saturate(1.55) !important;
+    transition: transform 360ms cubic-bezier(.22,1,.36,1), box-shadow 240ms ease !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble::before {
+    inset: 2px 4px 51% 4px !important;
+    background: linear-gradient(180deg,rgba(255,255,255,.48),rgba(255,255,255,0)) !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble::after {
+    box-shadow: 0 0 0 1px rgba(255,255,255,.16) inset,
+                0 -2px 13px rgba(255,213,135,.13) inset !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled.v131-dragging .v131-dock-bubble {
+    width: clamp(54px, calc((100% - 38px)/5), 85px) !important;
+    height: 69px !important;
+    background: linear-gradient(150deg,rgba(255,255,255,.32),rgba(243,218,169,.17)) !important;
+    box-shadow: 0 9px 21px rgba(80,61,32,.18),
+                0 0 0 4px rgba(255,224,160,.09),
+                inset 0 1px 0 rgba(255,255,255,.72) !important;
+    transition-duration: 0ms !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.active .v13-tab-visual,
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item[aria-current="page"] .v13-tab-visual,
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.v131-preview .v13-tab-visual {
+    background: transparent !important;
+    transform: translateY(-4px) scale(1.07) !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.active .v13-tab-visual svg,
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item[aria-current="page"] .v13-tab-visual svg,
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.v131-preview .v13-tab-visual svg,
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.v131-preview .bottom-nav-icon-wrap svg {
+    stroke: #ffffff !important;
+    color: #ffffff !important;
+    stroke-width: 2.55px !important;
+    fill: rgba(255,255,255,.66) !important;
+    filter: drop-shadow(0 1px 2px rgba(83,60,35,.14)) !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.active > span:last-child,
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item[aria-current="page"] > span:last-child,
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.v131-preview > span:last-child {
+    color: #fffdfa !important;
+    font-weight: 800 !important;
+    text-shadow: 0 1px 4px rgba(60,43,20,.18);
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled.v131-dragging .bottom-nav-item.v131-preview .v13-tab-visual {
+    transform: translateY(-6px) scale(1.09) !important;
+  }
+  /* Preserve the navy glass style in the existing Dark Mode. */
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav {
+    background: linear-gradient(150deg,rgba(40,52,77,.80),rgba(27,39,63,.74) 63%,rgba(50,55,78,.76)) !important;
+    border-color: rgba(255,225,162,.38) !important;
+    box-shadow: 0 16px 34px rgba(4,12,27,.28),inset 0 1px 0 rgba(255,255,255,.21) !important;
+  }
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav.v131-enabled .v131-dock-bubble {
+    background: linear-gradient(155deg,rgba(255,255,255,.22),rgba(170,180,213,.08),rgba(217,182,122,.12)) !important;
+    border-color: rgba(255,244,223,.50) !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble,
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item .v13-tab-visual {
+    transition-duration: .01ms !important;
+  }
+}
