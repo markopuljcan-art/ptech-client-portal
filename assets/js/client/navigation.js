@@ -39,17 +39,17 @@
 
 (() => {
   'use strict';
-  const MIN = 76, MAX = 430, DEFAULT = 244, COLLAPSED = 202;
+  const MIN = 220, MAX = 430, DEFAULT = 244, COLLAPSED = 190;
   const KEY = 'ptech_sidebar_width_v22';
   const DESKTOP = window.matchMedia('(min-width: 1101px)');
   const clamp = value => Math.max(MIN, Math.min(MAX, Math.round(Number(value) || DEFAULT)));
   const read = () => {
     try {
       const current = localStorage.getItem(KEY);
-      if (current !== null) return Number(current);
+      if (current !== null) { const value = Number(current); return value >= MIN && value <= MAX ? value : DEFAULT; }
       // Migrate only a readable width: old stored narrow values caused clipped labels.
       const old = Number(localStorage.getItem('ptech_sidebar_width') || localStorage.getItem('ptech-client-sidebar-width-v21') || localStorage.getItem('ptech-v18-sidebar-width') || 0);
-      return old >= 215 && old <= MAX ? old : 0;
+      return old >= MIN && old <= MAX ? old : 0;
     } catch (_) {return 0;}
   };
   const store = value => {try {localStorage.setItem(KEY, String(value));} catch (_) {}};

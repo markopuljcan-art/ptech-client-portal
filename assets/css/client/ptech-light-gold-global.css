@@ -1,0 +1,303 @@
+
+/* PTech Digital Client Portal | Light Gold Global V22.2
+   Shared light-mode refinement for all client pages.
+   Dark mode remains untouched.
+*/
+html.ptech-glass[data-theme="light"] body,
+html.ptech-glass body.light-mode {
+  --lg-page: #f8f5ef;
+  --lg-page-top: #fdfbf8;
+  --lg-page-bottom: #f3ede4;
+  --lg-card: #ffffff;
+  --lg-card-soft: #fbf7f1;
+  --lg-border: #eadfce;
+  --lg-border-strong: #d8c5a8;
+  --lg-text: #232936;
+  --lg-muted: #66635f;
+  --lg-gold: #b37a1f;
+  --lg-gold-deep: #8f6118;
+  --lg-gold-soft: #f7ecd3;
+  --lg-shadow: 0 10px 28px rgba(83, 62, 31, .08), 0 2px 6px rgba(83, 62, 31, .04);
+  --lg-shadow-soft: 0 6px 18px rgba(83, 62, 31, .05);
+  color: var(--lg-text);
+  background: var(--lg-page);
+}
+
+html.ptech-glass[data-theme="light"] body .dashboard.desktop-layout,
+html.ptech-glass body.light-mode .dashboard.desktop-layout {
+  background: var(--lg-page) !important;
+}
+
+html.ptech-glass[data-theme="light"] body .desktop-main,
+html.ptech-glass body.light-mode .desktop-main {
+  background:
+    radial-gradient(ellipse 600px 420px at 96% 8%, rgba(205, 164, 92, .12), transparent 75%),
+    radial-gradient(ellipse 520px 360px at 0% 95%, rgba(191, 154, 88, .07), transparent 76%),
+    linear-gradient(165deg, var(--lg-page-top) 0%, #faf7f2 52%, var(--lg-page-bottom) 100%) !important;
+}
+
+html.ptech-glass[data-theme="light"] body .desktop-main::before,
+html.ptech-glass[data-theme="light"] body .desktop-main::after,
+html.ptech-glass body.light-mode .desktop-main::before,
+html.ptech-glass body.light-mode .desktop-main::after {
+  opacity: .15 !important;
+}
+
+@media (min-width: 1101px) {
+  html.ptech-glass[data-theme="light"] body .desktop-sidebar,
+  html.ptech-glass body.light-mode .desktop-sidebar {
+    background: linear-gradient(180deg, #fffdf9 0%, #f7f1e7 100%) !important;
+    border-right: 1px solid #e9dece !important;
+    box-shadow: 6px 0 22px rgba(86, 61, 29, .05) !important;
+    color: #2d2924 !important;
+  }
+
+  html.ptech-glass[data-theme="light"] body .sidebar-brand,
+  html.ptech-glass body.light-mode .sidebar-brand {
+    padding-bottom: 28px;
+  }
+
+  html.ptech-glass[data-theme="light"] body .brand-logo,
+  html.ptech-glass body.light-mode .brand-logo {
+    background: linear-gradient(145deg, #fff8ef, #f0dcc4) !important;
+    color: #9a6717 !important;
+    border: 1px solid rgba(191, 150, 85, .32) !important;
+    box-shadow: 0 8px 18px rgba(96, 68, 29, .08) !important;
+  }
+
+  html.ptech-glass[data-theme="light"] body .sidebar-brand-text strong,
+  html.ptech-glass body.light-mode .sidebar-brand-text strong {
+    color: #232936 !important;
+  }
+
+  html.ptech-glass[data-theme="light"] body .sidebar-brand-text small,
+  html.ptech-glass body.light-mode .sidebar-brand-text small {
+    color: #9f7226 !important;
+  }
+
+  html.ptech-glass[data-theme="light"] body .sidebar-link,
+  html.ptech-glass body.light-mode .sidebar-link {
+    color: #3b362f !important;
+    font-weight: 650;
+  }
+
+  html.ptech-glass[data-theme="light"] body .sidebar-link:hover:not(.active):not([aria-current="page"]),
+  html.ptech-glass body.light-mode .sidebar-link:hover:not(.active):not([aria-current="page"]) {
+    background: rgba(199, 157, 93, .11) !important;
+  }
+
+  html.ptech-glass[data-theme="light"] body .sidebar-link.active,
+  html.ptech-glass[data-theme="light"] body .sidebar-link[aria-current="page"],
+  html.ptech-glass body.light-mode .sidebar-link.active,
+  html.ptech-glass body.light-mode .sidebar-link[aria-current="page"] {
+    background: linear-gradient(120deg, rgba(255,255,255,.95), rgba(248, 232, 200, .82)) !important;
+    color: #2f251b !important;
+    border: 1px solid rgba(188, 144, 68, .34) !important;
+    box-shadow: 0 5px 16px rgba(134, 94, 32, .12), inset 0 1px 0 rgba(255,255,255,.95) !important;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  html.ptech-glass[data-theme="light"] body .sidebar-link.active::before,
+  html.ptech-glass[data-theme="light"] body .sidebar-link[aria-current="page"]::before,
+  html.ptech-glass body.light-mode .sidebar-link.active::before,
+  html.ptech-glass body.light-mode .sidebar-link[aria-current="page"]::before {
+    background: linear-gradient(180deg, #d4a23e, #9f6b16) !important;
+  }
+
+  html.ptech-glass[data-theme="light"] body .sidebar-bottom,
+  html.ptech-glass body.light-mode .sidebar-bottom {
+    border-top-color: #ece1d0 !important;
+  }
+
+  html.ptech-glass[data-theme="light"] body .sidebar-bottom p,
+  html.ptech-glass body.light-mode .sidebar-bottom p,
+  html.ptech-glass[data-theme="light"] body .sidebar-help,
+  html.ptech-glass body.light-mode .sidebar-help {
+    color: #6f665f !important;
+  }
+
+  html.ptech-glass[data-theme="light"] body .ptech-sidebar-resize,
+  html.ptech-glass body.light-mode .ptech-sidebar-resize {
+    background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(244, 228, 203, .92)) !important;
+    border: 1px solid rgba(190, 150, 84, .42) !important;
+    box-shadow: 0 6px 16px rgba(111, 80, 37, .09) !important;
+  }
+
+  html.ptech-glass[data-theme="light"] body .ptech-sidebar-resize span,
+  html.ptech-glass body.light-mode .ptech-sidebar-resize span {
+    color: #9c6a1c !important;
+  }
+}
+
+html.ptech-glass[data-theme="light"] body .dashboard-header,
+html.ptech-glass body.light-mode .dashboard-header {
+  background: rgba(255, 252, 248, .96) !important;
+  border-bottom: 1px solid #ece1d2 !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+html.ptech-glass[data-theme="light"] body :is(.header-page-title strong, .header-page-title h1, .page-intro h1, .task-intro h1, .page-heading h1, .projects-page-header h1, .documents-page-header h1, .profile-page-header h1),
+html.ptech-glass body.light-mode :is(.header-page-title strong, .header-page-title h1, .page-intro h1, .task-intro h1, .page-heading h1, .projects-page-header h1, .documents-page-header h1, .profile-page-header h1) {
+  color: #232936 !important;
+}
+
+html.ptech-glass[data-theme="light"] body :is(.header-eyebrow, .page-eyebrow, .projects-eyebrow, .documents-eyebrow, .profile-eyebrow, .task-eyebrow, .profile-role, .modal-eyebrow),
+html.ptech-glass body.light-mode :is(.header-eyebrow, .page-eyebrow, .projects-eyebrow, .documents-eyebrow, .profile-eyebrow, .task-eyebrow, .profile-role, .modal-eyebrow) {
+  color: #a0701f !important;
+}
+
+html.ptech-glass[data-theme="light"] body :is(.user-box, .logout-button),
+html.ptech-glass body.light-mode :is(.user-box, .logout-button) {
+  color: #2f2e31 !important;
+}
+
+html.ptech-glass[data-theme="light"] body :is(
+  .project-card, .project-detail-hero, .deadline-card, .package-info-card,
+  .project-actions-card, .activities-detail-card, .activities-card,
+  .dashboard-section, .actions-section, .overview-panel, .ptech-dashboard-tasks,
+  .profile-hero, .profile-section, .stat-card, .documents-panel, .document-card,
+  .task-card, .task-summary, .chat-workspace, .chat-panel, .answer-card,
+  .conversation-rail, .conversation-option, .v1614-help-hero, .help-card,
+  .approve-project-card, .info-panel, .comment-panel, .side-panel,
+  .upload-section, .upload-screen-content, .upload-info-panel,
+  .action-card, .quick-action, .project-info, .project-actions-grid > *,
+  .detail-stat, .documents-toolbar, .projects-toolbar, .upload-dropzone,
+  .task-empty, .chat-empty, .documents-empty, .empty-state
+),
+html.ptech-glass body.light-mode :is(
+  .project-card, .project-detail-hero, .deadline-card, .package-info-card,
+  .project-actions-card, .activities-detail-card, .activities-card,
+  .dashboard-section, .actions-section, .overview-panel, .ptech-dashboard-tasks,
+  .profile-hero, .profile-section, .stat-card, .documents-panel, .document-card,
+  .task-card, .task-summary, .chat-workspace, .chat-panel, .answer-card,
+  .conversation-rail, .conversation-option, .v1614-help-hero, .help-card,
+  .approve-project-card, .info-panel, .comment-panel, .side-panel,
+  .upload-section, .upload-screen-content, .upload-info-panel,
+  .action-card, .quick-action, .project-info, .project-actions-grid > *,
+  .detail-stat, .documents-toolbar, .projects-toolbar, .upload-dropzone,
+  .task-empty, .chat-empty, .documents-empty, .empty-state
+) {
+  background: var(--lg-card) !important;
+  color: var(--lg-text) !important;
+  border: 1px solid var(--lg-border) !important;
+  box-shadow: var(--lg-shadow-soft) !important;
+}
+
+html.ptech-glass[data-theme="light"] body :is(.project-card, .project-detail-hero, .dashboard-section, .profile-hero, .profile-section, .documents-panel, .chat-workspace, .chat-panel, .task-card, .task-summary, .approve-project-card, .info-panel, .comment-panel, .side-panel),
+html.ptech-glass body.light-mode :is(.project-card, .project-detail-hero, .dashboard-section, .profile-hero, .profile-section, .documents-panel, .chat-workspace, .chat-panel, .task-card, .task-summary, .approve-project-card, .info-panel, .comment-panel, .side-panel) {
+  box-shadow: var(--lg-shadow) !important;
+}
+
+html.ptech-glass[data-theme="light"] body :is(.project-card, .project-detail-hero, .dashboard-section, .profile-hero, .profile-section, .documents-panel, .task-card, .task-summary),
+html.ptech-glass body.light-mode :is(.project-card, .project-detail-hero, .dashboard-section, .profile-hero, .profile-section, .documents-panel, .task-card, .task-summary) {
+  border-radius: 20px !important;
+}
+
+html.ptech-glass[data-theme="light"] body :is(.stat-icon, .project-icon, .documents-panel-icon, .section-icon, .panel-icon, .approval-button-icon, .upload-dropzone-icon, .profile-avatar),
+html.ptech-glass body.light-mode :is(.stat-icon, .project-icon, .documents-panel-icon, .section-icon, .panel-icon, .approval-button-icon, .upload-dropzone-icon, .profile-avatar) {
+  background: linear-gradient(145deg, #f9edd7, #f2d49d) !important;
+  color: #956118 !important;
+  border: 1px solid rgba(188, 146, 78, .18) !important;
+}
+
+html.ptech-glass[data-theme="light"] body .profile-avatar {
+  color: #704516 !important;
+}
+
+html.ptech-glass[data-theme="light"] body :is(.bronze-button, .project-open, .upload-launch-button, .upload-submit-button, .task-button-primary, .approval-button.primary, .task-button, .portal-project-open),
+html.ptech-glass body.light-mode :is(.bronze-button, .project-open, .upload-launch-button, .upload-submit-button, .task-button-primary, .approval-button.primary, .task-button, .portal-project-open) {
+  background: linear-gradient(135deg, #cf9a43, #a56d14) !important;
+  color: #fff !important;
+  border: 1px solid rgba(129, 87, 22, .24) !important;
+  box-shadow: 0 7px 16px rgba(130, 91, 34, .15) !important;
+}
+
+html.ptech-glass[data-theme="light"] body :is(.outline-button, .task-button-secondary, .approval-button.secondary, .tool-button, .upload-cancel-button, .upload-close-button),
+html.ptech-glass body.light-mode :is(.outline-button, .task-button-secondary, .approval-button.secondary, .tool-button, .upload-cancel-button, .upload-close-button) {
+  background: #fffdf9 !important;
+  color: #8f6118 !important;
+  border: 1px solid rgba(184, 144, 78, .34) !important;
+  box-shadow: none !important;
+}
+
+html.ptech-glass[data-theme="light"] body :is(.mini-pill, .project-status, .task-pill, .profile-status, .approve-status, .portal-count-pill),
+html.ptech-glass body.light-mode :is(.mini-pill, .project-status, .task-pill, .profile-status, .approve-status, .portal-count-pill) {
+  background: #f9f1e0 !important;
+  color: #865811 !important;
+  border: 1px solid rgba(187, 151, 84, .22) !important;
+}
+
+html.ptech-glass[data-theme="light"] body :is(input, textarea, select, .chat-compose textarea, .upload-field input, .upload-field textarea, .upload-field select, .projects-search input, .documents-search-wrap input),
+html.ptech-glass body.light-mode :is(input, textarea, select, .chat-compose textarea, .upload-field input, .upload-field textarea, .upload-field select, .projects-search input, .documents-search-wrap input) {
+  background: #fffdfa !important;
+  color: #242a36 !important;
+  border: 1px solid #e6dbc9 !important;
+}
+
+html.ptech-glass[data-theme="light"] body :is(.documents-toolbar, .projects-toolbar, .upload-footer, .chat-footer, .chat-header),
+html.ptech-glass body.light-mode :is(.documents-toolbar, .projects-toolbar, .upload-footer, .chat-footer, .chat-header) {
+  background: #fff !important;
+}
+
+html.ptech-glass[data-theme="light"] body :is(.message-bubble, .chat-message),
+html.ptech-glass body.light-mode :is(.message-bubble, .chat-message) {
+  color: #252932 !important;
+}
+
+html.ptech-glass[data-theme="light"] body :is(.message-bubble.is-admin, .chat-message.is-admin .message-bubble),
+html.ptech-glass body.light-mode :is(.message-bubble.is-admin, .chat-message.is-admin .message-bubble) {
+  background: #fff !important;
+  border: 1px solid var(--lg-border) !important;
+}
+
+html.ptech-glass[data-theme="light"] body :is(.message-bubble.is-client, .chat-message.is-client .message-bubble),
+html.ptech-glass body.light-mode :is(.message-bubble.is-client, .chat-message.is-client .message-bubble) {
+  background: linear-gradient(135deg, #f8ecd8, #f2d8a7) !important;
+  color: #543910 !important;
+  border: 1px solid rgba(188, 149, 80, .24) !important;
+}
+
+html.ptech-glass[data-theme="light"] body :is(.status-dot, .notice-dot) {
+  background: #39a566 !important;
+  box-shadow: 0 0 0 4px rgba(57,165,102,.12) !important;
+}
+
+/* Mobile bottom bar: liquid glass with subtle gold shimmer */
+@media (max-width: 1100px) {
+  html.ptech-glass[data-theme="light"] body .bottom-nav,
+  html.ptech-glass body.light-mode .bottom-nav {
+    background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(249, 238, 217, .72)) !important;
+    border: 1px solid rgba(194, 155, 89, .26) !important;
+    box-shadow: 0 14px 32px rgba(86, 64, 35, .13), inset 0 1px 0 rgba(255,255,255,.8) !important;
+    backdrop-filter: blur(18px) saturate(1.12);
+    -webkit-backdrop-filter: blur(18px) saturate(1.12);
+  }
+
+  html.ptech-glass[data-theme="light"] body .bottom-nav::before,
+  html.ptech-glass body.light-mode .bottom-nav::before {
+    content: "";
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    top: 5px;
+    height: 20px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(255,255,255,.55), rgba(255, 229, 173, .26), rgba(255,255,255,.16));
+    pointer-events: none;
+  }
+
+  html.ptech-glass[data-theme="light"] body .bottom-nav-item,
+  html.ptech-glass body.light-mode .bottom-nav-item {
+    color: #5c5348 !important;
+  }
+
+  html.ptech-glass[data-theme="light"] body .bottom-nav-item.active,
+  html.ptech-glass body.light-mode .bottom-nav-item.active {
+    background: linear-gradient(135deg, rgba(255,255,255,.68), rgba(245, 225, 187, .78)) !important;
+    color: #915f14 !important;
+    box-shadow: 0 8px 18px rgba(130, 91, 34, .12), inset 0 1px 0 rgba(255,255,255,.85) !important;
+    border: 1px solid rgba(188, 149, 80, .26) !important;
+  }
+}
