@@ -1,4 +1,4 @@
-/* PTech Client Portal V24 | iPhone-inspired Liquid Glass + smoother controls.
+/* PTech Client Portal V24.1 | Softer iPhone-inspired Liquid Glass + smoother controls.
    Decorative only: keep native links, Supabase, messages and browser accessibility.
 */
 :root { --ptech-v24-ease: cubic-bezier(.22,1,.36,1); }
@@ -49,19 +49,36 @@
     transition:transform 290ms var(--ptech-v24-ease),color 180ms ease,background 180ms ease !important;
   }
   html body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble {
-    z-index:1 !important; width:46px !important; height:44px !important;
-    border-radius:17px !important;
-    background:linear-gradient(145deg,rgba(209,163,79,.88),rgba(169,116,34,.83) 62%,rgba(130,87,23,.83)) !important;
-    border:1px solid rgba(255,242,208,.85) !important;
-    box-shadow:0 8px 20px rgba(142,102,34,.25),0 2px 4px rgba(90,62,26,.12),inset 0 1px 1px rgba(255,255,255,.72),inset 0 -2px 6px rgba(83,50,16,.16) !important;
-    -webkit-backdrop-filter: blur(16px) saturate(1.35) !important;
-    backdrop-filter: blur(16px) saturate(1.35) !important;
-    transition:transform 390ms var(--ptech-v24-ease),box-shadow 240ms ease !important;
+    z-index:1 !important; width:52px !important; height:50px !important;
+    border-radius:21px !important;
+    background:linear-gradient(165deg,rgba(255,255,255,.34) 0%,rgba(255,252,245,.22) 46%,rgba(233,205,154,.18) 100%) !important;
+    border:1px solid rgba(247,223,176,.62) !important;
+    box-shadow:0 10px 24px rgba(142,102,34,.12),0 2px 8px rgba(90,62,26,.08),inset 0 1px 0 rgba(255,255,255,.78),inset 0 -1px 0 rgba(212,172,98,.18) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(1.45) !important;
+    backdrop-filter: blur(20px) saturate(1.45) !important;
+    transition:transform 390ms var(--ptech-v24-ease),box-shadow 240ms ease,background 240ms ease !important;
     will-change:transform;
   }
+  html body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble::before {
+    content:"" !important;
+    position:absolute !important;
+    inset:1px 2px 52% 2px !important;
+    border-radius:18px 18px 24px 24px !important;
+    background:linear-gradient(180deg,rgba(255,255,255,.52),rgba(255,255,255,0)) !important;
+    pointer-events:none !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble::after {
+    content:"" !important;
+    position:absolute !important;
+    inset:0 !important;
+    border-radius:inherit !important;
+    box-shadow:0 0 0 1px rgba(255,243,214,.28) inset, 0 0 18px rgba(214,170,86,.12) inset !important;
+    pointer-events:none !important;
+  }
   html body.ptech-v13 .bottom-nav.v131-enabled.v131-dragging .v131-dock-bubble {
-    width:46px !important; height:44px !important;
-    box-shadow:0 11px 25px rgba(144,100,29,.32),0 0 0 4px rgba(255,225,165,.16),inset 0 1px 1px rgba(255,255,255,.73) !important;
+    width:52px !important; height:50px !important;
+    box-shadow:0 14px 28px rgba(144,100,29,.18),0 0 0 5px rgba(255,225,165,.11),inset 0 1px 0 rgba(255,255,255,.82) !important;
+    background:linear-gradient(165deg,rgba(255,255,255,.42) 0%,rgba(255,251,241,.28) 46%,rgba(233,205,154,.22) 100%) !important;
     transition-duration:0ms !important;
   }
   html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.active .v13-tab-visual,
@@ -71,21 +88,27 @@
     background:transparent !important;
     border:0 !important;
     box-shadow:none !important;
-    transform:translate3d(0,-5px,0) scale(1.075) !important;
+    transform:translate3d(0,-6px,0) scale(1.06) !important;
   }
   html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.v131-preview .v13-tab-visual > svg,
-  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.v131-preview .v13-tab-visual .bottom-nav-icon-wrap > svg {
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.v131-preview .v13-tab-visual .bottom-nav-icon-wrap > svg,
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.active .v13-tab-visual > svg,
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.active .v13-tab-visual .bottom-nav-icon-wrap > svg,
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item[aria-current="page"] .v13-tab-visual > svg,
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item[aria-current="page"] .v13-tab-visual .bottom-nav-icon-wrap > svg {
     color:#fff !important;
     stroke:#fff !important;
-    stroke-width:2.55px !important;
-    fill:rgba(255,255,255,.25) !important;
-    filter:drop-shadow(0 1px 2px rgba(69,40,7,.18));
+    stroke-width:2.6px !important;
+    fill:rgba(255,255,255,.34) !important;
+    filter:drop-shadow(0 1px 2px rgba(69,40,7,.12));
   }
-  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.v131-preview > span:last-child {
-    color:#835512 !important; font-weight:800 !important;
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.v131-preview > span:last-child,
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.active > span:last-child,
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item[aria-current="page"] > span:last-child {
+    color:#6c5731 !important; font-weight:800 !important;
   }
   html body.ptech-v13 .bottom-nav.v131-enabled.v131-dragging .bottom-nav-item.v131-preview .v13-tab-visual {
-    transform:translate3d(0,-7px,0) scale(1.12) !important;
+    transform:translate3d(0,-8px,0) scale(1.09) !important;
   }
   html body.ptech-v13.v131-exiting .desktop-main {
     opacity:.93 !important; transform:translate3d(-6px,0,0) !important;
@@ -101,6 +124,11 @@
     background:linear-gradient(145deg,rgba(45,57,78,.79),rgba(29,42,64,.66) 60%,rgba(26,35,54,.76)) !important;
     border-color:rgba(228,193,133,.34) !important;
     box-shadow:0 18px 38px rgba(6,13,31,.34),inset 0 1px 0 rgba(255,255,255,.23),inset 0 -1px 0 rgba(216,169,93,.13) !important;
+  }
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav.v131-enabled .v131-dock-bubble {
+    background:linear-gradient(165deg,rgba(85,105,141,.42),rgba(48,63,94,.28) 46%,rgba(214,170,86,.16) 100%) !important;
+    border-color:rgba(228,193,133,.42) !important;
+    box-shadow:0 14px 28px rgba(5,13,31,.24),0 2px 8px rgba(5,13,31,.14),inset 0 1px 0 rgba(255,255,255,.22),inset 0 -1px 0 rgba(216,169,93,.16) !important;
   }
   html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav-item.v131-preview > span:last-child {
     color:#f5e6c9 !important;
