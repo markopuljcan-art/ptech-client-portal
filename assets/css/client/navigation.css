@@ -401,8 +401,7 @@ html.ptech-glass body.light-mode .chat-workspace .conversation-rail {
     display:flex;align-items:center;justify-content:center;
     width:43px;height:43px;flex:0 0 43px;box-sizing:border-box;
     border-radius:13px;border:1px solid rgba(255,255,255,.64);
-    background: url('../../ptech-icon.png') center / 33px auto no-repeat,
-                linear-gradient(145deg,#fffaf2,#f1d9c5);
+    background: linear-gradient(145deg,#fffaf2,#f1d9c5);
     box-shadow:0 8px 20px rgba(76,48,30,.11);
     font-size:0;color:transparent;
   }

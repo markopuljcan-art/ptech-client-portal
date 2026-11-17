@@ -37,110 +37,132 @@
 })();
 
 
+/* PTech Client Portal - Sidebar V23.0
+   New versioned preference, never auto-restore broken legacy narrow widths.
+   Users can explicitly collapse to the real 76px compact mode or expand.
+*/
 (() => {
   'use strict';
-  const MIN = 220, MAX = 430, DEFAULT = 244, COLLAPSED = 190;
-  const KEY = 'ptech_sidebar_width_v22';
   const DESKTOP = window.matchMedia('(min-width: 1101px)');
-  const clamp = value => Math.max(MIN, Math.min(MAX, Math.round(Number(value) || DEFAULT)));
-  const read = () => {
+  const KEY = 'ptech_client_sidebar_v23';
+  const WIDTH_DEFAULT = 258;
+  const WIDTH_MIN = 236;
+  const WIDTH_MAX = 380;
+  const WIDTH_COMPACT = 76;
+  const clamp = n => Math.min(WIDTH_MAX, Math.max(WIDTH_MIN, Math.round(Number(n) || WIDTH_DEFAULT)));
+  const defaultState = () => ({mode:'expanded', width:WIDTH_DEFAULT});
+
+  function load() {
     try {
-      const current = localStorage.getItem(KEY);
-      if (current !== null) { const value = Number(current); return value >= MIN && value <= MAX ? value : DEFAULT; }
-      // Migrate only a readable width: old stored narrow values caused clipped labels.
-      const old = Number(localStorage.getItem('ptech_sidebar_width') || localStorage.getItem('ptech-client-sidebar-width-v21') || localStorage.getItem('ptech-v18-sidebar-width') || 0);
-      return old >= MIN && old <= MAX ? old : 0;
-    } catch (_) {return 0;}
-  };
-  const store = value => {try {localStorage.setItem(KEY, String(value));} catch (_) {}};
+      const stored = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (!stored || (stored.mode !== 'expanded' && stored.mode !== 'collapsed')) return defaultState();
+      return {mode:stored.mode, width:clamp(stored.width)};
+    } catch (_) { return defaultState(); }
+  }
+  function save(state) {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (_) {}
+  }
 
   function init() {
     const dashboard = document.querySelector('.dashboard.desktop-layout');
     const sidebar = dashboard?.querySelector(':scope > .desktop-sidebar');
     if (!sidebar || document.getElementById('ptechSidebarResize')) return;
-    // In repositories that still explicitly load the older V18 resizer, keep just one grip.
-    document.querySelectorAll('.p18-sidebar-grip').forEach(grip => grip.remove());
     const root = document.documentElement;
-    const saved = read();
-    let width = saved >= MIN && saved <= MAX ? saved : DEFAULT;
-    let expanded = width > COLLAPSED ? width : DEFAULT;
+    root.classList.remove('p18-sidebar-collapsed', 'p18-resizing');
+    // The old V18 handle can remain in legacy builds. Remove it before adding ours.
+    document.querySelectorAll('.p18-sidebar-grip').forEach(el => el.remove());
+    root.classList.add('ptech-glass','ptech-sidebar-resizable');
+
     const grip = document.createElement('button');
     grip.type = 'button';
-    grip.id = 'ptechSidebarResize';
     grip.className = 'ptech-sidebar-resize';
-    grip.setAttribute('role', 'separator');
-    grip.setAttribute('aria-orientation', 'vertical');
-    grip.setAttribute('aria-label', 'Promjena širine bočnog izbornika');
-    if (!sidebar.id) sidebar.id = 'ptechClientSidebar';
-    grip.setAttribute('aria-controls', sidebar.id);
-    grip.title = 'Povuci za promjenu širine · klikni za skupi ili proširi · strelice za precizno podešavanje';
+    grip.id = 'ptechSidebarResize';
     grip.innerHTML = '<span aria-hidden="true"><i></i><i></i><i></i></span>';
+    grip.setAttribute('aria-controls', sidebar.id || 'ptechClientSidebar');
+    if (!sidebar.id) sidebar.id = 'ptechClientSidebar';
     sidebar.insertAdjacentElement('afterend', grip);
+    let state = load();
 
-    function apply(next, persist) {
-      width = clamp(next);
-      if (width > COLLAPSED) expanded = width;
-      root.classList.add('ptech-glass', 'ptech-sidebar-resizable');
-      root.classList.toggle('ptech-sidebar-collapsed', width <= COLLAPSED);
-      root.style.setProperty('--ptech-sidebar-width', `${width}px`);
-      grip.setAttribute('aria-valuenow', String(width));
-      grip.setAttribute('aria-valuemin', String(MIN));
-      grip.setAttribute('aria-valuemax', String(MAX));
-      grip.setAttribute('aria-valuetext', width <= COLLAPSED ? 'Skupljeni izbornik' : `Širina ${width} piksela`);
-      if (DESKTOP.matches) dashboard.style.setProperty('grid-template-columns', `${width}px minmax(0, 1fr)`, 'important');
-      else dashboard.style.removeProperty('grid-template-columns');
-      if (persist) store(width);
-      window.dispatchEvent(new CustomEvent('ptech:sidebar-resized', {detail:{width}}));
+    function apply(next, persist=false) {
+      state = { mode:next.mode === 'collapsed' ? 'collapsed':'expanded', width:clamp(next.width) };
+      const collapsed = state.mode === 'collapsed';
+      const width = collapsed ? WIDTH_COMPACT : state.width;
+      root.classList.toggle('ptech-sidebar-collapsed', collapsed);
+      root.classList.remove('p18-sidebar-collapsed');
+      root.style.setProperty('--ptech-sidebar-width', width + 'px');
+      grip.setAttribute('aria-expanded', String(!collapsed));
+      grip.setAttribute('aria-label', collapsed ? 'Proširi bočni izbornik' : 'Skupi bočni izbornik');
+      grip.title = collapsed ? 'Klikni za proširenje izbornika' : 'Klikni za skupljanje ili povuci za promjenu širine';
+      if (DESKTOP.matches) {
+        dashboard.style.setProperty('grid-template-columns', width + 'px minmax(0,1fr)', 'important');
+      } else {
+        dashboard.style.removeProperty('grid-template-columns');
+      }
+      if (persist) save(state);
+      window.dispatchEvent(new CustomEvent('ptech:sidebar-resized', {detail:{width,collapsed}}));
     }
-    apply(width, false);
-    DESKTOP.addEventListener?.('change', () => apply(width, false));
+    apply(state);
+    DESKTOP.addEventListener?.('change', () => apply(state));
 
-    let pointer = null;
+    let drag = null;
+    let suppressClick = false;
     grip.addEventListener('pointerdown', event => {
       if (!DESKTOP.matches || event.button !== 0) return;
-      pointer = {id:event.pointerId, start:event.clientX, moved:false};
-      grip.setPointerCapture(event.pointerId);
-      root.classList.add('ptech-sidebar-resizing');
-      event.preventDefault();
+      suppressClick = false;
+      drag = {id:event.pointerId, x:event.clientX, moved:false, original:{...state}};
+      try { grip.setPointerCapture(event.pointerId); } catch (_) {}
     });
     grip.addEventListener('pointermove', event => {
-      if (!pointer || event.pointerId !== pointer.id) return;
-      if (Math.abs(event.clientX - pointer.start) > 4) pointer.moved = true;
-      if (pointer.moved) apply(event.clientX, false);
+      if (!drag || event.pointerId !== drag.id) return;
+      if (Math.abs(event.clientX - drag.x) > 7) drag.moved = true;
+      if (!drag.moved) return;
+      root.classList.add('ptech-sidebar-resizing');
+      // Below the threshold, snap fully shut instead of hiding labels in a half-width sidebar.
+      apply(event.clientX < 166 ? {mode:'collapsed',width:drag.original.width} : {mode:'expanded',width:clamp(event.clientX)});
     });
-    function end(event, cancelled) {
-      if (!pointer || (event?.pointerId !== undefined && event.pointerId !== pointer.id)) return;
-      const moved = pointer.moved;
-      pointer = null;
+    grip.addEventListener('pointerup', event => {
+      if (!drag || event.pointerId !== drag.id) return;
+      const wasMoved = drag.moved;
+      drag = null;
       root.classList.remove('ptech-sidebar-resizing');
-      if (!cancelled) {
-        if (!moved) apply(width <= COLLAPSED ? expanded : MIN, true);
-        else apply(width, true);
-      } else apply(width, true);
-    }
-    grip.addEventListener('pointerup', event => end(event, false));
-    grip.addEventListener('pointercancel', event => end(event, true));
-    grip.addEventListener('lostpointercapture', () => {if (pointer) end(null, true);});
+      if (wasMoved) { suppressClick=true; apply(state,true); }
+    });
+    grip.addEventListener('pointercancel', () => {
+      if (!drag) return;
+      const original = drag.original;
+      drag=null; suppressClick=true;
+      root.classList.remove('ptech-sidebar-resizing');
+      apply(original);
+    });
+    grip.addEventListener('click', event => {
+      if (suppressClick) { suppressClick=false; return; }
+      if (!DESKTOP.matches) return;
+      apply(state.mode==='collapsed' ? {mode:'expanded',width:state.width} : {mode:'collapsed',width:state.width},true);
+    });
+    grip.addEventListener('dblclick', event => {
+      event.preventDefault();
+      apply(defaultState(),true);
+    });
     grip.addEventListener('keydown', event => {
-      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-        event.preventDefault(); apply(width + (event.key === 'ArrowLeft' ? -16 : 16), true);
-      } else if (event.key === 'Home') {
-        event.preventDefault(); apply(MIN, true);
-      } else if (event.key === 'End') {
-        event.preventDefault(); apply(MAX, true);
-      } else if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault(); apply(width <= COLLAPSED ? expanded : MIN, true);
+      if (!DESKTOP.matches) return;
+      if (event.key==='ArrowLeft'||event.key==='ArrowRight') {
+        event.preventDefault();
+        const current = state.mode==='collapsed' ? WIDTH_DEFAULT:state.width;
+        apply({mode:'expanded',width:clamp(current+(event.key==='ArrowLeft'?-16:16))},true);
+      } else if (event.key==='Home') {
+        event.preventDefault(); apply({mode:'expanded',width:WIDTH_MIN},true);
+      } else if (event.key==='End') {
+        event.preventDefault(); apply({mode:'expanded',width:WIDTH_MAX},true);
       }
     });
-    grip.addEventListener('dblclick', event => {event.preventDefault(); apply(DEFAULT, true);});
     sidebar.querySelectorAll('.sidebar-nav .sidebar-link').forEach(link => {
       const label = link.querySelector('span')?.textContent?.trim();
       if (label) {
         link.title = label;
-        if (!link.hasAttribute('aria-label')) link.setAttribute('aria-label', label);
+        if (!link.hasAttribute('aria-label')) link.setAttribute('aria-label',label);
       }
     });
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, {once:true});
+  if (document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});
   else init();
 })();
