@@ -176,13 +176,14 @@
       const url = targetPath(links[index]);
       if (!url) { snap(active); return; }
       navigating = true;
+      nav.classList.add('v131-switching');
       const dir = index > active ? 'next' : 'prev';
       try { sessionStorage.setItem('ptech-v131-slide', dir); } catch { /* optional */ }
-      document.body.classList.add('v131-exiting');
-      document.documentElement.dataset.v131Direction = dir;
-      // Do not delay navigation for users with reduced motion.
+      // Allow the sliding selection to start, then navigate normally. Modern
+      // browsers animate same-origin page transitions through CSS @view-transition.
+      // Never slide/fade the entire old page before navigation (caused a flash).
       if (reduceMotion.matches) { location.assign(url.href); return; }
-      window.setTimeout(() => location.assign(url.href), 105);
+      window.setTimeout(() => location.assign(url.href), 100);
     }
 
     nav.addEventListener('pointerdown', e => {
@@ -326,13 +327,16 @@
     updateLayout();
     requestAnimationFrame(updateLayout);
 
-    // Lightweight entrance on the next HTML document; session state is not auth data.
+    // Keep a gentle fallback for older browsers. Chromium/Safari with
+    // same-origin cross-document View Transitions handle the scene natively.
     let lastDir = '';
     try { lastDir = sessionStorage.getItem('ptech-v131-slide') || ''; sessionStorage.removeItem('ptech-v131-slide'); } catch { /* no-op */ }
-    if (lastDir && !reduceMotion.matches) {
-      document.documentElement.dataset.v131Direction = lastDir;
-      document.body.classList.add('v131-entering');
-      window.setTimeout(() => document.body.classList.remove('v131-entering'), 330);
+    if (lastDir && !reduceMotion.matches && !document.createDocumentTransition) {
+      // CSS fade is intentionally tiny; the native transition takes priority.
+      if (!document.startViewTransition) {
+        document.body.classList.add('ptech-ig-fallback-enter');
+        window.setTimeout(() => document.body.classList.remove('ptech-ig-fallback-enter'), 210);
+      }
     }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, {once:true});

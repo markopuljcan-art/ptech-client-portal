@@ -1,0 +1,223 @@
+/* PTech Digital Client Portal | V25 | Clean Instagram-inspired mobile dock.
+   White navigation in Light Mode, dark gray/black icons, softly translucent
+   sliding lens. This sheet is the final mobile dock skin; older V13/V24 dock
+   styles are deliberately not edited to avoid regressions elsewhere. */
+
+/* Same-origin cross-document transitions: no SPA rewrite, no auth changes. */
+@view-transition { navigation: auto; }
+
+@media (max-width: 1100px) {
+  html body.ptech-v13 .bottom-nav {
+    --p25-dock-accent: #16181c;
+    --p25-dock-muted: #6c6d71;
+    --p25-lens-width: 62px;
+    --p25-lens-height: 59px;
+    min-height: 74px !important;
+    padding: 6px 8px !important;
+    border-radius: 25px !important;
+    gap: 1px !important;
+  }
+  html body.ptech-v13 .bottom-nav::before,
+  html body.ptech-v13 .bottom-nav::after {
+    content: none !important;
+    display: none !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item {
+    min-height: 60px !important;
+    padding: 4px 0 !important;
+    gap: 3px !important;
+    font-size: 10px !important;
+    line-height: 1.1 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item .v13-tab-visual {
+    width: 42px !important;
+    height: 37px !important;
+    border-radius: 13px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    transition: transform 230ms cubic-bezier(.22,1,.36,1),color 170ms ease !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: var(--p25-lens-width) !important;
+    height: var(--p25-lens-height) !important;
+    border-radius: 21px !important;
+    pointer-events: none !important;
+    will-change: transform;
+    transition: transform 270ms cubic-bezier(.22,1,.36,1),box-shadow 190ms ease !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled.v131-dragging .v131-dock-bubble {
+    width: var(--p25-lens-width) !important;
+    height: var(--p25-lens-height) !important;
+    transition: none !important;
+  }
+  /* Keep the labels as a visual/accessibility aid for less technical clients. */
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item > span:last-child {
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+    text-shadow: none !important;
+  }
+  html body.ptech-v13 .bottom-nav-item:focus-visible {
+    outline: 2px solid #a07839 !important;
+    outline-offset: 2px !important;
+  }
+}
+
+/* Light Mode. Pure white dock, neutral selection, optional faint warm edge. */
+@media (max-width: 1100px) {
+  html[data-theme="light"] body.ptech-v13 .bottom-nav,
+  html body.ptech-v13.light-mode .bottom-nav {
+    background: rgba(255,255,255,.965) !important;
+    color: #222429 !important;
+    border: 1px solid rgba(209,209,209,.83) !important;
+    box-shadow: 0 7px 25px rgba(31,35,43,.10),0 2px 5px rgba(31,35,43,.035),inset 0 1px rgba(255,255,255,.98) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(1.06) !important;
+    backdrop-filter: blur(24px) saturate(1.06) !important;
+  }
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .v131-dock-bubble {
+    /* Translucent gray-white lens - not a gold or brown tile. */
+    background: rgba(226,228,231,.42) !important;
+    border: 1px solid rgba(92,96,102,.11) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.95),0 2px 8px rgba(26,31,41,.045) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(1.08) !important;
+    backdrop-filter: blur(16px) saturate(1.08) !important;
+  }
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble::before,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .v131-dock-bubble::before {
+    content: none !important;
+    display: none !important;
+  }
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble::after,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .v131-dock-bubble::after {
+    content: none !important;
+    display: none !important;
+  }
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled.v131-dragging .v131-dock-bubble,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled.v131-dragging .v131-dock-bubble {
+    background: rgba(217,220,224,.50) !important;
+    border: 1px solid rgba(92,96,102,.15) !important;
+    box-shadow: 0 3px 11px rgba(25,29,35,.075),inset 0 1px 0 rgba(255,255,255,.98) !important;
+  }
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .bottom-nav-item {
+    color: #63676e !important;
+  }
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item .v13-tab-visual,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .bottom-nav-item .v13-tab-visual,
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item .v13-tab-visual :is(svg, .bottom-nav-icon-wrap svg),
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .bottom-nav-item .v13-tab-visual :is(svg, .bottom-nav-icon-wrap svg) {
+    color: #63676e !important;
+    stroke: #63676e !important;
+    fill: none !important;
+    filter: none !important;
+    stroke-width: 1.9px !important;
+  }
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item > span:last-child,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .bottom-nav-item > span:last-child {
+    color: #63676e !important;
+    font-weight: 600 !important;
+  }
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item:is(.v131-preview,.active,[aria-current="page"]) .v13-tab-visual,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .bottom-nav-item:is(.v131-preview,.active,[aria-current="page"]) .v13-tab-visual {
+    transform: translateY(-2px) scale(1.055) !important;
+    color: #16181c !important;
+    background: transparent !important;
+  }
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item:is(.v131-preview,.active,[aria-current="page"]) .v13-tab-visual :is(svg,.bottom-nav-icon-wrap svg),
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .bottom-nav-item:is(.v131-preview,.active,[aria-current="page"]) .v13-tab-visual :is(svg,.bottom-nav-icon-wrap svg) {
+    color: #16181c !important;
+    stroke: #16181c !important;
+    stroke-width: 2.45px !important;
+    fill: rgba(22,24,28,.10) !important;
+  }
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item:is(.v131-preview,.active,[aria-current="page"]) > span:last-child,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .bottom-nav-item:is(.v131-preview,.active,[aria-current="page"]) > span:last-child {
+    color: #17191c !important;
+    font-weight: 750 !important;
+  }
+  /* Once a new tab is previewed, only that tab should remain dark. */
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled:is(.v131-dragging,.v131-switching) .bottom-nav-item.active:not(.v131-preview) .v13-tab-visual,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled:is(.v131-dragging,.v131-switching) .bottom-nav-item.active:not(.v131-preview) .v13-tab-visual {
+    color: #63676e !important;
+    transform: none !important;
+  }
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled:is(.v131-dragging,.v131-switching) .bottom-nav-item.active:not(.v131-preview) .v13-tab-visual :is(svg,.bottom-nav-icon-wrap svg),
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled:is(.v131-dragging,.v131-switching) .bottom-nav-item.active:not(.v131-preview) .v13-tab-visual :is(svg,.bottom-nav-icon-wrap svg) {
+    color: #63676e !important;
+    stroke: #63676e !important;
+    stroke-width: 1.9px !important;
+    fill: none !important;
+  }
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled:is(.v131-dragging,.v131-switching) .bottom-nav-item.active:not(.v131-preview) > span:last-child,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled:is(.v131-dragging,.v131-switching) .bottom-nav-item.active:not(.v131-preview) > span:last-child {
+    color: #63676e !important;
+    font-weight: 600 !important;
+  }
+}
+
+/* Original navy / gold dark mode stays intact except for the shared geometry. */
+@media (max-width: 1100px) and (prefers-reduced-motion: no-preference) {
+  /* Stable chrome across page-to-page navigation; content quietly slides in. */
+  html body.ptech-v13 .bottom-nav { view-transition-name: ptech-mobile-dock; }
+  html body.ptech-v13 .desktop-main { view-transition-name: ptech-page-content; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+  ::view-transition-old(ptech-mobile-dock), ::view-transition-new(ptech-mobile-dock) {
+    animation-duration: 95ms;
+    animation-timing-function: ease-out;
+  }
+  ::view-transition-old(ptech-page-content) {
+    animation: 120ms ease-in both ptech-ig-out;
+  }
+  ::view-transition-new(ptech-page-content) {
+    animation: 205ms cubic-bezier(.2,.8,.2,1) both ptech-ig-in;
+  }
+  @keyframes ptech-ig-out { from {opacity:1;} to {opacity:.86;} }
+  @keyframes ptech-ig-in { from {opacity:.86;transform:translateX(10px);} to {opacity:1;transform:translateX(0);} }
+  /* Fallback entrance for browsers without cross-document transitions. */
+  html body.ptech-v13.ptech-ig-fallback-enter .desktop-main {
+    animation: ptech-ig-in 160ms cubic-bezier(.2,.8,.2,1) both !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble,
+  html body.ptech-v13 .bottom-nav.v131-enabled .v13-tab-visual,
+  ::view-transition-old(*), ::view-transition-new(*) {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Final override: V24.3 had a stronger brown background and glass streak.
+   Match that exact specificity and reset its background-image explicitly. */
+@media (max-width: 1100px) {
+  html.ptech-glass[data-theme="light"] body.ptech-v13 .bottom-nav,
+  html.ptech-glass body.ptech-v13.light-mode .bottom-nav,
+  html[data-theme="light"] body.ptech-v13 .bottom-nav {
+    background: rgba(255,255,255,.97) !important;
+    background-image: none !important;
+    border: 1px solid rgba(214,215,218,.93) !important;
+    border-radius: 25px !important;
+    min-height: 74px !important;
+    padding: 6px 8px !important;
+    box-shadow: 0 8px 28px rgba(25,29,35,.11), 0 1px 3px rgba(25,29,35,.03), inset 0 1px 0 #fff !important;
+    -webkit-backdrop-filter: blur(24px) saturate(1.04) !important;
+    backdrop-filter: blur(24px) saturate(1.04) !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled::before,
+  html body.ptech-v13 .bottom-nav.v131-enabled::after {
+    content: none !important;
+    display: none !important;
+    background: none !important;
+    box-shadow: none !important;
+  }
+}
