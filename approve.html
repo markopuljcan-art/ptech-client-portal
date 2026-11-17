@@ -12,69 +12,48 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./assets/js/client/approve.js?v=14.3" defer></script>
   <script src="./assets/js/shared/ptech-loading.js?v=13.8" defer></script>
-  <link rel="stylesheet" href="./assets/css/client/navigation.css?v=unified1">
-  <script src="./assets/js/client/navigation.js?v=unified1" defer></script>
+  <link rel="stylesheet" href="./assets/css/client/navigation.css?v=sidebar-v22-1">
+  <script src="./assets/js/client/navigation.js?v=sidebar-v22-1" defer></script>
 </head>
 <body class="portal-desktop light-mode">
   <a class="skip-link" href="#main-content">Preskoči na sadržaj</a>
   <div class="dashboard desktop-layout">
-    <aside aria-label="Glavna navigacija" class="desktop-sidebar">
-<a class="sidebar-brand" href="form.html">
-<span class="brand-logo">P</span>
-<span class="sidebar-brand-text">
-<strong>PTech Digital</strong>
-<small>CLIENT PORTAL</small>
-</span>
-</a>
-<nav aria-label="Stranice portala" class="sidebar-nav">
-<a class="sidebar-link" href="form.html">
-<svg aria-hidden="true" viewbox="0 0 24 24">
-<path d="M3 11.5L12 4l9 7.5"></path>
-<path d="M5 10.5V20h14v-9.5"></path>
-<path d="M9 20v-6h6v6"></path>
-</svg>
-<span>Početna</span>
-</a>
-<a aria-current="page" class="sidebar-link active" href="my-projects.html">
-<svg aria-hidden="true" viewbox="0 0 24 24">
-<rect height="15" rx="2" width="16" x="4" y="5"></rect>
-<path d="M8 5V3"></path>
-<path d="M16 5V3"></path>
-<path d="M4 9h16"></path>
-</svg>
-<span>Projekti</span>
-</a>
-<a class="sidebar-link" href="documents.html">
-<svg aria-hidden="true" viewbox="0 0 24 24">
-<path d="M4 4h6l2 2h8v14H4z"></path>
-</svg>
-<span>Dokumenti</span>
-</a>
-<a class="sidebar-link" href="messages.html">
-<svg aria-hidden="true" viewbox="0 0 24 24">
-<path d="M4 5h16v11H8l-4 4z"></path>
-</svg>
-<span>Poruke</span>
-<span aria-hidden="true" class="sidebar-message-indicator" hidden=""></span>
-</a>
-<a class="sidebar-link" href="profile.html">
-<svg aria-hidden="true" viewbox="0 0 24 24">
-<circle cx="12" cy="8" r="3"></circle>
-<path d="M5 20c0-4 3-7 7-7s7 3 7 7"></path>
-</svg>
-<span>Profil</span>
-</a>
-</nav>
-<div class="sidebar-bottom">
-<a href="messages.html">
-                    ⓘ   Pomoć i podrška
-                </a>
-<p>
-                    © PTech Digital 2026.
-                    Sva prava zadržana.
-                </p>
-</div>
-</aside>
+    <aside class="desktop-sidebar" aria-label="Glavna navigacija">
+        <a class="sidebar-brand" href="form.html" aria-label="PTech Digital Client Portal – Početna">
+            <span class="brand-logo" aria-hidden="true">P</span>
+            <span class="sidebar-brand-text"><strong>PTech Digital</strong><small>CLIENT PORTAL</small></span>
+        </a>
+        <nav class="sidebar-nav" aria-label="Stranice portala">
+            <a href="form.html" class="sidebar-link" aria-label="Početna" title="Početna">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5"/><path d="M5 10.5V20h14v-9.5"/><path d="M9 20v-6h6v6"/></svg>
+                <span>Početna</span>
+            </a>
+            <a href="my-projects.html" class="sidebar-link active" aria-current="page" aria-label="Projekti" title="Projekti">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 5V3"/><path d="M16 5V3"/><path d="M4 9h16"/></svg>
+                <span>Projekti</span>
+            </a>
+            <a href="tasks.html" class="sidebar-link" aria-label="Zadaci" title="Zadaci">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="m8 11 2 2 5-5M8 17h8"/></svg>
+                <span>Zadaci</span>
+            </a>
+            <a href="documents.html" class="sidebar-link" aria-label="Dokumenti" title="Dokumenti">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6l2 2h8v14H4z"/></svg>
+                <span>Dokumenti</span>
+            </a>
+            <a href="messages.html" class="sidebar-link" aria-label="Poruke" title="Poruke">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/></svg>
+                <span>Poruke</span><span class="sidebar-message-indicator" aria-hidden="true" hidden></span><span id="desktopUnreadBadge" class="sidebar-unread" hidden>0</span>
+            </a>
+            <a href="profile.html" class="sidebar-link" aria-label="Profil" title="Profil">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3"/><path d="M5 20c0-4 3-7 7-7s7 3 7 7"/></svg>
+                <span>Profil</span>
+            </a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="messages.html" class="sidebar-help">ⓘ &nbsp; Pomoć i podrška</a>
+            <p>© PTech Digital 2026.<br>Sva prava zadržana.</p>
+        </div>
+    </aside>
 
     <div class="desktop-main">
       <header class="dashboard-header">

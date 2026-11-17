@@ -377,3 +377,142 @@ html.ptech-glass body.light-mode .chat-workspace .conversation-rail {
   }
 }
 .p18-sidebar-grip{display:none!important}
+
+/* ============================================================
+   CLIENT SIDEBAR V22.1 – identical on all client pages.
+   The home page, profile, projects, tasks, documents, messages,
+   project detail and design approval share a consistent sidebar.
+   All rules are nav-only; content and Dark Mode colors stay intact.
+   ============================================================ */
+@media (min-width:1101px) {
+  html.ptech-glass body.portal-desktop .dashboard.desktop-layout {
+    grid-template-columns:var(--ptech-sidebar-width,244px) minmax(0,1fr)!important;
+  }
+  html.ptech-glass body.portal-desktop .desktop-sidebar {
+    width:100%!important;min-width:0!important;max-width:none!important;
+    display:flex;flex-direction:column;box-sizing:border-box;
+    padding:29px 13px 22px;overflow:hidden;
+  }
+  html.ptech-glass body.portal-desktop .sidebar-brand {
+    display:flex;align-items:center;gap:11px;padding:3px 8px 29px;
+    min-width:0;flex-shrink:0;white-space:nowrap;
+  }
+  html.ptech-glass body.portal-desktop .sidebar-brand .brand-logo {
+    display:flex;align-items:center;justify-content:center;
+    width:43px;height:43px;flex:0 0 43px;box-sizing:border-box;
+    border-radius:13px;border:1px solid rgba(255,255,255,.64);
+    background: url('../../ptech-icon.png') center / 33px auto no-repeat,
+                linear-gradient(145deg,#fffaf2,#f1d9c5);
+    box-shadow:0 8px 20px rgba(76,48,30,.11);
+    font-size:0;color:transparent;
+  }
+  html.ptech-glass body.portal-desktop .sidebar-brand-text {
+    min-width:0;display:flex;flex-direction:column;gap:4px;
+  }
+  html.ptech-glass body.portal-desktop .sidebar-brand-text strong {
+    font-size:16px;font-weight:800;letter-spacing:-.45px;line-height:1.15;
+  }
+  html.ptech-glass body.portal-desktop .sidebar-brand-text small {
+    font-size:10px;font-weight:800;letter-spacing:1.05px;line-height:1.2;
+  }
+  html.ptech-glass body.portal-desktop .sidebar-nav {
+    display:flex;flex-direction:column;gap:7px;margin-top:11px;
+    min-width:0;align-items:stretch;
+  }
+  html.ptech-glass body.portal-desktop .sidebar-nav .sidebar-link {
+    display:flex;align-items:center;gap:13px;width:100%;min-width:0;
+    min-height:48px;box-sizing:border-box;padding:10px 13px;
+    font-size:14px;font-weight:650;line-height:1.35;
+    border:1px solid transparent;border-radius:13px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  html.ptech-glass body.portal-desktop .sidebar-nav .sidebar-link > svg {
+    width:21px;height:21px;flex:0 0 21px;
+    fill:none;stroke:currentColor;stroke-width:1.8;
+    stroke-linecap:round;stroke-linejoin:round;
+  }
+  html.ptech-glass body.portal-desktop .sidebar-nav .sidebar-link > span:not(.sidebar-unread):not(.sidebar-message-indicator) {
+    min-width:0;overflow:hidden;text-overflow:ellipsis;
+  }
+  html.ptech-glass body.portal-desktop .sidebar-bottom {
+    margin-top:auto;min-width:0;padding:17px 8px 0;
+  }
+  html.ptech-glass body.portal-desktop .sidebar-bottom .sidebar-help {
+    display:flex;align-items:center;min-height:40px;
+    font-size:13px;font-weight:650;white-space:nowrap;
+  }
+  html.ptech-glass body.portal-desktop .sidebar-bottom p {
+    margin:15px 0 0;font-size:11px;line-height:1.75;
+  }
+  /* Click on the handle collapses the entire nav, not only the container.
+     Breakpoint is high enough to prevent cropped text and branding. */
+  html.ptech-glass.ptech-sidebar-collapsed body.portal-desktop .sidebar-brand {
+    gap:0;padding-left:0;padding-right:0;justify-content:center;
+  }
+  html.ptech-glass.ptech-sidebar-collapsed body.portal-desktop .sidebar-brand-text,
+  html.ptech-glass.ptech-sidebar-collapsed body.portal-desktop .sidebar-nav .sidebar-link > span,
+  html.ptech-glass.ptech-sidebar-collapsed body.portal-desktop .sidebar-bottom p {
+    display:none!important;
+  }
+  html.ptech-glass.ptech-sidebar-collapsed body.portal-desktop .sidebar-nav {align-items:center;}
+  html.ptech-glass.ptech-sidebar-collapsed body.portal-desktop .sidebar-nav .sidebar-link {
+    width:46px;min-width:46px;height:48px;min-height:48px;
+    padding:0!important;gap:0;justify-content:center;
+  }
+  html.ptech-glass.ptech-sidebar-collapsed body.portal-desktop .sidebar-bottom {
+    padding-left:0;padding-right:0;text-align:center;
+  }
+  html.ptech-glass.ptech-sidebar-collapsed body.portal-desktop .sidebar-bottom .sidebar-help {
+    font-size:0!important;justify-content:center;
+  }
+  html.ptech-glass.ptech-sidebar-collapsed body.portal-desktop .sidebar-bottom .sidebar-help::before {
+    content:'?';font-size:18px;width:29px;height:29px;line-height:29px;
+    border-radius:50%;border:1px solid currentColor;text-align:center;
+  }
+  html.ptech-glass body.portal-desktop .sidebar-nav .sidebar-link:focus-visible,
+  html.ptech-glass body.portal-desktop .sidebar-bottom .sidebar-help:focus-visible {
+    outline:2px solid #b6883d;outline-offset:2px;
+  }
+  html.ptech-glass body.portal-desktop .sidebar-nav .sidebar-link.active,
+  html.ptech-glass body.portal-desktop .sidebar-nav .sidebar-link[aria-current="page"] {
+    font-weight:800;
+  }
+}
+/* Homepage Light Gold finish, now on every client page. */
+@media (min-width:1101px) {
+  html.ptech-glass[data-theme="light"] body.portal-desktop .desktop-sidebar,
+  html.ptech-glass body.portal-desktop.light-mode .desktop-sidebar {
+    background:linear-gradient(180deg,#fffcf7 0%,#f8f3ea 100%)!important;
+    border-right:1px solid #e9dfd1!important;
+    box-shadow:5px 0 20px rgba(71,52,26,.035)!important;
+  }
+  html.ptech-glass[data-theme="light"] body.portal-desktop .desktop-sidebar::before,
+  html.ptech-glass[data-theme="light"] body.portal-desktop .desktop-sidebar::after,
+  html.ptech-glass body.portal-desktop.light-mode .desktop-sidebar::before,
+  html.ptech-glass body.portal-desktop.light-mode .desktop-sidebar::after {opacity:.13!important;}
+  html.ptech-glass[data-theme="light"] body.portal-desktop .sidebar-link,
+  html.ptech-glass body.portal-desktop.light-mode .sidebar-link {color:#35302a!important;}
+  html.ptech-glass[data-theme="light"] body.portal-desktop .sidebar-brand-text strong,
+  html.ptech-glass body.portal-desktop.light-mode .sidebar-brand-text strong {color:#292724!important;}
+  html.ptech-glass[data-theme="light"] body.portal-desktop .sidebar-brand-text small,
+  html.ptech-glass body.portal-desktop.light-mode .sidebar-brand-text small {color:#99691e!important;}
+  html.ptech-glass[data-theme="light"] body.portal-desktop .sidebar-link:hover:not(.active),
+  html.ptech-glass body.portal-desktop.light-mode .sidebar-link:hover:not(.active) {
+    background:rgba(198,160,92,.12)!important;transform:none!important;box-shadow:none!important;
+  }
+  html.ptech-glass[data-theme="light"] body.portal-desktop .sidebar-link.active,
+  html.ptech-glass[data-theme="light"] body.portal-desktop .sidebar-link[aria-current="page"],
+  html.ptech-glass body.portal-desktop.light-mode .sidebar-link.active,
+  html.ptech-glass body.portal-desktop.light-mode .sidebar-link[aria-current="page"] {
+    background:linear-gradient(115deg,rgba(255,255,255,.94),rgba(248,230,192,.74))!important;
+    color:#30251b!important;border:1px solid rgba(185,139,56,.36)!important;
+    box-shadow:0 4px 14px rgba(135,96,34,.10),inset 0 1px 0 rgba(255,255,255,.98)!important;
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  }
+  html.ptech-glass[data-theme="light"] body.portal-desktop .sidebar-link.active::before,
+  html.ptech-glass[data-theme="light"] body.portal-desktop .sidebar-link[aria-current="page"]::before,
+  html.ptech-glass body.portal-desktop.light-mode .sidebar-link.active::before,
+  html.ptech-glass body.portal-desktop.light-mode .sidebar-link[aria-current="page"]::before {
+    background:#ba882f!important;
+  }
+}
