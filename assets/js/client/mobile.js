@@ -129,8 +129,8 @@
     let navigating = false;
     // Read the actual CSS lens dimensions. Keeps touch dragging centered even
     // when the dock becomes narrower or the glass lens changes with viewport.
-    const bubbleWidth = () => bubble.getBoundingClientRect().width || 62;
-    const bubbleHeight = () => bubble.getBoundingClientRect().height || 69;
+    const bubbleWidth = () => bubble.getBoundingClientRect().width || 60;
+    const bubbleHeight = () => bubble.getBoundingClientRect().height || 63;
 
     function targetPath(link) {
       try {

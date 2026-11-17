@@ -127,8 +127,8 @@
     let drag = false;
     let suppressUntil = 0;
     let navigating = false;
-    const BUBBLE_W = 45;
-    const BUBBLE_H = 40;
+    const bubbleWidth = () => bubble.getBoundingClientRect().width || 60;
+    const bubbleHeight = () => bubble.getBoundingClientRect().height || 63;
 
     function targetPath(link) {
       try {
@@ -142,8 +142,8 @@
       const r = visual.getBoundingClientRect();
       const nr = nav.getBoundingClientRect();
       return {
-        x: r.left + r.width / 2 - nr.left - BUBBLE_W / 2,
-        y: r.top + r.height / 2 - nr.top - BUBBLE_H / 2
+        x: r.left + r.width / 2 - nr.left - bubbleWidth() / 2,
+        y: r.top + r.height / 2 - nr.top - bubbleHeight() / 2
       };
     }
     function showAt(x, y, immediate = false) {
@@ -208,7 +208,7 @@
       const p = bubblePoint(idx);
       const minX = bubblePoint(0).x;
       const maxX = bubblePoint(links.length - 1).x;
-      showAt(Math.max(minX, Math.min(maxX, e.clientX - r.left - BUBBLE_W / 2)), p.y, true);
+      showAt(Math.max(minX, Math.min(maxX, e.clientX - r.left - bubbleWidth() / 2)), p.y, true);
       preview(idx);
       if (e.cancelable) e.preventDefault();
     }, {passive:false});
@@ -245,7 +245,7 @@
       const r = nav.getBoundingClientRect();
       const p = bubblePoint(idx);
       const left = bubblePoint(0).x, right = bubblePoint(links.length - 1).x;
-      showAt(Math.max(left,Math.min(right,x-r.left-BUBBLE_W/2)),p.y,true);
+      showAt(Math.max(left,Math.min(right,x-r.left-bubbleWidth()/2)),p.y,true);
       preview(idx);
     }
     nav.addEventListener('touchstart', e => {
