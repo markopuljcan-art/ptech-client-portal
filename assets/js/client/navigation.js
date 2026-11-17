@@ -137,6 +137,11 @@
     grip.addEventListener('click', event => {
       if (suppressClick) { suppressClick=false; return; }
       if (!DESKTOP.matches) return;
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        root.classList.add('ptech-sidebar-animating');
+        window.clearTimeout(grip._ptechAnimationTimer);
+        grip._ptechAnimationTimer = window.setTimeout(() => root.classList.remove('ptech-sidebar-animating'), 380);
+      }
       apply(state.mode==='collapsed' ? {mode:'expanded',width:state.width} : {mode:'collapsed',width:state.width},true);
     });
     grip.addEventListener('dblclick', event => {

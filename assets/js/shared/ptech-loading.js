@@ -142,9 +142,21 @@
       let target;
       try {target = new URL(link.href, location.href);} catch {return;}
       if (target.origin !== location.origin || (target.pathname === location.pathname && target.search === location.search)) return;
-      // Browser performs the actual navigation (no interception of auth links/modals).
+      // Ordinary client-to-client clicks should not flash a fullscreen splash.
+      // The browser still owns navigation; show a quiet progress line only.
+      const clientPages = /\/(?:form|my-projects|project|tasks|documents|messages|profile|approve|revision)\.html$/;
+      if (document.body.classList.contains('portal-desktop') &&
+          clientPages.test(location.pathname) && clientPages.test(target.pathname)) {
+        setup();
+        if (top) {
+          firstVisibleAt = performance.now();
+          top.dataset.visible = 'true';
+          window.setTimeout(() => { if (top) top.dataset.visible = 'false'; }, 1800);
+        }
+        return;
+      }
+      // Login/auth and external workflows retain the existing branded loader.
       showPage('Učitavanje stranice...');
-      // If a page script cancels navigation, do not block the page indefinitely.
       setTimeout(() => {if (panel) panel.dataset.visible = 'false'; navigationStarted = false;}, 2300);
     }, false);
     window.addEventListener('pageshow', () => {

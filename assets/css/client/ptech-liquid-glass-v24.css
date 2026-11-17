@@ -1,0 +1,137 @@
+/* PTech Client Portal V24 | iPhone-inspired Liquid Glass + smoother controls.
+   Decorative only: keep native links, Supabase, messages and browser accessibility.
+*/
+:root { --ptech-v24-ease: cubic-bezier(.22,1,.36,1); }
+@media (max-width:1100px) {
+  html body.ptech-v13 .bottom-nav {
+    --v24-glass-edge: rgba(245,221,176,.50);
+    --v24-nav-text: #514c46;
+    --v24-icon: #655d51;
+    position: fixed !important;
+    min-height: 80px !important;
+    padding: 9px 8px !important;
+    border-radius: 29px !important;
+    border: 1px solid var(--v24-glass-edge) !important;
+    background: linear-gradient(160deg,rgba(255,255,255,.79) 0%,rgba(255,250,237,.57) 52%,rgba(243,225,192,.56) 100%) !important;
+    box-shadow: 0 16px 38px rgba(76,55,25,.15), 0 2px 10px rgba(119,87,35,.08), inset 0 1px 0 rgba(255,255,255,.94), inset 0 -1px 0 rgba(192,151,85,.16) !important;
+    -webkit-backdrop-filter: blur(27px) saturate(1.45) !important;
+    backdrop-filter: blur(27px) saturate(1.45) !important;
+    isolation: isolate;
+  }
+  html body.ptech-v13 .bottom-nav::before {
+    content:"" !important; display:block !important;
+    position:absolute; z-index:0 !important; pointer-events:none;
+    inset:3px 5px 43% !important; border-radius:27px 27px 50% 50% !important;
+    background:linear-gradient(180deg,rgba(255,255,255,.60),rgba(255,255,255,0)) !important;
+    box-shadow:none !important;
+  }
+  html body.ptech-v13 .bottom-nav::after {
+    content:"" !important; display:block !important; position:absolute;
+    z-index:0 !important; top:1px !important; left:13% !important; width:74% !important; height:1px !important;
+    background:linear-gradient(90deg,transparent,rgba(255,228,165,.85),rgba(255,255,255,.95),transparent) !important;
+    pointer-events:none;
+  }
+  html body.ptech-v13 .bottom-nav-item,
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item {
+    z-index:2 !important; border-radius:21px !important;
+    background:transparent !important; border:0 !important;
+    color:var(--v24-icon) !important;
+    transition:color .22s ease,opacity .22s ease !important;
+    -webkit-tap-highlight-color:transparent;
+  }
+  html body.ptech-v13 .bottom-nav-item .v13-tab-visual {
+    width:46px !important; height:44px !important;
+    border:0 !important; border-radius:17px !important;
+    color:var(--v24-icon) !important;
+    background:rgba(181,142,87,.055) !important;
+    box-shadow:none !important;
+    transform:translate3d(0,0,0) !important;
+    transition:transform 290ms var(--ptech-v24-ease),color 180ms ease,background 180ms ease !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble {
+    z-index:1 !important; width:46px !important; height:44px !important;
+    border-radius:17px !important;
+    background:linear-gradient(145deg,rgba(209,163,79,.88),rgba(169,116,34,.83) 62%,rgba(130,87,23,.83)) !important;
+    border:1px solid rgba(255,242,208,.85) !important;
+    box-shadow:0 8px 20px rgba(142,102,34,.25),0 2px 4px rgba(90,62,26,.12),inset 0 1px 1px rgba(255,255,255,.72),inset 0 -2px 6px rgba(83,50,16,.16) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(1.35) !important;
+    backdrop-filter: blur(16px) saturate(1.35) !important;
+    transition:transform 390ms var(--ptech-v24-ease),box-shadow 240ms ease !important;
+    will-change:transform;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled.v131-dragging .v131-dock-bubble {
+    width:46px !important; height:44px !important;
+    box-shadow:0 11px 25px rgba(144,100,29,.32),0 0 0 4px rgba(255,225,165,.16),inset 0 1px 1px rgba(255,255,255,.73) !important;
+    transition-duration:0ms !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.active .v13-tab-visual,
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item[aria-current="page"] .v13-tab-visual,
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.v131-preview .v13-tab-visual {
+    color:#ffffff !important;
+    background:transparent !important;
+    border:0 !important;
+    box-shadow:none !important;
+    transform:translate3d(0,-5px,0) scale(1.075) !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.v131-preview .v13-tab-visual > svg,
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.v131-preview .v13-tab-visual .bottom-nav-icon-wrap > svg {
+    color:#fff !important;
+    stroke:#fff !important;
+    stroke-width:2.55px !important;
+    fill:rgba(255,255,255,.25) !important;
+    filter:drop-shadow(0 1px 2px rgba(69,40,7,.18));
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item.v131-preview > span:last-child {
+    color:#835512 !important; font-weight:800 !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled.v131-dragging .bottom-nav-item.v131-preview .v13-tab-visual {
+    transform:translate3d(0,-7px,0) scale(1.12) !important;
+  }
+  html body.ptech-v13.v131-exiting .desktop-main {
+    opacity:.93 !important; transform:translate3d(-6px,0,0) !important;
+    transition:opacity 105ms ease,transform 105ms ease !important;
+  }
+  html[data-v131-direction="prev"] body.ptech-v13.v131-exiting .desktop-main {transform:translate3d(6px,0,0) !important;}
+  html body.ptech-v13.v131-entering .desktop-main {animation-duration:195ms !important;}
+}
+@media (max-width:1100px) {
+  /* Dark mode retains the existing navy palette, with a gentle golden glow. */
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav {
+    --v24-nav-text:#e7e8f1; --v24-icon:#d2d6e2;
+    background:linear-gradient(145deg,rgba(45,57,78,.79),rgba(29,42,64,.66) 60%,rgba(26,35,54,.76)) !important;
+    border-color:rgba(228,193,133,.34) !important;
+    box-shadow:0 18px 38px rgba(6,13,31,.34),inset 0 1px 0 rgba(255,255,255,.23),inset 0 -1px 0 rgba(216,169,93,.13) !important;
+  }
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav-item.v131-preview > span:last-child {
+    color:#f5e6c9 !important;
+  }
+}
+@media (prefers-reduced-motion:reduce) {
+  html body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble,
+  html body.ptech-v13 .bottom-nav-item .v13-tab-visual,
+  html body.ptech-v13.v131-entering .desktop-main,
+  html body.ptech-v13.v131-exiting .desktop-main {transition:none !important;animation:none !important;}
+}
+/* Keyboard and pointer accessibility on all devices. */
+html body .sidebar-link,
+html body .ptech-sidebar-resize {transition:background .22s ease,border-color .22s ease,box-shadow .22s ease,color .22s ease !important;}
+html body .sidebar-link:focus-visible,
+html body .bottom-nav-item:focus-visible {outline:3px solid #bb842b !important;outline-offset:3px !important;}
+
+/* Only click-to-toggle animates sidebar dimensions; dragging stays responsive. */
+@media (min-width:1101px) {
+  html.ptech-sidebar-animating body.portal-desktop .dashboard.desktop-layout {
+    transition:grid-template-columns 310ms cubic-bezier(.22,1,.36,1) !important;
+  }
+  html.ptech-sidebar-animating body.portal-desktop .ptech-sidebar-resize {
+    transition:left 310ms cubic-bezier(.22,1,.36,1),background .2s ease,box-shadow .2s ease !important;
+  }
+  html.ptech-sidebar-resizing body.portal-desktop .dashboard.desktop-layout,
+  html.ptech-sidebar-resizing body.portal-desktop .ptech-sidebar-resize {
+    transition:none !important;
+  }
+}
+@media (prefers-reduced-motion:reduce) {
+  html.ptech-sidebar-animating body.portal-desktop .dashboard.desktop-layout,
+  html.ptech-sidebar-animating body.portal-desktop .ptech-sidebar-resize {transition:none !important;}
+}

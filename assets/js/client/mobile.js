@@ -127,8 +127,8 @@
     let drag = false;
     let suppressUntil = 0;
     let navigating = false;
-    const BUBBLE_W = 45;
-    const BUBBLE_H = 40;
+    const BUBBLE_W = 46;
+    const BUBBLE_H = 44;
 
     function targetPath(link) {
       try {
@@ -180,7 +180,7 @@
       document.documentElement.dataset.v131Direction = dir;
       // Do not delay navigation for users with reduced motion.
       if (reduceMotion.matches) { location.assign(url.href); return; }
-      window.setTimeout(() => location.assign(url.href), 155);
+      window.setTimeout(() => location.assign(url.href), 105);
     }
 
     nav.addEventListener('pointerdown', e => {
