@@ -1,0 +1,166 @@
+/* PTech Digital Client Portal V24.4 — WHITE / TRANSPARENT LIQUID GLASS
+   Light Mode only. Overrides older V13/V24 dock skins, keeping the existing
+   mobile.js pointer/touch dragging, page navigation and notification badges.
+   CSS dimensions are read by the drag script for precise centering.
+*/
+@media (max-width: 1100px) {
+  html.ptech-glass[data-theme="light"] body.ptech-v13 .bottom-nav,
+  html body.ptech-v13.light-mode .bottom-nav {
+    --v24-icon: #625f5b;
+    --v24-nav-text: #625f5b;
+    background: rgba(255,255,255,.95) !important;
+    border: 1px solid rgba(198,177,139,.43) !important;
+    border-radius: 30px !important;
+    box-shadow: 0 12px 30px rgba(69,56,39,.105),
+                0 2px 8px rgba(43,37,29,.055),
+                inset 0 1px 0 rgba(255,255,255,.96) !important;
+    backdrop-filter: blur(22px) saturate(1.08) !important;
+    -webkit-backdrop-filter: blur(22px) saturate(1.08) !important;
+    color: #33312d !important;
+  }
+  html.ptech-glass[data-theme="light"] body.ptech-v13 .bottom-nav::before,
+  html body.ptech-v13.light-mode .bottom-nav::before {
+    background: linear-gradient(180deg,rgba(255,255,255,.65),transparent) !important;
+    opacity: .75 !important;
+    pointer-events: none !important;
+  }
+  html.ptech-glass[data-theme="light"] body.ptech-v13 .bottom-nav::after,
+  html body.ptech-v13.light-mode .bottom-nav::after {
+    background: linear-gradient(90deg,transparent,rgba(204,171,117,.30),rgba(255,255,255,.88),transparent) !important;
+    opacity: .7 !important;
+    pointer-events: none !important;
+  }
+  /* Exactly one moving transparent lens, never a solid gold or brown tile. */
+  html.ptech-glass[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .v131-dock-bubble {
+    position: absolute !important;
+    width: 56px !important;
+    height: 60px !important;
+    border-radius: 24px !important;
+    background: linear-gradient(154deg,
+      rgba(255,255,255,.24),
+      rgba(236,227,213,.16) 58%,
+      rgba(251,238,213,.20)) !important;
+    border: 1px solid rgba(185,163,130,.43) !important;
+    box-shadow: 0 4px 11px rgba(67,56,40,.075),
+                inset 0 1px 0 rgba(255,255,255,.87),
+                inset 0 -1px 0 rgba(205,167,95,.20) !important;
+    backdrop-filter: blur(13px) saturate(1.04) !important;
+    -webkit-backdrop-filter: blur(13px) saturate(1.04) !important;
+    pointer-events: none !important;
+    transition: transform 300ms cubic-bezier(.22,1,.36,1), box-shadow 200ms ease !important;
+  }
+  html.ptech-glass[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble::before,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .v131-dock-bubble::before {
+    background: linear-gradient(180deg,rgba(255,255,255,.32),transparent) !important;
+    box-shadow: none !important;
+  }
+  html.ptech-glass[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble::after,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .v131-dock-bubble::after {
+    box-shadow: inset 0 -1px 7px rgba(198,158,86,.08) !important;
+  }
+  html.ptech-glass[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled.v131-dragging .v131-dock-bubble,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled.v131-dragging .v131-dock-bubble {
+    width: 56px !important;
+    height: 60px !important;
+    background: rgba(245,236,219,.24) !important;
+    box-shadow: 0 6px 16px rgba(63,54,39,.11), inset 0 1px 0 rgba(255,255,255,.95) !important;
+    transition-duration: 0ms !important;
+  }
+  /* Clear non-selected links: dark gray on the white surface. */
+  html.ptech-glass[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .bottom-nav-item {
+    color: #68625b !important;
+    text-shadow: none !important;
+    border: 0 !important;
+    background: transparent !important;
+    font-weight: 600 !important;
+    z-index: 2 !important;
+  }
+  html.ptech-glass[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item .v13-tab-visual,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .bottom-nav-item .v13-tab-visual {
+    color: #68625b !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    transform: translateY(0) !important;
+    transition: transform 240ms cubic-bezier(.22,1,.36,1),color 180ms ease !important;
+  }
+  html.ptech-glass[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item .v13-tab-visual svg,
+  html.ptech-glass[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item .bottom-nav-icon-wrap svg,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .bottom-nav-item .v13-tab-visual svg,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .bottom-nav-item .bottom-nav-icon-wrap svg {
+    color: #68625b !important;
+    stroke: #68625b !important;
+    fill: none !important;
+    stroke-width: 2px !important;
+    filter: none !important;
+  }
+  html.ptech-glass[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item > span:last-child,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .bottom-nav-item > span:last-child {
+    color: #68625b !important;
+    font-weight: 600 !important;
+    text-shadow: none !important;
+  }
+  /* Selection or preview while moving by finger: BLACK icon, slight lift. */
+  html.ptech-glass[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item:is(.active,[aria-current="page"],.v131-preview) .v13-tab-visual,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .bottom-nav-item:is(.active,[aria-current="page"],.v131-preview) .v13-tab-visual {
+    color: #161616 !important;
+    background: transparent !important;
+    transform: translateY(-4px) scale(1.055) !important;
+    box-shadow: none !important;
+  }
+  html.ptech-glass[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item:is(.active,[aria-current="page"],.v131-preview) .v13-tab-visual svg,
+  html.ptech-glass[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item:is(.active,[aria-current="page"],.v131-preview) .bottom-nav-icon-wrap svg,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .bottom-nav-item:is(.active,[aria-current="page"],.v131-preview) .v13-tab-visual svg,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .bottom-nav-item:is(.active,[aria-current="page"],.v131-preview) .bottom-nav-icon-wrap svg {
+    color: #151515 !important;
+    stroke: #151515 !important;
+    fill: rgba(21,21,21,.17) !important;
+    stroke-width: 2.5px !important;
+    filter: none !important;
+  }
+  html.ptech-glass[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item:is(.active,[aria-current="page"],.v131-preview) > span:last-child,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .bottom-nav-item:is(.active,[aria-current="page"],.v131-preview) > span:last-child {
+    color: #161616 !important;
+    font-weight: 800 !important;
+  }
+  html.ptech-glass[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled.v131-dragging .bottom-nav-item.v131-preview .v13-tab-visual,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled.v131-dragging .bottom-nav-item.v131-preview .v13-tab-visual {
+    transform: translateY(-5px) scale(1.08) !important;
+  }
+  /* While dragging, only the icon under the finger is black. */
+  html.ptech-glass[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled.v131-dragging .bottom-nav-item.active:not(.v131-preview) .v13-tab-visual,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled.v131-dragging .bottom-nav-item.active:not(.v131-preview) .v13-tab-visual {
+    color: #68625b !important;
+    transform: none !important;
+  }
+  html.ptech-glass[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled.v131-dragging .bottom-nav-item.active:not(.v131-preview) .v13-tab-visual svg,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled.v131-dragging .bottom-nav-item.active:not(.v131-preview) .v13-tab-visual svg {
+    color: #68625b !important;
+    stroke: #68625b !important;
+    fill: none !important;
+    stroke-width: 2px !important;
+  }
+  html.ptech-glass[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled.v131-dragging .bottom-nav-item.active:not(.v131-preview) > span:last-child,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled.v131-dragging .bottom-nav-item.active:not(.v131-preview) > span:last-child {
+    color: #68625b !important;
+    font-weight: 600 !important;
+  }
+  /* Keep badge contrast intact, and make keyboard focus visible. */
+  html.ptech-glass[data-theme="light"] body.ptech-v13 .bottom-nav .nav-notification,
+  html body.ptech-v13.light-mode .bottom-nav .nav-notification {
+    color: #fff !important;
+    background: #a35e26 !important;
+  }
+  html body.ptech-v13 .bottom-nav-item:focus-visible {
+    outline: 2px solid #a66f22 !important;
+    outline-offset: 3px !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble,
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item .v13-tab-visual {
+    transition: none !important;
+  }
+}
