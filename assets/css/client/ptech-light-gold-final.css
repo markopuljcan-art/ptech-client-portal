@@ -1,0 +1,167 @@
+/* PTech Digital Client Portal | Light Gold 1.0
+   Scoped to the client dashboard's LIGHT theme; the dark theme is untouched.
+   Styling only: no changes to project data, Supabase, or widget behavior.
+*/
+body.ptech-home.light-mode {
+  --portal-page:#f8f5ef;
+  --portal-ink:#20232a;
+  --portal-ink-soft:#575b60;
+  --portal-bronze:#a56d16;
+  --portal-bronze-rich:#875713;
+  --portal-on-bronze:#ffffff;
+  --portal-card:#ffffff;
+  --portal-border:rgba(167,135,86,.22);
+  --portal-edge:rgba(164,137,101,.18);
+  --portal-inset:#faf7f2;
+  --portal-track:#e9dfd0;
+  --portal-shadow:0 6px 20px rgba(68,54,37,.065),0 1px 3px rgba(68,54,37,.04);
+  --portal-image-opacity:1;
+  --portal-focus:#9d6b20;
+  --ui-bg:#faf8f4;
+  --ui-bg-top:#fcfbf8;
+  --ui-bg-bottom:#f6f1e9;
+  --ui-card:#ffffff;
+  --ui-card-end:#ffffff;
+  --ui-card-inset:#faf7f2;
+  --ui-border:#e8ddcb;
+  --ui-text:#20232a;
+  --ui-muted:#5c5e62;
+  --ui-muted-soft:#75716a;
+  --ui-copper:#986418;
+  --ui-copper-light:#bd8e42;
+  --ui-copper-soft:#f5e8ce;
+  --ui-header:rgba(255,255,255,.96);
+  --ui-sidebar-text:#292724;
+  --ui-sidebar-muted:#5c5955;
+  --ui-sidebar-active:rgba(255,255,255,.86);
+  --ui-shadow:0 6px 20px rgba(68,54,37,.06);
+}
+/* Clean professional canvas, quieter decorations. */
+html.ptech-glass body.ptech-home.light-mode .desktop-main {
+  background:linear-gradient(165deg,#fcfbf9 0%,#f9f6f1 57%,#f5f0e9 100%)!important;
+}
+body.ptech-home.light-mode .desktop-main::before,
+body.ptech-home.light-mode .desktop-main::after {
+  opacity:.12!important;
+}
+html.ptech-glass body.ptech-home.light-mode .desktop-sidebar {
+  background:linear-gradient(180deg,#fffcf7 0%,#f8f3ea 100%)!important;
+  border-right:1px solid #e9dfd1!important;
+  box-shadow:5px 0 20px rgba(71,52,26,.035)!important;
+}
+body.ptech-home.light-mode .desktop-sidebar::before,
+body.ptech-home.light-mode .desktop-sidebar::after {opacity:.13!important;}
+html.ptech-glass body.ptech-home.light-mode .sidebar-link {
+  color:#35302a!important;
+  font-weight:650;
+}
+html.ptech-glass body.ptech-home.light-mode .sidebar-link:hover:not(.active) {
+  background:rgba(198,160,92,.12)!important;
+  box-shadow:none!important;
+  transform:none!important;
+}
+html.ptech-glass body.ptech-home.light-mode .sidebar-link.active,
+html.ptech-glass body.ptech-home.light-mode .sidebar-link[aria-current="page"] {
+  background:linear-gradient(115deg,rgba(255,255,255,.94),rgba(248,230,192,.74))!important;
+  color:#30251b!important;
+  border:1px solid rgba(185,139,56,.36)!important;
+  box-shadow:0 4px 14px rgba(135,96,34,.10),inset 0 1px 0 rgba(255,255,255,.98)!important;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+html.ptech-glass body.ptech-home.light-mode .sidebar-link.active::before,
+html.ptech-glass body.ptech-home.light-mode .sidebar-link[aria-current="page"]::before {
+  background:#ba882f!important;
+}
+html.ptech-glass body.ptech-home.light-mode .dashboard-header {
+  background:rgba(255,253,249,.96)!important;
+  border-bottom:1px solid #ebe2d7!important;
+}
+/* White, visually separated card surfaces. */
+body.ptech-home.light-mode #portalHome .portal-surface {
+  background:#fff!important;
+  border:1px solid #e8dfd3!important;
+  box-shadow:var(--portal-shadow)!important;
+}
+/* Welcome illustration remains the existing repository SVG. */
+body.ptech-home.light-mode #portalHome .portal-welcome {
+  min-height:170px;
+  background:linear-gradient(103deg,#fff 0%,#fffdfa 58%,#f9ecd6 100%)!important;
+}
+body.ptech-home.light-mode #portalHome .portal-welcome::after {
+  border-top:1px solid rgba(185,137,50,.20)!important;
+}
+body.ptech-home.light-mode #portalHome .portal-overline {color:#94651b!important;}
+body.ptech-home.light-mode #portalHome .portal-welcome h1 {color:#20232a!important;}
+body.ptech-home.light-mode #portalHome .portal-project-card {
+  background:#fff!important;
+  border:1px solid #ede5d9!important;
+  box-shadow:none!important;
+}
+body.ptech-home.light-mode #portalHome .portal-project-icon,
+body.ptech-home.light-mode #portalHome .portal-action-icon,
+body.ptech-home.light-mode #portalHome .portal-empty-icon,
+body.ptech-home.light-mode #portalHome .portal-summary-decoration {
+  background:linear-gradient(145deg,#fbefd7,#f2d7a4)!important;
+  color:#966113!important;
+}
+body.ptech-home.light-mode #portalHome .portal-metric,
+body.ptech-home.light-mode #portalHome .portal-task-main {
+  background:#faf7f2!important;
+}
+body.ptech-home.light-mode #portalHome .portal-progress-track {background:#e8dcc9!important;}
+body.ptech-home.light-mode #portalHome .portal-progress-track span {
+  background:linear-gradient(90deg,#a36c18,#dbab52)!important;
+}
+body.ptech-home.light-mode #portalHome .portal-count-pill {
+  background:#fcf4e6!important;color:#805514!important;
+}
+/* Consistent gold primary actions with readable white text. */
+body.ptech-home.light-mode #portalHome .portal-project-open,
+body.ptech-home.light-mode #portalHome #portalEdit.portal-text-btn,
+body.ptech-home.light-mode #portalHome .portal-action-add-cta {
+  background:linear-gradient(135deg,#ce9b47,#a66a10)!important;
+  border-color:rgba(123,83,24,.23)!important;
+  color:#fff!important;
+  box-shadow:0 5px 13px rgba(131,93,36,.17)!important;
+}
+body.ptech-home.light-mode #portalHome .portal-project-open:hover,
+body.ptech-home.light-mode #portalHome #portalEdit.portal-text-btn:hover {
+  box-shadow:0 8px 17px rgba(131,93,36,.22)!important;
+}
+body.ptech-home.light-mode #portalHome .portal-card-link {color:#86570e!important;}
+/* Clear, roomy quick actions with whole-card click targets. */
+body.ptech-home.light-mode.portal-unified #portalHome .portal-actions-grid {
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,205px),1fr))!important;
+  gap:13px!important;
+}
+body.ptech-home.light-mode #portalHome .portal-action {
+  background:linear-gradient(145deg,#fffdf9,#fbf6ed)!important;
+  border-color:#e9ddc9!important;
+  border-radius:14px!important;
+  padding:15px!important;
+  min-height:102px!important;
+  gap:13px!important;
+}
+body.ptech-home.light-mode #portalHome .portal-action:hover {
+  border-color:#b88a3f!important;
+  box-shadow:0 6px 16px rgba(122,88,39,.10)!important;
+}
+body.ptech-home.light-mode #portalHome .portal-action-text strong {font-size:15px!important;}
+body.ptech-home.light-mode #portalHome .portal-action-text small {font-size:13px!important;}
+body.ptech-home.light-mode #portalHome .portal-action-icon {width:49px;height:49px;flex-basis:49px;}
+/* Preserve the editing mode's resize and adaptive-size behavior. */
+body.ptech-home.light-mode.portal-unified #portalHome .ptech-widget[data-adaptive-level="mini"] .portal-action,
+body.ptech-home.light-mode.portal-unified #portalHome .ptech-widget[data-adaptive-level="small"] .portal-action {
+  min-height:0!important;padding:9px!important;
+}
+/* Larger text and clearly keyboard-visible controls for older clients. */
+body.ptech-home.light-mode #portalHome :is(a,button):focus-visible,
+body.ptech-home.light-mode .sidebar-link:focus-visible {outline:3px solid #a46c17!important;outline-offset:3px!important;}
+@media (max-width:700px){
+  body.ptech-home.light-mode #portalHome .portal-welcome{min-height:175px;}
+  body.ptech-home.light-mode #portalHome .portal-action {min-height:72px!important;padding:11px!important;}
+}
+@media (prefers-reduced-motion:reduce){
+  body.ptech-home.light-mode #portalHome .portal-action {transition:none!important;}
+}
