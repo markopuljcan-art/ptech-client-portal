@@ -1,0 +1,153 @@
+/* PTech Digital Client Portal V25.4 | Theme + readability + filled active icons
+   No change to Supabase, roles, stored widgets or the liquid animation mechanics.
+   Loaded AFTER the legacy skins so theme-dependent surfaces have one final source.
+*/
+
+/* Focused, low-cost theme changes: no geometric animations on the widget grid. */
+@media (prefers-reduced-motion: no-preference) {
+  html.ptech-theme-changing body :is(.dashboard-header,.desktop-sidebar,.desktop-main,.portal-surface,.portal-action,.portal-metric,.portal-summary-card,.portal-project-card,.profile-section,.documents-panel,.task-card,.chat-workspace),
+  html.ptech-theme-changing body :is(.theme-slider,.theme-slider::before,.bottom-nav,.v131-dock-bubble) {
+    transition: background-color 270ms ease, border-color 270ms ease, color 230ms ease, box-shadow 270ms ease, opacity 250ms ease !important;
+  }
+  /* The liquid indicator owns its transform and spring physics; never override it. */
+  html.ptech-theme-changing body .v131-dock-bubble {
+    transition-property: background-color,border-color,color,box-shadow,opacity !important;
+  }
+}
+
+/* The theme toggle is the SAME size and iconography on every client screen. */
+html body.portal-desktop .dashboard-header .theme-switch {
+  position:relative !important; width:58px !important; min-width:58px !important;
+  height:33px !important; flex:0 0 58px !important;
+}
+html body.portal-desktop .dashboard-header .theme-switch input {
+  position:absolute; opacity:0; width:100%; height:100%; inset:0;
+  cursor:pointer; pointer-events:auto; z-index:2; margin:0;
+}
+html body.portal-desktop .dashboard-header .theme-switch .theme-slider {
+  display:block; position:absolute; inset:0; border-radius:999px;
+  background:#26354e !important; border:1px solid rgba(212,171,105,.29) !important;
+  box-shadow:inset 0 1px 3px rgba(0,0,0,.17), 0 1px 3px rgba(0,0,0,.08) !important;
+}
+html body.portal-desktop .dashboard-header .theme-switch .theme-slider::before {
+  content:"☾" !important; position:absolute; top:3px; left:3px;
+  width:25px; height:25px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:system-ui, sans-serif; font-size:14px; font-weight:650;
+  background:linear-gradient(135deg,#ddb776,#aa7a3f) !important;
+  color:#ffffff !important; border:1px solid rgba(255,255,255,.28);
+  box-shadow:0 2px 5px rgba(7,12,24,.14) !important;
+  transform:translateX(0) !important;
+  transition:transform 290ms cubic-bezier(.2,.8,.2,1),background-color 230ms ease !important;
+}
+html body.portal-desktop .dashboard-header .theme-switch input:checked + .theme-slider::before {
+  content:"☀" !important; transform:translateX(25px) !important;
+}
+html[data-theme="light"] body.portal-desktop .dashboard-header .theme-switch .theme-slider,
+html body.portal-desktop.light-mode .dashboard-header .theme-switch .theme-slider {
+  background:linear-gradient(125deg,#fffdf8,#f3e8d6) !important;
+  border:1px solid #dfc9a6 !important;
+  box-shadow:inset 0 1px 2px rgba(97,69,26,.04),0 2px 6px rgba(93,68,28,.06) !important;
+}
+html[data-theme="light"] body.portal-desktop .dashboard-header .theme-switch .theme-slider::before,
+html body.portal-desktop.light-mode .dashboard-header .theme-switch .theme-slider::before {
+  background:linear-gradient(135deg,#d7a24a,#ab7419) !important;
+  color:#fff !important;
+  box-shadow:0 2px 5px rgba(123,85,33,.15) !important;
+}
+html body.portal-desktop .dashboard-header .theme-switch input:focus-visible + .theme-slider {
+  outline:3px solid #b88a3e !important; outline-offset:3px !important;
+}
+@media (max-width:520px) {
+  html body.portal-desktop .dashboard-header .theme-switch {width:54px !important;min-width:54px !important;flex-basis:54px !important;}
+  html body.portal-desktop .dashboard-header .theme-switch input:checked + .theme-slider::before {transform:translateX(21px) !important;}
+}
+
+/* Light mode: consistent cream/white/gold button palette, not bright copper. */
+html[data-theme="light"] body.ptech-home #portalHome .portal-action,
+html body.ptech-home.light-mode #portalHome .portal-action {
+  background:linear-gradient(140deg,#ffffff,#fbf7ef) !important;
+  border:1px solid #e6d9c5 !important;
+  color:#282b30 !important;
+  box-shadow:0 3px 12px rgba(95,74,41,.055) !important;
+}
+html[data-theme="light"] body.ptech-home #portalHome .portal-action:hover,
+html body.ptech-home.light-mode #portalHome .portal-action:hover {
+  border-color:#cda55c !important;
+  box-shadow:0 7px 19px rgba(122,91,43,.12) !important;
+}
+html[data-theme="light"] body.ptech-home #portalHome .portal-action-icon,
+html body.ptech-home.light-mode #portalHome .portal-action-icon {
+  background:linear-gradient(140deg,#fff2d9,#f3dcad) !important;
+  color:#865b19 !important;
+}
+html[data-theme="light"] body.ptech-home #portalHome :is(.portal-action-text strong,.portal-action-chevron),
+html body.ptech-home.light-mode #portalHome :is(.portal-action-text strong,.portal-action-chevron) {color:#242a33 !important;}
+html[data-theme="light"] body.ptech-home #portalHome .portal-action-text small,
+html body.ptech-home.light-mode #portalHome .portal-action-text small {color:#5b5e61 !important;}
+
+/* Readable typography for clients of all ages; compact widgets still compact. */
+html body.ptech-home #portalHome .portal-introduction {font-size:15px !important; line-height:1.55 !important;}
+html body.ptech-home #portalHome .portal-overline {font-size:11px !important; line-height:1.45 !important;}
+html body.ptech-home #portalHome .portal-metric-label {font-size:13px !important;}
+html body.ptech-home #portalHome .portal-metric strong {font-size:14px !important;}
+html body.ptech-home #portalHome .portal-summary-detail {font-size:13px !important;}
+html body.ptech-home #portalHome .portal-card-link {font-size:13px !important;}
+html body.ptech-home #portalHome .portal-action-text strong {font-size:15px !important;line-height:1.3 !important;}
+html body.ptech-home.portal-unified #portalHome .portal-action .portal-action-text strong {font-size:15px !important;}
+html body.ptech-home #portalHome .portal-action-text small {font-size:13px !important;line-height:1.4 !important;}
+html body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-adaptive-level="medium"] .portal-action-text strong {font-size:13px !important;}
+html body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-adaptive-level="medium"] .portal-action-text small {font-size:12px !important;}
+html body.ptech-home.portal-unified #portalHome [data-widget-id="actions"]:is([data-adaptive-level="small"],[data-adaptive-level="mini"]) .portal-action-text strong {font-size:11px !important;}
+html body.ptech-home #portalHome [data-widget-id="actions"][data-adaptive-level="full"] .portal-action {min-height:78px !important;}
+@media(max-width:720px) {
+  html body.ptech-home #portalHome .portal-introduction {font-size:14px !important;line-height:1.55 !important;}
+  html body.ptech-home #portalHome .portal-action-text strong {font-size:14px !important;}
+  html body.ptech-home #portalHome .portal-action-text small {font-size:12px !important;}
+  html body.ptech-home #portalHome [data-widget-id="actions"][data-adaptive-level="full"] .portal-action {min-height:70px !important;}
+}
+
+/* Filled icon is only visible under the active/preview tab. Inactive keeps outline. */
+@media(max-width:1100px) {
+  html body.ptech-v13 .bottom-nav .v13-tab-visual {
+    position:relative !important; isolation:isolate;
+  }
+  html body.ptech-v13 .bottom-nav .v13-tab-visual > svg.ptech-filled-icon {
+    display:none !important; width:23px !important; height:23px !important;
+    position:absolute !important; top:50%; left:50%;
+    transform:translate(-50%,-50%) !important;
+    z-index:3 !important; stroke:none !important; fill:currentColor !important;
+    color:#16181c !important; pointer-events:none;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item:is(.active,.v131-preview,[aria-current="page"]) .v13-tab-visual > svg.ptech-filled-icon {
+    display:block !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item:is(.active,.v131-preview,[aria-current="page"]) .v13-tab-visual > svg:not(.ptech-filled-icon),
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item:is(.active,.v131-preview,[aria-current="page"]) .v13-tab-visual > .bottom-nav-icon-wrap > svg {
+    visibility:hidden !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled:is(.v131-dragging,.v131-switching) .bottom-nav-item.active:not(.v131-preview) .v13-tab-visual > svg.ptech-filled-icon {
+    display:none !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled:is(.v131-dragging,.v131-switching) .bottom-nav-item.active:not(.v131-preview) .v13-tab-visual > svg:not(.ptech-filled-icon),
+  html body.ptech-v13 .bottom-nav.v131-enabled:is(.v131-dragging,.v131-switching) .bottom-nav-item.active:not(.v131-preview) .v13-tab-visual > .bottom-nav-icon-wrap > svg {
+    visibility:visible !important;
+  }
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav .v13-tab-visual > svg.ptech-filled-icon {
+    color:#f4f4f4 !important;
+  }
+  html body.ptech-v13 .bottom-nav .v13-tab-visual > svg.ptech-filled-icon .ptech-cutout {
+    fill:#ffffff !important;
+  }
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav .v13-tab-visual > svg.ptech-filled-icon .ptech-cutout {
+    fill:#27344b !important;
+  }
+  /* Theme changes should not reset the spring's transform/drag state. */
+  html.ptech-theme-changing body .bottom-nav .v131-dock-bubble {
+    transition-property:background-color,border-color,box-shadow,opacity !important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  html body.portal-desktop .dashboard-header .theme-switch .theme-slider::before,
+  html.ptech-theme-changing body * {animation:none !important;transition:none !important;}
+}
