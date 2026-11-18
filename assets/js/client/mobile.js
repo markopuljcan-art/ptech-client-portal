@@ -207,10 +207,12 @@
     function bubblePoint(index) {
       const visual = links[index].querySelector('.v13-tab-visual') || links[index];
       const r = visual.getBoundingClientRect();
+      const tab = links[index].getBoundingClientRect();
       const nr = nav.getBoundingClientRect();
       return {
         x: r.left + r.width / 2 - nr.left - bubbleWidth() / 2,
-        y: r.top + r.height / 2 - nr.top - bubbleHeight() / 2
+        // Center within the full nav row (icon + label), not just the icon.
+        y: tab.top + tab.height / 2 - nr.top - bubbleHeight() / 2
       };
     }
     function showAt(x, y, immediate = false, following = false) {

@@ -238,9 +238,10 @@
   }
   html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble,
   html body.ptech-v13.light-mode .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble {
-    background: linear-gradient(145deg, rgba(255,255,255,.30), rgba(223,227,231,.48) 62%, rgba(249,233,207,.28)) !important;
-    border: 1px solid rgba(194,191,186,.30) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.94), 0 3px 9px rgba(24,28,35,.07), 0 0 11px rgba(190,149,78,.10) !important;
+    /* V25.2: warm champagne-glass, wider and still transparent. */
+    background: linear-gradient(115deg, rgba(255,251,242,.83) 0%, rgba(249,232,201,.72) 53%, rgba(244,221,180,.62) 100%) !important;
+    border: 1px solid rgba(217,179,112,.40) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.95), inset 0 -1px 0 rgba(209,166,92,.10), 0 3px 12px rgba(128,93,35,.075), 0 0 13px rgba(200,155,75,.13) !important;
     -webkit-backdrop-filter: blur(18px) saturate(1.28) !important;
     backdrop-filter: blur(18px) saturate(1.28) !important;
   }
@@ -252,7 +253,7 @@
     inset: 0;
     pointer-events: none;
     border-radius: inherit;
-    background: radial-gradient(ellipse 70% 22% at 50% 100%, rgba(216,174,91,.18), transparent 84%);
+    background: radial-gradient(ellipse 75% 30% at 50% 100%, rgba(222,172,80,.16), transparent 84%);
   }
   html body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion .bottom-nav-item .v13-tab-visual {
     transition: transform 260ms cubic-bezier(.18,.85,.24,1), color 170ms ease !important;
@@ -263,5 +264,24 @@
   html body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble {
     transition: none !important;
     animation: none !important;
+  }
+}
+
+/* V25.2 | Desired wider champagne bubble, carefully kept inside the white dock.
+   Responsive to the space for each tab: approx 70px on a phone, 110px on a tablet.
+   Only LIGHT theme receives the wider gold-tinted lens; dark mode is unchanged. */
+@media (max-width: 1100px) {
+  html[data-theme="light"] body.ptech-v13 .bottom-nav,
+  html body.ptech-v13.light-mode .bottom-nav {
+    --p25-lens-width: clamp(62px, calc(20% + 1px), 118px);
+  }
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble {
+    border-radius: 23px !important;
+  }
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion.v131-dragging .v131-dock-bubble,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled.ptech-liquid-motion.v131-dragging .v131-dock-bubble {
+    background: linear-gradient(115deg, rgba(255,251,240,.87), rgba(247,226,188,.78)) !important;
+    box-shadow: inset 0 1px rgba(255,255,255,.95), 0 4px 13px rgba(143,101,31,.09), 0 0 16px rgba(203,160,74,.17) !important;
   }
 }
