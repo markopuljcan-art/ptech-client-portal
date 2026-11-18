@@ -221,3 +221,47 @@
     box-shadow: none !important;
   }
 }
+
+/* V25.1: iPhone-style liquid motion on top of the approved WHITE dock skin.
+   Motion is driven by a spring in mobile.js, not a hardcoded CSS tab slide. */
+@media (max-width: 1100px) {
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion {
+    overflow: hidden !important;
+    isolation: isolate;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble,
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion.v131-dragging .v131-dock-bubble {
+    transition: none !important;
+    transform-origin: center center !important;
+    will-change: transform !important;
+    border-radius: 21px !important;
+  }
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble {
+    background: linear-gradient(145deg, rgba(255,255,255,.30), rgba(223,227,231,.48) 62%, rgba(249,233,207,.28)) !important;
+    border: 1px solid rgba(194,191,186,.30) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.94), 0 3px 9px rgba(24,28,35,.07), 0 0 11px rgba(190,149,78,.10) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(1.28) !important;
+    backdrop-filter: blur(18px) saturate(1.28) !important;
+  }
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble::after,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble::after {
+    content: "" !important;
+    display: block !important;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    background: radial-gradient(ellipse 70% 22% at 50% 100%, rgba(216,174,91,.18), transparent 84%);
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion .bottom-nav-item .v13-tab-visual {
+    transition: transform 260ms cubic-bezier(.18,.85,.24,1), color 170ms ease !important;
+  }
+  /* Selected icon remains black; inactive icons gray, as in approved V25. */
+}
+@media (prefers-reduced-motion: reduce) {
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble {
+    transition: none !important;
+    animation: none !important;
+  }
+}

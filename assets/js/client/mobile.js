@@ -127,10 +127,75 @@
     let drag = false;
     let suppressUntil = 0;
     let navigating = false;
-    // Read the actual CSS lens dimensions. Keeps touch dragging centered even
-    // when the dock becomes narrower or the glass lens changes with viewport.
-    const bubbleWidth = () => bubble.getBoundingClientRect().width || 60;
-    const bubbleHeight = () => bubble.getBoundingClientRect().height || 63;
+    // Stable layout size; getBoundingClientRect() grows when the glass deforms.
+    const bubbleWidth = () => bubble.offsetWidth || 62;
+    const bubbleHeight = () => bubble.offsetHeight || 59;
+
+    /* iOS-like liquid lens motion: a single spring-driven, deformable glass lens.
+       It follows the finger continuously; selection happens only on release.
+       No external library, no changes to auth, and full reduced-motion support. */
+    const spring = {
+      x: NaN, y: NaN, targetX: 0, targetY: 0,
+      vx: 0, vy: 0, stretch: 1, stretchV: 0,
+      lastTime: 0, frame: 0, following: false
+    };
+    const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+    nav.classList.add('ptech-liquid-motion');
+    const motionAllowed = () => mobile.matches && !reduceMotion.matches;
+
+    function paintLiquid() {
+      const stretch = motionAllowed() ? spring.stretch : 1;
+      const squish = 1 / Math.sqrt(stretch);
+      bubble.style.transform = `translate3d(${spring.x.toFixed(2)}px,${spring.y.toFixed(2)}px,0) scale(${stretch.toFixed(4)},${squish.toFixed(4)})`;
+    }
+    function liquidFrame(timestamp) {
+      spring.frame = 0;
+      const dt = spring.lastTime ? clamp((timestamp - spring.lastTime) / 16.667, 0.55, 1.7) : 1;
+      spring.lastTime = timestamp;
+      // Slightly firmer following while held; a softer, damped snap afterwards.
+      const stiffness = spring.following ? 0.23 : 0.17;
+      const friction = spring.following ? 0.69 : 0.74;
+      spring.vx = (spring.vx + (spring.targetX - spring.x) * stiffness * dt) * Math.pow(friction, dt);
+      spring.vy = (spring.vy + (spring.targetY - spring.y) * stiffness * dt) * Math.pow(friction, dt);
+      spring.x += spring.vx * dt;
+      spring.y += spring.vy * dt;
+      // Stretch parallel to travel, settle back to a regular pill when stationary.
+      const stretchTarget = 1 + Math.min(0.135, Math.abs(spring.vx) * 0.008) + (spring.following ? 0.026 : 0);
+      spring.stretchV = (spring.stretchV + (stretchTarget - spring.stretch) * 0.20 * dt) * Math.pow(0.63, dt);
+      spring.stretch += spring.stretchV * dt;
+      spring.stretch = clamp(spring.stretch, 0.985, 1.16);
+      paintLiquid();
+      const moving = Math.abs(spring.targetX - spring.x) > 0.12 ||
+        Math.abs(spring.targetY - spring.y) > 0.12 || Math.abs(spring.vx) > 0.08 ||
+        Math.abs(spring.vy) > 0.08 || Math.abs(spring.stretch - stretchTarget) > 0.003 ||
+        Math.abs(spring.stretchV) > 0.002;
+      if (moving) spring.frame = requestAnimationFrame(liquidFrame);
+      else {
+        spring.x = spring.targetX; spring.y = spring.targetY;
+        spring.vx = spring.vy = spring.stretchV = 0;
+        spring.stretch = spring.following ? 1.026 : 1; spring.lastTime = 0;
+        paintLiquid();
+      }
+    }
+    function setGlassTarget(x, y, instant = false, following = false) {
+      // The lens never leaves the dock, even with elastic scale.
+      const margin = 5;
+      const maxX = Math.max(margin, nav.clientWidth - bubbleWidth() - margin);
+      const maxY = Math.max(margin, nav.clientHeight - bubbleHeight() - margin);
+      spring.targetX = clamp(x, margin, maxX);
+      spring.targetY = clamp(y, margin, maxY);
+      spring.following = following;
+      if (!Number.isFinite(spring.x) || instant || !motionAllowed()) {
+        if (spring.frame) cancelAnimationFrame(spring.frame);
+        spring.frame = 0; spring.lastTime = 0;
+        spring.x = spring.targetX; spring.y = spring.targetY;
+        spring.vx = spring.vy = spring.stretchV = 0;
+        spring.stretch = 1;
+        paintLiquid();
+      } else if (!spring.frame) {
+        spring.frame = requestAnimationFrame(liquidFrame);
+      }
+    }
 
     function targetPath(link) {
       try {
@@ -148,9 +213,8 @@
         y: r.top + r.height / 2 - nr.top - bubbleHeight() / 2
       };
     }
-    function showAt(x, y, immediate = false) {
-      bubble.style.transitionDuration = immediate ? '0ms' : '';
-      bubble.style.transform = `translate3d(${Math.round(x)}px,${Math.round(y)}px,0)`;
+    function showAt(x, y, immediate = false, following = false) {
+      setGlassTarget(x, y, immediate, following);
     }
     function preview(index) {
       hovered = index;
@@ -183,7 +247,7 @@
       // browsers animate same-origin page transitions through CSS @view-transition.
       // Never slide/fade the entire old page before navigation (caused a flash).
       if (reduceMotion.matches) { location.assign(url.href); return; }
-      window.setTimeout(() => location.assign(url.href), 100);
+      window.setTimeout(() => location.assign(url.href), 225);
     }
 
     nav.addEventListener('pointerdown', e => {
@@ -194,8 +258,11 @@
       if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
       pointer = { id: e.pointerId, startX: e.clientX, startY: e.clientY, element: link };
       drag = false;
+      nav.classList.add('v131-holding');
       const currentIndex = links.indexOf(link);
       preview(currentIndex);
+      const pressed = bubblePoint(currentIndex);
+      showAt(pressed.x, pressed.y, false, true);
       try { link.setPointerCapture(e.pointerId); } catch { /* allowed to fail */ }
     });
     nav.addEventListener('pointermove', e => {
@@ -211,7 +278,7 @@
       const p = bubblePoint(idx);
       const minX = bubblePoint(0).x;
       const maxX = bubblePoint(links.length - 1).x;
-      showAt(Math.max(minX, Math.min(maxX, e.clientX - r.left - bubbleWidth() / 2)), p.y, true);
+      showAt(Math.max(minX, Math.min(maxX, e.clientX - r.left - bubbleWidth() / 2)), p.y, false, true);
       preview(idx);
       if (e.cancelable) e.preventDefault();
     }, {passive:false});
@@ -222,7 +289,8 @@
       try { pointer.element.releasePointerCapture(e.pointerId); } catch { /* no-op */ }
       pointer = null;
       drag = false;
-      nav.classList.remove('v131-dragging');
+      nav.classList.remove('v131-dragging', 'v131-holding');
+      spring.following = false;
       if (didDrag) {
         suppressUntil = performance.now() + 480;
         snap(idx);
@@ -234,7 +302,8 @@
       if (!pointer || e.pointerId !== pointer.id) return;
       pointer = null;
       drag = false;
-      nav.classList.remove('v131-dragging');
+      nav.classList.remove('v131-dragging', 'v131-holding');
+      spring.following = false;
       snap(active);
     });
     // Touch-specific fallback: iOS/Android can cancel pointer capture when the
@@ -248,7 +317,7 @@
       const r = nav.getBoundingClientRect();
       const p = bubblePoint(idx);
       const left = bubblePoint(0).x, right = bubblePoint(links.length - 1).x;
-      showAt(Math.max(left,Math.min(right,x-r.left-bubbleWidth()/2)),p.y,true);
+      showAt(Math.max(left,Math.min(right,x-r.left-bubbleWidth()/2)),p.y,false,true);
       preview(idx);
     }
     nav.addEventListener('touchstart', e => {
@@ -257,7 +326,11 @@
       if (!link || !nav.contains(link)) return;
       const t = e.touches[0];
       touch = {id:t.identifier, ...pointFromTouch(t), dragging:false};
-      preview(links.indexOf(link));
+      nav.classList.add('v131-holding');
+      const pressedIndex = links.indexOf(link);
+      preview(pressedIndex);
+      const pressed = bubblePoint(pressedIndex);
+      showAt(pressed.x, pressed.y, false, true);
     }, {passive:true});
     nav.addEventListener('touchmove', e => {
       if (!touch || navigating) return;
@@ -277,7 +350,8 @@
       if (!t) return;
       const dragged=touch.dragging;
       touch=null;
-      nav.classList.remove('v131-dragging');
+      nav.classList.remove('v131-dragging', 'v131-holding');
+      spring.following = false;
       if (dragged) {
         const idx=closestIndex(t.clientX);
         suppressUntil=performance.now()+650;
@@ -287,7 +361,8 @@
     }, {passive:true});
     nav.addEventListener('touchcancel', () => {
       touch=null;
-      nav.classList.remove('v131-dragging');
+      nav.classList.remove('v131-dragging', 'v131-holding');
+      spring.following = false;
       snap(active);
     }, {passive:true});
     nav.addEventListener('click', e => {
