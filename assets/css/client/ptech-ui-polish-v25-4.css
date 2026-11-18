@@ -151,3 +151,53 @@ html body.ptech-home #portalHome [data-widget-id="actions"][data-adaptive-level=
   html body.portal-desktop .dashboard-header .theme-switch .theme-slider::before,
   html.ptech-theme-changing body * {animation:none !important;transition:none !important;}
 }
+
+
+/* V25.5 | Theme toggle alignment + identical dock bubble geometry in dark mode.
+   Fixes the reported mismatch after switching from Light to Dark without touching
+   the spring / drag logic of the mobile dock. */
+html body.portal-desktop .dashboard-header .header-actions {
+  align-items:center !important;
+}
+html body.portal-desktop .dashboard-header .theme-switch {
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  align-self:center !important;
+  margin:0 !important;
+  line-height:0 !important;
+}
+html body.portal-desktop .dashboard-header .theme-switch .theme-slider {
+  inset:0 !important;
+  margin:0 !important;
+}
+@media (max-width:1100px) {
+  /* Keep the active bubble identical in size in BOTH themes. */
+  html body.ptech-v13 .bottom-nav {
+    --p25-lens-width: clamp(62px, calc(20% + 1px), 118px);
+    --p25-lens-height: 59px;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble,
+  html body.ptech-v13 .bottom-nav.v131-enabled.v131-dragging .v131-dock-bubble {
+    width:var(--p25-lens-width) !important;
+    height:var(--p25-lens-height) !important;
+    border-radius:23px !important;
+  }
+  /* Dark mode gets the SAME geometry as light mode, only a different color skin. */
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav.v131-enabled .v131-dock-bubble,
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav.v131-enabled.v131-dragging .v131-dock-bubble {
+    width:var(--p25-lens-width) !important;
+    height:var(--p25-lens-height) !important;
+    border-radius:23px !important;
+    background:linear-gradient(165deg, rgba(77,95,128,.34) 0%, rgba(47,61,90,.28) 54%, rgba(212,168,84,.14) 100%) !important;
+    border:1px solid rgba(226,190,126,.30) !important;
+    box-shadow:0 10px 22px rgba(5,13,31,.22), 0 2px 7px rgba(5,13,31,.12), inset 0 1px 0 rgba(255,255,255,.18), inset 0 -1px 0 rgba(216,169,93,.13) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(1.14) !important;
+    backdrop-filter: blur(18px) saturate(1.14) !important;
+  }
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav.v131-enabled .v131-dock-bubble::before,
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav.v131-enabled .v131-dock-bubble::after {
+    content:none !important;
+    display:none !important;
+  }
+}
