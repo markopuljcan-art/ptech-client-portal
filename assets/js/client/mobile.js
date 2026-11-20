@@ -122,6 +122,12 @@
     nav.setAttribute('aria-description', 'Dodirni ikonu ili povuci oznaku preko donjeg izbornika.');
 
     let active = Math.max(0, links.findIndex(a => a.matches('[aria-current="page"],.active')));
+    // V25.12: one and only one visibly selected icon. Gesture preview is
+    // separate from the selected page, so press/hold cannot blacken two icons.
+    function selectVisual(index) {
+      links.forEach((link,i) => link.classList.toggle('ptech-nav-selected', i === index));
+    }
+    selectVisual(active);
     let hovered = active;
     let pointer = null;
     let drag = false;
@@ -238,9 +244,10 @@
       return best;
     }
     function navigate(index) {
-      if (navigating || index === active) { snap(active); return; }
+      if (navigating || index === active) { selectVisual(active); snap(active); return; }
       const url = targetPath(links[index]);
-      if (!url) { snap(active); return; }
+      if (!url) { selectVisual(active); snap(active); return; }
+      selectVisual(index); // Commit immediately; do not await the page load.
       // V25.11: immediately switch the actual selected icon BEFORE the 225ms
       // cross-page transition. This is a committed click/release, not a swipe
       // preview, so the other icons stay outlined while the destination fills.
@@ -273,6 +280,7 @@
       drag = false;
       nav.classList.add('v131-holding');
       const currentIndex = links.indexOf(link);
+      selectVisual(currentIndex); // The pressed tab replaces the old solid icon.
       preview(currentIndex);
       const pressed = bubblePoint(currentIndex);
       showAt(pressed.x, pressed.y, false, true);
@@ -285,6 +293,7 @@
       if (!drag && Math.abs(dx) < 11) return;
       if (!drag && Math.abs(dy) > Math.abs(dx) * 1.4) return;
       drag = true;
+      selectVisual(active); // Drag is preview-only until the finger is released.
       nav.classList.add('v131-dragging');
       const idx = closestIndex(e.clientX);
       const r = nav.getBoundingClientRect();
@@ -309,7 +318,10 @@
         snap(idx);
         if (navigator.vibrate) { try { navigator.vibrate(8); } catch { /* optional */ } }
         navigate(idx);
-      } else snap(active);
+      } else {
+        // Keep pressed tab visibly chosen until its native click commits it.
+        // Do not momentarily snap back to the old tab on pointerup.
+      }
     });
     nav.addEventListener('pointercancel', e => {
       if (!pointer || e.pointerId !== pointer.id) return;
@@ -317,6 +329,7 @@
       drag = false;
       nav.classList.remove('v131-dragging', 'v131-holding');
       spring.following = false;
+      selectVisual(active);
       snap(active);
     });
     // Touch-specific fallback: iOS/Android can cancel pointer capture when the
@@ -341,6 +354,7 @@
       touch = {id:t.identifier, ...pointFromTouch(t), dragging:false};
       nav.classList.add('v131-holding');
       const pressedIndex = links.indexOf(link);
+      selectVisual(pressedIndex);
       preview(pressedIndex);
       const pressed = bubblePoint(pressedIndex);
       showAt(pressed.x, pressed.y, false, true);
@@ -353,6 +367,7 @@
       if (!touch.dragging && Math.abs(dx) < 11) return;
       if (!touch.dragging && Math.abs(dy) > Math.abs(dx)*1.4) return;
       touch.dragging = true;
+      selectVisual(active);
       nav.classList.add('v131-dragging');
       if (e.cancelable) e.preventDefault();
       drawTouchPreview(t.clientX);
@@ -370,12 +385,15 @@
         suppressUntil=performance.now()+650;
         snap(idx);
         navigate(idx);
-      } else snap(active);
+      } else {
+        // Native click follows touchend; retain exclusive visual selection.
+      }
     }, {passive:true});
     nav.addEventListener('touchcancel', () => {
       touch=null;
       nav.classList.remove('v131-dragging', 'v131-holding');
       spring.following = false;
+      selectVisual(active);
       snap(active);
     }, {passive:true});
     nav.addEventListener('click', e => {
@@ -410,7 +428,27 @@
       if (mobile.matches && !drag) snap(active, true);
     };
     window.addEventListener('resize', updateLayout, {passive:true});
-    window.addEventListener('pageshow', () => { navigating = false; document.body.classList.remove('v131-exiting'); updateLayout(); });
+    window.addEventListener('pageshow', () => {
+      // Correct a restored BFCache page whose previous click had changed the
+      // old document's aria-current before the browser navigated away.
+      const file = decodeURIComponent(location.pathname.split('/').pop() || '');
+      const actual = (file === 'project.html' || file === 'tasks.html') ? 'my-projects.html' : file;
+      const realIndex = links.findIndex(link => (link.getAttribute('href') || '').split(/[?#]/)[0].replace(/^\.\//,'') === actual);
+      if (realIndex >= 0) {
+        active = realIndex;
+        links.forEach((link,i) => {
+          const current = i === active;
+          link.classList.toggle('active',current);
+          if(current)link.setAttribute('aria-current','page');
+          else link.removeAttribute('aria-current');
+        });
+      }
+      navigating = false;
+      nav.classList.remove('v131-switching', 'v131-dragging', 'v131-holding');
+      document.body.classList.remove('v131-exiting');
+      selectVisual(active);
+      updateLayout();
+    });
     if ('ResizeObserver' in window) new ResizeObserver(updateLayout).observe(nav);
     updateLayout();
     requestAnimationFrame(updateLayout);

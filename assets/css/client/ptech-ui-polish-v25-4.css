@@ -490,3 +490,97 @@ html body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-
     animation:none !important;
   }
 }
+
+
+/* V25.12 - Exclusive solid icon while pressing, dragging and navigating.
+   The existing preview/hover skins can STILL move the gold lens, but no
+   secondary tab may turn black while a different tab is selected. */
+@media (max-width:1100px) {
+  html body.ptech-v13 nav.bottom-nav.v131-enabled a.bottom-nav-item:not(.ptech-nav-selected)
+    .v13-tab-visual > svg.ptech-filled-icon {
+    display:none !important;
+    visibility:hidden !important;
+  }
+  html body.ptech-v13 nav.bottom-nav.v131-enabled a.bottom-nav-item.ptech-nav-selected
+    .v13-tab-visual > svg.ptech-filled-icon {
+    display:block !important;
+    visibility:visible !important;
+    position:absolute !important;
+    top:50% !important;left:50% !important;
+    transform:translate(-50%,-50%) !important;
+    width:23px !important;height:23px !important;
+    color:#111111 !important;
+    fill:#111111 !important;
+    stroke:none !important;
+  }
+  html body.ptech-v13 nav.bottom-nav.v131-enabled a.bottom-nav-item.ptech-nav-selected
+    .v13-tab-visual > svg.ptech-filled-icon > :is(path,rect,circle,polygon,ellipse) {
+    fill:#111111 !important;stroke:none !important;
+  }
+  html body.ptech-v13 nav.bottom-nav.v131-enabled a.bottom-nav-item.ptech-nav-selected
+    .v13-tab-visual > svg.ptech-filled-icon > .ptech-cutout {
+    fill:#ffffff !important;
+  }
+  html body.ptech-v13 nav.bottom-nav.v131-enabled a.bottom-nav-item.ptech-nav-selected
+    .v13-tab-visual > svg:not(.ptech-filled-icon),
+  html body.ptech-v13 nav.bottom-nav.v131-enabled a.bottom-nav-item.ptech-nav-selected
+    .v13-tab-visual > .bottom-nav-icon-wrap > svg {
+    visibility:hidden !important;
+  }
+  /* Neutralize the legacy .v131-preview and .active skins for NON-selected
+     icons. This prevents the black 'Documents' folder during mouse hold. */
+  html body.ptech-v13 nav.bottom-nav.v131-enabled a.bottom-nav-item:not(.ptech-nav-selected)
+    .v13-tab-visual > svg:not(.ptech-filled-icon),
+  html body.ptech-v13 nav.bottom-nav.v131-enabled a.bottom-nav-item:not(.ptech-nav-selected)
+    .v13-tab-visual > .bottom-nav-icon-wrap > svg {
+    visibility:visible !important;
+    color:#676b75 !important;
+    stroke:#676b75 !important;
+    stroke-width:1.9px !important;
+    fill:none !important;
+    filter:none !important;
+  }
+  html body.ptech-v13 nav.bottom-nav.v131-enabled a.bottom-nav-item:not(.ptech-nav-selected)
+    .v13-tab-visual {
+    color:#676b75 !important;
+    transform:none !important;
+    background:transparent !important;
+  }
+  html body.ptech-v13 nav.bottom-nav.v131-enabled a.bottom-nav-item:not(.ptech-nav-selected) > span:last-child {
+    color:#676b75 !important;
+    font-weight:600 !important;
+  }
+  html body.ptech-v13 nav.bottom-nav.v131-enabled a.bottom-nav-item.ptech-nav-selected > span:last-child {
+    color:#111111 !important;
+    font-weight:750 !important;
+  }
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+    nav.bottom-nav.v131-enabled a.bottom-nav-item.ptech-nav-selected
+    .v13-tab-visual > svg.ptech-filled-icon,
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+    nav.bottom-nav.v131-enabled a.bottom-nav-item.ptech-nav-selected
+    .v13-tab-visual > svg.ptech-filled-icon > :is(path,rect,circle,polygon,ellipse) {
+    color:#ffffff !important;fill:#ffffff !important;
+  }
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+    nav.bottom-nav.v131-enabled a.bottom-nav-item.ptech-nav-selected
+    .v13-tab-visual > svg.ptech-filled-icon > .ptech-cutout {
+    fill:#27344b !important;
+  }
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+    nav.bottom-nav.v131-enabled a.bottom-nav-item:not(.ptech-nav-selected)
+    .v13-tab-visual > svg:not(.ptech-filled-icon),
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+    nav.bottom-nav.v131-enabled a.bottom-nav-item:not(.ptech-nav-selected)
+    .v13-tab-visual > .bottom-nav-icon-wrap > svg {
+    color:#c3cbd8 !important;stroke:#c3cbd8 !important;
+  }
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+    nav.bottom-nav.v131-enabled a.bottom-nav-item:not(.ptech-nav-selected) > span:last-child {
+    color:#c3cbd8 !important;
+  }
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+    nav.bottom-nav.v131-enabled a.bottom-nav-item.ptech-nav-selected > span:last-child {
+    color:#ffffff !important;
+  }
+}
