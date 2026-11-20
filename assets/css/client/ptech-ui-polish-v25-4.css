@@ -352,3 +352,71 @@ html body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-
     flex-basis:32px !important;
   }
 }
+
+/* ================================================================
+   V25.10 - iPhone-style solid active icon, outline on other tabs.
+   A tab is selected ONLY when navigation assigns aria-current="page".
+   The floating gold lens and all drag/spring mechanics are unchanged.
+   ================================================================ */
+@media (max-width: 1100px) {
+  /* Even when the lens previews a destination during a swipe, do not
+     fill that destination icon before its page actually opens. */
+  html body.ptech-v13 nav.bottom-nav.v131-enabled a.bottom-nav-item
+    .v13-tab-visual > svg.ptech-filled-icon {
+    display: none !important;
+    pointer-events: none !important;
+  }
+  html body.ptech-v13 nav.bottom-nav.v131-enabled a.bottom-nav-item[aria-current="page"]
+    .v13-tab-visual > svg.ptech-filled-icon {
+    display: block !important;
+    visibility: visible !important;
+    width: 23px !important;
+    height: 23px !important;
+    color: #111111 !important;
+    fill: #111111 !important;
+    stroke: none !important;
+  }
+  /* The older dock skin applies fill:none / translucent fills to every svg;
+     override it for the ACTIVE solid artwork, including its children. */
+  html body.ptech-v13 nav.bottom-nav.v131-enabled a.bottom-nav-item[aria-current="page"]
+    .v13-tab-visual > svg.ptech-filled-icon > :is(path,rect,circle,polygon,ellipse) {
+    fill: #111111 !important;
+    stroke: none !important;
+  }
+  /* White door/calendar cutout remains an empty opening in the solid glyph. */
+  html body.ptech-v13 nav.bottom-nav.v131-enabled a.bottom-nav-item[aria-current="page"]
+    .v13-tab-visual > svg.ptech-filled-icon > .ptech-cutout {
+    fill: #ffffff !important;
+    stroke: none !important;
+  }
+  /* Show the outline on all other tabs, including gesture preview tabs. */
+  html body.ptech-v13 nav.bottom-nav.v131-enabled a.bottom-nav-item:not([aria-current="page"])
+    .v13-tab-visual > svg:not(.ptech-filled-icon),
+  html body.ptech-v13 nav.bottom-nav.v131-enabled a.bottom-nav-item:not([aria-current="page"])
+    .v13-tab-visual > .bottom-nav-icon-wrap > svg {
+    visibility: visible !important;
+  }
+  html body.ptech-v13 nav.bottom-nav.v131-enabled a.bottom-nav-item[aria-current="page"]
+    .v13-tab-visual > svg:not(.ptech-filled-icon),
+  html body.ptech-v13 nav.bottom-nav.v131-enabled a.bottom-nav-item[aria-current="page"]
+    .v13-tab-visual > .bottom-nav-icon-wrap > svg {
+    visibility: hidden !important;
+  }
+  /* Dark theme preserves contrast: active solid WHITE instead of invisible black. */
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+    nav.bottom-nav.v131-enabled a.bottom-nav-item[aria-current="page"]
+    .v13-tab-visual > svg.ptech-filled-icon {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+  }
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+    nav.bottom-nav.v131-enabled a.bottom-nav-item[aria-current="page"]
+    .v13-tab-visual > svg.ptech-filled-icon > :is(path,rect,circle,polygon,ellipse) {
+    fill: #ffffff !important;
+  }
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+    nav.bottom-nav.v131-enabled a.bottom-nav-item[aria-current="page"]
+    .v13-tab-visual > svg.ptech-filled-icon > .ptech-cutout {
+    fill: #27344b !important;
+  }
+}
