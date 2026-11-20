@@ -1,0 +1,53 @@
+/* PTech Client Portal V26.6 | Mobile dock bubble centering polish.
+   Goal:
+   - Keep the approved Light Mode bubble geometry (56x60) in BOTH themes.
+   - Nudge the bubble a little upward and to the left so it looks visually centered on iPhone.
+   - Make the Dark Mode bubble rim thinner and lighter.
+   This file is additive and does not change dock JS, navigation logic, or page content.
+*/
+@media (max-width: 1100px) {
+  /* Shared geometry: same pill size as the approved Light Mode. */
+  html body.ptech-v13 nav.bottom-nav.v131-enabled {
+    --p266-bubble-width: 56px;
+    --p266-bubble-height: 60px;
+    --p266-bubble-radius: 24px;
+    --p266-bubble-offset-x: -2px;
+    --p266-bubble-offset-y: -2px;
+  }
+
+  /* Light mode: keep the current look, only gently re-center the bubble. */
+  html[data-theme="light"] body.ptech-v13 nav.bottom-nav.v131-enabled .v131-dock-bubble,
+  html[data-theme="light"] body.ptech-v13 nav.bottom-nav.v131-enabled.v131-dragging .v131-dock-bubble,
+  html body.ptech-v13.light-mode nav.bottom-nav.v131-enabled .v131-dock-bubble,
+  html body.ptech-v13.light-mode nav.bottom-nav.v131-enabled.v131-dragging .v131-dock-bubble {
+    width: var(--p266-bubble-width) !important;
+    height: var(--p266-bubble-height) !important;
+    border-radius: var(--p266-bubble-radius) !important;
+    left: var(--p266-bubble-offset-x) !important;
+    top: var(--p266-bubble-offset-y) !important;
+  }
+
+  /* Dark mode: same geometry as Light Mode, but with a thinner/lighter border. */
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+    nav.bottom-nav.v131-enabled.ptech-optical-dock .v131-dock-bubble,
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+    nav.bottom-nav.v131-enabled.ptech-optical-dock.v131-dragging .v131-dock-bubble {
+    width: var(--p266-bubble-width) !important;
+    height: var(--p266-bubble-height) !important;
+    border-radius: var(--p266-bubble-radius) !important;
+    left: var(--p266-bubble-offset-x) !important;
+    top: var(--p266-bubble-offset-y) !important;
+    border: 0.85px solid rgba(226, 194, 134, 0.28) !important;
+    box-shadow:
+      0 6px 16px rgba(4, 12, 29, 0.28),
+      0 0 12px rgba(224, 177, 93, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      inset 0 -1px 4px rgba(216, 170, 91, 0.09) !important;
+  }
+
+  /* Slightly calmer optical rim in Dark Mode so the thinner border reads cleaner. */
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+    nav.bottom-nav.v131-enabled.ptech-optical-dock .p262-caustic-rim {
+    opacity: 0.6;
+  }
+}
