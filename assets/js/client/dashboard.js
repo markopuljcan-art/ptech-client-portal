@@ -499,7 +499,7 @@
         const open=tasks.filter(t=>t.status!=='done');
         metric=taskError?'!':String(open.length);
         const upcoming=[...open].sort((a,b)=>String(a.due_date||'9999').localeCompare(String(b.due_date||'9999')))[0];
-        main=taskError?'Nije moguće učitati':upcoming?.title||'Nema otvorenih zadataka';
+        main=taskError?'Nije moguće učitati':upcoming?.title||'Nema zadataka';
         detail=upcoming?.due_date?`Rok: ${new Date(upcoming.due_date+'T12:00:00').toLocaleDateString('hr-HR')}`:'Prati svoje obveze';
       }else if(id==='actions'){
         const visible=state.actionOrder.filter(key=>!state.hiddenActions.includes(key)&&actionSlots.has(key));
@@ -1496,7 +1496,7 @@
       return;
     }
     if(!tasks.length) {
-      taskList.append(text('p','ptech-tasks-empty',currentUserId?'Trenutačno nema dodijeljenih zadataka.':'Učitavanje zadataka...'));
+      taskList.append(text('p','ptech-tasks-empty',currentUserId?'Trenutačno nema zadataka.':'Učitavanje zadataka...'));
       return;
     }
     const dims=state.dims.tasks || {w:6,h:5};
@@ -1704,7 +1704,10 @@
       const number=raw==='!'?'!':(/^\d+$/.test(raw)?raw:'–');
       const glance=extras.tasksGlance;
       glance.number.textContent=number;
-      glance.description.textContent=raw==='!'?'Provjeri zadatke':number==='–'?'Učitavanje':number==='0'?'Nema otvorenih':'Otvorenih zadataka';
+      glance.description.textContent=raw==='!'?'Provjeri zadatke':number==='–'?'Učitavanje':number==='0'?'Nema zadataka':'Otvorenih zadataka';
+      // All three empty-state tiles use one shared, horizontal status design.
+      const taskCard=glance.number.closest('.portal-summary-card');
+      if(taskCard)taskCard.dataset.ptechStatusEmpty=number==='0'?'true':'false';
       const first=rows[0];
       const next=extras.tasksNext;
       next.textContent=first?.querySelector('strong')?.textContent?.trim()||'';
@@ -1729,6 +1732,13 @@
       glance.description.textContent=loading?'Učitavanje':id==='messages'?
         (allRows.length===0?'Nema poruka':allRows.length===1?'Poruka u pregledu':'Poruke u pregledu'):
         (allRows.length===0?'Nema dokumenata':allRows.length===1?'Dokument u pregledu':'Dokumenti u pregledu');
+      // Only present an empty state when the data source confirms none exist.
+      // Errors and loading states retain their own messages.
+      const statusCard=glance.number.closest('.portal-summary-card');
+      if(statusCard){
+        const confirmedEmpty=allRows.length===0 && !loading && /^trenutno nema /i.test((list.textContent||'').trim());
+        statusCard.dataset.ptechStatusEmpty=confirmedEmpty?'true':'false';
+      }
       const next=extras[`${id}Next`];
       next.textContent=allRows[0]?.querySelector('.overview-row-main strong')?.textContent?.trim()||'';
       next.hidden=!next.textContent;
@@ -1791,17 +1801,21 @@
     if(open){open.href='project.html?id='+encodeURIComponent(String(p.id));open.setAttribute('aria-label',`Otvori projekt ${p.type||p.name||''}`);open.firstChild.textContent='Otvori projekt ';}
   }
   function tasks(){
+    const card=home?.querySelector('.portal-summary-card[aria-label="Moji zadaci"]');
+    const setEmptyState=(value)=>{
+      if(card)card.dataset.emptyState=value?'true':'false';
+    };
     const raw=source.count?.textContent?.trim()||'–';
     const loading=raw==='–' || Boolean(source.tasks?.textContent?.includes('Učitavanje'));
     const n=Number(raw);const rows=[...(source.tasks?.querySelectorAll('.ptech-task-preview-row')||[])];
-    if(loading){text('portalTaskCount','–');text('portalTaskStatus','Učitavanje zadataka...');text('portalTaskDescription','Provjeri svoje obveze i rokove.');return;}
+    if(loading){setEmptyState(false);text('portalTaskCount','–');text('portalTaskStatus','Učitavanje zadataka...');text('portalTaskDescription','Provjeri svoje obveze i rokove.');return;}
     if(raw==='!' || !Number.isFinite(n)){
-      text('portalTaskCount','!');text('portalTaskStatus','Zadaci nisu dostupni');text('portalTaskDescription','Otvori stranicu Zadaci za više informacija.');return;
+      setEmptyState(false);text('portalTaskCount','!');text('portalTaskStatus','Zadaci nisu dostupni');text('portalTaskDescription','Otvori stranicu Zadaci za više informacija.');return;
     }
     text('portalTaskCount',n);
-    if(n>0){text('portalTaskStatus',n===1?'1 otvoreni zadatak':`${n} otvorenih zadataka`);
+    if(n>0){setEmptyState(false);text('portalTaskStatus',n===1?'1 otvoreni zadatak':`${n} otvorenih zadataka`);
       const title=rows[0]?.querySelector('strong')?.textContent?.trim();text('portalTaskDescription',title?`Sljedeći zadatak: ${title}`:'Pogledajte zadatke i njihove rokove.');
-    }else{text('portalTaskStatus','Nema otvorenih zadataka');text('portalTaskDescription','Trenutačno nema dodijeljenih zadataka.');}
+    }else{setEmptyState(true);text('portalTaskStatus','Nema zadataka');text('portalTaskDescription','Trenutačno nema zadataka.');}
   }
   function empty(target,message,kind){
     target.replaceChildren();const wrap=create('span','portal-empty-preview');const icon=create('span','portal-empty-icon');icon.innerHTML=kind==='document'?svg.document:svg.mail;wrap.append(icon,create('span','',message));target.append(wrap);
