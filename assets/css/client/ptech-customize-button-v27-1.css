@@ -119,3 +119,150 @@ body.ptech-home #portalHome .portal-welcome #portalEdit.portal-text-btn:focus-vi
     transition: none !important;
   }
 }
+
+
+/* ===============================================================
+   V27.2 | "Otvori projekt" matches the approved "Prilagodi početnu".
+   Preserve the original text node as the first child: dashboard.js
+   updates it through open.firstChild.textContent when a project loads.
+   row-reverse places the arrow tile on the left WITHOUT changing DOM.
+   =============================================================== */
+body.ptech-home #portalHome #portalProjectOpen.portal-project-open {
+  display: inline-flex !important;
+  flex-direction: row-reverse !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  box-sizing: border-box !important;
+  max-width: 100% !important;
+  min-height: 58px !important;
+  padding: 7px 20px 7px 8px !important;
+  border-radius: 29px !important;
+  border: 1.5px solid rgba(220, 170, 91, .90) !important;
+  background: linear-gradient(175deg, rgba(98, 111, 136, .55) 0%,
+    rgba(37, 54, 84, .78) 60%, rgba(38, 49, 73, .92) 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 7px 16px rgba(4, 12, 28, .19),
+    inset 0 1px 0 rgba(255, 255, 255, .22),
+    0 0 9px rgba(211, 166, 86, .09) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  backdrop-filter: blur(12px) saturate(1.2);
+  font: inherit !important;
+  font-size: 15px !important;
+  font-weight: 750 !important;
+  letter-spacing: -.02em !important;
+  line-height: 1.2 !important;
+  white-space: nowrap;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  filter: none !important;
+  transition: transform .2s ease, box-shadow .2s ease,
+    border-color .2s ease, background-color .2s ease !important;
+}
+
+/* Golden arrow tile, matching the sliders tile in "Prilagodi početnu". */
+body.ptech-home #portalHome #portalProjectOpen.portal-project-open > svg {
+  display: block !important;
+  flex: 0 0 auto !important;
+  box-sizing: content-box !important;
+  width: 21px !important;
+  height: 21px !important;
+  padding: 10px !important;
+  border-radius: 13px !important;
+  background: linear-gradient(145deg, #e5b763 0%, #bb7914 78%, #a56810 100%) !important;
+  color: #fff !important;
+  stroke: currentColor !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35),
+    0 3px 9px rgba(108, 74, 24, .19) !important;
+}
+
+html[data-theme="light"] body.ptech-home #portalHome #portalProjectOpen.portal-project-open,
+body.ptech-home.light-mode #portalHome #portalProjectOpen.portal-project-open {
+  background: linear-gradient(180deg, #fffefa 0%, #f9edd9 100%) !important;
+  border-color: #d9ad6c !important;
+  color: #203047 !important;
+  box-shadow: 0 6px 18px rgba(130, 91, 42, .12),
+    inset 0 1px 0 rgba(255, 255, 255, .98) !important;
+}
+
+@media (hover: hover) {
+  body.ptech-home #portalHome #portalProjectOpen.portal-project-open:hover {
+    transform: translateY(-1px) !important;
+    filter: none !important;
+    border-color: #dfb778 !important;
+    box-shadow: 0 10px 21px rgba(5, 15, 31, .23),
+      inset 0 1px 0 rgba(255, 255, 255, .26) !important;
+  }
+  html[data-theme="light"] body.ptech-home #portalHome #portalProjectOpen.portal-project-open:hover,
+  body.ptech-home.light-mode #portalHome #portalProjectOpen.portal-project-open:hover {
+    box-shadow: 0 9px 23px rgba(130, 91, 42, .17),
+      inset 0 1px 0 rgba(255, 255, 255, .98) !important;
+  }
+}
+body.ptech-home #portalHome #portalProjectOpen.portal-project-open:active {
+  transform: translateY(0) scale(.985) !important;
+}
+body.ptech-home #portalHome #portalProjectOpen.portal-project-open:focus-visible {
+  outline: 3px solid #c79335 !important;
+  outline-offset: 3px !important;
+}
+
+/* Keep the existing adaptive dashboard's miniature project CTA compact. */
+body.ptech-home.portal-unified #portalHome
+  [data-widget-id="projects"]:is([data-adaptive-level="small"], [data-adaptive-level="mini"])
+  #portalProjectOpen.portal-project-open {
+  min-height: 39px !important;
+  width: 39px !important;
+  padding: 3px !important;
+  gap: 0 !important;
+  font-size: 0 !important;
+  border-radius: 13px !important;
+}
+body.ptech-home.portal-unified #portalHome
+  [data-widget-id="projects"]:is([data-adaptive-level="small"], [data-adaptive-level="mini"])
+  #portalProjectOpen.portal-project-open > svg {
+  width: 17px !important;
+  height: 17px !important;
+  padding: 7px !important;
+  border-radius: 9px !important;
+}
+body.ptech-home.portal-unified #portalHome
+  [data-widget-id="projects"][data-adaptive-level="medium"]
+  #portalProjectOpen.portal-project-open {
+  min-height: 45px !important;
+  padding: 5px 12px 5px 5px !important;
+  gap: 7px !important;
+  font-size: 12px !important;
+  border-radius: 23px !important;
+}
+body.ptech-home.portal-unified #portalHome
+  [data-widget-id="projects"][data-adaptive-level="medium"]
+  #portalProjectOpen.portal-project-open > svg {
+  width: 17px !important;
+  height: 17px !important;
+  padding: 7px !important;
+  border-radius: 9px !important;
+}
+
+@media (max-width: 600px) {
+  body.ptech-home #portalHome #portalProjectOpen.portal-project-open {
+    min-height: 52px !important;
+    padding: 6px 15px 6px 6px !important;
+    gap: 10px !important;
+    border-radius: 26px !important;
+    font-size: 14px !important;
+  }
+  body.ptech-home #portalHome #portalProjectOpen.portal-project-open > svg {
+    width: 19px !important;
+    height: 19px !important;
+    padding: 9px !important;
+    border-radius: 11px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.ptech-home #portalHome #portalProjectOpen.portal-project-open {
+    transition: none !important;
+  }
+}
