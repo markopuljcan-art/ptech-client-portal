@@ -1,0 +1,50 @@
+/* PTech Client Portal V26.5 | Dark Mode bottom dock alignment.
+   Real markup: .bottom-nav / .bottom-nav-item / .v131-dock-bubble.
+   Light Mode and V26.3 multi-tap spring controller remain untouched.
+*/
+@media (max-width: 1100px) {
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+    nav.bottom-nav.v131-enabled {
+    /* Same dock height and same bubble width as the approved light design.
+       The selected dark lens is deliberately shorter (less inflated). */
+    --p25-lens-height: 52px;
+  }
+
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+    nav.bottom-nav.v131-enabled.ptech-optical-dock .v131-dock-bubble,
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+    nav.bottom-nav.v131-enabled.ptech-optical-dock.v131-dragging .v131-dock-bubble {
+    height: var(--p25-lens-height) !important;
+    border-radius: 19px !important;
+    /* Preserve refractive layers and the spring transform set by JS. */
+    border-color: rgba(219, 184, 121, .36) !important;
+    box-shadow:
+      0 5px 14px rgba(3, 10, 25, .20),
+      0 0 9px rgba(216, 170, 86, .07),
+      inset 0 1px 0 rgba(240, 246, 255, .35),
+      inset 0 -1px 2px rgba(202, 157, 80, .10) !important;
+  }
+
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+    nav.bottom-nav.v131-enabled .bottom-nav-item {
+    gap: 1px !important;
+  }
+
+  /* Icons and labels sit slightly lower, while preserving the 60px tap area.
+     Use a positional offset rather than transform so drag/active animations
+     and the computed bubble center remain stable. */
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+    nav.bottom-nav.v131-enabled .bottom-nav-item .v13-tab-visual {
+    top: 2px !important;
+  }
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+    nav.bottom-nav.v131-enabled .bottom-nav-item > span:last-child {
+    position: relative;
+    top: 2px !important;
+  }
+  /* Less pronounced rim, same soft gold shimmer from the optical glass skin. */
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+    nav.bottom-nav.v131-enabled.ptech-optical-dock .p262-caustic-rim {
+    opacity: .72;
+  }
+}
