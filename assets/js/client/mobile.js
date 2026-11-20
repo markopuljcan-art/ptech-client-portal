@@ -155,8 +155,11 @@
       bubble.style.transform = `translate3d(${spring.x.toFixed(2)}px,${spring.y.toFixed(2)}px,0) scale(${stretch.toFixed(4)},${squish.toFixed(4)})`;
       // V26: optical highlights shift subtly with velocity, without replacing
       // the spring animation or altering active-tab selection.
-      const glint = clamp(35 + spring.vx * 0.62, 20, 55);
+      const glint = clamp(48 + spring.vx * 1.32, 26, 74);
+      const specularShift = clamp(spring.vx * 0.24, -3.5, 3.5);
       bubble.style.setProperty('--p26-highlight-x', `${glint.toFixed(1)}%`);
+      bubble.style.setProperty('--p261-glint-x', `${glint.toFixed(1)}%`);
+      bubble.style.setProperty('--p261-specular-shift', `${specularShift.toFixed(2)}px`);
       bubble.style.setProperty('--p26-shimmer-y', `${clamp(spring.vy * 0.12, -1.4, 1.4).toFixed(2)}px`);
     }
     function liquidFrame(timestamp) {
@@ -272,7 +275,7 @@
       // browsers animate same-origin page transitions through CSS @view-transition.
       // Never slide/fade the entire old page before navigation (caused a flash).
       if (reduceMotion.matches) { location.assign(url.href); return; }
-      window.setTimeout(() => location.assign(url.href), 145);
+      window.setTimeout(() => location.assign(url.href), 100);
     }
 
     nav.addEventListener('pointerdown', e => {

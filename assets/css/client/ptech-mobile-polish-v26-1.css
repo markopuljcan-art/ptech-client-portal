@@ -1,0 +1,233 @@
+/* PTech Client Portal V26.1 | Liquid Lens and Mobile Polish
+   Purpose: visual enhancement only. No Supabase / auth / push modifications.
+   Always loaded LAST among client stylesheets. */
+
+@media (max-width:1100px) {
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion {
+    /* Keep the approved floating geometry, but clarify the optical surface. */
+    isolation:isolate;
+    overflow:hidden !important;
+    touch-action:pan-y;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble,
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion.v131-dragging .v131-dock-bubble {
+    width:var(--p25-lens-width) !important;
+    height:var(--p25-lens-height) !important;
+    border-radius:22px !important;
+    box-sizing:border-box !important;
+    isolation:isolate;
+    overflow:hidden;
+    transform-origin:center center !important;
+    /* A refractive-looking lens: transparent layers + specular highlights.
+       The browser's backdrop-filter provides blur, not physical ray refraction. */
+    background:
+      radial-gradient(ellipse 85% 70% at var(--p261-glint-x,48%) -8%,rgba(255,255,255,.82) 0%,rgba(255,255,255,.13) 55%,transparent 85%),
+      radial-gradient(ellipse 88% 100% at 93% 100%,rgba(222,172,89,.20),transparent 80%),
+      linear-gradient(140deg,rgba(255,255,255,.38),rgba(250,241,221,.17) 57%,rgba(222,188,125,.19)) !important;
+    border:1px solid rgba(204,162,86,.43) !important;
+    box-shadow:
+      0 8px 18px rgba(77,54,29,.12),
+      0 0 16px rgba(218,175,94,.14),
+      inset 0 1px 0 rgba(255,255,255,.94),
+      inset 1px 0 0 rgba(255,255,255,.45),
+      inset 0 -2px 4px rgba(174,118,39,.08) !important;
+    -webkit-backdrop-filter:blur(20px) saturate(1.3) brightness(1.025) !important;
+    backdrop-filter:blur(20px) saturate(1.3) brightness(1.025) !important;
+    transition:background-color .2s ease,box-shadow .22s ease !important;
+    will-change:transform;
+  }
+  /* Curved upper reflection and a soft caustic strip along the lower edge. */
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble::before {
+    content:"" !important; display:block !important;
+    position:absolute;inset:1px 2px 43% 2px;
+    pointer-events:none;border-radius:21px 21px 19px 19px;
+    background:
+      radial-gradient(ellipse 92% 70% at var(--p261-glint-x,48%) 0%,rgba(255,255,255,.9),rgba(255,255,255,.13) 63%,transparent 100%),
+      linear-gradient(180deg,rgba(255,255,255,.22),transparent);
+    opacity:.66;
+    transform:translate3d(var(--p261-specular-shift,0px),var(--p26-shimmer-y,0px),0);
+    mix-blend-mode:screen;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble::after {
+    content:"" !important;display:block !important;
+    position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+    background:
+      radial-gradient(ellipse 52% 30% at 55% 107%,rgba(241,184,93,.32),transparent 98%),
+      linear-gradient(108deg,rgba(255,255,255,.58),transparent 27%,transparent 69%,rgba(252,220,155,.39));
+    box-shadow:inset 0 0 0 1px rgba(255,250,229,.27);
+    opacity:.73;
+    transform:translateX(var(--p261-specular-shift,0px));
+    transition:opacity .18s ease;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion:is(.v131-holding,.v131-dragging) .v131-dock-bubble {
+    box-shadow:
+      0 10px 20px rgba(78,53,22,.15),
+      0 0 21px rgba(220,165,74,.18),
+      inset 0 1px rgba(255,255,255,.96),
+      inset 0 -1px rgba(197,142,52,.1) !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion:is(.v131-holding,.v131-dragging) .v131-dock-bubble::after {
+    opacity:.88;
+  }
+  /* Navy theme: same lens geometry and motion; just tune light absorption. */
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+   .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble,
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+   .bottom-nav.v131-enabled.ptech-liquid-motion.v131-dragging .v131-dock-bubble {
+    width:var(--p25-lens-width) !important;
+    height:var(--p25-lens-height) !important;
+    border-radius:22px !important;
+    background:
+      radial-gradient(ellipse 85% 75% at var(--p261-glint-x,48%) -10%,rgba(218,235,255,.33),transparent 82%),
+      radial-gradient(ellipse 82% 98% at 100% 107%,rgba(223,176,93,.22),transparent 82%),
+      linear-gradient(150deg,rgba(132,158,190,.32),rgba(57,79,112,.19) 57%,rgba(188,146,83,.16)) !important;
+    border-color:rgba(226,182,110,.46) !important;
+    box-shadow:0 7px 19px rgba(5,13,29,.30),0 0 16px rgba(225,174,92,.11),inset 0 1px rgba(255,255,255,.31),inset 0 -1px rgba(220,174,95,.12) !important;
+    -webkit-backdrop-filter:blur(20px) saturate(1.28) !important;
+    backdrop-filter:blur(20px) saturate(1.28) !important;
+  }
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+   .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble::before {
+    display:block !important;content:"" !important;opacity:.34;
+  }
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+   .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble::after {
+    display:block !important;content:"" !important;opacity:.53;
+  }
+
+  /* The filled-icon rule from V25.12 continues to be the only selection rule.
+     Don't style .v131-preview icons: those are merely a drag preview. */
+  html body.ptech-v13 .bottom-nav.v131-enabled a.bottom-nav-item {min-height:60px !important;}
+  html body.ptech-v13 .bottom-nav.v131-enabled a.bottom-nav-item:focus-visible {
+    outline:2px solid #c49340 !important;outline-offset:1px !important;
+  }
+  /* Entire screen remains reachable above the raised dock + iPhone home bar. */
+  html body.ptech-v13 {
+    --p261-nav-clearance:calc(164px + env(safe-area-inset-bottom,0px));
+  }
+  html body.ptech-v13 .desktop-main {padding-bottom:var(--p261-nav-clearance) !important;}
+  html body.ptech-v13 :is(.dashboard-content,.messages-page,.approve-content) {
+    scroll-padding-bottom:var(--p261-nav-clearance);
+  }
+}
+
+@media (max-width:760px) {
+  /* Keep filters usable on narrower screens instead of squeezing each item. */
+  html body.portal-desktop :is(.projects-toolbar,.documents-toolbar,.task-filters) {
+    width:100%;max-width:100%;min-width:0;
+    gap:10px;
+  }
+  html body.portal-desktop .projects-toolbar {
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(150px,35%);
+    align-items:stretch;
+  }
+  html body.portal-desktop .documents-toolbar {
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+    align-items:stretch;
+  }
+  html body.portal-desktop .documents-search-wrap {grid-column:1 / -1;}
+  html body.portal-desktop .task-filters {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));}
+  html body.portal-desktop .task-filters label {min-width:0;}
+  html body.portal-desktop .task-filters button {grid-column:1 / -1;}
+  html body.portal-desktop :is(.projects-toolbar,.documents-toolbar,.task-filters)
+    :is(input,select,button,label) {min-width:0;max-width:100%;box-sizing:border-box;}
+  html body.portal-desktop :is(.projects-toolbar,.documents-toolbar,.task-filters)
+    :is(input,select,button) {min-height:44px;}
+  html body.portal-desktop :is(.projects-heading h1,.documents-heading h1,.task-intro h1) {
+    font-size:clamp(24px,5.5vw,34px);line-height:1.17;letter-spacing:-.025em;
+    overflow-wrap:break-word;
+  }
+  html body.portal-desktop :is(.project-card,.documents-panel,.profile-card,.task-card) {
+    min-width:0;max-width:100%;
+  }
+  html body.portal-desktop :is(.project-card,.task-card) :is(h2,h3,strong,p,small) {
+    overflow-wrap:break-word;
+  }
+  html body.portal-desktop :is(.task-card-actions,.project-card-footer,.documents-panel-header) {
+    min-width:0;gap:9px;
+  }
+  html body.portal-desktop :is(.upload-launch-button,.chat-send-button,.task-button,.bronze-button) {
+    min-height:44px;
+  }
+  html body.portal-desktop :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),select,textarea) {
+    font-size:16px !important;
+  }
+}
+
+@media (max-width:520px) {
+  html body.portal-desktop :is(.projects-toolbar,.documents-toolbar,.task-filters) {
+    display:grid;grid-template-columns:minmax(0,1fr);
+  }
+  html body.portal-desktop .documents-search-wrap,
+  html body.portal-desktop .task-filters button {grid-column:auto;}
+  html body.portal-desktop :is(.projects-search,.documents-search-wrap) {width:100%;min-width:0;}
+  html body.portal-desktop .projects-grid {grid-template-columns:minmax(0,1fr);}
+  html body.portal-desktop .documents-list {min-width:0;max-width:100%;}
+  html body.portal-desktop .task-list {min-width:0;max-width:100%;}
+  html body.portal-desktop :is(.project-card-footer,.task-card-actions) {flex-wrap:wrap;}
+}
+
+/* Refined press feel without hiding interactive controls behind effects. */
+@media (hover:hover) and (prefers-reduced-motion:no-preference) {
+  html body.portal-desktop :is(.portal-action,.upload-launch-button,.task-button,.bronze-button) {
+    transition:transform .16s ease,box-shadow .2s ease,background-color .2s ease;
+  }
+  html body.portal-desktop :is(.portal-action,.upload-launch-button,.task-button,.bronze-button):active {
+    transform:scale(.985);
+  }
+}
+
+/* Cross-document transitions are supported progressively. No SPA emulation. */
+@media (max-width:1100px) and (prefers-reduced-motion:no-preference) {
+  ::view-transition-old(ptech-mobile-dock) {animation:none !important;opacity:0 !important;}
+  ::view-transition-new(ptech-mobile-dock) {animation:none !important;opacity:1 !important;}
+  ::view-transition-old(ptech-page-content) {
+    animation:p261-page-exit 100ms ease-in both !important;
+  }
+  ::view-transition-new(ptech-page-content) {
+    animation:p261-page-enter 210ms cubic-bezier(.22,.8,.25,1) both !important;
+  }
+  @keyframes p261-page-exit {from{opacity:1} to{opacity:.88}}
+  @keyframes p261-page-enter {from{opacity:.82;transform:translateY(7px)} to{opacity:1;transform:translateY(0)}}
+}
+
+/* Explicit Light Mode override: older V25 theme selectors were more specific
+   than the shared lens rules above. Without this, Light stayed opaque gold. */
+@media (max-width:1100px) {
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble,
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion.v131-dragging .v131-dock-bubble,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled.ptech-liquid-motion.v131-dragging .v131-dock-bubble {
+    background:
+      radial-gradient(ellipse 85% 70% at var(--p261-glint-x,48%) -8%,rgba(255,255,255,.82),rgba(255,255,255,.13) 55%,transparent 85%),
+      radial-gradient(ellipse 88% 100% at 93% 100%,rgba(222,172,89,.20),transparent 80%),
+      linear-gradient(140deg,rgba(255,255,255,.38),rgba(250,241,221,.17) 57%,rgba(222,188,125,.19)) !important;
+    border:1px solid rgba(204,162,86,.43) !important;
+    box-shadow:0 8px 18px rgba(77,54,29,.12),0 0 16px rgba(218,175,94,.14),
+      inset 0 1px rgba(255,255,255,.94),inset 1px 0 rgba(255,255,255,.45),
+      inset 0 -2px 4px rgba(174,118,39,.08) !important;
+    -webkit-backdrop-filter:blur(20px) saturate(1.3) brightness(1.025) !important;
+    backdrop-filter:blur(20px) saturate(1.3) brightness(1.025) !important;
+  }
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble::before,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble::before {
+    content:"" !important;display:block !important;
+    background:radial-gradient(ellipse 92% 70% at var(--p261-glint-x,48%) 0%,rgba(255,255,255,.9),rgba(255,255,255,.13) 63%,transparent 100%),
+      linear-gradient(180deg,rgba(255,255,255,.22),transparent) !important;
+  }
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble::after,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble::after {
+    content:"" !important;display:block !important;
+    background:radial-gradient(ellipse 52% 30% at 55% 107%,rgba(241,184,93,.32),transparent 98%),
+      linear-gradient(108deg,rgba(255,255,255,.58),transparent 27%,transparent 69%,rgba(252,220,155,.39)) !important;
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble,
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble::before,
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble::after {
+    animation:none !important;transition:none !important;
+  }
+  ::view-transition-old(*),::view-transition-new(*) {animation-duration:0s !important;}
+}
