@@ -537,7 +537,7 @@ async function loadSupport() {
     console.error(error);
 
     root.innerHTML =
-      '<div class="chat-empty">Razgovor se trenutačno ne može učitati.</div>';
+      '<div class="chat-empty v27-chat-empty"><span class="v27-empty-symbol" aria-hidden="true">!</span><strong>Razgovor trenutačno nije dostupan</strong><p>Pokušajte osvježiti stranicu ili ponovno kasnije.</p></div>';
 
     return;
 
@@ -546,7 +546,7 @@ async function loadSupport() {
   if (!data?.length) {
 
     root.innerHTML =
-      '<div class="chat-empty">Još nema poruka. Napišite pitanje i pošaljite ga našem timu.</div>';
+      '<div class="chat-empty v27-chat-empty"><span class="v27-empty-symbol" aria-hidden="true">✉</span><strong>Kako vam možemo pomoći?</strong><p>Napišite poruku našem timu. Vaš razgovor bit će prikazan ovdje.</p></div>';
 
     return;
 
@@ -603,9 +603,10 @@ function switchChat(mode) {
 
   $("aiSuggestions").hidden = human;
 
+  const compactInput = window.matchMedia("(max-width: 650px)").matches;
   $("chatInput").placeholder = human
-    ? "Napiši poruku PTech timu..."
-    : "Pitaj PTech asistenta...";
+    ? (compactInput ? "Napiši poruku..." : "Napiši poruku PTech timu...")
+    : (compactInput ? "Pitaj asistenta..." : "Pitaj PTech asistenta...");
 
   $("chatTitle").textContent = human
     ? "PTech Digital tim"
@@ -618,6 +619,8 @@ function switchChat(mode) {
   $("chatFooterText").textContent = human
     ? "Poruke se šalju PTech Digital timu"
     : "PTech asistent • Informativni odgovori";
+
+  $("chatView").classList.toggle("v27-mode-ai", !human);
 
   setNotice("");
 
@@ -989,25 +992,9 @@ async function start() {
 
   setupFaq();
 
-  /* V16.14: nova poruka otvara postojeci razgovor, ne stvara lazne niti. */
-  $("focusNewMessage").addEventListener("click", () => openChat("human"));
-
-  /* Poveznice u animiranom centru pomoci. */
-  document.querySelectorAll("[data-policy-card]").forEach(button => {
-    button.addEventListener("click", () => {
-      const policy = $("helpPolicy");
-      policy.open = true;
-      const target = button.dataset.policyCard;
-      if (target === "how") {
-        const help = document.querySelector('[data-help="support"]');
-        help?.click();
-        $("helpAnswer").scrollIntoView({behavior:"smooth",block:"nearest"});
-      } else if (target === "rules") {
-        $("communicationRules").scrollIntoView({behavior:"smooth",block:"start"});
-      } else {
-        policy.scrollIntoView({behavior:"smooth",block:"start"});
-      }
-    });
+  /* V27: pomoć je kompaktna lista pitanja umjesto starog 'Saznaj više'. */
+  $("helpPolicy").addEventListener("toggle", () => {
+    $("closeChat").setAttribute("aria-expanded", String($("helpPolicy").open));
   });
 
   /* OTVORI / ZATVORI POMOC I PRAVILA */

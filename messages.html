@@ -26,7 +26,7 @@
 
 <link href="./assets/css/client/messages.css?v=16.14" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script defer src="./assets/js/client/messages.js?v=16.14"></script>
+<script defer src="./assets/js/client/messages.js?v=27.0"></script>
     
 <link rel="stylesheet" href="./assets/css/client/mobile.css?v=unified1">
 <script src="./assets/js/client/mobile.js?v=26.7" defer></script>
@@ -48,9 +48,10 @@
   <link rel="stylesheet" href="./assets/css/client/ptech-dark-dock-alignment-v26-5.css?v=26.5">
   <link rel="stylesheet" href="./assets/css/client/ptech-mobile-dock-centering-v26-6.css?v=26.6">
   <link rel="stylesheet" href="./assets/css/client/ptech-dock-precise-centering-v26-7.css?v=26.7">
+  <link rel="stylesheet" href="./assets/css/client/ptech-messages-v27.css?v=27.0">
 </head>
 
-<body class="portal-desktop ptech-client-v264">
+<body class="portal-desktop ptech-client-v264 ptech-messages-v27">
 <script>/* Apply saved theme before first paint to avoid a flash when opening another page. */
 (function(){try{var t=localStorage.getItem('theme')||localStorage.getItem('ptech-theme');if(t==='light'||t==='dark'){document.documentElement.dataset.theme=t;document.body.classList.toggle('light-mode',t==='light');}}catch(_){}})();</script>
 
@@ -151,9 +152,9 @@
 
         <!-- V16.14: razgovor na prvom mjestu -->
         <div class="page-heading v1614-page-heading">
-            <small>KOMUNIKACIJA I PODRŠKA</small>
-            <h1>Razgovor i podrška<span>.</span></h1>
-            <p>Izravno razgovaraj s PTech Digital timom, postavi pitanje i prati odgovor na jednom mjestu.</p>
+            <small>PTECH DIGITAL / PODRŠKA</small>
+            <h1>Poruke i podrška<span>.</span></h1>
+            <p>Razgovarajte s našim timom ili pronađite brzi odgovor uz AI asistenta.</p>
         </div>
 
         <!-- V16.13: RAZGOVOR ODMAH U GLAVNOJ KARTICI -->
@@ -162,68 +163,28 @@
     <section aria-label="PTech Digital razgovori"
              class="chat-workspace chat-workspace-inline" id="chatView">
 
-        <!-- ODABIR RAZGOVORA -->
-
-        <aside class="conversation-rail">
-
+        <!-- Dva jasna odabira, umjesto zasebne bočne trake -->
+        <div class="conversation-rail" aria-label="Odabir razgovora">
             <div class="rail-heading">
-                <div class="v1614-rail-topline">
-                    <h2>Razgovori</h2>
-                    <button class="v1614-new-message" id="focusNewMessage" type="button" title="Napiši novu poruku u postojećem razgovoru">+ Nova poruka</button>
-                </div>
-                <p>Odaberi razgovor za podršku ili pomoć asistenta.</p>
+                <strong>Odaberite razgovor</strong>
+                <p>Komunikacija na jednom mjestu</p>
             </div>
-
-            <small class="rail-subtitle">DOSTUPNI RAZGOVORI</small>
-
-            <div aria-label="Vrsta razgovora"
-                 class="conversation-select" role="group">
-
-                <button aria-pressed="true"
-                        class="conversation-option active"
-                        id="humanTab" type="button">
-
-                    <span class="conversation-symbol">◉</span>
-
-                    <span>
-                        <strong>Općenita podrška</strong>
-                        <small>Razgovor s PTech timom</small>
+            <div class="conversation-select" role="group" aria-label="Vrsta razgovora">
+                <button aria-pressed="true" class="conversation-option active" id="humanTab" type="button">
+                    <span class="conversation-symbol" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M4 5.5h16v11H9l-5 3z"/></svg>
                     </span>
-
+                    <span class="conversation-label"><strong>PTech tim</strong><small>Izravna podrška</small></span>
                     <span class="unread" hidden id="humanTabUnread">0</span>
-
                 </button>
-
-                <button aria-pressed="false"
-                        class="conversation-option"
-                        id="aiTab" type="button">
-
-                    <span class="conversation-symbol">✦</span>
-
-                    <span>
-                        <strong>AI asistent</strong>
-                        <small>Odgovori na česta pitanja</small>
+                <button aria-pressed="false" class="conversation-option" id="aiTab" type="button">
+                    <span class="conversation-symbol" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M12 2.5 14.2 9.8 21.5 12l-7.3 2.2L12 21.5l-2.2-7.3L2.5 12l7.3-2.2L12 2.5Z"/></svg>
                     </span>
-
+                    <span class="conversation-label"><strong>AI asistent</strong><small>Brzi odgovori</small></span>
                 </button>
-
             </div>
-
-            <div class="rail-bottom">
-
-                <span>✦</span>
-
-                <div>
-                    <strong>Privatnost razgovora</strong>
-                    <p>
-                        Poruke timu vezane su uz tvoj račun.
-                        Ne šaljite lozinke.
-                    </p>
-                </div>
-
-            </div>
-
-        </aside>
+        </div>
 
         <!-- DESNA STRANA -->
 
@@ -243,8 +204,11 @@
                 </div>
 
                 <button class="back-btn v1614-help-info" id="closeChat" type="button"
-                        aria-controls="helpPolicy" aria-label="Otvori pomoć i pravila"
-                        title="Pomoć i pravila">ⓘ</button>
+                        aria-controls="helpPolicy" aria-expanded="true" aria-label="Prikaži ili sakrij česta pitanja"
+                        title="Pomoć i česta pitanja">
+                    <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.8-2.5 2.1-2.5 4"/><path d="M12 17.5h.01"/></svg>
+                    <span>Pomoć</span>
+                </button>
 
             </header>
 
@@ -383,177 +347,53 @@
 
             </div>
 
-            <div class="chat-footer" id="chatFooterText">
-                Poruke se šalju PTech Digital timu
+            <div class="chat-footer">
+                <span id="chatFooterText">Poruke se šalju PTech Digital timu</span>
+                <span class="v27-privacy-note">Ne šaljite lozinke ili pristupne podatke.</span>
             </div>
 
         </section>
 
     </section>
 
-        <!-- V16.14: pomoć i pravila s originalnom animacijom -->
-        <section class="v1614-help-hero" aria-labelledby="v1614HelpTitle">
-            <div class="v1614-help-copy">
-                <small>PTECH DIGITAL</small>
-                <h2 id="v1614HelpTitle">Pomoć i pravila<span>.</span></h2>
-                <p>Brzi odgovori, korisne upute i pravila komunikacije za jasnu i učinkovitu podršku.</p>
-                <div class="v1614-help-links" aria-label="Izbornik pomoći">
-                    <button type="button" class="v1614-help-link" data-policy-card="how">
-                        <span class="v1614-help-link-icon" aria-hidden="true">▤</span>
-                        <strong>Kako koristiti razgovor?</strong>
-                        <small>Slanje poruka i praćenje odgovora.</small>
-                        <span class="v1614-arrow" aria-hidden="true">→</span>
-                    </button>
-                    <button type="button" class="v1614-help-link" data-policy-card="rules">
-                        <span class="v1614-help-link-icon" aria-hidden="true">♢</span>
-                        <strong>Pravila komunikacije</strong>
-                        <small>Sigurna i jasna komunikacija.</small>
-                        <span class="v1614-arrow" aria-hidden="true">→</span>
-                    </button>
-                    <button type="button" class="v1614-help-link" data-policy-card="faq">
-                        <span class="v1614-help-link-icon" aria-hidden="true">ⓘ</span>
-                        <strong>Često postavljena pitanja</strong>
-                        <small>Projekti, dokumenti i podrška.</small>
-                        <span class="v1614-arrow" aria-hidden="true">→</span>
-                    </button>
-                </div>
-            </div>
-            <div class="hero-graphic v1614-help-illustration" aria-hidden="true">
-                <div class="hero-art">
-                    <span class="hero-art-orbit"></span>
-                    <span class="hero-art-halo"></span>
-                    <span class="hero-bubble hero-bubble-back">
-                        <span class="hero-faux-line"></span>
-                        <span class="hero-faux-line hero-faux-line-short"></span>
-                    </span>
-                    <span class="hero-bubble hero-bubble-front">
-                        <svg viewBox="0 0 32 32" aria-hidden="true">
-                            <path d="M5 7h22v16H13l-6 5v-5H5z"/>
-                        </svg>
-                        <span class="hero-typing"><i></i><i></i><i></i></span>
-                    </span>
-                    <span class="hero-spark hero-spark-one"></span>
-                    <span class="hero-spark hero-spark-two"></span>
-                    <span class="hero-spark hero-spark-three"></span>
-                </div>
-            </div>
-        </section>
-
-        <details class="help-policy" id="helpPolicy">
+        <!-- Kompaktna pomoć bez dodatnog heroa i gumba "Saznaj više" -->
+        <details class="help-policy v27-help" id="helpPolicy" open>
             <summary class="help-policy-summary">
-                <span class="help-policy-copy">
-                    <small>SAZNAJ VIŠE</small>
-                    <strong>Detaljne upute i odgovori</strong>
-                    <span>Otvori najčešća pitanja i pravila komunikacije.</span>
+                <span class="v27-help-title-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.8-2.5 2.1-2.5 4"/><path d="M12 17.5h.01"/></svg>
                 </span>
-                <span class="help-policy-chevron" aria-hidden="true">⌄</span>
+                <span class="help-policy-copy">
+                    <strong>Pomoć i česta pitanja</strong>
+                    <span>Odaberite temu i pogledajte kratak odgovor.</span>
+                </span>
+                <span class="help-policy-chevron" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </span>
             </summary>
             <div class="help-policy-content">
-        <!-- FAQ NASLOV -->
-
-        <div class="section-title">
-
-            <div>
-                <small>CENTAR ZA POMOĆ</small>
-                <h2>Česta pitanja</h2>
-                <p>Kratki odgovori i korisne upute na jednom mjestu.</p>
-            </div>
-
-            <span>6 tema</span>
-
-        </div>
-
-        <section class="v1614-communication-rules" id="communicationRules" aria-label="Pravila komunikacije">
-            <h3>Pravila komunikacije</h3>
-            <p>Opiši o kojem je projektu riječ i što ti treba. Poruke PTech timu vezane su uz tvoj korisnički račun. Ne dijeli lozinke ni druge tajne pristupne podatke. Dodatne izmjene dogovaraju se prije izvedbe.</p>
-        </section>
-
-        <!-- FAQ KARTICE -->
-
-        <section aria-label="Najčešća pitanja" class="help-grid">
-
-            <button class="help-card" data-help="approve" type="button">
-                <span class="help-icon">✓</span>
-                <strong>Kako odobriti dizajn?</strong>
-                <p>Pogledaj dizajn i potvrdi konačnu verziju.</p>
-            </button>
-
-            <button class="help-card" data-help="revision" type="button">
-                <span class="help-icon">↔</span>
-                <strong>Kako zatražiti izmjenu?</strong>
-                <p>Pošalji komentar i opiši željenu promjenu.</p>
-            </button>
-
-            <button class="help-card" data-help="documents" type="button">
-                <span class="help-icon">▣</span>
-                <strong>Gdje su moji dokumenti?</strong>
-                <p>Pronađi ugovore, račune i projektne datoteke.</p>
-            </button>
-
-            <button class="help-card" data-help="status" type="button">
-                <span class="help-icon">▤</span>
-                <strong>Kako pratiti projekt?</strong>
-                <p>Provjeri trenutni status, napredak i rokove.</p>
-            </button>
-
-            <button class="help-card" data-help="billing" type="button">
-                <span class="help-icon">€</span>
-                <strong>Što se dodatno naplaćuje?</strong>
-                <p>Saznaj što nije uključeno u dogovoreni opseg.</p>
-            </button>
-
-            <button class="help-card" data-help="support" type="button">
-                <span class="help-icon">?</span>
-                <strong>Trebam pomoć</strong>
-                <p>Saznaj kako poslati poruku PTech Digital timu.</p>
-            </button>
-
-        </section>
-
-        <!-- DETALJAN ODGOVOR -->
-
-        <section aria-live="polite" class="answer-card" hidden id="helpAnswer">
-
-            <div class="answer-top">
-
-                <div>
-                    <small>DETALJAN ODGOVOR</small>
-                    <h3 id="helpAnswerTitle"></h3>
+                <section aria-label="Najčešća pitanja" class="help-grid">
+                    <button class="help-card" data-help="approve" type="button"><span class="help-icon" aria-hidden="true">✓</span><span class="v27-help-question"><strong>Kako odobriti dizajn?</strong><small>Pregled i potvrda dizajna</small></span><span class="v27-help-arrow" aria-hidden="true">→</span></button>
+                    <button class="help-card" data-help="revision" type="button"><span class="help-icon" aria-hidden="true">↔</span><span class="v27-help-question"><strong>Kako zatražiti izmjenu?</strong><small>Zahtjevi i dorade</small></span><span class="v27-help-arrow" aria-hidden="true">→</span></button>
+                    <button class="help-card" data-help="documents" type="button"><span class="help-icon" aria-hidden="true">▤</span><span class="v27-help-question"><strong>Gdje su moji dokumenti?</strong><small>Pregled i slanje datoteka</small></span><span class="v27-help-arrow" aria-hidden="true">→</span></button>
+                    <button class="help-card" data-help="status" type="button"><span class="help-icon" aria-hidden="true">▥</span><span class="v27-help-question"><strong>Kako pratiti projekt?</strong><small>Status, napredak i rokovi</small></span><span class="v27-help-arrow" aria-hidden="true">→</span></button>
+                    <button class="help-card" data-help="billing" type="button"><span class="help-icon" aria-hidden="true">€</span><span class="v27-help-question"><strong>Što se dodatno naplaćuje?</strong><small>Opseg i dodatni zahtjevi</small></span><span class="v27-help-arrow" aria-hidden="true">→</span></button>
+                    <button class="help-card" data-help="support" type="button"><span class="help-icon" aria-hidden="true">?</span><span class="v27-help-question"><strong>Kako kontaktirati tim?</strong><small>Komunikacija i odgovori</small></span><span class="v27-help-arrow" aria-hidden="true">→</span></button>
+                </section>
+                <section aria-live="polite" class="answer-card" hidden id="helpAnswer">
+                    <div class="answer-top"><div><small>ODGOVOR</small><h3 id="helpAnswerTitle"></h3></div><button aria-label="Zatvori odgovor" id="closeHelpAnswer" type="button">×</button></div>
+                    <p id="helpAnswerText"></p>
+                    <button class="outline-btn" id="askAiAboutThis" type="button">Pitaj AI asistenta više →</button>
+                </section>
+                <div class="v27-help-notes">
+                    <section class="v1614-communication-rules" id="communicationRules" aria-label="Pravila komunikacije">
+                        <strong>Sigurna komunikacija</strong>
+                        <p>Opišite projekt i svoj upit. Poruke timu povezane su s vašim računom. Ne šaljite lozinke i druge tajne pristupne podatke.</p>
+                    </section>
+                    <section class="billing-notice">
+                        <span aria-hidden="true">i</span>
+                        <div><strong>Dodatni zahtjevi</strong><p>Rad izvan dogovorenog opsega može se dodatno naplatiti. Opseg i cijenu potrebno je potvrditi prije izvedbe.</p></div>
+                    </section>
                 </div>
-
-                <button aria-label="Zatvori odgovor" id="closeHelpAnswer" type="button">
-                    ×
-                </button>
-
-            </div>
-
-            <p id="helpAnswerText"></p>
-
-            <button class="outline-btn" id="askAiAboutThis" type="button">
-                Pitaj AI asistenta više →
-            </button>
-
-        </section>
-
-        <!-- NAPLATA -->
-
-        <section class="billing-notice">
-
-            <span>!</span>
-
-            <div>
-                <strong>Napomena o dodatnim zahtjevima</strong>
-
-                <p>
-                    Zahtjevi za nove funkcionalnosti, dodatne izmjene
-                    ili rad izvan ugovorenog opsega mogu se dodatno
-                    naplatiti. Prije dodatnog rada dobit ćete potvrdu
-                    opsega i cijene.
-                </p>
-            </div>
-
-        </section>
-
             </div>
         </details>
 

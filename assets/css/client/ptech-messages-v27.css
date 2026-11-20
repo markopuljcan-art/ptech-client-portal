@@ -1,0 +1,501 @@
+/* PTech Digital Client Portal V27 – focused conversation UI.
+   Uses the existing Supabase/AI logic and keeps V26.7 dock untouched. */
+
+body.ptech-messages-v27 {
+  --v27-paper: #ffffff;
+  --v27-page-soft: #faf7f1;
+  --v27-inset: #f8f6f1;
+  --v27-tint: #fff6e7;
+  --v27-ink: #253046;
+  --v27-muted: #696c75;
+  --v27-border: #e9ddcd;
+  --v27-gold: #b77d19;
+  --v27-gold-strong: #936011;
+  --v27-gold-wash: #f8ebcf;
+  --v27-shadow: 0 12px 36px rgba(74, 53, 24, .085), 0 2px 7px rgba(74, 53, 24, .035);
+  --v27-my-bubble: #f7e6c5;
+  --v27-team-bubble: #f5f6f7;
+}
+html:not([data-theme="light"]) body.ptech-messages-v27:not(.light-mode) {
+  --v27-paper: #2b3b55;
+  --v27-page-soft: #202d42;
+  --v27-inset: #34455f;
+  --v27-tint: #34445f;
+  --v27-ink: #f8f7f4;
+  --v27-muted: #bac5d3;
+  --v27-border: #4a5870;
+  --v27-gold: #edbd82;
+  --v27-gold-strong: #f0c58f;
+  --v27-gold-wash: rgba(217, 166, 93, .12);
+  --v27-shadow: 0 18px 42px rgba(5, 12, 29, .23);
+  --v27-my-bubble: #67543e;
+  --v27-team-bubble: #3c4d66;
+}
+
+/* Hero is informative but no longer the visual focus. */
+body.ptech-messages-v27 .dashboard-content.messages-page {
+  max-width: 1280px;
+  padding-top: 26px;
+}
+body.ptech-messages-v27 .messages-page .v1614-page-heading { margin-bottom: 20px; }
+body.ptech-messages-v27 .messages-page .v1614-page-heading h1 {
+  color: var(--v27-ink);
+  font-size: clamp(30px, 3vw, 38px);
+  line-height: 1.15;
+  letter-spacing: -1.1px;
+  margin-top: 7px;
+}
+body.ptech-messages-v27 .messages-page .v1614-page-heading p {
+  max-width: 680px;
+  color: var(--v27-muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+body.ptech-messages-v27 .messages-page .v1614-page-heading small { color: var(--v27-gold-strong); }
+body.ptech-messages-v27 .messages-page .v1614-page-heading h1 span { color: var(--v27-gold); }
+
+/* One full-width workspace; choice row takes the place of the tall rail. */
+body.ptech-messages-v27 .messages-page .chat-workspace-inline.chat-workspace {
+  display: flex;
+  flex-direction: column;
+  grid-template-columns: none;
+  width: 100%;
+  height: clamp(530px, calc(100dvh - 235px), 760px);
+  min-height: 530px;
+  max-width: none;
+  margin: 0 0 18px;
+  overflow: hidden;
+  background: var(--v27-paper) !important;
+  border: 1px solid var(--v27-border) !important;
+  border-radius: 20px !important;
+  box-shadow: var(--v27-shadow) !important;
+}
+body.ptech-messages-v27 .messages-page .conversation-rail {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 87px;
+  padding: 13px 20px;
+  background: var(--v27-page-soft);
+  border: 0 !important;
+  border-bottom: 1px solid var(--v27-border) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+body.ptech-messages-v27 .messages-page .rail-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  flex: 1 1 auto;
+  gap: 4px;
+  min-width: 0;
+  margin: 0;
+}
+body.ptech-messages-v27 .messages-page .rail-heading strong {
+  font-size: 15px;
+  font-weight: 850;
+  color: var(--v27-ink);
+}
+body.ptech-messages-v27 .messages-page .rail-heading p {
+  display: block;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--v27-muted);
+}
+body.ptech-messages-v27 .messages-page .conversation-select {
+  display: grid;
+  flex: 0 1 460px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 9px;
+  max-width: 460px;
+  width: 100%;
+}
+body.ptech-messages-v27 .messages-page .conversation-option {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 61px;
+  gap: 10px;
+  padding: 9px 13px;
+  color: var(--v27-ink);
+  text-align: left;
+  background: var(--v27-paper) !important;
+  border: 1px solid var(--v27-border) !important;
+  border-radius: 13px !important;
+  box-shadow: none !important;
+  transition: background-color .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+body.ptech-messages-v27 .messages-page .conversation-option::before,
+body.ptech-messages-v27 .messages-page .conversation-option::after { display: none !important; }
+body.ptech-messages-v27 .messages-page .conversation-option:hover { transform: translateY(-1px); border-color: var(--v27-gold) !important; }
+body.ptech-messages-v27 .messages-page .conversation-option.active {
+  background: var(--v27-gold-wash) !important;
+  border-color: var(--v27-gold) !important;
+  box-shadow: 0 2px 12px rgba(161, 120, 56, .10) !important;
+}
+body.ptech-messages-v27 .messages-page .conversation-option .conversation-symbol {
+  display: grid;
+  place-items: center;
+  flex: 0 0 37px;
+  width: 37px;
+  height: 37px;
+  border: 1px solid var(--v27-border);
+  border-radius: 11px;
+  background: var(--v27-inset);
+  color: var(--v27-gold-strong);
+}
+body.ptech-messages-v27 .messages-page .conversation-option .conversation-symbol svg { width: 21px; height: 21px; }
+body.ptech-messages-v27 .messages-page .conversation-option > .conversation-label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+body.ptech-messages-v27 .messages-page .conversation-option strong { font-size: 13px; color: var(--v27-ink); font-weight: 800; line-height: 1.3; }
+body.ptech-messages-v27 .messages-page .conversation-option small { color: var(--v27-muted); font-size: 11px; line-height: 1.3; }
+body.ptech-messages-v27 .messages-page .conversation-option .unread { flex: 0 0 auto; }
+
+/* Chat conversation; no second card in the middle of the main card. */
+body.ptech-messages-v27 .messages-page .chat-panel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--v27-paper) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+body.ptech-messages-v27 .messages-page .chat-header {
+  min-height: 72px;
+  padding: 12px 22px;
+  gap: 11px;
+  background: var(--v27-paper) !important;
+  border-bottom: 1px solid var(--v27-border) !important;
+}
+body.ptech-messages-v27 .messages-page .chat-logo {
+  width: 42px; height: 42px; flex-basis: 42px;
+  border: 1px solid var(--v27-border);
+  background: var(--v27-tint);
+  border-radius: 13px;
+}
+body.ptech-messages-v27 .messages-page .chat-header-info strong { font-size: 15px; font-weight: 800; color: var(--v27-ink); }
+body.ptech-messages-v27 .messages-page .chat-header-info span { font-size: 12px; color: var(--v27-muted); }
+body.ptech-messages-v27 .messages-page .v1614-help-info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  flex: 0 0 auto;
+  width: auto;
+  height: 40px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border-radius: 11px !important;
+  background: var(--v27-inset) !important;
+  border: 1px solid var(--v27-border) !important;
+  color: var(--v27-ink) !important;
+  font-size: 12px;
+  font-weight: 750;
+}
+body.ptech-messages-v27 .messages-page .v1614-help-info svg { width: 18px; height: 18px; }
+body.ptech-messages-v27 .messages-page .v1614-help-info:hover { border-color: var(--v27-gold) !important; }
+body.ptech-messages-v27 .messages-page .chat-body {
+  flex: 1 1 auto;
+  gap: 14px;
+  min-height: 0;
+  padding: 24px clamp(17px,3vw,35px);
+  background: var(--v27-paper);
+  scroll-padding-bottom: 16px;
+}
+body.ptech-messages-v27 .messages-page .chat-empty.v27-chat-empty {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 9px;
+  width: min(100%, 430px);
+  padding: 20px 16px;
+  margin: auto;
+  border: 0;
+  background: transparent;
+  color: var(--v27-muted);
+  font-size: 13px;
+}
+body.ptech-messages-v27 .messages-page .v27-empty-symbol {
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  margin: 0 0 5px;
+  border-radius: 21px;
+  background: var(--v27-gold-wash);
+  border: 1px solid var(--v27-border);
+  color: var(--v27-gold-strong);
+  font-size: 28px;
+}
+body.ptech-messages-v27 .messages-page .v27-chat-empty strong { font-size: 18px; color: var(--v27-ink); font-weight: 800; }
+body.ptech-messages-v27 .messages-page .v27-chat-empty p { margin: 0; font-size: 13px; line-height: 1.65; color: var(--v27-muted); max-width: 325px; }
+body.ptech-messages-v27 .messages-page .message-bubble {
+  padding: 12px 16px;
+  color: var(--v27-ink);
+  background: var(--v27-team-bubble);
+  border: 1px solid var(--v27-border);
+  border-radius: 16px 16px 16px 5px;
+  font-size: 14px;
+  line-height: 1.55;
+}
+body.ptech-messages-v27 .messages-page .chat-message.user .message-bubble {
+  color: var(--v27-ink);
+  background: var(--v27-my-bubble);
+  border-color: var(--v27-border);
+  border-radius: 16px 16px 5px 16px;
+}
+body.ptech-messages-v27 .messages-page .message-content { max-width: min(79%,650px); }
+body.ptech-messages-v27 .messages-page .chat-welcome { padding: 8px 0 15px; }
+body.ptech-messages-v27 .messages-page .chat-welcome strong { font-size: 15px; color: var(--v27-ink); }
+body.ptech-messages-v27 .messages-page .chat-welcome p { font-size: 13px; color: var(--v27-muted); }
+body.ptech-messages-v27 .messages-page .message-time { color: var(--v27-muted); font-size: 10px; }
+body.ptech-messages-v27 .messages-page .suggestions { border-color: var(--v27-border); padding: 9px 18px; max-height: 95px; }
+body.ptech-messages-v27 .messages-page .suggestions button {
+  background: var(--v27-inset);
+  border-color: var(--v27-border);
+  color: var(--v27-ink);
+  font-size: 12px;
+  min-height: 34px;
+}
+body.ptech-messages-v27 .messages-page .chat-notice { color: var(--v27-ink); font-size: 12px; }
+
+/* Composer: aligned actions, spacious 16px text on iOS, gentle separation. */
+body.ptech-messages-v27 .messages-page .chat-compose {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  padding: 12px 17px 6px;
+  border-top: 1px solid var(--v27-border);
+  background: var(--v27-paper);
+}
+body.ptech-messages-v27 .messages-page .chat-compose textarea {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 46px;
+  min-height: 46px;
+  max-height: 115px;
+  padding: 12px 14px;
+  border: 1px solid var(--v27-border) !important;
+  border-radius: 13px !important;
+  background: var(--v27-inset) !important;
+  color: var(--v27-ink) !important;
+  font-size: 15px;
+  line-height: 1.45;
+}
+body.ptech-messages-v27 .messages-page .chat-compose textarea::placeholder { color: var(--v27-muted); }
+body.ptech-messages-v27 .messages-page .chat-compose textarea:focus { outline: 2px solid rgba(186,135,53,.35); border-color: var(--v27-gold) !important; }
+body.ptech-messages-v27 .messages-page .v1614-attach-link,
+body.ptech-messages-v27 .messages-page .chat-compose button#sendChatMessage {
+  display: grid;
+  place-items: center;
+  flex: 0 0 46px;
+  width: 46px;
+  height: 46px;
+  min-height: 46px;
+  margin: 0;
+  padding: 0 !important;
+  border-radius: 13px !important;
+}
+body.ptech-messages-v27 .messages-page .v1614-attach-link {
+  background: var(--v27-inset) !important;
+  color: var(--v27-gold-strong) !important;
+  border: 1px solid var(--v27-border) !important;
+}
+body.ptech-messages-v27 .messages-page .chat-compose button#sendChatMessage {
+  background: linear-gradient(135deg,#d6a045,#ad7512) !important;
+  border: 1px solid rgba(142,99,32,.32) !important;
+  box-shadow: 0 6px 16px rgba(157,104,28,.16) !important;
+  color: #fff !important;
+}
+body.ptech-messages-v27 .messages-page .chat-compose button#sendChatMessage svg { width: 21px; height: 21px; }
+body.ptech-messages-v27 .messages-page .chat-workspace.v27-mode-ai .v1614-attach-link { visibility: hidden; pointer-events: none; }
+body.ptech-messages-v27 .messages-page .chat-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 5px 16px;
+  padding: 5px 15px 13px;
+  background: var(--v27-paper);
+  color: var(--v27-muted);
+  font-size: 11px;
+  line-height: 1.4;
+}
+body.ptech-messages-v27 .messages-page .v27-privacy-note { opacity: .86; }
+
+/* Compact FAQ rows: all information reachable, no huge old help hero. */
+body.ptech-messages-v27 .messages-page .help-policy.v27-help {
+  margin: 0 0 12px;
+  background: var(--v27-paper);
+  border: 1px solid var(--v27-border) !important;
+  border-radius: 19px !important;
+  box-shadow: var(--v27-shadow) !important;
+  scroll-margin-top: 96px;
+}
+body.ptech-messages-v27 .messages-page .help-policy-summary {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 19px 24px;
+  background: var(--v27-paper) !important;
+  color: var(--v27-ink);
+}
+body.ptech-messages-v27 .messages-page .help-policy-summary:hover { background: var(--v27-page-soft) !important; }
+body.ptech-messages-v27 .messages-page .v27-help-title-icon,
+body.ptech-messages-v27 .messages-page .help-policy-chevron {
+  display: grid;
+  place-items: center;
+  flex: 0 0 41px;
+  width: 41px;
+  height: 41px;
+  background: var(--v27-gold-wash);
+  border: 1px solid var(--v27-border);
+  border-radius: 13px;
+  color: var(--v27-gold-strong);
+}
+body.ptech-messages-v27 .messages-page .v27-help-title-icon svg { width: 21px; height: 21px; }
+body.ptech-messages-v27 .messages-page .help-policy-chevron {
+  flex: 0 0 35px;
+  width: 35px;
+  height: 35px;
+  background: transparent;
+  border-radius: 11px;
+}
+body.ptech-messages-v27 .messages-page .help-policy-chevron svg { width: 18px; height: 18px; }
+body.ptech-messages-v27 .messages-page .help-policy-copy { min-width: 0; flex: 1; gap: 4px; }
+body.ptech-messages-v27 .messages-page .help-policy-copy strong { color: var(--v27-ink); font-size: 17px; letter-spacing: -.25px; }
+body.ptech-messages-v27 .messages-page .help-policy-copy > span { color: var(--v27-muted); font-size: 12px; }
+body.ptech-messages-v27 .messages-page .help-policy-content { padding: 0 22px 21px; }
+body.ptech-messages-v27 .messages-page .help-grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 9px;
+  margin: 0 0 14px;
+  padding: 0;
+}
+body.ptech-messages-v27 .messages-page .help-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 39px minmax(0,1fr) 20px;
+  align-items: center;
+  gap: 11px;
+  min-height: 69px;
+  padding: 11px 13px;
+  background: var(--v27-page-soft) !important;
+  border: 1px solid var(--v27-border) !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  transform: none;
+  color: var(--v27-ink) !important;
+  text-align: left;
+}
+body.ptech-messages-v27 .messages-page .help-card::before,
+body.ptech-messages-v27 .messages-page .help-card::after { display: none !important; }
+body.ptech-messages-v27 .messages-page .help-card:hover,
+body.ptech-messages-v27 .messages-page .help-card:focus-visible { border-color: var(--v27-gold) !important; transform: none; box-shadow: none !important; }
+body.ptech-messages-v27 .messages-page .help-card > .help-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 39px;
+  height: 39px;
+  margin: 0;
+  padding: 0;
+  border-radius: 12px;
+  background: var(--v27-gold-wash);
+  border: 0;
+  color: var(--v27-gold-strong);
+  font-size: 17px;
+  transform: none !important;
+}
+body.ptech-messages-v27 .messages-page .v27-help-question { display: flex; flex-direction: column; min-width: 0; gap: 4px; }
+body.ptech-messages-v27 .messages-page .v27-help-question strong { color: var(--v27-ink); font-size: 13px; font-weight: 800; line-height: 1.3; }
+body.ptech-messages-v27 .messages-page .v27-help-question small { color: var(--v27-muted); font-size: 11px; line-height: 1.3; }
+body.ptech-messages-v27 .messages-page .v27-help-arrow { justify-self: end; font-size: 18px; color: var(--v27-gold-strong); }
+body.ptech-messages-v27 .messages-page .answer-card { border: 1px solid var(--v27-border) !important; background: var(--v27-page-soft) !important; color: var(--v27-ink); box-shadow: none !important; margin: 16px 0; }
+body.ptech-messages-v27 .messages-page .answer-card p { white-space: pre-line; color: var(--v27-ink); font-size: 13px; line-height: 1.6; }
+body.ptech-messages-v27 .messages-page .answer-card h3 { color: var(--v27-ink); }
+body.ptech-messages-v27 .messages-page .v27-help-notes { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+body.ptech-messages-v27 .messages-page .v1614-communication-rules,
+body.ptech-messages-v27 .messages-page .billing-notice {
+  min-width: 0;
+  margin: 0;
+  padding: 13px 16px;
+  border: 1px solid var(--v27-border);
+  border-radius: 12px;
+  background: var(--v27-inset);
+  box-shadow: none;
+  color: var(--v27-ink);
+}
+body.ptech-messages-v27 .messages-page .v1614-communication-rules strong,
+body.ptech-messages-v27 .messages-page .billing-notice strong { color: var(--v27-ink); font-size: 12px; font-weight: 800; }
+body.ptech-messages-v27 .messages-page .v1614-communication-rules p,
+body.ptech-messages-v27 .messages-page .billing-notice p { margin: 5px 0 0; color: var(--v27-muted); font-size: 11px; line-height: 1.55; }
+body.ptech-messages-v27 .messages-page .billing-notice > span { display:grid;place-items:center;width:28px;height:28px;min-width:28px;margin-right:9px;border-radius:9px;background:var(--v27-gold-wash);color:var(--v27-gold-strong);font-weight:800; }
+body.ptech-messages-v27 .messages-page footer { padding: 14px 3px 16px; color: var(--v27-muted); font-size: 11px; }
+
+@media(max-width:850px) {
+  body.ptech-messages-v27 .messages-page .conversation-rail { gap: 12px; padding: 11px 14px; }
+  body.ptech-messages-v27 .messages-page .rail-heading { display: none; }
+  body.ptech-messages-v27 .messages-page .conversation-select { flex: 1 1 auto; max-width: none; }
+}
+@media(max-width:650px) {
+  body.ptech-messages-v27 .dashboard-content.messages-page { padding: 20px 12px 30px; }
+  body.ptech-messages-v27 .messages-page .v1614-page-heading h1 { font-size: 28px; }
+  body.ptech-messages-v27 .messages-page .v1614-page-heading p { font-size: 13px; }
+  html body.ptech-v13.ptech-messages-v27 .messages-page .chat-workspace-inline.chat-workspace:not([hidden]),
+  body.ptech-messages-v27 .messages-page .chat-workspace-inline.chat-workspace:not([hidden]) {
+    width: 100%;
+    height: clamp(345px, calc(var(--v13-viewport-height,100dvh) - 350px), 660px) !important;
+    min-height: 345px !important;
+    margin-bottom: 16px;
+    border-radius: 17px !important;
+  }
+  body.ptech-messages-v27 .messages-page .conversation-rail { min-height: 72px; padding: 9px; }
+  body.ptech-messages-v27 .messages-page .conversation-option { min-height: 56px; padding: 8px 10px; gap: 8px; }
+  body.ptech-messages-v27 .messages-page .conversation-option .conversation-symbol { flex-basis: 33px; width: 33px; height: 33px; }
+  body.ptech-messages-v27 .messages-page .conversation-option strong { font-size: 13px; }
+  body.ptech-messages-v27 .messages-page .conversation-option small { font-size: 10px; }
+  body.ptech-messages-v27 .messages-page .chat-header { min-height: 62px; padding: 9px 12px; }
+  body.ptech-messages-v27 .messages-page .chat-header-info strong { font-size: 13px; }
+  body.ptech-messages-v27 .messages-page .chat-header-info span { font-size: 11px; }
+  body.ptech-messages-v27 .messages-page .v1614-help-info { width: 40px; height: 40px; min-height: 40px; padding: 0 !important; }
+  body.ptech-messages-v27 .messages-page .v1614-help-info span { display: none; }
+  body.ptech-messages-v27 .messages-page .chat-body { padding: 16px 12px; }
+  body.ptech-messages-v27 .messages-page .chat-empty.v27-chat-empty { padding: 14px 6px; }
+  body.ptech-messages-v27 .messages-page .v27-chat-empty strong { font-size: 16px; }
+  body.ptech-messages-v27 .messages-page .message-content { max-width: 87%; }
+  body.ptech-messages-v27 .messages-page .message-bubble { font-size: 14px; }
+  body.ptech-messages-v27 .messages-page .chat-compose { gap: 8px; padding: 9px 9px 4px; }
+  body.ptech-messages-v27 .messages-page .chat-compose textarea { font-size: 16px !important; }
+  body.ptech-messages-v27 .messages-page .chat-footer { gap: 2px 10px; padding: 4px 10px 9px; font-size: 10px; }
+  body.ptech-messages-v27 .messages-page .help-policy-summary { padding: 14px 13px; gap: 10px; }
+  body.ptech-messages-v27 .messages-page .help-policy-copy strong { font-size: 15px; }
+  body.ptech-messages-v27 .messages-page .help-policy-copy > span { font-size: 11px; }
+  body.ptech-messages-v27 .messages-page .v27-help-title-icon { flex-basis: 35px; width:35px;height:35px; }
+  body.ptech-messages-v27 .messages-page .help-policy-content { padding: 0 11px 14px; }
+  body.ptech-messages-v27 .messages-page .help-grid { grid-template-columns: minmax(0,1fr); gap: 7px; }
+  body.ptech-messages-v27 .messages-page .help-card { min-height: 63px; }
+  body.ptech-messages-v27 .messages-page .v27-help-notes { grid-template-columns: minmax(0,1fr); }
+}
+@media(max-width:650px) {
+  html body.ptech-v13.v13-keyboard-open.ptech-messages-v27 .messages-page .chat-workspace-inline.chat-workspace:not([hidden]) {
+    height: max(315px, calc(var(--v13-viewport-height,100dvh) - 175px)) !important;
+    min-height: 315px !important;
+  }
+}
+@media(prefers-reduced-motion:reduce) {
+  body.ptech-messages-v27 .messages-page .conversation-option { transition: none; }
+}
