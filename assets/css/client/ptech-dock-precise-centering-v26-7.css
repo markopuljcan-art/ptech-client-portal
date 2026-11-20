@@ -1,0 +1,33 @@
+/* PTech Client Portal V26.7 – precise optical dock centering.
+ * One responsive bubble geometry for Light AND Dark.
+ * Left/right extents are symmetrical around the selected icon, including
+ * first and last tabs. Keep the already-approved light style and optics.
+ * Horizontal offsets must be ZERO: mobile.js owns the x-coordinate.
+ */
+@media (max-width: 1100px) {
+  html body.ptech-v13 nav.bottom-nav.v131-enabled {
+    /* Approved Light Mode width, now identical in Dark Mode. */
+    --p25-lens-width: clamp(62px, calc(20% + 1px), 118px) !important;
+    --p25-lens-height: 60px !important;
+  }
+  html[data-theme] body.ptech-v13 nav.bottom-nav.v131-enabled.ptech-liquid-motion.ptech-optical-dock .v131-dock-bubble,
+  html[data-theme] body.ptech-v13 nav.bottom-nav.v131-enabled.ptech-liquid-motion.ptech-optical-dock.v131-dragging .v131-dock-bubble,
+  html body.ptech-v13 nav.bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble,
+  html body.ptech-v13 nav.bottom-nav.v131-enabled.ptech-liquid-motion.v131-dragging .v131-dock-bubble {
+    box-sizing: border-box !important;
+    width: var(--p25-lens-width) !important;
+    height: var(--p25-lens-height) !important;
+    /* Previous -2px left shift caused asymmetry on edge tabs. */
+    left: 0 !important;
+    /* Keep the small upward optical adjustment requested for mobile. */
+    top: -2px !important;
+    border-radius: 24px !important;
+    transform-origin: center center !important;
+  }
+  /* Dark Mode only: preserve the thin champagne rim from V26.6. */
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode)
+    nav.bottom-nav.v131-enabled.ptech-optical-dock .v131-dock-bubble {
+    border-width: 0.85px !important;
+    border-color: rgba(226,194,134,.28) !important;
+  }
+}

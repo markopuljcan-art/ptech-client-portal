@@ -200,12 +200,15 @@
       }
     }
     function setGlassTarget(x, y, instant = false, following = false) {
-      // The lens never leaves the dock, even with elastic scale.
-      const margin = 9;
-      const maxX = Math.max(margin, nav.clientWidth - bubbleWidth() - margin);
-      const maxY = Math.max(margin, nav.clientHeight - bubbleHeight() - margin);
-      spring.targetX = clamp(x, margin, maxX);
-      spring.targetY = clamp(y, margin, maxY);
+      // V26.7: horizontal placement must use the exact icon center, even on
+      // the first/last tabs. The old forced 9px inset shifted edge bubbles.
+      // Only clamp to the ACTUAL inner nav edges, not an arbitrary padding.
+      const minX = 0;
+      const maxX = Math.max(0, nav.clientWidth - bubbleWidth());
+      const marginY = 9;
+      const maxY = Math.max(marginY, nav.clientHeight - bubbleHeight() - marginY);
+      spring.targetX = clamp(x, minX, maxX);
+      spring.targetY = clamp(y, marginY, maxY);
       spring.following = following;
       if (!Number.isFinite(spring.x) || instant || !motionAllowed()) {
         if (spring.frame) cancelAnimationFrame(spring.frame);
@@ -232,8 +235,10 @@
       const tab = links[index].getBoundingClientRect();
       const nr = nav.getBoundingClientRect();
       return {
-        x: r.left + r.width / 2 - nr.left - bubbleWidth() / 2,
-        // Center within the full nav row (icon + label), not just the icon.
+        // The bubble is absolutely positioned from the nav padding edge.
+        // Subtract the border origin too; otherwise it drifts by ~1px.
+        x: r.left + r.width / 2 - nr.left - nav.clientLeft - bubbleWidth() / 2,
+        // Center vertically within the entire tab (icon plus label).
         y: tab.top + tab.height / 2 - nr.top - bubbleHeight() / 2
       };
     }
@@ -353,7 +358,7 @@
       const p = bubblePoint(idx);
       const minX = bubblePoint(0).x;
       const maxX = bubblePoint(links.length - 1).x;
-      showAt(Math.max(minX, Math.min(maxX, e.clientX - r.left - bubbleWidth() / 2)), p.y, false, true);
+      showAt(Math.max(minX, Math.min(maxX, e.clientX - r.left - nav.clientLeft - bubbleWidth() / 2)), p.y, false, true);
       preview(idx);
       if (e.cancelable) e.preventDefault();
     }, {passive:false});
@@ -396,7 +401,7 @@
       const r = nav.getBoundingClientRect();
       const p = bubblePoint(idx);
       const left = bubblePoint(0).x, right = bubblePoint(links.length - 1).x;
-      showAt(Math.max(left,Math.min(right,x-r.left-bubbleWidth()/2)),p.y,false,true);
+      showAt(Math.max(left,Math.min(right,x-r.left-nav.clientLeft-bubbleWidth()/2)),p.y,false,true);
       preview(idx);
     }
     nav.addEventListener('touchstart', e => {
