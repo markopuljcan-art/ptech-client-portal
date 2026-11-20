@@ -241,9 +241,20 @@
       if (navigating || index === active) { snap(active); return; }
       const url = targetPath(links[index]);
       if (!url) { snap(active); return; }
+      // V25.11: immediately switch the actual selected icon BEFORE the 225ms
+      // cross-page transition. This is a committed click/release, not a swipe
+      // preview, so the other icons stay outlined while the destination fills.
+      const dir = index > active ? 'next' : 'prev';
+      links.forEach((link, i) => {
+        const selected = i === index;
+        link.classList.toggle('active', selected);
+        if (selected) link.setAttribute('aria-current', 'page');
+        else link.removeAttribute('aria-current');
+      });
+      preview(index);
+      active = index;
       navigating = true;
       nav.classList.add('v131-switching');
-      const dir = index > active ? 'next' : 'prev';
       try { sessionStorage.setItem('ptech-v131-slide', dir); } catch { /* optional */ }
       // Allow the sliding selection to start, then navigate normally. Modern
       // browsers animate same-origin page transitions through CSS @view-transition.

@@ -420,3 +420,73 @@ html body.ptech-home.portal-unified #portalHome [data-widget-id="actions"][data-
     fill: #27344b !important;
   }
 }
+
+
+/* V25.11 - first-paint active icon and immediate cross-page selection.
+   The solid SVG is already in the HTML, so it never waits for DOMContentLoaded
+   or the deferred icon-mounting script. The Liquid Glass geometry is untouched. */
+@media (max-width: 1100px) {
+  html body nav.bottom-nav:not(.v131-enabled) .v13-tab-visual {
+    position:relative !important;
+    isolation:isolate;
+    display:grid;
+    place-items:center;
+    flex:0 0 auto;
+    width:39px;
+    height:36px;
+  }
+  html body nav.bottom-nav:not(.v131-enabled) .v13-tab-visual > svg.ptech-filled-icon {
+    display:none !important;
+    pointer-events:none !important;
+  }
+  html body nav.bottom-nav:not(.v131-enabled) a.bottom-nav-item[aria-current="page"]
+    .v13-tab-visual > svg.ptech-filled-icon {
+    display:block !important;
+    position:absolute !important;
+    top:50%;left:50%;transform:translate(-50%,-50%) !important;
+    width:23px !important;height:23px !important;
+    z-index:3;
+    color:#111111 !important;
+    fill:#111111 !important;
+    stroke:none !important;
+  }
+  html body nav.bottom-nav:not(.v131-enabled) a.bottom-nav-item[aria-current="page"]
+    .v13-tab-visual > svg.ptech-filled-icon > :is(path,rect,circle,polygon,ellipse) {
+    fill:#111111 !important;
+    stroke:none !important;
+  }
+  html body nav.bottom-nav:not(.v131-enabled) a.bottom-nav-item[aria-current="page"]
+    .v13-tab-visual > svg.ptech-filled-icon > .ptech-cutout {
+    fill:#ffffff !important;
+  }
+  html body nav.bottom-nav:not(.v131-enabled) a.bottom-nav-item[aria-current="page"]
+    .v13-tab-visual > svg:not(.ptech-filled-icon),
+  html body nav.bottom-nav:not(.v131-enabled) a.bottom-nav-item[aria-current="page"]
+    .v13-tab-visual > .bottom-nav-icon-wrap > svg {
+    visibility:hidden !important;
+  }
+  html:not([data-theme="light"]) body:not(.light-mode)
+    nav.bottom-nav:not(.v131-enabled) a.bottom-nav-item[aria-current="page"]
+    .v13-tab-visual > svg.ptech-filled-icon,
+  html:not([data-theme="light"]) body:not(.light-mode)
+    nav.bottom-nav:not(.v131-enabled) a.bottom-nav-item[aria-current="page"]
+    .v13-tab-visual > svg.ptech-filled-icon > :is(path,rect,circle,polygon,ellipse) {
+    color:#ffffff !important;
+    fill:#ffffff !important;
+  }
+  html:not([data-theme="light"]) body:not(.light-mode)
+    nav.bottom-nav:not(.v131-enabled) a.bottom-nav-item[aria-current="page"]
+    .v13-tab-visual > svg.ptech-filled-icon > .ptech-cutout {
+    fill:#27344b !important;
+  }
+}
+@media (max-width: 1100px) and (prefers-reduced-motion: no-preference) {
+  /* No cross-fade of the previous page's outline icon over the new solid one. */
+  ::view-transition-old(ptech-mobile-dock) {
+    animation:none !important;
+    opacity:0 !important;
+  }
+  ::view-transition-new(ptech-mobile-dock) {
+    animation:none !important;
+  }
+}
