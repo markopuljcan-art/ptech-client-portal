@@ -1,0 +1,422 @@
+/*
+ * PTech Digital Client Portal V26.4 | One design language across client pages
+ * Deliberately excludes the bottom navigation, admin, auth pages and chat bubbles.
+ * Added last, after page-specific CSS. No HTML or Supabase logic changes.
+ */
+body.ptech-client-v264 {
+  --p264-page: #172338;
+  --p264-surface: #2b3b56;
+  --p264-surface-strong: #344663;
+  --p264-inset: #364760;
+  --p264-border: rgba(220,185,142,.24);
+  --p264-border-strong: rgba(231,189,133,.41);
+  --p264-ink: #f8f8fb;
+  --p264-muted: #c6cfdd;
+  --p264-accent: #e5b47c;
+  --p264-accent-deep: #cc965b;
+  --p264-primary: linear-gradient(125deg,#d5a073 0%,#a96d43 100%);
+  --p264-primary-ink: #fff;
+  --p264-shadow: 0 12px 32px rgba(5,12,27,.16),0 3px 8px rgba(5,12,27,.07);
+  --p264-focus: #ebbb84;
+  accent-color:var(--p264-accent);
+}
+html[data-theme="light"] body.ptech-client-v264,
+body.ptech-client-v264.light-mode {
+  --p264-page: #f9f6f1;
+  --p264-surface: #fff;
+  --p264-surface-strong: #fffdf9;
+  --p264-inset: #f8f5f0;
+  --p264-border: #eadfce;
+  --p264-border-strong: #d8bc8f;
+  --p264-ink: #202a3c;
+  --p264-muted: #60636b;
+  --p264-accent: #ad741b;
+  --p264-accent-deep: #8b5811;
+  --p264-primary: linear-gradient(120deg,#d5a34c 0%,#b77a16 85%);
+  --p264-primary-ink: #fff;
+  --p264-shadow: 0 12px 30px rgba(79,59,29,.075),0 3px 9px rgba(79,59,29,.035);
+  --p264-focus: #a67528;
+  accent-color:var(--p264-accent);
+}
+
+/* Stable typography tokens: section headings, eyebrow labels and descriptions. */
+body.ptech-client-v264:not(.ptech-home) .dashboard-content :is(
+  .projects-page-header h1,.documents-page-header h1,.task-intro h1,
+  .page-intro h1,.profile-page-header h1,.page-heading h1
+),
+body.ptech-client-v264 .approve-content .page-intro h1 {
+  color:var(--p264-ink)!important;
+  font-size:clamp(25px,2.35vw,34px)!important;
+  font-weight:850!important;
+  line-height:1.17!important;
+  letter-spacing:-.045em!important;
+}
+body.ptech-client-v264:not(.ptech-home) .dashboard-content :is(
+  .projects-page-header p,.documents-page-header p,.task-intro p,.page-intro p,
+  .profile-page-header p,.page-heading p
+),
+body.ptech-client-v264 .approve-content .page-intro p {
+  color:var(--p264-muted)!important;
+  font-size:14px!important;
+  line-height:1.6!important;
+}
+body.ptech-client-v264:not(.ptech-home) .dashboard-content :is(
+  .projects-eyebrow,.documents-eyebrow,.task-eyebrow,.page-eyebrow,.profile-eyebrow
+),
+body.ptech-client-v264 .approve-content .eyebrow {
+  color:var(--p264-accent)!important;
+  font-size:11px!important;
+  font-weight:850!important;
+  letter-spacing:.13em!important;
+}
+
+/* Surfaces share the same shape, visual weight and spacing. */
+body.ptech-client-v264:not(.ptech-home) .dashboard-content :is(
+  .project-card,.project-detail-hero,.deadline-card,.package-info-card,
+  .activities-detail-card,.activities-card,.project-actions-card,
+  .projects-total-box,.projects-toolbar,.documents-toolbar,.documents-panel,
+  .document-card,.task-card,.task-summary,.profile-hero,.profile-section,
+  .stat-card,.chat-workspace,.chat-panel,.conversation-rail,.v1614-help-hero,
+  .answer-card,.help-card
+),
+body.ptech-client-v264 .approve-content :is(
+  .approve-project-card,.design-section,.side-panel,.action-panel,.comment-panel
+) {
+  border-color:var(--p264-border)!important;
+  border-radius:19px!important;
+  box-shadow:var(--p264-shadow)!important;
+}
+
+/* Scope backgrounds by semantic group: do not paint the chat message bubbles. */
+body.ptech-client-v264:not(.ptech-home) .dashboard-content :is(
+  .project-card,.project-detail-hero,.deadline-card,.package-info-card,
+  .activities-detail-card,.activities-card,.projects-total-box,
+  .projects-toolbar,.documents-toolbar,.documents-panel,.task-card,
+  .task-summary,.profile-hero,.profile-section,.stat-card,.v1614-help-hero,
+  .answer-card,.help-card
+),
+body.ptech-client-v264 .approve-content :is(.approve-project-card,.design-section,.side-panel,.action-panel) {
+  background:var(--p264-surface)!important;
+  color:var(--p264-ink)!important;
+}
+body.ptech-client-v264:not(.ptech-home) .dashboard-content :is(
+  .project-info,.project-progress,.project-action-button,.document-card,
+  .push-device-card,.conversation-option,.task-pill,.task-notice
+),
+body.ptech-client-v264 .approve-content :is(.project-meta,.info-line) {
+  border-color:var(--p264-border)!important;
+}
+body.ptech-client-v264:not(.ptech-home) .dashboard-content :is(
+  .project-info,.project-progress,.push-device-card
+) {
+  background:var(--p264-inset)!important;
+}
+body.ptech-client-v264:not(.ptech-home) .dashboard-content :is(
+  .project-title-block h2,.project-title-area h2,.documents-panel-heading h2,
+  .project-info strong,.project-progress-top strong,.project-open,
+  .task-card h2,.profile-main-info h2,.profile-section h2,
+  .section-header h2,.project-card strong,.task-summary strong
+) { color:var(--p264-ink)!important; }
+body.ptech-client-v264:not(.ptech-home) .dashboard-content :is(
+  .project-title-block p,.project-title-area p,.project-info span,.project-update,
+  .project-progress-top,.documents-panel-heading p,.task-card p,
+  .profile-main-info p,.stat-card small
+) {color:var(--p264-muted)!important;}
+
+/* Primary buttons: equal 46px target, radius, gradient, weight and hover. */
+body.ptech-client-v264 .dashboard-content :is(
+  .upload-launch-button,.upload-submit-button,.task-button-primary,
+  .bronze-button,.primary-btn,.v1614-new-message
+),
+body.ptech-client-v264 .approve-content :is(
+  .approval-button.primary,.dialog-confirm
+),
+body.ptech-client-v264 .upload-overlay :is(.upload-submit-button) {
+  box-sizing:border-box;
+  min-height:46px;
+  padding:10px 16px;
+  border:1px solid rgba(167,115,45,.30)!important;
+  border-radius:12px!important;
+  background:var(--p264-primary)!important;
+  color:var(--p264-primary-ink)!important;
+  font-size:13px!important;
+  line-height:1.35;
+  font-weight:800!important;
+  box-shadow:0 7px 17px rgba(117,79,29,.13)!important;
+  text-decoration:none;
+  transition:filter .18s ease,transform .18s ease,box-shadow .18s ease;
+}
+/* Secondary and outlined buttons: one common visual language. */
+body.ptech-client-v264 .dashboard-content :is(
+  .task-button-secondary,.outline-button,.outline-btn,.back-btn
+),
+body.ptech-client-v264 .approve-content :is(
+  .approval-button.secondary,.dialog-cancel,.tool-button,.back-link
+),
+body.ptech-client-v264 .upload-overlay :is(
+  .upload-cancel-button,.upload-close-button
+) {
+  box-sizing:border-box;
+  min-height:42px;
+  padding:9px 14px;
+  border:1px solid var(--p264-border-strong)!important;
+  border-radius:12px!important;
+  background:var(--p264-surface-strong)!important;
+  color:var(--p264-ink)!important;
+  font-size:13px;
+  font-weight:750;
+  text-decoration:none;
+  transition:filter .18s ease,transform .18s ease,border-color .18s ease;
+}
+body.ptech-client-v264 :is(.dashboard-content,.approve-content,.upload-overlay)
+  :is(.upload-launch-button,.upload-submit-button,.task-button,.bronze-button,.outline-button,
+      .primary-btn,.outline-btn,.v1614-new-message,.approval-button,.dialog-confirm,
+      .dialog-cancel,.project-action-button):not(:disabled):hover {
+  transform:translateY(-1px);
+  filter:brightness(1.055);
+}
+body.ptech-client-v264 :is(.dashboard-content,.approve-content,.upload-overlay)
+  :is(button,a):not(:disabled):active {
+  transform:translateY(0) scale(.985);
+}
+body.ptech-client-v264 :is(.dashboard-content,.approve-content,.upload-overlay)
+  :is(button,input,select,textarea,a):focus-visible {
+  outline:2px solid var(--p264-focus)!important;
+  outline-offset:3px!important;
+}
+body.ptech-client-v264 :is(.dashboard-content,.approve-content,.upload-overlay)
+  :is(button,input,select,textarea):disabled {cursor:not-allowed;opacity:.58;}
+
+/* Common form controls in content areas; icons and layout remain page-specific. */
+body.ptech-client-v264:not(.ptech-home) .dashboard-content :is(
+  .projects-search input,.projects-toolbar select,
+  .documents-search-wrap input,.documents-toolbar select,
+  .task-filters select,.chat-compose textarea,.chat-compose input,
+  .notification-settings select,.notification-settings input
+),
+body.ptech-client-v264 .approve-content :is(textarea,select,input:not([type="checkbox"])),
+body.ptech-client-v264 .upload-overlay :is(textarea,select,input:not([type="file"]):not([type="checkbox"])) {
+  border:1px solid var(--p264-border)!important;
+  border-radius:12px!important;
+  background:var(--p264-surface-strong)!important;
+  color:var(--p264-ink)!important;
+  font-size:14px;
+  box-shadow:none;
+}
+body.ptech-client-v264:not(.ptech-home) .dashboard-content :is(
+  .projects-search input,.projects-toolbar select,.documents-search-wrap input,.documents-toolbar select,
+  .task-filters select
+) {min-height:48px;}
+body.ptech-client-v264:not(.ptech-home) .dashboard-content :is(input,select,textarea)::placeholder,
+body.ptech-client-v264 .approve-content :is(input,textarea)::placeholder {
+  color:var(--p264-muted);opacity:.88;
+}
+body.ptech-client-v264:not(.ptech-home) .dashboard-content :is(
+  .projects-search input,.projects-toolbar select,.documents-search-wrap input,.documents-toolbar select,
+  .task-filters select,.chat-compose textarea
+):focus {
+  border-color:var(--p264-accent)!important;
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--p264-accent) 18%,transparent)!important;
+}
+
+/* Header: same label hierarchy, divider and theme switch placement on every page. */
+body.ptech-client-v264 .dashboard-header .header-actions {align-items:center!important;}
+body.ptech-client-v264 .dashboard-header .header-page-title strong {
+  color:var(--p264-ink)!important;
+  font-size:16px!important;
+  font-weight:800!important;
+}
+body.ptech-client-v264 .dashboard-header .header-eyebrow {
+  color:var(--p264-accent)!important;
+  font-weight:800!important;
+}
+body.ptech-client-v264 .dashboard-header .theme-switch {align-self:center!important;}
+
+/* Compact mobile sizing while keeping legible labels. */
+@media(max-width:720px){
+  body.ptech-client-v264:not(.ptech-home) .dashboard-content :is(
+    .projects-page-header h1,.documents-page-header h1,.task-intro h1,
+    .page-intro h1,.profile-page-header h1,.page-heading h1
+  ), body.ptech-client-v264 .approve-content .page-intro h1 {font-size:27px!important;}
+  body.ptech-client-v264:not(.ptech-home) .dashboard-content :is(
+    .projects-page-header p,.documents-page-header p,.task-intro p,.page-intro p,
+    .profile-page-header p,.page-heading p
+  ) {font-size:13px!important;}
+  body.ptech-client-v264:not(.ptech-home) .dashboard-content :is(.projects-toolbar,.documents-toolbar) {
+    padding:12px!important;
+    gap:10px!important;
+  }
+  body.ptech-client-v264 .dashboard-content :is(
+    .upload-launch-button,.task-button,.bronze-button,.outline-button,.primary-btn,.v1614-new-message
+  ) {min-height:44px;}
+  body.ptech-client-v264:not(.ptech-home) .dashboard-content :is(.project-card,.task-card,.profile-section,.documents-panel) {
+    border-radius:18px!important;
+  }
+  body.ptech-client-v264:not(.ptech-home) .dashboard-content :is(.projects-search input,.projects-toolbar select,
+    .documents-search-wrap input,.documents-toolbar select,.task-filters select,.chat-compose textarea,.chat-compose input),
+  body.ptech-client-v264 .approve-content :is(input:not([type="checkbox"]),textarea,select),
+  body.ptech-client-v264 .upload-overlay :is(input:not([type="file"]):not([type="checkbox"]),textarea,select) {
+    font-size:16px!important; /* avoids Safari automatic zoom */
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  body.ptech-client-v264 :is(.dashboard-content,.approve-content,.upload-overlay) :is(button,a) {
+    transition:none!important;
+  }
+}
+
+/* Document actions and the messages send control use the same primary/secondary hierarchy. */
+body.ptech-client-v264 .dashboard-content .document-open-button,
+body.ptech-client-v264 .messages-page .chat-compose button:not(:disabled) {
+  background:var(--p264-primary)!important;
+  color:var(--p264-primary-ink)!important;
+  border:1px solid rgba(167,115,45,.30)!important;
+  border-radius:12px!important;
+  font-weight:800;
+  box-shadow:0 7px 17px rgba(117,79,29,.13)!important;
+}
+body.ptech-client-v264 .dashboard-content :is(
+  .document-download-button,.project-back,.project-action-button
+) {
+  color:var(--p264-ink)!important;
+  background:var(--p264-surface-strong)!important;
+  border:1px solid var(--p264-border)!important;
+  border-radius:12px!important;
+  text-decoration:none;
+}
+body.ptech-client-v264 .dashboard-content .document-download-button {
+  min-height:38px;padding:8px 11px;font-size:12px;font-weight:750;
+}
+body.ptech-client-v264 .dashboard-content .project-back {
+  display:inline-flex;align-items:center;justify-content:center;
+  min-height:42px;padding:9px 13px;font-size:13px;font-weight:750;
+}
+body.ptech-client-v264 .dashboard-content .project-action-button {
+  min-height:68px;
+  box-shadow:none!important;
+}
+body.ptech-client-v264 .dashboard-content .project-action-button:hover {
+  border-color:var(--p264-border-strong)!important;
+  box-shadow:var(--p264-shadow)!important;
+}
+
+/* Gentle accent icons, matching Početna in both themes. */
+body.ptech-client-v264:not(.ptech-home) .dashboard-content :is(
+  .project-icon,.documents-panel-icon,.stat-icon,.section-icon,.project-action-icon
+),
+body.ptech-client-v264 .approve-content :is(.project-icon,.panel-icon),
+body.ptech-client-v264 .upload-overlay .upload-dropzone-icon {
+  border:1px solid var(--p264-border-strong)!important;
+  border-radius:13px!important;
+  background:color-mix(in srgb,var(--p264-accent) 15%,var(--p264-surface))!important;
+  color:var(--p264-accent)!important;
+}
+body.ptech-client-v264:not(.ptech-home) .dashboard-content :is(
+  .projects-total-box strong,.documents-count,.stat-card strong
+) {font-variant-numeric:tabular-nums;}
+body.ptech-client-v264:not(.ptech-home) .dashboard-content :is(
+  .documents-panel-heading span,.projects-total-box span,.task-summary span,
+  .project-info span,.project-progress-top,.project-update
+) {font-size:max(11px, .68rem)!important;line-height:1.45;}
+
+/* Hover and selected state should not depend on page-specific old copper colors. */
+body.ptech-client-v264:not(.ptech-home) .dashboard-content :is(
+  .project-card,.stat-card,.help-card,.conversation-option
+):hover {
+  border-color:var(--p264-border-strong)!important;
+}
+body.ptech-client-v264:not(.ptech-home) .dashboard-content .v1614-help-link {
+  border-radius:13px!important;
+  border-color:var(--p264-border)!important;
+  background:var(--p264-surface-strong)!important;
+  color:var(--p264-ink)!important;
+}
+body.ptech-client-v264:not(.ptech-home) .dashboard-content .v1614-help-link small {
+  color:var(--p264-muted)!important;
+}
+
+/* Upload confirmation controls and form borders share tokens; keep the dialog layout. */
+body.ptech-client-v264 .upload-overlay :is(
+  .upload-dropzone,.upload-info-panel,.upload-screen-content
+) {border-color:var(--p264-border)!important;}
+body.ptech-client-v264 .upload-overlay .upload-dropzone {
+  border-radius:16px!important;
+}
+body.ptech-client-v264 .approve-content .tool-open {
+  color:var(--p264-accent)!important;
+  font-size:13px!important;
+  font-weight:750;
+}
+body.ptech-client-v264 .approve-content .dialog-actions :is(.dialog-cancel,.dialog-confirm){min-height:44px;}
+
+@media(max-width:720px){
+  body.ptech-client-v264:not(.ptech-home) .dashboard-content :is(
+    .document-open-button,.document-download-button,.project-back
+  ) {min-height:44px;}
+}
+
+/* Legacy light-mode overrides used a stronger specificity than the shared button rule.
+   This final light-only rule ensures every primary CTA is the SAME gold, not copper. */
+html[data-theme="light"] body.ptech-client-v264 .dashboard-content :is(
+  .upload-launch-button,.upload-submit-button,.task-button-primary,
+  .bronze-button,.primary-btn,.v1614-new-message,.document-open-button
+),
+html[data-theme="light"] body.ptech-client-v264 .approve-content :is(.approval-button.primary,.dialog-confirm),
+html[data-theme="light"] body.ptech-client-v264 .upload-overlay .upload-submit-button,
+body.ptech-client-v264.light-mode .dashboard-content :is(
+  .upload-launch-button,.upload-submit-button,.task-button-primary,
+  .bronze-button,.primary-btn,.v1614-new-message,.document-open-button
+),
+body.ptech-client-v264.light-mode .approve-content :is(.approval-button.primary,.dialog-confirm),
+body.ptech-client-v264.light-mode .upload-overlay .upload-submit-button {
+  background:var(--p264-primary)!important;
+  color:var(--p264-primary-ink)!important;
+  border-color:rgba(167,115,45,.30)!important;
+  border-radius:12px!important;
+  font-weight:800!important;
+  box-shadow:0 7px 17px rgba(117,79,29,.13)!important;
+}
+
+/* Profile password modal and design confirmation dialog belong to the same system. */
+body.ptech-client-v264 .modal-backdrop .modal-dialog,
+body.ptech-client-v264 .approval-dialog {
+  border:1px solid var(--p264-border)!important;
+  border-radius:20px!important;
+  background:var(--p264-surface)!important;
+  color:var(--p264-ink)!important;
+  box-shadow:0 24px 68px rgba(7,14,28,.22)!important;
+}
+body.ptech-client-v264 .modal-backdrop .modal-actions .bronze-button {
+  min-height:44px;
+  border-radius:12px!important;
+  border:1px solid rgba(167,115,45,.3)!important;
+  color:var(--p264-primary-ink)!important;
+  background:var(--p264-primary)!important;
+  box-shadow:0 7px 17px rgba(117,79,29,.13)!important;
+  font-weight:800;
+}
+body.ptech-client-v264 .modal-backdrop .modal-actions .outline-button {
+  min-height:44px;
+  border:1px solid var(--p264-border-strong)!important;
+  border-radius:12px!important;
+  background:var(--p264-surface-strong)!important;
+  color:var(--p264-ink)!important;
+  font-weight:750;
+}
+body.ptech-client-v264 .modal-backdrop :is(input[type="password"],input[type="text"]) {
+  min-height:46px;
+  border:1px solid var(--p264-border)!important;
+  border-radius:12px!important;
+  background:var(--p264-surface-strong)!important;
+  color:var(--p264-ink)!important;
+}
+body.ptech-client-v264 .modal-backdrop :is(input,button):focus-visible,
+body.ptech-client-v264 .approval-dialog button:focus-visible {
+  outline:2px solid var(--p264-focus)!important;
+  outline-offset:3px!important;
+}
+@media(max-width:720px){
+ body.ptech-client-v264 .modal-backdrop :is(input[type="password"],input[type="text"]) {
+  font-size:16px!important;
+ }
+}
