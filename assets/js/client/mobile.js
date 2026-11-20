@@ -128,11 +128,19 @@
       links.forEach((link,i) => link.classList.toggle('ptech-nav-selected', i === index));
     }
     selectVisual(active);
+    const documentIndex = active; // The page really loaded; distinct from an optimistic tap.
     let hovered = active;
     let pointer = null;
     let drag = false;
     let suppressUntil = 0;
     let navigating = false;
+    // V26.3: latest intent wins. While someone taps quickly we keep the dock
+    // fully interactive and launch only ONE cross-document navigation.
+    // Full page reloads cannot themselves remain interactive, so we coalesce
+    // rapid input BEFORE handing control to the browser.
+    const NAV_IDLE_MS = 190;
+    let pendingIndex = -1;
+    let pendingTimer = 0;
     // Stable layout size; getBoundingClientRect() grows when the glass deforms.
     const bubbleWidth = () => bubble.offsetWidth || 62;
     const bubbleHeight = () => bubble.offsetHeight || 59;
@@ -251,31 +259,65 @@
       });
       return best;
     }
-    function navigate(index) {
-      if (navigating || index === active) { selectVisual(active); snap(active); return; }
-      const url = targetPath(links[index]);
-      if (!url) { selectVisual(active); snap(active); return; }
-      selectVisual(index); // Commit immediately; do not await the page load.
-      // V25.11: immediately switch the actual selected icon BEFORE the 225ms
-      // cross-page transition. This is a committed click/release, not a swipe
-      // preview, so the other icons stay outlined while the destination fills.
-      const dir = index > active ? 'next' : 'prev';
+    function setSelectedTab(index) {
+      selectVisual(index);
       links.forEach((link, i) => {
         const selected = i === index;
         link.classList.toggle('active', selected);
         if (selected) link.setAttribute('aria-current', 'page');
         else link.removeAttribute('aria-current');
       });
-      preview(index);
       active = index;
+      snap(index);
+    }
+
+    function cancelQueuedNavigation() {
+      if (pendingTimer) clearTimeout(pendingTimer);
+      pendingTimer = 0;
+      pendingIndex = -1;
+      nav.classList.remove('v131-switching', 'p263-pending');
+    }
+
+    function commitQueuedNavigation() {
+      pendingTimer = 0;
+      const index = pendingIndex;
+      if (index < 0 || navigating || index === documentIndex) {
+        cancelQueuedNavigation();
+        return;
+      }
+      const url = targetPath(links[index]);
+      if (!url) {
+        cancelQueuedNavigation();
+        setSelectedTab(documentIndex);
+        return;
+      }
+      pendingIndex = -1;
       navigating = true;
-      nav.classList.add('v131-switching');
-      try { sessionStorage.setItem('ptech-v131-slide', dir); } catch { /* optional */ }
-      // Allow the sliding selection to start, then navigate normally. Modern
-      // browsers animate same-origin page transitions through CSS @view-transition.
-      // Never slide/fade the entire old page before navigation (caused a flash).
-      if (reduceMotion.matches) { location.assign(url.href); return; }
-      window.setTimeout(() => location.assign(url.href), 100);
+      nav.classList.remove('p263-pending', 'v131-holding', 'v131-dragging');
+      nav.classList.add('v131-switching', 'p263-committing');
+      // Save the direction once, for the already existing page transition.
+      try { sessionStorage.setItem('ptech-v131-slide', index > documentIndex ? 'next' : 'prev'); } catch (_) {}
+      // No extra animation timeout here: the browser receives the final URL
+      // immediately after the brief burst of taps settles.
+      location.assign(url.href);
+    }
+
+    function navigate(index) {
+      if (navigating || index < 0 || index >= links.length) return;
+      if (!targetPath(links[index])) return;
+      // Optimistic feedback is instant, even if a previous destination was queued.
+      setSelectedTab(index);
+      // Pressing the original page cancels an in-flight rapid-selection burst.
+      if (index === documentIndex) {
+        cancelQueuedNavigation();
+        return;
+      }
+      pendingIndex = index;
+      nav.classList.add('p263-pending', 'v131-switching');
+      if (pendingTimer) clearTimeout(pendingTimer);
+      // Repeated taps only update the pending destination. Do not start a full
+      // document load until the user's finger has stopped switching tabs.
+      pendingTimer = window.setTimeout(commitQueuedNavigation, NAV_IDLE_MS);
     }
 
     nav.addEventListener('pointerdown', e => {
@@ -284,6 +326,9 @@
       if (!link || !nav.contains(link)) return;
       // Preserve ordinary link semantics for modified clicks / accessible keyboard use.
       if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+      // A NEW physical press must not be blocked by the previous swipe's
+      // synthetic-click suppression window.
+      suppressUntil = 0;
       pointer = { id: e.pointerId, startX: e.clientX, startY: e.clientY, element: link };
       drag = false;
       nav.classList.add('v131-holding');
@@ -358,6 +403,7 @@
       if (!mobile.matches || navigating || e.touches.length !== 1) return;
       const link = e.target.closest('a.bottom-nav-item');
       if (!link || !nav.contains(link)) return;
+      suppressUntil = 0;
       const t = e.touches[0];
       touch = {id:t.identifier, ...pointFromTouch(t), dragging:false};
       nav.classList.add('v131-holding');
@@ -405,10 +451,15 @@
       snap(active);
     }, {passive:true});
     nav.addEventListener('click', e => {
-      if (!mobile.matches || navigating) return;
+      if (!mobile.matches) return;
       const link = e.target.closest('a.bottom-nav-item');
       if (!link || !nav.contains(link)) return;
-      if (performance.now() < suppressUntil) {
+      // While an actual document navigation has started, never let a second
+      // native click escape and create a competing navigation.
+      if (navigating) { e.preventDefault(); e.stopImmediatePropagation(); return; }
+      if (e.detail !== 0 && performance.now() < suppressUntil) {
+        // Only ignore the synthetic click generated at the END of a drag.
+        // Keyboard clicks and the next independent pointer/touch press work.
         e.preventDefault(); e.stopImmediatePropagation(); return;
       }
       if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
@@ -437,6 +488,7 @@
     };
     window.addEventListener('resize', updateLayout, {passive:true});
     window.addEventListener('pageshow', () => {
+      cancelQueuedNavigation();
       // Correct a restored BFCache page whose previous click had changed the
       // old document's aria-current before the browser navigated away.
       const file = decodeURIComponent(location.pathname.split('/').pop() || '');
@@ -452,10 +504,14 @@
         });
       }
       navigating = false;
-      nav.classList.remove('v131-switching', 'v131-dragging', 'v131-holding');
+      nav.classList.remove('v131-switching', 'v131-dragging', 'v131-holding', 'p263-pending', 'p263-committing');
       document.body.classList.remove('v131-exiting');
       selectVisual(active);
       updateLayout();
+    });
+    window.addEventListener('pagehide', () => {
+      if (pendingTimer) clearTimeout(pendingTimer);
+      pendingTimer = 0;
     });
     if ('ResizeObserver' in window) new ResizeObserver(updateLayout).observe(nav);
     updateLayout();

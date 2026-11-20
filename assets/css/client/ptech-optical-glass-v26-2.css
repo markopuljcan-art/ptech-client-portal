@@ -178,3 +178,61 @@
   }
   html body.ptech-v13 .bottom-nav.v131-enabled.ptech-optical-dock .p262-refractive-lens {backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
 }
+
+/* V26.3 — Keep the five-tab dock steady across rapid navigation bursts.
+   The appearance, size and golden optical lens remain exactly as V26.2.
+   View Transitions are progressive: browsers without cross-document support
+   continue normal navigation instead of running an intrusive fake loader. */
+@media (max-width:1100px) {
+  body nav.bottom-nav {
+    view-transition-name:ptech-mobile-dock;
+  }
+  body .desktop-main {
+    view-transition-name:ptech-page-content;
+  }
+  body.ptech-v13 nav.bottom-nav.v131-enabled .v131-dock-bubble {
+    will-change:transform;
+  }
+  /* Stop overlapping native navigation only AFTER the final URL is committed;
+     during rapid taps the links must stay fully interactive. */
+  body.ptech-v13 nav.bottom-nav.p263-committing {
+    pointer-events:none;
+  }
+}
+@media (max-width:1100px) and (prefers-reduced-motion:no-preference) {
+  /* No flash, scaling or double-dissolve of the bottom bar during a document
+     transition. The old and new docks have identical geometry and selection. */
+  ::view-transition-group(ptech-mobile-dock) {
+    animation-duration:0s !important;
+    animation-delay:0s !important;
+  }
+  ::view-transition-old(ptech-mobile-dock),
+  ::view-transition-new(ptech-mobile-dock) {
+    animation:none !important;
+    opacity:1 !important;
+    mix-blend-mode:normal !important;
+  }
+  /* Transition only the main content; the bottom dock remains anchored. */
+  ::view-transition-old(ptech-page-content) {
+    animation:p263-content-out 125ms ease-in both !important;
+  }
+  ::view-transition-new(ptech-page-content) {
+    animation:p263-content-in 180ms cubic-bezier(.2,.8,.2,1) both !important;
+  }
+  @keyframes p263-content-out {
+    from {opacity:1; transform:translateY(0)}
+    to {opacity:.92; transform:translateY(-3px)}
+  }
+  @keyframes p263-content-in {
+    from {opacity:.87;transform:translateY(5px)}
+    to {opacity:1; transform:translateY(0)}
+  }
+}
+@media (prefers-reduced-motion:reduce) {
+  ::view-transition-group(ptech-mobile-dock),
+  ::view-transition-old(ptech-mobile-dock),
+  ::view-transition-new(ptech-mobile-dock) {
+    animation:none!important;
+    transition:none!important;
+  }
+}
