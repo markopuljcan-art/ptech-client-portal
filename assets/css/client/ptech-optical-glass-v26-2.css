@@ -1,0 +1,180 @@
+/* PTech Digital Client Portal V26.2 – video-based UX and optical glass.
+ * Overrides older V24/V25/V26.1 layers without changing application logic.
+ * Optical backdrop refraction: Chromium; enhanced material: Safari/WebKit.
+ */
+
+@media(max-width:1100px){
+  /* Keep the already-approved white floating dock and 5 equal action targets. */
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-optical-dock {
+    isolation:isolate !important;
+    overflow:hidden !important;
+    -webkit-tap-highlight-color:transparent;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-optical-dock .v131-dock-bubble,
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-optical-dock.v131-dragging .v131-dock-bubble,
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled.ptech-optical-dock .v131-dock-bubble,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled.ptech-optical-dock .v131-dock-bubble {
+    width:var(--p25-lens-width) !important;
+    height:var(--p25-lens-height) !important;
+    border-radius:23px !important;
+    overflow:hidden !important;
+    background:linear-gradient(120deg,rgba(255,255,255,.12),rgba(247,236,210,.13) 58%,rgba(223,172,81,.16)) !important;
+    border:1px solid rgba(211,168,92,.55) !important;
+    box-shadow:
+      0 7px 18px rgba(76,54,23,.12),
+      0 0 15px rgba(199,147,59,.12),
+      inset 0 1px 1px rgba(255,255,255,.98),
+      inset 0 -1.5px 2px rgba(169,117,34,.18),
+      inset 1px 0 2px rgba(255,255,255,.72) !important;
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+    transition:box-shadow 190ms ease,border-color 190ms ease !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-optical-dock .v131-dock-bubble::before,
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-optical-dock .v131-dock-bubble::after {
+    content:none !important;display:none !important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-optical-dock .v131-dock-bubble > :is(.p262-refractive-lens,.p262-caustic-rim,.p262-specular-shine) {
+    position:absolute;inset:0;display:block;pointer-events:none;
+    border-radius:inherit;box-sizing:border-box;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-optical-dock .p262-refractive-lens {
+    z-index:0;
+    inset:1px;
+    background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(251,231,189,.10) 77%,rgba(255,255,255,.07));
+    -webkit-backdrop-filter:blur(4px) saturate(1.30) brightness(1.04);
+    backdrop-filter:blur(4px) saturate(1.30) brightness(1.04);
+  }
+  /* Actual edge bending of the LIVE backdrop. Only enabled by JS on Chromium,
+     never set this SVG backdrop-filter unconditionally: it fails on Safari. */
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-optical-dock.p262-native-refraction .p262-refractive-lens {
+    -webkit-backdrop-filter:url('#p262-optical-filter');
+    backdrop-filter:url('#p262-optical-filter');
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-optical-dock .p262-caustic-rim {
+    z-index:1;
+    border:1px solid rgba(255,250,229,.40);
+    background:
+      radial-gradient(ellipse 55% 38% at 45% -10%,rgba(255,255,255,.92),transparent 87%),
+      radial-gradient(ellipse 58% 44% at 93% 104%,rgba(237,174,68,.25),transparent 85%),
+      radial-gradient(ellipse 20% 85% at -7% 52%,rgba(255,255,255,.56),transparent 95%);
+    box-shadow:
+      inset 0 2px 1px rgba(255,255,255,.60),
+      inset 0 -2px 3px rgba(194,137,42,.13),
+      inset 2px 0 3px rgba(255,255,255,.30),
+      inset -2px 0 4px rgba(175,133,65,.13);
+    -webkit-mask:radial-gradient(closest-side,transparent 74%,black 100%);
+    mask:radial-gradient(closest-side,transparent 74%,black 100%);
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-optical-dock .p262-specular-shine {
+    z-index:2;
+    inset:1px 2px 45% 2px;
+    border-radius:22px 22px 50% 50%;
+    background:radial-gradient(ellipse 55% 70% at var(--p262-light-x,48%) var(--p262-light-y,0%),rgba(255,255,255,.72),rgba(255,255,255,.17) 57%,transparent 95%);
+    opacity:.72;
+    mix-blend-mode:screen;
+    transition:opacity 220ms ease;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-optical-dock:is(.v131-dragging,.v131-holding) .p262-specular-shine {opacity:1;}
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-optical-dock:is(.v131-dragging,.v131-holding) .v131-dock-bubble {
+    box-shadow:
+      0 10px 23px rgba(90,58,19,.17),0 0 20px rgba(215,162,74,.18),
+      inset 0 1px 0 rgba(255,255,255,.96),inset 0 -2px 3px rgba(181,124,42,.15) !important;
+  }
+  /* The actual bubble size NEVER changes when theme changes. */
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav.v131-enabled.ptech-optical-dock .v131-dock-bubble,
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav.v131-enabled.ptech-optical-dock.v131-dragging .v131-dock-bubble {
+    width:var(--p25-lens-width) !important;
+    height:var(--p25-lens-height) !important;
+    border-radius:23px !important;
+    background:linear-gradient(123deg,rgba(184,200,231,.10),rgba(64,86,127,.09) 56%,rgba(209,161,79,.14)) !important;
+    border-color:rgba(222,180,105,.49) !important;
+    box-shadow:0 9px 22px rgba(3,10,22,.29),0 0 15px rgba(216,171,91,.10),inset 0 1px 1px rgba(240,246,255,.46),inset 0 -2px 2px rgba(180,132,50,.17) !important;
+  }
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav.v131-enabled.ptech-optical-dock .p262-refractive-lens {
+    background:linear-gradient(145deg,rgba(192,211,246,.08),rgba(51,70,109,.09) 72%,rgba(224,177,97,.09));
+    -webkit-backdrop-filter:blur(4px) saturate(1.24) brightness(.96);
+    backdrop-filter:blur(4px) saturate(1.24) brightness(.96);
+  }
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav.v131-enabled.ptech-optical-dock.p262-native-refraction .p262-refractive-lens {
+    -webkit-backdrop-filter:url('#p262-optical-filter');
+    backdrop-filter:url('#p262-optical-filter');
+  }
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav.v131-enabled.ptech-optical-dock .p262-caustic-rim {
+    border-color:rgba(220,199,156,.27);
+    background:radial-gradient(ellipse 70% 50% at 40% -12%,rgba(233,242,255,.46),transparent 88%),radial-gradient(ellipse 45% 45% at 100% 110%,rgba(233,178,81,.25),transparent 100%);
+  }
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav.v131-enabled.ptech-optical-dock .p262-specular-shine {opacity:.48;}
+
+  /* Bottom card/buttons never remain trapped behind the fixed navigation. */
+  html body.ptech-v13 .desktop-main,
+  html body.ptech-v13 .dashboard-content {
+    scroll-padding-bottom:calc(155px + env(safe-area-inset-bottom,0px));
+  }
+  html body.ptech-v13 .desktop-main {
+    padding-bottom:calc(166px + env(safe-area-inset-bottom,0px)) !important;
+  }
+  .p262-filter-host {position:absolute;width:0;height:0;overflow:hidden;pointer-events:none;}
+}
+
+/* Changes directly based on the supplied video, not generic scaling. */
+@media(max-width:639px) {
+  /* Page hierarchy: counts and currency/progress stay on ONE line. */
+  html body.portal-desktop :is(.portal-count-area strong,.task-summary strong,.projects-total-box strong,
+    .portal-metric strong,.project-progress-value,.project-progress-percent) {
+    white-space:nowrap !important;
+    font-variant-numeric:tabular-nums !important;
+    font-size:clamp(19px,6.6vw,30px);
+    letter-spacing:-.035em;
+  }
+  /* Narrowest screens turn side-by-side secondary data into stacked rows. */
+  html body.portal-desktop :is(.project-card-top,.task-card-head) {
+    min-width:0;flex-wrap:wrap;
+  }
+  html body.portal-desktop :is(.projects-toolbar,.documents-toolbar,.task-filters) {
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) !important;
+    min-width:0 !important;
+    align-items:stretch;
+  }
+  html body.portal-desktop :is(.projects-toolbar,.documents-toolbar,.task-filters) > * {
+    min-width:0 !important;width:100%;max-width:100%;
+  }
+  html body.portal-desktop :is(.projects-toolbar,.documents-toolbar,.task-filters) :is(input,select) {
+    min-height:44px;
+  }
+  html body.portal-desktop :is(.project-card-footer,.task-card-actions) {
+    display:flex;flex-wrap:wrap;gap:10px;min-width:0;
+  }
+  html body.portal-desktop :is(.task-card,.project-card,.documents-panel) {
+    min-width:0;max-width:100%;overflow-wrap:break-word;
+  }
+  html body.portal-desktop input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),
+  html body.portal-desktop :is(select,textarea) {
+    font-size:max(16px,1rem) !important;
+  }
+  html body.portal-desktop input[type=number] {font-variant-numeric:tabular-nums;}
+}
+
+/* The video's 44px rule is for coarse touch, NOT every desktop button. */
+@media(pointer:coarse) {
+  html body.portal-desktop :is(.task-card button,.task-card a,.documents-toolbar select,
+    .projects-toolbar select,.upload-launch-button,.chat-send-button,.task-button,
+    .project-card-footer a,.portal-action,.theme-switch) {
+    min-height:44px;
+    touch-action:manipulation;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item {
+    min-height:60px;
+  }
+}
+@media(prefers-reduced-motion:reduce) {
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-optical-dock .p262-specular-shine {transition:none;}
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-optical-dock .v131-dock-bubble {transition:none!important;}
+}
+@media(prefers-reduced-transparency:reduce) {
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-optical-dock .v131-dock-bubble {
+    background:rgba(248,243,230,.92)!important;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled.ptech-optical-dock .p262-refractive-lens {backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+}
