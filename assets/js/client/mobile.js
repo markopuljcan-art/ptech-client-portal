@@ -153,6 +153,11 @@
       const stretch = motionAllowed() ? spring.stretch : 1;
       const squish = 1 / Math.sqrt(stretch);
       bubble.style.transform = `translate3d(${spring.x.toFixed(2)}px,${spring.y.toFixed(2)}px,0) scale(${stretch.toFixed(4)},${squish.toFixed(4)})`;
+      // V26: optical highlights shift subtly with velocity, without replacing
+      // the spring animation or altering active-tab selection.
+      const glint = clamp(35 + spring.vx * 0.62, 20, 55);
+      bubble.style.setProperty('--p26-highlight-x', `${glint.toFixed(1)}%`);
+      bubble.style.setProperty('--p26-shimmer-y', `${clamp(spring.vy * 0.12, -1.4, 1.4).toFixed(2)}px`);
     }
     function liquidFrame(timestamp) {
       spring.frame = 0;
@@ -166,10 +171,10 @@
       spring.x += spring.vx * dt;
       spring.y += spring.vy * dt;
       // Stretch parallel to travel, settle back to a regular pill when stationary.
-      const stretchTarget = 1 + Math.min(0.135, Math.abs(spring.vx) * 0.008) + (spring.following ? 0.026 : 0);
+      const stretchTarget = 1 + Math.min(0.08, Math.abs(spring.vx) * 0.007) + (spring.following ? 0.026 : 0);
       spring.stretchV = (spring.stretchV + (stretchTarget - spring.stretch) * 0.20 * dt) * Math.pow(0.63, dt);
       spring.stretch += spring.stretchV * dt;
-      spring.stretch = clamp(spring.stretch, 0.985, 1.16);
+      spring.stretch = clamp(spring.stretch, 0.985, 1.115);
       paintLiquid();
       const moving = Math.abs(spring.targetX - spring.x) > 0.12 ||
         Math.abs(spring.targetY - spring.y) > 0.12 || Math.abs(spring.vx) > 0.08 ||
@@ -185,7 +190,7 @@
     }
     function setGlassTarget(x, y, instant = false, following = false) {
       // The lens never leaves the dock, even with elastic scale.
-      const margin = 5;
+      const margin = 9;
       const maxX = Math.max(margin, nav.clientWidth - bubbleWidth() - margin);
       const maxY = Math.max(margin, nav.clientHeight - bubbleHeight() - margin);
       spring.targetX = clamp(x, margin, maxX);
@@ -267,7 +272,7 @@
       // browsers animate same-origin page transitions through CSS @view-transition.
       // Never slide/fade the entire old page before navigation (caused a flash).
       if (reduceMotion.matches) { location.assign(url.href); return; }
-      window.setTimeout(() => location.assign(url.href), 225);
+      window.setTimeout(() => location.assign(url.href), 145);
     }
 
     nav.addEventListener('pointerdown', e => {

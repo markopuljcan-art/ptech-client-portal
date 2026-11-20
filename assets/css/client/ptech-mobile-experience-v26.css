@@ -1,0 +1,233 @@
+/* PTech Digital Client Portal V26.0 | Responsive UX + Liquid Glass
+   Loaded after the V25 rules. This sheet changes presentation only: never
+   replaces auth, Supabase, push, storage or the existing dashboard widgets.
+   The active glass lens is one element shared by both themes. */
+
+@media (max-width:1100px) {
+  html body.ptech-v13 {
+    /* Dock bottom offset (26px), height (74px), breathing room for last CTA. */
+    --v13-bottom-gap:calc(158px + env(safe-area-inset-bottom,0px));
+    --p26-touch:44px;
+  }
+  html body.ptech-v13 .desktop-main {
+    padding-bottom:var(--v13-bottom-gap) !important;
+  }
+  html body.ptech-v13 .bottom-nav {
+    --p25-lens-width:clamp(62px,calc(20% + 1px),118px);
+    --p25-lens-height:59px;
+    bottom:calc(26px + env(safe-area-inset-bottom,0px)) !important;
+    box-sizing:border-box !important;
+    touch-action:pan-y;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble,
+  html body.ptech-v13 .bottom-nav.v131-enabled.v131-dragging .v131-dock-bubble {
+    width:var(--p25-lens-width) !important;
+    height:var(--p25-lens-height) !important;
+    border-radius:22px !important;
+    overflow:hidden;
+    isolation:isolate;
+    /* Fixed geometry between light/dark and during drag. */
+    box-sizing:border-box !important;
+    background:
+      radial-gradient(ellipse 105% 85% at var(--p26-highlight-x,35%) -16%,rgba(255,255,255,.56),transparent 62%),
+      radial-gradient(ellipse 75% 95% at 94% 105%,rgba(225,169,68,.22),transparent 75%),
+      linear-gradient(154deg,rgba(255,255,255,.46),rgba(248,243,231,.20) 53%,rgba(215,175,101,.19)) !important;
+    border:1px solid rgba(204,165,93,.40) !important;
+    -webkit-backdrop-filter:blur(22px) saturate(1.26) contrast(1.04) !important;
+    backdrop-filter:blur(22px) saturate(1.26) contrast(1.04) !important;
+    box-shadow:
+      0 5px 16px rgba(75,52,24,.13),
+      0 0 14px rgba(211,164,77,.12),
+      inset 0 1px 0 rgba(255,255,255,.92),
+      inset 0 -2px 6px rgba(172,121,47,.09) !important;
+    transition:box-shadow 200ms ease,background-color 220ms ease !important;
+    will-change:transform;
+  }
+  /* Refracted highlight: moves a few percent with spring velocity. */
+  html body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble::before {
+    content:"" !important;display:block !important;
+    position:absolute;pointer-events:none;
+    inset:1px 2px 46% 2px;
+    border-radius:21px 21px 24px 24px;
+    background:
+      radial-gradient(ellipse 80% 95% at var(--p26-highlight-x,35%) 3%,rgba(255,255,255,.76),transparent 74%),
+      linear-gradient(180deg,rgba(255,255,255,.40),transparent) !important;
+    mix-blend-mode:screen;
+    opacity:.8;
+    transform:translate3d(0,var(--p26-shimmer-y,0px),0);
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble::after {
+    content:"" !important;display:block !important;
+    position:absolute;pointer-events:none;inset:0;
+    border-radius:inherit;
+    background:linear-gradient(125deg,rgba(255,255,255,.55),transparent 30%,transparent 70%,rgba(244,200,120,.30));
+    box-shadow:inset 0 0 0 1px rgba(255,243,207,.32),inset 0 -1px 4px rgba(171,118,43,.10) !important;
+    opacity:.62;
+  }
+  html body.ptech-v13 .bottom-nav.v131-enabled:is(.v131-holding,.v131-dragging) .v131-dock-bubble {
+    box-shadow:0 8px 19px rgba(103,74,32,.17),0 0 18px rgba(223,167,69,.17),inset 0 1px 0 rgba(255,255,255,.95) !important;
+  }
+  /* Identical glass size in navy dark mode; only the optical tint changes. */
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav.v131-enabled .v131-dock-bubble,
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav.v131-enabled.v131-dragging .v131-dock-bubble {
+    width:var(--p25-lens-width) !important;
+    height:var(--p25-lens-height) !important;
+    border-radius:22px !important;
+    background:
+      radial-gradient(ellipse 105% 85% at var(--p26-highlight-x,35%) -16%,rgba(223,235,255,.23),transparent 67%),
+      radial-gradient(ellipse 75% 90% at 100% 100%,rgba(230,182,96,.18),transparent 75%),
+      linear-gradient(155deg,rgba(122,148,181,.29),rgba(66,87,120,.19) 52%,rgba(189,141,79,.13)) !important;
+    border-color:rgba(235,195,119,.42) !important;
+    box-shadow:0 7px 18px rgba(4,12,29,.32),0 0 13px rgba(224,177,93,.10),inset 0 1px rgba(255,255,255,.27),inset 0 -1px 4px rgba(216,170,91,.11) !important;
+    -webkit-backdrop-filter:blur(22px) saturate(1.30) contrast(1.08) !important;
+    backdrop-filter:blur(22px) saturate(1.30) contrast(1.08) !important;
+  }
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav.v131-enabled .v131-dock-bubble::before,
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav.v131-enabled .v131-dock-bubble::after {
+    content:"" !important;display:block !important;
+  }
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav.v131-enabled .v131-dock-bubble::before {
+    opacity:.4;
+  }
+  html:not([data-theme="light"]) body.ptech-v13:not(.light-mode) .bottom-nav.v131-enabled .v131-dock-bubble::after {
+    opacity:.36;
+  }
+  /* The selected icon remains managed exclusively by the existing V25.12 JS.
+     Do not paint previewed icons black or create an extra selection state. */
+  html body.ptech-v13 .bottom-nav.v131-enabled .bottom-nav-item {
+    min-height:60px !important;
+    touch-action:pan-y;
+  }
+  html body.ptech-v13 .bottom-nav .bottom-nav-item:focus-visible {
+    outline:2px solid #c2933d !important;
+    outline-offset:0 !important;
+  }
+  /* The translucent switch is easy to tap without enlarging its visible pill. */
+  html body.portal-desktop .dashboard-header .theme-switch {
+    align-self:center !important;
+    margin-block:0 !important;
+  }
+  html body.portal-desktop .dashboard-header .header-actions {
+    align-items:center !important;
+  }
+  /* All actionable content remains above the floating dock when scrolled down. */
+  html body.ptech-v13 :is(.dashboard-content,.projects-page-content,.documents-page-content,
+    .task-page-content,.profile-page-content,.messages-page-content) {scroll-padding-bottom:var(--v13-bottom-gap);}
+}
+
+@media (max-width:720px) {
+  /* iPhone Safari does not autofocus/zoom controls with a 16px font. */
+  html body.portal-desktop :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="hidden"]),textarea,select) {
+    font-size:16px !important;
+  }
+  html body.portal-desktop :is(.portal-action,.action-card,.task-button,.task-action,
+      .documents-upload-btn,.project-open-button,.portal-project-open,
+      .materials-submit,.materials-cancel,.profile-action,.chat-send-button,
+      .projects-filter select,.documents-toolbar select) {
+    min-height:44px;
+    box-sizing:border-box;
+  }
+  html body.portal-desktop :is(.portal-project-metrics,.projects-grid,.documents-list,
+    .task-list,.profile-main-grid,.profile-bottom-grid,.dashboard-overview,
+    .portal-summary-grid) {min-width:0;max-width:100%;}
+  html body.portal-desktop :is(.projects-toolbar,.documents-toolbar,.task-filters,
+    .profile-stats,.portal-project-top,.documents-panel-header) {
+    min-width:0;max-width:100%;
+  }
+  html body.portal-desktop :is(.projects-search,.documents-search-wrap,.documents-search,
+    .projects-toolbar input,.documents-toolbar input,.task-filters select,
+    .task-filters button) {min-width:0;max-width:100%;}
+  html body.portal-desktop :is(.portal-project-identity h3,.projects-heading h1,
+    .profile-main-info h2,.documents-heading h1,.task-intro h1,
+    .portal-card-heading h2,.overview-row-main strong,.project-name) {
+    overflow-wrap:anywhere;
+  }
+  /* Prevent buttons in compact cards from being clipped by the floating dock. */
+  html body.ptech-v13 .desktop-main {padding-bottom:var(--v13-bottom-gap) !important;}
+}
+
+@media (max-width:430px) {
+  html body.ptech-home.portal-unified #portalHome .portal-project-top {
+    flex-wrap:wrap;
+    row-gap:10px;
+  }
+  html body.portal-desktop .dashboard-header .header-actions {
+    gap:8px !important;
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  html body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble,
+  html body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble::before,
+  html body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble::after {
+    animation:none !important;
+    transition:none !important;
+  }
+}
+
+/* Legacy V25 light skin disabled the optical highlight with higher specificity.
+   Restore it in both light entry paths without changing its color/geometry. */
+@media (max-width:1100px) {
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble::before,
+  html[data-theme="light"] body.ptech-v13 .bottom-nav.v131-enabled .v131-dock-bubble::after,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .v131-dock-bubble::before,
+  html body.ptech-v13.light-mode .bottom-nav.v131-enabled .v131-dock-bubble::after {
+    content:"" !important;
+    display:block !important;
+  }
+}
+
+/* V26 readable cards: apply only where there is enough room; preserve
+   tiny, user-resized dashboard widgets and existing content priorities. */
+@media (max-width:720px) {
+  html body.portal-desktop :is(.task-card p,.task-notice,.documents-empty,
+      .project-card-meta,.project-card-desc,.profile-section p,.overview-empty) {
+    font-size:max(13px,1em);
+    line-height:1.55;
+  }
+  html body.portal-desktop :is(.task-button,.task-pill,.task-filters label) {
+    font-size:13px;
+  }
+  html body.portal-desktop :is(.documents-toolbar,.projects-toolbar,.task-filters) {
+    gap:10px;
+  }
+  html body.portal-desktop :is(.task-card-actions,.project-card-footer,.documents-panel-header) {
+    flex-wrap:wrap;
+  }
+  html body.ptech-home.portal-unified #portalHome
+     [data-widget-id="actions"]:is([data-adaptive-level="medium"],[data-adaptive-level="full"])
+     .portal-action-text strong {font-size:13px !important;}
+  html body.ptech-home.portal-unified #portalHome
+     [data-widget-id="actions"]:is([data-adaptive-level="medium"],[data-adaptive-level="full"])
+     .portal-action-text small {font-size:12px !important;}
+  html body.portal-desktop :is(.portal-project-identity,.project-card,.task-card,.documents-panel) {
+    min-width:0;
+  }
+}
+
+/* Mobile theme toggle: 44px interaction target, unchanged 34px visual track. */
+@media (max-width:720px) {
+  html body.portal-desktop .dashboard-header .theme-switch {
+    height:44px !important;
+    min-height:44px !important;
+    display:block !important;
+    position:relative !important;
+  }
+  html body.portal-desktop .dashboard-header .theme-switch .theme-slider {
+    top:5px !important;
+    bottom:5px !important;
+    left:0 !important;
+    right:0 !important;
+  }
+  html body.portal-desktop .dashboard-header .theme-switch input:focus-visible + .theme-slider {
+    outline:2px solid #b98b3f !important;
+    outline-offset:3px !important;
+  }
+}
+@media (hover:none) and (pointer:coarse) and (prefers-reduced-motion:no-preference) {
+  html body.portal-desktop :is(.portal-action,.task-button,.portal-project-open,
+      .project-card-footer a,.materials-submit,.materials-cancel):active {
+    transform:scale(.985);
+    transition:transform 130ms cubic-bezier(.2,.8,.2,1);
+  }
+}
