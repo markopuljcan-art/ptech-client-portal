@@ -1,11 +1,11 @@
-/* PTech Digital · V28 · Clear glass homepage.
+/* PTech Digital · V28.2 · Photo comparison for the existing clear glass.
  * This last-loaded, homepage-only layer preserves the live V16/V21 widget
  * hierarchy, adaptive sizes and all existing action/auth/navigation handlers.
- * A single glass shell surrounds each widget; its content is never filtered.
+ * Outer shells and inner tiles have aligned lens layers; text stays native.
  */
 
 html body.ptech-home.ptech-home-glass-v28 {
-  --home-canvas: #151a23;
+  --home-canvas: #151a21;
   --home-ink: #f5f6f8;
   --home-muted: #c5cad2;
   --home-blue: #233850;
@@ -13,10 +13,10 @@ html body.ptech-home.ptech-home-glass-v28 {
   --home-gold-soft: rgba(215,177,94,.13);
   --home-gold-haze: rgba(208,160,55,.24);
   --home-gold-haze-soft: rgba(185,134,32,.13);
-  --home-glass: rgba(28,34,43,.27);
-  --home-glass-inset: rgba(235,241,255,.035);
+  --home-glass: rgba(28,34,43,.065);
+  --home-glass-inset: rgba(235,241,255,.025);
   --home-sidebar: rgba(23,29,38,.61);
-  --home-header: rgba(25,31,40,.34);
+  --home-header: rgba(25,31,40,.075);
   --home-border: rgba(236,241,249,.19);
   --home-inner-border: rgba(235,240,249,.13);
   --home-highlight: rgba(255,255,255,.39);
@@ -26,7 +26,7 @@ html body.ptech-home.ptech-home-glass-v28 {
     inset 0 -1px 0 rgba(255,255,255,.06);
   --home-inset-shadow: inset 0 1px 0 rgba(255,255,255,.15),
     inset 0 -1px 0 rgba(0,0,0,.08);
-  --home-blur: 9px;
+  --home-blur: .65px;
   --home-logout: #e3bc6b;
   --home-logout-bg: rgba(215,177,94,.15);
   --home-toggle: #d7b15e;
@@ -66,17 +66,17 @@ html body.ptech-home.ptech-home-glass-v28 {
 
 html[data-theme="light"] body.ptech-home.ptech-home-glass-v28,
 body.ptech-home.ptech-home-glass-v28.light-mode {
-  --home-canvas: #fafafa;
+  --home-canvas: #f5f5f3;
   --home-ink: #20252c;
   --home-muted: #565d67;
   --home-gold: #b68728;
   --home-gold-soft: rgba(206,164,67,.13);
   --home-gold-haze: rgba(224,187,91,.31);
   --home-gold-haze-soft: rgba(221,182,82,.17);
-  --home-glass: rgba(255,255,255,.26);
-  --home-glass-inset: rgba(255,255,255,.17);
+  --home-glass: rgba(255,255,255,.055);
+  --home-glass-inset: rgba(255,255,255,.035);
   --home-sidebar: rgba(255,255,255,.58);
-  --home-header: rgba(255,255,255,.31);
+  --home-header: rgba(255,255,255,.065);
   --home-border: rgba(112,115,121,.18);
   --home-inner-border: rgba(105,111,121,.13);
   --home-highlight: rgba(255,255,255,.96);
@@ -127,9 +127,9 @@ html body.ptech-home.ptech-home-glass-v28.portal-desktop .dashboard-particle::af
 }
 
 /* Outer shell, including widgets added later from the existing catalogue. */
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-welcome,
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .ptech-dashboard-grid > .ptech-widget,
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .ptech-dashboard-grid:not(.ptech-zoom-grid) > .portal-unified-core,
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-welcome,
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .ptech-dashboard-grid > .ptech-widget,
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .ptech-dashboard-grid:not(.ptech-zoom-grid) > .portal-unified-core,
 html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-zoom-grid > .ptech-widget {
   background: var(--home-glass) !important;
   border: 1px solid var(--home-border) !important;
@@ -139,76 +139,38 @@ html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-zoom-grid > .pte
   color: var(--home-ink) !important;
 }
 /* Keep the pre-mount fallback readable without stacking opaque panels. */
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-surface {
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-surface {
   background: var(--home-glass) !important;
   border-color: var(--home-border) !important;
   box-shadow: var(--home-shadow) !important;
 }
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .ptech-widget .ptech-tile-inner,
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .ptech-widget .portal-live-card {
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .ptech-widget .ptech-tile-inner,
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .ptech-widget .portal-live-card {
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
 }
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-welcome::after {
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-welcome::after {
   content: none !important;
 }
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-overline {
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-overline {
   color: var(--home-muted) !important;
 }
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-welcome h1 {
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-welcome h1 {
   color: var(--home-ink) !important;
 }
 
-/* A shallow, polished rim: text/icons stay outside the optical layer.
- * The JS enhancement supplies a static, edge-normal map on capable desktops.
- * Other browsers retain the same transparent surface and specular rim.
- */
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-welcome::before,
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .ptech-widget::before,
+/* V28.1: the optical canvas now owns the lens/rim on every surface. */
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-welcome::before,
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .ptech-widget::before,
 html body.ptech-home.ptech-home-glass-v28.portal-desktop .dashboard-header::before {
-  content: "" !important;
-  position: absolute !important;
-  inset: 0 !important;
-  width: auto !important;
-  height: auto !important;
-  padding: 9px;
-  border: 0 !important;
-  border-radius: inherit !important;
-  pointer-events: none !important;
-  z-index: 0;
-  opacity: 1 !important;
-  transform: none !important;
-  background: linear-gradient(137deg, rgba(255,255,255,.23), transparent 37%,
-    rgba(255,255,255,.025) 63%, rgba(228,202,142,.10)) !important;
-  box-shadow: inset 1px 1px 1px var(--home-highlight),
-    inset -1px -1px 2px rgba(41,46,55,.10),
-    inset 0 4px 6px rgba(255,255,255,.08) !important;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-}
-@supports (backdrop-filter: url("#ptech-home-glass")) {
-  html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .ptech-home-refractive::before,
-  html body.ptech-home.ptech-home-glass-v28.portal-desktop .dashboard-header.ptech-home-refractive::before {
-    -webkit-backdrop-filter: var(--ptech-home-refraction) saturate(1.14);
-    backdrop-filter: var(--ptech-home-refraction) saturate(1.14);
-  }
-}
-@supports not (mask-composite: exclude) {
-  html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-welcome::before,
-  html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .ptech-widget::before,
-  html body.ptech-home.ptech-home-glass-v28.portal-desktop .dashboard-header::before {
-    background: transparent !important;
-    padding: 0;
-  }
+  content: none !important;
 }
 
 /* Nested cards share the clear material, without double shadows or heavy blur. */
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome :is(
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) :is(
   .portal-project-card, .portal-metric, .portal-task-main, .portal-adaptive-glance,
   .portal-preview-link, .portal-adaptive-list-row, .portal-action,
   .ptech-hub-extra, .ptech-personal-check, .ptech-hub-metric, .ptech-smart-preview
@@ -218,7 +180,7 @@ html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome :is(
   box-shadow: var(--home-inset-shadow) !important;
   color: var(--home-ink) !important;
 }
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome :is(
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) :is(
   .portal-project-icon, .portal-action-icon, .portal-empty-icon,
   .portal-summary-decoration, .portal-preview-icon, .ptech-hub-icon,
   .ptech-personal-symbol, .portal-adaptive-glance-icon
@@ -227,43 +189,43 @@ html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome :is(
   color: var(--home-muted) !important;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.29) !important;
 }
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome :is(
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) :is(
   .portal-section-header h2 svg, .portal-card-heading h2 svg,
   .portal-metric-icon, .portal-action-chevron, .portal-action > svg
 ) { color: var(--home-muted) !important; }
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-count-pill {
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-count-pill {
   background: var(--home-glass-inset) !important;
   border-color: var(--home-inner-border) !important;
   color: var(--home-muted) !important;
 }
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-progress-track {
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-progress-track {
   background: var(--portal-track) !important;
 }
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-progress-track span {
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-progress-track span {
   background: var(--home-gold) !important;
 }
 
 /* Primary actions follow the supplied blue annotation, with plain line icons.
  * Preserve the project link's first text node and the edit button's first span.
  */
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-welcome #portalEdit.portal-text-btn,
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome #portalProjectOpen.portal-project-open {
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-welcome #portalEdit.portal-text-btn,
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) #portalProjectOpen.portal-project-open {
   background: rgba(35,56,80,.94) !important;
   color: #ffffff !important;
   border-color: rgba(35,56,80,.32) !important;
   box-shadow: 0 3px 9px rgba(18,32,47,.12), inset 0 1px 0 rgba(255,255,255,.23) !important;
 }
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-welcome #portalEdit.portal-text-btn > svg,
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome #portalProjectOpen.portal-project-open > svg {
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-welcome #portalEdit.portal-text-btn > svg,
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) #portalProjectOpen.portal-project-open > svg {
   background: transparent !important;
   color: #ffffff !important;
   box-shadow: none !important;
 }
 
 /* Footer links: underline only. Keep their existing divider fixed. */
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-card-link,
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-card-link:hover,
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-card-link:focus-visible {
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-card-link,
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-card-link:hover,
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-card-link:focus-visible {
   gap: 7px !important;
   color: var(--home-ink) !important;
   background: transparent !important;
@@ -274,24 +236,24 @@ html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-car
   text-decoration-thickness: 1.5px;
   text-underline-offset: 4px;
 }
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-card-link:hover,
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-card-link:focus-visible {
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-card-link:hover,
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-card-link:focus-visible {
   text-decoration-line: underline !important;
 }
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-card-link svg {
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-card-link svg {
   transform: none !important;
 }
 
 /* Stable populated rows. Empty/loading boxes are intentionally not targets. */
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome :is(.portal-preview-link,.portal-adaptive-list-row),
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome :is(.portal-preview-link,.portal-adaptive-list-row):hover,
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-summary-card:has(.portal-adaptive-list-row,.portal-preview-link) :is(.portal-task-main,.portal-adaptive-glance) {
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) :is(.portal-preview-link,.portal-adaptive-list-row),
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) :is(.portal-preview-link,.portal-adaptive-list-row):hover,
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-summary-card:has(.portal-adaptive-list-row,.portal-preview-link) :is(.portal-task-main,.portal-adaptive-glance) {
   transform: none !important;
   filter: none !important;
   box-shadow: var(--home-inset-shadow) !important;
   transition: border-color .18s ease !important;
 }
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-action {
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-action {
   transform: none;
   filter: none !important;
   transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease !important;
@@ -302,8 +264,8 @@ html body.ptech-home.ptech-home-glass-v28.portal-desktop .dashboard-header {
   background: var(--home-header) !important;
   border-color: var(--home-border) !important;
   box-shadow: 0 2px 12px rgba(20,25,33,.025), inset 0 1px 0 var(--home-highlight) !important;
-  -webkit-backdrop-filter: blur(12px) saturate(1.14) !important;
-  backdrop-filter: blur(12px) saturate(1.14) !important;
+  -webkit-backdrop-filter: blur(.65px) saturate(1.06) !important;
+  backdrop-filter: blur(.65px) saturate(1.06) !important;
 }
 html body.ptech-home.ptech-home-glass-v28.portal-desktop .dashboard-header > * {
   position: relative;
@@ -374,15 +336,15 @@ html body.ptech-home.ptech-home-glass-v28.portal-desktop .desktop-sidebar .sideb
 }
 
 @media (hover: hover) and (pointer: fine) {
-  html body.ptech-home.ptech-home-glass-v28.portal-desktop:not(.ptech-layout-editing) #portalHome .portal-action:hover:not(:disabled):not([aria-disabled="true"]) {
+  html body.ptech-home.ptech-home-glass-v28.portal-desktop:not(.ptech-layout-editing) :is(#portalHome,.ptech-zoom-grid) .portal-action:hover:not(:disabled):not([aria-disabled="true"]) {
     border-color: var(--home-gold) !important;
     transform: translateY(-3px) !important;
     box-shadow: var(--home-inset-shadow), 0 7px 15px rgba(80,63,29,.10) !important;
   }
-  html body.ptech-home.ptech-home-glass-v28.portal-desktop:not(.ptech-layout-editing) #portalHome :is(.portal-preview-link,.portal-adaptive-list-row):hover {
+  html body.ptech-home.ptech-home-glass-v28.portal-desktop:not(.ptech-layout-editing) :is(#portalHome,.ptech-zoom-grid) :is(.portal-preview-link,.portal-adaptive-list-row):hover {
     border-color: var(--home-gold) !important;
   }
-  html body.ptech-home.ptech-home-glass-v28.portal-desktop:not(.ptech-layout-editing) #portalHome .portal-summary-card:has(.portal-adaptive-list-row,.portal-preview-link) :is(.portal-task-main,.portal-adaptive-glance):hover {
+  html body.ptech-home.ptech-home-glass-v28.portal-desktop:not(.ptech-layout-editing) :is(#portalHome,.ptech-zoom-grid) .portal-summary-card:has(.portal-adaptive-list-row,.portal-preview-link) :is(.portal-task-main,.portal-adaptive-glance):hover {
     border-color: var(--home-gold) !important;
     outline: 1px solid var(--home-gold);
     outline-offset: -1px;
@@ -396,8 +358,8 @@ html body.ptech-home.ptech-home-glass-v28.portal-desktop .desktop-sidebar .sideb
     background: var(--home-gold-soft) !important;
     transform: translateX(4px) !important;
   }
-  html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-welcome #portalEdit.portal-text-btn:hover,
-  html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome #portalProjectOpen.portal-project-open:hover {
+  html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-welcome #portalEdit.portal-text-btn:hover,
+  html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) #portalProjectOpen.portal-project-open:hover {
     color: #fff !important;
     border-color: var(--home-gold) !important;
     box-shadow: 0 4px 12px rgba(18,32,47,.18), inset 0 1px 0 rgba(255,255,255,.25) !important;
@@ -405,13 +367,13 @@ html body.ptech-home.ptech-home-glass-v28.portal-desktop .desktop-sidebar .sideb
 }
 
 /* Keyboard equivalents and touch press feedback without persistent hover lift. */
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome :is(a,button):focus-visible,
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) :is(a,button):focus-visible,
 html body.ptech-home.ptech-home-glass-v28.portal-desktop .desktop-sidebar .sidebar-link:focus-visible,
 html body.ptech-home.ptech-home-glass-v28.portal-desktop .dashboard-header #logoutButton:focus-visible {
   outline: 2px solid var(--home-gold) !important;
   outline-offset: 3px !important;
 }
-html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome :is(.portal-action,.portal-preview-link,.portal-adaptive-list-row):focus-visible {
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) :is(.portal-action,.portal-preview-link,.portal-adaptive-list-row):focus-visible {
   border-color: var(--home-gold) !important;
 }
 html body.ptech-home.ptech-home-glass-v28.portal-desktop .dashboard-header #logoutButton:focus-visible {
@@ -423,18 +385,18 @@ html body.ptech-home.ptech-home-glass-v28.portal-desktop .dashboard-header .them
   outline-offset: 3px;
 }
 @media (hover: none), (pointer: coarse) {
-  html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-action:hover {
+  html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-action:hover {
     transform: none !important;
     box-shadow: var(--home-inset-shadow) !important;
     border-color: var(--home-inner-border) !important;
   }
-  html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome .portal-action:active {
+  html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-action:active {
     border-color: var(--home-gold) !important;
   }
 }
 
 /* The dashboard editor retains ownership of dragging/resizing transforms. */
-html body.ptech-home.ptech-home-glass-v28.portal-desktop.ptech-layout-editing #portalHome .portal-action:hover {
+html body.ptech-home.ptech-home-glass-v28.portal-desktop.ptech-layout-editing :is(#portalHome,.ptech-zoom-grid) .portal-action:hover {
   transform: none !important;
   box-shadow: var(--home-inset-shadow) !important;
 }
@@ -445,20 +407,20 @@ html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(
   background: var(--home-sidebar) !important;
   border-color: var(--home-border) !important;
   color: var(--home-ink) !important;
-  -webkit-backdrop-filter: blur(14px) saturate(1.12);
-  backdrop-filter: blur(14px) saturate(1.12);
+  -webkit-backdrop-filter: blur(.65px) saturate(1.06);
+  backdrop-filter: blur(.65px) saturate(1.06);
   box-shadow: var(--home-shadow) !important;
 }
 
 @media (max-width: 1100px) {
-  html body.ptech-home.ptech-home-glass-v28 { --home-blur: 7px; }
+  html body.ptech-home.ptech-home-glass-v28 { --home-blur: .65px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  html body.ptech-home.ptech-home-glass-v28.portal-desktop #portalHome :is(.portal-action,.portal-preview-link,.portal-adaptive-list-row,.portal-card-link),
+  html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) :is(.portal-action,.portal-preview-link,.portal-adaptive-list-row,.portal-card-link),
   html body.ptech-home.ptech-home-glass-v28.portal-desktop .desktop-sidebar .sidebar-nav .sidebar-link {
     transition: none !important;
   }
-  html body.ptech-home.ptech-home-glass-v28.portal-desktop:not(.ptech-layout-editing) #portalHome .portal-action:hover:not(:disabled):not([aria-disabled="true"]),
+  html body.ptech-home.ptech-home-glass-v28.portal-desktop:not(.ptech-layout-editing) :is(#portalHome,.ptech-zoom-grid) .portal-action:hover:not(:disabled):not([aria-disabled="true"]),
   html body.ptech-home.ptech-home-glass-v28.portal-desktop .desktop-sidebar .sidebar-nav .sidebar-link:hover {
     transform: none !important;
   }
@@ -467,4 +429,155 @@ html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(
   html body.ptech-home.ptech-home-glass-v28 { --home-glass: rgba(28,34,43,.94); --home-header: rgba(25,31,40,.96); }
   html[data-theme="light"] body.ptech-home.ptech-home-glass-v28,
   body.ptech-home.ptech-home-glass-v28.light-mode { --home-glass: rgba(255,255,255,.94); --home-header: rgba(255,255,255,.96); }
+}
+
+
+/* The same selected scene is sampled by the rounded optical lenses.
+ * Canvas layers are decorative. No wrapping/repositioning of content children.
+ */
+html body.ptech-home.ptech-home-glass-v28.portal-desktop .desktop-main[data-ptech-scene-ready="true"] {
+  background: transparent !important;
+}
+html body.ptech-home.ptech-home-glass-v28.portal-desktop .desktop-main[data-ptech-scene-ready="true"] .dashboard-particles {
+  display: none !important;
+}
+html body.ptech-home.ptech-home-glass-v28.portal-desktop .desktop-main > .ptech-gold-scene {
+  position: absolute !important;
+  inset: 0 auto auto 0 !important;
+  display: block !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  user-select: none !important;
+  border: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: none !important;
+  max-height: none !important;
+  visibility: hidden !important;
+}
+html body.ptech-home.ptech-home-glass-v28.portal-desktop .desktop-main[data-ptech-scene-ready="true"] > .ptech-gold-scene {
+  visibility: inherit !important;
+}
+html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-liquid-surface {
+  isolation: isolate !important;
+}
+html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-liquid-positioned {
+  position: relative;
+}
+html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-liquid-surface > canvas.ptech-liquid-canvas,
+html body.ptech-home.ptech-home-glass-v28.portal-desktop .dashboard-header > canvas.ptech-liquid-canvas {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: -1 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  max-height: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: inherit !important;
+  pointer-events: none !important;
+  user-select: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  visibility: hidden !important;
+}
+html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-liquid-surface[data-ptech-liquid-ready="true"] > canvas.ptech-liquid-canvas {
+  visibility: inherit !important;
+}
+/* Include the highly specific V25.9 compact/empty status selectors. */
+html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-liquid-surface[data-ptech-liquid-ready="true"],
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .ptech-liquid-surface[data-ptech-liquid-ready="true"],
+html body.ptech-home.ptech-home-glass-v28.portal-desktop.portal-unified :is(#portalHome,.ptech-zoom-grid) [data-widget-id] .portal-summary-card[data-ptech-status-empty] .portal-adaptive-glance[data-ptech-liquid-ready="true"] {
+  background: transparent !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .ptech-dashboard-grid:not(.ptech-zoom-grid) > .portal-unified-core[data-ptech-liquid-ready="true"],
+html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-welcome[data-ptech-liquid-ready="true"],
+html body.ptech-home.ptech-home-glass-v28.portal-desktop .dashboard-header[data-ptech-liquid-ready="true"] {
+  background: transparent !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* A compact comparison control outside the editable dashboard grid. */
+#ptechGlassBackdropImage { display: none !important; }
+html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-backdrop-toolbar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px 14px;
+  align-self: stretch;
+  margin: 12px clamp(16px, 2.45vw, 42px) 0;
+  padding: 9px 12px;
+  border: 1px solid var(--home-inner-border);
+  border-radius: 14px;
+  background: var(--home-sidebar);
+  color: var(--home-ink);
+  font-size: 12px;
+  line-height: 1.4;
+}
+html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-backdrop-label {
+  font-weight: 750;
+}
+html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-backdrop-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-backdrop-switch button {
+  appearance: none;
+  cursor: pointer;
+  min-width: 64px;
+  min-height: 34px;
+  padding: 6px 13px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--home-ink);
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.3;
+}
+html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-backdrop-switch button[aria-pressed="true"] {
+  border-color: var(--home-gold);
+  background: var(--home-gold-soft);
+}
+html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-backdrop-switch button:hover {
+  border-color: var(--home-gold);
+}
+html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-backdrop-switch button:focus-visible {
+  outline: 2px solid var(--home-gold);
+  outline-offset: 3px;
+}
+html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-backdrop-status {
+  flex: 1 1 180px;
+  min-width: 0;
+  color: var(--home-muted);
+  font-size: 11px;
+}
+html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-backdrop-status:empty {
+  display: none;
+}
+@media (max-width: 520px) {
+  html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-backdrop-toolbar {
+    margin: 10px 12px 0;
+    padding: 8px 10px;
+    gap: 7px 10px;
+  }
+  html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-backdrop-switch button {
+    min-height: 40px;
+  }
+  html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-backdrop-status {
+    flex-basis: 100%;
+  }
 }

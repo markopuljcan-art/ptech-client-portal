@@ -67,8 +67,9 @@
   <link rel="stylesheet" href="./assets/css/client/ptech-mobile-dock-centering-v26-6.css?v=26.6">
   <link rel="stylesheet" href="./assets/css/client/ptech-dock-precise-centering-v26-7.css?v=26.7">
   <link rel="stylesheet" href="./assets/css/client/ptech-customize-button-v27-1.css?v=27.2">
-  <link rel="stylesheet" href="./assets/css/client/ptech-home-glass-v28.css?v=28.0">
-  <script src="./assets/js/client/ptech-home-glass-v28.js?v=28.0" defer></script>
+  <link rel="stylesheet" href="./assets/css/client/ptech-home-glass-v28.css?v=28.2">
+  <script src="./assets/js/client/ptech-liquid-optics-v28-1.js?v=28.2" defer></script>
+  <script src="./assets/js/client/ptech-home-glass-v28.js?v=28.2" defer></script>
 </head>
 
 <body class="portal-desktop ptech-home ptech-client-v264 ptech-home-glass-v28">
@@ -118,6 +119,7 @@
 
         <!-- GLAVNI DESKTOP SADRZAJ -->
         <div class="desktop-main">
+            <img id="ptechGlassBackdropImage" src="./assets/backgrounds/ptech-glass-test-landscape.png" alt="" aria-hidden="true" hidden decoding="async" loading="eager">
 
             <!-- GORNJA TRAKA -->
             <header class="dashboard-header">
@@ -184,6 +186,15 @@
 
                 </div>
             </header>
+
+            <div id="ptechGlassBackdropToolbar" class="ptech-backdrop-toolbar" role="group" aria-labelledby="ptechGlassBackdropLabel">
+                <span id="ptechGlassBackdropLabel" class="ptech-backdrop-label">Pozadina</span>
+                <div class="ptech-backdrop-switch">
+                    <button id="ptechBackdropPhoto" type="button" data-ptech-backdrop="photo" aria-pressed="true" aria-describedby="ptechGlassBackdropStatus">Slika</button>
+                    <button id="ptechBackdropGold" type="button" data-ptech-backdrop="gold" aria-pressed="false" aria-describedby="ptechGlassBackdropStatus">Zlatna</button>
+                </div>
+                <span id="ptechGlassBackdropStatus" class="ptech-backdrop-status" role="status" aria-live="polite" aria-atomic="true">Učitavanje slike… Prikazana je zlatna pozadina.</span>
+            </div>
 
             <!-- V21: profesionalna početna, originalni V16 editor ostaje ispod -->
             <div class="dashboard-content">
