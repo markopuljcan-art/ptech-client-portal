@@ -1,4 +1,4 @@
-/* PTech V28.4 — clearer neutral glass for content behind the bars.
+/* PTech V28.6 — a smoky mobile dock beneath a clear selection lens.
  * CSS backdrop-filter samples the real page: text, images and controls.
  * A supported SVG enhancement bends the rim. WebKit/iOS keeps native blur.
  * Only material/colors change; mobile.js still owns all dock geometry/motion.
@@ -10,8 +10,11 @@ html body.portal-desktop.ptech-live-glass-v283 {
   --p283-bar-ink: #f7f8fa;
   --p283-bar-muted: #d8dde5;
   --p283-bar-solid: #1a2029;
-  --p283-selection-edge: rgba(255,255,255,.28);
-  --p283-selection-highlight: rgba(255,255,255,.18);
+  --p283-dock-fill: rgba(8,13,20,.62);
+  --p283-dock-solid: #111821;
+  --p283-dock-muted: #d8dde5;
+  --p283-selection-edge: rgba(255,255,255,.40);
+  --p283-selection-highlight: rgba(255,255,255,.24);
   --p283-bar-shadow: 0 6px 20px rgba(0,0,0,.16);
 }
 html[data-theme="light"] body.portal-desktop.ptech-live-glass-v283,
@@ -22,8 +25,11 @@ html body.portal-desktop.ptech-live-glass-v283.light-mode {
   --p283-bar-ink: #202833;
   --p283-bar-muted: #354150;
   --p283-bar-solid: #f7f8fa;
-  --p283-selection-edge: rgba(255,255,255,.70);
-  --p283-selection-highlight: rgba(255,255,255,.44);
+  --p283-dock-fill: rgba(29,38,49,.22);
+  --p283-dock-solid: #b5b9be;
+  --p283-dock-muted: #26303d;
+  --p283-selection-edge: rgba(255,255,255,.78);
+  --p283-selection-highlight: rgba(255,255,255,.52);
   --p283-bar-shadow: 0 6px 20px rgba(0,0,0,.07);
 }
 
@@ -51,7 +57,7 @@ html body.portal-desktop.ptech-home.ptech-home-glass-v28.ptech-live-glass-v283 .
 @media (max-width:1100px) {
   html body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav {
     /* No opacity/filter on the foreground icons, labels or click targets. */
-    background: var(--p283-bar-fill) !important;
+    background: var(--p283-dock-fill) !important;
     border-color: var(--p283-bar-border) !important;
     color: var(--p283-bar-ink) !important;
     box-shadow: var(--p283-bar-shadow),
@@ -110,10 +116,10 @@ html body.portal-desktop.ptech-home.ptech-home-glass-v28.ptech-live-glass-v283 .
   html[data-theme] body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav.v131-enabled .bottom-nav-item:not(.ptech-nav-selected),
   html[data-theme] body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav.v131-enabled .bottom-nav-item:not(.ptech-nav-selected) > span:last-child,
   html[data-theme] body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav.v131-enabled .bottom-nav-item:not(.ptech-nav-selected) .v13-tab-visual {
-    color: var(--p283-bar-muted) !important;
+    color: var(--p283-dock-muted) !important;
   }
   html[data-theme] body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav.v131-enabled .bottom-nav-item:not(.ptech-nav-selected) .v13-tab-visual svg:not(.ptech-filled-icon) {
-    stroke: var(--p283-bar-muted) !important;
+    stroke: var(--p283-dock-muted) !important;
   }
   html[data-theme] body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav.v131-enabled .bottom-nav-item.ptech-nav-selected,
   html[data-theme] body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav.v131-enabled .bottom-nav-item.ptech-nav-selected > span:last-child,
@@ -140,14 +146,20 @@ html body.portal-desktop.ptech-home.ptech-home-glass-v28.ptech-live-glass-v283 .
 /* Native blur stays the baseline, including Safari/iOS. Reduced transparency
  * and older engines receive a solid readable surface instead of raw content. */
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
-  html body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav,
+  html body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav {
+    background: var(--p283-dock-solid) !important;
+  }
   html body.portal-desktop.ptech-home.ptech-home-glass-v28.ptech-live-glass-v283 .dashboard-header {
     background: var(--p283-bar-solid) !important;
   }
 }
 @media (prefers-reduced-transparency:reduce) {
   html body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav,
-  html body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav.p283-native-backdrop,
+  html body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav.p283-native-backdrop {
+    background: var(--p283-dock-solid) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
   html body.portal-desktop.ptech-home.ptech-home-glass-v28.ptech-live-glass-v283 .dashboard-header,
   html body.portal-desktop.ptech-home.ptech-home-glass-v28.ptech-live-glass-v283 .dashboard-header.p283-native-backdrop {
     background: var(--p283-bar-solid) !important;

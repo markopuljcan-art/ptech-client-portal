@@ -1,4 +1,4 @@
-/* PTech Digital · V28.5 · Black mist, breathing gold bubbles and blue particles.
+/* PTech Digital · V28.6 · Soft gold light lines, quiet blue particles and live glass.
  * This last-loaded, homepage-only layer preserves the live V16/V21 widget
  * hierarchy, adaptive sizes and all existing action/auth/navigation handlers.
  * Native glass reveals the moving scene; optional canvas decorates only rims.
@@ -14,8 +14,8 @@ html body.ptech-home.ptech-home-glass-v28 {
   --home-fog-core: rgba(0,0,0,.30);
   --home-fog-mid: rgba(0,0,0,.246);
   --home-fog-edge: rgba(0,0,0,.072);
-  --home-bubble-strength: .48;
-  --home-particle-strength: .65;
+  --home-line-strength: .28;
+  --home-particle-strength: .32;
   --home-glass: rgba(17,25,35,.40);
   --home-glass-inset: rgba(17,25,35,.40);
   --home-live-glass: rgba(17,25,35,.18);
@@ -84,8 +84,8 @@ body.ptech-home.ptech-home-glass-v28.light-mode {
   --home-fog-core: rgba(0,0,0,.14);
   --home-fog-mid: rgba(0,0,0,.115);
   --home-fog-edge: rgba(0,0,0,.034);
-  --home-bubble-strength: .38;
-  --home-particle-strength: .55;
+  --home-line-strength: .30;
+  --home-particle-strength: .25;
   --home-glass: rgba(255,255,252,.32);
   --home-glass-inset: rgba(255,255,252,.32);
   --home-live-glass: rgba(255,255,255,.12);
@@ -115,7 +115,7 @@ body.ptech-home.ptech-home-glass-v28.light-mode {
 }
 
 /* One viewport-sized atmosphere behind the transparent dashboard. Soft fog
- * is static; only small gold circles animate opacity and transform. */
+ * is static; a few long light lines drift slowly at low contrast. */
 html body.ptech-home.ptech-home-glass-v28.portal-desktop {
   background: var(--home-canvas) !important;
   color: var(--home-ink);
@@ -143,32 +143,42 @@ html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-atmosphere {
       var(--home-fog-edge) 66%, transparent 100%),
     var(--home-canvas);
 }
-html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-gold-bubble {
+/* Long, softly fading light traces give the glass a reference to blur.
+ * The narrow highlights stay behind all content; there are no circular forms. */
+html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-gold-line {
   position: absolute;
-  left: var(--bubble-x);
-  top: var(--bubble-y);
-  width: var(--bubble-size);
-  height: var(--bubble-size);
-  border-radius: 50%;
-  opacity: 0;
-  background:
-    radial-gradient(circle at 35% 30%, rgba(255,235,173,.48), transparent 42%),
-    radial-gradient(circle, rgba(218,177,77,.04) 26%,
-      rgba(218,177,77,.17) 55%, rgba(241,201,107,.65) 65%,
-      rgba(224,181,74,.22) 71%, transparent 78%);
-  animation: ptechGoldBreath var(--bubble-duration) ease-in-out var(--bubble-delay) infinite;
+  left: var(--line-x);
+  top: var(--line-y);
+  width: clamp(320px, var(--line-width), 1180px);
+  height: 22px;
+  opacity: calc(var(--home-line-strength) * .55);
+  transform: translate3d(-50%, -50%, 0) rotate(var(--line-angle));
+  background: radial-gradient(ellipse closest-side,
+    rgba(221,186,111,.32), rgba(205,170,94,.12) 52%, transparent 100%);
+  animation: ptechGoldLineDrift var(--line-duration) ease-in-out var(--line-delay) infinite;
 }
-@keyframes ptechGoldBreath {
+html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-gold-line::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg, transparent,
+    rgba(192,155,75,.45) 22%, rgba(238,204,130,.86) 52%,
+    rgba(192,155,75,.36) 78%, transparent);
+  filter: blur(.5px);
+}
+@keyframes ptechGoldLineDrift {
   0%, 100% {
-    opacity: 0;
-    transform: translate3d(-50%, -50%, 0) scale(.94);
+    opacity: calc(var(--home-line-strength) * .42);
+    transform: translate3d(-50%, -50%, 0) rotate(var(--line-angle));
   }
-  23% { opacity: calc(var(--home-bubble-strength) * .70); }
-  48% {
-    opacity: var(--home-bubble-strength);
-    transform: translate3d(calc(-50% + var(--bubble-drift-x)), calc(-50% + var(--bubble-drift-y)), 0) scale(1.04);
+  50% {
+    opacity: var(--home-line-strength);
+    transform: translate3d(calc(-50% + var(--line-drift-x)), calc(-50% + var(--line-drift-y)), 0) rotate(var(--line-angle));
   }
-  76% { opacity: calc(var(--home-bubble-strength) * .48); }
 }
 /* Restore the original 34 moving streaks from script.js, with blue light.
  * A viewport layer keeps their density steady while the dashboard scrolls. */
@@ -187,14 +197,14 @@ html body.ptech-home.ptech-home-glass-v28.portal-desktop .dashboard-particle::af
   background: #68b2ff !important;
   box-shadow: 0 0 7px rgba(68,149,255,.34) !important;
 }
-html body.ptech-home.ptech-home-glass-v28[data-ptech-atmosphere-paused="true"] :is(.ptech-gold-bubble,.dashboard-particle) {
+html body.ptech-home.ptech-home-glass-v28[data-ptech-atmosphere-paused="true"] :is(.ptech-gold-line,.dashboard-particle) {
   animation-play-state: paused !important;
 }
 @media (prefers-reduced-motion: reduce) {
-  html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-gold-bubble {
+  html body.ptech-home.ptech-home-glass-v28.portal-desktop .ptech-gold-line {
     animation: none !important;
-    opacity: calc(var(--home-bubble-strength) * .35);
-    transform: translate3d(-50%, -50%, 0);
+    opacity: calc(var(--home-line-strength) * .55);
+    transform: translate3d(-50%, -50%, 0) rotate(var(--line-angle));
   }
   html body.ptech-home.ptech-home-glass-v28.portal-desktop .dashboard-particles {
     display: none !important;
@@ -245,7 +255,7 @@ html body.ptech-home.ptech-home-glass-v28.portal-desktop .dashboard-header::befo
 }
 
 /* Nested cards keep a low native tint and blur once their optical rim is ready.
- * The canvas center stays transparent so moving bubbles remain live. */
+ * The canvas center stays transparent so the subtle moving light lines remain live. */
 html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) :is(
   .portal-project-card, .portal-metric, .portal-task-main, .portal-adaptive-glance,
   .portal-preview-link, .portal-adaptive-list-row, .portal-action,
