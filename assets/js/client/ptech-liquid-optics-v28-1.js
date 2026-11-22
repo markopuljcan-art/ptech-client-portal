@@ -1,8 +1,10 @@
-/* PTech V28.1 — curved glass over a caller-owned decorative scene.
+/* PTech V28.3 — curved glass with an optional readable interior.
  * Three Snell-law rays sample that scene with different refractive indices.
  * This does not capture or refract arbitrary DOM, user text or controls.
  * One reusable WebGL context paints supplied 2D canvases; the CPU path uses
  * the same geometry, refraction, dispersion and lighting when GL is absent.
+ * A shared softened scene and theme veil can separate content from detailed
+ * photography. They fade in behind the content, leaving the outer lip clear.
  */
 (function (root, factory) {
   'use strict';
@@ -37,6 +39,8 @@
       rim: clamp(finite(value.rim, defaultRim), .25, Math.max(.25, Math.min(width, height) / 2)),
       depth: clamp(finite(value.depth, inner ? 16 : header ? 28 : 34), 0, 80),
       dispersion: clamp(finite(value.dispersion, 1), 0, 3),
+      readability: clamp(finite(value.readability, 0), 0, 1),
+      blur: clamp(finite(value.blur, 0), 0, 32),
       originX: finite(value.originX, 0), originY: finite(value.originY, 0),
       sceneWidth: Math.max(1, finite(value.sceneWidth, scene.width)),
       sceneHeight: Math.max(1, finite(value.sceneHeight, scene.height)),
@@ -67,6 +71,88 @@
     }
   }
 
+  // Every panel samples the same softened scene instead of independently
+  // blurring its own rectangle. A single bounded cache per source revision
+  // prevents nested cards revealing an untreated, sharp copy of the photo.
+  const blurCache = new WeakMap();
+
+  function boxPass(source, destination, width, height, radius, horizontal) {
+    if (!radius) { destination.set(source); return; }
+    const length = horizontal ? width : height;
+    const lines = horizontal ? height : width;
+    const step = horizontal ? 4 : width * 4;
+    const divisor = 2 * radius + 1;
+    for (let line = 0; line < lines; line++) {
+      const base = horizontal ? line * width * 4 : line * 4;
+      let r = 0, g = 0, b = 0, a = 0;
+      for (let offset = -radius; offset <= radius; offset++) {
+        const index = base + clamp(offset, 0, length - 1) * step;
+        r += source[index]; g += source[index + 1];
+        b += source[index + 2]; a += source[index + 3];
+      }
+      for (let point = 0; point < length; point++) {
+        const index = base + point * step;
+        destination[index] = r / divisor;
+        destination[index + 1] = g / divisor;
+        destination[index + 2] = b / divisor;
+        destination[index + 3] = a / divisor;
+        const before = base + Math.max(0, point - radius) * step;
+        const after = base + Math.min(length - 1, point + radius + 1) * step;
+        r += source[after] - source[before];
+        g += source[after + 1] - source[before + 1];
+        b += source[after + 2] - source[before + 2];
+        a += source[after + 3] - source[before + 3];
+      }
+    }
+  }
+
+  function softenedScene(scene, o) {
+    if (o.blur <= 0) return scene;
+    const key = [o.sceneWidth, o.sceneHeight, o.blur].join('|');
+    const cached = blurCache.get(scene);
+    if (cached && cached.key === key) return cached.pixels;
+    // The original sharp texture remains untouched. The blur alone uses a
+    // smaller raster: <= 262,144 pixels, <= 1,024px on either axis, with two
+    // temporary float buffers. Work is linear in this bounded pixel count.
+    const scale = Math.min(1, 1024 / scene.width, 1024 / scene.height,
+      Math.sqrt(262144 / (scene.width * scene.height)));
+    const width = Math.max(1, Math.floor(scene.width * scale));
+    const height = Math.max(1, Math.floor(scene.height * scale));
+    const count = width * height * 4;
+    let source = new Float32Array(count), work = new Float32Array(count);
+    const value = new Float64Array(4);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        sample(scene, (x + .5) * o.sceneWidth / width,
+          (y + .5) * o.sceneHeight / height, o, value);
+        const index = (y * width + x) * 4;
+        // Premultiplied colour avoids dark fringes in transparent sources.
+        for (let c = 0; c < 3; c++) source[index + c] = value[c] * value[3] * 255;
+        source[index + 3] = value[3] * 255;
+      }
+    }
+    const boxRadius = sigma => clamp(Math.round((Math.sqrt(1 + 4 * sigma * sigma) - 1) / 2), 1, 64);
+    const radiusX = boxRadius(o.blur * width / o.sceneWidth);
+    const radiusY = boxRadius(o.blur * height / o.sceneHeight);
+    // Three separable box passes approximate a Gaussian without relying on
+    // Canvas filter support or repeating many taps for every output pixel.
+    for (let pass = 0; pass < 3; pass++) {
+      boxPass(source, work, width, height, radiusX, true);
+      boxPass(work, source, width, height, radiusY, false);
+    }
+    const data = new Uint8ClampedArray(count);
+    for (let index = 0; index < count; index += 4) {
+      const alpha = clamp(source[index + 3], 0, 255);
+      const unpremultiply = alpha > .0001 ? 255 / alpha : 0;
+      for (let c = 0; c < 3; c++) data[index + c] = source[index + c] * unpremultiply;
+      data[index + 3] = alpha;
+    }
+    source = work = null;
+    const pixels = { data, width, height };
+    blurCache.set(scene, { key, pixels });
+    return pixels;
+  }
+
   function rayOffset(index, nx, ny, nz, travel, out) {
     // refract(I, N, eta), with I=(0,0,-1), then intersect the rear plane.
     const eta = 1 / index;
@@ -83,10 +169,14 @@
   function renderPixels(scene, input) {
     checkScene(scene);
     const o = optionsFor(input, scene);
+    const softScene = softenedScene(scene, o);
     const data = new Uint8ClampedArray(o.pixelWidth * o.pixelHeight * 4);
     const ex = o.width / 2 - o.radius, ey = o.height / 2 - o.radius;
     const red = new Float64Array(4), green = new Float64Array(4), blue = new Float64Array(4);
     const offset = new Float64Array(2);
+    const softened = new Float64Array(4);
+    const readableTint = o.light ? [1, 1, .99] : [17 / 255, 25 / 255, 35 / 255];
+    const interiorInset = Math.min(o.rim, 12, Math.max(4, o.rim * .6));
     const envLow = o.light ? [.44, .37, .24] : [.06, .09, .14];
     const envHigh = o.light ? [1, 1, .98] : [.98, .91, .71];
     const tint = o.light ? [1, .99, .96] : [.07, .10, .15];
@@ -108,11 +198,11 @@
         const t = clamp(inset / o.rim, 0, 1);
         const worldX = o.originX + px, worldY = o.originY + py;
 
-        // The flat center is an exact aligned view of the scene: no blur,
-        // tint, reflective veil or chromatic offset is applied there.
+        // The pure-optics default stays an exact aligned scene. A caller can
+        // opt into a softened, tinted interior to protect text readability.
         if (t >= 1) {
-          sample(scene, worldX, worldY, o, green);
-          for (let c = 0; c < 3; c++) data[output + c] = Math.round(green[c] * 255);
+          sample(softScene, worldX, worldY, o, green);
+          for (let c = 0; c < 3; c++) data[output + c] = Math.round((green[c] * (1 - o.readability) + readableTint[c] * o.readability) * 255);
           data[output + 3] = Math.round(green[3] * alpha * 255);
           continue;
         }
@@ -151,10 +241,14 @@
         const highlight = specular + rimLight + caustic;
         const tintAmount = (o.light ? .035 : .055) * edge;
         const channels = [red[0], green[1], blue[2]];
+        const material = smoothstep(Math.min(1.5, interiorInset * .25), interiorInset, inset);
+        if (o.blur > 0) sample(softScene, worldX, worldY, o, softened);
         for (let c = 0; c < 3; c++) {
           const transmission = channels[c] * (1 - tintAmount) + tint[c] * tintAmount;
           const reflected = envLow[c] + (envHigh[c] - envLow[c]) * environment;
-          const color = transmission * (1 - reflection) + reflected * reflection + shine[c] * highlight;
+          let color = transmission * (1 - reflection) + reflected * reflection + shine[c] * highlight;
+          if (o.blur > 0) color += (softened[c] - color) * material;
+          color += (readableTint[c] - color) * o.readability * material;
           data[output + c] = Math.round(clamp(color, 0, 1) * 255);
         }
         data[output + 3] = Math.round(clamp((red[3] + green[3] + blue[3]) / 3, 0, 1) * alpha * 255);
@@ -171,11 +265,14 @@
   const fragmentSource = `
     precision highp float;
     varying vec2 vUv;
-    uniform sampler2D uScene;
+    uniform sampler2D uScene, uSoftScene;
     uniform vec2 uSize, uOrigin, uSceneSize;
     uniform float uRadius, uRim, uDepth, uDispersion, uLight, uAA;
+    uniform float uReadability, uBlur, uInteriorInset;
     float square(float x){return x*x;}
     vec4 sceneAt(vec2 p){return texture2D(uScene,clamp(p/uSceneSize,0.,1.));}
+    vec4 softAt(vec2 p){return texture2D(uSoftScene,clamp(p/uSceneSize,0.,1.));}
+    vec3 readableTint(){return mix(vec3(17./255.,25./255.,35./255.),vec3(1.,1.,.99),uLight);}
     vec2 traceRay(float index,vec3 n,float travel){
       vec3 ray=refract(vec3(0.,0.,-1.),n,1./index);
       return ray.xy/max(.15,-ray.z)*travel;
@@ -191,7 +288,11 @@
       float inset=max(0.,-sdf);
       float t=clamp(inset/uRim,0.,1.);
       vec2 world=uOrigin+p;
-      if(t>=1.){vec4 plain=sceneAt(world);gl_FragColor=vec4(plain.rgb,plain.a*coverage);return;}
+      if(t>=1.){
+        vec4 plain=uBlur>0.?softAt(world):sceneAt(world);
+        gl_FragColor=vec4(mix(plain.rgb,readableTint(),uReadability),plain.a*coverage);
+        return;
+      }
       vec2 outward;
       if(dot(outside,outside)>0.)outward=normalize(outside*sign(centered));
       else if(q.x>q.y)outward=vec2(sign(centered.x),0.);
@@ -222,6 +323,9 @@
       vec3 envHigh=mix(vec3(.98,.91,.71),vec3(1.,1.,.98),uLight);
       color=mix(color,mix(envLow,envHigh,environment),reflection);
       color+=mix(vec3(1.,.94,.78),vec3(1.,.99,.95),uLight)*(specular+rimLight+caustic);
+      float material=smoothstep(min(1.5,uInteriorInset*.25),uInteriorInset,inset);
+      if(uBlur>0.)color=mix(color,softAt(world).rgb,material);
+      color=mix(color,readableTint(),uReadability*material);
       float sourceAlpha=(red.a+green.a+blue.a)/3.;
       gl_FragColor=vec4(clamp(color,0.,1.),sourceAlpha*coverage);
     }
@@ -231,7 +335,7 @@
    * created; caller-supplied target canvases stay in the caller's ownership.
    */
   function createRenderer() {
-    let gl, canvas, program, texture, buffer, scenePixels, sceneCanvas;
+    let gl, canvas, program, texture, softTexture, buffer, scenePixels, sceneCanvas, uploadedSoft;
     let mode = 'cpu', dead = false, lost = false;
     let maximumWidth = 1, maximumHeight = 1;
     const locations = {};
@@ -270,13 +374,15 @@
           buffer = gl.createBuffer();
           gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
           gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]), gl.STATIC_DRAW);
-          texture = gl.createTexture();
-          gl.bindTexture(gl.TEXTURE_2D, texture);
-          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-          for (const name of ['uScene','uSize','uOrigin','uSceneSize','uRadius','uRim','uDepth','uDispersion','uLight','uAA']) locations[name] = gl.getUniformLocation(program, name);
+          texture = gl.createTexture(); softTexture = gl.createTexture();
+          for (const currentTexture of [texture, softTexture]) {
+            gl.bindTexture(gl.TEXTURE_2D, currentTexture);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+          }
+          for (const name of ['uScene','uSoftScene','uSize','uOrigin','uSceneSize','uRadius','uRim','uDepth','uDispersion','uLight','uAA','uReadability','uBlur','uInteriorInset']) locations[name] = gl.getUniformLocation(program, name);
           locations.position = gl.getAttribLocation(program, 'aPosition');
           canvas.addEventListener('webglcontextlost', onLost);
           mode = 'webgl';
@@ -291,10 +397,11 @@
       if (!context) throw new TypeError('The scene must be a 2D canvas.');
       scenePixels = context.getImageData(0, 0, nextScene.width, nextScene.height);
       sceneCanvas = nextScene;
+      uploadedSoft = null;
       maximumWidth = maximumHeight = 1;
       if (mode === 'webgl' && !lost) {
         try {
-          gl.bindTexture(gl.TEXTURE_2D, texture);
+          gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, texture);
           gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
           gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
           gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, sceneCanvas);
@@ -310,6 +417,7 @@
       const context = target.getContext('2d');
       if (!context) throw new TypeError('The target must be a 2D canvas.');
       let o = optionsFor(input, scenePixels);
+      const softScene = softenedScene(scenePixels, o);
       if (mode === 'webgl' && !lost) {
         try {
           maximumWidth = Math.max(maximumWidth, o.pixelWidth);
@@ -325,12 +433,25 @@
           gl.vertexAttribPointer(locations.position, 2, gl.FLOAT, false, 0, 0);
           gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, texture);
           gl.uniform1i(locations.uScene, 0);
+          gl.activeTexture(gl.TEXTURE1);
+          gl.bindTexture(gl.TEXTURE_2D, o.blur > 0 ? softTexture : texture);
+          if (o.blur > 0 && uploadedSoft !== softScene) {
+            gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+            gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, softScene.width, softScene.height,
+              0, gl.RGBA, gl.UNSIGNED_BYTE, softScene.data);
+            uploadedSoft = softScene;
+          }
+          gl.uniform1i(locations.uSoftScene, 1);
           gl.uniform2f(locations.uSize, o.width, o.height);
           gl.uniform2f(locations.uOrigin, o.originX, o.originY);
           gl.uniform2f(locations.uSceneSize, o.sceneWidth, o.sceneHeight);
           gl.uniform1f(locations.uRadius, o.radius); gl.uniform1f(locations.uRim, o.rim);
           gl.uniform1f(locations.uDepth, o.depth); gl.uniform1f(locations.uDispersion, o.dispersion);
           gl.uniform1f(locations.uLight, o.light ? 1 : 0); gl.uniform1f(locations.uAA, o.aa);
+          gl.uniform1f(locations.uReadability, o.readability);
+          gl.uniform1f(locations.uBlur, o.blur > 0 ? 1 : 0);
+          gl.uniform1f(locations.uInteriorInset, Math.min(o.rim, 12, Math.max(4, o.rim * .6)));
           gl.drawArrays(gl.TRIANGLES, 0, 6);
           if (gl.isContextLost() || gl.getError() !== gl.NO_ERROR) throw new Error('Liquid optics GL rendering failed.');
           if (target.width !== o.pixelWidth) target.width = o.pixelWidth;
@@ -357,10 +478,11 @@
       dead = true; mode = 'destroyed';
       if (canvas) canvas.removeEventListener('webglcontextlost', onLost);
       if (gl && !lost) {
-        try { if (texture) gl.deleteTexture(texture); if (buffer) gl.deleteBuffer(buffer); if (program) gl.deleteProgram(program); } catch (_) {}
+        try { if (texture) gl.deleteTexture(texture); if (softTexture) gl.deleteTexture(softTexture); if (buffer) gl.deleteBuffer(buffer); if (program) gl.deleteProgram(program); } catch (_) {}
       }
       if (canvas) { canvas.width = canvas.height = 1; }
-      scenePixels = sceneCanvas = canvas = gl = program = texture = buffer = null;
+      if (scenePixels) blurCache.delete(scenePixels);
+      scenePixels = sceneCanvas = canvas = gl = program = texture = softTexture = buffer = uploadedSoft = null;
     }
 
     return { setScene, render, destroy, get mode() { return mode; } };

@@ -1,5 +1,5 @@
-/* PTech V28.2 — photograph/gold comparison using the existing glass material.
- * The optical module traces the same scene for every surface, including mobile.
+/* PTech V28.3 — readable glass over a pale gold scene or optional photograph.
+ * Curved edges trace the scene; the interior softly diffuses and tones it.
  * DOM text, links, saved layout and authentication remain native.
  */
 (() => {
@@ -32,8 +32,7 @@
     '.ptech-personal-form',
     '.portal-action-picker-choice',
     '.portal-action-picker-selected-row',
-    '.portal-adaptive-dialog-item',
-    '.dashboard-header'
+    '.portal-adaptive-dialog-item'
   ].join(',');
   const canvasClass = 'ptech-liquid-canvas';
   const clamp = (n, lo, hi) => Math.min(hi, Math.max(lo, n));
@@ -72,7 +71,7 @@
     const photoButton = body.querySelector('#ptechBackdropPhoto');
     const goldButton = body.querySelector('#ptechBackdropGold');
     const backdropStatus = body.querySelector('#ptechGlassBackdropStatus');
-    let backdropChoice = main.dataset.ptechBackdropChoice === 'gold' ? 'gold' : 'photo';
+    let backdropChoice = main.dataset.ptechBackdropChoice === 'photo' ? 'photo' : 'gold';
     let imageState = backdropImage ? 'loading' : 'error';
     let imageRevision = 0, decorationFailed = false;
     const cleanupEvents = [];
@@ -160,7 +159,7 @@
         }
       }
       if (!photoPainted) {
-      ctx.fillStyle = light ? '#f5f5f3' : '#151a21';
+      ctx.fillStyle = light ? '#f7f3e8' : '#191d24';
       ctx.fillRect(0, 0, width, height);
 
       function glow(x, y, rx, ry, rgb, opacity) {
@@ -177,9 +176,9 @@
         ctx.restore();
       }
       const top = Math.min(height * .42, width < 700 ? 650 : 560);
-      glow(width * .75, top, Math.max(width * .82, 620), 740, '214,172,69', light ? .46 : .30);
-      glow(width * .12, Math.min(height * .82, 1320), Math.max(width * .66, 540), 660, '191,144,41', light ? .19 : .18);
-      glow(width * .32, 80, Math.max(width * .56, 480), 460, '255,248,222', light ? .76 : .055);
+      glow(width * .75, top, Math.max(width * .82, 620), 740, '223,194,125', light ? .34 : .20);
+      glow(width * .12, Math.min(height * .82, 1320), Math.max(width * .66, 540), 660, '206,175,106', light ? .15 : .12);
+      glow(width * .32, 80, Math.max(width * .56, 480), 460, '255,251,235', light ? .66 : .045);
 
       // Soft reflected-light contours make the curved edge's bending visible.
       // They are part of this exact shared scene, not a separate overlay.
@@ -197,10 +196,10 @@
         ctx.restore();
       }
       const band = Math.min(490, Math.max(240, width * .34));
-      lightBand(band, Math.min(230, width * .22), light ? '174,134,48' : '229,185,87', light ? .11 : .11, 20, 28);
-      lightBand(band - 20, Math.min(230, width * .22), '255,250,229', light ? .57 : .11, 7, 18);
-      lightBand(band + 510, Math.min(200, width * .19), '194,153,58', light ? .085 : .10, 26, 34);
-      lightBand(band + 492, Math.min(200, width * .19), '255,247,211', light ? .37 : .085, 5, 16);
+      lightBand(band, Math.min(230, width * .22), light ? '184,153,85' : '222,195,135', light ? .10 : .10, 20, 28);
+      lightBand(band - 20, Math.min(230, width * .22), '255,253,241', light ? .48 : .10, 7, 18);
+      lightBand(band + 510, Math.min(200, width * .19), '207,177,112', light ? .08 : .085, 26, 34);
+      lightBand(band + 492, Math.min(200, width * .19), '255,250,228', light ? .32 : .075, 5, 16);
       }
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       renderer.setScene(scene);
@@ -284,9 +283,8 @@
           const width = Math.max(1, rect.width - left - right);
           const height = Math.max(1, rect.height - top - bottom);
           const radius = clamp((parseFloat(style.borderTopLeftRadius) || 0) * Math.min(sx, sy) - Math.max(left, top), 0, Math.min(width, height) / 2);
-          const header = element.classList.contains('dashboard-header');
-          const outer = header || element.matches('.portal-welcome,.ptech-widget,.ptech-widget-picker');
-          const kind = header ? 'header' : outer ? 'outer' : 'inner';
+          const outer = element.matches('.portal-welcome,.ptech-widget,.ptech-widget-picker');
+          const kind = outer ? 'outer' : 'inner';
           const originX = rect.left - mainRect.left + left;
           const originY = rect.top - mainRect.top + top;
           const key = [sceneVersion, round(width), round(height), round(radius), round(originX), round(originY), renderer.mode].join(':');
@@ -300,7 +298,11 @@
           try {
             const result = renderer.render(entry.canvas, {
               width, height, radius, rim, depth: outer ? 36 : 18,
-              dispersion: 1, originX, originY, sceneWidth, sceneHeight, light, kind, pixelRatio: ratio
+              dispersion: 1, originX, originY, sceneWidth, sceneHeight, light, kind, pixelRatio: ratio,
+              // A busy photograph needs a stronger interior veil than the calm
+              // gold scene. Inner cards use the same treatment as their shell.
+              readability: main.dataset.ptechBackdropActive === 'photo' ? .72 : light ? .30 : .35,
+              blur: 12
             });
             if (result === false) throw new Error('No glass frame');
             entry.key = key;
