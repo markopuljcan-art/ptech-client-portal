@@ -1,10 +1,12 @@
-/* PTech V28.3 — curved glass with an optional readable interior.
+/* PTech V28.5 — curved glass with optional readable or rim-only rendering.
  * Three Snell-law rays sample that scene with different refractive indices.
  * This does not capture or refract arbitrary DOM, user text or controls.
  * One reusable WebGL context paints supplied 2D canvases; the CPU path uses
  * the same geometry, refraction, dispersion and lighting when GL is absent.
  * A shared softened scene and theme veil can separate content from detailed
  * photography. They fade in behind the content, leaving the outer lip clear.
+ * rimOnly leaves the interior transparent for native live backdrop glass.
+ * Its decorative rim samples the supplied static scene, not animated DOM.
  */
 (function (root, factory) {
   'use strict';
@@ -41,6 +43,7 @@
       dispersion: clamp(finite(value.dispersion, 1), 0, 3),
       readability: clamp(finite(value.readability, 0), 0, 1),
       blur: clamp(finite(value.blur, 0), 0, 32),
+      rimOnly: value.rimOnly === true,
       originX: finite(value.originX, 0), originY: finite(value.originY, 0),
       sceneWidth: Math.max(1, finite(value.sceneWidth, scene.width)),
       sceneHeight: Math.max(1, finite(value.sceneHeight, scene.height)),
@@ -196,6 +199,10 @@
         const output = (y * o.pixelWidth + x) * 4;
         const inset = Math.max(0, -sdf);
         const t = clamp(inset / o.rim, 0, 1);
+        const rimCoverage = o.rimOnly ? 1 - smoothstep(.28, .95, t) : 1;
+        // Leave the compositor's live backdrop visible in the flat interior.
+        // Avoid all scene/blur/ray samples for these fully transparent pixels.
+        if (rimCoverage <= 0) continue;
         const worldX = o.originX + px, worldY = o.originY + py;
 
         // The pure-optics default stays an exact aligned scene. A caller can
@@ -251,7 +258,7 @@
           color += (readableTint[c] - color) * o.readability * material;
           data[output + c] = Math.round(clamp(color, 0, 1) * 255);
         }
-        data[output + 3] = Math.round(clamp((red[3] + green[3] + blue[3]) / 3, 0, 1) * alpha * 255);
+        data[output + 3] = Math.round(clamp((red[3] + green[3] + blue[3]) / 3, 0, 1) * alpha * rimCoverage * 255);
       }
     }
     return { data, width: o.pixelWidth, height: o.pixelHeight };
@@ -268,7 +275,7 @@
     uniform sampler2D uScene, uSoftScene;
     uniform vec2 uSize, uOrigin, uSceneSize;
     uniform float uRadius, uRim, uDepth, uDispersion, uLight, uAA;
-    uniform float uReadability, uBlur, uInteriorInset;
+    uniform float uReadability, uBlur, uInteriorInset, uRimOnly;
     float square(float x){return x*x;}
     vec4 sceneAt(vec2 p){return texture2D(uScene,clamp(p/uSceneSize,0.,1.));}
     vec4 softAt(vec2 p){return texture2D(uSoftScene,clamp(p/uSceneSize,0.,1.));}
@@ -287,6 +294,9 @@
       if(coverage<=0.){gl_FragColor=vec4(0.);return;}
       float inset=max(0.,-sdf);
       float t=clamp(inset/uRim,0.,1.);
+      float rimCoverage=mix(1.,1.-smoothstep(.28,.95,t),uRimOnly);
+      if(rimCoverage<=0.){gl_FragColor=vec4(0.);return;}
+      coverage*=rimCoverage;
       vec2 world=uOrigin+p;
       if(t>=1.){
         vec4 plain=uBlur>0.?softAt(world):sceneAt(world);
@@ -382,7 +392,7 @@
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
           }
-          for (const name of ['uScene','uSoftScene','uSize','uOrigin','uSceneSize','uRadius','uRim','uDepth','uDispersion','uLight','uAA','uReadability','uBlur','uInteriorInset']) locations[name] = gl.getUniformLocation(program, name);
+          for (const name of ['uScene','uSoftScene','uSize','uOrigin','uSceneSize','uRadius','uRim','uDepth','uDispersion','uLight','uAA','uReadability','uBlur','uInteriorInset','uRimOnly']) locations[name] = gl.getUniformLocation(program, name);
           locations.position = gl.getAttribLocation(program, 'aPosition');
           canvas.addEventListener('webglcontextlost', onLost);
           mode = 'webgl';
@@ -452,6 +462,7 @@
           gl.uniform1f(locations.uReadability, o.readability);
           gl.uniform1f(locations.uBlur, o.blur > 0 ? 1 : 0);
           gl.uniform1f(locations.uInteriorInset, Math.min(o.rim, 12, Math.max(4, o.rim * .6)));
+          gl.uniform1f(locations.uRimOnly, o.rimOnly ? 1 : 0);
           gl.drawArrays(gl.TRIANGLES, 0, 6);
           if (gl.isContextLost() || gl.getError() !== gl.NO_ERROR) throw new Error('Liquid optics GL rendering failed.');
           if (target.width !== o.pixelWidth) target.width = o.pixelWidth;

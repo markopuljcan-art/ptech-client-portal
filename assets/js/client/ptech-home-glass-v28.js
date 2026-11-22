@@ -1,5 +1,6 @@
-/* PTech V28.4 — clearer glass over a pale gold scene or optional photograph.
- * Curved edges trace the scene; the interior softly diffuses and tones it.
+/* PTech V28.5 — optical rims over a smoky, animated CSS atmosphere.
+ * The static source only decorates edges; native backdrop-filter sees the
+ * real moving gold bubbles and blue particles through transparent interiors.
  * DOM text, links, saved layout and authentication remain native.
  */
 (() => {
@@ -37,12 +38,39 @@
   const canvasClass = 'ptech-liquid-canvas';
   const clamp = (n, lo, hi) => Math.min(hi, Math.max(lo, n));
   const round = n => Math.round(n * 4) / 4;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let stopAtmosphere = null;
+
+  // CSS owns the animation. This controller only pauses it when hidden or
+  // reduced motion is requested, including when optional optics cannot start.
+  function initAtmosphere(body) {
+    if (stopAtmosphere) return;
+    const sync = () => {
+      body.dataset.ptechAtmospherePaused = String(document.hidden || reduced.matches);
+    };
+    document.addEventListener('visibilitychange', sync);
+    if (reduced.addEventListener) reduced.addEventListener('change', sync);
+    else if (reduced.addListener) reduced.addListener(sync);
+    const stop = () => {
+      document.removeEventListener('visibilitychange', sync);
+      if (reduced.removeEventListener) reduced.removeEventListener('change', sync);
+      else if (reduced.removeListener) reduced.removeListener(sync);
+      window.removeEventListener('pagehide', stop);
+      delete body.dataset.ptechAtmospherePaused;
+      stopAtmosphere = null;
+    };
+    stopAtmosphere = stop;
+    window.addEventListener('pagehide', stop, { once: true });
+    sync();
+  }
 
   function init() {
     const body = document.querySelector('body.ptech-home-glass-v28');
     const main = body && body.querySelector('.desktop-main');
+    if (!main) return;
+    initAtmosphere(body);
     const optics = window.PTechLiquidOptics;
-    if (!main || !optics || body.dataset.ptechHomeGlassReady) return;
+    if (!optics || body.dataset.ptechHomeGlassReady) return;
     body.dataset.ptechHomeGlassReady = 'true';
 
     let renderer;
@@ -66,16 +94,7 @@
     let frame = 0, destroyed = false, sceneKey = '', sceneVersion = 0;
     let sceneWidth = 0, sceneHeight = 0, needsDiscovery = true, movingUntil = 0;
     let activePointerId = null;
-    const backdropImage = body.querySelector('#ptechGlassBackdropImage');
-    const backdropToolbar = body.querySelector('#ptechGlassBackdropToolbar');
-    const photoButton = body.querySelector('#ptechBackdropPhoto');
-    const goldButton = body.querySelector('#ptechBackdropGold');
-    const backdropStatus = body.querySelector('#ptechGlassBackdropStatus');
-    let backdropChoice = main.dataset.ptechBackdropChoice === 'photo' ? 'photo' : 'gold';
-    let imageState = backdropImage ? 'loading' : 'error';
-    let imageRevision = 0, decorationFailed = false;
     const cleanupEvents = [];
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     function on(target, name, handler, options) {
       target.addEventListener(name, handler, options);
@@ -88,46 +107,6 @@
     }
     function rgba(rgb, alpha) { return 'rgba(' + rgb + ',' + alpha + ')'; }
 
-    function syncBackdropControls() {
-      main.dataset.ptechBackdropChoice = backdropChoice;
-      if (!main.dataset.ptechBackdropActive) main.dataset.ptechBackdropActive = 'gold';
-      if (photoButton) photoButton.setAttribute('aria-pressed', String(backdropChoice === 'photo'));
-      if (goldButton) goldButton.setAttribute('aria-pressed', String(backdropChoice === 'gold'));
-      if (backdropToolbar) backdropToolbar.dataset.ptechBackdropStatus = decorationFailed ? 'error' : imageState;
-      const message = backdropChoice !== 'photo' ? '' : decorationFailed || imageState === 'error'
-        ? 'Slika nije dostupna. Prikazana je zlatna pozadina.'
-        : imageState === 'loading' ? 'Učitavanje slike… Prikazana je zlatna pozadina.' : '';
-      if (backdropStatus && backdropStatus.textContent !== message) backdropStatus.textContent = message;
-    }
-    function invalidateBackdrop() {
-      sceneKey = '';
-      for (const [element, entry] of tracked) {
-        entry.key = '';
-        entry.failed = false;
-        delete element.dataset.ptechLiquidReady;
-      }
-      syncBackdropControls();
-      queue();
-    }
-    function chooseBackdrop(choice) {
-      if (destroyed || choice === backdropChoice) return;
-      backdropChoice = choice;
-      decorationFailed = false;
-      invalidateBackdrop();
-    }
-    function imageLoaded() {
-      if (destroyed) return;
-      imageState = backdropImage && backdropImage.naturalWidth > 0 && backdropImage.naturalHeight > 0 ? 'ready' : 'error';
-      imageRevision++;
-      invalidateBackdrop();
-    }
-    function imageFailed() {
-      if (destroyed) return;
-      imageState = 'error';
-      imageRevision++;
-      invalidateBackdrop();
-    }
-
     function paintScene(width, height, light) {
       // Bounded raster; logical coordinates stay in CSS pixels regardless of DPR.
       const density = Math.min(1.4, window.devicePixelRatio || 1, 1900 / width,
@@ -138,75 +117,27 @@
       scene.style.height = height + 'px';
       const ctx = sceneContext;
       ctx.setTransform(density, 0, 0, density, 0, 0);
-      let photoPainted = false;
-      if (backdropChoice === 'photo' && imageState === 'ready') {
-        try {
-          // A raw, aspect-preserving cover crop per viewport-height band keeps
-          // long mobile pages from magnifying one tiny slice of the photograph.
-          // The visible scene and every lens use these exact same image pixels.
-          const tileHeight = Math.min(height, Math.max(1, window.innerHeight || height));
-          const scale = Math.max(width / backdropImage.naturalWidth, tileHeight / backdropImage.naturalHeight);
-          const sourceWidth = width / scale, sourceHeight = tileHeight / scale;
-          const sourceX = (backdropImage.naturalWidth - sourceWidth) / 2;
-          const sourceY = (backdropImage.naturalHeight - sourceHeight) / 2;
-          for (let y = 0; y < height; y += tileHeight) {
-            ctx.drawImage(backdropImage, sourceX, sourceY, sourceWidth, sourceHeight, 0, y, width, tileHeight);
-          }
-          photoPainted = true;
-        } catch (_) {
-          imageState = 'error';
-          imageRevision++;
-        }
-      }
-      if (!photoPainted) {
-      ctx.fillStyle = light ? '#f7f3e8' : '#191d24';
+      ctx.fillStyle = light ? '#d7d5d0' : '#14171b';
       ctx.fillRect(0, 0, width, height);
 
-      function glow(x, y, rx, ry, rgb, opacity) {
+      function fog(x, y, rx, ry, opacity) {
         ctx.save();
         ctx.translate(x, y);
         ctx.scale(rx, ry);
         const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, 1);
-        gradient.addColorStop(0, rgba(rgb, opacity));
-        gradient.addColorStop(.28, rgba(rgb, opacity * .82));
-        gradient.addColorStop(.66, rgba(rgb, opacity * .24));
-        gradient.addColorStop(1, rgba(rgb, 0));
+        gradient.addColorStop(0, rgba('0,0,0', opacity));
+        gradient.addColorStop(.28, rgba('0,0,0', opacity * .82));
+        gradient.addColorStop(.66, rgba('0,0,0', opacity * .24));
+        gradient.addColorStop(1, rgba('0,0,0', 0));
         ctx.fillStyle = gradient;
         ctx.fillRect(-1, -1, 2, 2);
         ctx.restore();
       }
       const top = Math.min(height * .42, width < 700 ? 650 : 560);
-      glow(width * .75, top, Math.max(width * .82, 620), 740, '223,194,125', light ? .34 : .20);
-      glow(width * .12, Math.min(height * .82, 1320), Math.max(width * .66, 540), 660, '206,175,106', light ? .15 : .12);
-      glow(width * .32, 80, Math.max(width * .56, 480), 460, '255,251,235', light ? .66 : .045);
-
-      // Soft reflected-light contours make the curved edge's bending visible.
-      // They are part of this exact shared scene, not a separate overlay.
-      function lightBand(y, amplitude, rgb, alpha, lineWidth, blur) {
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(-100, y + amplitude * .55);
-        ctx.bezierCurveTo(width * .25, y - amplitude, width * .58, y + amplitude * 1.3, width + 100, y - amplitude * .2);
-        ctx.lineWidth = lineWidth;
-        ctx.strokeStyle = rgba(rgb, alpha);
-        ctx.shadowColor = rgba(rgb, alpha * .9);
-        ctx.shadowBlur = blur;
-        ctx.lineCap = 'round';
-        ctx.stroke();
-        ctx.restore();
-      }
-      const band = Math.min(490, Math.max(240, width * .34));
-      lightBand(band, Math.min(230, width * .22), light ? '184,153,85' : '222,195,135', light ? .10 : .10, 20, 28);
-      lightBand(band - 20, Math.min(230, width * .22), '255,253,241', light ? .48 : .10, 7, 18);
-      lightBand(band + 510, Math.min(200, width * .19), '207,177,112', light ? .08 : .085, 26, 34);
-      lightBand(band + 492, Math.min(200, width * .19), '255,250,228', light ? .32 : .075, 5, 16);
-      }
+      fog(width * .72, top, Math.max(width * .82, 620), 740, light ? .14 : .30);
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       renderer.setScene(scene);
       main.dataset.ptechSceneReady = 'true';
-      main.dataset.ptechBackdropActive = photoPainted ? 'photo' : 'gold';
-      decorationFailed = false;
-      syncBackdropControls();
     }
 
     function release(element, entry) {
@@ -259,7 +190,7 @@
         sceneWidth = Math.max(1, main.clientWidth);
         sceneHeight = Math.max(main.clientHeight, window.innerHeight);
         const nextSceneKey = [sceneWidth, sceneHeight, light, window.devicePixelRatio || 1,
-          window.innerHeight, backdropChoice, imageState, imageRevision].join(':');
+          window.innerHeight].join(':');
         if (nextSceneKey !== sceneKey) {
           paintScene(sceneWidth, sceneHeight, light);
           sceneKey = nextSceneKey;
@@ -299,11 +230,9 @@
             const result = renderer.render(entry.canvas, {
               width, height, radius, rim, depth: outer ? 36 : 18,
               dispersion: 1, originX, originY, sceneWidth, sceneHeight, light, kind, pixelRatio: ratio,
-              // Let more of the pale gold scene pass through the glass. Keep
-              // the optional photograph softer so its fine details do not
-              // compete with text. Inner cards match their outer shell.
-              readability: main.dataset.ptechBackdropActive === 'photo' ? (light ? .66 : .68) : (light ? .12 : .18),
-              blur: main.dataset.ptechBackdropActive === 'photo' ? 12 : 8
+              // Native CSS glass samples the real moving DOM. The optional
+              // canvas only adds a rim; its entire interior stays transparent.
+              rimOnly: true, readability: 0, blur: 0
             });
             if (result === false) throw new Error('No glass frame');
             entry.key = key;
@@ -320,8 +249,6 @@
         // Keep the native CSS material and working controls if decoration fails.
         sceneKey = '';
         delete main.dataset.ptechSceneReady;
-        main.dataset.ptechBackdropActive = 'gold';
-        decorationFailed = true;
         scene.width = scene.height = 1;
         for (const [element, entry] of tracked) {
           entry.key = '';
@@ -329,7 +256,6 @@
           delete element.dataset.ptechLiquidReady;
           entry.canvas.width = entry.canvas.height = 1;
         }
-        syncBackdropControls();
       }
     }
 
@@ -408,14 +334,15 @@
     on(body, 'lostpointercapture', finishGesture, { capture: true, passive: true });
     on(window, 'blur', finishGesture);
     on(window, 'keydown', event => { if (event.key === 'Escape') finishGesture(); }, { capture: true });
-    if (photoButton) on(photoButton, 'click', () => chooseBackdrop('photo'));
-    if (goldButton) on(goldButton, 'click', () => chooseBackdrop('gold'));
-    if (backdropImage) {
-      on(backdropImage, 'load', imageLoaded);
-      on(backdropImage, 'error', imageFailed);
-      if (backdropImage.complete) imageLoaded();
+    const motionChanged = () => {
+      movingUntil = 0;
+      queue();
+    };
+    if (reduced.addEventListener) on(reduced, 'change', motionChanged);
+    else if (reduced.addListener) {
+      reduced.addListener(motionChanged);
+      cleanupEvents.push(() => reduced.removeListener(motionChanged));
     }
-    syncBackdropControls();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => queue(250));
     queue(500);
 
@@ -430,7 +357,6 @@
       renderer.destroy();
       scene.remove();
       delete main.dataset.ptechSceneReady;
-      main.dataset.ptechBackdropActive = 'gold';
       delete body.dataset.ptechHomeGlassReady;
     }, { once: true });
   }
