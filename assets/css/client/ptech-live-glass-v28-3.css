@@ -1,30 +1,30 @@
-/* PTech V28.3 — live glass for content that scrolls behind the bars.
+/* PTech V28.4 — clearer neutral glass for content behind the bars.
  * CSS backdrop-filter samples the real page: text, images and controls.
  * A supported SVG enhancement bends the rim. WebKit/iOS keeps native blur.
  * Only material/colors change; mobile.js still owns all dock geometry/motion.
  */
 html body.portal-desktop.ptech-live-glass-v283 {
-  --p283-bar-fill: rgba(21,27,36,.74);
-  --p283-bar-border: rgba(237,221,181,.29);
-  --p283-bar-highlight: rgba(255,250,234,.39);
+  --p283-bar-fill: rgba(21,27,36,.40);
+  --p283-bar-border: rgba(255,255,255,.20);
+  --p283-bar-highlight: rgba(255,255,255,.30);
   --p283-bar-ink: #f7f8fa;
   --p283-bar-muted: #d8dde5;
   --p283-bar-solid: #1a2029;
-  --p283-selection: rgba(226,196,132,.14);
-  --p283-selection-edge: rgba(235,201,135,.49);
-  --p283-bar-shadow: 0 9px 26px rgba(4,9,15,.22);
+  --p283-selection-edge: rgba(255,255,255,.28);
+  --p283-selection-highlight: rgba(255,255,255,.18);
+  --p283-bar-shadow: 0 6px 20px rgba(0,0,0,.16);
 }
 html[data-theme="light"] body.portal-desktop.ptech-live-glass-v283,
 html body.portal-desktop.ptech-live-glass-v283.light-mode {
-  --p283-bar-fill: rgba(255,253,245,.72);
-  --p283-bar-border: rgba(164,133,69,.28);
-  --p283-bar-highlight: rgba(255,255,255,.95);
+  --p283-bar-fill: rgba(255,255,255,.32);
+  --p283-bar-border: rgba(255,255,255,.58);
+  --p283-bar-highlight: rgba(255,255,255,.68);
   --p283-bar-ink: #202833;
   --p283-bar-muted: #354150;
-  --p283-bar-solid: #faf7ee;
-  --p283-selection: rgba(231,207,152,.23);
-  --p283-selection-edge: rgba(173,136,61,.52);
-  --p283-bar-shadow: 0 9px 26px rgba(70,59,34,.12);
+  --p283-bar-solid: #f7f8fa;
+  --p283-selection-edge: rgba(255,255,255,.70);
+  --p283-selection-highlight: rgba(255,255,255,.44);
+  --p283-bar-shadow: 0 6px 20px rgba(0,0,0,.07);
 }
 
 /* The header contains no decorative photo canvas. Its backdrop is live. */
@@ -32,11 +32,11 @@ html body.portal-desktop.ptech-home.ptech-home-glass-v28.ptech-live-glass-v283 .
   background: var(--p283-bar-fill) !important;
   border-color: var(--p283-bar-border) !important;
   color: var(--p283-bar-ink) !important;
-  box-shadow: 0 3px 16px rgba(35,30,19,.04),
+  box-shadow: 0 3px 16px rgba(0,0,0,.035),
     inset 0 1px 0 var(--p283-bar-highlight),
-    inset 0 -1px 0 rgba(185,148,70,.10) !important;
-  -webkit-backdrop-filter: blur(10px) saturate(1.08) !important;
-  backdrop-filter: blur(10px) saturate(1.08) !important;
+    inset 0 -1px 0 rgba(0,0,0,.035) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  backdrop-filter: blur(10px) !important;
 }
 html body.portal-desktop.ptech-home.ptech-home-glass-v28.ptech-live-glass-v283 .dashboard-header.p283-native-backdrop {
   backdrop-filter: var(--p283-live-filter) !important;
@@ -56,10 +56,10 @@ html body.portal-desktop.ptech-home.ptech-home-glass-v28.ptech-live-glass-v283 .
     color: var(--p283-bar-ink) !important;
     box-shadow: var(--p283-bar-shadow),
       inset 0 1.5px 0 var(--p283-bar-highlight),
-      inset 1px 0 0 rgba(255,255,255,.22),
-      inset 0 -1px 0 rgba(179,139,57,.14) !important;
-    -webkit-backdrop-filter: blur(9px) saturate(1.10) !important;
-    backdrop-filter: blur(9px) saturate(1.10) !important;
+      inset 1px 0 0 rgba(255,255,255,.16),
+      inset 0 -1px 0 rgba(0,0,0,.045) !important;
+    -webkit-backdrop-filter: blur(9px) !important;
+    backdrop-filter: blur(9px) !important;
   }
   html body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav.p283-native-backdrop {
     backdrop-filter: var(--p283-live-filter) !important;
@@ -72,25 +72,40 @@ html body.portal-desktop.ptech-home.ptech-home-glass-v28.ptech-live-glass-v283 .
     display: none !important;
   }
 
-  /* Keep the current 60px spring-driven indicator. The entire bar now samples
-   * the real page, so the old nested backdrop cannot isolate it a second time. */
+  /* Keep the current 60px spring-driven indicator completely clear. A neutral
+   * white edge marks its shape; no filled center or outer glow in any state. */
+  html body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav.v131-enabled .v131-dock-bubble,
+  html body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble,
   html[data-theme] body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav.v131-enabled.ptech-optical-dock .v131-dock-bubble,
-  html body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav.v131-enabled.ptech-liquid-motion.v131-dragging .v131-dock-bubble {
-    background: linear-gradient(140deg,rgba(255,255,255,.16),rgba(255,255,255,.025) 58%), var(--p283-selection) !important;
-    border-color: var(--p283-selection-edge) !important;
-    box-shadow: 0 3px 9px rgba(88,67,27,.10),
-      inset 0 1px 0 var(--p283-bar-highlight),
-      inset 0 -1px 1px rgba(166,129,54,.12) !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
-  }
-  html[data-theme] body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav.v131-enabled.ptech-optical-dock .p262-refractive-lens {
+  html body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav.v131-enabled.ptech-liquid-motion:is(.v131-dragging,.v131-holding) .v131-dock-bubble {
     background: transparent !important;
+    border-color: var(--p283-selection-edge) !important;
+    box-shadow: inset 0 1px 0 var(--p283-selection-highlight),
+      inset 0 -1px 0 rgba(0,0,0,.04) !important;
+    filter: none !important;
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
   }
-  html[data-theme] body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav.v131-enabled.ptech-optical-dock .p262-specular-shine {
-    opacity: .42;
+  /* V24–V26 pseudo-elements and V26.2 child layers carry their own champagne
+   * fills/caustics. Suppress those decorations, including during hold/drag;
+   * all visible refraction now comes from the parent bar's live backdrop. */
+  html body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav.v131-enabled .v131-dock-bubble::before,
+  html body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav.v131-enabled .v131-dock-bubble::after,
+  html body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble::before,
+  html body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav.v131-enabled.ptech-liquid-motion .v131-dock-bubble::after {
+    content: none !important;
+    display: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  html body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav.v131-enabled .v131-dock-bubble > :is(.p262-refractive-lens,.p262-caustic-rim,.p262-specular-shine) {
+    display: none !important;
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
   }
   html[data-theme] body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav.v131-enabled .bottom-nav-item:not(.ptech-nav-selected),
   html[data-theme] body.portal-desktop.ptech-v13.ptech-live-glass-v283 nav.bottom-nav.v131-enabled .bottom-nav-item:not(.ptech-nav-selected) > span:last-child,

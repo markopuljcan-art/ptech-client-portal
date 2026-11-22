@@ -1,4 +1,4 @@
-/* PTech V28.3 — readable glass over a pale gold scene or optional photograph.
+/* PTech V28.4 — clearer glass over a pale gold scene or optional photograph.
  * Curved edges trace the scene; the interior softly diffuses and tones it.
  * DOM text, links, saved layout and authentication remain native.
  */
@@ -299,10 +299,11 @@
             const result = renderer.render(entry.canvas, {
               width, height, radius, rim, depth: outer ? 36 : 18,
               dispersion: 1, originX, originY, sceneWidth, sceneHeight, light, kind, pixelRatio: ratio,
-              // A busy photograph needs a stronger interior veil than the calm
-              // gold scene. Inner cards use the same treatment as their shell.
-              readability: main.dataset.ptechBackdropActive === 'photo' ? .72 : light ? .30 : .35,
-              blur: 12
+              // Let more of the pale gold scene pass through the glass. Keep
+              // the optional photograph softer so its fine details do not
+              // compete with text. Inner cards match their outer shell.
+              readability: main.dataset.ptechBackdropActive === 'photo' ? (light ? .66 : .68) : (light ? .12 : .18),
+              blur: main.dataset.ptechBackdropActive === 'photo' ? 12 : 8
             });
             if (result === false) throw new Error('No glass frame');
             entry.key = key;

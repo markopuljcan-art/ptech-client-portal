@@ -1,4 +1,4 @@
-/* PTech Digital · V28.3 · Readable glass, pale gold scene and glass controls.
+/* PTech Digital · V28.4 · Clearer glass, pale gold scene and glass controls.
  * This last-loaded, homepage-only layer preserves the live V16/V21 widget
  * hierarchy, adaptive sizes and all existing action/auth/navigation handlers.
  * Outer shells and inner tiles have aligned lens layers; text stays native.
@@ -13,11 +13,11 @@ html body.ptech-home.ptech-home-glass-v28 {
   --home-gold-soft: rgba(215,177,94,.13);
   --home-gold-haze: rgba(223,194,125,.20);
   --home-gold-haze-soft: rgba(206,175,106,.12);
-  --home-glass: rgba(17,25,35,.72);
-  --home-glass-inset: rgba(17,25,35,.72);
-  --home-sidebar: rgba(23,29,38,.72);
-  --home-header: rgba(17,25,35,.72);
-  --home-control-glass: rgba(24,32,44,.55);
+  --home-glass: rgba(17,25,35,.40);
+  --home-glass-inset: rgba(17,25,35,.40);
+  --home-sidebar: rgba(23,29,38,.40);
+  --home-header: rgba(17,25,35,.40);
+  --home-control-glass: rgba(24,32,44,.24);
   --home-status-ink: #d5f8e2;
   --home-status-fill: rgba(23,75,48,.72);
   --home-waiting-ink: #fff0d2;
@@ -31,7 +31,7 @@ html body.ptech-home.ptech-home-glass-v28 {
     inset 0 -1px 0 rgba(255,255,255,.06);
   --home-inset-shadow: inset 0 1px 0 rgba(255,255,255,.15),
     inset 0 -1px 0 rgba(0,0,0,.08);
-  --home-blur: 12px;
+  --home-blur: 8px;
   --home-logout: #e3bc6b;
   --home-logout-bg: rgba(215,177,94,.15);
   --home-toggle: #d7b15e;
@@ -78,23 +78,23 @@ body.ptech-home.ptech-home-glass-v28.light-mode {
   --home-gold-soft: rgba(206,164,67,.13);
   --home-gold-haze: rgba(223,194,125,.34);
   --home-gold-haze-soft: rgba(206,175,106,.15);
-  --home-glass: rgba(255,255,252,.72);
-  --home-glass-inset: rgba(255,255,252,.72);
-  --home-sidebar: rgba(255,253,245,.72);
-  --home-header: rgba(255,255,252,.72);
-  --home-control-glass: rgba(255,255,252,.52);
+  --home-glass: rgba(255,255,252,.32);
+  --home-glass-inset: rgba(255,255,252,.32);
+  --home-sidebar: rgba(255,255,252,.32);
+  --home-header: rgba(255,255,252,.32);
+  --home-control-glass: rgba(255,255,252,.20);
   --home-status-ink: #174c2b;
   --home-status-fill: rgba(242,255,247,.76);
   --home-waiting-ink: #62400d;
   --home-waiting-fill: rgba(255,249,232,.80);
   --home-border: rgba(112,115,121,.18);
   --home-inner-border: rgba(105,111,121,.13);
-  --home-highlight: rgba(255,255,255,.96);
+  --home-highlight: rgba(255,255,255,.76);
   --home-shadow: 0 4px 15px rgba(35,40,49,.045),
-    inset 0 1px 0 rgba(255,255,255,.94),
-    inset 1px 0 0 rgba(255,255,255,.57),
-    inset 0 -1px 0 rgba(255,255,255,.24);
-  --home-inset-shadow: inset 0 1px 0 rgba(255,255,255,.84),
+    inset 0 1px 0 rgba(255,255,255,.72),
+    inset 1px 0 0 rgba(255,255,255,.37),
+    inset 0 -1px 0 rgba(255,255,255,.16);
+  --home-inset-shadow: inset 0 1px 0 rgba(255,255,255,.64),
     inset 0 -1px 0 rgba(82,71,43,.035);
   --home-logout: #233850;
   --home-logout-bg: rgba(35,56,80,.10);
@@ -102,6 +102,19 @@ body.ptech-home.ptech-home-glass-v28.light-mode {
   --home-toggle-icon: #ffffff;
   --portal-on-bronze: #ffffff;
   --portal-track: rgba(77,86,99,.13);
+}
+
+/* The optional detailed photograph retains a stronger fallback veil. These
+ * overrides only matter if a particular optical canvas cannot be rendered. */
+html body.ptech-home.ptech-home-glass-v28 .desktop-main[data-ptech-backdrop-active="photo"] {
+  --home-glass: rgba(17,25,35,.68);
+  --home-glass-inset: rgba(17,25,35,.68);
+  --home-blur: 12px;
+}
+html[data-theme="light"] body.ptech-home.ptech-home-glass-v28 .desktop-main[data-ptech-backdrop-active="photo"],
+html body.ptech-home.ptech-home-glass-v28.light-mode .desktop-main[data-ptech-backdrop-active="photo"] {
+  --home-glass: rgba(255,255,252,.66);
+  --home-glass-inset: rgba(255,255,252,.66);
 }
 
 /* One broad, static gold glow behind the transparent dashboard.
@@ -243,7 +256,7 @@ html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-
  */
 html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) .portal-welcome #portalEdit.portal-text-btn,
 html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) #portalProjectOpen.portal-project-open {
-  background: linear-gradient(155deg, rgba(131,159,187,.18), transparent 48%, rgba(11,25,42,.22)), rgba(35,56,80,.84) !important;
+  background: linear-gradient(155deg, rgba(131,159,187,.14), transparent 48%, rgba(11,25,42,.18)), rgba(35,56,80,.76) !important;
   color: #ffffff !important;
   border-color: rgba(222,234,248,.38) !important;
   box-shadow: 0 3px 9px rgba(18,32,47,.12), inset 0 1px 0 rgba(255,255,255,.42), inset 0 -1px 0 rgba(12,23,38,.20) !important;
@@ -464,7 +477,7 @@ html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(
 }
 
 @media (max-width: 1100px) {
-  html body.ptech-home.ptech-home-glass-v28 { --home-blur: 12px; }
+  html body.ptech-home.ptech-home-glass-v28 { --home-blur: 8px; }
 }
 @media (prefers-reduced-motion: reduce) {
   html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(#portalHome,.ptech-zoom-grid) :is(.portal-action,.portal-preview-link,.portal-adaptive-list-row,.portal-card-link),
@@ -480,6 +493,9 @@ html body.ptech-home.ptech-home-glass-v28.portal-desktop :is(
   html body.ptech-home.ptech-home-glass-v28 { --home-glass: rgba(17,25,35,.94); --home-glass-inset: rgba(17,25,35,.94); --home-header: rgba(17,25,35,.96); }
   html[data-theme="light"] body.ptech-home.ptech-home-glass-v28,
   body.ptech-home.ptech-home-glass-v28.light-mode { --home-glass: rgba(255,255,252,.94); --home-glass-inset: rgba(255,255,252,.94); --home-header: rgba(255,255,252,.96); }
+  html body.ptech-home.ptech-home-glass-v28 .desktop-main[data-ptech-backdrop-active="photo"] { --home-glass: rgba(17,25,35,.94); --home-glass-inset: rgba(17,25,35,.94); }
+  html[data-theme="light"] body.ptech-home.ptech-home-glass-v28 .desktop-main[data-ptech-backdrop-active="photo"],
+  html body.ptech-home.ptech-home-glass-v28.light-mode .desktop-main[data-ptech-backdrop-active="photo"] { --home-glass: rgba(255,255,252,.94); --home-glass-inset: rgba(255,255,252,.94); }
 }
 
 
